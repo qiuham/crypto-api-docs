@@ -1,0 +1,24 @@
+name: binance
+language: zh-CN
+type: mpa  # 多页面应用
+
+crawler:
+  start_url: "https://developers.binance.com/docs/zh-CN/derivatives/usds-margined-futures"
+
+  selectors:
+    # 折叠菜单按钮
+    collapsed_menu: ".menu__list-item--collapsed"
+    menu_button: 'a[role="button"]'
+
+    # 文档链接（排除菜单按钮）
+    doc_link: 'aside nav a:not([role="button"])'
+
+    # 主内容区
+    main_content: "main article"
+
+    # 标题
+    title: "h1"
+
+output:
+  base_dir: "docs"
+  dir_name: "binance"
