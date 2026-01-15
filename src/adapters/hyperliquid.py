@@ -5,11 +5,12 @@ Hyperliquid 适配器（GitBook格式）
 import time
 from typing import List, Dict, Any
 from loguru import logger as log
-from .base import ExchangeAdapter, DocumentPage
+from .base import ExchangeAdapter, DocumentPage, register_adapter
 from ..utils.browser import BrowserManager
 from ..utils.markdown import MarkdownProcessor
 
 
+@register_adapter('hyperliquid')
 class HyperliquidAdapter(ExchangeAdapter):
     """Hyperliquid GitBook 适配器"""
 
@@ -137,7 +138,6 @@ class HyperliquidAdapter(ExchangeAdapter):
         # 提取元数据
         metadata = {
             'exchange': self.name,
-            'language': self.language,
             'source_url': url,
             'api_type': self._detect_api_type(url, title)
         }
@@ -211,3 +211,80 @@ class HyperliquidAdapter(ExchangeAdapter):
             return 'WebSocket'
         else:
             return 'REST'
+
+    def crawl(self, concurrency: int = 1, limit: int = None):
+        """执行完整的Hyperliquid单入口爬取流程"""
+        import os
+        from pathlib import Path
+
+        log.info("获取爬取入口...")
+
+        # 从配置读取 start_urls（hyperliquid只有一个）
+        start_urls = self.config['crawler']['start_urls']
+
+        if not start_urls:
+            log.error("配置文件中未定义 start_urls")
+            return
+
+        start_url = start_urls[0]  # 取第一个
+        log.success(f"入口: {start_url}")
+
+        # 发现所有页面
+        log.info("发现页面...")
+        urls = self.discover_pages()
+
+        if not urls:
+            log.error("未发现任何页面")
+            return
+
+        log.success(f"发现 {len(urls)} 个页面")
+
+        # 限制爬取数量
+        if limit and limit > 0:
+            urls = urls[:limit]
+            log.warning(f"限制模式：只爬取前 {len(urls)} 页")
+
+        # 初始化输出目录
+        output_dir = self.get_output_path()
+        os.makedirs(output_dir, exist_ok=True)
+
+        # 提取内容（hyperliquid暂不支持并发，因为没有实现）
+        log.info("开始提取内容...")
+        from ..utils.path_generator import url_to_filepath
+
+        # 获取基础URL前缀
+        base_prefix = "https://hyperliquid.gitbook.io/hyperliquid-docs/"
+
+        success_count = 0
+        for i, url in enumerate(urls, 1):
+            try:
+                page = self.extract_content(url)
+                # 使用URL路径生成目录结构
+                filepath = url_to_filepath(url, base_prefix)
+                output_path = os.path.join(output_dir, filepath)
+                # 确保子目录存在
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                self.save_page(page, output_path)
+                log.success(f"[{i}/{len(urls)}] {page.title}")
+                success_count += 1
+            except Exception as e:
+                log.error(f"[{i}/{len(urls)}] {url} - {e}")
+
+        log.success(f"完成! 成功: {success_count}/{len(urls)}")
+        log.info(f"保存在: {output_dir}")
+
+        # 生成索引
+        log.info("生成索引...")
+        from ..utils.indexer import DocumentIndexer
+        project_root = Path(__file__).parent.parent.parent
+        index_dir = project_root / "index"
+        indexer = DocumentIndexer(output_dir)
+        index_path = indexer.generate_index(str(index_dir))
+        log.success(f"索引已生成: {index_path}")
+
+        # 更新主 README
+        log.info("更新 README...")
+        from ..utils.readme_updater import ReadmeUpdater
+        updater = ReadmeUpdater(str(project_root))
+        readme_path = updater.update_exchange_table()
+        log.success(f"README 已更新: {readme_path}")

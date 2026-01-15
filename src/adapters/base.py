@@ -3,7 +3,7 @@
 交易所适配器基类
 """
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Type
 from dataclasses import dataclass
 
 
@@ -17,23 +17,63 @@ class DocumentPage:
     raw_html: str = ""
 
 
+# Adapter注册表
+_ADAPTER_REGISTRY: Dict[str, Type['ExchangeAdapter']] = {}
+
+
+def register_adapter(name: str):
+    """装饰器：注册adapter到全局注册表
+
+    使用方式:
+        @register_adapter('binance')
+        class BinanceAdapter(ExchangeAdapter):
+            pass
+    """
+    def decorator(cls: Type['ExchangeAdapter']) -> Type['ExchangeAdapter']:
+        _ADAPTER_REGISTRY[name] = cls
+        return cls
+    return decorator
+
+
+def get_adapter(config: dict) -> 'ExchangeAdapter':
+    """根据配置动态获取adapter实例
+
+    Args:
+        config: 配置字典（必须包含'name'字段）
+
+    Returns:
+        ExchangeAdapter实例
+
+    Raises:
+        NotImplementedError: 当name对应的adapter未注册时
+    """
+    name = config['name']
+    if name not in _ADAPTER_REGISTRY:
+        available = ', '.join(_ADAPTER_REGISTRY.keys())
+        raise NotImplementedError(
+            f"暂不支持: {name}\n"
+            f"可用的交易所: {available}"
+        )
+    return _ADAPTER_REGISTRY[name](config)
+
+
 class ExchangeAdapter(ABC):
     """交易所适配器抽象基类"""
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.name = config['name']
-        self.language = config.get('language', 'en')
 
-    def get_products(self) -> List[Dict[str, str]]:
+    @abstractmethod
+    def crawl(self, concurrency: int = 1, limit: int = None):
         """
-        获取需要爬取的产品列表（可选，用于多产品交易所）
+        执行完整的爬取流程（每个适配器实现自己的逻辑）
 
-        Returns:
-            List[Dict]: 产品列表，每个产品包含 name 和 url
-                       返回 None 或空列表表示单产品模式（传统模式）
+        Args:
+            concurrency: 并发数
+            limit: 每个入口限制爬取的页面数（None表示不限制）
         """
-        return None
+        pass
 
     @abstractmethod
     def discover_pages(self) -> List[str]:

@@ -5,11 +5,12 @@ Binance 适配器（Docusaurus 格式）
 import time
 from typing import List, Dict, Any
 from loguru import logger as log
-from .base import ExchangeAdapter, DocumentPage
+from .base import ExchangeAdapter, DocumentPage, register_adapter
 from ..utils.browser import BrowserManager
 from ..utils.markdown import MarkdownProcessor
 
 
+@register_adapter('binance')
 class BinanceAdapter(ExchangeAdapter):
     """Binance Docusaurus 适配器"""
 
@@ -18,88 +19,29 @@ class BinanceAdapter(ExchangeAdapter):
         self.browser = BrowserManager(f"{self.name}-crawler")
         self.md_processor = MarkdownProcessor()
 
-    def get_products(self) -> List[Dict[str, str]]:
-        """获取'金融交易'分类下的所有产品"""
-        # 打开任意币安文档页面来访问产品菜单
-        homepage = "https://developers.binance.com/docs/zh-CN/derivatives/Introduction"
-        if not self.browser.open(homepage, wait=3):
-            raise Exception(f"无法打开页面: {homepage}")
+    def discover_pages(self) -> List[str]:
+        """发现当前页面的所有文档页面（使用当前已打开的页面）"""
 
-        # 点击产品按钮并获取"金融交易"分类下的产品
-        js_get_products = '''
-        (function() {
-            // 点击产品按钮
-            const btn = document.querySelector('button[class*="productSelector"]');
-            if (btn) {
-                btn.click();
-            }
+        # 获取当前页面URL，用于过滤相关页面
+        current_url_js = 'window.location.href'
+        current_url = self.browser.eval_js(current_url_js)
 
-            // 等待菜单展开
-            const start = Date.now();
-            while (Date.now() - start < 1000);
-
-            // 点击"金融交易"分类
-            const groups = document.querySelectorAll('[class*="groupItem"]');
-            let tradingGroup = null;
-            groups.forEach(g => {
-                if (g.textContent.trim() === '金融交易') {
-                    tradingGroup = g;
-                    g.click();
-                }
-            });
-
-            if (!tradingGroup) {
-                return { error: '找不到金融交易分类' };
-            }
-
-            // 再等待一下让产品列表更新
-            const start2 = Date.now();
-            while (Date.now() - start2 < 500);
-
-            // 获取金融交易分类下的所有产品
-            const products = [];
-            const productItems = document.querySelectorAll('a[class*="productItem"]');
-
-            productItems.forEach(item => {
-                const titleEl = item.querySelector('[class*="Title"]');
-                const title = titleEl ? titleEl.textContent.trim() : '';
-                const href = item.href;
-
-                if (title && href) {
-                    products.push({
-                        name: title,
-                        url: href
-                    });
-                }
-            });
-
-            return {
-                category: '金融交易',
-                products: products,
-                total: products.length
-            };
-        })()
-        '''
-
-        result = self.browser.eval_js(js_get_products)
-
-        if not result or 'error' in result:
-            log.error("获取产品列表失败")
+        if not current_url:
+            log.error("无法获取当前页面URL")
             return []
 
-        products = result.get('products', [])
-        log.info(f"发现 {len(products)} 个金融交易产品")
+        # 从URL提取产品路径前缀（用于过滤）
+        # 例如：https://developers.binance.com/docs/zh-CN/derivatives/xxx -> /docs/zh-CN/derivatives/
+        import re
+        match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url)
+        if not match:
+            log.warning(f"无法从URL提取产品路径: {current_url}")
+            product_prefix = None
+        else:
+            product_prefix = match.group(1)
+            log.info(f"产品路径前缀: {product_prefix}")
 
-        return products
-
-    def discover_pages(self) -> List[str]:
-        """发现所有API文档页面"""
-        start_url = self.config['crawler']['start_url']
-
-        if not self.browser.open(start_url, wait=3):
-            raise Exception(f"无法打开页面: {start_url}")
-
-        # 展开所有折叠菜单
+        # 展开所有折叠菜单（在Python中循环，让React有时间渲染）
         collapsed_selector = self.config['crawler']['selectors']['collapsed_menu']
         max_iterations = 50  # 防止死循环
 
@@ -110,7 +52,8 @@ class BinanceAdapter(ExchangeAdapter):
                 log.info("所有菜单已展开")
                 break
 
-            log.info(f"[轮次 {i+1}] 折叠菜单: {count} 个")
+            if i < 3 or i % 5 == 0:  # 只显示前3次和每5次
+                log.info(f"[轮次 {i+1}] 折叠菜单: {count} 个")
 
             # 点击折叠菜单里的 a[role="button"]
             js_expand = '''
@@ -134,7 +77,7 @@ class BinanceAdapter(ExchangeAdapter):
             if not clicked or clicked == 0:
                 break
 
-            # 不需要 sleep，下一轮会自动检测变化
+            # 不需要 sleep，Python/Browser往返间React会完成渲染
 
         # 提取所有文档链接
         doc_link_selector = self.config['crawler']['selectors']['doc_link']
@@ -149,11 +92,17 @@ class BinanceAdapter(ExchangeAdapter):
         if not links:
             return []
 
+        # 如果有产品前缀，过滤只保留当前产品的页面
+        if product_prefix:
+            filtered_links = [link for link in links if link.startswith(product_prefix)]
+            log.info(f"过滤前: {len(links)} 个链接，过滤后: {len(filtered_links)} 个链接")
+            links = filtered_links
+
         # 去重并排序
         unique_links = list(set(links))
         unique_links.sort()
 
-        log.info(f"发现 {len(unique_links)} 个页面")
+        log.info(f"发现 {len(unique_links)} 个唯一页面（去重后）")
         return unique_links
 
     def extract_content(self, url: str, skip_open: bool = False) -> DocumentPage:
@@ -229,7 +178,6 @@ class BinanceAdapter(ExchangeAdapter):
         # 提取元数据
         metadata = {
             'exchange': self.name,
-            'language': self.language,
             'source_url': url,
             'api_type': self._detect_api_type(url, title)
         }
@@ -311,3 +259,179 @@ class BinanceAdapter(ExchangeAdapter):
             return 'Account'
         else:
             return 'REST'
+
+    def _extract_product_dir(self, url: str) -> str:
+        """从URL提取产品目录名（英文）
+
+        例如:
+        https://.../docs/zh-CN/binance-spot-api-docs/... -> binance-spot-api-docs
+        https://.../docs/zh-CN/derivatives/... -> derivatives
+        https://.../docs/zh-CN/margin_trading/... -> margin_trading
+        """
+        import re
+        match = re.search(r'/docs/[^/]+/([^/]+)/', url)
+        if match:
+            return match.group(1)
+        else:
+            log.warning(f"无法从URL提取产品目录名: {url}")
+            return 'default'
+
+    def crawl(self, concurrency: int = 1, limit: int = None):
+        """执行完整的Binance多入口爬取流程"""
+        import os
+        from pathlib import Path
+
+        log.info("获取爬取入口列表...")
+
+        # 从配置读取 start_urls
+        start_urls = self.config['crawler']['start_urls']
+
+        if not start_urls:
+            log.error("配置文件中未定义 start_urls")
+            return
+
+        log.success(f"发现 {len(start_urls)} 个入口")
+
+        # 对每个入口分别爬取
+        for i, entry_url in enumerate(start_urls, 1):
+            product_dir = self._extract_product_dir(entry_url)
+
+            log.info(f"\n{'='*60}")
+            log.info(f"[{i}/{len(start_urls)}] 开始爬取: {product_dir}")
+            log.info(f"{'='*60}")
+
+            # 打开入口页面
+            if not self.browser.open(entry_url, wait=3):
+                log.error(f"无法打开入口页面: {entry_url}")
+                continue
+
+            # 发现该入口的所有页面
+            log.info(f"发现 {product_dir} 的页面...")
+            urls = self.discover_pages()
+
+            if not urls:
+                log.warning(f"{product_dir} 未发现任何页面")
+                continue
+
+            log.success(f"{product_dir} 发现 {len(urls)} 个页面")
+
+            # 限制爬取数量
+            if limit and limit > 0:
+                urls = urls[:limit]
+                log.warning(f"限制模式：只爬取前 {len(urls)} 页")
+
+            # 为该产品创建输出目录
+            output_dir = self.get_output_path(product_dir)
+            os.makedirs(output_dir, exist_ok=True)
+
+            # 提取内容
+            log.info(f"开始提取 {product_dir} 内容...")
+
+            if concurrency == 1:
+                success_count = self._crawl_sequential(urls, output_dir)
+            else:
+                success_count = self._crawl_concurrent(urls, output_dir, concurrency)
+
+            log.success(f"{product_dir} 完成! 成功: {success_count}/{len(urls)}")
+
+        # 全部完成后，生成索引和更新README
+        log.info("\n" + "="*60)
+        log.info("所有入口爬取完成，生成索引...")
+
+        from ..utils.indexer import DocumentIndexer
+        project_root = Path(__file__).parent.parent.parent
+        index_dir = project_root / "index"
+
+        # 为整个 binance 目录生成索引
+        base_output_dir = self.get_output_path()
+        indexer = DocumentIndexer(base_output_dir)
+        index_path = indexer.generate_index(str(index_dir))
+        log.success(f"索引已生成: {index_path}")
+
+        # 更新主 README
+        log.info("更新 README...")
+        from ..utils.readme_updater import ReadmeUpdater
+        updater = ReadmeUpdater(str(project_root))
+        readme_path = updater.update_exchange_table()
+        log.success(f"README 已更新: {readme_path}")
+
+    def _crawl_sequential(self, urls, output_dir):
+        """顺序爬取"""
+        import re
+        import os
+        from ..utils.path_generator import url_to_filepath
+
+        # 获取产品前缀用于生成文件名
+        if urls and hasattr(self, 'browser'):
+            current_url = self.browser.eval_js('window.location.href')
+            match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url) if current_url else None
+            product_prefix = match.group(1) if match else None
+        else:
+            product_prefix = None
+
+        success_count = 0
+        for i, url in enumerate(urls, 1):
+            try:
+                filename = url_to_filepath(url, product_prefix)
+                output_path = os.path.join(output_dir, filename)
+                # 确保子目录存在
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                page = self.extract_content(url)
+                self.save_page(page, output_path)
+                log.success(f"[{i}/{len(urls)}] {page.title}")
+                success_count += 1
+            except Exception as e:
+                log.error(f"[{i}/{len(urls)}] {url} - {e}")
+        return success_count
+
+    def _crawl_concurrent(self, urls, output_dir, concurrency):
+        """多标签并发爬取"""
+        import re
+        import os
+        from ..utils.path_generator import url_to_filepath
+
+        browser = self.browser
+        total = len(urls)
+        success_count = 0
+
+        # 获取产品前缀用于生成文件名
+        if urls:
+            current_url = browser.eval_js('window.location.href')
+            match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url) if current_url else None
+            product_prefix = match.group(1) if match else None
+        else:
+            product_prefix = None
+
+        # 已有tab 0，再创建N-1个新标签
+        num_tabs = min(concurrency, total)
+        browser.open_tabs_batch(num_tabs - 1)
+
+        for batch_start in range(0, total, num_tabs):
+            batch_urls = urls[batch_start:batch_start + num_tabs]
+
+            # 1. 批量加载URLs
+            browser.load_urls_batch(batch_urls, start_tab=0)
+
+            # 2. 顺序提取内容
+            for i, url in enumerate(batch_urls):
+                idx = batch_start + i + 1
+                try:
+                    browser.tab_switch(i)
+
+                    # 等待页面加载完成
+                    if not browser.wait_for_element('main', timeout=30):
+                        log.warning(f"[{idx}/{total}] 页面加载超时，尝试继续")
+
+                    filename = url_to_filepath(url, product_prefix)
+                    output_path = os.path.join(output_dir, filename)
+                    # 确保子目录存在
+                    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                    page = self.extract_content(url, skip_open=True)
+                    self.save_page(page, output_path)
+
+                    log.success(f"[{idx}/{total}] {page.title}")
+                    success_count += 1
+                except Exception as e:
+                    log.error(f"[{idx}/{total}] {url} - {e}")
+
+        return success_count

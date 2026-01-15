@@ -1,18 +1,14 @@
 name: okx
-language: zh
-type: spa  # 单页应用
 
 crawler:
-  start_url: "https://www.okx.com/docs-v5/zh/"
+  # 多入口爬取（每个入口是独立的SPA页面）- 英文版
+  start_urls:
+    - "https://www.okx.com/docs-v5/en/"           # 主API文档
+    - "https://www.okx.com/docs-v5/trick_en/"     # 使用教程
 
   selectors:
-    # 侧边栏链接（包含锚点）
     sidebar_links: 'nav a[href*="#"]'
-
-    # 主内容区
     main_content: "main, article, .content, [role='main']"
-
-    # 标题
     title: "h1, h2"
 
 output:

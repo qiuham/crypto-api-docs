@@ -16,10 +16,10 @@ class DocumentIndexer:
         self.docs_dir = Path(docs_dir)
 
     def scan_documents(self) -> List[Dict[str, Any]]:
-        """扫描目录下所有文档"""
+        """扫描目录下所有文档（递归）"""
         docs = []
 
-        for md_file in sorted(self.docs_dir.glob("*.md")):
+        for md_file in sorted(self.docs_dir.glob("**/*.md")):
             if md_file.name.lower() in ['index.md', 'readme.md']:
                 continue
 
@@ -53,8 +53,12 @@ class DocumentIndexer:
                     title = line[2:].strip()
                     break
 
+            # 计算相对于docs_dir的相对路径
+            relative_path = file_path.relative_to(self.docs_dir)
+
             return {
                 'filename': file_path.name,
+                'relative_path': str(relative_path),
                 'title': title or file_path.stem.replace('-', ' ').title(),
                 'metadata': metadata
             }
@@ -81,7 +85,7 @@ class DocumentIndexer:
             grouped[api_type].append({
                 'title': doc['title'],
                 'filename': doc['filename'],
-                'path': f"docs/{exchange_name}/{doc['filename']}",
+                'path': f"docs/{exchange_name}/{doc['relative_path']}",
                 'source_url': doc['metadata'].get('source_url', ''),
                 'updated_at': str(doc['metadata'].get('updated_at', ''))
             })
@@ -101,7 +105,7 @@ class DocumentIndexer:
                 {
                     'title': doc['title'],
                     'filename': doc['filename'],
-                    'path': f"docs/{exchange_name}/{doc['filename']}",
+                    'path': f"docs/{exchange_name}/{doc['relative_path']}",
                     'api_type': doc['metadata'].get('api_type', 'Other'),
                     'source_url': doc['metadata'].get('source_url', ''),
                     'updated_at': str(doc['metadata'].get('updated_at', ''))

@@ -1,23 +1,10 @@
 name: hyperliquid
-type: gitbook
-language: en
-base_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api
 
 crawler:
-  start_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api
-
-  retry:
-    max_attempts: 3
-    delay: 2
-
-  concurrency: 2
-  request_delay: 1
+  # 单入口爬取
+  start_urls:
+    - "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api"
 
 output:
-  directory: docs/hyperliquid
-  structure: flat
-  format: markdown
-
-  metadata:
-    description: "Hyperliquid API Documentation"
-    api_types: ["REST", "WebSocket"]
+  base_dir: "docs"
+  dir_name: "hyperliquid"
