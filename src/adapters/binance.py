@@ -31,9 +31,11 @@ class BinanceAdapter(ExchangeAdapter):
             return []
 
         # 从URL提取产品路径前缀（用于过滤）
-        # 例如：https://developers.binance.com/docs/zh-CN/derivatives/xxx -> /docs/zh-CN/derivatives/
+        # 英文: https://developers.binance.com/docs/derivatives/... -> https://.../docs/derivatives/
+        # 中文: https://developers.binance.com/docs/zh-CN/derivatives/... -> https://.../docs/zh-CN/derivatives/
         import re
-        match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url)
+        # 匹配到第二或第三个斜杠后的部分
+        match = re.match(r'(https://[^/]+/docs/(?:[^/]+/)?[^/]+/)', current_url)
         if not match:
             log.warning(f"无法从URL提取产品路径: {current_url}")
             product_prefix = None
@@ -261,82 +263,112 @@ class BinanceAdapter(ExchangeAdapter):
             return 'REST'
 
     def _extract_product_dir(self, url: str) -> str:
-        """从URL提取产品目录名（英文）
+        """从URL提取产品目录名
 
         例如:
-        https://.../docs/zh-CN/binance-spot-api-docs/... -> binance-spot-api-docs
-        https://.../docs/zh-CN/derivatives/... -> derivatives
-        https://.../docs/zh-CN/margin_trading/... -> margin_trading
+        英文: https://.../docs/binance-spot-api-docs/... -> binance-spot-api-docs
+        中文: https://.../docs/zh-CN/binance-spot-api-docs/... -> binance-spot-api-docs
         """
         import re
-        match = re.search(r'/docs/[^/]+/([^/]+)/', url)
+        # 先尝试匹配 /docs/{lang}/{product}/ 格式（中文）
+        match = re.search(r'/docs/(zh-CN|en|zh|ja|ko)/([^/]+)', url)
+        if match:
+            return match.group(2)
+
+        # 再尝试匹配 /docs/{product}/ 格式（英文）
+        match = re.search(r'/docs/([^/]+)/', url)
         if match:
             return match.group(1)
-        else:
-            log.warning(f"无法从URL提取产品目录名: {url}")
-            return 'default'
 
-    def crawl(self, concurrency: int = 1, limit: int = None):
-        """执行完整的Binance多入口爬取流程"""
+        log.warning(f"无法从URL提取产品目录名: {url}")
+        return 'default'
+
+    def crawl(self, concurrency: int = 1, limit: int = None, languages: List[str] = None):
+        """执行完整的Binance多语言多入口爬取流程"""
         import os
         from pathlib import Path
 
-        log.info("获取爬取入口列表...")
+        lang_configs = self.config['crawler']['languages']
 
-        # 从配置读取 start_urls
-        start_urls = self.config['crawler']['start_urls']
+        # 过滤指定的语言
+        if languages:
+            lang_configs = [lc for lc in lang_configs if lc['lang'] in languages]
+            if not lang_configs:
+                log.error(f"配置中未找到指定语言: {languages}")
+                return
 
-        if not start_urls:
-            log.error("配置文件中未定义 start_urls")
-            return
+        log.info(f"开始多语言爬取，共 {len(lang_configs)} 种语言")
 
-        log.success(f"发现 {len(start_urls)} 个入口")
-
-        # 对每个入口分别爬取
-        for i, entry_url in enumerate(start_urls, 1):
-            product_dir = self._extract_product_dir(entry_url)
+        # 遍历每个语言
+        for lang_idx, lang_config in enumerate(lang_configs, 1):
+            lang = lang_config['lang']
+            start_urls = lang_config['start_urls']
 
             log.info(f"\n{'='*60}")
-            log.info(f"[{i}/{len(start_urls)}] 开始爬取: {product_dir}")
+            log.info(f"[{lang_idx}/{len(lang_configs)}] 开始爬取语言: {lang.upper()}")
             log.info(f"{'='*60}")
 
-            # 打开入口页面
-            if not self.browser.open(entry_url, wait=3):
-                log.error(f"无法打开入口页面: {entry_url}")
+            if not start_urls:
+                log.warning(f"语言 {lang} 未定义 start_urls，跳过")
                 continue
 
-            # 发现该入口的所有页面
-            log.info(f"发现 {product_dir} 的页面...")
-            urls = self.discover_pages()
+            log.success(f"发现 {len(start_urls)} 个入口")
 
-            if not urls:
-                log.warning(f"{product_dir} 未发现任何页面")
-                continue
+            # 临时替换配置的 start_urls
+            original_urls = self.config['crawler'].get('start_urls')
+            self.config['crawler']['start_urls'] = start_urls
 
-            log.success(f"{product_dir} 发现 {len(urls)} 个页面")
+            # 对每个入口分别爬取
+            for i, entry_url in enumerate(start_urls, 1):
+                product_dir = self._extract_product_dir(entry_url)
 
-            # 限制爬取数量
-            if limit and limit > 0:
-                urls = urls[:limit]
-                log.warning(f"限制模式：只爬取前 {len(urls)} 页")
+                log.info(f"\n{'-'*50}")
+                log.info(f"[{i}/{len(start_urls)}] 开始爬取: {product_dir}")
+                log.info(f"{'-'*50}")
 
-            # 为该产品创建输出目录
-            output_dir = self.get_output_path(product_dir)
-            os.makedirs(output_dir, exist_ok=True)
+                # 打开入口页面
+                if not self.browser.open(entry_url, wait=3):
+                    log.error(f"无法打开入口页面: {entry_url}")
+                    continue
 
-            # 提取内容
-            log.info(f"开始提取 {product_dir} 内容...")
+                # 发现该入口的所有页面
+                log.info(f"发现 {product_dir} 的页面...")
+                urls = self.discover_pages()
 
-            if concurrency == 1:
-                success_count = self._crawl_sequential(urls, output_dir)
+                if not urls:
+                    log.warning(f"{product_dir} 未发现任何页面")
+                    continue
+
+                log.success(f"{product_dir} 发现 {len(urls)} 个页面")
+
+                # 限制爬取数量
+                if limit and limit > 0:
+                    urls = urls[:limit]
+                    log.warning(f"限制模式：只爬取前 {len(urls)} 页")
+
+                # 为该产品和语言创建输出目录
+                output_dir = f"{self.get_output_path()}/{lang}/{product_dir}"
+                os.makedirs(output_dir, exist_ok=True)
+
+                # 提取内容
+                log.info(f"开始提取 {product_dir} 内容...")
+
+                if concurrency == 1:
+                    success_count = self._crawl_sequential(urls, output_dir)
+                else:
+                    success_count = self._crawl_concurrent(urls, output_dir, concurrency)
+
+                log.success(f"{product_dir} 完成! 成功: {success_count}/{len(urls)}")
+
+            # 恢复原始配置
+            if original_urls:
+                self.config['crawler']['start_urls'] = original_urls
             else:
-                success_count = self._crawl_concurrent(urls, output_dir, concurrency)
-
-            log.success(f"{product_dir} 完成! 成功: {success_count}/{len(urls)}")
+                self.config['crawler'].pop('start_urls', None)
 
         # 全部完成后，生成索引和更新README
         log.info("\n" + "="*60)
-        log.info("所有入口爬取完成，生成索引...")
+        log.info("所有语言爬取完成，生成索引...")
 
         from ..utils.indexer import DocumentIndexer
         project_root = Path(__file__).parent.parent.parent
@@ -362,9 +394,11 @@ class BinanceAdapter(ExchangeAdapter):
         from ..utils.path_generator import url_to_filepath
 
         # 获取产品前缀用于生成文件名
+        # 英文: https://.../docs/derivatives/... -> https://.../docs/derivatives/
+        # 中文: https://.../docs/zh-CN/derivatives/... -> https://.../docs/zh-CN/derivatives/
         if urls and hasattr(self, 'browser'):
             current_url = self.browser.eval_js('window.location.href')
-            match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url) if current_url else None
+            match = re.match(r'(https://[^/]+/docs/(?:[^/]+/)?[^/]+/)', current_url) if current_url else None
             product_prefix = match.group(1) if match else None
         else:
             product_prefix = None
@@ -395,9 +429,11 @@ class BinanceAdapter(ExchangeAdapter):
         success_count = 0
 
         # 获取产品前缀用于生成文件名
+        # 英文: https://.../docs/derivatives/... -> https://.../docs/derivatives/
+        # 中文: https://.../docs/zh-CN/derivatives/... -> https://.../docs/zh-CN/derivatives/
         if urls:
             current_url = browser.eval_js('window.location.href')
-            match = re.match(r'(https://[^/]+/docs/[^/]+/[^/]+/)', current_url) if current_url else None
+            match = re.match(r'(https://[^/]+/docs/(?:[^/]+/)?[^/]+/)', current_url) if current_url else None
             product_prefix = match.group(1) if match else None
         else:
             product_prefix = None

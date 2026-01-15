@@ -224,103 +224,123 @@ class OKXAdapter(ExchangeAdapter):
         else:
             return 'API'
 
-    def crawl(self, concurrency: int = 1, limit: int = None):
-        """执行完整的OKX多入口SPA爬取流程"""
+    def crawl(self, concurrency: int = 1, limit: int = None, languages: List[str] = None):
+        """执行完整的OKX多语言多入口SPA爬取流程"""
         import os
         from pathlib import Path
         from urllib.parse import urlparse
 
-        log.info("获取爬取入口列表...")
+        lang_configs = self.config['crawler']['languages']
 
-        # 从配置读取 start_urls（支持多个SPA页面）
-        start_urls = self.config['crawler']['start_urls']
+        # 过滤指定的语言
+        if languages:
+            lang_configs = [lc for lc in lang_configs if lc['lang'] in languages]
+            if not lang_configs:
+                log.error(f"配置中未找到指定语言: {languages}")
+                return
 
-        if not start_urls:
-            log.error("配置文件中未定义 start_urls")
-            return
+        log.info(f"开始多语言爬取，共 {len(lang_configs)} 种语言")
 
-        log.success(f"发现 {len(start_urls)} 个入口")
-
-        # 初始化输出目录
-        output_dir = self.get_output_path()
-        os.makedirs(output_dir, exist_ok=True)
-
-        # 对每个入口分别爬取
-        for entry_idx, start_url in enumerate(start_urls, 1):
-            # 提取页面标识（用于日志显示）
-            page_identifier = urlparse(start_url).path.strip('/').split('/')[-1]
+        # 遍历每个语言
+        for lang_idx, lang_config in enumerate(lang_configs, 1):
+            lang = lang_config['lang']
+            start_urls = lang_config['start_urls']
 
             log.info(f"\n{'='*60}")
-            log.info(f"[{entry_idx}/{len(start_urls)}] 开始爬取: {page_identifier}")
-            log.info(f"入口: {start_url}")
+            log.info(f"[{lang_idx}/{len(lang_configs)}] 开始爬取语言: {lang.upper()}")
             log.info(f"{'='*60}")
 
-            # 发现该页面的所有段落（会自动过滤跨页面链接）
-            log.info(f"发现 {page_identifier} 的段落...")
-
-            # 临时保存当前start_url，让discover_pages使用
-            original_urls = self.config['crawler']['start_urls']
-            self.config['crawler']['start_urls'] = [start_url]
-
-            urls = self.discover_pages()
-
-            # 恢复原始配置
-            self.config['crawler']['start_urls'] = original_urls
-
-            if not urls:
-                log.warning(f"{page_identifier} 未发现任何段落")
+            if not start_urls:
+                log.warning(f"语言 {lang} 未定义 start_urls，跳过")
                 continue
 
-            log.success(f"{page_identifier} 发现 {len(urls)} 个段落")
+            log.success(f"发现 {len(start_urls)} 个入口")
 
-            # 限制爬取数量
-            if limit and limit > 0:
-                urls = urls[:limit]
-                log.warning(f"限制模式：只爬取前 {len(urls)} 个段落")
+            # 对每个入口分别爬取
+            for entry_idx, start_url in enumerate(start_urls, 1):
+                # 提取页面标识（用于日志显示）
+                page_identifier = urlparse(start_url).path.strip('/').split('/')[-1]
 
-            # 提取内容（SPA所有内容在一个页面，顺序爬取）
-            log.info(f"开始提取 {page_identifier} 内容...")
-            success_count = 0
-            for i, url in enumerate(urls, 1):
-                try:
-                    # SPA只需在第一次打开页面
-                    skip_open = (i > 1)
-                    page = self.extract_content(url, skip_open=skip_open)
+                log.info(f"\n{'-'*50}")
+                log.info(f"[{entry_idx}/{len(start_urls)}] 开始爬取: {page_identifier}")
+                log.info(f"入口: {start_url}")
+                log.info(f"{'-'*50}")
 
-                    # 生成文件路径：将锚点ID转换为目录结构
-                    from ..utils.path_generator import anchor_to_filepath, is_hash_anchor, slugify_title
-                    anchor_id = page.metadata.get('anchor_id', str(i))
+                # 发现该页面的所有段落（会自动过滤跨页面链接）
+                log.info(f"发现 {page_identifier} 的段落...")
 
-                    # 如果锚点是哈希格式，使用标题生成文件名
-                    if is_hash_anchor(anchor_id):
-                        filepath = f"{slugify_title(page.title)}.md"
-                    else:
-                        filepath = anchor_to_filepath(anchor_id)
+                # 临时保存当前start_url，让discover_pages使用
+                original_urls = self.config['crawler'].get('start_urls')
+                self.config['crawler']['start_urls'] = [start_url]
 
-                    output_path = os.path.join(output_dir, filepath)
+                urls = self.discover_pages()
 
-                    # 确保子目录存在
-                    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                # 恢复原始配置
+                if original_urls:
+                    self.config['crawler']['start_urls'] = original_urls
+                else:
+                    self.config['crawler'].pop('start_urls', None)
 
-                    self.save_page(page, output_path)
-                    log.success(f"[{i}/{len(urls)}] {page.title}")
-                    success_count += 1
-                except Exception as e:
-                    log.error(f"[{i}/{len(urls)}] {url} - {e}")
+                if not urls:
+                    log.warning(f"{page_identifier} 未发现任何段落")
+                    continue
 
-            log.success(f"{page_identifier} 完成! 成功: {success_count}/{len(urls)}")
+                log.success(f"{page_identifier} 发现 {len(urls)} 个段落")
+
+                # 限制爬取数量
+                if limit and limit > 0:
+                    urls = urls[:limit]
+                    log.warning(f"限制模式：只爬取前 {len(urls)} 个段落")
+
+                # 为该语言创建输出目录
+                output_dir = f"{self.get_output_path()}/{lang}"
+                os.makedirs(output_dir, exist_ok=True)
+
+                # 提取内容（SPA所有内容在一个页面，顺序爬取）
+                log.info(f"开始提取 {page_identifier} 内容...")
+                success_count = 0
+                for i, url in enumerate(urls, 1):
+                    try:
+                        # SPA只需在第一次打开页面
+                        skip_open = (i > 1)
+                        page = self.extract_content(url, skip_open=skip_open)
+
+                        # 生成文件路径：将锚点ID转换为目录结构
+                        from ..utils.path_generator import anchor_to_filepath, is_hash_anchor, slugify_title
+                        anchor_id = page.metadata.get('anchor_id', str(i))
+
+                        # 如果锚点是哈希格式，使用标题生成文件名
+                        if is_hash_anchor(anchor_id):
+                            filepath = f"{slugify_title(page.title)}.md"
+                        else:
+                            filepath = anchor_to_filepath(anchor_id)
+
+                        output_path = os.path.join(output_dir, filepath)
+
+                        # 确保子目录存在
+                        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+                        self.save_page(page, output_path)
+                        log.success(f"[{i}/{len(urls)}] {page.title}")
+                        success_count += 1
+                    except Exception as e:
+                        log.error(f"[{i}/{len(urls)}] {url} - {e}")
+
+                log.success(f"{page_identifier} 完成! 成功: {success_count}/{len(urls)}")
 
         # 全部完成
         log.info("\n" + "="*60)
-        log.info("所有入口爬取完成")
-        log.info(f"保存在: {output_dir}")
+        log.info("所有语言爬取完成")
 
         # 生成索引
         log.info("生成索引...")
         from ..utils.indexer import DocumentIndexer
         project_root = Path(__file__).parent.parent.parent
         index_dir = project_root / "index"
-        indexer = DocumentIndexer(output_dir)
+
+        # 为整个 okx 目录生成索引
+        base_output_dir = self.get_output_path()
+        indexer = DocumentIndexer(base_output_dir)
         index_path = indexer.generate_index(str(index_dir))
         log.success(f"索引已生成: {index_path}")
 

@@ -212,7 +212,7 @@ class HyperliquidAdapter(ExchangeAdapter):
         else:
             return 'REST'
 
-    def crawl(self, concurrency: int = 1, limit: int = None):
+    def crawl(self, concurrency: int = 1, limit: int = None, languages: List[str] = None):
         """执行完整的Hyperliquid单入口爬取流程"""
         import os
         from pathlib import Path

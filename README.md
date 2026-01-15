@@ -20,9 +20,9 @@ PYTHONPATH=. python src/main.py crawl -e hyperliquid -c 5
 
 | 交易所 | 状态 | 文档数量 | 最后更新 |
 |--------|------|----------|----------|
-| Hyperliquid | 🔜 | - | - |
-| Binance | 🔜 | - | - |
-| [OKX](./docs/okx/) | ✅ | 551 | 2026-01-15 |
+| [Hyperliquid](./docs/hyperliquid/) | ✅ | 15 | 2026-01-14 |
+| [Binance](./docs/binance/) | ✅ | 10 | 2026-01-15 |
+| OKX | 🔜 | - | - |
 | Bybit | 🔜 | - | - |
 | Kraken | 🔜 | - | - |
 | Coinbase | 🔜 | - | - |

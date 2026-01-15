@@ -32,13 +32,15 @@ def load_config(exchange_name: str) -> dict:
         return yaml.safe_load(f)
 
 
-def crawl_exchange(exchange_name: str, concurrency: int = 1, limit: int = None):
+def crawl_exchange(exchange_name: str, concurrency: int = 1, limit: int = None, languages: list = None):
     """爬取指定交易所"""
     from src.adapters.base import get_adapter
 
     log.info(f"开始爬取: {exchange_name} (并发: {concurrency})")
     if limit:
         log.warning(f"限制模式：每个入口最多爬取 {limit} 页")
+    if languages:
+        log.info(f"指定语言: {', '.join(languages)}")
 
     # 加载配置
     config = load_config(exchange_name)
@@ -47,7 +49,7 @@ def crawl_exchange(exchange_name: str, concurrency: int = 1, limit: int = None):
     adapter = get_adapter(config)
 
     # 统一接口：每个适配器实现自己的爬取逻辑
-    adapter.crawl(concurrency=concurrency, limit=limit)
+    adapter.crawl(concurrency=concurrency, limit=limit, languages=languages)
 
 
 def main():
@@ -58,11 +60,15 @@ def main():
                         help='并发数（标签页数量），默认 1')
     parser.add_argument('--limit', '-l', type=int, default=None,
                         help='每个入口限制爬取的页面数')
+    parser.add_argument('--lang', type=str, default=None,
+                        help='指定爬取的语言，多个语言用逗号分隔（如：en,zh）。不指定则爬取所有语言')
 
     args = parser.parse_args()
 
     if args.command == 'crawl':
-        crawl_exchange(args.exchange, concurrency=args.concurrency, limit=args.limit)
+        # 解析语言参数
+        languages = args.lang.split(',') if args.lang else None
+        crawl_exchange(args.exchange, concurrency=args.concurrency, limit=args.limit, languages=languages)
 
 
 if __name__ == '__main__':

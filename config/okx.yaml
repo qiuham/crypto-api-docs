@@ -1,10 +1,16 @@
 name: okx
 
 crawler:
-  # 多入口爬取（每个入口是独立的SPA页面）- 英文版
-  start_urls:
-    - "https://www.okx.com/docs-v5/en/"           # 主API文档
-    - "https://www.okx.com/docs-v5/trick_en/"     # 使用教程
+  # 多语言支持
+  languages:
+    - lang: en
+      start_urls:
+        - "https://www.okx.com/docs-v5/en/"           # 主API文档
+        - "https://www.okx.com/docs-v5/trick_en/"     # 使用教程
+    - lang: zh
+      start_urls:
+        - "https://www.okx.com/docs-v5/zh/"           # 主API文档
+        - "https://www.okx.com/docs-v5/trick/"        # 使用教程
 
   selectors:
     sidebar_links: 'nav a[href*="#"]'

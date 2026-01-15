@@ -65,13 +65,14 @@ class ExchangeAdapter(ABC):
         self.name = config['name']
 
     @abstractmethod
-    def crawl(self, concurrency: int = 1, limit: int = None):
+    def crawl(self, concurrency: int = 1, limit: int = None, languages: List[str] = None):
         """
         执行完整的爬取流程（每个适配器实现自己的逻辑）
 
         Args:
             concurrency: 并发数
             limit: 每个入口限制爬取的页面数（None表示不限制）
+            languages: 指定爬取的语言列表（None表示爬取所有语言）
         """
         pass
 
