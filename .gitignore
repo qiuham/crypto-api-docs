@@ -45,3 +45,8 @@ index/
 # Test files
 test_*.py
 temp/
+tmp/
+*.pyc
+__pycache__/
+.DS_Store
+config/*_test.yaml

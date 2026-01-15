@@ -23,7 +23,7 @@ def load_config(exchange_name: str) -> dict:
     """加载交易所配置"""
     # 获取项目根目录
     project_root = Path(__file__).parent.parent
-    config_file = project_root / f"config/exchanges/{exchange_name}.yaml"
+    config_file = project_root / f"config/{exchange_name}.yaml"
 
     if not config_file.exists():
         raise FileNotFoundError(f"配置文件不存在: {config_file}")

@@ -32,21 +32,26 @@ PYTHONPATH=. python src/main.py crawl -e hyperliquid -c 5
 
 ```
 crypto-api-docs/
-├── config/
-│   └── exchanges/          # 交易所配置（YAML）
+├── config/                 # 交易所配置（YAML）
+│   ├── binance.yaml
+│   ├── okx.yaml
+│   └── hyperliquid.yaml
 ├── docs/                   # 生成的 Markdown 文档
 │   ├── hyperliquid/        # 按交易所分目录
-│   └── binance/
+│   ├── binance/
+│   └── okx/
 ├── index/                  # JSON 索引（供 AI 读取）
 ├── src/
 │   ├── adapters/           # 交易所适配器
 │   │   ├── base.py         # 基类
 │   │   ├── hyperliquid.py  # Hyperliquid (GitBook)
-│   │   └── binance.py      # Binance (Docusaurus)
+│   │   ├── binance.py      # Binance (Docusaurus)
+│   │   └── okx.py          # OKX (SPA)
 │   ├── utils/              # 工具类
 │   │   ├── browser.py      # 浏览器自动化
 │   │   ├── markdown.py     # HTML → Markdown
-│   │   └── indexer.py      # 索引生成
+│   │   ├── indexer.py      # 索引生成
+│   │   └── path_generator.py # 路径生成工具
 │   └── main.py             # 主程序入口
 ├── scripts/                # 工具脚本
 └── README.md
