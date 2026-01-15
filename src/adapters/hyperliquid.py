@@ -21,7 +21,11 @@ class HyperliquidAdapter(ExchangeAdapter):
 
     def discover_pages(self) -> List[str]:
         """发现所有API文档页面"""
-        start_url = self.config['crawler']['start_url']
+        start_urls = self.config['crawler']['start_urls']
+        start_url = start_urls[0] if start_urls else None
+
+        if not start_url:
+            raise Exception("配置文件中未定义 start_urls")
 
         if not self.browser.open(start_url, wait=3):
             raise Exception(f"无法打开页面: {start_url}")

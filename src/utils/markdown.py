@@ -54,6 +54,21 @@ class MarkdownProcessor:
 
         frontmatter = self.generate_frontmatter(metadata)
 
+        # 移除 content 中的第一个 h1 标题（避免重复）
+        import re
+        content_lines = content.split('\n')
+        result_lines = []
+        found_first_h1 = False
+
+        for line in content_lines:
+            # 如果是第一个 h1 标题行，跳过
+            if not found_first_h1 and re.match(r'^#\s+', line):
+                found_first_h1 = True
+                continue
+            result_lines.append(line)
+
+        content = '\n'.join(result_lines).strip()
+
         return f"{frontmatter}\n\n# {title}\n\n{content}"
 
 

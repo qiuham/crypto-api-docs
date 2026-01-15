@@ -1,0 +1,26 @@
+{
+  "exchange": "bybit",
+  "total": 1,
+  "updated_at": "2026-01-16 02:43:30.553583",
+  "documents_by_type": {
+    "REST": [
+      {
+        "title": "Get Lending Account Info",
+        "filename": "account-info.md",
+        "path": "docs/bybit/abandon/account-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/account-info",
+        "updated_at": "2026-01-16 02:43:30.553583"
+      }
+    ]
+  },
+  "all_documents": [
+    {
+      "title": "Get Lending Account Info",
+      "filename": "account-info.md",
+      "path": "docs/bybit/abandon/account-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/account-info",
+      "updated_at": "2026-01-16 02:43:30.553583"
+    }
+  ]
+}

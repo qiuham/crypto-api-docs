@@ -1,0 +1,25 @@
+name: kraken
+
+crawler:
+  # 多语言支持（Kraken 只有英文）
+  languages:
+    - lang: en
+      start_urls:
+        - "https://docs.kraken.com/api/docs/guides/global-intro"
+        - "https://docs.kraken.com/api/docs/rest-api/get-market-data"
+        - "https://docs.kraken.com/api/docs/websocket-v2/introduction"
+        - "https://docs.kraken.com/api/docs/nft/introduction"
+        - "https://docs.kraken.com/api/docs/rest-api-etp/introduction"
+
+  # 页面选择器
+  selectors:
+    # Docusaurus 侧边栏链接
+    sidebar_links: '.menu__link'
+    # 折叠菜单按钮
+    collapsible_button: 'button[aria-expanded="false"]'
+    # 主内容区域
+    main_content: 'article, main, [role="main"]'
+
+output:
+  base_dir: "docs"
+  dir_name: "kraken"

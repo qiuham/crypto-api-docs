@@ -292,8 +292,10 @@ class OKXAdapter(ExchangeAdapter):
                     urls = urls[:limit]
                     log.warning(f"限制模式：只爬取前 {len(urls)} 个段落")
 
-                # 为该语言创建输出目录
-                output_dir = f"{self.get_output_path()}/{lang}"
+                # 为该语言创建临时输出目录
+                import tempfile
+                temp_base = tempfile.gettempdir()
+                output_dir = f"{temp_base}/crypto-api-docs/{self.name}/{lang}"
                 os.makedirs(output_dir, exist_ok=True)
 
                 # 提取内容（SPA所有内容在一个页面，顺序爬取）
@@ -332,6 +334,22 @@ class OKXAdapter(ExchangeAdapter):
         log.info("\n" + "="*60)
         log.info("所有语言爬取完成")
 
+        # 如果爬取了多种语言，合并成双语文件
+        if len(lang_configs) > 1:
+            log.info("开始合并双语文件...")
+            import tempfile
+            temp_base = f"{tempfile.gettempdir()}/crypto-api-docs/{self.name}"
+            final_output_dir = self.get_output_path()
+            merged_count = self._merge_bilingual_files(temp_base, final_output_dir, [lc['lang'] for lc in lang_configs])
+            log.success(f"合并完成：{merged_count} 个文件")
+
+            # 删除临时文件
+            log.info("清理临时文件...")
+            import shutil
+            if os.path.exists(temp_base):
+                shutil.rmtree(temp_base)
+            log.success("临时文件已删除")
+
         # 生成索引
         log.info("生成索引...")
         from ..utils.indexer import DocumentIndexer
@@ -350,3 +368,92 @@ class OKXAdapter(ExchangeAdapter):
         updater = ReadmeUpdater(str(project_root))
         readme_path = updater.update_exchange_table()
         log.success(f"README 已更新: {readme_path}")
+
+    def _remove_trailing_separator(self, content: str) -> str:
+        """移除内容末尾的 markdown 分隔线"""
+        import re
+        return re.sub(r'\n+(\*\s*\*\s*\*|---)\s*$', '', content.rstrip())
+
+    def _merge_bilingual_files(self, temp_dir: str, output_dir: str, languages: List[str]) -> int:
+        """合并多语言文件为双语文件
+
+        Args:
+            temp_dir: 临时目录，如 /tmp/crypto-api-docs/okx
+            output_dir: 最终输出目录，如 docs/okx
+            languages: 语言列表，如 ['en', 'zh']
+
+        Returns:
+            合并的文件数量
+        """
+        import os
+        import glob
+
+        if len(languages) < 2:
+            return 0
+
+        # 假设第一种语言是主语言（英文）
+        primary_lang = languages[0]
+        primary_dir = os.path.join(temp_dir, primary_lang)
+
+        if not os.path.exists(primary_dir):
+            log.warning(f"主语言目录不存在: {primary_dir}")
+            return 0
+
+        # 遍历主语言的所有文件
+        pattern = os.path.join(primary_dir, '**', '*.md')
+        primary_files = glob.glob(pattern, recursive=True)
+        merged_count = 0
+
+        for primary_file in primary_files:
+            # 获取相对路径（相对于语言目录）
+            rel_path = os.path.relpath(primary_file, primary_dir)
+
+            # 读取主语言内容
+            with open(primary_file, 'r', encoding='utf-8') as f:
+                primary_content = f.read()
+
+            # 收集其他语言的内容
+            other_contents = []
+            for lang in languages[1:]:
+                lang_file = os.path.join(temp_dir, lang, rel_path)
+                if os.path.exists(lang_file):
+                    with open(lang_file, 'r', encoding='utf-8') as f:
+                        other_contents.append((lang, f.read()))
+
+            # 如果有其他语言的内容，合并
+            if other_contents:
+                # 构建合并后的内容
+                # 先移除英文内容末尾的 markdown 分隔线（如果有）
+                primary_content = self._remove_trailing_separator(primary_content)
+                merged_content = primary_content
+
+                for lang, content in other_contents:
+                    # 移除次要语言内容中的 metadata（YAML front matter）
+                    lines = content.split('\n')
+                    if lines and lines[0].strip() == '---':
+                        # 找到第二个 ---
+                        end_idx = 1
+                        for i in range(1, len(lines)):
+                            if lines[i].strip() == '---':
+                                end_idx = i + 1
+                                break
+                        # 跳过 metadata，保留后面的内容
+                        content = '\n'.join(lines[end_idx:]).strip()
+
+                    # 移除内容末尾的分隔线
+                    content = self._remove_trailing_separator(content)
+
+                    # 添加分隔符和次要语言内容
+                    merged_content += f"\n\n---\n\n"
+                    merged_content += content
+
+                # 写入合并后的文件到最终目录
+                output_file = os.path.join(output_dir, rel_path)
+                os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+                with open(output_file, 'w', encoding='utf-8') as f:
+                    f.write(merged_content)
+
+                merged_count += 1
+
+        return merged_count

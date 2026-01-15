@@ -1,0 +1,86 @@
+{
+  "exchange": "hyperliquid",
+  "total": 5,
+  "updated_at": "2026-01-15 23:33:19.043967",
+  "documents_by_type": {
+    "REST": [
+      {
+        "title": "Activation gas fee",
+        "filename": "activation-gas-fee.md",
+        "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
+        "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee",
+        "updated_at": "2026-01-15 23:33:06.849386"
+      },
+      {
+        "title": "Asset IDs",
+        "filename": "asset-ids.md",
+        "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
+        "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids",
+        "updated_at": "2026-01-15 23:33:09.406871"
+      },
+      {
+        "title": "Bridge2",
+        "filename": "bridge2.md",
+        "path": "docs/hyperliquid/for-developers/api/bridge2.md",
+        "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2",
+        "updated_at": "2026-01-15 23:33:12.832149"
+      },
+      {
+        "title": "Deploying HIP-1 and HIP-2 assets",
+        "filename": "deploying-hip-1-and-hip-2-assets.md",
+        "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
+        "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets",
+        "updated_at": "2026-01-15 23:33:16.215831"
+      },
+      {
+        "title": "Error responses",
+        "filename": "error-responses.md",
+        "path": "docs/hyperliquid/for-developers/api/error-responses.md",
+        "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses",
+        "updated_at": "2026-01-15 23:33:19.043967"
+      }
+    ]
+  },
+  "all_documents": [
+    {
+      "title": "Activation gas fee",
+      "filename": "activation-gas-fee.md",
+      "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
+      "api_type": "REST",
+      "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee",
+      "updated_at": "2026-01-15 23:33:06.849386"
+    },
+    {
+      "title": "Asset IDs",
+      "filename": "asset-ids.md",
+      "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
+      "api_type": "REST",
+      "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids",
+      "updated_at": "2026-01-15 23:33:09.406871"
+    },
+    {
+      "title": "Bridge2",
+      "filename": "bridge2.md",
+      "path": "docs/hyperliquid/for-developers/api/bridge2.md",
+      "api_type": "REST",
+      "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2",
+      "updated_at": "2026-01-15 23:33:12.832149"
+    },
+    {
+      "title": "Deploying HIP-1 and HIP-2 assets",
+      "filename": "deploying-hip-1-and-hip-2-assets.md",
+      "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
+      "api_type": "REST",
+      "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets",
+      "updated_at": "2026-01-15 23:33:16.215831"
+    },
+    {
+      "title": "Error responses",
+      "filename": "error-responses.md",
+      "path": "docs/hyperliquid/for-developers/api/error-responses.md",
+      "api_type": "REST",
+      "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses",
+      "updated_at": "2026-01-15 23:33:19.043967"
+    }
+  ]
+}

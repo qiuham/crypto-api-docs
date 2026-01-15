@@ -38,12 +38,11 @@ Thumbs.db
 logs/
 *.log
 
-# Output
-docs/
-index/
+# Output (docs 和 index 现在需要提交到 git)
+# docs/
+# index/
 
-# Test files
-test_*.py
+# Test files (已改名为 examples/)
 temp/
 tmp/
 *.pyc

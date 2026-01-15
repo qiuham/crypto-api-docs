@@ -1,0 +1,72 @@
+---
+exchange: binance
+source_url: https://developers.binance.com/docs/algo/spot-algo/Cancel-Algo-Order
+api_type: REST
+updated_at: 2026-01-15T23:49:13.050726
+---
+
+# Cancel Algo Order(TRADE)
+
+## API Description[​](/docs/algo/spot-algo/Cancel-Algo-Order#api-description "Direct link to API Description")
+
+Cancel an open TWAP order
+
+## HTTP Request[​](/docs/algo/spot-algo/Cancel-Algo-Order#http-request "Direct link to HTTP Request")
+
+DELETE `/sapi/v1/algo/spot/order`
+
+## Request Weight(IP)[​](/docs/algo/spot-algo/Cancel-Algo-Order#request-weightip "Direct link to Request Weight\(IP\)")
+
+**1**
+
+## Request Parameters[​](/docs/algo/spot-algo/Cancel-Algo-Order#request-parameters "Direct link to Request Parameters")
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+algoId| LONG| YES| eg. 14511  
+recvWindow| LONG| NO|   
+timestamp| LONG| YES|   
+  
+## Response Example[​](/docs/algo/spot-algo/Cancel-Algo-Order#response-example "Direct link to Response Example")
+    
+    
+    {  
+        "algoId": 14511,  
+        "success": true,  
+        "code": 0,  
+        "msg": "OK"  
+    }
+
+---
+
+# 取消TWAP策略订单(TRADE)
+
+## 接口描述[​](/docs/zh-CN/algo/spot-algo/Cancel-Algo-Order#接口描述 "接口描述的直接链接")
+
+取消正在委托的TWAP订单
+
+## HTTP请求[​](/docs/zh-CN/algo/spot-algo/Cancel-Algo-Order#http请求 "HTTP请求的直接链接")
+
+DELETE `/sapi/v1/algo/spot/order`
+
+## 请求权重(IP)[​](/docs/zh-CN/algo/spot-algo/Cancel-Algo-Order#请求权重ip "请求权重\(IP\)的直接链接")
+
+**1**
+
+## 请求参数[​](/docs/zh-CN/algo/spot-algo/Cancel-Algo-Order#请求参数 "请求参数的直接链接")
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+algoId| LONG| YES| eg. 14511  
+recvWindow| LONG| NO|   
+timestamp| LONG| YES|   
+  
+## 响应示例[​](/docs/zh-CN/algo/spot-algo/Cancel-Algo-Order#响应示例 "响应示例的直接链接")
+    
+    
+    {  
+        "algoId": 14511,  //策略订单ID  
+        "success": true,  
+        "code": 0,  
+        "msg": "OK"  
+    }
