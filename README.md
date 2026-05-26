@@ -61,3 +61,14 @@ crypto-api-docs/
 - **HTML 转换**: html2text
 - **日志**: loguru
 - **配置**: YAML
+
+## TODO
+
+- 增加 GitHub Actions 爬取工作流。
+- 先用 `workflow_dispatch` 手动触发，避免全量任务误跑太久。
+- 支持 `exchange`、`concurrency`、`limit` 和可选语言参数。
+- 在 runner 上缓存/安装 Python 依赖、`agent-browser` 和浏览器运行环境。
+- 仅当 `docs/`、`index/` 或 `README.md` 有变化时自动提交并推送。
+- 上传 crawl logs 作为 artifacts，方便排查失败或部分爬取。
+- Kraken 和 Gate.io 这类动态/保护较强站点使用保守并发默认值。
+- 手动工作流稳定后再增加 `schedule` 定时任务。
