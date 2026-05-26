@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2
 api_type: REST
-updated_at: 2026-01-15T23:33:12.832149
+updated_at: 2026-05-26 11:02:56.901182
 ---
 
 # Bridge2

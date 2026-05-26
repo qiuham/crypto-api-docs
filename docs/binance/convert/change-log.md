@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/change-log
 api_type: REST
-updated_at: 2026-01-15T23:50:12.612318
+updated_at: 2026-01-16T09:00:11.544637
 ---
 
 # Change Log

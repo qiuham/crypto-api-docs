@@ -6,6 +6,7 @@ import os
 import sys
 import yaml
 import argparse
+import re
 from pathlib import Path
 from loguru import logger as log
 
@@ -21,9 +22,16 @@ log.add(
 
 def load_config(exchange_name: str) -> dict:
     """加载交易所配置"""
+    if not re.fullmatch(r'[a-z0-9_-]+', exchange_name):
+        raise ValueError(f"非法交易所名称: {exchange_name}")
+
     # 获取项目根目录
     project_root = Path(__file__).parent.parent
-    config_file = project_root / f"config/{exchange_name}.yaml"
+    config_dir = (project_root / "config").resolve()
+    config_file = (config_dir / f"{exchange_name}.yaml").resolve()
+
+    if config_dir not in config_file.parents:
+        raise ValueError(f"配置路径越界: {exchange_name}")
 
     if not config_file.exists():
         raise FileNotFoundError(f"配置文件不存在: {config_file}")
@@ -54,8 +62,8 @@ def crawl_exchange(exchange_name: str, concurrency: int = 1, limit: int = None, 
 
 def main():
     parser = argparse.ArgumentParser(description='爬取交易所API文档')
-    parser.add_argument('command', choices=['crawl'], help='命令')
-    parser.add_argument('--exchange', '-e', required=True, help='交易所名称')
+    parser.add_argument('command', choices=['crawl', 'readme'], help='命令')
+    parser.add_argument('--exchange', '-e', help='交易所名称')
     parser.add_argument('--concurrency', '-c', type=int, default=1,
                         help='并发数（标签页数量），默认 1')
     parser.add_argument('--limit', '-l', type=int, default=None,
@@ -66,9 +74,18 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'crawl':
+        if not args.exchange:
+            parser.error('crawl 命令需要指定 --exchange/-e')
+
         # 解析语言参数
         languages = args.lang.split(',') if args.lang else None
         crawl_exchange(args.exchange, concurrency=args.concurrency, limit=args.limit, languages=languages)
+    elif args.command == 'readme':
+        from src.utils.readme_updater import ReadmeUpdater
+
+        project_root = Path(__file__).parent.parent
+        readme_path = ReadmeUpdater(str(project_root)).update_exchange_table()
+        log.success(f"README 已更新: {readme_path}")
 
 
 if __name__ == '__main__':

@@ -1,0 +1,204 @@
+---
+exchange: bybit
+source_url: https://bybit-exchange.github.io/docs/v5/crypto-loan/acct-borrow-collateral
+api_type: REST
+updated_at: 2026-01-16T09:39:02.101724
+---
+
+# Get Account Borrowable/Collateralizable Limit
+
+Query for the minimum and maximum amounts your account can borrow and how much collateral you can put up.
+
+> Permission: "Spot trade"
+
+### HTTP Request
+
+GET `/v5/crypto-loan/borrowable-collateralisable-number`
+
+### Request Parameters
+
+Parameter| Required| Type| Comments  
+---|---|---|---  
+loanCurrency| **true**|  string| Loan coin name  
+collateralCurrency| **true**|  string| Collateral coin name  
+  
+### Response Parameters
+
+Parameter| Type| Comments  
+---|---|---  
+collateralCurrency| string| Collateral coin name  
+loanCurrency| string| Loan coin name  
+maxCollateralAmount| string| Max. limit to mortgage  
+maxLoanAmount| string| Max. limit to borrow  
+minCollateralAmount| string| Min. limit to mortgage  
+minLoanAmount| string| Min. limit to borrow  
+  
+### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/crypto-loan/borrowable-collateralisable-number?loanCurrency=USDT&collateralCurrency=BTC HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1728627083198  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_account_borrowable_or_collateralizable_limit(  
+        loanCurrency="USDT",  
+        collateralCurrency="BTC",  
+    ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getAccountBorrowCollateralLimit({  
+        loanCurrency: 'USDT',  
+        collateralCurrency: 'BTC',  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
+    
+
+### Response Example
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "request.success",  
+        "result": {  
+            "collateralCurrency": "BTC",  
+            "loanCurrency": "USDT",  
+            "maxCollateralAmount": "164.957732055526752104",  
+            "maxLoanAmount": "8000000",  
+            "minCollateralAmount": "0.000412394330138818",  
+            "minLoanAmount": "20"  
+        },  
+        "retExtInfo": {},  
+        "time": 1728627084863  
+    }
+
+---
+
+# 查詢帳戶可借貸/抵押的限額
+
+查詢本帳戶支持的最小/最大的借貸和質押額
+
+> 權限: "現貨交易"
+
+### HTTP 請求
+
+GET `/v5/crypto-loan/borrowable-collateralisable-number`
+
+### 請求參數
+
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+loanCurrency| **true**|  string| 借貸幣種  
+collateralCurrency| **true**|  string| 質押幣種  
+  
+### 響應參數
+
+參數| 類型| 說明  
+---|---|---  
+collateralCurrency| string| 抵押幣種  
+loanCurrency| string| 借貸幣種  
+maxCollateralAmount| string| 最大可質押金額  
+maxLoanAmount| string| 最大可借貸金額  
+minCollateralAmount| string| 最小質押金額  
+minLoanAmount| string| 最小借貸金額  
+  
+### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/crypto-loan/borrowable-collateralisable-number?loanCurrency=USDT&collateralCurrency=BTC HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1728627083198  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_account_borrowable_or_collateralizable_limit(  
+        loanCurrency="USDT",  
+        collateralCurrency="BTC",  
+    ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getAccountBorrowCollateralLimit({  
+        loanCurrency: 'USDT',  
+        collateralCurrency: 'BTC',  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
+    
+
+### 響應示例
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "request.success",  
+        "result": {  
+            "collateralCurrency": "BTC",  
+            "loanCurrency": "USDT",  
+            "maxCollateralAmount": "164.957732055526752104",  
+            "maxLoanAmount": "8000000",  
+            "minCollateralAmount": "0.000412394330138818",  
+            "minLoanAmount": "20"  
+        },  
+        "retExtInfo": {},  
+        "time": 1728627084863  
+    }

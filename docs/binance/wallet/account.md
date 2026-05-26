@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/account
 api_type: Account
-updated_at: 2026-01-15T23:49:20.687805
+updated_at: 2026-01-16T08:59:55.756377
 ---
 
 # Account info (USER_DATA)

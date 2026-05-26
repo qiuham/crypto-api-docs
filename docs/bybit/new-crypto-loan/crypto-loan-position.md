@@ -1,0 +1,270 @@
+---
+exchange: bybit
+source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/crypto-loan-position
+api_type: REST
+updated_at: 2026-01-16T09:39:40.707309
+---
+
+# Get Crypto Loan Position
+
+> Permission: "Spot trade"  
+>  UID rate limit: 5 req / second
+
+### HTTP Request
+
+GET `/v5/crypto-loan-common/position`
+
+### Request Parameters
+
+None
+
+### Response Parameters
+
+Parameter| Type| Comments  
+---|---|---  
+borrowList| array| Object  
+> fixedTotalDebt| string| Total debt of fixed loan (coin)  
+> fixedTotalDebtUSD| string| Total debt of fixed loan (USD)  
+> flexibleHourlyInterestRate| string| Flebible loan hourly interest rate  
+> flexibleTotalDebt| string| Total debt of flexible loan (coin)  
+> flexibleTotalDebtUSD| string| Total debt of flexible loan (USD)  
+> loanCurrency| string| Loan coin  
+collateralList| array| Object  
+> amount| string| Collateral amount in coin  
+> amountUSD| string| Collateral amount in USD (after tierd collateral ratio calculation)  
+> currency| string| Collateral coin  
+ltv| string| LTV  
+supplyList| array| Object  
+> amount| string| Supply amount in coin  
+> amountUSD| string| Supply amount in USD  
+> currency| string| Supply coin  
+totalCollateral| string| Total collateral amount (USD)  
+totalDebt| string| Total debt (fixed + flexible, in USD)  
+totalSupply| string| Total supply amount (USD)  
+  
+### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/crypto-loan-common/position HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752628288472  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_position_new_crypto_loan())  
+    
+    
+    
+      
+    
+
+### Response Example
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "ok",  
+        "result": {  
+            "borrowList": [  
+                {  
+                    "fixedTotalDebt": "0",  
+                    "fixedTotalDebtUSD": "0",  
+                    "flexibleHourlyInterestRate": "0.0000001361462",  
+                    "flexibleTotalDebt": "0.08800022",  
+                    "flexibleTotalDebtUSD": "9355.37",  
+                    "loanCurrency": "BTC"  
+                },  
+                {  
+                    "fixedTotalDebt": "0.1",  
+                    "fixedTotalDebtUSD": "282.8",  
+                    "flexibleHourlyInterestRate": "0.00000188498892",  
+                    "flexibleTotalDebt": "0",  
+                    "flexibleTotalDebtUSD": "0",  
+                    "loanCurrency": "ETH"  
+                }  
+            ],  
+            "collateralList": [  
+                {  
+                    "amount": "0.12",  
+                    "amountUSD": "9930.11",  
+                    "currency": "BTC"  
+                },  
+                {  
+                    "amount": "2",  
+                    "amountUSD": "4524.81",  
+                    "currency": "ETH"  
+                },  
+                {  
+                    "amount": "4002.12",  
+                    "amountUSD": "3201.69",  
+                    "currency": "USDT"  
+                },  
+                {  
+                    "amount": "1000",  
+                    "amountUSD": "724.8",  
+                    "currency": "USDC"  
+                }  
+            ],  
+            "ltv": "0.524344",  
+            "supplyList": [  
+                {  
+                    "amount": "800.13041095890410959",  
+                    "amountUSD": "800.13",  
+                    "currency": "USDT"  
+                }  
+            ],  
+            "totalCollateral": "18381.41",  
+            "totalDebt": "9638.17",  
+            "totalSupply": "800.13"  
+        },  
+        "retExtInfo": {},  
+        "time": 1752627962000  
+    }
+
+---
+
+# 查詢質押借幣持倉
+
+> 權限: "現貨"  
+>  頻率: 5次/秒
+
+### HTTP 請求
+
+GET `/v5/crypto-loan-common/position`
+
+### 請求參數
+
+None
+
+### 響應參數
+
+參數| 類型| 說明  
+---|---|---  
+borrowList| array| Object  
+> fixedTotalDebt| string| 定期借款總負債（幣）  
+> fixedTotalDebtUSD| string| 定期借款總負債（美元）  
+> flexibleHourlyInterestRate| string| 活期借款每小時利率  
+> flexibleTotalDebt| string| 活期借款總負債（幣）  
+> flexibleTotalDebtUSD| string| 活期借款總負債（美元）  
+> loanCurrency| string| 借款幣種  
+collateralList| array| Object  
+> amount| string| 抵押金額（幣）  
+> amountUSD| string| 抵押金額（USD，經分層抵押率計算後）  
+> currency| string| 抵押幣種  
+ltv| string| 質押率（LTV）  
+supplyList| array| Object  
+> amount| string| 出借金額（幣）  
+> amountUSD| string| 出借金額（USD）  
+> currency| string| 出借幣種  
+totalCollateral| string| 抵押總金額（USD）  
+totalDebt| string| 總負債金額（定期 + 活期，USD）  
+totalSupply| string| 出借總金額（USD）  
+  
+### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/crypto-loan-common/position HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752628288472  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_position_new_crypto_loan())  
+    
+    
+    
+      
+    
+
+### 響應示例
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "ok",  
+        "result": {  
+            "borrowList": [  
+                {  
+                    "fixedTotalDebt": "0",  
+                    "fixedTotalDebtUSD": "0",  
+                    "flexibleHourlyInterestRate": "0.0000001361462",  
+                    "flexibleTotalDebt": "0.08800022",  
+                    "flexibleTotalDebtUSD": "9355.37",  
+                    "loanCurrency": "BTC"  
+                },  
+                {  
+                    "fixedTotalDebt": "0.1",  
+                    "fixedTotalDebtUSD": "282.8",  
+                    "flexibleHourlyInterestRate": "0.00000188498892",  
+                    "flexibleTotalDebt": "0",  
+                    "flexibleTotalDebtUSD": "0",  
+                    "loanCurrency": "ETH"  
+                }  
+            ],  
+            "collateralList": [  
+                {  
+                    "amount": "0.12",  
+                    "amountUSD": "9930.11",  
+                    "currency": "BTC"  
+                },  
+                {  
+                    "amount": "2",  
+                    "amountUSD": "4524.81",  
+                    "currency": "ETH"  
+                },  
+                {  
+                    "amount": "4002.12",  
+                    "amountUSD": "3201.69",  
+                    "currency": "USDT"  
+                },  
+                {  
+                    "amount": "1000",  
+                    "amountUSD": "724.8",  
+                    "currency": "USDC"  
+                }  
+            ],  
+            "ltv": "0.524344",  
+            "supplyList": [  
+                {  
+                    "amount": "800.13041095890410959",  
+                    "amountUSD": "800.13",  
+                    "currency": "USDT"  
+                }  
+            ],  
+            "totalCollateral": "18381.41",  
+            "totalDebt": "9638.17",  
+            "totalSupply": "800.13"  
+        },  
+        "retExtInfo": {},  
+        "time": 1752627962000  
+    }

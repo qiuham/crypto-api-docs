@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets
 api_type: REST
-updated_at: 2026-01-15T23:33:16.215831
+updated_at: 2026-05-26 11:03:01.256202
 ---
 
 # Deploying HIP-1 and HIP-2 assets
@@ -42,6 +42,14 @@ The API for deploying HIP-1 and HIP-2 assets is a five-step process which involv
       | {
           type: "spotDeploy";
           enableAlignedQuoteToken: { token: number };
+        }
+      | {
+          type: "spotDeploy";
+          disableQuoteToken: { token: number };
+        }
+      | { /* note: must be sent after disableQuoteToken */ 
+          type: "spotDeploy";
+          disableAlignedQuoteToken: { token: number };
         };
     
     type RegisterToken2 = {

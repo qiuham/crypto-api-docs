@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account
 api_type: Account
-updated_at: 2026-01-15T23:48:14.289506
+updated_at: 2026-01-16T08:59:39.867129
 ---
 
 # Adjust cross margin max leverage (USER_DATA)

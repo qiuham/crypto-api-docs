@@ -1,0 +1,197 @@
+---
+exchange: bybit
+source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-config
+api_type: Trading
+updated_at: 2026-01-16T09:40:50.478074
+---
+
+# Get RFQ Configuration
+
+RFQ Config. **Up to 50 requests** per second.
+
+info
+
+  * Query for information on the quoting party that can participate in your transaction, your own deskCode and other configuration information.
+  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
+
+
+
+### HTTP Request
+
+GET `/v5/rfq/config`
+
+### Request Parameters
+
+None
+
+### Response Parameters
+
+Parameter| Type| Comments  
+---|---|---  
+result| array| Order ID  
+list| Object|   
+> deskCode| string| Your deskCode, a unique identification code  
+> maxLegs| integer| Maximum number of legs  
+> maxLP| integer| The maximum number of LPs (liquidity providers) selected in the inquiry  
+> maxActiveRfq| integer| The maximum number of unfinished inquiry orders allowed by a user  
+> rfqExpireTime| integer| Inquiry expiration time (mins)  
+> minLimitQtySpotOrder| integer| Spot minimum order quantity  
+>minLimitQtyContractOrder| integer| Contract minimum order quantity  
+> minLimitQtyOptionOrder| integer| Option minimum order  
+> strategyTypes| array| Product strategy  
+>> strategyName| string| Strategy name  
+> counterparties| array| Information on the quoters who can participate in the transaction  
+>> traderName| string| Name of the quoter  
+>> deskCode| string| The unique identification code of the quoting party  
+>> type| string| Quoter type. `LP` is an automated market maker connected via API, null means a normal quoting party  
+  
+### Request Example
+    
+    
+    GET /v5/rfq/create-rfq HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1676430842094  
+    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    
+
+### Response Example
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "OK",  
+        "result": {  
+            "deskCode": "1nu9d1",  
+            "maxLegs": 25,  
+            "maxLP": 50,  
+            "rfqExpireTime": 10,  
+            "maxActiveRfq": 10,  
+            "minLimitQtySpotOrder": 10,  
+            "minLimitQtyContractOrder": 10,  
+            "minLimitQtyOptionOrder": 1,  
+            "strategyTypes": [  
+                {  
+                    "strategyName": "custom"  
+                },  
+                {  
+                    "strategyName": "FundingRate"  
+                },  
+                {  
+                    "strategyName": "CarryTrade"  
+                },  
+                ...,  
+            ],  
+            "counterparties": [  
+                {  
+                    "traderName": "1zQkH0y7Y3acALM",  
+                    "deskCode": "gIMhjitYqE9WG5F",  
+                    "type": "LP"  
+                },  
+                {  
+                    "traderName": "Bernie LP",  
+                    "deskCode": "Bernie",  
+                    "type": "LP"  
+                },  
+                ...,  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1756870672013  
+    }
+
+---
+
+# rfq配寘資訊
+
+査詢rfq配寘資訊 **每秒最多 50 次請求**
+
+信息
+
+查詢可參與交易的報價方資訊，以及自己的 deskCode 和其他配置資訊。 **在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況**
+
+### HTTP 請求
+
+GET `/v5/rfq/config`
+
+### 請求參數
+
+無
+
+### 響應參數
+
+參數| 類型| 說明  
+---|---|---  
+result| array| 訂單 ID  
+list| Object|   
+> deskCode| string| 自己的 deskCode，唯一識別代碼  
+> maxLegs| integer| 最大腿數  
+> maxLP| integer| 詢價單中可選的最大 LP 數量  
+> maxActiveRfq| integer| 使用者允許的未完成詢價單最大數量  
+> rfqExpireTime| integer| 詢價過期時間，分鐘  
+> minLimitQtySpotOrder| integer| 現貨最小下單量乘數  
+> minLimitQtyContractOrder| integer| 合約最小下單量乘數  
+> minLimitQtyOptionOrder| integer| 期權最小下單量乘數  
+> strategyTypes| array| 產品策略  
+>> strategyName| string| 策略名稱  
+> counterparties| array| 可參與交易的報價方資訊  
+>> traderName| string| 報價方名稱  
+>> deskCode| string| 報價方的唯一識別代碼，公開可見；報價和詢價的相關介面使用此代碼表示報價方  
+>> type| string| 報價方類型:`LP`指通過API連接的自動做市商，為空表示普通報價方  
+  
+### 請求示例
+    
+    
+    GET /v5/rfq/create-rfq HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1676430842094  
+    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    
+
+### 響應示例
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "OK",  
+        "result": {  
+            "deskCode": "1nu9d1",  
+            "maxLegs": 25,  
+            "maxLP": 50,  
+            "rfqExpireTime": 10,  
+            "maxActiveRfq": 10,  
+            "minLimitQtySpotOrder": 10,  
+            "minLimitQtyContractOrder": 10,  
+            "minLimitQtyOptionOrder": 1,  
+            "strategyTypes": [  
+                {  
+                    "strategyName": "custom"  
+                },  
+                {  
+                    "strategyName": "FundingRate"  
+                },  
+                {  
+                    "strategyName": "CarryTrade"  
+                },  
+                ...,  
+            ],  
+            "counterparties": [  
+                {  
+                    "traderName": "1zQkH0y7Y3acALM",  
+                    "deskCode": "gIMhjitYqE9WG5F",  
+                    "type": "LP"  
+                },  
+                {  
+                    "traderName": "Bernie LP",  
+                    "deskCode": "Bernie",  
+                    "type": "LP"  
+                },  
+                ...,  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1756870672013  
+    }

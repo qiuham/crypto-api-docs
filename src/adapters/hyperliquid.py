@@ -20,32 +20,123 @@ class HyperliquidAdapter(ExchangeAdapter):
         self.md_processor = MarkdownProcessor()
 
     def discover_pages(self) -> List[str]:
-        """发现所有API文档页面"""
+        """递归发现 For Developers 下的所有文档页面"""
+        import json
+        from urllib.parse import urlparse
+
         start_urls = self.config['crawler']['start_urls']
         start_url = start_urls[0] if start_urls else None
 
         if not start_url:
             raise Exception("配置文件中未定义 start_urls")
 
-        if not self.browser.open(start_url, wait=3):
-            raise Exception(f"无法打开页面: {start_url}")
+        scope_prefixes = self.config.get('crawler', {}).get('scope_prefixes')
+        if not scope_prefixes:
+            parsed = urlparse(start_url)
+            marker = '/for-developers/'
+            if marker in parsed.path:
+                scope_path = parsed.path[:parsed.path.index(marker) + len(marker)]
+                scope_prefixes = [f"{parsed.scheme}://{parsed.netloc}{scope_path}"]
+            else:
+                scope_prefixes = [start_url.rstrip('/') + '/']
 
-        # GitBook 页面，直接提取侧边栏所有链接
-        js = '''
-        Array.from(document.querySelectorAll('a'))
-            .filter(a => a.href.includes('/for-developers/api/'))
-            .filter(a => !a.href.endsWith('#'))
-            .map(a => a.href)
-        '''
+        normalized_prefixes = [prefix.rstrip('/') for prefix in scope_prefixes]
+        scope_prefixes_json = json.dumps(normalized_prefixes)
+        max_pages = self.config.get('crawler', {}).get('max_discovery_pages', 500)
 
-        links = self.browser.eval_js(js)
+        def normalize_url(url: str) -> str:
+            return (url or '').split('#')[0].rstrip('/')
 
-        if not links:
-            return []
+        def in_scope(url: str) -> bool:
+            return any(url == prefix or url.startswith(prefix + '/') for prefix in normalized_prefixes)
 
-        # 去重
-        unique_links = list(set(links))
-        unique_links.sort()
+        def collect_current_page_links() -> List[str]:
+            """展开当前 GitBook 页面并收集范围内链接。"""
+            collected = set()
+            last_count = -1
+            stable_rounds = 0
+
+            for _ in range(12):
+                js = f'''
+        (function() {{
+            const scopePrefixes = {scope_prefixes_json};
+            let clicked = 0;
+
+            [
+                'button[aria-expanded="false"]',
+                '[role="button"][aria-expanded="false"]',
+                'summary:not([open])'
+            ].forEach(selector => {{
+                document.querySelectorAll(selector).forEach(el => {{
+                    try {{
+                        el.click();
+                        clicked++;
+                    }} catch(e) {{}}
+                }});
+            }});
+
+            document.querySelectorAll('aside, nav, [role="navigation"]').forEach(el => {{
+                try {{
+                    if (el.scrollHeight > el.clientHeight) el.scrollTop = el.scrollHeight;
+                }} catch(e) {{}}
+            }});
+            try {{ window.scrollTo(0, document.body.scrollHeight); }} catch(e) {{}}
+
+            const links = Array.from(document.querySelectorAll('a'))
+                .map(a => (a.href || '').split('#')[0].replace(/\\/$/, ''))
+                .filter(href => href && !href.endsWith('#'))
+                .filter(href => !href.includes('/~/'))
+                .filter(href => scopePrefixes.some(prefix => href === prefix || href.startsWith(prefix + '/')));
+            return {{ clicked, links: Array.from(new Set(links)).sort() }};
+        }})()
+                '''
+
+                result = self.browser.eval_js(js) or {}
+                links = result.get('links') or []
+                collected.update(links)
+
+                if len(collected) == last_count:
+                    stable_rounds += 1
+                else:
+                    stable_rounds = 0
+                last_count = len(collected)
+
+                if stable_rounds >= 2:
+                    break
+                time.sleep(0.2)
+
+            return sorted(collected)
+
+        discovered = set()
+        processed = set()
+        queue = [normalize_url(url) for url in start_urls]
+
+        while queue and len(discovered) < max_pages:
+            current_url = normalize_url(queue.pop(0))
+            if not current_url or current_url in processed or not in_scope(current_url):
+                continue
+
+            processed.add(current_url)
+            discovered.add(current_url)
+
+            if not self.browser.open(current_url, wait=3):
+                log.warning(f"无法打开页面，跳过发现子链接: {current_url}")
+                continue
+
+            links = collect_current_page_links()
+            log.info(f"发现链接: {current_url} -> {len(links)} 个")
+
+            for link in links:
+                link = normalize_url(link)
+                if link and in_scope(link) and link not in discovered:
+                    discovered.add(link)
+                    if link not in processed and link not in queue:
+                        queue.append(link)
+
+        if len(discovered) >= max_pages:
+            log.warning(f"达到最大页面发现数量: {max_pages}")
+
+        unique_links = sorted(discovered)
 
         return unique_links
 
@@ -254,7 +345,7 @@ class HyperliquidAdapter(ExchangeAdapter):
 
         # 提取内容（hyperliquid暂不支持并发，因为没有实现）
         log.info("开始提取内容...")
-        from ..utils.path_generator import url_to_filepath
+        from ..utils.path_generator import safe_output_path, url_to_filepath
 
         # 获取基础URL前缀
         base_prefix = "https://hyperliquid.gitbook.io/hyperliquid-docs/"
@@ -265,7 +356,7 @@ class HyperliquidAdapter(ExchangeAdapter):
                 page = self.extract_content(url)
                 # 使用URL路径生成目录结构
                 filepath = url_to_filepath(url, base_prefix)
-                output_path = os.path.join(output_dir, filepath)
+                output_path = safe_output_path(output_dir, filepath)
                 # 确保子目录存在
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 self.save_page(page, output_path)

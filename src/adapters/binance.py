@@ -380,9 +380,9 @@ class BinanceAdapter(ExchangeAdapter):
 
             # 删除临时文件
             log.info("清理临时文件...")
-            import shutil
             if os.path.exists(temp_base):
-                shutil.rmtree(temp_base)
+                from ..utils.path_generator import safe_rmtree
+                safe_rmtree(temp_base, [os.path.join(tempfile.gettempdir(), "crypto-api-docs")])
             log.success("临时文件已删除")
 
         # 生成索引
@@ -422,6 +422,7 @@ class BinanceAdapter(ExchangeAdapter):
         """
         import os
         import glob
+        from ..utils.path_generator import safe_output_path
 
         if len(languages) < 2:
             return 0
@@ -483,7 +484,7 @@ class BinanceAdapter(ExchangeAdapter):
                     merged_content += content
 
                 # 写入合并后的文件到最终目录
-                output_file = os.path.join(output_dir, rel_path)
+                output_file = safe_output_path(output_dir, rel_path)
                 os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
                 with open(output_file, 'w', encoding='utf-8') as f:
@@ -497,7 +498,7 @@ class BinanceAdapter(ExchangeAdapter):
         """顺序爬取"""
         import re
         import os
-        from ..utils.path_generator import url_to_filepath
+        from ..utils.path_generator import safe_output_path, url_to_filepath
 
         # 获取产品前缀用于生成文件名
         # 英文: https://.../docs/derivatives/... -> https://.../docs/derivatives/
@@ -513,7 +514,7 @@ class BinanceAdapter(ExchangeAdapter):
         for i, url in enumerate(urls, 1):
             try:
                 filename = url_to_filepath(url, product_prefix)
-                output_path = os.path.join(output_dir, filename)
+                output_path = safe_output_path(output_dir, filename)
                 # 确保子目录存在
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 page = self.extract_content(url)
@@ -528,7 +529,7 @@ class BinanceAdapter(ExchangeAdapter):
         """多标签并发爬取"""
         import re
         import os
-        from ..utils.path_generator import url_to_filepath
+        from ..utils.path_generator import safe_output_path, url_to_filepath
 
         browser = self.browser
         total = len(urls)
@@ -565,7 +566,7 @@ class BinanceAdapter(ExchangeAdapter):
                         log.warning(f"[{idx}/{total}] 页面加载超时，尝试继续")
 
                     filename = url_to_filepath(url, product_prefix)
-                    output_path = os.path.join(output_dir, filename)
+                    output_path = safe_output_path(output_dir, filename)
                     # 确保子目录存在
                     os.makedirs(os.path.dirname(output_path), exist_ok=True)
                     page = self.extract_content(url, skip_open=True)

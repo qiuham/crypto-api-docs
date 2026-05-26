@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses
 api_type: REST
-updated_at: 2026-01-15T23:33:19.043967
+updated_at: 2026-05-26 11:03:05.916067
 ---
 
 # Error responses
@@ -11,9 +11,14 @@ Order and cancel errors are usually returned as a vector with same length as the
 
 Below is a list of possible batched error responses:
 
-Error source| Error type| Error string  
----|---|---  
+Error source
+
+Error type
+
+Error string
+
 Order| Tick| Price must be divisible by tick size.  
+---|---|---  
 Order| MinTradeNtl| Order must have minimum value of $10.  
 Order| MinTradeSpotNtl| Order must have minimum value of 10 {quote_token}.  
 Order| PerpMargin| Insufficient margin to place order.  
@@ -33,7 +38,7 @@ Cancel| MissingOrder| Order was never placed, already canceled, or filled.
   
 Important: Some errors are a deterministic function of the payload itself, and these are instead returned earlier as part of pre-validation. In this case only one error is returned for the entire payload, as some of these errors do not apply to a specific order or cancel.
 
-Examples include: empty batch of orders, non-reduce-only TP/SL orders, and some forms of tick size validation. 
+Examples include: empty batch of orders, non-reduce-only TP/SL orders, order too far from reference price, and some forms of tick size validation. 
 
 For API users that use batching, it's recommended to handle the case where a single error is returned for a batch of multiple orders. In this case, the response could be duplicated `n`times before being sent to the callback function, as the whole batch was rejected for this same reason.
 

@@ -3,6 +3,7 @@
 Markdown 处理工具
 """
 import html2text
+import yaml
 from typing import Dict, Any
 from datetime import datetime
 
@@ -26,20 +27,13 @@ class MarkdownProcessor:
 
     def generate_frontmatter(self, metadata: Dict[str, Any]) -> str:
         """生成文档前置信息"""
-        lines = ['---']
-
-        for key, value in metadata.items():
-            if isinstance(value, list):
-                lines.append(f"{key}:")
-                for item in value:
-                    lines.append(f"  - {item}")
-            elif isinstance(value, datetime):
-                lines.append(f"{key}: {value.isoformat()}")
-            else:
-                lines.append(f"{key}: {value}")
-
-        lines.append('---')
-        return '\n'.join(lines)
+        yaml_body = yaml.safe_dump(
+            metadata,
+            allow_unicode=True,
+            default_flow_style=False,
+            sort_keys=False
+        ).strip()
+        return f"---\n{yaml_body}\n---"
 
     def create_document(
         self,

@@ -1,7 +1,7 @@
 {
   "exchange": "binance",
   "total": 804,
-  "updated_at": "2026-01-15 23:51:32.737631",
+  "updated_at": "2026-01-16 09:00:35.483952",
   "documents_by_type": {
     "REST": [
       {
@@ -9,14 +9,14 @@
         "filename": "Introduction.md",
         "path": "docs/binance/algo/Introduction.md",
         "source_url": "https://developers.binance.com/docs/algo/Introduction",
-        "updated_at": "2026-01-15 23:49:07.699856"
+        "updated_at": "2026-01-16 08:59:45.476102"
       },
       {
         "title": "Change Log",
         "filename": "change-log.md",
         "path": "docs/binance/algo/change-log.md",
         "source_url": "https://developers.binance.com/docs/algo/change-log",
-        "updated_at": "2026-01-15 23:49:07.762027"
+        "updated_at": "2026-01-16 08:59:47.793966"
       },
       {
         "title": "Contact Us",
@@ -135,21 +135,21 @@
         "filename": "change-log.md",
         "path": "docs/binance/alpha/change-log.md",
         "source_url": "https://developers.binance.com/docs/alpha/change-log",
-        "updated_at": "2026-01-15 23:50:41.775133"
+        "updated_at": "2026-01-16 09:00:25.209792"
       },
       {
         "title": "Introduction",
         "filename": "introduction.md",
         "path": "docs/binance/alpha/introduction.md",
         "source_url": "https://developers.binance.com/docs/alpha/introduction",
-        "updated_at": "2026-01-15 23:50:41.836799"
+        "updated_at": "2026-01-16 09:00:27.549600"
       },
       {
         "title": "SPOT Exchange Terms of Use",
         "filename": "PROD-TERMS-OF-USE.md",
         "path": "docs/binance/binance-spot-api-docs/PROD-TERMS-OF-USE.md",
         "source_url": "https://developers.binance.com/docs/binance-spot-api-docs/PROD-TERMS-OF-USE",
-        "updated_at": "2026-01-15 23:35:52.306435"
+        "updated_at": "2026-01-16 08:59:21.441792"
       },
       {
         "title": "ENUM Definitions",
@@ -450,14 +450,14 @@
         "filename": "Introduction.md",
         "path": "docs/binance/convert/Introduction.md",
         "source_url": "https://developers.binance.com/docs/convert/Introduction",
-        "updated_at": "2026-01-15 23:50:12.546745"
+        "updated_at": "2026-01-16 09:00:09.263477"
       },
       {
         "title": "Change Log",
         "filename": "change-log.md",
         "path": "docs/binance/convert/change-log.md",
         "source_url": "https://developers.binance.com/docs/convert/change-log",
-        "updated_at": "2026-01-15 23:50:12.612318"
+        "updated_at": "2026-01-16 09:00:11.544637"
       },
       {
         "title": "Contact Us",
@@ -492,14 +492,14 @@
         "filename": "Introduction.md",
         "path": "docs/binance/copy_trading/Introduction.md",
         "source_url": "https://developers.binance.com/docs/copy_trading/Introduction",
-        "updated_at": "2026-01-15 23:50:02.809627"
+        "updated_at": "2026-01-16 09:00:01.362994"
       },
       {
         "title": "Change Log",
         "filename": "change-log.md",
         "path": "docs/binance/copy_trading/change-log.md",
         "source_url": "https://developers.binance.com/docs/copy_trading/change-log",
-        "updated_at": "2026-01-15 23:50:02.871911"
+        "updated_at": "2026-01-16 09:00:03.678440"
       },
       {
         "title": "Contact Us",
@@ -548,14 +548,14 @@
         "filename": "Introduction.md",
         "path": "docs/binance/derivatives/Introduction.md",
         "source_url": "https://developers.binance.com/docs/derivatives/Introduction",
-        "updated_at": "2026-01-15 23:37:32.050745"
+        "updated_at": "2026-01-16 08:59:29.514187"
       },
       {
         "title": "Change Log",
         "filename": "change-log.md",
         "path": "docs/binance/derivatives/change-log.md",
         "source_url": "https://developers.binance.com/docs/derivatives/change-log",
-        "updated_at": "2026-01-15 23:37:32.156636"
+        "updated_at": "2026-01-16 08:59:31.891907"
       },
       {
         "title": "Public Endpoints Info",
@@ -1031,7 +1031,7 @@
         "filename": "Introduction.md",
         "path": "docs/binance/institutional_loan/Introduction.md",
         "source_url": "https://developers.binance.com/docs/institutional_loan/Introduction",
-        "updated_at": "2026-01-15 23:50:26.519201"
+        "updated_at": "2026-01-16 09:00:17.224385"
       },
       {
         "title": "Risk Unit borrow/repay records(TRADE)",
@@ -1115,7 +1115,7 @@
         "filename": "Introduction.md",
         "path": "docs/binance/margin_trading/Introduction.md",
         "source_url": "https://developers.binance.com/docs/margin_trading/Introduction",
-        "updated_at": "2026-01-15 23:48:14.218722"
+        "updated_at": "2026-01-16 08:59:37.536333"
       },
       {
         "title": "Best Practice",
@@ -1248,7 +1248,7 @@
         "filename": "Introduction.md",
         "path": "docs/binance/wallet/Introduction.md",
         "source_url": "https://developers.binance.com/docs/wallet/Introduction",
-        "updated_at": "2026-01-15 23:49:20.619992"
+        "updated_at": "2026-01-16 08:59:53.424160"
       },
       {
         "title": "Get Assets That Can Be Converted Into BNB (USER_DATA)",
@@ -3121,7 +3121,7 @@
         "filename": "account.md",
         "path": "docs/binance/institutional_loan/account.md",
         "source_url": "https://developers.binance.com/docs/institutional_loan/account",
-        "updated_at": "2026-01-15 23:50:26.586341"
+        "updated_at": "2026-01-16 09:00:19.575650"
       },
       {
         "title": "Disable Isolated Margin Account (TRADE)",
@@ -3198,7 +3198,7 @@
         "filename": "account.md",
         "path": "docs/binance/margin_trading/account.md",
         "source_url": "https://developers.binance.com/docs/margin_trading/account",
-        "updated_at": "2026-01-15 23:48:14.289506"
+        "updated_at": "2026-01-16 08:59:39.867129"
       },
       {
         "title": "Margin account borrow/repay(MARGIN)",
@@ -3212,7 +3212,7 @@
         "filename": "Introduction.md",
         "path": "docs/binance/sub_account/Introduction.md",
         "source_url": "https://developers.binance.com/docs/sub_account/Introduction",
-        "updated_at": "2026-01-15 23:50:52.085894"
+        "updated_at": "2026-01-16 09:00:33.192250"
       },
       {
         "title": "Enable Futures for Sub-account (For Master Account) (USER_DATA)",
@@ -3268,7 +3268,7 @@
         "filename": "account-management.md",
         "path": "docs/binance/sub_account/account-management.md",
         "source_url": "https://developers.binance.com/docs/sub_account/account-management",
-        "updated_at": "2026-01-15 23:50:52.156314"
+        "updated_at": "2026-01-16 09:00:35.483952"
       },
       {
         "title": "Add IP Restriction for Sub-Account API key (For Master Account) (USER_DATA)",
@@ -3611,7 +3611,7 @@
         "filename": "account.md",
         "path": "docs/binance/wallet/account.md",
         "source_url": "https://developers.binance.com/docs/wallet/account",
-        "updated_at": "2026-01-15 23:49:20.687805"
+        "updated_at": "2026-01-16 08:59:55.756377"
       }
     ],
     "WebSocket": [
@@ -5857,7 +5857,7 @@
       "path": "docs/binance/wallet/account.md",
       "api_type": "Account",
       "source_url": "https://developers.binance.com/docs/wallet/account",
-      "updated_at": "2026-01-15 23:49:20.687805"
+      "updated_at": "2026-01-16 08:59:55.756377"
     },
     {
       "title": "Account requests",
@@ -5897,7 +5897,7 @@
       "path": "docs/binance/margin_trading/account.md",
       "api_type": "Account",
       "source_url": "https://developers.binance.com/docs/margin_trading/account",
-      "updated_at": "2026-01-15 23:48:14.289506"
+      "updated_at": "2026-01-16 08:59:39.867129"
     },
     {
       "title": "Aggregate Trade Streams",
@@ -6457,7 +6457,7 @@
       "path": "docs/binance/algo/change-log.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/algo/change-log",
-      "updated_at": "2026-01-15 23:49:07.762027"
+      "updated_at": "2026-01-16 08:59:47.793966"
     },
     {
       "title": "Change Log",
@@ -6465,7 +6465,7 @@
       "path": "docs/binance/convert/change-log.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/convert/change-log",
-      "updated_at": "2026-01-15 23:50:12.612318"
+      "updated_at": "2026-01-16 09:00:11.544637"
     },
     {
       "title": "Change Log",
@@ -6473,7 +6473,7 @@
       "path": "docs/binance/copy_trading/change-log.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/copy_trading/change-log",
-      "updated_at": "2026-01-15 23:50:02.871911"
+      "updated_at": "2026-01-16 09:00:03.678440"
     },
     {
       "title": "Change Log",
@@ -6481,7 +6481,7 @@
       "path": "docs/binance/derivatives/change-log.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/derivatives/change-log",
-      "updated_at": "2026-01-15 23:37:32.156636"
+      "updated_at": "2026-01-16 08:59:31.891907"
     },
     {
       "title": "Change Log",
@@ -6841,7 +6841,7 @@
       "path": "docs/binance/sub_account/account-management.md",
       "api_type": "Account",
       "source_url": "https://developers.binance.com/docs/sub_account/account-management",
-      "updated_at": "2026-01-15 23:50:52.156314"
+      "updated_at": "2026-01-16 09:00:35.483952"
     },
     {
       "title": "Cross margin collateral ratio (MARKET_DATA)",
@@ -8881,7 +8881,7 @@
       "path": "docs/binance/algo/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/algo/Introduction",
-      "updated_at": "2026-01-15 23:49:07.699856"
+      "updated_at": "2026-01-16 08:59:45.476102"
     },
     {
       "title": "Introduction",
@@ -8889,7 +8889,7 @@
       "path": "docs/binance/alpha/introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/alpha/introduction",
-      "updated_at": "2026-01-15 23:50:41.836799"
+      "updated_at": "2026-01-16 09:00:27.549600"
     },
     {
       "title": "Introduction",
@@ -8897,7 +8897,7 @@
       "path": "docs/binance/convert/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/convert/Introduction",
-      "updated_at": "2026-01-15 23:50:12.546745"
+      "updated_at": "2026-01-16 09:00:09.263477"
     },
     {
       "title": "Introduction",
@@ -8905,7 +8905,7 @@
       "path": "docs/binance/copy_trading/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/copy_trading/Introduction",
-      "updated_at": "2026-01-15 23:50:02.809627"
+      "updated_at": "2026-01-16 09:00:01.362994"
     },
     {
       "title": "Introduction",
@@ -8913,7 +8913,7 @@
       "path": "docs/binance/derivatives/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/derivatives/Introduction",
-      "updated_at": "2026-01-15 23:37:32.050745"
+      "updated_at": "2026-01-16 08:59:29.514187"
     },
     {
       "title": "Introduction",
@@ -8921,7 +8921,7 @@
       "path": "docs/binance/institutional_loan/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/institutional_loan/Introduction",
-      "updated_at": "2026-01-15 23:50:26.519201"
+      "updated_at": "2026-01-16 09:00:17.224385"
     },
     {
       "title": "Introduction",
@@ -8929,7 +8929,7 @@
       "path": "docs/binance/margin_trading/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/margin_trading/Introduction",
-      "updated_at": "2026-01-15 23:48:14.218722"
+      "updated_at": "2026-01-16 08:59:37.536333"
     },
     {
       "title": "Introduction",
@@ -8937,7 +8937,7 @@
       "path": "docs/binance/sub_account/Introduction.md",
       "api_type": "Account",
       "source_url": "https://developers.binance.com/docs/sub_account/Introduction",
-      "updated_at": "2026-01-15 23:50:52.085894"
+      "updated_at": "2026-01-16 09:00:33.192250"
     },
     {
       "title": "Introduction",
@@ -8945,7 +8945,7 @@
       "path": "docs/binance/wallet/Introduction.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/wallet/Introduction",
-      "updated_at": "2026-01-15 23:49:20.619992"
+      "updated_at": "2026-01-16 08:59:53.424160"
     },
     {
       "title": "Keepalive User Data Stream (USER_STREAM)",
@@ -10729,7 +10729,7 @@
       "path": "docs/binance/institutional_loan/account.md",
       "api_type": "Account",
       "source_url": "https://developers.binance.com/docs/institutional_loan/account",
-      "updated_at": "2026-01-15 23:50:26.586341"
+      "updated_at": "2026-01-16 09:00:19.575650"
     },
     {
       "title": "Query Risk Unit Forced Liquidation Transfer Records(USER_DATA)",
@@ -11249,7 +11249,7 @@
       "path": "docs/binance/binance-spot-api-docs/PROD-TERMS-OF-USE.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/binance-spot-api-docs/PROD-TERMS-OF-USE",
-      "updated_at": "2026-01-15 23:35:52.306435"
+      "updated_at": "2026-01-16 08:59:21.441792"
     },
     {
       "title": "SPOT Testnet Terms of Use",
@@ -12065,7 +12065,7 @@
       "path": "docs/binance/alpha/change-log.md",
       "api_type": "REST",
       "source_url": "https://developers.binance.com/docs/alpha/change-log",
-      "updated_at": "2026-01-15 23:50:41.775133"
+      "updated_at": "2026-01-16 09:00:25.209792"
     },
     {
       "title": "listenToken Subscription Methods",

@@ -17,13 +17,20 @@ class BrowserManager:
     def _run_command(self, cmd: List[str], timeout: int = 30) -> subprocess.CompletedProcess:
         """执行 agent-browser 命令"""
         full_cmd = ['agent-browser', '--session', self.session] + cmd
-        result = subprocess.run(
-            full_cmd,
-            capture_output=True,
-            text=True,
-            timeout=timeout
-        )
-        return result
+        try:
+            return subprocess.run(
+                full_cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout
+            )
+        except subprocess.TimeoutExpired as e:
+            return subprocess.CompletedProcess(
+                full_cmd,
+                returncode=124,
+                stdout=e.stdout or "",
+                stderr=e.stderr or f"Command timed out after {timeout}s"
+            )
 
     def open(self, url: str, wait: int = 3) -> bool:
         """打开URL"""
@@ -58,8 +65,9 @@ class BrowserManager:
 
     def get_links(self, selector: str, filter_func: Optional[str] = None) -> List[str]:
         """获取所有匹配选择器的链接"""
+        selector_js = json.dumps(selector)
         js = f'''
-        Array.from(document.querySelectorAll('{selector}'))
+        Array.from(document.querySelectorAll({selector_js}))
             .map(a => a.href)
             .filter(href => href && {filter_func if filter_func else "true"})
         '''
@@ -69,9 +77,10 @@ class BrowserManager:
 
     def extract_content(self, selector: str) -> Optional[str]:
         """提取HTML内容"""
+        selector_js = json.dumps(selector)
         js = f'''
         (function() {{
-            const element = document.querySelector('{selector}');
+            const element = document.querySelector({selector_js});
             return element ? element.innerHTML : null;
         }})()
         '''
@@ -80,14 +89,16 @@ class BrowserManager:
 
     def count_elements(self, selector: str) -> int:
         """统计元素数量"""
-        js = f'document.querySelectorAll("{selector}").length'
+        selector_js = json.dumps(selector)
+        js = f'document.querySelectorAll({selector_js}).length'
         result = self.eval_js(js)
         return result if result is not None else 0
 
     def click_all(self, selector: str) -> int:
         """点击所有匹配的元素"""
+        selector_js = json.dumps(selector)
         js = f'''
-        const elements = document.querySelectorAll('{selector}');
+        const elements = document.querySelectorAll({selector_js});
         let clicked = 0;
         elements.forEach(el => {{
             try {{

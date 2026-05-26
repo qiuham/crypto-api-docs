@@ -3,6 +3,7 @@
 文档索引生成器
 """
 import os
+import re
 import yaml
 from pathlib import Path
 from typing import List, Dict, Any
@@ -14,6 +15,12 @@ class DocumentIndexer:
 
     def __init__(self, docs_dir: str):
         self.docs_dir = Path(docs_dir)
+
+    def _safe_exchange_name(self, name: str) -> str:
+        """索引文件名只允许来自目录名的安全交易所标识。"""
+        if not re.fullmatch(r'[a-z0-9_-]+', name or ''):
+            raise ValueError(f"非法交易所名称: {name}")
+        return name
 
     def scan_documents(self) -> List[Dict[str, Any]]:
         """扫描目录下所有文档（递归）"""
@@ -43,7 +50,7 @@ class DocumentIndexer:
             if len(parts) < 3:
                 return None
 
-            metadata = yaml.safe_load(parts[1])
+            metadata = yaml.safe_load(parts[1]) or {}
 
             # 提取标题（第一个 h1）
             lines = parts[2].strip().split('\n')
@@ -74,7 +81,7 @@ class DocumentIndexer:
             return ""
 
         # 构建索引结构
-        exchange_name = docs[0]['metadata'].get('exchange', 'unknown')
+        exchange_name = self._safe_exchange_name(self.docs_dir.name)
 
         # 按 api_type 分组
         grouped = {}

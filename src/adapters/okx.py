@@ -96,11 +96,13 @@ class OKXAdapter(ExchangeAdapter):
             raise Exception(f"URL不包含锚点: {url}")
 
         anchor_id = anchor_match.group(1)
+        import json
+        anchor_id_js = json.dumps(anchor_id)
 
         # 提取该锚点对应的标题
         title_js = f'''
         (() => {{
-            const elem = document.getElementById('{anchor_id}');
+            const elem = document.getElementById({anchor_id_js});
             if (!elem) return null;
 
             // 查找标题
@@ -113,7 +115,7 @@ class OKXAdapter(ExchangeAdapter):
         # 提取该段落的内容（从锚点元素到下一个同级标题之间的内容）
         js_extract = f'''
         (() => {{
-            const anchor = document.getElementById('{anchor_id}');
+            const anchor = document.getElementById({anchor_id_js});
             if (!anchor) return '';
 
             // 创建容器收集内容
@@ -308,7 +310,7 @@ class OKXAdapter(ExchangeAdapter):
                         page = self.extract_content(url, skip_open=skip_open)
 
                         # 生成文件路径：将锚点ID转换为目录结构
-                        from ..utils.path_generator import anchor_to_filepath, is_hash_anchor, slugify_title
+                        from ..utils.path_generator import anchor_to_filepath, is_hash_anchor, safe_output_path, slugify_title
                         anchor_id = page.metadata.get('anchor_id', str(i))
 
                         # 如果锚点是哈希格式，使用标题生成文件名
@@ -317,7 +319,7 @@ class OKXAdapter(ExchangeAdapter):
                         else:
                             filepath = anchor_to_filepath(anchor_id)
 
-                        output_path = os.path.join(output_dir, filepath)
+                        output_path = safe_output_path(output_dir, filepath)
 
                         # 确保子目录存在
                         os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -345,9 +347,9 @@ class OKXAdapter(ExchangeAdapter):
 
             # 删除临时文件
             log.info("清理临时文件...")
-            import shutil
             if os.path.exists(temp_base):
-                shutil.rmtree(temp_base)
+                from ..utils.path_generator import safe_rmtree
+                safe_rmtree(temp_base, [os.path.join(tempfile.gettempdir(), "crypto-api-docs")])
             log.success("临时文件已删除")
 
         # 生成索引
@@ -387,6 +389,7 @@ class OKXAdapter(ExchangeAdapter):
         """
         import os
         import glob
+        from ..utils.path_generator import safe_output_path
 
         if len(languages) < 2:
             return 0
@@ -448,7 +451,7 @@ class OKXAdapter(ExchangeAdapter):
                     merged_content += content
 
                 # 写入合并后的文件到最终目录
-                output_file = os.path.join(output_dir, rel_path)
+                output_file = safe_output_path(output_dir, rel_path)
                 os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
                 with open(output_file, 'w', encoding='utf-8') as f:

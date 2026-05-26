@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/account-info
 api_type: REST
-updated_at: 2026-01-16T02:43:30.553583
+updated_at: 2026-01-16T09:37:38.006141
 ---
 
 # Get Lending Account Info

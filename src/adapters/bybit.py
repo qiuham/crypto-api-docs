@@ -45,28 +45,26 @@ class BybitAdapter(ExchangeAdapter):
             product_prefix = match.group(1)
             log.info(f"产品路径前缀: {product_prefix}")
 
-        # 展开所有折叠菜单
-        collapsible_selector = '.menu__list-item--collapsed'
-        button_selector = self.config['crawler']['selectors']['collapsible_button']
-        max_iterations = 50
+        # 展开所有折叠菜单 (使用aria-expanded属性定位)
+        max_iterations = 20
+        prev_clicked = None
 
         for i in range(max_iterations):
-            # 点击所有折叠菜单
-            js_expand = f'''
-            (function() {{
-                const collapsed = document.querySelectorAll('{collapsible_selector}');
+            # 点击所有未展开的折叠菜单，使用更简单的选择器
+            js_expand = '''
+            (function() {
+                const collapsed = document.querySelectorAll('.menu__list-item--collapsed .menu__link--sublist');
                 let clicked = 0;
-                collapsed.forEach(item => {{
-                    const link = item.querySelector('{button_selector}');
-                    if (link) {{
-                        try {{
+                collapsed.forEach(link => {
+                    if (link && link.getAttribute('aria-expanded') === 'false') {
+                        try {
                             link.click();
                             clicked++;
-                        }} catch(e) {{}}
-                    }}
-                }});
+                        } catch(e) {}
+                    }
+                });
                 return clicked;
-            }})()
+            })()
             '''
 
             clicked = self.browser.eval_js(js_expand) or 0
@@ -76,7 +74,14 @@ class BybitAdapter(ExchangeAdapter):
                 break
 
             log.info(f"[轮次 {i+1}] 折叠菜单: {clicked} 个")
-            time.sleep(0.3)  # 等待DOM更新
+            # 不需要sleep，Python/Browser往返时React会完成渲染
+
+            # 如果连续2轮都是同样数量，说明无法继续展开，退出
+            if prev_clicked is not None and clicked == prev_clicked:
+                # 这些通常是顶层分类菜单（href="#"），不影响爬取
+                log.info(f"检测到 {clicked} 个顶层菜单项无法展开（通常是分类菜单），已获取所有可用链接")
+                break
+            prev_clicked = clicked
 
         # 提取所有侧边栏链接
         sidebar_selector = self.config['crawler']['selectors']['sidebar_links']
@@ -300,9 +305,9 @@ class BybitAdapter(ExchangeAdapter):
 
             # 清理临时文件
             log.info("清理临时文件...")
-            import shutil
             if os.path.exists(temp_base):
-                shutil.rmtree(temp_base)
+                from ..utils.path_generator import safe_rmtree
+                safe_rmtree(temp_base, [os.path.join(tempfile.gettempdir(), "crypto-api-docs")])
                 log.success("临时文件已删除")
         else:
             # 单语言，直接移动文件
@@ -311,7 +316,13 @@ class BybitAdapter(ExchangeAdapter):
             if os.path.exists(temp_lang_dir):
                 import shutil
                 if os.path.exists(base_output_dir):
-                    shutil.rmtree(base_output_dir)
+                    from ..utils.path_generator import safe_rmtree
+                    project_root = Path(__file__).parent.parent.parent
+                    docs_root = project_root / self.config.get('output', {}).get('base_dir', 'docs')
+                    target_output_dir = Path(base_output_dir)
+                    if not target_output_dir.is_absolute():
+                        target_output_dir = project_root / target_output_dir
+                    safe_rmtree(str(target_output_dir), [docs_root])
                 shutil.move(temp_lang_dir, base_output_dir)
                 log.success(f"文件已移动到: {base_output_dir}")
 
@@ -334,7 +345,7 @@ class BybitAdapter(ExchangeAdapter):
     def _crawl_sequential(self, urls: List[str], output_dir: str) -> int:
         """顺序爬取"""
         import re
-        from ..utils.path_generator import url_to_filepath
+        from ..utils.path_generator import safe_output_path, url_to_filepath
 
         # 获取产品前缀用于生成文件名（动态提取，包含语言代码）
         if urls:
@@ -349,7 +360,7 @@ class BybitAdapter(ExchangeAdapter):
             try:
                 page = self.extract_content(url)
                 filepath = url_to_filepath(url, product_prefix)
-                output_path = os.path.join(output_dir, filepath)
+                output_path = safe_output_path(output_dir, filepath)
                 os.makedirs(os.path.dirname(output_path), exist_ok=True)
                 self.save_page(page, output_path)
                 log.success(f"[{i}/{len(urls)}] {page.title}")
@@ -362,7 +373,7 @@ class BybitAdapter(ExchangeAdapter):
     def _crawl_concurrent(self, urls: List[str], output_dir: str, concurrency: int) -> int:
         """多标签并发爬取（与 Binance 相同的实现）"""
         import re
-        from ..utils.path_generator import url_to_filepath
+        from ..utils.path_generator import safe_output_path, url_to_filepath
 
         browser = self.browser
         total = len(urls)
@@ -400,7 +411,7 @@ class BybitAdapter(ExchangeAdapter):
                         log.warning(f"[{idx}/{total}] 页面加载超时，尝试继续")
 
                     filepath = url_to_filepath(url, product_prefix)
-                    output_path = os.path.join(output_dir, filepath)
+                    output_path = safe_output_path(output_dir, filepath)
                     os.makedirs(os.path.dirname(output_path), exist_ok=True)
                     page = self.extract_content(url, skip_open=True)
                     self.save_page(page, output_path)
@@ -421,6 +432,7 @@ class BybitAdapter(ExchangeAdapter):
         """合并多语言文件为双语文件"""
         import os
         import glob
+        from ..utils.path_generator import safe_output_path
 
         if len(languages) < 2:
             return 0
@@ -481,7 +493,7 @@ class BybitAdapter(ExchangeAdapter):
                     merged_content += content
 
                 # 写入合并后的文件到最终目录
-                output_file = os.path.join(output_dir, rel_path)
+                output_file = safe_output_path(output_dir, rel_path)
                 os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
                 with open(output_file, 'w', encoding='utf-8') as f:
@@ -490,7 +502,7 @@ class BybitAdapter(ExchangeAdapter):
                 merged_count += 1
             else:
                 # 没有其他语言，直接复制主语言文件
-                output_file = os.path.join(output_dir, rel_path)
+                output_file = safe_output_path(output_dir, rel_path)
                 os.makedirs(os.path.dirname(output_file), exist_ok=True)
                 import shutil
                 shutil.copy2(primary_file, output_file)

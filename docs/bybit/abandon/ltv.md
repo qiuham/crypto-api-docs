@@ -1,0 +1,196 @@
+---
+exchange: bybit
+source_url: https://bybit-exchange.github.io/docs/v5/abandon/ltv
+api_type: REST
+updated_at: 2026-01-16T09:37:47.721747
+---
+
+# Get LTV
+
+### HTTP Request
+
+GET `/v5/ins-loan/ltv`
+
+### Request Parameters
+
+None
+
+### Response Parameters
+
+Parameter| Type| Comments  
+---|---|---  
+ltvInfo| array| Object  
+> ltv| string| Risk rate  
+> parentUid| string| User id  
+> subAccountUids| array| Bound user id  
+> unpaidAmount| string| Total debt(USDT)  
+> unpaidInfo| array| Debt details  
+>> token| string| coin  
+>> unpaidQty| string| Unpaid principle  
+>> unpaidInterest| string| Unpaid interest  
+> balance| string| Total asset. (margin coins converted to USDT). Please read [here](https://www.bybit.com/en-US/help-center/s/article/Over-the-counter-OTC-Lending) to understand the calculation  
+> spotBalanceInfo| array| Spot asset details  
+>> token| string| Spot margin coin  
+>> price| string| Spot margin coin price  
+>> qty| string| Spot margin coin quantity  
+> contractInfo| array| Contract asset details  
+>> token| string| Contract margin coin  
+>> price| string| Contract margin coin index price  
+>> qty| string| Contract margin coin quantity (available balance of Contract account, and it is not involved with LTV calculation)  
+  
+### Request Example
+    
+    
+    GET /v5/ins-loan/ltv HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1678688069538  
+    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXX  
+    
+
+### Response Example
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "ltvInfo": [  
+                {  
+                    "ltv": "0.1147",  
+                    "parentUid": "999805",  
+                    "subAccountUids": [  
+                        "999805"  
+                    ],  
+                    "unpaidAmount": "",  
+                    "unpaidInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "unpaidQty": "6351.49614274",  
+                            "unpaidInterest": "264.0137162"  
+                        }  
+                    ],  
+                    "balance": "57626.875915433333333332400000000",  
+                    "spotBalanceInfo": [  
+                        {  
+                            "token": "BTC",  
+                            "price": "16375.621333333333333332",  
+                            "qty": "0.2"  
+                        },  
+                        ....  
+                        {  
+                            "token": "XRP",  
+                            "price": "0.409517",  
+                            "qty": "10000"  
+                        }  
+                    ],  
+                    "contractInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "price": "1",  
+                            "qty": "0"  
+                        }  
+                    ]  
+                }  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1669367335608  
+    }
+
+---
+
+# 查詢風險率
+
+### HTTP 請求
+
+GET `/v5/ins-loan/ltv`
+
+### 請求參數
+
+無
+
+### 返回參數
+
+參數| 類型| 說明  
+---|---|---  
+ltvInfo| array| Object  
+> ltv| string| 風險率  
+> parentUid| string| 用戶ID  
+> subAccountUids| array| 綁定的子UID  
+> unpaidAmount| string| 總負債 (USDT)  
+> unpaidInfo| array| 負債明細  
+>> token| string| 幣種  
+>> unpaidQty| string| 未還本金  
+>> unpaidInterest| string| 未還利息  
+> balance| string| 總資產(保證金幣種資產折算為USDT資產). 可以參考[這裡](https://www.bybit.com/zh-MY/help-center/s/article/Over-the-counter-OTC-Lending)了解詳細計算  
+> spotBalanceInfo| array| 現貨資產明細  
+>> token| string| 現貨保證金幣種  
+>> price| string| 現貨保證金幣種價格  
+>> qty| string| 現貨保證金數量  
+> contractInfo| array| 合約資產明細  
+>> token| string| 合約保證金幣種  
+>> price| string| 合約保證金幣種指數價格  
+>> qty| string| 合約保證金幣種數量 (合約可用餘額，不參與LTV計算)  
+  
+### 請求示例
+    
+    
+    curl --location --request GET 'https://api-testnet.bybit.com/spot/v3/private/margin-ltv' \  
+    --header 'X-BAPI-SIGN-TYPE: 2' \  
+    --header 'X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx' \  
+    --header 'X-BAPI-TIMESTAMP: 1669367335035' \  
+    --header 'X-BAPI-RECV-WINDOW: 5000' \  
+    --header 'X-BAPI-SIGN: XXXXXXXX'  
+    
+
+### 響應示例
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "ltvInfo": [  
+                {  
+                    "ltv": "0.1147",  
+                    "parentUid": "999805",  
+                    "subAccountUids": [  
+                        "999805"  
+                    ],  
+                    "unpaidAmount": "",  
+                    "unpaidInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "unpaidQty": "6351.49614274",  
+                            "unpaidInterest": "264.0137162"  
+                        }  
+                    ],  
+                    "balance": "57626.875915433333333332400000000",  
+                    "spotBalanceInfo": [  
+                        {  
+                            "token": "BTC",  
+                            "price": "16375.621333333333333332",  
+                            "qty": "0.2"  
+                        },  
+                        ....  
+                        {  
+                            "token": "XRP",  
+                            "price": "0.409517",  
+                            "qty": "10000"  
+                        }  
+                    ],  
+                    "contractInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "price": "1",  
+                            "qty": "0"  
+                        }  
+                    ]  
+                }  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1669367335608  
+    }

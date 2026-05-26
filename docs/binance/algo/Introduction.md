@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/Introduction
 api_type: REST
-updated_at: 2026-01-15T23:49:07.699856
+updated_at: 2026-01-16T08:59:45.476102
 ---
 
 # Introduction

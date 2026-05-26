@@ -1,7 +1,7 @@
 {
   "exchange": "bybit",
-  "total": 1,
-  "updated_at": "2026-01-16 02:43:30.553583",
+  "total": 294,
+  "updated_at": "2026-01-16 09:41:58.506619",
   "documents_by_type": {
     "REST": [
       {
@@ -9,18 +9,4423 @@
         "filename": "account-info.md",
         "path": "docs/bybit/abandon/account-info.md",
         "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/account-info",
-        "updated_at": "2026-01-16 02:43:30.553583"
+        "updated_at": "2026-01-16 09:37:38.006141"
+      },
+      {
+        "title": "Get Asset Info",
+        "filename": "asset-info.md",
+        "path": "docs/bybit/abandon/asset-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/asset-info",
+        "updated_at": "2026-01-16 09:37:38.076476"
+      },
+      {
+        "title": "Borrow",
+        "filename": "borrow.md",
+        "path": "docs/bybit/abandon/borrow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/borrow",
+        "updated_at": "2026-01-16 09:37:38.144301"
+      },
+      {
+        "title": "Cancel Redeem",
+        "filename": "cancel-redeem.md",
+        "path": "docs/bybit/abandon/cancel-redeem.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/cancel-redeem",
+        "updated_at": "2026-01-16 09:37:38.212846"
+      },
+      {
+        "title": "Get Lending Coin Info",
+        "filename": "coin-info.md",
+        "path": "docs/bybit/abandon/coin-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/coin-info",
+        "updated_at": "2026-01-16 09:37:38.278864"
+      },
+      {
+        "title": "Get Transaction Log",
+        "filename": "contract-transaction-log.md",
+        "path": "docs/bybit/abandon/contract-transaction-log.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/contract-transaction-log",
+        "updated_at": "2026-01-16 09:37:42.841562"
+      },
+      {
+        "title": "Switch Cross/Isolated Margin",
+        "filename": "cross-isolate.md",
+        "path": "docs/bybit/abandon/cross-isolate.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/cross-isolate",
+        "updated_at": "2026-01-16 09:37:42.908521"
+      },
+      {
+        "title": "Deposit Funds",
+        "filename": "deposit.md",
+        "path": "docs/bybit/abandon/deposit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/deposit",
+        "updated_at": "2026-01-16 09:37:42.971452"
+      },
+      {
+        "title": "Get Broker Earning",
+        "filename": "earning.md",
+        "path": "docs/bybit/abandon/earning.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/earning",
+        "updated_at": "2026-01-16 09:37:43.037011"
+      },
+      {
+        "title": "Enable Universal Transfer for Sub UID",
+        "filename": "enable-unitransfer-subuid.md",
+        "path": "docs/bybit/abandon/enable-unitransfer-subuid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/enable-unitransfer-subuid",
+        "updated_at": "2026-01-16 09:37:43.099058"
+      },
+      {
+        "title": "Get LTV",
+        "filename": "ltv.md",
+        "path": "docs/bybit/abandon/ltv.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/ltv",
+        "updated_at": "2026-01-16 09:37:47.721747"
+      },
+      {
+        "title": "Get Margin Coin Info",
+        "filename": "margin-coin-info.md",
+        "path": "docs/bybit/abandon/margin-coin-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/margin-coin-info",
+        "updated_at": "2026-01-16 09:37:47.783974"
+      },
+      {
+        "title": "Get Order Records",
+        "filename": "order-record.md",
+        "path": "docs/bybit/abandon/order-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/order-record",
+        "updated_at": "2026-01-16 09:37:47.845802"
+      },
+      {
+        "title": "Redeem Funds",
+        "filename": "redeem.md",
+        "path": "docs/bybit/abandon/redeem.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/redeem",
+        "updated_at": "2026-01-16 09:37:47.910863"
+      },
+      {
+        "title": "Set Risk Limit",
+        "filename": "set-risk-limit.md",
+        "path": "docs/bybit/abandon/set-risk-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/set-risk-limit",
+        "updated_at": "2026-01-16 09:37:47.977689"
+      },
+      {
+        "title": "Set TP/SL Mode",
+        "filename": "tpsl-mode.md",
+        "path": "docs/bybit/abandon/tpsl-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/tpsl-mode",
+        "updated_at": "2026-01-16 09:37:52.636055"
+      },
+      {
+        "title": "Get Affiliate User Info",
+        "filename": "affiliate-info.md",
+        "path": "docs/bybit/affiliate/affiliate-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/affiliate/affiliate-info",
+        "updated_at": "2026-01-16 09:38:15.138032"
+      },
+      {
+        "title": "Get Affiliate User List",
+        "filename": "affiliate-user-list.md",
+        "path": "docs/bybit/affiliate/affiliate-user-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/affiliate/affiliate-user-list",
+        "updated_at": "2026-01-16 09:38:15.205397"
+      },
+      {
+        "title": "Get Announcement",
+        "filename": "announcement.md",
+        "path": "docs/bybit/announcement.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/announcement",
+        "updated_at": "2026-01-16 09:38:15.269945"
+      },
+      {
+        "title": "Get Single Coin Balance",
+        "filename": "account-coin-balance.md",
+        "path": "docs/bybit/asset/balance/account-coin-balance.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/account-coin-balance",
+        "updated_at": "2026-01-16 09:38:15.334779"
+      },
+      {
+        "title": "Get All Coins Balance",
+        "filename": "all-balance.md",
+        "path": "docs/bybit/asset/balance/all-balance.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/all-balance",
+        "updated_at": "2026-01-16 09:38:19.754769"
+      },
+      {
+        "title": "Get Withdrawable Amount",
+        "filename": "delay-amount.md",
+        "path": "docs/bybit/asset/balance/delay-amount.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/delay-amount",
+        "updated_at": "2026-01-16 09:38:19.821647"
+      },
+      {
+        "title": "Get Coin Info",
+        "filename": "coin-info.md",
+        "path": "docs/bybit/asset/coin-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/coin-info",
+        "updated_at": "2026-01-16 09:38:19.885967"
+      },
+      {
+        "title": "Request a Quote",
+        "filename": "apply-quote.md",
+        "path": "docs/bybit/asset/convert/apply-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/apply-quote",
+        "updated_at": "2026-01-16 09:38:24.890381"
+      },
+      {
+        "title": "Confirm a Quote",
+        "filename": "confirm-quote.md",
+        "path": "docs/bybit/asset/convert/confirm-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/confirm-quote",
+        "updated_at": "2026-01-16 09:38:24.955499"
+      },
+      {
+        "title": "Get Convert Coin List",
+        "filename": "convert-coin-list.md",
+        "path": "docs/bybit/asset/convert/convert-coin-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/convert-coin-list",
+        "updated_at": "2026-01-16 09:38:25.021985"
+      },
+      {
+        "title": "Get Convert History",
+        "filename": "get-convert-history.md",
+        "path": "docs/bybit/asset/convert/get-convert-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-history",
+        "updated_at": "2026-01-16 09:38:29.046714"
+      },
+      {
+        "title": "Get Convert Status",
+        "filename": "get-convert-result.md",
+        "path": "docs/bybit/asset/convert/get-convert-result.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-result",
+        "updated_at": "2026-01-16 09:38:29.120631"
+      },
+      {
+        "title": "Convert Guideline",
+        "filename": "guideline.md",
+        "path": "docs/bybit/asset/convert/guideline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/guideline",
+        "updated_at": "2026-01-16 09:38:29.193369"
+      },
+      {
+        "title": "Confirm a Quote",
+        "filename": "confirm-quote.md",
+        "path": "docs/bybit/asset/convert-small-balance/confirm-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/confirm-quote",
+        "updated_at": "2026-01-16 09:38:19.950932"
+      },
+      {
+        "title": "Get Exchange History",
+        "filename": "exchange-history.md",
+        "path": "docs/bybit/asset/convert-small-balance/exchange-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/exchange-history",
+        "updated_at": "2026-01-16 09:38:20.017667"
+      },
+      {
+        "title": "Request a Quote",
+        "filename": "request-quote.md",
+        "path": "docs/bybit/asset/convert-small-balance/request-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/request-quote",
+        "updated_at": "2026-01-16 09:38:24.759834"
+      },
+      {
+        "title": "Get Small Balance Coins",
+        "filename": "small-balanc-coins.md",
+        "path": "docs/bybit/asset/convert-small-balance/small-balanc-coins.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/small-balanc-coins",
+        "updated_at": "2026-01-16 09:38:24.823872"
+      },
+      {
+        "title": "Get Delivery Record",
+        "filename": "delivery.md",
+        "path": "docs/bybit/asset/delivery.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/delivery",
+        "updated_at": "2026-01-16 09:38:29.267865"
+      },
+      {
+        "title": "Get Deposit Records (on-chain)",
+        "filename": "deposit-record.md",
+        "path": "docs/bybit/asset/deposit/deposit-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/deposit-record",
+        "updated_at": "2026-01-16 09:38:29.342468"
+      },
+      {
+        "title": "Get Internal Deposit Records (off-chain)",
+        "filename": "internal-deposit-record.md",
+        "path": "docs/bybit/asset/deposit/internal-deposit-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/internal-deposit-record",
+        "updated_at": "2026-01-16 09:38:35.021181"
+      },
+      {
+        "title": "Get Master Deposit Address",
+        "filename": "master-deposit-addr.md",
+        "path": "docs/bybit/asset/deposit/master-deposit-addr.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/master-deposit-addr",
+        "updated_at": "2026-01-16 09:38:35.090703"
+      },
+      {
+        "title": "Set Deposit Account",
+        "filename": "set-deposit-acct.md",
+        "path": "docs/bybit/asset/deposit/set-deposit-acct.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/set-deposit-acct",
+        "updated_at": "2026-01-16 09:38:35.155519"
+      },
+      {
+        "title": "Get Sub Deposit Address",
+        "filename": "sub-deposit-addr.md",
+        "path": "docs/bybit/asset/deposit/sub-deposit-addr.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-addr",
+        "updated_at": "2026-01-16 09:38:35.221096"
+      },
+      {
+        "title": "Get Sub Deposit Records (on-chain)",
+        "filename": "sub-deposit-record.md",
+        "path": "docs/bybit/asset/deposit/sub-deposit-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record",
+        "updated_at": "2026-01-16 09:38:35.284891"
+      },
+      {
+        "title": "Get Coin Exchange Records",
+        "filename": "exchange.md",
+        "path": "docs/bybit/asset/exchange.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/exchange",
+        "updated_at": "2026-01-16 09:38:39.401454"
+      },
+      {
+        "title": "Get Balance",
+        "filename": "balance-query.md",
+        "path": "docs/bybit/asset/fiat-convert/balance-query.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/balance-query",
+        "updated_at": "2026-01-16 09:38:39.472134"
+      },
+      {
+        "title": "Confirm a Quote",
+        "filename": "confirm-quote.md",
+        "path": "docs/bybit/asset/fiat-convert/confirm-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/confirm-quote",
+        "updated_at": "2026-01-16 09:38:39.537482"
+      },
+      {
+        "title": "Get Trading Pair List",
+        "filename": "query-coin-list.md",
+        "path": "docs/bybit/asset/fiat-convert/query-coin-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-coin-list",
+        "updated_at": "2026-01-16 09:38:39.603235"
+      },
+      {
+        "title": "Get Convert History",
+        "filename": "query-trade-history.md",
+        "path": "docs/bybit/asset/fiat-convert/query-trade-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-trade-history",
+        "updated_at": "2026-01-16 09:38:44.167206"
+      },
+      {
+        "title": "Get Convert Status",
+        "filename": "query-trade.md",
+        "path": "docs/bybit/asset/fiat-convert/query-trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-trade",
+        "updated_at": "2026-01-16 09:38:39.667130"
+      },
+      {
+        "title": "Request a Quote",
+        "filename": "quote-apply.md",
+        "path": "docs/bybit/asset/fiat-convert/quote-apply.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/quote-apply",
+        "updated_at": "2026-01-16 09:38:44.230112"
+      },
+      {
+        "title": "Get Reference Price",
+        "filename": "reference-price.md",
+        "path": "docs/bybit/asset/fiat-convert/reference-price.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/reference-price",
+        "updated_at": "2026-01-16 09:38:44.295813"
+      },
+      {
+        "title": "Trade Notify",
+        "filename": "trade-notify.md",
+        "path": "docs/bybit/asset/fiat-convert/trade-notify.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/trade-notify",
+        "updated_at": "2026-01-16 09:38:44.356533"
+      },
+      {
+        "title": "Get USDC Session Settlement",
+        "filename": "settlement.md",
+        "path": "docs/bybit/asset/settlement.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/settlement",
+        "updated_at": "2026-01-16 09:38:44.420375"
+      },
+      {
+        "title": "Get Sub UID",
+        "filename": "sub-uid-list.md",
+        "path": "docs/bybit/asset/sub-uid-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/sub-uid-list",
+        "updated_at": "2026-01-16 09:38:48.153468"
+      },
+      {
+        "title": "Create Internal Transfer",
+        "filename": "create-inter-transfer.md",
+        "path": "docs/bybit/asset/transfer/create-inter-transfer.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/create-inter-transfer",
+        "updated_at": "2026-01-16 09:38:48.217597"
+      },
+      {
+        "title": "Get Internal Transfer Records",
+        "filename": "inter-transfer-list.md",
+        "path": "docs/bybit/asset/transfer/inter-transfer-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/inter-transfer-list",
+        "updated_at": "2026-01-16 09:38:48.282158"
+      },
+      {
+        "title": "Get Transferable Coin",
+        "filename": "transferable-coin.md",
+        "path": "docs/bybit/asset/transfer/transferable-coin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/transferable-coin",
+        "updated_at": "2026-01-16 09:38:48.348335"
+      },
+      {
+        "title": "Get Universal Transfer Records",
+        "filename": "unitransfer-list.md",
+        "path": "docs/bybit/asset/transfer/unitransfer-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer-list",
+        "updated_at": "2026-01-16 09:38:52.448686"
+      },
+      {
+        "title": "Create Universal Transfer",
+        "filename": "unitransfer.md",
+        "path": "docs/bybit/asset/transfer/unitransfer.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer",
+        "updated_at": "2026-01-16 09:38:48.411215"
+      },
+      {
+        "title": "Cancel Withdrawal",
+        "filename": "cancel-withdraw.md",
+        "path": "docs/bybit/asset/withdraw/cancel-withdraw.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/cancel-withdraw",
+        "updated_at": "2026-01-16 09:38:52.581458"
+      },
+      {
+        "title": "Get Exchange Entity List",
+        "filename": "vasp-list.md",
+        "path": "docs/bybit/asset/withdraw/vasp-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/vasp-list",
+        "updated_at": "2026-01-16 09:38:52.647433"
+      },
+      {
+        "title": "Get Withdrawal Address List",
+        "filename": "withdraw-address.md",
+        "path": "docs/bybit/asset/withdraw/withdraw-address.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-address",
+        "updated_at": "2026-01-16 09:38:52.712448"
+      },
+      {
+        "title": "Get Withdrawal Records",
+        "filename": "withdraw-record.md",
+        "path": "docs/bybit/asset/withdraw/withdraw-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-record",
+        "updated_at": "2026-01-16 09:38:56.974716"
+      },
+      {
+        "title": "Withdraw",
+        "filename": "withdraw.md",
+        "path": "docs/bybit/asset/withdraw.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw",
+        "updated_at": "2026-01-16 09:38:52.516505"
+      },
+      {
+        "title": "Application Process",
+        "filename": "guidance.md",
+        "path": "docs/bybit/broker/api-broker/guidance.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/api-broker/guidance",
+        "updated_at": "2026-01-16 09:38:57.041162"
+      },
+      {
+        "title": "Get Account Info",
+        "filename": "account-info.md",
+        "path": "docs/bybit/broker/exchange-broker/account-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/account-info",
+        "updated_at": "2026-01-16 09:38:57.105197"
+      },
+      {
+        "title": "Get Earning",
+        "filename": "exchange-earning.md",
+        "path": "docs/bybit/broker/exchange-broker/exchange-earning.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/exchange-earning",
+        "updated_at": "2026-01-16 09:38:57.171470"
+      },
+      {
+        "title": "Get Sub Account Deposit Records",
+        "filename": "sub-deposit-record.md",
+        "path": "docs/bybit/broker/exchange-broker/sub-deposit-record.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/sub-deposit-record",
+        "updated_at": "2026-01-16 09:38:57.236753"
+      },
+      {
+        "title": "Get Issued Voucher",
+        "filename": "get-issue-voucher.md",
+        "path": "docs/bybit/broker/reward/get-issue-voucher.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/get-issue-voucher",
+        "updated_at": "2026-01-16 09:39:01.841989"
+      },
+      {
+        "title": "Issue Voucher",
+        "filename": "issue-voucher.md",
+        "path": "docs/bybit/broker/reward/issue-voucher.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/issue-voucher",
+        "updated_at": "2026-01-16 09:39:01.910741"
+      },
+      {
+        "title": "Get Voucher Spec",
+        "filename": "voucher.md",
+        "path": "docs/bybit/broker/reward/voucher.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/voucher",
+        "updated_at": "2026-01-16 09:39:01.977110"
+      },
+      {
+        "title": "How To Start Copy Trading",
+        "filename": "copytrade.md",
+        "path": "docs/bybit/copytrade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/copytrade",
+        "updated_at": "2026-01-16 09:39:02.039810"
+      },
+      {
+        "title": "Get Account Borrowable/Collateralizable Limit",
+        "filename": "acct-borrow-collateral.md",
+        "path": "docs/bybit/crypto-loan/acct-borrow-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/acct-borrow-collateral",
+        "updated_at": "2026-01-16 09:39:02.101724"
+      },
+      {
+        "title": "Adjust Collateral Amount",
+        "filename": "adjust-collateral.md",
+        "path": "docs/bybit/crypto-loan/adjust-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/adjust-collateral",
+        "updated_at": "2026-01-16 09:39:06.602290"
+      },
+      {
+        "title": "Get Collateral Coins",
+        "filename": "collateral-coin.md",
+        "path": "docs/bybit/crypto-loan/collateral-coin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/collateral-coin",
+        "updated_at": "2026-01-16 09:39:06.667302"
+      },
+      {
+        "title": "Get Completed Loan History",
+        "filename": "completed-loan-order.md",
+        "path": "docs/bybit/crypto-loan/completed-loan-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/completed-loan-order",
+        "updated_at": "2026-01-16 09:39:06.743535"
+      },
+      {
+        "title": "Get Borrowable Coins",
+        "filename": "loan-coin.md",
+        "path": "docs/bybit/crypto-loan/loan-coin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/loan-coin",
+        "updated_at": "2026-01-16 09:39:06.807539"
+      },
+      {
+        "title": "Get Loan LTV Adjustment History",
+        "filename": "ltv-adjust-history.md",
+        "path": "docs/bybit/crypto-loan/ltv-adjust-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/ltv-adjust-history",
+        "updated_at": "2026-01-16 09:39:06.870927"
+      },
+      {
+        "title": "Get Max. Allowed Collateral Reduction Amount",
+        "filename": "reduce-max-collateral-amt.md",
+        "path": "docs/bybit/crypto-loan/reduce-max-collateral-amt.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/reduce-max-collateral-amt",
+        "updated_at": "2026-01-16 09:39:11.812216"
+      },
+      {
+        "title": "Get Loan Repayment History",
+        "filename": "repay-transaction.md",
+        "path": "docs/bybit/crypto-loan/repay-transaction.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/repay-transaction",
+        "updated_at": "2026-01-16 09:39:11.946418"
+      },
+      {
+        "title": "Repay",
+        "filename": "repay.md",
+        "path": "docs/bybit/crypto-loan/repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/repay",
+        "updated_at": "2026-01-16 09:39:11.876001"
+      },
+      {
+        "title": "Get Unpaid Loans",
+        "filename": "unpaid-loan-order.md",
+        "path": "docs/bybit/crypto-loan/unpaid-loan-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/unpaid-loan-order",
+        "updated_at": "2026-01-16 09:39:12.010533"
+      },
+      {
+        "title": "Demo Trading Service",
+        "filename": "demo.md",
+        "path": "docs/bybit/demo.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/demo",
+        "updated_at": "2026-01-16 09:39:12.075652"
+      },
+      {
+        "title": "Stake / Redeem",
+        "filename": "create-order.md",
+        "path": "docs/bybit/earn/create-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/create-order",
+        "updated_at": "2026-01-16 09:39:16.490893"
+      },
+      {
+        "title": "Get Hourly Yield History",
+        "filename": "hourly-yield.md",
+        "path": "docs/bybit/earn/hourly-yield.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/hourly-yield",
+        "updated_at": "2026-01-16 09:39:16.555553"
+      },
+      {
+        "title": "Get Stake/Redeem Order History",
+        "filename": "order-history.md",
+        "path": "docs/bybit/earn/order-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/order-history",
+        "updated_at": "2026-01-16 09:39:16.618192"
+      },
+      {
+        "title": "Get Staked Position",
+        "filename": "position.md",
+        "path": "docs/bybit/earn/position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/position",
+        "updated_at": "2026-01-16 09:39:16.681958"
+      },
+      {
+        "title": "Get Product Info",
+        "filename": "product-info.md",
+        "path": "docs/bybit/earn/product-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/product-info",
+        "updated_at": "2026-01-16 09:39:16.747144"
+      },
+      {
+        "title": "Get Yield History",
+        "filename": "yield-history.md",
+        "path": "docs/bybit/earn/yield-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/earn/yield-history",
+        "updated_at": "2026-01-16 09:39:20.758136"
+      },
+      {
+        "title": "Enums Definitions",
+        "filename": "enum.md",
+        "path": "docs/bybit/enum.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/enum",
+        "updated_at": "2026-01-16 09:39:20.830739"
+      },
+      {
+        "title": "Error Codes",
+        "filename": "error.md",
+        "path": "docs/bybit/error.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/error",
+        "updated_at": "2026-01-16 09:39:20.906316"
+      },
+      {
+        "title": "Integration Guidance",
+        "filename": "guide.md",
+        "path": "docs/bybit/guide.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/guide",
+        "updated_at": "2026-01-16 09:39:20.971044"
+      },
+      {
+        "title": "Adjust Collateral Amount",
+        "filename": "adjust-collateral.md",
+        "path": "docs/bybit/new-crypto-loan/adjust-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/adjust-collateral",
+        "updated_at": "2026-01-16 09:39:40.575973"
+      },
+      {
+        "title": "Get Collateral Coins",
+        "filename": "collateral-coin.md",
+        "path": "docs/bybit/new-crypto-loan/collateral-coin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/collateral-coin",
+        "updated_at": "2026-01-16 09:39:40.640578"
+      },
+      {
+        "title": "Get Crypto Loan Position",
+        "filename": "crypto-loan-position.md",
+        "path": "docs/bybit/new-crypto-loan/crypto-loan-position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/crypto-loan-position",
+        "updated_at": "2026-01-16 09:39:40.707309"
+      },
+      {
+        "title": "Get Borrow Contract Info",
+        "filename": "borrow-contract.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/borrow-contract.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-contract",
+        "updated_at": "2026-01-16 09:39:44.933408"
+      },
+      {
+        "title": "Get Borrowing Market",
+        "filename": "borrow-market.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/borrow-market.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-market",
+        "updated_at": "2026-01-16 09:39:45.000344"
+      },
+      {
+        "title": "Get Borrow Order Info",
+        "filename": "borrow-order.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/borrow-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-order",
+        "updated_at": "2026-01-16 09:39:45.065570"
+      },
+      {
+        "title": "Create Borrow Order",
+        "filename": "borrow.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/borrow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow",
+        "updated_at": "2026-01-16 09:39:40.771596"
+      },
+      {
+        "title": "Cancel Borrow Order",
+        "filename": "cancel-borrow.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/cancel-borrow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/cancel-borrow",
+        "updated_at": "2026-01-16 09:39:45.129419"
+      },
+      {
+        "title": "Cancel Supply Order",
+        "filename": "cancel-supply.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/cancel-supply.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/cancel-supply",
+        "updated_at": "2026-01-16 09:39:45.192049"
+      },
+      {
+        "title": "Get Renew Order Info",
+        "filename": "renew-order.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/renew-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/renew-order",
+        "updated_at": "2026-01-16 09:39:50.058150"
+      },
+      {
+        "title": "Renew Borrow Order",
+        "filename": "renew.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/renew.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/renew",
+        "updated_at": "2026-01-16 09:39:49.993677"
+      },
+      {
+        "title": "Collateral Repayment",
+        "filename": "repay-collateral.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/repay-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay-collateral",
+        "updated_at": "2026-01-16 09:39:50.184807"
+      },
+      {
+        "title": "Get Repayment History",
+        "filename": "repay-history.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/repay-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay-history",
+        "updated_at": "2026-01-16 09:39:50.248237"
+      },
+      {
+        "title": "Repay",
+        "filename": "repay.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay",
+        "updated_at": "2026-01-16 09:39:50.120852"
+      },
+      {
+        "title": "Get Supply Contract Info",
+        "filename": "supply-contract%20copy.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/supply-contract%20copy.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-contract%20copy",
+        "updated_at": "2026-01-16 09:39:55.629493"
+      },
+      {
+        "title": "Get Lending Market",
+        "filename": "supply-market.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/supply-market.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-market",
+        "updated_at": "2026-01-16 09:39:55.693827"
+      },
+      {
+        "title": "Get Supply Order Info",
+        "filename": "supply-order.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/supply-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-order",
+        "updated_at": "2026-01-16 09:39:55.761738"
+      },
+      {
+        "title": "Create Supply Order",
+        "filename": "supply.md",
+        "path": "docs/bybit/new-crypto-loan/fixed/supply.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply",
+        "updated_at": "2026-01-16 09:39:55.564134"
+      },
+      {
+        "title": "Borrow",
+        "filename": "borrow.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/borrow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/borrow",
+        "updated_at": "2026-01-16 09:39:55.825942"
+      },
+      {
+        "title": "Get Borrowing History",
+        "filename": "loan-orders.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/loan-orders.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/loan-orders",
+        "updated_at": "2026-01-16 09:40:00.183752"
+      },
+      {
+        "title": "Collateral Repayment",
+        "filename": "repay-collateral.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/repay-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay-collateral",
+        "updated_at": "2026-01-16 09:40:00.312756"
+      },
+      {
+        "title": "Get Repayment History",
+        "filename": "repay-orders.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/repay-orders.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay-orders",
+        "updated_at": "2026-01-16 09:40:00.377234"
+      },
+      {
+        "title": "Repay",
+        "filename": "repay.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay",
+        "updated_at": "2026-01-16 09:40:00.249612"
+      },
+      {
+        "title": "Get Flexible Loans",
+        "filename": "unpaid-loan-order.md",
+        "path": "docs/bybit/new-crypto-loan/flexible/unpaid-loan-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/unpaid-loan-order",
+        "updated_at": "2026-01-16 09:40:00.439909"
+      },
+      {
+        "title": "Get Borrowable Coins",
+        "filename": "loan-coin.md",
+        "path": "docs/bybit/new-crypto-loan/loan-coin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/loan-coin",
+        "updated_at": "2026-01-16 09:40:04.982691"
+      },
+      {
+        "title": "Get Collateral Adjustment History",
+        "filename": "ltv-adjust-history.md",
+        "path": "docs/bybit/new-crypto-loan/ltv-adjust-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/ltv-adjust-history",
+        "updated_at": "2026-01-16 09:40:05.049715"
+      },
+      {
+        "title": "Get Max. Allowed Collateral Reduction Amount",
+        "filename": "reduce-max-collateral-amt.md",
+        "path": "docs/bybit/new-crypto-loan/reduce-max-collateral-amt.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/reduce-max-collateral-amt",
+        "updated_at": "2026-01-16 09:40:05.113448"
+      },
+      {
+        "title": "Bind Or Unbind UID",
+        "filename": "bind-uid.md",
+        "path": "docs/bybit/otc/bind-uid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/bind-uid",
+        "updated_at": "2026-01-16 09:40:16.729693"
+      },
+      {
+        "title": "Get Loan Orders",
+        "filename": "loan-info.md",
+        "path": "docs/bybit/otc/loan-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/loan-info",
+        "updated_at": "2026-01-16 09:40:16.805414"
+      },
+      {
+        "title": "Get LTV",
+        "filename": "ltv-convert.md",
+        "path": "docs/bybit/otc/ltv-convert.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/ltv-convert",
+        "updated_at": "2026-01-16 09:40:16.872820"
+      },
+      {
+        "title": "Get Margin Coin Info",
+        "filename": "margin-coin-convert-info.md",
+        "path": "docs/bybit/otc/margin-coin-convert-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/margin-coin-convert-info",
+        "updated_at": "2026-01-16 09:40:16.940724"
+      },
+      {
+        "title": "Get Product Info",
+        "filename": "margin-product-info.md",
+        "path": "docs/bybit/otc/margin-product-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/margin-product-info",
+        "updated_at": "2026-01-16 09:40:21.271005"
+      },
+      {
+        "title": "Get Repayment Orders",
+        "filename": "repay-info.md",
+        "path": "docs/bybit/otc/repay-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/repay-info",
+        "updated_at": "2026-01-16 09:40:21.408941"
+      },
+      {
+        "title": "Repay",
+        "filename": "repay.md",
+        "path": "docs/bybit/otc/repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/otc/repay",
+        "updated_at": "2026-01-16 09:40:21.336305"
+      },
+      {
+        "title": "Get Position Info",
+        "filename": "position.md",
+        "path": "docs/bybit/position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position",
+        "updated_at": "2026-01-16 09:40:21.477570"
+      },
+      {
+        "title": "Get Pre-upgrade Closed PnL",
+        "filename": "close-pnl.md",
+        "path": "docs/bybit/pre-upgrade/close-pnl.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/close-pnl",
+        "updated_at": "2026-01-16 09:40:29.625030"
+      },
+      {
+        "title": "Get Pre-upgrade Delivery Record",
+        "filename": "delivery.md",
+        "path": "docs/bybit/pre-upgrade/delivery.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/delivery",
+        "updated_at": "2026-01-16 09:40:32.267707"
+      },
+      {
+        "title": "Get Pre-upgrade Trade History",
+        "filename": "execution.md",
+        "path": "docs/bybit/pre-upgrade/execution.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/execution",
+        "updated_at": "2026-01-16 09:40:32.332882"
+      },
+      {
+        "title": "Get Pre-upgrade Order History",
+        "filename": "order-list.md",
+        "path": "docs/bybit/pre-upgrade/order-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/order-list",
+        "updated_at": "2026-01-16 09:40:32.398901"
+      },
+      {
+        "title": "Get Pre-upgrade USDC Session Settlement",
+        "filename": "settlement.md",
+        "path": "docs/bybit/pre-upgrade/settlement.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/settlement",
+        "updated_at": "2026-01-16 09:40:32.462365"
+      },
+      {
+        "title": "Get Pre-upgrade Transaction Log",
+        "filename": "transaction-log.md",
+        "path": "docs/bybit/pre-upgrade/transaction-log.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/transaction-log",
+        "updated_at": "2026-01-16 09:40:32.530182"
+      },
+      {
+        "title": "Get All Rate Limits",
+        "filename": "apilimit-query-all.md",
+        "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query-all.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query-all",
+        "updated_at": "2026-01-16 09:40:36.703136"
+      },
+      {
+        "title": "Get Rate Limit Cap",
+        "filename": "apilimit-query-cap.md",
+        "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query-cap.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query-cap",
+        "updated_at": "2026-01-16 09:40:36.768953"
+      },
+      {
+        "title": "Get Rate Limit",
+        "filename": "apilimit-query.md",
+        "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query",
+        "updated_at": "2026-01-16 09:40:36.638845"
+      },
+      {
+        "title": "Set Rate Limit",
+        "filename": "apilimit-set.md",
+        "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-set.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-set",
+        "updated_at": "2026-01-16 09:40:36.831894"
+      },
+      {
+        "title": "Introduction",
+        "filename": "introduction.md",
+        "path": "docs/bybit/rate-limit/rules-for-pros/introduction.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/introduction",
+        "updated_at": "2026-01-16 09:40:40.612148"
+      },
+      {
+        "title": "API Rate Limit Rules for VIPs",
+        "filename": "rules-for-vips.md",
+        "path": "docs/bybit/rate-limit/rules-for-vips.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-vips",
+        "updated_at": "2026-01-16 09:40:40.674012"
+      },
+      {
+        "title": "Rate Limit Rules",
+        "filename": "rate-limit.md",
+        "path": "docs/bybit/rate-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit",
+        "updated_at": "2026-01-16 09:40:36.575739"
+      },
+      {
+        "title": "Basic Workflow",
+        "filename": "basic-workflow.md",
+        "path": "docs/bybit/rfq/basic-workflow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/basic-workflow",
+        "updated_at": "2026-01-16 09:40:40.736077"
+      },
+      {
+        "title": "SBE BBO Integration",
+        "filename": "sbe-bbo.md",
+        "path": "docs/bybit/sbe/bbo/sbe-bbo.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/bbo/sbe-bbo",
+        "updated_at": "2026-01-16 09:40:59.705049"
+      },
+      {
+        "title": "SBE Level 50 Integration",
+        "filename": "sbe-level-50.md",
+        "path": "docs/bybit/sbe/level-50/sbe-level-50.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/level-50/sbe-level-50",
+        "updated_at": "2026-01-16 09:40:59.811741"
+      },
+      {
+        "title": "SBE Basic Information",
+        "filename": "sbe-basic-info.md",
+        "path": "docs/bybit/sbe/sbe-basic-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/sbe-basic-info",
+        "updated_at": "2026-01-16 09:40:59.874150"
+      },
+      {
+        "title": "SBE Public Trade Integration",
+        "filename": "sbe-public-trade.md",
+        "path": "docs/bybit/sbe/sbe-public-trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/sbe-public-trade",
+        "updated_at": "2026-01-16 09:41:03.977083"
+      },
+      {
+        "title": "Self Match Prevention",
+        "filename": "smp.md",
+        "path": "docs/bybit/smp.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/smp",
+        "updated_at": "2026-01-16 09:41:04.048226"
+      },
+      {
+        "title": "Get Coin State",
+        "filename": "coinstate.md",
+        "path": "docs/bybit/spot-margin-uta/coinstate.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/coinstate",
+        "updated_at": "2026-01-16 09:41:04.115373"
+      },
+      {
+        "title": "Get Auto Repay Mode",
+        "filename": "get-auto-repay-mode.md",
+        "path": "docs/bybit/spot-margin-uta/get-auto-repay-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/get-auto-repay-mode",
+        "updated_at": "2026-01-16 09:41:04.177957"
+      },
+      {
+        "title": "Get Historical Interest Rate",
+        "filename": "historical-interest.md",
+        "path": "docs/bybit/spot-margin-uta/historical-interest.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/historical-interest",
+        "updated_at": "2026-01-16 09:41:04.240712"
+      },
+      {
+        "title": "Get Max Borrowable Amount",
+        "filename": "max-borrowable.md",
+        "path": "docs/bybit/spot-margin-uta/max-borrowable.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/max-borrowable",
+        "updated_at": "2026-01-16 09:41:08.252742"
+      },
+      {
+        "title": "Get Position Tiers",
+        "filename": "position-tiers.md",
+        "path": "docs/bybit/spot-margin-uta/position-tiers.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/position-tiers",
+        "updated_at": "2026-01-16 09:41:08.320418"
+      },
+      {
+        "title": "Get Available Amount to Repay",
+        "filename": "repayment-available-amount.md",
+        "path": "docs/bybit/spot-margin-uta/repayment-available-amount.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/repayment-available-amount",
+        "updated_at": "2026-01-16 09:41:08.383249"
+      },
+      {
+        "title": "Set Auto Repay Mode",
+        "filename": "set-auto-repay-mode.md",
+        "path": "docs/bybit/spot-margin-uta/set-auto-repay-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-auto-repay-mode",
+        "updated_at": "2026-01-16 09:41:08.445946"
+      },
+      {
+        "title": "Set Leverage",
+        "filename": "set-leverage.md",
+        "path": "docs/bybit/spot-margin-uta/set-leverage.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-leverage",
+        "updated_at": "2026-01-16 09:41:08.512956"
+      },
+      {
+        "title": "Get Status And Leverage",
+        "filename": "status.md",
+        "path": "docs/bybit/spot-margin-uta/status.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/status",
+        "updated_at": "2026-01-16 09:41:12.137025"
+      },
+      {
+        "title": "Toggle Margin Trade",
+        "filename": "switch-mode.md",
+        "path": "docs/bybit/spot-margin-uta/switch-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/switch-mode",
+        "updated_at": "2026-01-16 09:41:12.201170"
+      },
+      {
+        "title": "Get Tiered Collateral Ratio",
+        "filename": "tier-collateral-ratio.md",
+        "path": "docs/bybit/spot-margin-uta/tier-collateral-ratio.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/tier-collateral-ratio",
+        "updated_at": "2026-01-16 09:41:12.263846"
+      },
+      {
+        "title": "Get VIP Margin Data",
+        "filename": "vip-margin.md",
+        "path": "docs/bybit/spot-margin-uta/vip-margin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/vip-margin",
+        "updated_at": "2026-01-16 09:41:12.327499"
+      },
+      {
+        "title": "Get System Status",
+        "filename": "system-status.md",
+        "path": "docs/bybit/system-status.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/system-status",
+        "updated_at": "2026-01-16 09:41:29.982616"
+      },
+      {
+        "title": "Get API Key Information",
+        "filename": "apikey-info.md",
+        "path": "docs/bybit/user/apikey-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/apikey-info",
+        "updated_at": "2026-01-16 09:41:30.052546"
+      },
+      {
+        "title": "Create Sub UID API Key",
+        "filename": "create-subuid-apikey.md",
+        "path": "docs/bybit/user/create-subuid-apikey.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/create-subuid-apikey",
+        "updated_at": "2026-01-16 09:41:30.184640"
+      },
+      {
+        "title": "Create Sub UID",
+        "filename": "create-subuid.md",
+        "path": "docs/bybit/user/create-subuid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/create-subuid",
+        "updated_at": "2026-01-16 09:41:30.118219"
+      },
+      {
+        "title": "Freeze Sub UID",
+        "filename": "froze-subuid.md",
+        "path": "docs/bybit/user/froze-subuid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/froze-subuid",
+        "updated_at": "2026-01-16 09:41:30.249191"
+      },
+      {
+        "title": "Get Fund Custodial Sub Acct",
+        "filename": "fund-subuid-list.md",
+        "path": "docs/bybit/user/fund-subuid-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/fund-subuid-list",
+        "updated_at": "2026-01-16 09:41:34.213501"
+      },
+      {
+        "title": "Get Sub Account All API Keys",
+        "filename": "list-sub-apikeys.md",
+        "path": "docs/bybit/user/list-sub-apikeys.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/list-sub-apikeys",
+        "updated_at": "2026-01-16 09:41:34.284758"
+      },
+      {
+        "title": "Modify Master API Key",
+        "filename": "modify-master-apikey.md",
+        "path": "docs/bybit/user/modify-master-apikey.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/modify-master-apikey",
+        "updated_at": "2026-01-16 09:41:34.356162"
+      },
+      {
+        "title": "Modify Sub API Key",
+        "filename": "modify-sub-apikey.md",
+        "path": "docs/bybit/user/modify-sub-apikey.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/modify-sub-apikey",
+        "updated_at": "2026-01-16 09:41:34.424986"
+      },
+      {
+        "title": "Get Sub UID List (Unlimited)",
+        "filename": "page-subuid.md",
+        "path": "docs/bybit/user/page-subuid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/page-subuid",
+        "updated_at": "2026-01-16 09:41:34.488893"
+      },
+      {
+        "title": "Delete Master API Key",
+        "filename": "rm-master-apikey.md",
+        "path": "docs/bybit/user/rm-master-apikey.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-master-apikey",
+        "updated_at": "2026-01-16 09:41:39.091238"
+      },
+      {
+        "title": "Delete Sub API Key",
+        "filename": "rm-sub-apikey.md",
+        "path": "docs/bybit/user/rm-sub-apikey.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-sub-apikey",
+        "updated_at": "2026-01-16 09:41:39.158261"
+      },
+      {
+        "title": "Delete Sub UID",
+        "filename": "rm-subuid.md",
+        "path": "docs/bybit/user/rm-subuid.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-subuid",
+        "updated_at": "2026-01-16 09:41:39.221919"
+      },
+      {
+        "title": "Get Sub UID List (Limited)",
+        "filename": "subuid-list.md",
+        "path": "docs/bybit/user/subuid-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/subuid-list",
+        "updated_at": "2026-01-16 09:41:39.287012"
+      },
+      {
+        "title": "Get UID Wallet Type",
+        "filename": "wallet-type.md",
+        "path": "docs/bybit/user/wallet-type.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/user/wallet-type",
+        "updated_at": "2026-01-16 09:41:39.349455"
+      },
+      {
+        "title": "Connect",
+        "filename": "connect.md",
+        "path": "docs/bybit/ws/connect.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/ws/connect",
+        "updated_at": "2026-01-16 09:41:58.506619"
+      }
+    ],
+    "Account": [
+      {
+        "title": "Get Account Info",
+        "filename": "account-info.md",
+        "path": "docs/bybit/account/account-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/account-info",
+        "updated_at": "2026-01-16 09:37:52.704959"
+      },
+      {
+        "title": "Batch Set Collateral Coin",
+        "filename": "batch-set-collateral.md",
+        "path": "docs/bybit/account/batch-set-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/batch-set-collateral",
+        "updated_at": "2026-01-16 09:37:52.775939"
+      },
+      {
+        "title": "Get Borrow History",
+        "filename": "borrow-history.md",
+        "path": "docs/bybit/account/borrow-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/borrow-history",
+        "updated_at": "2026-01-16 09:37:52.900002"
+      },
+      {
+        "title": "Manual Borrow",
+        "filename": "borrow.md",
+        "path": "docs/bybit/account/borrow.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/borrow",
+        "updated_at": "2026-01-16 09:37:52.837396"
+      },
+      {
+        "title": "Get Coin Greeks",
+        "filename": "coin-greeks.md",
+        "path": "docs/bybit/account/coin-greeks.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/coin-greeks",
+        "updated_at": "2026-01-16 09:37:57.112275"
+      },
+      {
+        "title": "Get Collateral Info",
+        "filename": "collateral-info.md",
+        "path": "docs/bybit/account/collateral-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/collateral-info",
+        "updated_at": "2026-01-16 09:37:57.177380"
+      },
+      {
+        "title": "Get DCP Info",
+        "filename": "dcp-info.md",
+        "path": "docs/bybit/account/dcp-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/dcp-info",
+        "updated_at": "2026-01-16 09:37:57.243245"
+      },
+      {
+        "title": "Get Fee Rate",
+        "filename": "fee-rate.md",
+        "path": "docs/bybit/account/fee-rate.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/fee-rate",
+        "updated_at": "2026-01-16 09:37:57.306514"
+      },
+      {
+        "title": "Get MMP State",
+        "filename": "get-mmp-state.md",
+        "path": "docs/bybit/account/get-mmp-state.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/get-mmp-state",
+        "updated_at": "2026-01-16 09:37:57.369534"
+      },
+      {
+        "title": "Get Trade Behaviour Setting",
+        "filename": "get-user-setting-config.md",
+        "path": "docs/bybit/account/get-user-setting-config.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/get-user-setting-config",
+        "updated_at": "2026-01-16 09:38:01.014531"
+      },
+      {
+        "title": "Get Account Instruments Info",
+        "filename": "instrument.md",
+        "path": "docs/bybit/account/instrument.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/instrument",
+        "updated_at": "2026-01-16 09:38:01.084710"
+      },
+      {
+        "title": "Manual Repay Without Asset Conversion",
+        "filename": "no-convert-repay.md",
+        "path": "docs/bybit/account/no-convert-repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/no-convert-repay",
+        "updated_at": "2026-01-16 09:38:01.148168"
+      },
+      {
+        "title": "Repay Liability",
+        "filename": "repay-liability.md",
+        "path": "docs/bybit/account/repay-liability.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/repay-liability",
+        "updated_at": "2026-01-16 09:38:01.274053"
+      },
+      {
+        "title": "Manual Repay",
+        "filename": "repay.md",
+        "path": "docs/bybit/account/repay.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/repay",
+        "updated_at": "2026-01-16 09:38:01.210365"
+      },
+      {
+        "title": "Reset MMP",
+        "filename": "reset-mmp.md",
+        "path": "docs/bybit/account/reset-mmp.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/reset-mmp",
+        "updated_at": "2026-01-16 09:38:06.747297"
+      },
+      {
+        "title": "Set Collateral Coin",
+        "filename": "set-collateral.md",
+        "path": "docs/bybit/account/set-collateral.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-collateral",
+        "updated_at": "2026-01-16 09:38:06.809937"
+      },
+      {
+        "title": "Set Margin Mode",
+        "filename": "set-margin-mode.md",
+        "path": "docs/bybit/account/set-margin-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-margin-mode",
+        "updated_at": "2026-01-16 09:38:06.873946"
+      },
+      {
+        "title": "Set MMP",
+        "filename": "set-mmp.md",
+        "path": "docs/bybit/account/set-mmp.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-mmp",
+        "updated_at": "2026-01-16 09:38:06.943684"
+      },
+      {
+        "title": "Set Limit Price Behaviour",
+        "filename": "set-price-limit.md",
+        "path": "docs/bybit/account/set-price-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-price-limit",
+        "updated_at": "2026-01-16 09:38:07.005575"
+      },
+      {
+        "title": "Set Spot Hedging",
+        "filename": "set-spot-hedge.md",
+        "path": "docs/bybit/account/set-spot-hedge.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-spot-hedge",
+        "updated_at": "2026-01-16 09:38:10.754808"
+      },
+      {
+        "title": "Get SMP Group ID",
+        "filename": "smp-group.md",
+        "path": "docs/bybit/account/smp-group.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/smp-group",
+        "updated_at": "2026-01-16 09:38:10.816272"
+      },
+      {
+        "title": "Get Transaction Log",
+        "filename": "transaction-log.md",
+        "path": "docs/bybit/account/transaction-log.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/transaction-log",
+        "updated_at": "2026-01-16 09:38:10.883235"
+      },
+      {
+        "title": "Get Transferable Amount (Unified)",
+        "filename": "unified-trans-amnt.md",
+        "path": "docs/bybit/account/unified-trans-amnt.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/unified-trans-amnt",
+        "updated_at": "2026-01-16 09:38:10.950253"
+      },
+      {
+        "title": "Upgrade to Unified Account Pro",
+        "filename": "upgrade-unified-account.md",
+        "path": "docs/bybit/account/upgrade-unified-account.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/upgrade-unified-account",
+        "updated_at": "2026-01-16 09:38:11.014351"
+      },
+      {
+        "title": "Get Wallet Balance",
+        "filename": "wallet-balance.md",
+        "path": "docs/bybit/account/wallet-balance.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/account/wallet-balance",
+        "updated_at": "2026-01-16 09:38:15.072224"
+      }
+    ],
+    "Market Data": [
+      {
+        "title": "Get ADL Alert",
+        "filename": "adl-alert.md",
+        "path": "docs/bybit/market/adl-alert.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/adl-alert",
+        "updated_at": "2026-01-16 09:39:21.035407"
+      },
+      {
+        "title": "Get Delivery Price",
+        "filename": "delivery-price.md",
+        "path": "docs/bybit/market/delivery-price.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/delivery-price",
+        "updated_at": "2026-01-16 09:39:24.839465"
+      },
+      {
+        "title": "Get Fee Group Structure",
+        "filename": "fee-group-info.md",
+        "path": "docs/bybit/market/fee-group-info.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/fee-group-info",
+        "updated_at": "2026-01-16 09:39:24.907520"
+      },
+      {
+        "title": "Get Funding Rate History",
+        "filename": "history-fund-rate.md",
+        "path": "docs/bybit/market/history-fund-rate.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/history-fund-rate",
+        "updated_at": "2026-01-16 09:39:24.975206"
+      },
+      {
+        "title": "Get Index Price Components",
+        "filename": "index-components.md",
+        "path": "docs/bybit/market/index-components.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/index-components",
+        "updated_at": "2026-01-16 09:39:25.039500"
+      },
+      {
+        "title": "Get Index Price Kline",
+        "filename": "index-kline.md",
+        "path": "docs/bybit/market/index-kline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/index-kline",
+        "updated_at": "2026-01-16 09:39:25.106319"
+      },
+      {
+        "title": "Get Instruments Info",
+        "filename": "instrument.md",
+        "path": "docs/bybit/market/instrument.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/instrument",
+        "updated_at": "2026-01-16 09:39:28.612673"
+      },
+      {
+        "title": "Get Insurance Pool",
+        "filename": "insurance.md",
+        "path": "docs/bybit/market/insurance.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/insurance",
+        "updated_at": "2026-01-16 09:39:28.679248"
+      },
+      {
+        "title": "Get Historical Volatility",
+        "filename": "iv.md",
+        "path": "docs/bybit/market/iv.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/iv",
+        "updated_at": "2026-01-16 09:39:28.747541"
+      },
+      {
+        "title": "Get Kline",
+        "filename": "kline.md",
+        "path": "docs/bybit/market/kline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/kline",
+        "updated_at": "2026-01-16 09:39:28.815120"
+      },
+      {
+        "title": "Get Long Short Ratio",
+        "filename": "long-short-ratio.md",
+        "path": "docs/bybit/market/long-short-ratio.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/long-short-ratio",
+        "updated_at": "2026-01-16 09:39:28.881665"
+      },
+      {
+        "title": "Get Mark Price Kline",
+        "filename": "mark-kline.md",
+        "path": "docs/bybit/market/mark-kline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/mark-kline",
+        "updated_at": "2026-01-16 09:39:32.810501"
+      },
+      {
+        "title": "Get New Delivery Price",
+        "filename": "new-delivery-price.md",
+        "path": "docs/bybit/market/new-delivery-price.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/new-delivery-price",
+        "updated_at": "2026-01-16 09:39:32.880151"
+      },
+      {
+        "title": "Get Open Interest",
+        "filename": "open-interest.md",
+        "path": "docs/bybit/market/open-interest.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/open-interest",
+        "updated_at": "2026-01-16 09:39:32.949631"
+      },
+      {
+        "title": "Get Order Price Limit",
+        "filename": "order-price-limit.md",
+        "path": "docs/bybit/market/order-price-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/order-price-limit",
+        "updated_at": "2026-01-16 09:39:33.017326"
+      },
+      {
+        "title": "Get Orderbook",
+        "filename": "orderbook.md",
+        "path": "docs/bybit/market/orderbook.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/orderbook",
+        "updated_at": "2026-01-16 09:39:33.084367"
+      },
+      {
+        "title": "Get Premium Index Price Kline",
+        "filename": "premium-index-kline.md",
+        "path": "docs/bybit/market/premium-index-kline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/premium-index-kline",
+        "updated_at": "2026-01-16 09:39:36.189560"
+      },
+      {
+        "title": "Get Recent Public Trades",
+        "filename": "recent-trade.md",
+        "path": "docs/bybit/market/recent-trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/recent-trade",
+        "updated_at": "2026-01-16 09:39:36.256049"
+      },
+      {
+        "title": "Get Risk Limit",
+        "filename": "risk-limit.md",
+        "path": "docs/bybit/market/risk-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/risk-limit",
+        "updated_at": "2026-01-16 09:39:36.322349"
+      },
+      {
+        "title": "Get RPI Orderbook",
+        "filename": "rpi-orderbook.md",
+        "path": "docs/bybit/market/rpi-orderbook.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/rpi-orderbook",
+        "updated_at": "2026-01-16 09:39:36.386308"
+      },
+      {
+        "title": "Get Tickers",
+        "filename": "tickers.md",
+        "path": "docs/bybit/market/tickers.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/tickers",
+        "updated_at": "2026-01-16 09:39:36.464042"
+      },
+      {
+        "title": "Get Bybit Server Time",
+        "filename": "time.md",
+        "path": "docs/bybit/market/time.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/market/time",
+        "updated_at": "2026-01-16 09:39:40.512903"
+      },
+      {
+        "title": "Get Instruments Info",
+        "filename": "instrument.md",
+        "path": "docs/bybit/spread/market/instrument.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/instrument",
+        "updated_at": "2026-01-16 09:41:12.391058"
+      },
+      {
+        "title": "Get Orderbook",
+        "filename": "orderbook.md",
+        "path": "docs/bybit/spread/market/orderbook.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/orderbook",
+        "updated_at": "2026-01-16 09:41:16.574951"
+      },
+      {
+        "title": "Get Recent Public Trades",
+        "filename": "recent-trade.md",
+        "path": "docs/bybit/spread/market/recent-trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/recent-trade",
+        "updated_at": "2026-01-16 09:41:16.640190"
+      },
+      {
+        "title": "Get Tickers",
+        "filename": "tickers.md",
+        "path": "docs/bybit/spread/market/tickers.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/tickers",
+        "updated_at": "2026-01-16 09:41:16.704081"
+      }
+    ],
+    "Trading": [
+      {
+        "title": "Amend Order",
+        "filename": "amend-order.md",
+        "path": "docs/bybit/order/amend-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/amend-order",
+        "updated_at": "2026-01-16 09:40:05.179594"
+      },
+      {
+        "title": "Batch Amend Order",
+        "filename": "batch-amend.md",
+        "path": "docs/bybit/order/batch-amend.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-amend",
+        "updated_at": "2026-01-16 09:40:05.251505"
+      },
+      {
+        "title": "Batch Cancel Order",
+        "filename": "batch-cancel.md",
+        "path": "docs/bybit/order/batch-cancel.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-cancel",
+        "updated_at": "2026-01-16 09:40:07.601232"
+      },
+      {
+        "title": "Batch Place Order",
+        "filename": "batch-place.md",
+        "path": "docs/bybit/order/batch-place.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-place",
+        "updated_at": "2026-01-16 09:40:07.677668"
+      },
+      {
+        "title": "Cancel All Orders",
+        "filename": "cancel-all.md",
+        "path": "docs/bybit/order/cancel-all.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/cancel-all",
+        "updated_at": "2026-01-16 09:40:07.745121"
+      },
+      {
+        "title": "Cancel Order",
+        "filename": "cancel-order.md",
+        "path": "docs/bybit/order/cancel-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/cancel-order",
+        "updated_at": "2026-01-16 09:40:07.811509"
+      },
+      {
+        "title": "Place Order",
+        "filename": "create-order.md",
+        "path": "docs/bybit/order/create-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/create-order",
+        "updated_at": "2026-01-16 09:40:07.887264"
+      },
+      {
+        "title": "Set Disconnect Cancel All",
+        "filename": "dcp.md",
+        "path": "docs/bybit/order/dcp.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/dcp",
+        "updated_at": "2026-01-16 09:40:11.145598"
+      },
+      {
+        "title": "Get Trade History",
+        "filename": "execution.md",
+        "path": "docs/bybit/order/execution.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/execution",
+        "updated_at": "2026-01-16 09:40:11.214981"
+      },
+      {
+        "title": "Get Open & Closed Orders",
+        "filename": "open-order.md",
+        "path": "docs/bybit/order/open-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/open-order",
+        "updated_at": "2026-01-16 09:40:11.287350"
+      },
+      {
+        "title": "Get Order History",
+        "filename": "order-list.md",
+        "path": "docs/bybit/order/order-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/order-list",
+        "updated_at": "2026-01-16 09:40:11.357388"
+      },
+      {
+        "title": "Pre Check Order",
+        "filename": "pre-check-order.md",
+        "path": "docs/bybit/order/pre-check-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/pre-check-order",
+        "updated_at": "2026-01-16 09:40:11.424360"
+      },
+      {
+        "title": "Get Borrow Quota (Spot)",
+        "filename": "spot-borrow-quota.md",
+        "path": "docs/bybit/order/spot-borrow-quota.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/order/spot-borrow-quota",
+        "updated_at": "2026-01-16 09:40:16.662966"
+      },
+      {
+        "title": "Accept non-LP Quote",
+        "filename": "accept-other-quote.md",
+        "path": "docs/bybit/rfq/trade/accept-other-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/accept-other-quote",
+        "updated_at": "2026-01-16 09:40:40.804267"
+      },
+      {
+        "title": "Cancel All Quotes",
+        "filename": "cancel-all-quotes.md",
+        "path": "docs/bybit/rfq/trade/cancel-all-quotes.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-all-quotes",
+        "updated_at": "2026-01-16 09:40:40.866950"
+      },
+      {
+        "title": "Cancel All RFQs",
+        "filename": "cancel-all-rfq.md",
+        "path": "docs/bybit/rfq/trade/cancel-all-rfq.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-all-rfq",
+        "updated_at": "2026-01-16 09:40:46.102756"
+      },
+      {
+        "title": "Cancel Quote",
+        "filename": "cancel-quote.md",
+        "path": "docs/bybit/rfq/trade/cancel-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-quote",
+        "updated_at": "2026-01-16 09:40:46.164705"
+      },
+      {
+        "title": "Cancel RFQ",
+        "filename": "cancel-rfq.md",
+        "path": "docs/bybit/rfq/trade/cancel-rfq.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-rfq",
+        "updated_at": "2026-01-16 09:40:46.226795"
+      },
+      {
+        "title": "Create Quote",
+        "filename": "create-quote.md",
+        "path": "docs/bybit/rfq/trade/create-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/create-quote",
+        "updated_at": "2026-01-16 09:40:46.292312"
+      },
+      {
+        "title": "Create RFQ",
+        "filename": "create-rfq.md",
+        "path": "docs/bybit/rfq/trade/create-rfq.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/create-rfq",
+        "updated_at": "2026-01-16 09:40:46.358025"
+      },
+      {
+        "title": "Execute Quote",
+        "filename": "execute-quote.md",
+        "path": "docs/bybit/rfq/trade/execute-quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/execute-quote",
+        "updated_at": "2026-01-16 09:40:50.220271"
+      },
+      {
+        "title": "Get Public Trades",
+        "filename": "public-trades.md",
+        "path": "docs/bybit/rfq/trade/public-trades.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/public-trades",
+        "updated_at": "2026-01-16 09:40:50.285713"
+      },
+      {
+        "title": "Get Quotes",
+        "filename": "quote-list.md",
+        "path": "docs/bybit/rfq/trade/quote-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/quote-list",
+        "updated_at": "2026-01-16 09:40:50.350598"
+      },
+      {
+        "title": "Get Quotes (real-time)",
+        "filename": "quote-realtime.md",
+        "path": "docs/bybit/rfq/trade/quote-realtime.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/quote-realtime",
+        "updated_at": "2026-01-16 09:40:50.415334"
+      },
+      {
+        "title": "Get RFQ Configuration",
+        "filename": "rfq-config.md",
+        "path": "docs/bybit/rfq/trade/rfq-config.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-config",
+        "updated_at": "2026-01-16 09:40:50.478074"
+      },
+      {
+        "title": "Get RFQs",
+        "filename": "rfq-list.md",
+        "path": "docs/bybit/rfq/trade/rfq-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-list",
+        "updated_at": "2026-01-16 09:40:54.985519"
+      },
+      {
+        "title": "Get RFQs (real-time)",
+        "filename": "rfq-realtime.md",
+        "path": "docs/bybit/rfq/trade/rfq-realtime.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-realtime",
+        "updated_at": "2026-01-16 09:40:55.051495"
+      },
+      {
+        "title": "Get Trade History",
+        "filename": "trade-list.md",
+        "path": "docs/bybit/rfq/trade/trade-list.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/trade-list",
+        "updated_at": "2026-01-16 09:40:55.117580"
+      },
+      {
+        "title": "Amend Order",
+        "filename": "amend-order.md",
+        "path": "docs/bybit/spread/trade/amend-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/amend-order",
+        "updated_at": "2026-01-16 09:41:16.765979"
+      },
+      {
+        "title": "Cancel All Orders",
+        "filename": "cancel-all.md",
+        "path": "docs/bybit/spread/trade/cancel-all.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/cancel-all",
+        "updated_at": "2026-01-16 09:41:16.830244"
+      },
+      {
+        "title": "Cancel Order",
+        "filename": "cancel-order.md",
+        "path": "docs/bybit/spread/trade/cancel-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/cancel-order",
+        "updated_at": "2026-01-16 09:41:20.974526"
+      },
+      {
+        "title": "Create Order",
+        "filename": "create-order.md",
+        "path": "docs/bybit/spread/trade/create-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/create-order",
+        "updated_at": "2026-01-16 09:41:21.037163"
+      },
+      {
+        "title": "Get Open Orders",
+        "filename": "open-order.md",
+        "path": "docs/bybit/spread/trade/open-order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/open-order",
+        "updated_at": "2026-01-16 09:41:21.100185"
+      },
+      {
+        "title": "Get Order History",
+        "filename": "order-history.md",
+        "path": "docs/bybit/spread/trade/order-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/order-history",
+        "updated_at": "2026-01-16 09:41:21.164148"
+      },
+      {
+        "title": "Get Trade History",
+        "filename": "trade-history.md",
+        "path": "docs/bybit/spread/trade/trade-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/trade-history",
+        "updated_at": "2026-01-16 09:41:21.228623"
+      },
+      {
+        "title": "Websocket Trade Guideline",
+        "filename": "guideline.md",
+        "path": "docs/bybit/websocket/trade/guideline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/trade/guideline",
+        "updated_at": "2026-01-16 09:41:58.438016"
+      }
+    ],
+    "Position": [
+      {
+        "title": "Set Auto Add Margin",
+        "filename": "auto-add-margin.md",
+        "path": "docs/bybit/position/auto-add-margin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/auto-add-margin",
+        "updated_at": "2026-01-16 09:40:21.543025"
+      },
+      {
+        "title": "Get Closed PnL",
+        "filename": "close-pnl.md",
+        "path": "docs/bybit/position/close-pnl.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/close-pnl",
+        "updated_at": "2026-01-16 09:40:24.889365"
+      },
+      {
+        "title": "Get Closed Options Positions",
+        "filename": "close-position.md",
+        "path": "docs/bybit/position/close-position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/close-position",
+        "updated_at": "2026-01-16 09:40:24.955607"
+      },
+      {
+        "title": "Confirm New Risk Limit",
+        "filename": "confirm-mmr.md",
+        "path": "docs/bybit/position/confirm-mmr.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/confirm-mmr",
+        "updated_at": "2026-01-16 09:40:25.020500"
+      },
+      {
+        "title": "Set Leverage",
+        "filename": "leverage.md",
+        "path": "docs/bybit/position/leverage.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/leverage",
+        "updated_at": "2026-01-16 09:40:25.085990"
+      },
+      {
+        "title": "Add Or Reduce Margin",
+        "filename": "manual-add-margin.md",
+        "path": "docs/bybit/position/manual-add-margin.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/manual-add-margin",
+        "updated_at": "2026-01-16 09:40:25.153178"
+      },
+      {
+        "title": "Get Move Position History",
+        "filename": "move-position-history.md",
+        "path": "docs/bybit/position/move-position-history.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/move-position-history",
+        "updated_at": "2026-01-16 09:40:29.426213"
+      },
+      {
+        "title": "Move Position",
+        "filename": "move-position.md",
+        "path": "docs/bybit/position/move-position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/move-position",
+        "updated_at": "2026-01-16 09:40:29.357267"
+      },
+      {
+        "title": "Switch Position Mode",
+        "filename": "position-mode.md",
+        "path": "docs/bybit/position/position-mode.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/position-mode",
+        "updated_at": "2026-01-16 09:40:29.491931"
+      },
+      {
+        "title": "Set Trading Stop",
+        "filename": "trading-stop.md",
+        "path": "docs/bybit/position/trading-stop.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/position/trading-stop",
+        "updated_at": "2026-01-16 09:40:29.560460"
+      }
+    ],
+    "WebSocket": [
+      {
+        "title": "RFQ",
+        "filename": "inquiry.md",
+        "path": "docs/bybit/rfq/websocket/private/inquiry.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/inquiry",
+        "updated_at": "2026-01-16 09:40:55.179559"
+      },
+      {
+        "title": "Quote",
+        "filename": "quote.md",
+        "path": "docs/bybit/rfq/websocket/private/quote.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/quote",
+        "updated_at": "2026-01-16 09:40:55.242468"
+      },
+      {
+        "title": "Execution",
+        "filename": "transaction.md",
+        "path": "docs/bybit/rfq/websocket/private/transaction.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/transaction",
+        "updated_at": "2026-01-16 09:40:59.556146"
+      },
+      {
+        "title": "Trade",
+        "filename": "public-transaction.md",
+        "path": "docs/bybit/rfq/websocket/public/public-transaction.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/public/public-transaction",
+        "updated_at": "2026-01-16 09:40:59.618201"
+      },
+      {
+        "title": "Execution",
+        "filename": "execution.md",
+        "path": "docs/bybit/spread/websocket/private/execution.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/private/execution",
+        "updated_at": "2026-01-16 09:41:25.780819"
+      },
+      {
+        "title": "Order",
+        "filename": "order.md",
+        "path": "docs/bybit/spread/websocket/private/order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/private/order",
+        "updated_at": "2026-01-16 09:41:25.847350"
+      },
+      {
+        "title": "Orderbook",
+        "filename": "orderbook.md",
+        "path": "docs/bybit/spread/websocket/public/orderbook.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/orderbook",
+        "updated_at": "2026-01-16 09:41:25.911190"
+      },
+      {
+        "title": "Ticker",
+        "filename": "ticker.md",
+        "path": "docs/bybit/spread/websocket/public/ticker.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/ticker",
+        "updated_at": "2026-01-16 09:41:25.974298"
+      },
+      {
+        "title": "Trade",
+        "filename": "trade.md",
+        "path": "docs/bybit/spread/websocket/public/trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/trade",
+        "updated_at": "2026-01-16 09:41:26.035216"
+      },
+      {
+        "title": "Dcp",
+        "filename": "dcp.md",
+        "path": "docs/bybit/websocket/private/dcp.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/dcp",
+        "updated_at": "2026-01-16 09:41:45.534718"
+      },
+      {
+        "title": "Execution",
+        "filename": "execution.md",
+        "path": "docs/bybit/websocket/private/execution.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/execution",
+        "updated_at": "2026-01-16 09:41:45.600356"
+      },
+      {
+        "title": "Fast Execution",
+        "filename": "fast-execution.md",
+        "path": "docs/bybit/websocket/private/fast-execution.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/fast-execution",
+        "updated_at": "2026-01-16 09:41:45.662879"
+      },
+      {
+        "title": "Greek",
+        "filename": "greek.md",
+        "path": "docs/bybit/websocket/private/greek.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/greek",
+        "updated_at": "2026-01-16 09:41:45.724883"
+      },
+      {
+        "title": "Order",
+        "filename": "order.md",
+        "path": "docs/bybit/websocket/private/order.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/order",
+        "updated_at": "2026-01-16 09:41:45.791087"
+      },
+      {
+        "title": "Position",
+        "filename": "position.md",
+        "path": "docs/bybit/websocket/private/position.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/position",
+        "updated_at": "2026-01-16 09:41:49.629932"
+      },
+      {
+        "title": "Wallet",
+        "filename": "wallet.md",
+        "path": "docs/bybit/websocket/private/wallet.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/wallet",
+        "updated_at": "2026-01-16 09:41:49.697493"
+      },
+      {
+        "title": "ADL Alert",
+        "filename": "adl-alert.md",
+        "path": "docs/bybit/websocket/public/adl-alert.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/adl-alert",
+        "updated_at": "2026-01-16 09:41:49.764284"
+      },
+      {
+        "title": "All Liquidation",
+        "filename": "all-liquidation.md",
+        "path": "docs/bybit/websocket/public/all-liquidation.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/all-liquidation",
+        "updated_at": "2026-01-16 09:41:49.827961"
+      },
+      {
+        "title": "Insurance Pool",
+        "filename": "insurance-pool.md",
+        "path": "docs/bybit/websocket/public/insurance-pool.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/insurance-pool",
+        "updated_at": "2026-01-16 09:41:49.890439"
+      },
+      {
+        "title": "Kline",
+        "filename": "kline.md",
+        "path": "docs/bybit/websocket/public/kline.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/kline",
+        "updated_at": "2026-01-16 09:41:54.279885"
+      },
+      {
+        "title": "Order Price Limit",
+        "filename": "order-price-limit.md",
+        "path": "docs/bybit/websocket/public/order-price-limit.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/order-price-limit",
+        "updated_at": "2026-01-16 09:41:54.342148"
+      },
+      {
+        "title": "RPI Orderbook",
+        "filename": "orderbook-rpi.md",
+        "path": "docs/bybit/websocket/public/orderbook-rpi.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook-rpi",
+        "updated_at": "2026-01-16 09:41:54.473610"
+      },
+      {
+        "title": "Orderbook",
+        "filename": "orderbook.md",
+        "path": "docs/bybit/websocket/public/orderbook.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook",
+        "updated_at": "2026-01-16 09:41:54.409480"
+      },
+      {
+        "title": "Ticker",
+        "filename": "ticker.md",
+        "path": "docs/bybit/websocket/public/ticker.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/ticker",
+        "updated_at": "2026-01-16 09:41:54.544618"
+      },
+      {
+        "title": "Trade",
+        "filename": "trade.md",
+        "path": "docs/bybit/websocket/public/trade.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/trade",
+        "updated_at": "2026-01-16 09:41:58.302120"
+      },
+      {
+        "title": "System Status",
+        "filename": "system-status.md",
+        "path": "docs/bybit/websocket/system/system-status.md",
+        "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/system/system-status",
+        "updated_at": "2026-01-16 09:41:58.366106"
       }
     ]
   },
   "all_documents": [
+    {
+      "title": "ADL Alert",
+      "filename": "adl-alert.md",
+      "path": "docs/bybit/websocket/public/adl-alert.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/adl-alert",
+      "updated_at": "2026-01-16 09:41:49.764284"
+    },
+    {
+      "title": "API Rate Limit Rules for VIPs",
+      "filename": "rules-for-vips.md",
+      "path": "docs/bybit/rate-limit/rules-for-vips.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-vips",
+      "updated_at": "2026-01-16 09:40:40.674012"
+    },
+    {
+      "title": "Accept non-LP Quote",
+      "filename": "accept-other-quote.md",
+      "path": "docs/bybit/rfq/trade/accept-other-quote.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/accept-other-quote",
+      "updated_at": "2026-01-16 09:40:40.804267"
+    },
+    {
+      "title": "Add Or Reduce Margin",
+      "filename": "manual-add-margin.md",
+      "path": "docs/bybit/position/manual-add-margin.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/manual-add-margin",
+      "updated_at": "2026-01-16 09:40:25.153178"
+    },
+    {
+      "title": "Adjust Collateral Amount",
+      "filename": "adjust-collateral.md",
+      "path": "docs/bybit/crypto-loan/adjust-collateral.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/adjust-collateral",
+      "updated_at": "2026-01-16 09:39:06.602290"
+    },
+    {
+      "title": "Adjust Collateral Amount",
+      "filename": "adjust-collateral.md",
+      "path": "docs/bybit/new-crypto-loan/adjust-collateral.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/adjust-collateral",
+      "updated_at": "2026-01-16 09:39:40.575973"
+    },
+    {
+      "title": "All Liquidation",
+      "filename": "all-liquidation.md",
+      "path": "docs/bybit/websocket/public/all-liquidation.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/all-liquidation",
+      "updated_at": "2026-01-16 09:41:49.827961"
+    },
+    {
+      "title": "Amend Order",
+      "filename": "amend-order.md",
+      "path": "docs/bybit/order/amend-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/amend-order",
+      "updated_at": "2026-01-16 09:40:05.179594"
+    },
+    {
+      "title": "Amend Order",
+      "filename": "amend-order.md",
+      "path": "docs/bybit/spread/trade/amend-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/amend-order",
+      "updated_at": "2026-01-16 09:41:16.765979"
+    },
+    {
+      "title": "Application Process",
+      "filename": "guidance.md",
+      "path": "docs/bybit/broker/api-broker/guidance.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/api-broker/guidance",
+      "updated_at": "2026-01-16 09:38:57.041162"
+    },
+    {
+      "title": "Basic Workflow",
+      "filename": "basic-workflow.md",
+      "path": "docs/bybit/rfq/basic-workflow.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/basic-workflow",
+      "updated_at": "2026-01-16 09:40:40.736077"
+    },
+    {
+      "title": "Batch Amend Order",
+      "filename": "batch-amend.md",
+      "path": "docs/bybit/order/batch-amend.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-amend",
+      "updated_at": "2026-01-16 09:40:05.251505"
+    },
+    {
+      "title": "Batch Cancel Order",
+      "filename": "batch-cancel.md",
+      "path": "docs/bybit/order/batch-cancel.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-cancel",
+      "updated_at": "2026-01-16 09:40:07.601232"
+    },
+    {
+      "title": "Batch Place Order",
+      "filename": "batch-place.md",
+      "path": "docs/bybit/order/batch-place.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/batch-place",
+      "updated_at": "2026-01-16 09:40:07.677668"
+    },
+    {
+      "title": "Batch Set Collateral Coin",
+      "filename": "batch-set-collateral.md",
+      "path": "docs/bybit/account/batch-set-collateral.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/batch-set-collateral",
+      "updated_at": "2026-01-16 09:37:52.775939"
+    },
+    {
+      "title": "Bind Or Unbind UID",
+      "filename": "bind-uid.md",
+      "path": "docs/bybit/otc/bind-uid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/bind-uid",
+      "updated_at": "2026-01-16 09:40:16.729693"
+    },
+    {
+      "title": "Borrow",
+      "filename": "borrow.md",
+      "path": "docs/bybit/abandon/borrow.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/borrow",
+      "updated_at": "2026-01-16 09:37:38.144301"
+    },
+    {
+      "title": "Borrow",
+      "filename": "borrow.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/borrow.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/borrow",
+      "updated_at": "2026-01-16 09:39:55.825942"
+    },
+    {
+      "title": "Cancel All Orders",
+      "filename": "cancel-all.md",
+      "path": "docs/bybit/order/cancel-all.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/cancel-all",
+      "updated_at": "2026-01-16 09:40:07.745121"
+    },
+    {
+      "title": "Cancel All Orders",
+      "filename": "cancel-all.md",
+      "path": "docs/bybit/spread/trade/cancel-all.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/cancel-all",
+      "updated_at": "2026-01-16 09:41:16.830244"
+    },
+    {
+      "title": "Cancel All Quotes",
+      "filename": "cancel-all-quotes.md",
+      "path": "docs/bybit/rfq/trade/cancel-all-quotes.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-all-quotes",
+      "updated_at": "2026-01-16 09:40:40.866950"
+    },
+    {
+      "title": "Cancel All RFQs",
+      "filename": "cancel-all-rfq.md",
+      "path": "docs/bybit/rfq/trade/cancel-all-rfq.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-all-rfq",
+      "updated_at": "2026-01-16 09:40:46.102756"
+    },
+    {
+      "title": "Cancel Borrow Order",
+      "filename": "cancel-borrow.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/cancel-borrow.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/cancel-borrow",
+      "updated_at": "2026-01-16 09:39:45.129419"
+    },
+    {
+      "title": "Cancel Order",
+      "filename": "cancel-order.md",
+      "path": "docs/bybit/order/cancel-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/cancel-order",
+      "updated_at": "2026-01-16 09:40:07.811509"
+    },
+    {
+      "title": "Cancel Order",
+      "filename": "cancel-order.md",
+      "path": "docs/bybit/spread/trade/cancel-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/cancel-order",
+      "updated_at": "2026-01-16 09:41:20.974526"
+    },
+    {
+      "title": "Cancel Quote",
+      "filename": "cancel-quote.md",
+      "path": "docs/bybit/rfq/trade/cancel-quote.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-quote",
+      "updated_at": "2026-01-16 09:40:46.164705"
+    },
+    {
+      "title": "Cancel RFQ",
+      "filename": "cancel-rfq.md",
+      "path": "docs/bybit/rfq/trade/cancel-rfq.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-rfq",
+      "updated_at": "2026-01-16 09:40:46.226795"
+    },
+    {
+      "title": "Cancel Redeem",
+      "filename": "cancel-redeem.md",
+      "path": "docs/bybit/abandon/cancel-redeem.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/cancel-redeem",
+      "updated_at": "2026-01-16 09:37:38.212846"
+    },
+    {
+      "title": "Cancel Supply Order",
+      "filename": "cancel-supply.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/cancel-supply.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/cancel-supply",
+      "updated_at": "2026-01-16 09:39:45.192049"
+    },
+    {
+      "title": "Cancel Withdrawal",
+      "filename": "cancel-withdraw.md",
+      "path": "docs/bybit/asset/withdraw/cancel-withdraw.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/cancel-withdraw",
+      "updated_at": "2026-01-16 09:38:52.581458"
+    },
+    {
+      "title": "Collateral Repayment",
+      "filename": "repay-collateral.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/repay-collateral.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay-collateral",
+      "updated_at": "2026-01-16 09:39:50.184807"
+    },
+    {
+      "title": "Collateral Repayment",
+      "filename": "repay-collateral.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/repay-collateral.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay-collateral",
+      "updated_at": "2026-01-16 09:40:00.312756"
+    },
+    {
+      "title": "Confirm New Risk Limit",
+      "filename": "confirm-mmr.md",
+      "path": "docs/bybit/position/confirm-mmr.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/confirm-mmr",
+      "updated_at": "2026-01-16 09:40:25.020500"
+    },
+    {
+      "title": "Confirm a Quote",
+      "filename": "confirm-quote.md",
+      "path": "docs/bybit/asset/convert/confirm-quote.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/confirm-quote",
+      "updated_at": "2026-01-16 09:38:24.955499"
+    },
+    {
+      "title": "Confirm a Quote",
+      "filename": "confirm-quote.md",
+      "path": "docs/bybit/asset/convert-small-balance/confirm-quote.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/confirm-quote",
+      "updated_at": "2026-01-16 09:38:19.950932"
+    },
+    {
+      "title": "Confirm a Quote",
+      "filename": "confirm-quote.md",
+      "path": "docs/bybit/asset/fiat-convert/confirm-quote.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/confirm-quote",
+      "updated_at": "2026-01-16 09:38:39.537482"
+    },
+    {
+      "title": "Connect",
+      "filename": "connect.md",
+      "path": "docs/bybit/ws/connect.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/ws/connect",
+      "updated_at": "2026-01-16 09:41:58.506619"
+    },
+    {
+      "title": "Convert Guideline",
+      "filename": "guideline.md",
+      "path": "docs/bybit/asset/convert/guideline.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/guideline",
+      "updated_at": "2026-01-16 09:38:29.193369"
+    },
+    {
+      "title": "Create Borrow Order",
+      "filename": "borrow.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/borrow.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow",
+      "updated_at": "2026-01-16 09:39:40.771596"
+    },
+    {
+      "title": "Create Internal Transfer",
+      "filename": "create-inter-transfer.md",
+      "path": "docs/bybit/asset/transfer/create-inter-transfer.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/create-inter-transfer",
+      "updated_at": "2026-01-16 09:38:48.217597"
+    },
+    {
+      "title": "Create Order",
+      "filename": "create-order.md",
+      "path": "docs/bybit/spread/trade/create-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/create-order",
+      "updated_at": "2026-01-16 09:41:21.037163"
+    },
+    {
+      "title": "Create Quote",
+      "filename": "create-quote.md",
+      "path": "docs/bybit/rfq/trade/create-quote.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/create-quote",
+      "updated_at": "2026-01-16 09:40:46.292312"
+    },
+    {
+      "title": "Create RFQ",
+      "filename": "create-rfq.md",
+      "path": "docs/bybit/rfq/trade/create-rfq.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/create-rfq",
+      "updated_at": "2026-01-16 09:40:46.358025"
+    },
+    {
+      "title": "Create Sub UID",
+      "filename": "create-subuid.md",
+      "path": "docs/bybit/user/create-subuid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/create-subuid",
+      "updated_at": "2026-01-16 09:41:30.118219"
+    },
+    {
+      "title": "Create Sub UID API Key",
+      "filename": "create-subuid-apikey.md",
+      "path": "docs/bybit/user/create-subuid-apikey.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/create-subuid-apikey",
+      "updated_at": "2026-01-16 09:41:30.184640"
+    },
+    {
+      "title": "Create Supply Order",
+      "filename": "supply.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/supply.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply",
+      "updated_at": "2026-01-16 09:39:55.564134"
+    },
+    {
+      "title": "Create Universal Transfer",
+      "filename": "unitransfer.md",
+      "path": "docs/bybit/asset/transfer/unitransfer.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer",
+      "updated_at": "2026-01-16 09:38:48.411215"
+    },
+    {
+      "title": "Dcp",
+      "filename": "dcp.md",
+      "path": "docs/bybit/websocket/private/dcp.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/dcp",
+      "updated_at": "2026-01-16 09:41:45.534718"
+    },
+    {
+      "title": "Delete Master API Key",
+      "filename": "rm-master-apikey.md",
+      "path": "docs/bybit/user/rm-master-apikey.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-master-apikey",
+      "updated_at": "2026-01-16 09:41:39.091238"
+    },
+    {
+      "title": "Delete Sub API Key",
+      "filename": "rm-sub-apikey.md",
+      "path": "docs/bybit/user/rm-sub-apikey.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-sub-apikey",
+      "updated_at": "2026-01-16 09:41:39.158261"
+    },
+    {
+      "title": "Delete Sub UID",
+      "filename": "rm-subuid.md",
+      "path": "docs/bybit/user/rm-subuid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/rm-subuid",
+      "updated_at": "2026-01-16 09:41:39.221919"
+    },
+    {
+      "title": "Demo Trading Service",
+      "filename": "demo.md",
+      "path": "docs/bybit/demo.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/demo",
+      "updated_at": "2026-01-16 09:39:12.075652"
+    },
+    {
+      "title": "Deposit Funds",
+      "filename": "deposit.md",
+      "path": "docs/bybit/abandon/deposit.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/deposit",
+      "updated_at": "2026-01-16 09:37:42.971452"
+    },
+    {
+      "title": "Enable Universal Transfer for Sub UID",
+      "filename": "enable-unitransfer-subuid.md",
+      "path": "docs/bybit/abandon/enable-unitransfer-subuid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/enable-unitransfer-subuid",
+      "updated_at": "2026-01-16 09:37:43.099058"
+    },
+    {
+      "title": "Enums Definitions",
+      "filename": "enum.md",
+      "path": "docs/bybit/enum.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/enum",
+      "updated_at": "2026-01-16 09:39:20.830739"
+    },
+    {
+      "title": "Error Codes",
+      "filename": "error.md",
+      "path": "docs/bybit/error.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/error",
+      "updated_at": "2026-01-16 09:39:20.906316"
+    },
+    {
+      "title": "Execute Quote",
+      "filename": "execute-quote.md",
+      "path": "docs/bybit/rfq/trade/execute-quote.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/execute-quote",
+      "updated_at": "2026-01-16 09:40:50.220271"
+    },
+    {
+      "title": "Execution",
+      "filename": "transaction.md",
+      "path": "docs/bybit/rfq/websocket/private/transaction.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/transaction",
+      "updated_at": "2026-01-16 09:40:59.556146"
+    },
+    {
+      "title": "Execution",
+      "filename": "execution.md",
+      "path": "docs/bybit/spread/websocket/private/execution.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/private/execution",
+      "updated_at": "2026-01-16 09:41:25.780819"
+    },
+    {
+      "title": "Execution",
+      "filename": "execution.md",
+      "path": "docs/bybit/websocket/private/execution.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/execution",
+      "updated_at": "2026-01-16 09:41:45.600356"
+    },
+    {
+      "title": "Fast Execution",
+      "filename": "fast-execution.md",
+      "path": "docs/bybit/websocket/private/fast-execution.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/fast-execution",
+      "updated_at": "2026-01-16 09:41:45.662879"
+    },
+    {
+      "title": "Freeze Sub UID",
+      "filename": "froze-subuid.md",
+      "path": "docs/bybit/user/froze-subuid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/froze-subuid",
+      "updated_at": "2026-01-16 09:41:30.249191"
+    },
+    {
+      "title": "Get ADL Alert",
+      "filename": "adl-alert.md",
+      "path": "docs/bybit/market/adl-alert.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/adl-alert",
+      "updated_at": "2026-01-16 09:39:21.035407"
+    },
+    {
+      "title": "Get API Key Information",
+      "filename": "apikey-info.md",
+      "path": "docs/bybit/user/apikey-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/apikey-info",
+      "updated_at": "2026-01-16 09:41:30.052546"
+    },
+    {
+      "title": "Get Account Borrowable/Collateralizable Limit",
+      "filename": "acct-borrow-collateral.md",
+      "path": "docs/bybit/crypto-loan/acct-borrow-collateral.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/acct-borrow-collateral",
+      "updated_at": "2026-01-16 09:39:02.101724"
+    },
+    {
+      "title": "Get Account Info",
+      "filename": "account-info.md",
+      "path": "docs/bybit/account/account-info.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/account-info",
+      "updated_at": "2026-01-16 09:37:52.704959"
+    },
+    {
+      "title": "Get Account Info",
+      "filename": "account-info.md",
+      "path": "docs/bybit/broker/exchange-broker/account-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/account-info",
+      "updated_at": "2026-01-16 09:38:57.105197"
+    },
+    {
+      "title": "Get Account Instruments Info",
+      "filename": "instrument.md",
+      "path": "docs/bybit/account/instrument.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/instrument",
+      "updated_at": "2026-01-16 09:38:01.084710"
+    },
+    {
+      "title": "Get Affiliate User Info",
+      "filename": "affiliate-info.md",
+      "path": "docs/bybit/affiliate/affiliate-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/affiliate/affiliate-info",
+      "updated_at": "2026-01-16 09:38:15.138032"
+    },
+    {
+      "title": "Get Affiliate User List",
+      "filename": "affiliate-user-list.md",
+      "path": "docs/bybit/affiliate/affiliate-user-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/affiliate/affiliate-user-list",
+      "updated_at": "2026-01-16 09:38:15.205397"
+    },
+    {
+      "title": "Get All Coins Balance",
+      "filename": "all-balance.md",
+      "path": "docs/bybit/asset/balance/all-balance.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/all-balance",
+      "updated_at": "2026-01-16 09:38:19.754769"
+    },
+    {
+      "title": "Get All Rate Limits",
+      "filename": "apilimit-query-all.md",
+      "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query-all.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query-all",
+      "updated_at": "2026-01-16 09:40:36.703136"
+    },
+    {
+      "title": "Get Announcement",
+      "filename": "announcement.md",
+      "path": "docs/bybit/announcement.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/announcement",
+      "updated_at": "2026-01-16 09:38:15.269945"
+    },
+    {
+      "title": "Get Asset Info",
+      "filename": "asset-info.md",
+      "path": "docs/bybit/abandon/asset-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/asset-info",
+      "updated_at": "2026-01-16 09:37:38.076476"
+    },
+    {
+      "title": "Get Auto Repay Mode",
+      "filename": "get-auto-repay-mode.md",
+      "path": "docs/bybit/spot-margin-uta/get-auto-repay-mode.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/get-auto-repay-mode",
+      "updated_at": "2026-01-16 09:41:04.177957"
+    },
+    {
+      "title": "Get Available Amount to Repay",
+      "filename": "repayment-available-amount.md",
+      "path": "docs/bybit/spot-margin-uta/repayment-available-amount.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/repayment-available-amount",
+      "updated_at": "2026-01-16 09:41:08.383249"
+    },
+    {
+      "title": "Get Balance",
+      "filename": "balance-query.md",
+      "path": "docs/bybit/asset/fiat-convert/balance-query.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/balance-query",
+      "updated_at": "2026-01-16 09:38:39.472134"
+    },
+    {
+      "title": "Get Borrow Contract Info",
+      "filename": "borrow-contract.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/borrow-contract.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-contract",
+      "updated_at": "2026-01-16 09:39:44.933408"
+    },
+    {
+      "title": "Get Borrow History",
+      "filename": "borrow-history.md",
+      "path": "docs/bybit/account/borrow-history.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/borrow-history",
+      "updated_at": "2026-01-16 09:37:52.900002"
+    },
+    {
+      "title": "Get Borrow Order Info",
+      "filename": "borrow-order.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/borrow-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-order",
+      "updated_at": "2026-01-16 09:39:45.065570"
+    },
+    {
+      "title": "Get Borrow Quota (Spot)",
+      "filename": "spot-borrow-quota.md",
+      "path": "docs/bybit/order/spot-borrow-quota.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/spot-borrow-quota",
+      "updated_at": "2026-01-16 09:40:16.662966"
+    },
+    {
+      "title": "Get Borrowable Coins",
+      "filename": "loan-coin.md",
+      "path": "docs/bybit/crypto-loan/loan-coin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/loan-coin",
+      "updated_at": "2026-01-16 09:39:06.807539"
+    },
+    {
+      "title": "Get Borrowable Coins",
+      "filename": "loan-coin.md",
+      "path": "docs/bybit/new-crypto-loan/loan-coin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/loan-coin",
+      "updated_at": "2026-01-16 09:40:04.982691"
+    },
+    {
+      "title": "Get Borrowing History",
+      "filename": "loan-orders.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/loan-orders.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/loan-orders",
+      "updated_at": "2026-01-16 09:40:00.183752"
+    },
+    {
+      "title": "Get Borrowing Market",
+      "filename": "borrow-market.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/borrow-market.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-market",
+      "updated_at": "2026-01-16 09:39:45.000344"
+    },
+    {
+      "title": "Get Broker Earning",
+      "filename": "earning.md",
+      "path": "docs/bybit/abandon/earning.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/earning",
+      "updated_at": "2026-01-16 09:37:43.037011"
+    },
+    {
+      "title": "Get Bybit Server Time",
+      "filename": "time.md",
+      "path": "docs/bybit/market/time.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/time",
+      "updated_at": "2026-01-16 09:39:40.512903"
+    },
+    {
+      "title": "Get Closed Options Positions",
+      "filename": "close-position.md",
+      "path": "docs/bybit/position/close-position.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/close-position",
+      "updated_at": "2026-01-16 09:40:24.955607"
+    },
+    {
+      "title": "Get Closed PnL",
+      "filename": "close-pnl.md",
+      "path": "docs/bybit/position/close-pnl.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/close-pnl",
+      "updated_at": "2026-01-16 09:40:24.889365"
+    },
+    {
+      "title": "Get Coin Exchange Records",
+      "filename": "exchange.md",
+      "path": "docs/bybit/asset/exchange.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/exchange",
+      "updated_at": "2026-01-16 09:38:39.401454"
+    },
+    {
+      "title": "Get Coin Greeks",
+      "filename": "coin-greeks.md",
+      "path": "docs/bybit/account/coin-greeks.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/coin-greeks",
+      "updated_at": "2026-01-16 09:37:57.112275"
+    },
+    {
+      "title": "Get Coin Info",
+      "filename": "coin-info.md",
+      "path": "docs/bybit/asset/coin-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/coin-info",
+      "updated_at": "2026-01-16 09:38:19.885967"
+    },
+    {
+      "title": "Get Coin State",
+      "filename": "coinstate.md",
+      "path": "docs/bybit/spot-margin-uta/coinstate.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/coinstate",
+      "updated_at": "2026-01-16 09:41:04.115373"
+    },
+    {
+      "title": "Get Collateral Adjustment History",
+      "filename": "ltv-adjust-history.md",
+      "path": "docs/bybit/new-crypto-loan/ltv-adjust-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/ltv-adjust-history",
+      "updated_at": "2026-01-16 09:40:05.049715"
+    },
+    {
+      "title": "Get Collateral Coins",
+      "filename": "collateral-coin.md",
+      "path": "docs/bybit/crypto-loan/collateral-coin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/collateral-coin",
+      "updated_at": "2026-01-16 09:39:06.667302"
+    },
+    {
+      "title": "Get Collateral Coins",
+      "filename": "collateral-coin.md",
+      "path": "docs/bybit/new-crypto-loan/collateral-coin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/collateral-coin",
+      "updated_at": "2026-01-16 09:39:40.640578"
+    },
+    {
+      "title": "Get Collateral Info",
+      "filename": "collateral-info.md",
+      "path": "docs/bybit/account/collateral-info.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/collateral-info",
+      "updated_at": "2026-01-16 09:37:57.177380"
+    },
+    {
+      "title": "Get Completed Loan History",
+      "filename": "completed-loan-order.md",
+      "path": "docs/bybit/crypto-loan/completed-loan-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/completed-loan-order",
+      "updated_at": "2026-01-16 09:39:06.743535"
+    },
+    {
+      "title": "Get Convert Coin List",
+      "filename": "convert-coin-list.md",
+      "path": "docs/bybit/asset/convert/convert-coin-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/convert-coin-list",
+      "updated_at": "2026-01-16 09:38:25.021985"
+    },
+    {
+      "title": "Get Convert History",
+      "filename": "get-convert-history.md",
+      "path": "docs/bybit/asset/convert/get-convert-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-history",
+      "updated_at": "2026-01-16 09:38:29.046714"
+    },
+    {
+      "title": "Get Convert History",
+      "filename": "query-trade-history.md",
+      "path": "docs/bybit/asset/fiat-convert/query-trade-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-trade-history",
+      "updated_at": "2026-01-16 09:38:44.167206"
+    },
+    {
+      "title": "Get Convert Status",
+      "filename": "get-convert-result.md",
+      "path": "docs/bybit/asset/convert/get-convert-result.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-result",
+      "updated_at": "2026-01-16 09:38:29.120631"
+    },
+    {
+      "title": "Get Convert Status",
+      "filename": "query-trade.md",
+      "path": "docs/bybit/asset/fiat-convert/query-trade.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-trade",
+      "updated_at": "2026-01-16 09:38:39.667130"
+    },
+    {
+      "title": "Get Crypto Loan Position",
+      "filename": "crypto-loan-position.md",
+      "path": "docs/bybit/new-crypto-loan/crypto-loan-position.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/crypto-loan-position",
+      "updated_at": "2026-01-16 09:39:40.707309"
+    },
+    {
+      "title": "Get DCP Info",
+      "filename": "dcp-info.md",
+      "path": "docs/bybit/account/dcp-info.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/dcp-info",
+      "updated_at": "2026-01-16 09:37:57.243245"
+    },
+    {
+      "title": "Get Delivery Price",
+      "filename": "delivery-price.md",
+      "path": "docs/bybit/market/delivery-price.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/delivery-price",
+      "updated_at": "2026-01-16 09:39:24.839465"
+    },
+    {
+      "title": "Get Delivery Record",
+      "filename": "delivery.md",
+      "path": "docs/bybit/asset/delivery.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/delivery",
+      "updated_at": "2026-01-16 09:38:29.267865"
+    },
+    {
+      "title": "Get Deposit Records (on-chain)",
+      "filename": "deposit-record.md",
+      "path": "docs/bybit/asset/deposit/deposit-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/deposit-record",
+      "updated_at": "2026-01-16 09:38:29.342468"
+    },
+    {
+      "title": "Get Earning",
+      "filename": "exchange-earning.md",
+      "path": "docs/bybit/broker/exchange-broker/exchange-earning.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/exchange-earning",
+      "updated_at": "2026-01-16 09:38:57.171470"
+    },
+    {
+      "title": "Get Exchange Entity List",
+      "filename": "vasp-list.md",
+      "path": "docs/bybit/asset/withdraw/vasp-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/vasp-list",
+      "updated_at": "2026-01-16 09:38:52.647433"
+    },
+    {
+      "title": "Get Exchange History",
+      "filename": "exchange-history.md",
+      "path": "docs/bybit/asset/convert-small-balance/exchange-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/exchange-history",
+      "updated_at": "2026-01-16 09:38:20.017667"
+    },
+    {
+      "title": "Get Fee Group Structure",
+      "filename": "fee-group-info.md",
+      "path": "docs/bybit/market/fee-group-info.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/fee-group-info",
+      "updated_at": "2026-01-16 09:39:24.907520"
+    },
+    {
+      "title": "Get Fee Rate",
+      "filename": "fee-rate.md",
+      "path": "docs/bybit/account/fee-rate.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/fee-rate",
+      "updated_at": "2026-01-16 09:37:57.306514"
+    },
+    {
+      "title": "Get Flexible Loans",
+      "filename": "unpaid-loan-order.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/unpaid-loan-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/unpaid-loan-order",
+      "updated_at": "2026-01-16 09:40:00.439909"
+    },
+    {
+      "title": "Get Fund Custodial Sub Acct",
+      "filename": "fund-subuid-list.md",
+      "path": "docs/bybit/user/fund-subuid-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/fund-subuid-list",
+      "updated_at": "2026-01-16 09:41:34.213501"
+    },
+    {
+      "title": "Get Funding Rate History",
+      "filename": "history-fund-rate.md",
+      "path": "docs/bybit/market/history-fund-rate.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/history-fund-rate",
+      "updated_at": "2026-01-16 09:39:24.975206"
+    },
+    {
+      "title": "Get Historical Interest Rate",
+      "filename": "historical-interest.md",
+      "path": "docs/bybit/spot-margin-uta/historical-interest.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/historical-interest",
+      "updated_at": "2026-01-16 09:41:04.240712"
+    },
+    {
+      "title": "Get Historical Volatility",
+      "filename": "iv.md",
+      "path": "docs/bybit/market/iv.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/iv",
+      "updated_at": "2026-01-16 09:39:28.747541"
+    },
+    {
+      "title": "Get Hourly Yield History",
+      "filename": "hourly-yield.md",
+      "path": "docs/bybit/earn/hourly-yield.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/hourly-yield",
+      "updated_at": "2026-01-16 09:39:16.555553"
+    },
+    {
+      "title": "Get Index Price Components",
+      "filename": "index-components.md",
+      "path": "docs/bybit/market/index-components.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/index-components",
+      "updated_at": "2026-01-16 09:39:25.039500"
+    },
+    {
+      "title": "Get Index Price Kline",
+      "filename": "index-kline.md",
+      "path": "docs/bybit/market/index-kline.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/index-kline",
+      "updated_at": "2026-01-16 09:39:25.106319"
+    },
+    {
+      "title": "Get Instruments Info",
+      "filename": "instrument.md",
+      "path": "docs/bybit/market/instrument.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/instrument",
+      "updated_at": "2026-01-16 09:39:28.612673"
+    },
+    {
+      "title": "Get Instruments Info",
+      "filename": "instrument.md",
+      "path": "docs/bybit/spread/market/instrument.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/instrument",
+      "updated_at": "2026-01-16 09:41:12.391058"
+    },
+    {
+      "title": "Get Insurance Pool",
+      "filename": "insurance.md",
+      "path": "docs/bybit/market/insurance.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/insurance",
+      "updated_at": "2026-01-16 09:39:28.679248"
+    },
+    {
+      "title": "Get Internal Deposit Records (off-chain)",
+      "filename": "internal-deposit-record.md",
+      "path": "docs/bybit/asset/deposit/internal-deposit-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/internal-deposit-record",
+      "updated_at": "2026-01-16 09:38:35.021181"
+    },
+    {
+      "title": "Get Internal Transfer Records",
+      "filename": "inter-transfer-list.md",
+      "path": "docs/bybit/asset/transfer/inter-transfer-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/inter-transfer-list",
+      "updated_at": "2026-01-16 09:38:48.282158"
+    },
+    {
+      "title": "Get Issued Voucher",
+      "filename": "get-issue-voucher.md",
+      "path": "docs/bybit/broker/reward/get-issue-voucher.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/get-issue-voucher",
+      "updated_at": "2026-01-16 09:39:01.841989"
+    },
+    {
+      "title": "Get Kline",
+      "filename": "kline.md",
+      "path": "docs/bybit/market/kline.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/kline",
+      "updated_at": "2026-01-16 09:39:28.815120"
+    },
+    {
+      "title": "Get LTV",
+      "filename": "ltv.md",
+      "path": "docs/bybit/abandon/ltv.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/ltv",
+      "updated_at": "2026-01-16 09:37:47.721747"
+    },
+    {
+      "title": "Get LTV",
+      "filename": "ltv-convert.md",
+      "path": "docs/bybit/otc/ltv-convert.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/ltv-convert",
+      "updated_at": "2026-01-16 09:40:16.872820"
+    },
     {
       "title": "Get Lending Account Info",
       "filename": "account-info.md",
       "path": "docs/bybit/abandon/account-info.md",
       "api_type": "REST",
       "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/account-info",
-      "updated_at": "2026-01-16 02:43:30.553583"
+      "updated_at": "2026-01-16 09:37:38.006141"
+    },
+    {
+      "title": "Get Lending Coin Info",
+      "filename": "coin-info.md",
+      "path": "docs/bybit/abandon/coin-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/coin-info",
+      "updated_at": "2026-01-16 09:37:38.278864"
+    },
+    {
+      "title": "Get Lending Market",
+      "filename": "supply-market.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/supply-market.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-market",
+      "updated_at": "2026-01-16 09:39:55.693827"
+    },
+    {
+      "title": "Get Loan LTV Adjustment History",
+      "filename": "ltv-adjust-history.md",
+      "path": "docs/bybit/crypto-loan/ltv-adjust-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/ltv-adjust-history",
+      "updated_at": "2026-01-16 09:39:06.870927"
+    },
+    {
+      "title": "Get Loan Orders",
+      "filename": "loan-info.md",
+      "path": "docs/bybit/otc/loan-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/loan-info",
+      "updated_at": "2026-01-16 09:40:16.805414"
+    },
+    {
+      "title": "Get Loan Repayment History",
+      "filename": "repay-transaction.md",
+      "path": "docs/bybit/crypto-loan/repay-transaction.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/repay-transaction",
+      "updated_at": "2026-01-16 09:39:11.946418"
+    },
+    {
+      "title": "Get Long Short Ratio",
+      "filename": "long-short-ratio.md",
+      "path": "docs/bybit/market/long-short-ratio.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/long-short-ratio",
+      "updated_at": "2026-01-16 09:39:28.881665"
+    },
+    {
+      "title": "Get MMP State",
+      "filename": "get-mmp-state.md",
+      "path": "docs/bybit/account/get-mmp-state.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/get-mmp-state",
+      "updated_at": "2026-01-16 09:37:57.369534"
+    },
+    {
+      "title": "Get Margin Coin Info",
+      "filename": "margin-coin-info.md",
+      "path": "docs/bybit/abandon/margin-coin-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/margin-coin-info",
+      "updated_at": "2026-01-16 09:37:47.783974"
+    },
+    {
+      "title": "Get Margin Coin Info",
+      "filename": "margin-coin-convert-info.md",
+      "path": "docs/bybit/otc/margin-coin-convert-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/margin-coin-convert-info",
+      "updated_at": "2026-01-16 09:40:16.940724"
+    },
+    {
+      "title": "Get Mark Price Kline",
+      "filename": "mark-kline.md",
+      "path": "docs/bybit/market/mark-kline.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/mark-kline",
+      "updated_at": "2026-01-16 09:39:32.810501"
+    },
+    {
+      "title": "Get Master Deposit Address",
+      "filename": "master-deposit-addr.md",
+      "path": "docs/bybit/asset/deposit/master-deposit-addr.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/master-deposit-addr",
+      "updated_at": "2026-01-16 09:38:35.090703"
+    },
+    {
+      "title": "Get Max Borrowable Amount",
+      "filename": "max-borrowable.md",
+      "path": "docs/bybit/spot-margin-uta/max-borrowable.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/max-borrowable",
+      "updated_at": "2026-01-16 09:41:08.252742"
+    },
+    {
+      "title": "Get Max. Allowed Collateral Reduction Amount",
+      "filename": "reduce-max-collateral-amt.md",
+      "path": "docs/bybit/crypto-loan/reduce-max-collateral-amt.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/reduce-max-collateral-amt",
+      "updated_at": "2026-01-16 09:39:11.812216"
+    },
+    {
+      "title": "Get Max. Allowed Collateral Reduction Amount",
+      "filename": "reduce-max-collateral-amt.md",
+      "path": "docs/bybit/new-crypto-loan/reduce-max-collateral-amt.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/reduce-max-collateral-amt",
+      "updated_at": "2026-01-16 09:40:05.113448"
+    },
+    {
+      "title": "Get Move Position History",
+      "filename": "move-position-history.md",
+      "path": "docs/bybit/position/move-position-history.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/move-position-history",
+      "updated_at": "2026-01-16 09:40:29.426213"
+    },
+    {
+      "title": "Get New Delivery Price",
+      "filename": "new-delivery-price.md",
+      "path": "docs/bybit/market/new-delivery-price.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/new-delivery-price",
+      "updated_at": "2026-01-16 09:39:32.880151"
+    },
+    {
+      "title": "Get Open & Closed Orders",
+      "filename": "open-order.md",
+      "path": "docs/bybit/order/open-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/open-order",
+      "updated_at": "2026-01-16 09:40:11.287350"
+    },
+    {
+      "title": "Get Open Interest",
+      "filename": "open-interest.md",
+      "path": "docs/bybit/market/open-interest.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/open-interest",
+      "updated_at": "2026-01-16 09:39:32.949631"
+    },
+    {
+      "title": "Get Open Orders",
+      "filename": "open-order.md",
+      "path": "docs/bybit/spread/trade/open-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/open-order",
+      "updated_at": "2026-01-16 09:41:21.100185"
+    },
+    {
+      "title": "Get Order History",
+      "filename": "order-list.md",
+      "path": "docs/bybit/order/order-list.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/order-list",
+      "updated_at": "2026-01-16 09:40:11.357388"
+    },
+    {
+      "title": "Get Order History",
+      "filename": "order-history.md",
+      "path": "docs/bybit/spread/trade/order-history.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/order-history",
+      "updated_at": "2026-01-16 09:41:21.164148"
+    },
+    {
+      "title": "Get Order Price Limit",
+      "filename": "order-price-limit.md",
+      "path": "docs/bybit/market/order-price-limit.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/order-price-limit",
+      "updated_at": "2026-01-16 09:39:33.017326"
+    },
+    {
+      "title": "Get Order Records",
+      "filename": "order-record.md",
+      "path": "docs/bybit/abandon/order-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/order-record",
+      "updated_at": "2026-01-16 09:37:47.845802"
+    },
+    {
+      "title": "Get Orderbook",
+      "filename": "orderbook.md",
+      "path": "docs/bybit/market/orderbook.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/orderbook",
+      "updated_at": "2026-01-16 09:39:33.084367"
+    },
+    {
+      "title": "Get Orderbook",
+      "filename": "orderbook.md",
+      "path": "docs/bybit/spread/market/orderbook.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/orderbook",
+      "updated_at": "2026-01-16 09:41:16.574951"
+    },
+    {
+      "title": "Get Position Info",
+      "filename": "position.md",
+      "path": "docs/bybit/position.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position",
+      "updated_at": "2026-01-16 09:40:21.477570"
+    },
+    {
+      "title": "Get Position Tiers",
+      "filename": "position-tiers.md",
+      "path": "docs/bybit/spot-margin-uta/position-tiers.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/position-tiers",
+      "updated_at": "2026-01-16 09:41:08.320418"
+    },
+    {
+      "title": "Get Pre-upgrade Closed PnL",
+      "filename": "close-pnl.md",
+      "path": "docs/bybit/pre-upgrade/close-pnl.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/close-pnl",
+      "updated_at": "2026-01-16 09:40:29.625030"
+    },
+    {
+      "title": "Get Pre-upgrade Delivery Record",
+      "filename": "delivery.md",
+      "path": "docs/bybit/pre-upgrade/delivery.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/delivery",
+      "updated_at": "2026-01-16 09:40:32.267707"
+    },
+    {
+      "title": "Get Pre-upgrade Order History",
+      "filename": "order-list.md",
+      "path": "docs/bybit/pre-upgrade/order-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/order-list",
+      "updated_at": "2026-01-16 09:40:32.398901"
+    },
+    {
+      "title": "Get Pre-upgrade Trade History",
+      "filename": "execution.md",
+      "path": "docs/bybit/pre-upgrade/execution.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/execution",
+      "updated_at": "2026-01-16 09:40:32.332882"
+    },
+    {
+      "title": "Get Pre-upgrade Transaction Log",
+      "filename": "transaction-log.md",
+      "path": "docs/bybit/pre-upgrade/transaction-log.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/transaction-log",
+      "updated_at": "2026-01-16 09:40:32.530182"
+    },
+    {
+      "title": "Get Pre-upgrade USDC Session Settlement",
+      "filename": "settlement.md",
+      "path": "docs/bybit/pre-upgrade/settlement.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/pre-upgrade/settlement",
+      "updated_at": "2026-01-16 09:40:32.462365"
+    },
+    {
+      "title": "Get Premium Index Price Kline",
+      "filename": "premium-index-kline.md",
+      "path": "docs/bybit/market/premium-index-kline.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/premium-index-kline",
+      "updated_at": "2026-01-16 09:39:36.189560"
+    },
+    {
+      "title": "Get Product Info",
+      "filename": "product-info.md",
+      "path": "docs/bybit/earn/product-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/product-info",
+      "updated_at": "2026-01-16 09:39:16.747144"
+    },
+    {
+      "title": "Get Product Info",
+      "filename": "margin-product-info.md",
+      "path": "docs/bybit/otc/margin-product-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/margin-product-info",
+      "updated_at": "2026-01-16 09:40:21.271005"
+    },
+    {
+      "title": "Get Public Trades",
+      "filename": "public-trades.md",
+      "path": "docs/bybit/rfq/trade/public-trades.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/public-trades",
+      "updated_at": "2026-01-16 09:40:50.285713"
+    },
+    {
+      "title": "Get Quotes",
+      "filename": "quote-list.md",
+      "path": "docs/bybit/rfq/trade/quote-list.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/quote-list",
+      "updated_at": "2026-01-16 09:40:50.350598"
+    },
+    {
+      "title": "Get Quotes (real-time)",
+      "filename": "quote-realtime.md",
+      "path": "docs/bybit/rfq/trade/quote-realtime.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/quote-realtime",
+      "updated_at": "2026-01-16 09:40:50.415334"
+    },
+    {
+      "title": "Get RFQ Configuration",
+      "filename": "rfq-config.md",
+      "path": "docs/bybit/rfq/trade/rfq-config.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-config",
+      "updated_at": "2026-01-16 09:40:50.478074"
+    },
+    {
+      "title": "Get RFQs",
+      "filename": "rfq-list.md",
+      "path": "docs/bybit/rfq/trade/rfq-list.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-list",
+      "updated_at": "2026-01-16 09:40:54.985519"
+    },
+    {
+      "title": "Get RFQs (real-time)",
+      "filename": "rfq-realtime.md",
+      "path": "docs/bybit/rfq/trade/rfq-realtime.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-realtime",
+      "updated_at": "2026-01-16 09:40:55.051495"
+    },
+    {
+      "title": "Get RPI Orderbook",
+      "filename": "rpi-orderbook.md",
+      "path": "docs/bybit/market/rpi-orderbook.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/rpi-orderbook",
+      "updated_at": "2026-01-16 09:39:36.386308"
+    },
+    {
+      "title": "Get Rate Limit",
+      "filename": "apilimit-query.md",
+      "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query",
+      "updated_at": "2026-01-16 09:40:36.638845"
+    },
+    {
+      "title": "Get Rate Limit Cap",
+      "filename": "apilimit-query-cap.md",
+      "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-query-cap.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query-cap",
+      "updated_at": "2026-01-16 09:40:36.768953"
+    },
+    {
+      "title": "Get Recent Public Trades",
+      "filename": "recent-trade.md",
+      "path": "docs/bybit/market/recent-trade.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/recent-trade",
+      "updated_at": "2026-01-16 09:39:36.256049"
+    },
+    {
+      "title": "Get Recent Public Trades",
+      "filename": "recent-trade.md",
+      "path": "docs/bybit/spread/market/recent-trade.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/recent-trade",
+      "updated_at": "2026-01-16 09:41:16.640190"
+    },
+    {
+      "title": "Get Reference Price",
+      "filename": "reference-price.md",
+      "path": "docs/bybit/asset/fiat-convert/reference-price.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/reference-price",
+      "updated_at": "2026-01-16 09:38:44.295813"
+    },
+    {
+      "title": "Get Renew Order Info",
+      "filename": "renew-order.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/renew-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/renew-order",
+      "updated_at": "2026-01-16 09:39:50.058150"
+    },
+    {
+      "title": "Get Repayment History",
+      "filename": "repay-history.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/repay-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay-history",
+      "updated_at": "2026-01-16 09:39:50.248237"
+    },
+    {
+      "title": "Get Repayment History",
+      "filename": "repay-orders.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/repay-orders.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay-orders",
+      "updated_at": "2026-01-16 09:40:00.377234"
+    },
+    {
+      "title": "Get Repayment Orders",
+      "filename": "repay-info.md",
+      "path": "docs/bybit/otc/repay-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/repay-info",
+      "updated_at": "2026-01-16 09:40:21.408941"
+    },
+    {
+      "title": "Get Risk Limit",
+      "filename": "risk-limit.md",
+      "path": "docs/bybit/market/risk-limit.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/risk-limit",
+      "updated_at": "2026-01-16 09:39:36.322349"
+    },
+    {
+      "title": "Get SMP Group ID",
+      "filename": "smp-group.md",
+      "path": "docs/bybit/account/smp-group.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/smp-group",
+      "updated_at": "2026-01-16 09:38:10.816272"
+    },
+    {
+      "title": "Get Single Coin Balance",
+      "filename": "account-coin-balance.md",
+      "path": "docs/bybit/asset/balance/account-coin-balance.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/account-coin-balance",
+      "updated_at": "2026-01-16 09:38:15.334779"
+    },
+    {
+      "title": "Get Small Balance Coins",
+      "filename": "small-balanc-coins.md",
+      "path": "docs/bybit/asset/convert-small-balance/small-balanc-coins.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/small-balanc-coins",
+      "updated_at": "2026-01-16 09:38:24.823872"
+    },
+    {
+      "title": "Get Stake/Redeem Order History",
+      "filename": "order-history.md",
+      "path": "docs/bybit/earn/order-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/order-history",
+      "updated_at": "2026-01-16 09:39:16.618192"
+    },
+    {
+      "title": "Get Staked Position",
+      "filename": "position.md",
+      "path": "docs/bybit/earn/position.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/position",
+      "updated_at": "2026-01-16 09:39:16.681958"
+    },
+    {
+      "title": "Get Status And Leverage",
+      "filename": "status.md",
+      "path": "docs/bybit/spot-margin-uta/status.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/status",
+      "updated_at": "2026-01-16 09:41:12.137025"
+    },
+    {
+      "title": "Get Sub Account All API Keys",
+      "filename": "list-sub-apikeys.md",
+      "path": "docs/bybit/user/list-sub-apikeys.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/list-sub-apikeys",
+      "updated_at": "2026-01-16 09:41:34.284758"
+    },
+    {
+      "title": "Get Sub Account Deposit Records",
+      "filename": "sub-deposit-record.md",
+      "path": "docs/bybit/broker/exchange-broker/sub-deposit-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/sub-deposit-record",
+      "updated_at": "2026-01-16 09:38:57.236753"
+    },
+    {
+      "title": "Get Sub Deposit Address",
+      "filename": "sub-deposit-addr.md",
+      "path": "docs/bybit/asset/deposit/sub-deposit-addr.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-addr",
+      "updated_at": "2026-01-16 09:38:35.221096"
+    },
+    {
+      "title": "Get Sub Deposit Records (on-chain)",
+      "filename": "sub-deposit-record.md",
+      "path": "docs/bybit/asset/deposit/sub-deposit-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record",
+      "updated_at": "2026-01-16 09:38:35.284891"
+    },
+    {
+      "title": "Get Sub UID",
+      "filename": "sub-uid-list.md",
+      "path": "docs/bybit/asset/sub-uid-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/sub-uid-list",
+      "updated_at": "2026-01-16 09:38:48.153468"
+    },
+    {
+      "title": "Get Sub UID List (Limited)",
+      "filename": "subuid-list.md",
+      "path": "docs/bybit/user/subuid-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/subuid-list",
+      "updated_at": "2026-01-16 09:41:39.287012"
+    },
+    {
+      "title": "Get Sub UID List (Unlimited)",
+      "filename": "page-subuid.md",
+      "path": "docs/bybit/user/page-subuid.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/page-subuid",
+      "updated_at": "2026-01-16 09:41:34.488893"
+    },
+    {
+      "title": "Get Supply Contract Info",
+      "filename": "supply-contract%20copy.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/supply-contract%20copy.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-contract%20copy",
+      "updated_at": "2026-01-16 09:39:55.629493"
+    },
+    {
+      "title": "Get Supply Order Info",
+      "filename": "supply-order.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/supply-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-order",
+      "updated_at": "2026-01-16 09:39:55.761738"
+    },
+    {
+      "title": "Get System Status",
+      "filename": "system-status.md",
+      "path": "docs/bybit/system-status.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/system-status",
+      "updated_at": "2026-01-16 09:41:29.982616"
+    },
+    {
+      "title": "Get Tickers",
+      "filename": "tickers.md",
+      "path": "docs/bybit/market/tickers.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/market/tickers",
+      "updated_at": "2026-01-16 09:39:36.464042"
+    },
+    {
+      "title": "Get Tickers",
+      "filename": "tickers.md",
+      "path": "docs/bybit/spread/market/tickers.md",
+      "api_type": "Market Data",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/market/tickers",
+      "updated_at": "2026-01-16 09:41:16.704081"
+    },
+    {
+      "title": "Get Tiered Collateral Ratio",
+      "filename": "tier-collateral-ratio.md",
+      "path": "docs/bybit/spot-margin-uta/tier-collateral-ratio.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/tier-collateral-ratio",
+      "updated_at": "2026-01-16 09:41:12.263846"
+    },
+    {
+      "title": "Get Trade Behaviour Setting",
+      "filename": "get-user-setting-config.md",
+      "path": "docs/bybit/account/get-user-setting-config.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/get-user-setting-config",
+      "updated_at": "2026-01-16 09:38:01.014531"
+    },
+    {
+      "title": "Get Trade History",
+      "filename": "execution.md",
+      "path": "docs/bybit/order/execution.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/execution",
+      "updated_at": "2026-01-16 09:40:11.214981"
+    },
+    {
+      "title": "Get Trade History",
+      "filename": "trade-list.md",
+      "path": "docs/bybit/rfq/trade/trade-list.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/trade/trade-list",
+      "updated_at": "2026-01-16 09:40:55.117580"
+    },
+    {
+      "title": "Get Trade History",
+      "filename": "trade-history.md",
+      "path": "docs/bybit/spread/trade/trade-history.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/trade/trade-history",
+      "updated_at": "2026-01-16 09:41:21.228623"
+    },
+    {
+      "title": "Get Trading Pair List",
+      "filename": "query-coin-list.md",
+      "path": "docs/bybit/asset/fiat-convert/query-coin-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-coin-list",
+      "updated_at": "2026-01-16 09:38:39.603235"
+    },
+    {
+      "title": "Get Transaction Log",
+      "filename": "contract-transaction-log.md",
+      "path": "docs/bybit/abandon/contract-transaction-log.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/contract-transaction-log",
+      "updated_at": "2026-01-16 09:37:42.841562"
+    },
+    {
+      "title": "Get Transaction Log",
+      "filename": "transaction-log.md",
+      "path": "docs/bybit/account/transaction-log.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/transaction-log",
+      "updated_at": "2026-01-16 09:38:10.883235"
+    },
+    {
+      "title": "Get Transferable Amount (Unified)",
+      "filename": "unified-trans-amnt.md",
+      "path": "docs/bybit/account/unified-trans-amnt.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/unified-trans-amnt",
+      "updated_at": "2026-01-16 09:38:10.950253"
+    },
+    {
+      "title": "Get Transferable Coin",
+      "filename": "transferable-coin.md",
+      "path": "docs/bybit/asset/transfer/transferable-coin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/transferable-coin",
+      "updated_at": "2026-01-16 09:38:48.348335"
+    },
+    {
+      "title": "Get UID Wallet Type",
+      "filename": "wallet-type.md",
+      "path": "docs/bybit/user/wallet-type.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/wallet-type",
+      "updated_at": "2026-01-16 09:41:39.349455"
+    },
+    {
+      "title": "Get USDC Session Settlement",
+      "filename": "settlement.md",
+      "path": "docs/bybit/asset/settlement.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/settlement",
+      "updated_at": "2026-01-16 09:38:44.420375"
+    },
+    {
+      "title": "Get Universal Transfer Records",
+      "filename": "unitransfer-list.md",
+      "path": "docs/bybit/asset/transfer/unitransfer-list.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer-list",
+      "updated_at": "2026-01-16 09:38:52.448686"
+    },
+    {
+      "title": "Get Unpaid Loans",
+      "filename": "unpaid-loan-order.md",
+      "path": "docs/bybit/crypto-loan/unpaid-loan-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/unpaid-loan-order",
+      "updated_at": "2026-01-16 09:39:12.010533"
+    },
+    {
+      "title": "Get VIP Margin Data",
+      "filename": "vip-margin.md",
+      "path": "docs/bybit/spot-margin-uta/vip-margin.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/vip-margin",
+      "updated_at": "2026-01-16 09:41:12.327499"
+    },
+    {
+      "title": "Get Voucher Spec",
+      "filename": "voucher.md",
+      "path": "docs/bybit/broker/reward/voucher.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/voucher",
+      "updated_at": "2026-01-16 09:39:01.977110"
+    },
+    {
+      "title": "Get Wallet Balance",
+      "filename": "wallet-balance.md",
+      "path": "docs/bybit/account/wallet-balance.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/wallet-balance",
+      "updated_at": "2026-01-16 09:38:15.072224"
+    },
+    {
+      "title": "Get Withdrawable Amount",
+      "filename": "delay-amount.md",
+      "path": "docs/bybit/asset/balance/delay-amount.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/balance/delay-amount",
+      "updated_at": "2026-01-16 09:38:19.821647"
+    },
+    {
+      "title": "Get Withdrawal Address List",
+      "filename": "withdraw-address.md",
+      "path": "docs/bybit/asset/withdraw/withdraw-address.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-address",
+      "updated_at": "2026-01-16 09:38:52.712448"
+    },
+    {
+      "title": "Get Withdrawal Records",
+      "filename": "withdraw-record.md",
+      "path": "docs/bybit/asset/withdraw/withdraw-record.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-record",
+      "updated_at": "2026-01-16 09:38:56.974716"
+    },
+    {
+      "title": "Get Yield History",
+      "filename": "yield-history.md",
+      "path": "docs/bybit/earn/yield-history.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/yield-history",
+      "updated_at": "2026-01-16 09:39:20.758136"
+    },
+    {
+      "title": "Greek",
+      "filename": "greek.md",
+      "path": "docs/bybit/websocket/private/greek.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/greek",
+      "updated_at": "2026-01-16 09:41:45.724883"
+    },
+    {
+      "title": "How To Start Copy Trading",
+      "filename": "copytrade.md",
+      "path": "docs/bybit/copytrade.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/copytrade",
+      "updated_at": "2026-01-16 09:39:02.039810"
+    },
+    {
+      "title": "Insurance Pool",
+      "filename": "insurance-pool.md",
+      "path": "docs/bybit/websocket/public/insurance-pool.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/insurance-pool",
+      "updated_at": "2026-01-16 09:41:49.890439"
+    },
+    {
+      "title": "Integration Guidance",
+      "filename": "guide.md",
+      "path": "docs/bybit/guide.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/guide",
+      "updated_at": "2026-01-16 09:39:20.971044"
+    },
+    {
+      "title": "Introduction",
+      "filename": "introduction.md",
+      "path": "docs/bybit/rate-limit/rules-for-pros/introduction.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/introduction",
+      "updated_at": "2026-01-16 09:40:40.612148"
+    },
+    {
+      "title": "Issue Voucher",
+      "filename": "issue-voucher.md",
+      "path": "docs/bybit/broker/reward/issue-voucher.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/broker/reward/issue-voucher",
+      "updated_at": "2026-01-16 09:39:01.910741"
+    },
+    {
+      "title": "Kline",
+      "filename": "kline.md",
+      "path": "docs/bybit/websocket/public/kline.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/kline",
+      "updated_at": "2026-01-16 09:41:54.279885"
+    },
+    {
+      "title": "Manual Borrow",
+      "filename": "borrow.md",
+      "path": "docs/bybit/account/borrow.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/borrow",
+      "updated_at": "2026-01-16 09:37:52.837396"
+    },
+    {
+      "title": "Manual Repay",
+      "filename": "repay.md",
+      "path": "docs/bybit/account/repay.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/repay",
+      "updated_at": "2026-01-16 09:38:01.210365"
+    },
+    {
+      "title": "Manual Repay Without Asset Conversion",
+      "filename": "no-convert-repay.md",
+      "path": "docs/bybit/account/no-convert-repay.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/no-convert-repay",
+      "updated_at": "2026-01-16 09:38:01.148168"
+    },
+    {
+      "title": "Modify Master API Key",
+      "filename": "modify-master-apikey.md",
+      "path": "docs/bybit/user/modify-master-apikey.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/modify-master-apikey",
+      "updated_at": "2026-01-16 09:41:34.356162"
+    },
+    {
+      "title": "Modify Sub API Key",
+      "filename": "modify-sub-apikey.md",
+      "path": "docs/bybit/user/modify-sub-apikey.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/user/modify-sub-apikey",
+      "updated_at": "2026-01-16 09:41:34.424986"
+    },
+    {
+      "title": "Move Position",
+      "filename": "move-position.md",
+      "path": "docs/bybit/position/move-position.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/move-position",
+      "updated_at": "2026-01-16 09:40:29.357267"
+    },
+    {
+      "title": "Order",
+      "filename": "order.md",
+      "path": "docs/bybit/spread/websocket/private/order.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/private/order",
+      "updated_at": "2026-01-16 09:41:25.847350"
+    },
+    {
+      "title": "Order",
+      "filename": "order.md",
+      "path": "docs/bybit/websocket/private/order.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/order",
+      "updated_at": "2026-01-16 09:41:45.791087"
+    },
+    {
+      "title": "Order Price Limit",
+      "filename": "order-price-limit.md",
+      "path": "docs/bybit/websocket/public/order-price-limit.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/order-price-limit",
+      "updated_at": "2026-01-16 09:41:54.342148"
+    },
+    {
+      "title": "Orderbook",
+      "filename": "orderbook.md",
+      "path": "docs/bybit/spread/websocket/public/orderbook.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/orderbook",
+      "updated_at": "2026-01-16 09:41:25.911190"
+    },
+    {
+      "title": "Orderbook",
+      "filename": "orderbook.md",
+      "path": "docs/bybit/websocket/public/orderbook.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook",
+      "updated_at": "2026-01-16 09:41:54.409480"
+    },
+    {
+      "title": "Place Order",
+      "filename": "create-order.md",
+      "path": "docs/bybit/order/create-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/create-order",
+      "updated_at": "2026-01-16 09:40:07.887264"
+    },
+    {
+      "title": "Position",
+      "filename": "position.md",
+      "path": "docs/bybit/websocket/private/position.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/position",
+      "updated_at": "2026-01-16 09:41:49.629932"
+    },
+    {
+      "title": "Pre Check Order",
+      "filename": "pre-check-order.md",
+      "path": "docs/bybit/order/pre-check-order.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/pre-check-order",
+      "updated_at": "2026-01-16 09:40:11.424360"
+    },
+    {
+      "title": "Quote",
+      "filename": "quote.md",
+      "path": "docs/bybit/rfq/websocket/private/quote.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/quote",
+      "updated_at": "2026-01-16 09:40:55.242468"
+    },
+    {
+      "title": "RFQ",
+      "filename": "inquiry.md",
+      "path": "docs/bybit/rfq/websocket/private/inquiry.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/inquiry",
+      "updated_at": "2026-01-16 09:40:55.179559"
+    },
+    {
+      "title": "RPI Orderbook",
+      "filename": "orderbook-rpi.md",
+      "path": "docs/bybit/websocket/public/orderbook-rpi.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook-rpi",
+      "updated_at": "2026-01-16 09:41:54.473610"
+    },
+    {
+      "title": "Rate Limit Rules",
+      "filename": "rate-limit.md",
+      "path": "docs/bybit/rate-limit.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit",
+      "updated_at": "2026-01-16 09:40:36.575739"
+    },
+    {
+      "title": "Redeem Funds",
+      "filename": "redeem.md",
+      "path": "docs/bybit/abandon/redeem.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/redeem",
+      "updated_at": "2026-01-16 09:37:47.910863"
+    },
+    {
+      "title": "Renew Borrow Order",
+      "filename": "renew.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/renew.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/renew",
+      "updated_at": "2026-01-16 09:39:49.993677"
+    },
+    {
+      "title": "Repay",
+      "filename": "repay.md",
+      "path": "docs/bybit/crypto-loan/repay.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/crypto-loan/repay",
+      "updated_at": "2026-01-16 09:39:11.876001"
+    },
+    {
+      "title": "Repay",
+      "filename": "repay.md",
+      "path": "docs/bybit/new-crypto-loan/fixed/repay.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/repay",
+      "updated_at": "2026-01-16 09:39:50.120852"
+    },
+    {
+      "title": "Repay",
+      "filename": "repay.md",
+      "path": "docs/bybit/new-crypto-loan/flexible/repay.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay",
+      "updated_at": "2026-01-16 09:40:00.249612"
+    },
+    {
+      "title": "Repay",
+      "filename": "repay.md",
+      "path": "docs/bybit/otc/repay.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/otc/repay",
+      "updated_at": "2026-01-16 09:40:21.336305"
+    },
+    {
+      "title": "Repay Liability",
+      "filename": "repay-liability.md",
+      "path": "docs/bybit/account/repay-liability.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/repay-liability",
+      "updated_at": "2026-01-16 09:38:01.274053"
+    },
+    {
+      "title": "Request a Quote",
+      "filename": "apply-quote.md",
+      "path": "docs/bybit/asset/convert/apply-quote.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert/apply-quote",
+      "updated_at": "2026-01-16 09:38:24.890381"
+    },
+    {
+      "title": "Request a Quote",
+      "filename": "request-quote.md",
+      "path": "docs/bybit/asset/convert-small-balance/request-quote.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/request-quote",
+      "updated_at": "2026-01-16 09:38:24.759834"
+    },
+    {
+      "title": "Request a Quote",
+      "filename": "quote-apply.md",
+      "path": "docs/bybit/asset/fiat-convert/quote-apply.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/quote-apply",
+      "updated_at": "2026-01-16 09:38:44.230112"
+    },
+    {
+      "title": "Reset MMP",
+      "filename": "reset-mmp.md",
+      "path": "docs/bybit/account/reset-mmp.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/reset-mmp",
+      "updated_at": "2026-01-16 09:38:06.747297"
+    },
+    {
+      "title": "SBE BBO Integration",
+      "filename": "sbe-bbo.md",
+      "path": "docs/bybit/sbe/bbo/sbe-bbo.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/bbo/sbe-bbo",
+      "updated_at": "2026-01-16 09:40:59.705049"
+    },
+    {
+      "title": "SBE Basic Information",
+      "filename": "sbe-basic-info.md",
+      "path": "docs/bybit/sbe/sbe-basic-info.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/sbe-basic-info",
+      "updated_at": "2026-01-16 09:40:59.874150"
+    },
+    {
+      "title": "SBE Level 50 Integration",
+      "filename": "sbe-level-50.md",
+      "path": "docs/bybit/sbe/level-50/sbe-level-50.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/level-50/sbe-level-50",
+      "updated_at": "2026-01-16 09:40:59.811741"
+    },
+    {
+      "title": "SBE Public Trade Integration",
+      "filename": "sbe-public-trade.md",
+      "path": "docs/bybit/sbe/sbe-public-trade.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/sbe/sbe-public-trade",
+      "updated_at": "2026-01-16 09:41:03.977083"
+    },
+    {
+      "title": "Self Match Prevention",
+      "filename": "smp.md",
+      "path": "docs/bybit/smp.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/smp",
+      "updated_at": "2026-01-16 09:41:04.048226"
+    },
+    {
+      "title": "Set Auto Add Margin",
+      "filename": "auto-add-margin.md",
+      "path": "docs/bybit/position/auto-add-margin.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/auto-add-margin",
+      "updated_at": "2026-01-16 09:40:21.543025"
+    },
+    {
+      "title": "Set Auto Repay Mode",
+      "filename": "set-auto-repay-mode.md",
+      "path": "docs/bybit/spot-margin-uta/set-auto-repay-mode.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-auto-repay-mode",
+      "updated_at": "2026-01-16 09:41:08.445946"
+    },
+    {
+      "title": "Set Collateral Coin",
+      "filename": "set-collateral.md",
+      "path": "docs/bybit/account/set-collateral.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-collateral",
+      "updated_at": "2026-01-16 09:38:06.809937"
+    },
+    {
+      "title": "Set Deposit Account",
+      "filename": "set-deposit-acct.md",
+      "path": "docs/bybit/asset/deposit/set-deposit-acct.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/deposit/set-deposit-acct",
+      "updated_at": "2026-01-16 09:38:35.155519"
+    },
+    {
+      "title": "Set Disconnect Cancel All",
+      "filename": "dcp.md",
+      "path": "docs/bybit/order/dcp.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/order/dcp",
+      "updated_at": "2026-01-16 09:40:11.145598"
+    },
+    {
+      "title": "Set Leverage",
+      "filename": "leverage.md",
+      "path": "docs/bybit/position/leverage.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/leverage",
+      "updated_at": "2026-01-16 09:40:25.085990"
+    },
+    {
+      "title": "Set Leverage",
+      "filename": "set-leverage.md",
+      "path": "docs/bybit/spot-margin-uta/set-leverage.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-leverage",
+      "updated_at": "2026-01-16 09:41:08.512956"
+    },
+    {
+      "title": "Set Limit Price Behaviour",
+      "filename": "set-price-limit.md",
+      "path": "docs/bybit/account/set-price-limit.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-price-limit",
+      "updated_at": "2026-01-16 09:38:07.005575"
+    },
+    {
+      "title": "Set MMP",
+      "filename": "set-mmp.md",
+      "path": "docs/bybit/account/set-mmp.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-mmp",
+      "updated_at": "2026-01-16 09:38:06.943684"
+    },
+    {
+      "title": "Set Margin Mode",
+      "filename": "set-margin-mode.md",
+      "path": "docs/bybit/account/set-margin-mode.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-margin-mode",
+      "updated_at": "2026-01-16 09:38:06.873946"
+    },
+    {
+      "title": "Set Rate Limit",
+      "filename": "apilimit-set.md",
+      "path": "docs/bybit/rate-limit/rules-for-pros/apilimit-set.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-set",
+      "updated_at": "2026-01-16 09:40:36.831894"
+    },
+    {
+      "title": "Set Risk Limit",
+      "filename": "set-risk-limit.md",
+      "path": "docs/bybit/abandon/set-risk-limit.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/set-risk-limit",
+      "updated_at": "2026-01-16 09:37:47.977689"
+    },
+    {
+      "title": "Set Spot Hedging",
+      "filename": "set-spot-hedge.md",
+      "path": "docs/bybit/account/set-spot-hedge.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/set-spot-hedge",
+      "updated_at": "2026-01-16 09:38:10.754808"
+    },
+    {
+      "title": "Set TP/SL Mode",
+      "filename": "tpsl-mode.md",
+      "path": "docs/bybit/abandon/tpsl-mode.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/tpsl-mode",
+      "updated_at": "2026-01-16 09:37:52.636055"
+    },
+    {
+      "title": "Set Trading Stop",
+      "filename": "trading-stop.md",
+      "path": "docs/bybit/position/trading-stop.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/trading-stop",
+      "updated_at": "2026-01-16 09:40:29.560460"
+    },
+    {
+      "title": "Stake / Redeem",
+      "filename": "create-order.md",
+      "path": "docs/bybit/earn/create-order.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/earn/create-order",
+      "updated_at": "2026-01-16 09:39:16.490893"
+    },
+    {
+      "title": "Switch Cross/Isolated Margin",
+      "filename": "cross-isolate.md",
+      "path": "docs/bybit/abandon/cross-isolate.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/abandon/cross-isolate",
+      "updated_at": "2026-01-16 09:37:42.908521"
+    },
+    {
+      "title": "Switch Position Mode",
+      "filename": "position-mode.md",
+      "path": "docs/bybit/position/position-mode.md",
+      "api_type": "Position",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/position/position-mode",
+      "updated_at": "2026-01-16 09:40:29.491931"
+    },
+    {
+      "title": "System Status",
+      "filename": "system-status.md",
+      "path": "docs/bybit/websocket/system/system-status.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/system/system-status",
+      "updated_at": "2026-01-16 09:41:58.366106"
+    },
+    {
+      "title": "Ticker",
+      "filename": "ticker.md",
+      "path": "docs/bybit/spread/websocket/public/ticker.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/ticker",
+      "updated_at": "2026-01-16 09:41:25.974298"
+    },
+    {
+      "title": "Ticker",
+      "filename": "ticker.md",
+      "path": "docs/bybit/websocket/public/ticker.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/ticker",
+      "updated_at": "2026-01-16 09:41:54.544618"
+    },
+    {
+      "title": "Toggle Margin Trade",
+      "filename": "switch-mode.md",
+      "path": "docs/bybit/spot-margin-uta/switch-mode.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spot-margin-uta/switch-mode",
+      "updated_at": "2026-01-16 09:41:12.201170"
+    },
+    {
+      "title": "Trade",
+      "filename": "public-transaction.md",
+      "path": "docs/bybit/rfq/websocket/public/public-transaction.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/rfq/websocket/public/public-transaction",
+      "updated_at": "2026-01-16 09:40:59.618201"
+    },
+    {
+      "title": "Trade",
+      "filename": "trade.md",
+      "path": "docs/bybit/spread/websocket/public/trade.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/spread/websocket/public/trade",
+      "updated_at": "2026-01-16 09:41:26.035216"
+    },
+    {
+      "title": "Trade",
+      "filename": "trade.md",
+      "path": "docs/bybit/websocket/public/trade.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/public/trade",
+      "updated_at": "2026-01-16 09:41:58.302120"
+    },
+    {
+      "title": "Trade Notify",
+      "filename": "trade-notify.md",
+      "path": "docs/bybit/asset/fiat-convert/trade-notify.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/trade-notify",
+      "updated_at": "2026-01-16 09:38:44.356533"
+    },
+    {
+      "title": "Upgrade to Unified Account Pro",
+      "filename": "upgrade-unified-account.md",
+      "path": "docs/bybit/account/upgrade-unified-account.md",
+      "api_type": "Account",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/account/upgrade-unified-account",
+      "updated_at": "2026-01-16 09:38:11.014351"
+    },
+    {
+      "title": "Wallet",
+      "filename": "wallet.md",
+      "path": "docs/bybit/websocket/private/wallet.md",
+      "api_type": "WebSocket",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/private/wallet",
+      "updated_at": "2026-01-16 09:41:49.697493"
+    },
+    {
+      "title": "Websocket Trade Guideline",
+      "filename": "guideline.md",
+      "path": "docs/bybit/websocket/trade/guideline.md",
+      "api_type": "Trading",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/websocket/trade/guideline",
+      "updated_at": "2026-01-16 09:41:58.438016"
+    },
+    {
+      "title": "Withdraw",
+      "filename": "withdraw.md",
+      "path": "docs/bybit/asset/withdraw.md",
+      "api_type": "REST",
+      "source_url": "https://bybit-exchange.github.io/docs/v5/asset/withdraw",
+      "updated_at": "2026-01-16 09:38:52.516505"
     }
   ]
 }

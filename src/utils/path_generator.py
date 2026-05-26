@@ -3,8 +3,53 @@
 文件路径生成工具
 用于将URL、锚点ID等转换为规范的文件目录结构
 """
-from urllib.parse import urlparse
+import re
+from pathlib import Path
+from urllib.parse import unquote, urlparse
 from typing import Optional
+
+
+_UNSAFE_PATH_CHARS = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
+_MULTI_DASHES = re.compile(r'-+')
+_WHITESPACE = re.compile(r'\s+')
+
+
+def sanitize_path_component(value: object, fallback: str = "untitled") -> str:
+    """清理单个路径片段，避免绝对路径/路径穿越/非法文件名。"""
+    component = unquote(str(value or "")).strip()
+    component = _UNSAFE_PATH_CHARS.sub("-", component)
+    component = _WHITESPACE.sub("-", component)
+    component = _MULTI_DASHES.sub("-", component)
+    component = component.strip("-. ")
+
+    if not component or component in {".", ".."}:
+        return fallback
+
+    return component
+
+
+def safe_output_path(output_dir: str, relative_path: str) -> str:
+    """把相对路径限制在输出目录内，防止写出目标目录。"""
+    base_dir = Path(output_dir).resolve()
+    target_path = (base_dir / relative_path).resolve()
+
+    if target_path != base_dir and base_dir not in target_path.parents:
+        raise ValueError(f"输出路径越界: {relative_path}")
+
+    return str(target_path)
+
+
+def safe_rmtree(target_dir: str, allowed_roots: list) -> None:
+    """只允许删除指定根目录下的子目录，避免配置错误误删。"""
+    import shutil
+
+    target_path = Path(target_dir).resolve()
+    allowed = [Path(root).resolve() for root in allowed_roots]
+
+    if not any(target_path != root and root in target_path.parents for root in allowed):
+        raise ValueError(f"拒绝删除非授权目录: {target_dir}")
+
+    shutil.rmtree(target_path)
 
 
 def url_to_filepath(url: str, base_prefix: Optional[str] = None) -> str:
@@ -35,8 +80,13 @@ def url_to_filepath(url: str, base_prefix: Optional[str] = None) -> str:
         if path.startswith(prefix_path):
             path = path[len(prefix_path):]
 
-    # 移除开头的斜杠
-    path = path.lstrip('/')
+    # 清理每个路径片段，避免远端链接构造 ../../ 等路径穿越
+    parts = [
+        sanitize_path_component(part)
+        for part in path.split('/')
+        if part and part not in {'.', '..'}
+    ]
+    path = '/'.join(parts)
 
     # 处理空路径
     if not path:
@@ -75,8 +125,15 @@ def anchor_to_filepath(anchor_id: str, separator: str = '-', max_depth: int = 3)
     if not anchor_id:
         return "index.md"
 
-    # 分割成段
-    parts = anchor_id.split(separator)
+    # 分割成段并清理，避免锚点中携带路径穿越字符
+    parts = [
+        sanitize_path_component(part)
+        for part in anchor_id.split(separator)
+        if part and part not in {'.', '..'}
+    ]
+
+    if not parts:
+        return "index.md"
 
     # 只有一段：直接作为文件名
     if len(parts) == 1:

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/account-management
 api_type: Account
-updated_at: 2026-01-15T23:50:52.156314
+updated_at: 2026-01-16T09:00:35.483952
 ---
 
 # Create a Virtual Sub-account (For Master Account) (USER_DATA)
