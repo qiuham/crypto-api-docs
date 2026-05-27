@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/options
 api_type: Trading
-updated_at: 2026-05-26 18:07:57.745345
+updated_at: 2026-05-27 20:17:31.621652
 ---
 
 # Options

@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/wallet
 api_type: Account
-updated_at: 2026-05-26 18:08:25.626114
+updated_at: 2026-05-27 20:18:09.322255
 ---
 
 # Wallet

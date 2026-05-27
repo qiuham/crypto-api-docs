@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/options/ws/zh_CN
 api_type: WebSocket
-updated_at: 2026-05-26 18:09:04.001560
+updated_at: 2026-05-27 20:18:56.244529
 ---
 
 # Gate 期权 WebSocket v4.0.0

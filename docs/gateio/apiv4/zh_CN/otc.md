@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/otc
 api_type: REST
-updated_at: 2026-05-26 18:08:01.173300
+updated_at: 2026-05-27 20:17:35.690639
 ---
 
 # OTC

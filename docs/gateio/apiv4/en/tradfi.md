@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/tradfi
 api_type: Trading
-updated_at: 2026-05-26 18:06:57.605019
+updated_at: 2026-05-27 20:16:10.890456
 ---
 
 # TradFi

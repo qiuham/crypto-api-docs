@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/earn
 api_type: Earn
-updated_at: 2026-05-26 18:06:15.689113
+updated_at: 2026-05-27 20:15:01.006292
 ---
 
 # Earn
