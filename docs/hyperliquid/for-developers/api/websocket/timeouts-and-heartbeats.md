@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/timeouts-and-heartbeats
 api_type: WebSocket
-updated_at: 2026-05-26 11:04:25.026141
+updated_at: 2026-05-27 18:52:32.713792
 ---
 
 # Timeouts and heartbeats

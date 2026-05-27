@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees
 api_type: REST
-updated_at: 2026-05-26 11:03:50.059072
+updated_at: 2026-05-27 18:52:05.991657
 ---
 
 # Priority fees

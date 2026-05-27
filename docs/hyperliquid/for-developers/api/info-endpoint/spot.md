@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot
 api_type: REST
-updated_at: 2026-05-26 11:03:30.565650
+updated_at: 2026-05-27 18:51:50.852553
 ---
 
 # Spot
@@ -357,7 +357,7 @@ tokenId*| String| Onchain id in 34-character hexadecimal format; e.g. 0x00000000
       "futureEmissions": "0.0"
     }
 
-## Retrieve outcome metadata (testnet-only)
+## Retrieve outcome metadata
 
 `POST` `https://api.hyperliquid.xyz/info`
 
@@ -400,4 +400,51 @@ type*| String| "outcomeMeta"
           ]
         }
       ]
+    }
+
+## Retrieve information about a settled outcome
+
+`POST` `https://api.hyperliquid.xyz/info`
+
+**Headers**
+
+Name
+
+Value
+
+Content-Type*| "application/json"  
+---|---  
+  
+**Body**
+
+Name
+
+Type
+
+Description
+
+type*| String| "settledOutcome"  
+---|---|---  
+outcome*| int| outcome  
+  
+**Response**
+    
+    
+    {
+      "spec": {
+        "outcome": 95,
+        "name": "Recurring",
+        "description": "class:priceBinary|underlying:BTC|expiry:20260526-0600|targetPrice:77363|period:1d",
+        "sideSpecs": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ],
+        "quoteToken": "USDC"
+      },
+      "settleFraction": "0.0",
+      "details": "price:76876.9"
     }

@@ -29,7 +29,7 @@ PYTHONPATH=. python src/main.py readme
 | [Bybit](./docs/bybit/) | ✅ | 294 | 2026-01-16 |
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-05-27 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-05-26 |
-| [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-05-26 |
+| [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-05-27 |
 | [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-26 |
 | [OKX](./docs/okx/) | ✅ | 470 | 2026-01-15 |
 
