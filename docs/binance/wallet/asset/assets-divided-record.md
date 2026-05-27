@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/assets-divided-record
 api_type: REST
-updated_at: 2026-01-15T23:49:27.129144
+updated_at: 2026-05-27 18:58:59.754579
 ---
 
 # Asset Dividend Record (USER_DATA)
@@ -38,25 +38,27 @@ timestamp| LONG| YES|
     
     
     {  
-        "rows":[  
+        "rows": [  
             {  
-                "id":1637366104,  
-                "amount":"10.00000000",  
-                "asset":"BHFT",  
-                "divTime":1563189166000,  
-                "enInfo":"BHFT distribution",  
-                "tranId":2968885920  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 //direction: 1 for Asset credited (inflow), -1 for Asset debited (outflow)  
             },  
             {  
-                "id":1631750237,  
-                "amount":"10.00000000",  
-                "asset":"BHFT",  
-                "divTime":1563189165000,  
-                "enInfo":"BHFT distribution",  
-                "tranId":2968885920  
+                "id": 1631750237,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
             }  
         ],  
-        "total":2  
+        "total": 2  
     }
 
 ---
@@ -94,23 +96,25 @@ timestamp| LONG| YES|
     
     
     {  
-        "rows":[  
+        "rows": [  
             {  
-                "id":1637366104,  
-                "amount":"10.00000000",  
-                "asset":"BHFT",  
-                "divTime":1563189166000,  
-                "enInfo":"BHFT distribution",  
-                "tranId":2968885920  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 // direction：1 表示资产记账入账（资产流入），-1 表示资产记账出账（资产流出）  
             },  
             {  
                 "id": 1631750237,  
-                "amount":"10.00000000",  
-                "asset":"BHFT",  
-                "divTime":1563189165000,  
-                "enInfo":"BHFT distribution",  
-                "tranId":2968885920  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
             }  
         ],  
-        "total":2  
+        "total": 2  
     }

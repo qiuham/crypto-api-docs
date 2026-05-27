@@ -2,339 +2,321 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/order_count_decrement
 api_type: REST
-updated_at: 2026-01-15T23:35:59.839983
+updated_at: 2026-05-27 18:54:01.035373
 ---
 
-# Spot Unfilled Order Count Rules
+# Price Range Execution Rule
 
-To ensure a fair and orderly Spot market, we limit the rate at which new orders may be placed.
+**Disclaimer:**
 
-The rate limit applies to the number of new, _unfilled_ orders placed within a time interval. That is, orders which are partially or fully filled do not count against the rate limit.
+  * The symbols and values used here are fictional and do not imply anything about the actual configuration of the live exchange.
 
-> [!NOTE] Unfilled order rate limit rewards efficient traders.
-> 
-> **So long as your orders trade, you can keep trading.**
-> 
-> More information: [How do filled orders affect the rate limit?](/docs/binance-spot-api-docs/faqs/order_count_decrement#filled-orders-rate-limit)
 
-### What are the current rate limits?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#what-are-the-current-rate-limits "Direct link to What are the current rate limits?")
 
-You can query current rate limits using the "exchange information" request.
+## What are execution rules?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-are-execution-rules "Direct link to What are execution rules?")
 
-The `"rateLimitType": "ORDERS"` indicates the current unfilled order rate limit.
+Execution rules are trading rules that are enforced at the time of order execution. The only execution rule currently available is the Price Range rule.
 
-Please refer to the API documentation:
+## What does the Price Range Execution Rule do?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-does-the-price-range-execution-rule-do "Direct link to What does the Price Range Execution Rule do?")
+
+This rule ensures that trades may only be executed at prices within and equal to a price range around a reference price.
+
+## How can I query the execution price range allowed for a symbol?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-can-i-query-the-execution-price-range-allowed-for-a-symbol "Direct link to How can I query the execution price range allowed for a symbol?")
+
+Refer to the following endpoints/methods:
 
 API| Request  
 ---|---  
-FIX API| [LimitQuery`<XLQ>`](/docs/binance-spot-api-docs/fix-api#limitquery)  
-REST API| [`GET /api/v3/exchangeInfo`](/docs/binance-spot-api-docs/rest-api/general-endpoints#exchangeInfo)  
-WebSocket API| [`exchangeInfo`](/docs/binance-spot-api-docs/websocket-api/general-requests#exchangeInfo)  
+REST API| `GET /api/v3/executionRules`  
+WebSocket API| `executionRules`  
   
-> [!IMPORTANT] Order placement requests are also affected by the general request rate limits on REST and WebSocket API and the message limits on FIX API.
-> 
-> If you send too many requests at a high rate, you will be blocked by the API.
+## How can I query the reference price?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-can-i-query-the-reference-price "Direct link to How can I query the reference price?")
 
-### How does the unfilled `ORDERS` rate limit work?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#how-does-the-unfilled-orders-rate-limit-work "Direct link to how-does-the-unfilled-orders-rate-limit-work")
+Refer to the following endpoints/methods:
 
-Every successful request to place an order adds to the unfilled order count for the current time interval. If too many unfilled orders accumulate during the interval, subsequent requests will be rejected.
+API| Request  
+---|---  
+REST API| `GET /api/v3/referencePrice`  
+WebSocket API| `referencePrice`  
+WebSocket Streams| `<symbol>@referencePrice`  
+  
+Note that the **reference price is continually changing** , so it is recommended to monitor the reference price via WebSocket Streams.
 
-For example, if the unfilled order rate limit is 100 per 10 seconds:
+## How does the Price Range Execution Rule work?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-does-the-price-range-execution-rule-work "Direct link to How does the Price Range Execution Rule work?")
+
+As an example, given the hypothetical execution rule for this symbol:
     
     
     {  
-        "rateLimitType": "ORDERS",  
-        "interval": "SECOND",  
-        "intervalNum": 10,  
-        "limit": 100  
+      "symbolRules": [  
+        {  
+          "symbol": "BAZUSD",  
+          "rules": [  
+            {  
+              "ruleType": "PRICE_RANGE",  
+              "bidLimitMultUp": "2.0000",  
+              "bidLimitMultDown": "0.5000",  
+              "askLimitMultUp": "2.0000",  
+              "askLimitMultDown": "0.5000"  
+            }  
+          ]  
+        }  
+      ]  
     }  
     
 
-then you can place at most 100 new orders between 12:34:00 and 12:34:10, then 100 more from 12:34:10 to 12:34:20, and so on.
+If the reference price for the symbol is:
+    
+    
+    {  
+      "symbol": "BAZUSD",  
+      "referencePrice": "10.00",  
+      "timestamp": 1770736694138  
+    }  
+    
 
-> [!TIP] If the newly placed orders receive fills, your unfilled order count decreases and you may place more orders during the time interval.
-> 
-> More information: [How do filled orders affect the rate limit?](/docs/binance-spot-api-docs/faqs/order_count_decrement#filled-orders-rate-limit)
+This means that at time `1770736694138`:
 
-When an order is rejected by the system due to the unfilled order rate limit, the HTTP status code is set to `429 Too Many Requests` and the error code is `-1015 "Too many new orders"`.
+  1. an order to `BUY` may not execute at a price more than twice the reference price or less than half the reference price and
+  2. an order to `SELL` may not execute at a price more than twice the reference price or less than half the reference price.
 
-If you encounter these errors, please stop sending orders until the affected rate limit interval expires.
 
-Please refer to the API documentation:
 
-API| Documentation  
+## What happens if a symbol has no execution rule of type `PRICE_RANGE` and no reference price?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-a-symbol-has-no-execution-rule-of-type-price_range-and-no-reference-price "Direct link to what-happens-if-a-symbol-has-no-execution-rule-of-type-price_range-and-no-reference-price")
+
+The Price Range Execution Rule is not enforced on the symbol.
+
+## What happens if a symbol has no execution rule of type `PRICE_RANGE` but does have a reference price?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-a-symbol-has-no-execution-rule-of-type-price_range-but-does-have-a-reference-price "Direct link to what-happens-if-a-symbol-has-no-execution-rule-of-type-price_range-but-does-have-a-reference-price")
+
+The Price Range Execution Rule is not enforced on the symbol.
+
+## What happens if a symbol has an execution rule of type `PRICE_RANGE` but does not have a reference price?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-a-symbol-has-an-execution-rule-of-type-price_range-but-does-not-have-a-reference-price "Direct link to what-happens-if-a-symbol-has-an-execution-rule-of-type-price_range-but-does-not-have-a-reference-price")
+
+The Price Range Execution Rule is not enforced on the symbol.
+
+## What happens if a symbol has an execution rule of type `PRICE_RANGE` that does not have all four multipliers?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-a-symbol-has-an-execution-rule-of-type-price_range-that-does-not-have-all-four-multipliers "Direct link to what-happens-if-a-symbol-has-an-execution-rule-of-type-price_range-that-does-not-have-all-four-multipliers")
+
+When a multiplier is not set, then Price Range Execution Rule is not enforced on the symbol for that order side and price direction. For example, if `bidMultiplierDown` was not present in the hypothetical execution rule above, then an order to `BUY` could execute at any price at or below twice the reference price.
+
+## What happens if the symbol's reference price is `null`?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-the-symbols-reference-price-is-null "Direct link to what-happens-if-the-symbols-reference-price-is-null")
+
+The Price Range Execution Rule is not enforced on the symbol.
+
+## When are the execution price limits for an order set?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#when-are-the-execution-price-limits-for-an-order-set "Direct link to When are the execution price limits for an order set?")
+
+When an order enters its taker phase, the reference price is recalculated to set the execution price limits for the order's entire taker phase. Note that a single taker order may match with many maker orders during its taker phase.
+
+## What happens if an order attempts to execute at a price outside of the allowed price range?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#what-happens-if-an-order-attempts-to-execute-at-a-price-outside-of-the-allowed-price-range "Direct link to What happens if an order attempts to execute at a price outside of the allowed price range?")
+
+If a taker order attempts to execute at a price outside of the allowed price range, it will be expired (i.e. status: `EXPIRED`) with the expiry reason `EXECUTION_RULE_PRICE_RANGE_EXCEEDED`.
+
+Service| Reference  
 ---|---  
-FIX API| [Unfilled Order Count](/docs/binance-spot-api-docs/fix-api#unfilled-order-count)  
-REST API| [Unfilled Order Count](/docs/binance-spot-api-docs/rest-api/limits#unfilled-order-count)  
-WebSocket API| [Unfilled Order Count](/docs/binance-spot-api-docs/websocket-api/rate-limits#unfilled-order-count)  
+Non-FIX APIs| `expiryReason`  
+FIX APIs| `ExpiryReason <25056>`  
+User Data Stream| `"eR"`  
   
-### Is the unfilled order count tracked by IP address?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#is-the-unfilled-order-count-tracked-by-ip-address "Direct link to Is the unfilled order count tracked by IP address?")
+## How is the reference price calculated?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-is-the-reference-price-calculated "Direct link to How is the reference price calculated?")
 
-Unfilled order count is tracked **by (sub)account**.
+If the reference price is being calculated by the Matching Engine, then a query for the reference price calculation returns `"calculationType": "ARITHMETIC_MEAN"`.
 
-Unfilled order count is shared across all IP addresses, all API keys, and all APIs.
+If the reference price is being calculated outside the matching engine, then a query for the reference price calculation returns `"calculationType": "EXTERNAL"`. See below for more details.
 
-### How do filled orders affect the unfilled order count?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#how-do-filled-orders-affect-the-unfilled-order-count "Direct link to How do filled orders affect the unfilled order count?")
+## How does the Matching Engine calculate the reference price?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-does-the-matching-engine-calculate-the-reference-price "Direct link to How does the Matching Engine calculate the reference price?")
 
-When an order is filled for the first time (partially or fully), your unfilled order count is decremented by one order for all intervals of the `ORDERS` rate limit. Effectively, orders that trade do not count towards the rate limit, allowing efficient traders to keep placing new orders.
+The matching engine calculates the reference price as a simple moving average of trade prices over a time window. The calculation is configured with a bucket width in milliseconds (`bucketWidthMs`) and the number of buckets (`bucketCount`). The bucket width multiplied by the number of buckets defines the size of the time window.
 
-Certain orders provide additional incentive:
+When a trade occurs, the matching engine captures the trade price and adds it to the current bucket. Each bucket has
 
-  * **Orders that do not fill immediately (that is, first fill in the maker phase).**
-  * Orders that fill large quantities.
-
-
-
-In these cases the unfilled order count may be decremented by more than one order for each order that starts trading.
-
-**Notes:**
-
-  * **The examples only give a general idea of the behavior.** The 10-second interval is used for simplicity. The actual configuration on the live exchange may be different.
-  * There is a short delay between the order being filled and the unfilled order count update. Please be careful when your unfilled order count is close to the limit.
-  * Please refer to [How does unfilled `ORDERS` rate limit work?](/docs/binance-spot-api-docs/faqs/order_count_decrement#order-rate-limit) to see how you can monitor the unfilled order count depending on the API.
+  * an open time, which is aligned to engine time modulo the bucket width
+  * a trade count, which is a fixed-point integer with four decimal places of precision
+  * a sum of all the trade prices represented in that bucket, which is a fixed-point integer with an extra four decimal places of precision over the quote asset precision.
 
 
 
-**Example 1** — taker:
+The matching engine calculates the average of a particular bucket by dividing the sum by the trade count. The first trade for a given open time creates a bucket and the matching engine gradually accumulates buckets as trades happen. The matching engine drops a bucket when its close time is outside the time window. This means that:
 
-Time| Action| Unfilled order count  
----|---|---  
-00:00:00| | 0  
-00:00:01| Place LIMIT order A| 1 — new order (+1)  
-00:00:02| Place LIMIT order B| 2 — new order (+1)  
-| (order B partially filled)| 1 — first fill as taker (−1)  
-00:00:03| Place LIMIT order C| 2 — new order (+1)  
-00:00:04| (order B partially filled)| 2  
-00:00:04| (order B filled)| 2  
-00:00:05| Place MARKET order D| 3 — new order (+1)  
-| (order D fully filled)| 2 — first fill as taker (−1)  
-  
-Note how for every taker order that immediately trades, the unfilled order count is decremented later, allowing you to keep placing orders.
+  * The oldest bucket at any given time likely has an open time outside of the time window and a close time inside of the time window.
+  * The maximum number of buckets tracked by the engine is actually 1 more than the configured `bucketCount`.
 
-**Example 2** — maker:
 
-Time| Action| Unfilled order count  
----|---|---  
-00:00:00| | 0  
-00:00:01| Place LIMIT order A| 1 — new order (+1)  
-00:00:01| Place LIMIT order B| 2 — new order (+1)  
-00:00:02| Place LIMIT order C| 3 — new order (+1)  
-00:00:02| Place LIMIT order D| 4 — new order (+1)  
-00:00:02| Place LIMIT order E| 5 — new order (+1)  
-00:00:03| (order A partially filled)| 0 — first fill as maker (−5)  
-00:00:04| Place LIMIT order F| 1 — new order (+1)  
-00:00:04| Place LIMIT order G| 2 — new order (+1)  
-00:00:05| (order A partially filled)| 2  
-00:00:05| (order A filled)| 2  
-00:00:05| (order B partially filled)| 0 — first fill as maker (−5)  
-00:00:06| Place LIMIT order H| 1 — new order (+1)  
-  
-Note how for every maker order that is filled later, the unfilled order count is decremented by a higher amount, allowing you to place more orders.
 
-### How do canceled or expired orders affect the unfilled order count?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#how-do-canceled-or-expired-orders-affect-the-unfilled-order-count "Direct link to How do canceled or expired orders affect the unfilled order count?")
+The remainder of this explanation refers to the oldest time in the time window as the "cutoff time".
 
-Canceling an order does not change the unfilled order count.
+When the oldest bucket straddles the cutoff time, its contents are _prorated_ :
 
-Expired orders also do not change the unfilled order count.
+  * The fraction of the bucket outside the moving window is: (cutoff time - the bucket's open time) divided by the bucket width. Call this the "expired fraction."
+  * The bucket's trade count is reduced by the expired fraction.
+  * The bucket's sum is reduced by the expired fraction.
+  * The open time is set to the cutoff time.
 
-**Example:**
 
-Time| Action| Unfilled order count  
----|---|---  
-00:00:00| | 0  
-00:00:01| Place LIMIT order A| 1 — new order (+1)  
-00:00:02| Cancel order A| 1  
-00:00:02| Place LIMIT order B| 2 — new order (+1)  
-00:00:03| Place LIMIT FOK order C| 3 — new order (+1)  
-| (order C is fully filled)| 2 — fill (−1)  
-00:00:05| Place LIMIT order D| 3 — new order (+1)  
-00:00:06| Place LIMIT FOK order E| 4 — new order (+1)  
-| (order E expires with no fill)| 4  
-00:00:07| Cancel order D| 4  
-00:00:07| Place LIMIT order F| 5 — new order (+1)  
-  
-### Which time zone does `"interval":"DAY"` use?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#which-time-zone-does-intervalday-use "Direct link to which-time-zone-does-intervalday-use")
 
-UTC
+The reference price is the total of the sum in each bucket divided by the total of the trade count in each bucket. Division is truncating integer division.
 
-### What happens if I placed an order yesterday but it is filled the next day?[​](/docs/binance-spot-api-docs/faqs/order_count_decrement#what-happens-if-i-placed-an-order-yesterday-but-it-is-filled-the-next-day "Direct link to What happens if I placed an order yesterday but it is filled the next day?")
+## How are reference prices calculated outside the matching engine?[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#how-are-reference-prices-calculated-outside-the-matching-engine "Direct link to How are reference prices calculated outside the matching engine?")
 
-New order fills decrease your _current_ unfilled order count regardless of when the orders were placed.
+If the reference price is being calculated outside the matching engine, then a query for the reference price calculation returns `"externalCalculationId":` followed by an integer number. Each of these numbers indicates a different calculation method.
 
-**Example:**
+## External Reference Price Calculation Method 0[​](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#external-reference-price-calculation-method-0 "Direct link to External Reference Price Calculation Method 0")
 
-Time| Action| Unfilled order count  
----|---|---  
-2024-01-01 09:00| Place 5 orders: 1..5| 5  
-2024-01-02 00:00| (rate limit interval reset)| 0  
-2024-01-02 09:00| Place 10 orders: 6..15| 10  
-2024-01-02 12:00| (orders 1..5 are filled)| 5  
-2024-01-02 13:00| (orders 6..10 are filled)| 0  
-2024-01-02 14:00| Place 2 orders: 16, 17| 2  
-2024-01-02 15:00| (orders 11..15 are filled)| 0  
-  
-**Note:** You do not get credit for order fills. That is, once the unfilled order count is down to zero, additional fills will not decrease it further. New orders will increase the count as usual.
+The reference price was set manually by a human operator. This calculation method will only be used in situations when algorithmic calculation of the reference price has been deemed unsuitable.
 
 ---
 
-# 现货未成交订单计数规则
+# 价格区间执行规则
 
-为确保公平有序的现货市场，我们限制了新订单的下达率。
+**免责声明：**
 
-速率限制适用于在时间间隔内下达的新的、 _未成交_ 的订单数量。也就是说，部分或全部成交的订单不计入速率限制。
+  * 此处使用的交易对和数值均为虚构，不代表实际交易所的配置。
 
-> [!NOTE] 未成交的订单速率限制奖励高效的交易者。 只要您的订单成交，您就可以继续交易。 详细信息：[已成交订单如何影响速率限制?](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#filled-orders-rate-limit)
 
-### 当前的速率限制是多少？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#当前的速率限制是多少 "当前的速率限制是多少？的直接链接")
 
-您可以使用 "exchange information" 请求查询当前的速率限制。
+## 什么是执行规则？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#什么是执行规则 "什么是执行规则？的直接链接")
 
-`"rateLimitType": "ORDERS"` 表示当前未成交的订单速率限制。
+执行规则是在订单执行时强制执行的交易规则。目前唯一可用的执行规则是价格区间规则。
 
-请参考 API 文档:
+## 价格区间执行规则的作用是什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#价格区间执行规则的作用是什么 "价格区间执行规则的作用是什么？的直接链接")
+
+该规则确保交易只能在参考价格附近的价格区间内（包括区间边界）执行。
+
+## 如何查询某个交易对允许的执行价格区间？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如何查询某个交易对允许的执行价格区间 "如何查询某个交易对允许的执行价格区间？的直接链接")
+
+请参考以下接口/方法：
 
 API| 请求  
 ---|---  
-FIX API| [LimitQuery`<XLQ>`](/docs/zh-CN/binance-spot-api-docs/fix-api#limitquery)  
-REST API| [`GET /api/v3/exchangeInfo`](/docs/zh-CN/binance-spot-api-docs/rest-api/general-endpoints#exchangeInfo)  
-WebSocket API| [`exchangeInfo`](/docs/zh-CN/binance-spot-api-docs/websocket-api/general-requests#exchangeInfo)  
+REST API| `GET /api/v3/executionRules`  
+WebSocket API| `executionRules`  
   
-> [!IMPORTANT] 下单请求还受到 REST 和 WebSocket API 上的常规请求速率限制以及 FIX API 上的消息限制的影响。 如果您以高速率发送过多的请求，您将会被 API 阻止。
+## 如何查询参考价格？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如何查询参考价格 "如何查询参考价格？的直接链接")
 
-### 如何运作未成交的 `ORDERS` 速率限制？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#如何运作未成交的-orders-速率限制 "如何运作未成交的-orders-速率限制的直接链接")
+请参考以下接口/方法：
 
-每次成功下单的请求都会增加当前时间间隔内的未成交订单计数。如果在时间间隔内累积了太多未成交的订单，后续的请求将被拒绝。
+API| 请求  
+---|---  
+REST API| `GET /api/v3/referencePrice`  
+WebSocket API| `referencePrice`  
+WebSocket 数据流| `<symbol>@referencePrice`  
+  
+请注意，**参考价格是持续变化的** ，建议通过 WebSocket 数据流实时监控参考价格。 
 
-例如，如果未成交的订单速率限制为每 10 秒 100 个：
+## 价格区间执行规则如何工作？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#价格区间执行规则如何工作 "价格区间执行规则如何工作？的直接链接")
+
+举例说明，假设该交易对的执行规则如下：
     
     
     {  
-        "rateLimitType": "ORDERS",  
-        "interval": "SECOND",  
-        "intervalNum": 10,  
-        "limit": 100  
+      "symbolRules": [  
+        {  
+          "symbol": "BAZUSD",  
+          "rules": [  
+            {  
+              "ruleType": "PRICE_RANGE",  
+              "bidLimitMultUp": "2.0000",  
+              "bidLimitMultDown": "0.5000",  
+              "askLimitMultUp": "2.0000",  
+              "askLimitMultDown": "0.5000"  
+            }  
+          ]  
+        }  
+      ]  
     }  
     
 
-那么，您在 12：34：00 到 12：34：10 之间最多可以下 100 个新订单，然后在 12：34：10 到 12：34：20 之间再下 100 个新订单，依此类推。
+如果该交易对的参考价格为：
+    
+    
+    {  
+      "symbol": "BAZUSD",  
+      "referencePrice": "10.00",  
+      "timestamp": 1770736694138  
+    }  
+    
 
-> [!TIP] 如果新下的订单成交，那么您的未成交订单数量会减少，您可能会在该时间间隔内下更多的订单。 详细信息：[已成交订单如何影响速率限制？](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#filled-orders-rate-limit)
+这意味着在时间点 `1770736694138`：
 
-当订单因未成交订单速率限制而被系统拒绝时，HTTP 状态代码会被设置为`429 Too Many Requests`，错误代码为`-1015 "Too many new orders"`。
+  1. 买入订单的执行价格不得高于参考价格的两倍，也不得低于参考价格的一半。
+  2. 卖出订单的执行价格不得高于参考价格的两倍，也不得低于参考价格的一半。
 
-如果您遇到这些错误，请停止发送订单，直到受影响的速率限制间隔到期。
 
-请参考 API 文档:
 
-API| 文档  
+## 如果某个交易对没有类型为 `PRICE_RANGE` 的执行规则，也没有参考价格，会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果某个交易对没有类型为-price_range-的执行规则也没有参考价格会发生什么 "如果某个交易对没有类型为-price_range-的执行规则也没有参考价格会发生什么的直接链接")
+
+该交易对不会强制执行价格区间执行规则。
+
+## 如果某个交易对没有类型为 `PRICE_RANGE` 的执行规则，但有参考价格，会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果某个交易对没有类型为-price_range-的执行规则但有参考价格会发生什么 "如果某个交易对没有类型为-price_range-的执行规则但有参考价格会发生什么的直接链接")
+
+该交易对不会强制执行价格区间执行规则。
+
+## 如果某个交易对有类型为 `PRICE_RANGE` 的执行规则，但没有参考价格，会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果某个交易对有类型为-price_range-的执行规则但没有参考价格会发生什么 "如果某个交易对有类型为-price_range-的执行规则但没有参考价格会发生什么的直接链接")
+
+该交易对不会强制执行价格区间执行规则。
+
+## 如果某个交易对有类型为 `PRICE_RANGE` 的执行规则，但没有全部四个乘数，会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果某个交易对有类型为-price_range-的执行规则但没有全部四个乘数会发生什么 "如果某个交易对有类型为-price_range-的执行规则但没有全部四个乘数会发生什么的直接链接")
+
+当某个乘数未设置时，该交易对在对应的订单方向和价格方向上不会强制执行价格区间执行规则。 例如，如果执行规则中没有 `bidMultiplierDown`，那么一笔 `BUY` 订单可以在低于或等于参考价格两倍的任意价格成交。
+
+## 如果该交易对的参考价格为 `null`，会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果该交易对的参考价格为-null会发生什么 "如果该交易对的参考价格为-null会发生什么的直接链接")
+
+该交易对不会强制执行价格区间执行规则。
+
+## 订单的执行价格限制何时设定？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#订单的执行价格限制何时设定 "订单的执行价格限制何时设定？的直接链接")
+
+当订单进入吃单阶段时，会重新计算参考价格，以设定该订单整个吃单阶段的执行价格限制。请注意，单个吃单订单在其吃单阶段可能会与多个挂单订单匹配。
+
+## 如果订单尝试以超出允许价格区间的价格执行，会发生什么[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#如果订单尝试以超出允许价格区间的价格执行会发生什么 "如果订单尝试以超出允许价格区间的价格执行，会发生什么的直接链接")
+
+如果吃单尝试以超出允许价格区间的价格执行，该订单将会过期（状态为 `EXPIRED`），过期原因是 `EXECUTION_RULE_PRICE_RANGE_EXCEEDED`。
+
+服务| 参考字段  
 ---|---  
-FIX API| [未成交订单计数](/docs/zh-CN/binance-spot-api-docs/fix-api#unfilled-order-count)  
-REST API| [未成交订单计数](/docs/zh-CN/binance-spot-api-docs/rest-api/limits#unfilled-order-count)  
-WebSocket API| [未成交订单计数](/docs/zh-CN/binance-spot-api-docs/websocket-api/rate-limits#unfilled-order-count)  
+非FIX接口| `expiryReason`  
+FIX接口| `ExpiryReason <25056>`  
+用户数据流| `"eR"`  
   
-### 是否按 IP 地址来统计未成交的订单计数？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#是否按-ip-地址来统计未成交的订单计数 "是否按 IP 地址来统计未成交的订单计数？的直接链接")
+## 参考价格是如何计算的？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#参考价格是如何计算的 "参考价格是如何计算的？的直接链接")
 
-未成交订单计数是根据 **（子）账户** 来统计的。
+如果参考价格由撮合引擎计算，则查询参考价格计算方式时返回 `"calculationType": "ARITHMETIC_MEAN"`。
 
-未成交订单计数在所有 IP 地址、所有 API 密钥和所有 API 之间共享。
+如果参考价格由撮合引擎外部计算，则查询参考价格计算方式时返回 `"calculationType": "EXTERNAL"`。详情见下文。
 
-### 已成交的订单如何影响未成交的订单数量？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#已成交的订单如何影响未成交的订单数量 "已成交的订单如何影响未成交的订单数量？的直接链接")
+## 撮合引擎如何计算参考价格？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#撮合引擎如何计算参考价格 "撮合引擎如何计算参考价格？的直接链接")
 
-当订单首次（部分或全部）成交时，在 `ORDERS` 速率限制的所有时间间隔内，您的未成交订单数量将会减少一个订单。实际上，已成交的订单不计入速率限制，这将允许高效的交易者继续下新订单。
+撮合引擎将参考价格计算为一段时间窗口内交易价格的简单移动平均。计算配置包括毫秒级的桶宽（`bucketWidthMs`）和桶数量（`bucketCount`）。桶宽乘以桶数量定义了时间窗口大小。
 
-某些订单会提供额外的激励：
+当发生交易时，撮合引擎会记录该交易价格并将其添加到当前的时间桶中。每个时间桶包含：
 
-  * **未立即成交的订单（即，在 maker 阶段首次成交）。**
-  * 大批量成交的订单。
-
-
-
-在这些情况下，对于每个开始交易的订单，未成交的订单数量可能会减少多个订单。
-
-**注意：**
-
-  * **这些示例仅给出了相关行为的通用概念。** 为了简单起见，请使用 10 秒间隔。实时交易平台上的实际配置可能会有所不同。
-  * 在正在执行的订单和未成交订单计数更新之间有短暂的延迟。当您的未成交订单数量接近限制时，请务必小心。
-  * 请参考 [如何运作未成交的 `ORDERS` 速率限制？](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#order-rate-limit) 以了解如何根据 API 来监控未成交订单计数。
+  * 开始时间（open time），该时间是引擎时间与桶宽度取模
+  * 交易数量（trade count），以固定小数点表示，精确到小数点后四位
+  * 该时间桶内所有交易价格的总和，以固定小数点表示，精度比报价资产的精度多四位小数
 
 
 
-**例 1** — taker:
+撮合引擎通过将总和除以交易数量计算该桶的平均价格。某个开始时间的第一个交易创建该桶，随着交易发生，撮合引擎逐渐累积桶。当桶的结束时间超出时间窗口时，该桶会被丢弃。这意味着：
 
-时间| 操作| 未成交订单数量  
----|---|---  
-00:00:00| | 0  
-00:00:01| 下订单 A (限价单)| 1 — 新订单 (+1)  
-00:00:02| 下订单 B (限价单)| 2 — 新订单 (+1)  
-| (订单 B 部分成交)| 1 — 作为 taker 首次成交 (−1)  
-00:00:03| 下订单 C (限价单)| 2 — 新订单 (+1)  
-00:00:04| (订单 B 部分成交)| 2  
-00:00:04| (订单 B 已成交)| 2  
-00:00:05| 下订单 D (市价单)| 3 — 新订单 (+1)  
-| (订单 D 全部成交)| 2 — 作为 taker 首次成交 (−1)  
-  
-请注意，对于每个立即交易的 taker 订单，未成交的订单数量稍后会减少，从而允许您继续下单。
+  * 当前时间点最旧的桶的开始时间可能在时间窗口之外，但结束时间在时间窗口内。
+  * 引擎维护的最大桶数实际上比配置的 `bucketCount` 多1。
 
-**例 2** — maker:
 
-时间| 操作| 未成交订单数量  
----|---|---  
-00:00:00| | 0  
-00:00:01| 下订单 A (限价单)| 1 — 新订单 (+1)  
-00:00:01| 下订单 B (限价单)| 2 — 新订单 (+1)  
-00:00:02| 下订单 C (限价单)| 3 — 新订单 (+1)  
-00:00:02| 下订单 D (限价单)| 4 — 新订单 (+1)  
-00:00:02| 下订单 E (限价单)| 5 — 新订单 (+1)  
-00:00:03| (订单 A 部分成交)| 0 — 作为 maker 首次成交 (−5)  
-00:00:04| 下订单 F (限价单)| 1 — 新订单 (+1)  
-00:00:04| 下订单 G (限价单)| 2 — 新订单 (+1)  
-00:00:05| (订单 A 部分成交)| 2  
-00:00:05| (订单 A 已成交)| 2  
-00:00:05| (订单 B 部分成交)| 0 — 作为 maker 首次成交 (−5)  
-00:00:06| 下订单 H (限价单)| 1 — 新订单 (+1)  
-  
-请注意，对于稍后执行的每个 maker 单，未执行的订单数量会减去更高的数量，从而允许您下更多订单。
 
-### 取消或过期的订单如何影响未成交的订单数量？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#取消或过期的订单如何影响未成交的订单数量 "取消或过期的订单如何影响未成交的订单数量？的直接链接")
+以下说明中，将时间窗口的最旧时间称为“截止时间”。
 
-取消订单不会更改未成交的订单计数。
+当最旧的桶跨越截止时间时，其内容会被按比例调整：
 
-过期的订单也不会改变未成交的订单计数。
+  * 桶外过期部分的比例为：（截止时间 - 桶的开始时间）除以桶宽，称为“过期比例”。
+  * 桶的交易数量按过期比例减少。
+  * 桶的总和按过期比例减少。
+  * 桶的开始时间设置为截止时间。
 
-**例:**
 
-时间| 操作| 未成交订单数量  
----|---|---  
-00:00:00| | 0  
-00:00:01| 下订单 A (限价单)| 1 — 新订单 (+1)  
-00:00:02| 取消订单 A| 1  
-00:00:02| 下订单 B (限价单)| 2 — 新订单(+1)  
-00:00:03| 下订单 C (限价 FOK 单)| 3 — 新订单 (+1)  
-| (订单 C 已成交)| 2 — fill (−1)  
-00:00:05| 下订单 D (限价单)| 3 — 新订单 (+1)  
-00:00:06| 下订单 E (限价 FOK 单)| 4 — 新订单 (+1)  
-| (订单 E 过期且没有成交)| 4  
-00:00:07| 取消订单 D| 4  
-00:00:07| 下订单 F (限价单)| 5 — 新订单 (+1)  
-  
-### `interval：DAY` 使用哪个时区？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#intervalday-使用哪个时区 "intervalday-使用哪个时区的直接链接")
 
-UTC。
+参考价格为所有桶的总和除以所有桶的交易数量，除法为截断式整数除法。
 
-### 如果我昨天下了订单，但第二天才成交，会发生什么情况？[​](/docs/zh-CN/binance-spot-api-docs/faqs/order_count_decrement#如果我昨天下了订单但第二天才成交会发生什么情况 "如果我昨天下了订单，但第二天才成交，会发生什么情况？的直接链接")
+## 外部计算参考价格的方式？[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#外部计算参考价格的方式 "外部计算参考价格的方式？的直接链接")
 
-无论订单是何时成交的，新成交的订单都会减少您当前未成交的订单数量。
+如果参考价格由撮合引擎外部计算，则查询参考价格计算方式时返回 `"externalCalculationId":` 后跟一个整数。每个数字代表不同的计算方法。
 
-**例:**
+## 外部参考价格计算方法 0[​](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules#外部参考价格计算方法-0 "外部参考价格计算方法 0的直接链接")
 
-时间| 操作| 未成交订单数量  
----|---|---  
-2024-01-01 09:00| 下 5 个订单: 1..5| 5  
-2024-01-02 00:00| (速率间隔重置)| 0  
-2024-01-02 09:00| 下 10 个订单: 6..15| 10  
-2024-01-02 12:00| (订单 1...5 已成交)| 5  
-2024-01-02 13:00| (订单 6...10 已成交)| 0  
-2024-01-02 14:00| 下 2 个订单: 16, 17| 2  
-2024-01-02 15:00| (订单 11...15 已成交)| 0  
-  
-**注意：** 您不会因订单的成交而获得信用。也就是说，一旦未成交的订单数量减少到零，额外的成交将不会进一步影响未成交订单计数。新订单将像依旧增加计数。
+参考价格由人工手动设置。该计算方法仅在不适合使用算法计算参考价格的情况下使用。

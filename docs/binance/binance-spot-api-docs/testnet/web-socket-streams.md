@@ -1,1210 +1,500 @@
 ---
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/web-socket-streams
-api_type: WebSocket
-updated_at: 2026-01-15T23:36:48.712241
+api_type: REST
+updated_at: 2026-05-27 18:54:52.161109
 ---
 
-# WebSocket Streams for Binance SPOT Testnet
+# User Data Streams for Binance
 
-## General WSS information[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#general-wss-information "Direct link to General WSS information")
+## General information[​](/docs/binance-spot-api-docs/user-data-stream#general-information "Direct link to General information")
 
-  * The base endpoint is: **wss://stream.testnet.binance.vision/ws**.
-  * Streams can be accessed either in a single raw stream or in a combined stream
-  * Raw streams are accessed at **/ws/ <streamName>**
-  * Combined streams are accessed at **/stream?streams= <streamName1>/<streamName2>/<streamName3>**
-  * Combined stream events are wrapped as follows: **{"stream":" <streamName>","data":<rawPayload>}**
-  * All symbols for streams are **lowercase**
-  * All time and timestamp related fields are **milliseconds by default**. To receive the information in microseconds, please add the parameter `timeUnit=MICROSECOND` or `timeUnit=microsecond` in the URL. 
-    * For example: `/stream?streams=btcusdt@trade&timeUnit=MICROSECOND`
-  * A single connection to **stream.binance.com** is only valid for 24 hours; expect to be disconnected at the 24 hour mark
-  * The WebSocket server will send a `ping frame` every 20 seconds. 
-    * If the WebSocket server does not receive a `pong frame` back from the connection within a minute, the connection will be disconnected.
-    * When you receive a ping, you must send a pong with a copy of ping's payload as soon as possible.
-    * Unsolicited `pong frames` are allowed, but will not prevent disconnection. **It is recommended that the payload for these pong frames are empty.**
-  * The base endpoint **wss://data-stream.binance.vision** can be subscribed to receive **only** market data messages.   
-User data stream is **NOT** available from this URL.
-  * All time and timestamp related fields are **milliseconds by default**. To receive the information in microseconds, please add the parameter `timeUnit=MICROSECOND or timeUnit=microsecond` in the URL. 
-    * For example: `/stream?streams=btcusdt@trade&timeUnit=MICROSECOND`
-  * If your request contains a symbol name containing non-ASCII characters, then the stream events may contain non-ASCII characters encoded in UTF-8.
-  * [All Market Mini Tickers Stream](#all-market-mini-tickers-stream and [All Market Rolling Window Statistics Streams](/docs/binance-spot-api-docs/testnet/web-socket-streams#all-market-rolling-window-statistics-streams) events may contain non-ASCII characters encoded in UTF-8.
+  * Subscribe via the [WebSocket API](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-stream-subscribe) using an API Key.
+  * Both [SBE](/docs/binance-spot-api-docs/faqs/sbe_faq) and JSON output are supported.
+  * Account events are pushed in **real-time**.
+  * All timestamps in JSON payloads are in **milliseconds by default**.
+  * Events may contain non-ASCII characters encoded in UTF-8 if you own or trade any assets or symbols whose names contain non-ASCII characters.
 
 
 
-## WebSocket Limits[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#websocket-limits "Direct link to WebSocket Limits")
+## User Data Stream Events[​](/docs/binance-spot-api-docs/user-data-stream#user-data-stream-events "Direct link to User Data Stream Events")
 
-  * WebSocket connections have a limit of 5 incoming messages per second. A message is considered: 
-    * A PING frame
-    * A PONG frame
-    * A JSON controlled message (e.g. subscribe, unsubscribe)
-  * A connection that goes beyond the limit will be disconnected; IPs that are repeatedly disconnected may be banned.
-  * A single connection can listen to a maximum of 1024 streams.
-  * There is a limit of **300 connections per attempt every 5 minutes per IP**.
+### Account Update[​](/docs/binance-spot-api-docs/user-data-stream#account-update "Direct link to Account Update")
 
-
-
-## Live Subscribing/Unsubscribing to streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#live-subscribingunsubscribing-to-streams "Direct link to Live Subscribing/Unsubscribing to streams")
-
-  * The following data can be sent through the WebSocket instance in order to subscribe/unsubscribe from streams. Examples can be seen below.
-  * The `id` is used as an identifier to uniquely identify the messages going back and forth. The following formats are accepted: 
-    * 64-bit signed integer
-    * alphanumeric strings; max length 36
-    * `null`
-  * In the response, if the `result` received is `null` this means the request sent was a success for non-query requests (e.g. Subscribing/Unsubscribing).
-
-
-
-### Subscribe to a stream[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#subscribe-to-a-stream "Direct link to Subscribe to a stream")
-
-  * Request
-        
-        {  
-            "method": "SUBSCRIBE",  
-            "params": ["btcusdt@aggTrade", "btcusdt@depth"],  
-            "id": 1  
+`outboundAccountPosition` is sent any time an account balance has changed and contains the assets that were possibly changed by the event that generated the balance change.
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "outboundAccountPosition",     // Event type  
+            "E": 1564034571105,                 // Event Time  
+            "u": 1564034571073,                 // Time of last account update  
+            // Balances Array  
+            "B": [  
+                {  
+                    "a": "ETH",                 // Asset  
+                    "f": "10000.000000",        // Free  
+                    "l": "0.000000"             // Locked  
+                }  
+            ]  
         }  
-        
+    }  
+    
 
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 1  
+### Balance Update[​](/docs/binance-spot-api-docs/user-data-stream#balance-update "Direct link to Balance Update")
+
+Balance Update occurs during the following:
+
+  * Deposits or withdrawals from the account
+  * Transfer of funds between accounts (e.g. Spot to Margin)
+
+
+
+**Payload**
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "balanceUpdate",     // Event Type  
+            "E": 1573200697110,       // Event Time  
+            "a": "BTC",               // Asset  
+            "d": "100.00000000",      // Balance Delta  
+            "T": 1573200697068        // Clear Time  
         }  
-        
+    }  
+    
 
+### Order Update[​](/docs/binance-spot-api-docs/user-data-stream#order-update "Direct link to Order Update")
 
+Orders are updated with the `executionReport` event.
 
-
-### Unsubscribe to a stream[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#unsubscribe-to-a-stream "Direct link to Unsubscribe to a stream")
-
-  * Request
-        
-        {  
-            "method": "UNSUBSCRIBE",  
-            "params": ["btcusdt@depth"],  
-            "id": 312  
+**Payload:**
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "executionReport",            // Event type  
+            "E": 1499405658658,                // Event time  
+            "s": "ETHBTC",                     // Symbol  
+            "c": "mUvoqJxFIILMdfAW5iGSOW",     // Client order ID  
+            "S": "BUY",                        // Side  
+            "o": "LIMIT",                      // Order type  
+            "f": "GTC",                        // Time in force  
+            "q": "1.00000000",                 // Order quantity  
+            "p": "0.10264410",                 // Order price  
+            "P": "0.00000000",                 // Stop price  
+            "F": "0.00000000",                 // Iceberg quantity  
+            "g": -1,                           // OrderListId  
+            "C": "",                           // Original client order ID; This is the ID of the order being canceled  
+            "x": "NEW",                        // Current execution type  
+            "X": "NEW",                        // Current order status  
+            "r": "NONE",                       // Order reject reason; Please see Order Reject Reason (below) for more information.  
+            "i": 4293153,                      // Order ID  
+            "l": "0.00000000",                 // Last executed quantity  
+            "z": "0.00000000",                 // Cumulative filled quantity  
+            "L": "0.00000000",                 // Last executed price  
+            "n": "0",                          // Commission amount  
+            "N": null,                         // Commission asset  
+            "T": 1499405658657,                // Transaction time  
+            "t": -1,                           // Trade ID  
+            "v": 3,                            // Prevented Match Id; This is only visible if the order expired due to STP  
+            "I": 8641984,                      // Execution Id  
+            "w": true,                         // Is the order on the book?  
+            "m": false,                        // Is this trade the maker side?  
+            "M": false,                        // Ignore  
+            "O": 1499405658657,                // Order creation time  
+            "Z": "0.00000000",                 // Cumulative quote asset transacted quantity  
+            "Y": "0.00000000",                 // Last quote asset transacted quantity (i.e. lastPrice * lastQty)  
+            "Q": "0.00000000",                 // Quote Order Quantity  
+            "W": 1499405658657,                // Working Time; This is only visible if the order has been placed on the book.  
+            "V": "NONE"                        // SelfTradePreventionMode  
         }  
-        
+    }  
+    
 
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 312  
-        }  
-        
+**Note:** Average price can be found by doing `Z` divided by `z`.
 
+#### Conditional Fields in Execution Report[​](/docs/binance-spot-api-docs/user-data-stream#conditional-fields-in-execution-report "Direct link to Conditional Fields in Execution Report")
 
+These are fields that appear in the payload only if certain conditions are met.
 
+For additional information on these parameters, please refer to the [Spot Glossary](/docs/binance-spot-api-docs/faqs/spot_glossary).
 
-### Listing Subscriptions[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#listing-subscriptions "Direct link to Listing Subscriptions")
-
-  * Request
-        
-        {  
-            "method": "LIST_SUBSCRIPTIONS",  
-            "id": 3  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": ["btcusdt@aggTrade"],  
-            "id": 3  
-        }  
-        
-
-
-
-
-### Setting Properties[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#setting-properties "Direct link to Setting Properties")
-
-Currently, the only property that can be set is whether `combined` stream payloads are enabled or not. The combined property is set to `false` when connecting using `/ws/` ("raw streams") and `true` when connecting using `/stream/`.
-
-  * Request
-        
-        {  
-            "method": "SET_PROPERTY",  
-            "params": ["combined", true],  
-            "id": 5  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 5  
-        }  
-        
-
-
-
-
-### Retrieving Properties[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#retrieving-properties "Direct link to Retrieving Properties")
-
-  * Request
-        
-        {  
-            "method": "GET_PROPERTY",  
-            "params": ["combined"],  
-            "id": 2  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": true, // Indicates that combined is set to true.  
-            "id": 2  
-        }  
-        
-
-
-
-
-### Error Messages[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#error-messages "Direct link to Error Messages")
-
-Error Message| Description  
----|---  
-{"code": 0, "msg": "Unknown property","id": %s}| Parameter used in the `SET_PROPERTY` or `GET_PROPERTY` was invalid  
-{"code": 1, "msg": "Invalid value type: expected Boolean"}| Value should only be `true` or `false`  
-{"code": 2, "msg": "Invalid request: property name must be a string"}| Property name provided was invalid  
-{"code": 2, "msg": "Invalid request: request ID must be an unsigned integer"}| Parameter `id` had to be provided or the value provided in the `id` parameter is an unsupported type  
-{"code": 2, "msg": "Invalid request: unknown variant %s, expected one of `SUBSCRIBE`, `UNSUBSCRIBE`, `LIST_SUBSCRIPTIONS`, `SET_PROPERTY`, `GET_PROPERTY` at line 1 column 28"}| Possible typo in the provided method or provided method was neither of the expected values  
-{"code": 2, "msg": "Invalid request: too many parameters"}| Unnecessary parameters provided in the data  
-{"code": 2, "msg": "Invalid request: property name must be a string"}| Property name was not provided  
-{"code": 2, "msg": "Invalid request: missing field `method` at line 1 column 73"}| `method` was not provided in the data  
-{"code":3,"msg":"Invalid JSON: expected value at line %s column %s"}| JSON data sent has incorrect syntax.  
+Field | Name | Description | Examples  
+---|---|---|---  
+`d` | Trailing Delta | Appears only for trailing stop orders. | `"d": 4`  
+`D` | Trailing Time | `"D": 1668680518494`  
+`j` | Strategy Id | Appears only if the `strategyId` parameter was provided upon order placement. | `"j": 1`  
+`J` | Strategy Type | Appears only if the `strategyType` parameter was provided upon order placement. | `"J": 1000000`  
+`v` | Prevented Match Id | Appears only for orders that expired due to STP. | `"v": 3`  
+`A` | Prevented Quantity | `"A":"3.000000"`  
+`B` | Last Prevented Quantity | `"B":"3.000000"`  
+`u` | Trade Group Id | `"u":1`  
+`U` | Counter Order Id | `"U":37`  
+`Cs` | Counter Symbol | `"Cs": "BTCUSDT"`  
+`pl` | Prevented Execution Quantity | `"pl":"2.123456"`  
+`pL` | Prevented Execution Price | `"pL":"0.10000001"`  
+`pY` | Prevented Execution Quote Qty | `"pY":"0.21234562"`  
+`W` | Working Time | Appears when the order is working on the book | `"W": 1668683798379`  
+`b` | Match Type | Appears for orders that have allocations | `"b":"ONE_PARTY_TRADE_REPORT"`  
+`a` | Allocation ID | `"a":1234`  
+`k` | Working Floor | Appears for orders that potentially have allocations | `"k":"SOR"`  
+`uS` | UsedSor | Appears for orders that used SOR | `"uS":true`  
+`gP` | Pegged Price Type | Appears only for Pegged Orders | `"gP": "PRIMARY_PEG"`  
+`gOT` | Pegged offset Type | `"gOT": "PRICE_LEVEL"`  
+`gOV` | Pegged Offset Value | `"gOV": 5`  
+`gp` | Pegged Price | `"gp": "1.00000000"`  
+`eR` | Expiry Reason | Appears when the order has expired. | `"eR": "INSUFFICIENT_LIQUIDITY"`  
   
-# Detailed Stream information
+#### Order Reject Reason[​](/docs/binance-spot-api-docs/user-data-stream#order-reject-reason "Direct link to Order Reject Reason")
 
-## Aggregate Trade Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#aggregate-trade-streams "Direct link to Aggregate Trade Streams")
+For additional details, look up the Error Message in the [Errors](/docs/binance-spot-api-docs/errors#other-errors) documentation.
 
-The Aggregate Trade Streams push trade information that is aggregated for a single taker order.
+Rejection Reason (`r`)| Error Message  
+---|---  
+`NONE`| N/A (i.e. The order was not rejected.)  
+`INSUFFICIENT_BALANCES`| "Account has insufficient balance for requested action."  
+`STOP_PRICE_WOULD_TRIGGER_IMMEDIATELY`| "Order would trigger immediately."  
+`WOULD_MATCH_IMMEDIATELY`| "Order would immediately match and take."  
+`OCO_BAD_PRICES`| "The relationship of the prices for the orders is not correct."  
+  
+If the order is an order list, an event named `ListStatus` will be sent in addition to the `executionReport` event.
 
-**Stream Name:** <symbol>@aggTrade
-
-**Update Speed:** Real-time
-
-**Payload:**
+**Payload**
     
     
     {  
-        "e": "aggTrade",        // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "a": 12345,             // Aggregate trade ID  
-        "p": "0.001",           // Price  
-        "q": "100",             // Quantity  
-        "f": 100,               // First trade ID  
-        "l": 105,               // Last trade ID  
-        "T": 1672515782136,     // Trade time  
-        "m": true,              // Is the buyer the market maker?  
-        "M": true               // Ignore  
-    }  
-    
-
-## Trade Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#trade-streams "Direct link to Trade Streams")
-
-The Trade Streams push raw trade information; each trade has a unique buyer and seller.
-
-**Stream Name:** <symbol>@trade
-
-**Update Speed:** Real-time
-
-**Payload:**
-    
-    
-    {  
-        "e": "trade",           // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "t": 12345,             // Trade ID  
-        "p": "0.001",           // Price  
-        "q": "100",             // Quantity  
-        "T": 1672515782136,     // Trade time  
-        "m": true,              // Is the buyer the market maker?  
-        "M": true               // Ignore  
-    }  
-    
-
-## Kline/Candlestick Streams for UTC[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#klinecandlestick-streams-for-utc "Direct link to Kline/Candlestick Streams for UTC")
-
-The Kline/Candlestick Stream push updates to the current klines/candlestick every second in `UTC+0` timezone.
-
-**Kline/Candlestick chart intervals:**
-
-s-> seconds; m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
-
-  * 1s
-  * 1m
-  * 3m
-  * 5m
-  * 15m
-  * 30m
-  * 1h
-  * 2h
-  * 4h
-  * 6h
-  * 8h
-  * 12h
-  * 1d
-  * 3d
-  * 1w
-  * 1M
-
-
-
-**Stream Name:** <symbol>@kline_<interval>
-
-**Update Speed:** 1000ms for `1s`, 2000ms for the other intervals
-
-**Payload:**
-    
-    
-    {  
-        "e": "kline",               // Event type  
-        "E": 1672515782136,         // Event time  
-        "s": "BNBBTC",              // Symbol  
-        "k": {  
-            "t": 1672515780000,     // Kline start time  
-            "T": 1672515839999,     // Kline close time  
-            "s": "BNBBTC",          // Symbol  
-            "i": "1m",              // Interval  
-            "f": 100,               // First trade ID  
-            "L": 200,               // Last trade ID  
-            "o": "0.0010",          // Open price  
-            "c": "0.0020",          // Close price  
-            "h": "0.0025",          // High price  
-            "l": "0.0015",          // Low price  
-            "v": "1000",            // Base asset volume  
-            "n": 100,               // Number of trades  
-            "x": false,             // Is this kline closed?  
-            "q": "1.0000",          // Quote asset volume  
-            "V": "500",             // Taker buy base asset volume  
-            "Q": "0.500",           // Taker buy quote asset volume  
-            "B": "123456"           // Ignore  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "listStatus",                        // Event Type  
+            "E": 1564035303637,                       // Event Time  
+            "s": "ETHBTC",                            // Symbol  
+            "g": 2,                                   // OrderListId  
+            "c": "OCO",                               // Contingency Type  
+            "l": "EXEC_STARTED",                      // List Status Type  
+            "L": "EXECUTING",                         // List Order Status  
+            "r": "NONE",                              // List Reject Reason  
+            "C": "F4QN4G8DlFATFlIUQ0cjdD",            // List Client Order ID  
+            "T": 1564035303625,                       // Transaction Time  
+            // An array of objects  
+            "O": [  
+                {  
+                    "s": "ETHBTC",                    // Symbol  
+                    "i": 17,                          // OrderId  
+                    "c": "AJYsMjErWJesZvqlJCTUgL"     // ClientOrderId  
+                },  
+                {  
+                    "s": "ETHBTC",  
+                    "i": 18,  
+                    "c": "bfYPSQdLoqAJeNrOr9adzq"  
+                }  
+            ]  
         }  
     }  
     
 
-## Kline/Candlestick Streams with timezone offset[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#klinecandlestick-streams-with-timezone-offset "Direct link to Kline/Candlestick Streams with timezone offset")
+#### Order Expiry Reason[​](/docs/binance-spot-api-docs/user-data-stream#order-expiry-reason "Direct link to Order Expiry Reason")
 
-The Kline/Candlestick Stream push updates to the current klines/candlestick every second in `UTC+8` timezone.
+Expiry Reason (`eR`)| Explanation  
+---|---  
+`REJECTED`| A contingent order or an order that was part of an OTO was rejected by the matching engine when trying to place it on the order book. Common reasons are lack of funds and rejection by filters.  
+`EXCHANGE_CANCELED`| The order was canceled by Binance.  
+`OCO_TRIGGER`| An order that was part of an OCO pair was canceled because the other order of the pair started working or the entire OCO expired.  
+`OTO_PHASE_ONE_EXPIRED`| The working order of the order list expired, thus expiring the entire order list.  
+`UNFILLED_IOC_QUANTITY_EXPIRED`| The IOC order was not fully filled and thus expired.  
+`UNFILLED_FOK_ORDER_EXPIRED`| The FOK order was not fully filled and thus expired.  
+`INSUFFICIENT_LIQUIDITY`| There were not enough orders in the order book to match with this order.  
+`EXECUTION_RULE_PRICE_RANGE_EXCEEDED`| The order attempted to trade at a price that would not meet the Price Range Execution Rule.  
+  
+Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum definitions.
 
-**Kline/Candlestick chart intervals:** Supported intervals: See [`Kline/Candlestick chart intervals`](/docs/binance-spot-api-docs/testnet/web-socket-streams#kline-intervals)
+## Event Stream Terminated[​](/docs/binance-spot-api-docs/user-data-stream#event-stream-terminated "Direct link to Event Stream Terminated")
 
-**UTC+8 timezone offset:**
+`eventStreamTerminated` is sent when:
 
-  * Kline intervals open and close in the `UTC+8` timezone. For example the `1d` klines will open at the beginning of the `UTC+8` day, and close at the end of the `UTC+8` day.
-  * Note that `E` (event time), `t` (start time), and `T` (close time) in the payload are Unix timestamps, which are always interpreted in UTC.
+  * [A listen token subscription](https://developers.binance.com/docs/margin_trading/trade-data-stream/Listen-Token-Websocket-API#subscribe-to-user-data-stream-using-listentoken-user_stream) expires due to token expiration.
+  * A [logon subscription](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/authentication-requests#log-in-with-api-key-signed) ends after sending [`session.logout`](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/authentication-requests#log-out-of-the-session) method.
+  * The subscription is stopped via the [`userDataStream.unsubscribe`](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#unsubscribe-from-user-data-stream) method.
 
 
-
-**Stream Name:** <symbol>@kline_<interval>@+08:00
-
-**Update Speed:** 1000ms for `1s`, 2000ms for the other intervals
 
 **Payload:**
     
     
     {  
-        "e": "kline",               // Event type  
-        "E": 1672515782136,         // Event time  
-        "s": "BNBBTC",              // Symbol  
-        "k": {  
-            "t": 1672515780000,     // Kline start time  
-            "T": 1672515839999,     // Kline close time  
-            "s": "BNBBTC",          // Symbol  
-            "i": "1m",              // Interval  
-            "f": 100,               // First trade ID  
-            "L": 200,               // Last trade ID  
-            "o": "0.0010",          // Open price  
-            "c": "0.0020",          // Close price  
-            "h": "0.0025",          // High price  
-            "l": "0.0015",          // Low price  
-            "v": "1000",            // Base asset volume  
-            "n": 100,               // Number of trades  
-            "x": false,             // Is this kline closed?  
-            "q": "1.0000",          // Quote asset volume  
-            "V": "500",             // Taker buy base asset volume  
-            "Q": "0.500",           // Taker buy quote asset volume  
-            "B": "123456"           // Ignore  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "eventStreamTerminated",     // Event Type  
+            "E": 1728973001334                // Event Time  
         }  
     }  
     
 
-## Individual Symbol Mini Ticker Stream[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-mini-ticker-stream "Direct link to Individual Symbol Mini Ticker Stream")
+## External Lock Update[​](/docs/binance-spot-api-docs/user-data-stream#external-lock-update "Direct link to External Lock Update")
 
-24hr rolling window mini-ticker statistics. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs.
-
-**Stream Name:** <symbol>@miniTicker
-
-**Update Speed:** 1000ms
+`externalLockUpdate` is sent when part of your spot wallet balance is locked/unlocked by an external system, for example when used as margin collateral.
 
 **Payload:**
     
     
     {  
-        "e": "24hrMiniTicker",     // Event type  
-        "E": 1672515782136,        // Event time  
-        "s": "BNBBTC",             // Symbol  
-        "c": "0.0025",             // Close price  
-        "o": "0.0010",             // Open price  
-        "h": "0.0025",             // High price  
-        "l": "0.0010",             // Low price  
-        "v": "10000",              // Total traded base asset volume  
-        "q": "18"                  // Total traded quote asset volume  
-    }  
-    
-
-## All Market Mini Tickers Stream[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#all-market-mini-tickers-stream "Direct link to All Market Mini Tickers Stream")
-
-24hr rolling window mini-ticker statistics for all symbols that changed in an array. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs. Note that only tickers that have changed will be present in the array.
-
-**Stream Name:** !miniTicker@arr
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    [  
-        {  
-            // Same as <symbol>@miniTicker payload  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "externalLockUpdate",     // Event Type  
+            "E": 1581557507324,            // Event Time  
+            "a": "NEO",                    // Asset  
+            "d": "10.00000000",            // Delta  
+            "T": 1581557507268             // Transaction Time  
         }  
-    ]  
-    
-
-## Individual Symbol Ticker Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-ticker-streams "Direct link to Individual Symbol Ticker Streams")
-
-24hr rolling window ticker statistics for a single symbol. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs.
-
-**Stream Name:** <symbol>@ticker
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "24hrTicker",      // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "p": "0.0015",          // Price change  
-        "P": "250.00",          // Price change percent  
-        "w": "0.0018",          // Weighted average price  
-        "x": "0.0009",          // First trade(F)-1 price (first trade before the 24hr rolling window)  
-        "c": "0.0025",          // Last price  
-        "Q": "10",              // Last quantity  
-        "b": "0.0024",          // Best bid price  
-        "B": "10",              // Best bid quantity  
-        "a": "0.0026",          // Best ask price  
-        "A": "100",             // Best ask quantity  
-        "o": "0.0010",          // Open price  
-        "h": "0.0025",          // High price  
-        "l": "0.0010",          // Low price  
-        "v": "10000",           // Total traded base asset volume  
-        "q": "18",              // Total traded quote asset volume  
-        "O": 0,                 // Statistics open time  
-        "C": 86400000,          // Statistics close time  
-        "F": 0,                 // First trade ID  
-        "L": 18150,             // Last trade Id  
-        "n": 18151              // Total number of trades  
-    }  
-    
-
-## Individual Symbol Rolling Window Statistics Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-rolling-window-statistics-streams "Direct link to Individual Symbol Rolling Window Statistics Streams")
-
-Rolling window ticker statistics for a single symbol, computed over multiple windows.
-
-**Stream Name:** <symbol>@ticker_<window_size>
-
-**Window Sizes:** 1h,4h,1d
-
-**Update Speed:** 1000ms
-
-**Note** : This stream is different from the <symbol>@ticker stream. The open time `O` always starts on a minute, while the closing time `C` is the current time of the update. As such, the effective window might be up to 59999ms wider that <window_size>.
-
-**Payload:**
-    
-    
-    {  
-        "e": "1hTicker",        // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "p": "0.0015",          // Price change  
-        "P": "250.00",          // Price change percent  
-        "o": "0.0010",          // Open price  
-        "h": "0.0025",          // High price  
-        "l": "0.0010",          // Low price  
-        "c": "0.0025",          // Last price  
-        "w": "0.0018",          // Weighted average price  
-        "v": "10000",           // Total traded base asset volume  
-        "q": "18",              // Total traded quote asset volume  
-        "O": 0,                 // Statistics open time  
-        "C": 1675216573749,     // Statistics close time  
-        "F": 0,                 // First trade ID  
-        "L": 18150,             // Last trade Id  
-        "n": 18151              // Total number of trades  
-    }  
-    
-
-## All Market Rolling Window Statistics Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#all-market-rolling-window-statistics-streams "Direct link to All Market Rolling Window Statistics Streams")
-
-Rolling window ticker statistics for all market symbols, computed over multiple windows. Note that only tickers that have changed will be present in the array.
-
-**Stream Name:** !ticker_<window-size>@arr
-
-**Window Size:** 1h,4h,1d
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    [  
-        {  
-            // Same as <symbol>@ticker_<window-size> payload,  
-            // one for each symbol updated within the interval.  
-        }  
-    ]  
-    
-
-## Individual Symbol Book Ticker Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-book-ticker-streams "Direct link to Individual Symbol Book Ticker Streams")
-
-Pushes any update to the best bid or ask's price or quantity in real-time for a specified symbol. Multiple `<symbol>@bookTicker` streams can be subscribed to over one connection.
-
-**Stream Name:** <symbol>@bookTicker
-
-**Update Speed:** Real-time
-
-**Payload:**
-    
-    
-    {  
-        "u": 400900217,         // order book updateId  
-        "s": "BNBUSDT",         // symbol  
-        "b": "25.35190000",     // best bid price  
-        "B": "31.21000000",     // best bid qty  
-        "a": "25.36520000",     // best ask price  
-        "A": "40.66000000"      // best ask qty  
-    }  
-    
-
-## Average Price[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#average-price "Direct link to Average Price")
-
-Average price streams push changes in the average price over a fixed time interval.
-
-**Stream Name:** <symbol>@avgPrice
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "avgPrice",           // Event type  
-        "E": 1693907033000,        // Event time  
-        "s": "BTCUSDT",            // Symbol  
-        "i": "5m",                 // Average price interval  
-        "w": "25776.86000000",     // Average price  
-        "T": 1693907032213         // Last trade time  
-    }  
-    
-
-## Partial Book Depth Streams[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#partial-book-depth-streams "Direct link to Partial Book Depth Streams")
-
-Top **< levels>** bids and asks, pushed every second. Valid **< levels>** are 5, 10, or 20.
-
-**Stream Names:** <symbol>@depth<levels> OR <symbol>@depth<levels>@100ms
-
-**Update Speed:** 1000ms or 100ms
-
-**Payload:**
-    
-    
-    {  
-        "lastUpdateId": 160,     // Last update ID  
-        "bids": [                // Bids to be updated  
-            [  
-                "0.0024",        // Price level to be updated  
-                "10"             // Quantity  
-            ]  
-        ],  
-        "asks": [                // Asks to be updated  
-            [  
-                "0.0026",        // Price level to be updated  
-                "100"            // Quantity  
-            ]  
-        ]  
-    }  
-    
-
-## Diff. Depth Stream[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#diff-depth-stream "Direct link to Diff. Depth Stream")
-
-Order book price and quantity depth updates used to locally manage an order book.
-
-**Stream Name:** <symbol>@depth OR <symbol>@depth@100ms
-
-**Update Speed:** 1000ms or 100ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "depthUpdate",     // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "U": 157,               // First update ID in event  
-        "u": 160,               // Final update ID in event  
-        "b": [                  // Bids to be updated  
-            [  
-                "0.0024",       // Price level to be updated  
-                "10"            // Quantity  
-            ]  
-        ],  
-        "a": [                  // Asks to be updated  
-            [  
-                "0.0026",       // Price level to be updated  
-                "100"           // Quantity  
-            ]  
-        ]  
-    }  
-    
-
-## How to manage a local order book correctly[​](/docs/binance-spot-api-docs/testnet/web-socket-streams#how-to-manage-a-local-order-book-correctly "Direct link to How to manage a local order book correctly")
-
-  1. Open a WebSocket connection to `wss://stream.testnet.binance.vision:9443/ws/bnbbtc@depth`.
-  2. Buffer the events received from the stream. Note the `U` of the first event you received.
-  3. Get a depth snapshot from `https://testnet.binance.vision/api/v3/depth?symbol=BNBBTC&limit=5000`.
-  4. If the `lastUpdateId` from the snapshot is strictly less than the `U` from step 2, go back to step 3.
-  5. In the buffered events, discard any event where `u` is <= `lastUpdateId` of the snapshot. The first buffered event should now have `lastUpdateId` within its `[U;u]` range.
-  6. Set your local order book to the snapshot. Its update ID is `lastUpdateId`.
-  7. Apply the update procedure below to all buffered events, and then to all subsequent events received.
-
-
-
-To apply an event to your local order book, follow this update procedure:
-
-  1. Decide whether the update event can be applied: 
-     * If the event last update ID (`u`) is less than the update ID of your local order book, ignore the event.
-     * If the event first update ID (`U`) is greater than the update ID of your local order book + 1, you have missed some events.   
-Discard your local order book and restart the process from the beginning.
-     * Normally, `U` of the next event is equal to `u + 1` of the previous event.
-  2. For each price level in bids (`b`) and asks (`a`), set the new quantity in the order book: 
-     * If the price level does not exist in the order book, insert it with new quantity.
-     * If the quantity is zero, remove the price level from the order book.
-  3. Set the order book update ID to the last update ID (`u`) in the processed event.
-
-
-
-> [!NOTE] Since depth snapshots retrieved from the API have a limit on the number of price levels (5000 on each side maximum), you won't learn the quantities for the levels outside of the initial snapshot unless they change.   
->  So be careful when using the information for those levels, since they might not reflect the full view of the order book.   
->  However, for most use cases, seeing 5000 levels on each side is enough to understand the market and trade effectively.
+    }
 
 ---
 
-# WebSocket Streams for Binance SPOT Testnet
+# 用户数据流
 
-## General WSS information[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#general-wss-information "General WSS information的直接链接")
+## 一般信息[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#一般信息 "一般信息的直接链接")
 
-  * The base endpoint is: **wss://stream.testnet.binance.vision/ws**.
-  * Streams can be accessed either in a single raw stream or in a combined stream
-  * Raw streams are accessed at **/ws/ <streamName>**
-  * Combined streams are accessed at **/stream?streams= <streamName1>/<streamName2>/<streamName3>**
-  * Combined stream events are wrapped as follows: **{"stream":" <streamName>","data":<rawPayload>}**
-  * All symbols for streams are **lowercase**
-  * All time and timestamp related fields are **milliseconds by default**. To receive the information in microseconds, please add the parameter `timeUnit=MICROSECOND` or `timeUnit=microsecond` in the URL. 
-    * For example: `/stream?streams=btcusdt@trade&timeUnit=MICROSECOND`
-  * A single connection to **stream.binance.com** is only valid for 24 hours; expect to be disconnected at the 24 hour mark
-  * The WebSocket server will send a `ping frame` every 20 seconds. 
-    * If the WebSocket server does not receive a `pong frame` back from the connection within a minute, the connection will be disconnected.
-    * When you receive a ping, you must send a pong with a copy of ping's payload as soon as possible.
-    * Unsolicited `pong frames` are allowed, but will not prevent disconnection. **It is recommended that the payload for these pong frames are empty.**
-  * The base endpoint **wss://data-stream.binance.vision** can be subscribed to receive **only** market data messages.   
-User data stream is **NOT** available from this URL.
-  * All time and timestamp related fields are **milliseconds by default**. To receive the information in microseconds, please add the parameter `timeUnit=MICROSECOND or timeUnit=microsecond` in the URL. 
-    * For example: `/stream?streams=btcusdt@trade&timeUnit=MICROSECOND`
-  * If your request contains a symbol name containing non-ASCII characters, then the stream events may contain non-ASCII characters encoded in UTF-8.
-  * [All Market Mini Tickers Stream](#all-market-mini-tickers-stream and [All Market Rolling Window Statistics Streams](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#all-market-rolling-window-statistics-streams) events may contain non-ASCII characters encoded in UTF-8.
+  * 通过使用 API Key 订阅 [WebSocket API](/docs/zh-CN/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-stream-subscribe)。
+  * 支持 [SBE](/docs/zh-CN/binance-spot-api-docs/faqs/sbe_faq) 和 JSON 输出格式。
+  * 账户事件以 **实时** 方式推送。
+  * JSON 数据中的所有时间戳默认均为 **毫秒** 。
+  * 如果您持有或交易任何名称包含非 ASCII 字符的资产或交易对，那么事件中可能包含以 UTF-8 编码的非 ASCII 字符。
 
 
 
-## WebSocket Limits[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#websocket-limits "WebSocket Limits的直接链接")
+## 用户数据流事件[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#用户数据流事件 "用户数据流事件的直接链接")
 
-  * WebSocket connections have a limit of 5 incoming messages per second. A message is considered: 
-    * A PING frame
-    * A PONG frame
-    * A JSON controlled message (e.g. subscribe, unsubscribe)
-  * A connection that goes beyond the limit will be disconnected; IPs that are repeatedly disconnected may be banned.
-  * A single connection can listen to a maximum of 1024 streams.
-  * There is a limit of **300 connections per attempt every 5 minutes per IP**.
+### 账户更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#账户更新 "账户更新的直接链接")
 
+每当帐户余额发生更改时，都会发送一个事件`outboundAccountPosition`，其中包含可能由生成余额变动的事件而变动的资产。
 
-
-## Live Subscribing/Unsubscribing to streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#live-subscribingunsubscribing-to-streams "Live Subscribing/Unsubscribing to streams的直接链接")
-
-  * The following data can be sent through the WebSocket instance in order to subscribe/unsubscribe from streams. Examples can be seen below.
-  * The `id` is used as an identifier to uniquely identify the messages going back and forth. The following formats are accepted: 
-    * 64-bit signed integer
-    * alphanumeric strings; max length 36
-    * `null`
-  * In the response, if the `result` received is `null` this means the request sent was a success for non-query requests (e.g. Subscribing/Unsubscribing).
-
-
-
-### Subscribe to a stream[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#subscribe-to-a-stream "Subscribe to a stream的直接链接")
-
-  * Request
-        
-        {  
-            "method": "SUBSCRIBE",  
-            "params": ["btcusdt@aggTrade", "btcusdt@depth"],  
-            "id": 1  
+**Payload**
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "outboundAccountPosition",     // 事件类型  
+            "E": 1564034571105,                 // 事件时间  
+            "u": 1564034571073,                 // 账户末次更新时间戳  
+            "B": [                              // 余额  
+                {  
+                    "a": "ETH",                 // 资产名称  
+                    "f": "10000.000000",        // 可用余额  
+                    "l": "0.000000"             // 冻结余额  
+                }  
+            ]  
         }  
-        
+    }  
+    
 
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 1  
+### 余额更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#余额更新 "余额更新的直接链接")
+
+当下列情形发生时更新:
+
+  * 账户发生充值或提取
+  * 交易账户之间发生划转(例如 现货向杠杆账户划转)
+
+
+
+**Payload**
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "balanceUpdate",     // 事件类型  
+            "E": 1573200697110,       // 事件时间  
+            "a": "BTC",               // 资产名称  
+            "d": "100.00000000",      // 余额增量  
+            "T": 1573200697068        // 清算时间  
         }  
-        
+    }  
+    
 
+### 订单更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单更新 "��订单更新的直接链接")
 
+订单通过`executionReport`事件进行更新。
 
-
-### Unsubscribe to a stream[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#unsubscribe-to-a-stream "Unsubscribe to a stream的直接链接")
-
-  * Request
-        
-        {  
-            "method": "UNSUBSCRIBE",  
-            "params": ["btcusdt@depth"],  
-            "id": 312  
+**Payload:**
+    
+    
+    {  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "executionReport",            // 事件类型  
+            "E": 1499405658658,                // 事件时间  
+            "s": "ETHBTC",                     // 交易对  
+            "c": "mUvoqJxFIILMdfAW5iGSOW",     // clientOrderId  
+            "S": "BUY",                        // 订单方向  
+            "o": "LIMIT",                      // 订单类型  
+            "f": "GTC",                        // 有效方式  
+            "q": "1.00000000",                 // 订单原始数量  
+            "p": "0.10264410",                 // 订单原始价格  
+            "P": "0.00000000",                 // 止盈止损单触发价格  
+            "F": "0.00000000",                 // 冰山订单数量  
+            "g": -1,                           // OCO订单 OrderListId  
+            "C": "",                           // 原始订单自定义ID（原始订单，指撤单操作的对象。撤单本身被视为另一个订单）  
+            "x": "NEW",                        // 本次事件的具体执行类型  
+            "X": "NEW",                        // 订单的当前状态  
+            "r": "NONE",                       // 订单被拒绝的原因；请参阅订单被拒绝的原因（下文）了解更多信息  
+            "i": 4293153,                      // orderId  
+            "l": "0.00000000",                 // 订单末次成交量  
+            "z": "0.00000000",                 // 订单累计已成交量  
+            "L": "0.00000000",                 // 订单末次成交价格  
+            "n": "0",                          // 手续费数量  
+            "N": null,                         // 手续费资产类别  
+            "T": 1499405658657,                // 成交时间  
+            "t": -1,                           // Trade ID  
+            "v": 3,                            // 被阻止的交易Id；仅在订单因为STP被阻止时显示  
+            "I": 8641984,                      // Execution ID  
+            "w": true,                         // 订单是否在订单簿上？  
+            "m": false,                        // 该成交是作为挂单成交吗？  
+            "M": false,                        // 请忽略  
+            "O": 1499405658657,                // 订单创建时间  
+            "Z": "0.00000000",                 // 订单累计已成交金额  
+            "Y": "0.00000000",                 // 订单末次成交金额  
+            "Q": "0.00000000",                 // Quote Order Quantity  
+            "W": 1499405658657,                // Working Time; 订单被添加到 order book 的时间  
+            "V": "NONE"                        // SelfTradePreventionMode  
         }  
-        
+    }  
+    
 
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 312  
-        }  
-        
+**备注:** 通过将`Z`除以`z`可以找到平均价格。
 
+#### `executionReport` 中的特定条件时才会出现的字段[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#executionreport-中的特定条件时才会出现的字段 "executionreport-中的特定条件时才会出现的字段的直接链接")
 
+这些字段仅在满足特定条件时才会出现。有关这些参数的更多信息，请参阅 [现货交易API术语表](/docs/zh-CN/binance-spot-api-docs/faqs/spot_glossary)。
 
-
-### Listing Subscriptions[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#listing-subscriptions "Listing Subscriptions的直接链接")
-
-  * Request
-        
-        {  
-            "method": "LIST_SUBSCRIPTIONS",  
-            "id": 3  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": ["btcusdt@aggTrade"],  
-            "id": 3  
-        }  
-        
-
-
-
-
-### Setting Properties[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#setting-properties "Setting Properties的直接链接")
-
-Currently, the only property that can be set is whether `combined` stream payloads are enabled or not. The combined property is set to `false` when connecting using `/ws/` ("raw streams") and `true` when connecting using `/stream/`.
-
-  * Request
-        
-        {  
-            "method": "SET_PROPERTY",  
-            "params": ["combined", true],  
-            "id": 5  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": null,  
-            "id": 5  
-        }  
-        
-
-
-
-
-### Retrieving Properties[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#retrieving-properties "Retrieving Properties的直接链接")
-
-  * Request
-        
-        {  
-            "method": "GET_PROPERTY",  
-            "params": ["combined"],  
-            "id": 2  
-        }  
-        
-
-  * Response
-        
-        {  
-            "result": true, // Indicates that combined is set to true.  
-            "id": 2  
-        }  
-        
-
-
-
-
-### Error Messages[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#error-messages "Error Messages的直接链接")
-
-Error Message| Description  
----|---  
-{"code": 0, "msg": "Unknown property","id": %s}| Parameter used in the `SET_PROPERTY` or `GET_PROPERTY` was invalid  
-{"code": 1, "msg": "Invalid value type: expected Boolean"}| Value should only be `true` or `false`  
-{"code": 2, "msg": "Invalid request: property name must be a string"}| Property name provided was invalid  
-{"code": 2, "msg": "Invalid request: request ID must be an unsigned integer"}| Parameter `id` had to be provided or the value provided in the `id` parameter is an unsupported type  
-{"code": 2, "msg": "Invalid request: unknown variant %s, expected one of `SUBSCRIBE`, `UNSUBSCRIBE`, `LIST_SUBSCRIPTIONS`, `SET_PROPERTY`, `GET_PROPERTY` at line 1 column 28"}| Possible typo in the provided method or provided method was neither of the expected values  
-{"code": 2, "msg": "Invalid request: too many parameters"}| Unnecessary parameters provided in the data  
-{"code": 2, "msg": "Invalid request: property name must be a string"}| Property name was not provided  
-{"code": 2, "msg": "Invalid request: missing field `method` at line 1 column 73"}| `method` was not provided in the data  
-{"code":3,"msg":"Invalid JSON: expected value at line %s column %s"}| JSON data sent has incorrect syntax.  
+字段 | 名称 | 描述 | 示例  
+---|---|---|---  
+`d` | Trailing Delta | 出现在追踪止损订单中。 | `"d": 4`  
+`D` | Trailing Time | `"D": 1668680518494`  
+`j` | Strategy Id | 如果在请求中添加了`strategyId`参数，则会出现。 | `"j": 1`  
+`J` | Strategy Type | 如果在请求中添加了`strategyType`参数，则会出现。 | `"J": 1000000`  
+`v` | Prevented Match Id | 只有在因为 STP 导致订单失效时可见。 | `"v": 3`  
+`A` | Prevented Quantity | `"A":"3.000000"`  
+`B` | Last Prevented Quantity | `"B":"3.000000"`  
+`u` | Trade Group Id | `"u":1`  
+`U` | Counter Order Id | `"U":37`  
+`Cs` | Counter Symbol | `"Cs": "BTCUSDT"`  
+`pl` | Prevented Execution Quantity | `"pl":"2.123456"`  
+`pL` | Prevented Execution Price | `"pL":"0.10000001"`  
+`pY` | Prevented Execution Quote Qty | `"pY":"0.21234562"`  
+`W` | Working Time | 只有在订单在订单簿上时可见 | `"W": 1668683798379`  
+`b` | Match Type | 只有在订单有分配时可见 | `"b":"ONE_PARTY_TRADE_REPORT"`  
+`a` | Allocation ID | `"a":1234`  
+`k` | Working Floor | 只有在订单可能有分配时可见 | `"k":"SOR"`  
+`uS` | UsedSor | 只有在订单使用 SOR 时可见 | `"uS":true`  
+`gP` | Pegged Price Type | 仅出现在挂钩订单中 | `"gP": "PRIMARY_PEG"`  
+`gOT` | Pegged offset Type | `"gOT": "PRICE_LEVEL"`  
+`gOV` | Pegged Offset Value | `"gOV": 5`  
+`gp` | Pegged Price | `"gp": "1.00000000"`  
+`eR` | Expiry Reason | 当订单已过期时出现。 | `"eR": "INSUFFICIENT_LIQUIDITY"`  
   
-# Detailed Stream information
+#### 订单拒绝原因[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单拒绝原因 "订单拒绝原因的直接链接")
 
-## Aggregate Trade Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#aggregate-trade-streams "Aggregate Trade Streams的直接链接")
+有关更多详细信息，请查阅 [错误代码汇总](/docs/zh-CN/binance-spot-api-docs/errors#other-errors) 文档中的错误消息。
 
-The Aggregate Trade Streams push trade information that is aggregated for a single taker order.
+拒绝原因 (`r`)| 错误信息  
+---|---  
+`NONE`| N/A (i.e. The order was not rejected.)  
+`INSUFFICIENT_BALANCES`| "Account has insufficient balance for requested action."  
+`STOP_PRICE_WOULD_TRIGGER_IMMEDIATELY`| "Order would trigger immediately."  
+`WOULD_MATCH_IMMEDIATELY`| "Order would immediately match and take."  
+`OCO_BAD_PRICES`| "The relationship of the prices for the orders is not correct."  
+  
+如果是一个订单列表，则除了显示 `executionReport` 事件外，还将显示一个名为 `ListStatus` 的事件。
 
-**Stream Name:** <symbol>@aggTrade
-
-**Update Speed:** Real-time
-
-**Payload:**
+**Payload**
     
     
     {  
-        "e": "aggTrade",        // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "a": 12345,             // Aggregate trade ID  
-        "p": "0.001",           // Price  
-        "q": "100",             // Quantity  
-        "f": 100,               // First trade ID  
-        "l": 105,               // Last trade ID  
-        "T": 1672515782136,     // Trade time  
-        "m": true,              // Is the buyer the market maker?  
-        "M": true               // Ignore  
-    }  
-    
-
-## Trade Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#trade-streams "Trade Streams的直接链接")
-
-The Trade Streams push raw trade information; each trade has a unique buyer and seller.
-
-**Stream Name:** <symbol>@trade
-
-**Update Speed:** Real-time
-
-**Payload:**
-    
-    
-    {  
-        "e": "trade",           // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "t": 12345,             // Trade ID  
-        "p": "0.001",           // Price  
-        "q": "100",             // Quantity  
-        "T": 1672515782136,     // Trade time  
-        "m": true,              // Is the buyer the market maker?  
-        "M": true               // Ignore  
-    }  
-    
-
-## Kline/Candlestick Streams for UTC[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#klinecandlestick-streams-for-utc "Kline/Candlestick Streams for UTC的直接链接")
-
-The Kline/Candlestick Stream push updates to the current klines/candlestick every second in `UTC+0` timezone.
-
-**Kline/Candlestick chart intervals:**
-
-s-> seconds; m -> minutes; h -> hours; d -> days; w -> weeks; M -> months
-
-  * 1s
-  * 1m
-  * 3m
-  * 5m
-  * 15m
-  * 30m
-  * 1h
-  * 2h
-  * 4h
-  * 6h
-  * 8h
-  * 12h
-  * 1d
-  * 3d
-  * 1w
-  * 1M
-
-
-
-**Stream Name:** <symbol>@kline_<interval>
-
-**Update Speed:** 1000ms for `1s`, 2000ms for the other intervals
-
-**Payload:**
-    
-    
-    {  
-        "e": "kline",               // Event type  
-        "E": 1672515782136,         // Event time  
-        "s": "BNBBTC",              // Symbol  
-        "k": {  
-            "t": 1672515780000,     // Kline start time  
-            "T": 1672515839999,     // Kline close time  
-            "s": "BNBBTC",          // Symbol  
-            "i": "1m",              // Interval  
-            "f": 100,               // First trade ID  
-            "L": 200,               // Last trade ID  
-            "o": "0.0010",          // Open price  
-            "c": "0.0020",          // Close price  
-            "h": "0.0025",          // High price  
-            "l": "0.0015",          // Low price  
-            "v": "1000",            // Base asset volume  
-            "n": 100,               // Number of trades  
-            "x": false,             // Is this kline closed?  
-            "q": "1.0000",          // Quote asset volume  
-            "V": "500",             // Taker buy base asset volume  
-            "Q": "0.500",           // Taker buy quote asset volume  
-            "B": "123456"           // Ignore  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "listStatus",                        // 事件类型  
+            "E": 1564035303637,                       // 事件时间  
+            "s": "ETHBTC",                            // 交易对  
+            "g": 2,                                   // OrderListId  
+            "c": "OCO",                               // Contingency 类型  
+            "l": "EXEC_STARTED",                      // List 状态类型  
+            "L": "EXECUTING",                         // List 订单类型  
+            "r": "NONE",                              // List 被拒绝的原因  
+            "C": "F4QN4G8DlFATFlIUQ0cjdD",            // List Client Order ID  
+            "T": 1564035303625,                       // 成交时间  
+            "O": [                                    // 对象数组  
+                {  
+                    "s": "ETHBTC",                    // 交易对  
+                    "i": 17,                          // orderId  
+                    "c": "AJYsMjErWJesZvqlJCTUgL"     // clientOrderId  
+                },  
+                {  
+                    "s": "ETHBTC",  
+                    "i": 18,  
+                    "c": "bfYPSQdLoqAJeNrOr9adzq"  
+                }  
+            ]  
         }  
     }  
     
 
-## Kline/Candlestick Streams with timezone offset[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#klinecandlestick-streams-with-timezone-offset "Kline/Candlestick Streams with timezone offset的直接链接")
+#### 订单过期原因[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单过期原因 "订单过期原因的直接链接")
 
-The Kline/Candlestick Stream push updates to the current klines/candlestick every second in `UTC+8` timezone.
+过期原因 (`eR`)| 说明  
+---|---  
+`REJECTED`| 当尝试将条件单或OTO（One-Triggers-the-Other）订单放入订单簿时，被撮合引擎拒绝。常见原因包括资金不足和过滤器拒绝。  
+`EXCHANGE_CANCELED`| 订单被币安取消。  
+`OCO_TRIGGER`| OCO（One-Cancels-the-Other）订单对中的一个订单被取消，因为其另一个订单开始生效或整个OCO订单对过期。  
+`OTO_PHASE_ONE_EXPIRED`| 订单列表中的生效订单过期，导致整个订单列表过期。  
+`UNFILLED_IOC_QUANTITY_EXPIRED`| IOC（立即成交或取消）订单未完全成交，因此过期。  
+`UNFILLED_FOK_ORDER_EXPIRED`| FOK（全部成交或取消）订单未完全成交，因此过期。  
+`INSUFFICIENT_LIQUIDITY`| 订单簿中没有足够的订单与该订单匹配。  
+`EXECUTION_RULE_PRICE_RANGE_EXCEEDED`| 订单尝试以不符合价格区间执行规则的价格进行交易。  
+  
+请查阅 [枚举定义](/docs/zh-CN/binance-spot-api-docs/enums) 文档获取更多枚举定义。
 
-**Kline/Candlestick chart intervals:** Supported intervals: See [`Kline/Candlestick chart intervals`](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#kline-intervals)
+## 事件流已终止[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#事件流已终止 "事件流已终止的直接链接")
 
-**UTC+8 timezone offset:**
+此事件仅在订阅 WebSocket API 时显示。
 
-  * Kline intervals open and close in the `UTC+8` timezone. For example the `1d` klines will open at the beginning of the `UTC+8` day, and close at the end of the `UTC+8` day.
-  * Note that `E` (event time), `t` (start time), and `T` (close time) in the payload are Unix timestamps, which are always interpreted in UTC.
+`eventStreamTerminated` 会在以下情况下发送：
+
+  * 当 [Listen Token 订阅](https://developers.binance.com/docs/zh-CN/margin_trading/trade-data-stream/Listen-Token-Websocket-API) 因 Token 过期而失效时。
+  * 在发送 [`session.logout`](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/websocket-api/authentication-requests#%E9%80%80%E5%87%BA%E4%BC%9A%E8%AF%9D) 方法后，[登录订阅](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/websocket-api/authentication-requests#%E7%94%A8api-key%E7%99%BB%E5%BD%95-signed) 结束时。
+  * 通过 [`userDataStream.unsubscribe`](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/websocket-api/user-data-stream-requests#%E5%8F%96%E6%B6%88%E8%AE%A2%E9%98%85%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%B5%81) 方法终止订阅时。
 
 
-
-**Stream Name:** <symbol>@kline_<interval>@+08:00
-
-**Update Speed:** 1000ms for `1s`, 2000ms for the other intervals
 
 **Payload:**
     
     
     {  
-        "e": "kline",               // Event type  
-        "E": 1672515782136,         // Event time  
-        "s": "BNBBTC",              // Symbol  
-        "k": {  
-            "t": 1672515780000,     // Kline start time  
-            "T": 1672515839999,     // Kline close time  
-            "s": "BNBBTC",          // Symbol  
-            "i": "1m",              // Interval  
-            "f": 100,               // First trade ID  
-            "L": 200,               // Last trade ID  
-            "o": "0.0010",          // Open price  
-            "c": "0.0020",          // Close price  
-            "h": "0.0025",          // High price  
-            "l": "0.0015",          // Low price  
-            "v": "1000",            // Base asset volume  
-            "n": 100,               // Number of trades  
-            "x": false,             // Is this kline closed?  
-            "q": "1.0000",          // Quote asset volume  
-            "V": "500",             // Taker buy base asset volume  
-            "Q": "0.500",           // Taker buy quote asset volume  
-            "B": "123456"           // Ignore  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "eventStreamTerminated",     // 事件类型  
+            "E": 1728973001334                // 事件时间  
         }  
     }  
     
 
-## Individual Symbol Mini Ticker Stream[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-mini-ticker-stream "Individual Symbol Mini Ticker Stream的直接链接")
+## 外部锁定更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#外部锁定更新 "外部锁定更新的直接链接")
 
-24hr rolling window mini-ticker statistics. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs.
-
-**Stream Name:** <symbol>@miniTicker
-
-**Update Speed:** 1000ms
+当您的现货钱包余额被外部系统锁定/解锁时 （例如，当用作保证金抵押品时），新事件 `externalLockUpdate` 将会被发送。
 
 **Payload:**
     
     
     {  
-        "e": "24hrMiniTicker",     // Event type  
-        "E": 1672515782136,        // Event time  
-        "s": "BNBBTC",             // Symbol  
-        "c": "0.0025",             // Close price  
-        "o": "0.0010",             // Open price  
-        "h": "0.0025",             // High price  
-        "l": "0.0010",             // Low price  
-        "v": "10000",              // Total traded base asset volume  
-        "q": "18"                  // Total traded quote asset volume  
-    }  
-    
-
-## All Market Mini Tickers Stream[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#all-market-mini-tickers-stream "All Market Mini Tickers Stream的直接链接")
-
-24hr rolling window mini-ticker statistics for all symbols that changed in an array. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs. Note that only tickers that have changed will be present in the array.
-
-**Stream Name:** !miniTicker@arr
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    [  
-        {  
-            // Same as <symbol>@miniTicker payload  
+        "subscriptionId": 0,  
+        "event": {  
+            "e": "externalLockUpdate",     // 事件类型  
+            "E": 1581557507324,            // 事件时间  
+            "a": "NEO",                    // 资产  
+            "d": "10.00000000",            // 余额变动量  
+            "T": 1581557507268             // 交易时间  
         }  
-    ]  
-    
-
-## Individual Symbol Ticker Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-ticker-streams "Individual Symbol Ticker Streams的直接链接")
-
-24hr rolling window ticker statistics for a single symbol. These are NOT the statistics of the UTC day, but a 24hr rolling window for the previous 24hrs.
-
-**Stream Name:** <symbol>@ticker
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "24hrTicker",      // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "p": "0.0015",          // Price change  
-        "P": "250.00",          // Price change percent  
-        "w": "0.0018",          // Weighted average price  
-        "x": "0.0009",          // First trade(F)-1 price (first trade before the 24hr rolling window)  
-        "c": "0.0025",          // Last price  
-        "Q": "10",              // Last quantity  
-        "b": "0.0024",          // Best bid price  
-        "B": "10",              // Best bid quantity  
-        "a": "0.0026",          // Best ask price  
-        "A": "100",             // Best ask quantity  
-        "o": "0.0010",          // Open price  
-        "h": "0.0025",          // High price  
-        "l": "0.0010",          // Low price  
-        "v": "10000",           // Total traded base asset volume  
-        "q": "18",              // Total traded quote asset volume  
-        "O": 0,                 // Statistics open time  
-        "C": 86400000,          // Statistics close time  
-        "F": 0,                 // First trade ID  
-        "L": 18150,             // Last trade Id  
-        "n": 18151              // Total number of trades  
-    }  
-    
-
-## Individual Symbol Rolling Window Statistics Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-rolling-window-statistics-streams "Individual Symbol Rolling Window Statistics Streams的直接链接")
-
-Rolling window ticker statistics for a single symbol, computed over multiple windows.
-
-**Stream Name:** <symbol>@ticker_<window_size>
-
-**Window Sizes:** 1h,4h,1d
-
-**Update Speed:** 1000ms
-
-**Note** : This stream is different from the <symbol>@ticker stream. The open time `O` always starts on a minute, while the closing time `C` is the current time of the update. As such, the effective window might be up to 59999ms wider that <window_size>.
-
-**Payload:**
-    
-    
-    {  
-        "e": "1hTicker",        // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "p": "0.0015",          // Price change  
-        "P": "250.00",          // Price change percent  
-        "o": "0.0010",          // Open price  
-        "h": "0.0025",          // High price  
-        "l": "0.0010",          // Low price  
-        "c": "0.0025",          // Last price  
-        "w": "0.0018",          // Weighted average price  
-        "v": "10000",           // Total traded base asset volume  
-        "q": "18",              // Total traded quote asset volume  
-        "O": 0,                 // Statistics open time  
-        "C": 1675216573749,     // Statistics close time  
-        "F": 0,                 // First trade ID  
-        "L": 18150,             // Last trade Id  
-        "n": 18151              // Total number of trades  
-    }  
-    
-
-## All Market Rolling Window Statistics Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#all-market-rolling-window-statistics-streams "All Market Rolling Window Statistics Streams的直接链接")
-
-Rolling window ticker statistics for all market symbols, computed over multiple windows. Note that only tickers that have changed will be present in the array.
-
-**Stream Name:** !ticker_<window-size>@arr
-
-**Window Size:** 1h,4h,1d
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    [  
-        {  
-            // Same as <symbol>@ticker_<window-size> payload,  
-            // one for each symbol updated within the interval.  
-        }  
-    ]  
-    
-
-## Individual Symbol Book Ticker Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#individual-symbol-book-ticker-streams "Individual Symbol Book Ticker Streams的直接链接")
-
-Pushes any update to the best bid or ask's price or quantity in real-time for a specified symbol. Multiple `<symbol>@bookTicker` streams can be subscribed to over one connection.
-
-**Stream Name:** <symbol>@bookTicker
-
-**Update Speed:** Real-time
-
-**Payload:**
-    
-    
-    {  
-        "u": 400900217,         // order book updateId  
-        "s": "BNBUSDT",         // symbol  
-        "b": "25.35190000",     // best bid price  
-        "B": "31.21000000",     // best bid qty  
-        "a": "25.36520000",     // best ask price  
-        "A": "40.66000000"      // best ask qty  
-    }  
-    
-
-## Average Price[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#average-price "Average Price的直接链接")
-
-Average price streams push changes in the average price over a fixed time interval.
-
-**Stream Name:** <symbol>@avgPrice
-
-**Update Speed:** 1000ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "avgPrice",           // Event type  
-        "E": 1693907033000,        // Event time  
-        "s": "BTCUSDT",            // Symbol  
-        "i": "5m",                 // Average price interval  
-        "w": "25776.86000000",     // Average price  
-        "T": 1693907032213         // Last trade time  
-    }  
-    
-
-## Partial Book Depth Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#partial-book-depth-streams "Partial Book Depth Streams的直接链接")
-
-Top **< levels>** bids and asks, pushed every second. Valid **< levels>** are 5, 10, or 20.
-
-**Stream Names:** <symbol>@depth<levels> OR <symbol>@depth<levels>@100ms
-
-**Update Speed:** 1000ms or 100ms
-
-**Payload:**
-    
-    
-    {  
-        "lastUpdateId": 160,     // Last update ID  
-        "bids": [                // Bids to be updated  
-            [  
-                "0.0024",        // Price level to be updated  
-                "10"             // Quantity  
-            ]  
-        ],  
-        "asks": [                // Asks to be updated  
-            [  
-                "0.0026",        // Price level to be updated  
-                "100"            // Quantity  
-            ]  
-        ]  
-    }  
-    
-
-## Diff. Depth Stream[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#diff-depth-stream "Diff. Depth Stream的直接链接")
-
-Order book price and quantity depth updates used to locally manage an order book.
-
-**Stream Name:** <symbol>@depth OR <symbol>@depth@100ms
-
-**Update Speed:** 1000ms or 100ms
-
-**Payload:**
-    
-    
-    {  
-        "e": "depthUpdate",     // Event type  
-        "E": 1672515782136,     // Event time  
-        "s": "BNBBTC",          // Symbol  
-        "U": 157,               // First update ID in event  
-        "u": 160,               // Final update ID in event  
-        "b": [                  // Bids to be updated  
-            [  
-                "0.0024",       // Price level to be updated  
-                "10"            // Quantity  
-            ]  
-        ],  
-        "a": [                  // Asks to be updated  
-            [  
-                "0.0026",       // Price level to be updated  
-                "100"           // Quantity  
-            ]  
-        ]  
-    }  
-    
-
-## How to manage a local order book correctly[​](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#how-to-manage-a-local-order-book-correctly "How to manage a local order book correctly的直接链接")
-
-  1. Open a WebSocket connection to `wss://stream.testnet.binance.vision:9443/ws/bnbbtc@depth`.
-  2. Buffer the events received from the stream. Note the `U` of the first event you received.
-  3. Get a depth snapshot from `https://testnet.binance.vision/api/v3/depth?symbol=BNBBTC&limit=5000`.
-  4. If the `lastUpdateId` from the snapshot is strictly less than the `U` from step 2, go back to step 3.
-  5. In the buffered events, discard any event where `u` is <= `lastUpdateId` of the snapshot. The first buffered event should now have `lastUpdateId` within its `[U;u]` range.
-  6. Set your local order book to the snapshot. Its update ID is `lastUpdateId`.
-  7. Apply the update procedure below to all buffered events, and then to all subsequent events received.
-
-
-
-To apply an event to your local order book, follow this update procedure:
-
-  1. Decide whether the update event can be applied: 
-     * If the event last update ID (`u`) is less than the update ID of your local order book, ignore the event.
-     * If the event first update ID (`U`) is greater than the update ID of your local order book + 1, you have missed some events.   
-Discard your local order book and restart the process from the beginning.
-     * Normally, `U` of the next event is equal to `u + 1` of the previous event.
-  2. For each price level in bids (`b`) and asks (`a`), set the new quantity in the order book: 
-     * If the price level does not exist in the order book, insert it with new quantity.
-     * If the quantity is zero, remove the price level from the order book.
-  3. Set the order book update ID to the last update ID (`u`) in the processed event.
-
-
-
-> [!NOTE] Since depth snapshots retrieved from the API have a limit on the number of price levels (5000 on each side maximum), you won't learn the quantities for the levels outside of the initial snapshot unless they change.   
->  So be careful when using the information for those levels, since they might not reflect the full view of the order book.   
->  However, for most use cases, seeing 5000 levels on each side is enough to understand the market and trade effectively.
+    }

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/fetch-deposit-address-list-with-network
 api_type: REST
-updated_at: 2026-01-15T23:49:36.643883
+updated_at: 2026-05-27 18:59:29.747496
 ---
 
 # Fetch deposit address list with network(USER_DATA)
@@ -36,24 +36,24 @@ timestamp| LONG| YES|
     
     
     [  
-      {  
-        "coin": "ETH", //coin here means network address space, ETH for all EVM-like network  
-        "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
-        "tag":"",  
-        "isDefault": 0  
-      },   
-      {  
-        "coin": "ETH",  
-        "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
-        "tag":"",  
-        "isDefault": 0  
-      },   
-      {  
-        "coin": "ETH",  
-        "address": "0x00003ada75e7da97ba0db2fcde72131f712455e2",  
-        "tag":"",  
-        "isDefault": 1  //'isDefault' is 1 means the address is default, same as shown in the app.  
-      }  
+        {  
+            "coin": "ETH",                                               // coin here means network address space, ETH for all EVM-like network  
+            "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
+            "tag": "",  
+            "isDefault": 0  
+        },  
+        {  
+            "coin": "ETH",  
+            "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
+            "tag": "",  
+            "isDefault": 0  
+        },  
+        {  
+            "coin": "ETH",  
+            "address": "0x00003ada75e7da97ba0db2fcde72131f712455e2",  
+            "tag": "",  
+            "isDefault": 1                                               // 'isDefault' is 1 means the address is default, same as shown in the app.  
+        }  
     ]
 
 ---
@@ -89,22 +89,22 @@ timestamp| LONG| YES| 时间戳
     
     
     [  
-      {  
-        "coin": "ETH",  //这里 coin 实际上指 network 的地址空间, 类 ETH 网络都使用 ETH 的地址  
-        "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
-        "tag":"",  
-        "isDefault": 0  
-      },   
-      {  
-        "coin": "ETH",  
-        "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
-        "tag":"",  
-        "isDefault": 0  
-      },   
-      {  
-        "coin": "ETH",  
-        "address": "0x00003ada75e7da97ba0db2fcde72131f712455e2",  
-        "tag":"",  
-        "isDefault": 1    
-      }  
+        {  
+            "coin": "ETH", //这里 coin 实际上指 network 的地址空间, 类 ETH 网络都使用 ETH 的地址  
+            "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
+            "tag": "",  
+            "isDefault": 0  
+        },  
+        {  
+            "coin": "ETH",  
+            "address": "0xD316E95Fd9E8E237Cb11f8200Babbc5D8D177BA4",  
+            "tag": "",  
+            "isDefault": 0  
+        },  
+        {  
+            "coin": "ETH",  
+            "address": "0x00003ada75e7da97ba0db2fcde72131f712455e2",  
+            "tag": "",  
+            "isDefault": 1  
+        }  
     ]

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/change-log
 api_type: Account
-updated_at: 2026-01-15T23:51:21.219582
+updated_at: 2026-05-27 19:02:47.864304
 ---
 
 # Change Log
@@ -258,11 +258,11 @@ The query time period must be less then 30 days; If `startTime` and `endTime` no
 
 ## 2021-11-16[​](/docs/sub_account/change-log#2021-11-16 "Direct link to 2021-11-16")
 
-  * 新增子母账户接口: 
-    * `POST /sapi/v1/sub-account/subAccountApi/ipRestriction` 以支持母账户为子账户 API Key 开启或关闭 IP 白名单
-    * `POST /sapi/v1/sub-account/subAccountApi/ipRestriction/ipList` 以支持母账户为子账户 API Key 添加 IP 白名单地址列表
-    * `GET /sapi/v1/sub-account/subAccountApi/ipRestriction` 以支持母账户为子账户 API Key 查询 IP 白名单
-    * `DELETE /sapi/v1/sub-account/subAccountApi/ipRestriction/ipList` 以支持母账户为子账户 API Key 删除 IP 白名单地址列表
+  * New endpoints for Sub-Account: 
+    * `POST /sapi/v1/sub-account/subAccountApi/ipRestriction` to support master account enable and disable IP whitelist for a sub-account API Key
+    * `POST /sapi/v1/sub-account/subAccountApi/ipRestriction/ipList` to support master account add IP Whitelist Address List for a sub-account API Key
+    * `GET /sapi/v1/sub-account/subAccountApi/ipRestriction` to support master account query IP whitelist for a sub-account API Key
+    * `DELETE /sapi/v1/sub-account/subAccountApi/ipRestriction/ipList` to support master account delete IP Whitelist Address List for a sub-account API Key
 
 
 

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders
 api_type: Trading
-updated_at: 2026-01-15T23:48:47.010164
+updated_at: 2026-05-27 18:57:28.908756
 ---
 
 # Margin Account Cancel all Open Orders on a Symbol (TRADE)

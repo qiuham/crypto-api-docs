@@ -2,703 +2,189 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/general-info
 api_type: REST
-updated_at: 2026-01-15T23:36:31.686621
+updated_at: 2026-05-27 18:54:47.355417
 ---
 
-# General Info
+# SBE Market Data Streams
 
-###  How can I use the Spot Test Network? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-how-to-use "Direct link to 
-        How can I use the Spot Test Network?
-")
+## General Information[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#general-information "Direct link to General Information")
 
-Step 1: Log in on this [website](https://testnet.binance.vision/), and generate an API Key. 
+  * The base endpoint is **stream-sbe.testnet.binance.vision** or **stream-sbe.testnet.binance.vision:9443**.
+  * To retrieve market data in JSON format, please refer to [this page](/docs/binance-spot-api-docs/testnet/web-socket-streams).
+  * SBE schema used for decoding the streams can be found [here](https://github.com/binance/binance-spot-api-docs/blob/master/sbe/schemas/stream_1_0.xml).
+  * All symbols in stream names are **lowercase**.
+  * You can subscribe to a single stream at **/ws/ <streamName>**.
+  * You can subscribe to multiple streams at **/stream?streams= <streamName1>/<streamName2>/<streamName3>**.
+  * A single connection to **stream-sbe.testnet.binance.vision** is **only valid for 24 hours** ; expect to be disconnected at the 24 hour mark.
+  * All time and timestamp fields are in **microseconds**.
+  * **An API Key is necessary for access**. 
+    * Only Ed25519 keys are allowed.
+    * Please put your API Key in the `X-MBX-APIKEY` header when opening the connection. Timestamp and signature are not necessary.
+    * No extra API key permissions are necessary to access public market data. Symbol whitelist also does not affect access to SBE Market Data Streams.
+    * However, if you use an IP whitelist for the API key, only specified IP addresses are allowed to use the API key.
+  * The server sends a `ping frame` every 20 seconds. 
+    * If the server does not receive a `pong frame` back from you within a minute, the connection will be closed.
+    * When you receive a ping, you must send a pong with a copy of ping's payload as soon as possible.
+    * Unsolicited `pong frames` are allowed, but will not prevent disconnection. **It is recommended that the payload for these pong frames are empty.**
+  * [Live Subscribing and Unsubscribing](/docs/binance-spot-api-docs/testnet/web-socket-streams#live-subscribingunsubscribing-to-streams) is also supported. 
+    * You must send the subscription requests in JSON, and will receive the subscription response also in JSON.
+    * You can differentiate subscription responses from market data events by looking at the WebSocket frame type: subscription responses are always sent in text frames (containing JSON), and events are always sent in binary frames (containing SBE).
 
-Step 2: Follow the [official documentation of the Spot API](https://developers.binance.com/docs/binance-spot-api-docs/CHANGELOG), replacing the URLs of the endpoints with the following values: 
 
-Spot API URLs | Spot Test Network URLs  
----|---  
-  
-  * https://api.binance.com/api
-  * https://api-gcp.binance.com/api
-  * https://api1.binance.com/api
-  * https://api2.binance.com/api
-  * https://api3.binance.com/api
-  * https://api4.binance.com/api
 
-| 
+## WebSocket Limits[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#websocket-limits "Direct link to WebSocket Limits")
 
-  * **https://testnet.binance.vision/api**
-  * **https://api1.testnet.binance.vision/api**
+  * WebSocket connections have a rate limit of **5 requests per second**. 
+    * Only messages from your client are considered: 
+      * `PING frame`
+      * `PONG frame`
+      * `Text frame` with JSON control request
+    * Events pushed by the server are not rate-limited.
+    * Connections that go beyond the limit will be closed. Repeatedly disconnected IP addresses may be banned.
+  * A single connection can listen to a maximum of 1024 streams.
+  * There is a limit of **300 connection attempts every 5 minutes per IP address**.
 
-  
-  
-  * wss://ws-api.binance.com/ws-api/v3
-  * wss://ws-api.binance.com:9443/ws-api/v3
 
-| 
 
-  * **wss://ws-api.testnet.binance.vision/ws-api/v3**
-  * **wss://ws-api.testnet.binance.vision:9443/ws-api/v3**
+## Available Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#available-streams "Direct link to Available Streams")
 
-  
-  
-  * wss://stream.binance.com/ws
-  * wss://stream.binance.com:9443/ws
+### Trades Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#trades-streams "Direct link to Trades Streams")
 
-| 
+Raw trade information, pushed in real-time.
 
-  * **wss://stream.testnet.binance.vision/stream**
-  * **wss://stream.testnet.binance.vision:9443/stream**
+**SBE Message Name:** `TradesStreamEvent`
 
-  
-  
-  * wss://stream.binance.com/stream
-  * wss://stream.binance.com:9443/stream
+**Stream Name** : <symbol>@trade
 
-| 
+**Update Speed** : Real time
 
-  * **wss://stream.testnet.binance.vision/stream**
-  * **wss://stream.testnet.binance.vision:9443/stream**
+### Best Bid/Ask Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#best-bidask-streams "Direct link to Best Bid/Ask Streams")
 
-  
-  
-  * wss://stream-sbe.binance.com/ws
-  * wss://stream-sbe.binance.com:9443/ws
+The best bid and ask price and quantity, pushed in real-time when the order book changes.
 
-| 
+> [!NOTE] Best bid/ask streams in SBE are the equivalent of bookTicker streams in JSON, except they support auto-culling, and also include the `eventTime` field.
 
-  * **wss://stream-sbe.testnet.binance.vision/ws**
-  * **wss://stream-sbe.testnet.binance.vision:9443/ws**
+**SBE Message Name:** `BestBidAskStreamEvent`
 
-  
-  
-  * wss://stream-sbe.binance.com/stream
-  * wss://stream-sbe.binance.com:9443/stream
+**Stream Name** : <symbol>@bestBidAsk
 
-| 
+**Update Speed** : Real time
 
-  * **wss://stream-sbe.testnet.binance.vision/stream**
-  * **wss://stream-sbe.testnet.binance.vision:9443/stream**
+SBE best bid/ask streams use **auto-culling** : when the system is under high load, it may drop outdated events instead of queuing all events and delivering them with a delay.
 
-  
-  
-  * tcp+tls://fix-oe.binance.com:9000
+For example, if a best bid/ask event is generated at time T2 when there is still an undelivered event queued at time T1 (where T1 < T2), the event for T1 is dropped, and the system will deliver only the event for T2. This is done on a per-symbol basis.
 
-| 
+### Diff. Depth Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#diff-depth-streams "Direct link to Diff. Depth Streams")
 
-  * **tcp+tls://fix-oe.testnet.binance.vision:9000**
+Incremental updates to the order book, pushed at regular intervals. Use this stream to maintain a local order book.
 
-  
-  
-  * tcp+tls://fix-dc.binance.com:9000
+[How to manage a local order book.](/docs/binance-spot-api-docs/testnet/web-socket-streams#how-to-manage-a-local-order-book-correctly)
 
-| 
+**SBE Message Name:** `DepthDiffStreamEvent`
 
-  * **tcp+tls://fix-dc.testnet.binance.vision:9000**
+**Stream Name** : <symbol>@depth
 
-  
-  
-  * tcp+tls://fix-md.binance.com:9000
+**Update Speed:** 25ms
 
-| 
+### Partial Book Depth Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#partial-book-depth-streams "Direct link to Partial Book Depth Streams")
 
-  * **tcp+tls://fix-md.testnet.binance.vision:9000**
+Snapshots of the top 20 levels of the order book, pushed at regular intervals.
 
-  
-  
-* * *
+**SBE Message Name:** `DepthSnapshotStreamEvent`
 
-###  Can I use the `/sapi` endpoints on the Spot Test Network? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-supported-endpoints "Direct link to faq-supported-endpoints")
+**Stream Name** : <symbol>@depth20
 
-No, only the `/api` endpoints are available on the Spot Test Network: 
-
-  * [Market Data Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints)
-  * [Market Data Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/market-data-requests)
-  * [Websocket Market Streams](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams)
-  * [Trading Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/trading-endpoints)
-  * [Account Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/account-endpoints)
-  * [Trading Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/trading-requests)
-  * [Account Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/account-requests)
-  * [User Data Streams](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream)
-
-
-
-* * *
-
-###  How to get funds in/out of the Spot Test Network? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-funds-transfer "Direct link to 
-        How to get funds in/out of the Spot Test Network?
-")
-
-All users registering on the Spot Test Network automatically receive a balance in many different assets. Please note that these are not real assets and can be used only on the Spot Test Network itself. 
-
-All funds on the Spot Test Network are virtual, and can not be transferred in/out of the Spot Test Network. 
-
-* * *
-
-###  What are the restrictions on the Spot Test Network? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-restrictions "Direct link to 
-        What are the restrictions on the Spot Test Network?
-")
-
-**IP Limits** , **Order Rate Limits** , **Exchange Filters** and **Symbol Filters** on the Spot Test Network are generally the same as on the Spot API. 
-
-All users are encouraged to regularly query the API to get the most up-to-date rate limits & filters, for example by doing: 
-
-curl "https://testnet.binance.vision/api/v3/exchangeInfo"
-
-* * *
-
-###  All my data has disappeared! What happened? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-periodic-reset "Direct link to 
-        All my data has disappeared! What happened?
-")
-
-The Spot Test Network is periodically reset to a blank state. That includes all pending and executed orders. During that reset procedure, all users automatically receive a fresh allowance of all assets. 
-
-These resets happen approximately **once per month** , and we do not offer prior notification for them. 
-
-Starting from August 2020, API Keys are preserved during resets. Users no longer need to re-register new API Keys after a reset. 
-
-* * *
-
-###  What is the difference between `klines` and `uiKlines`? [​](/docs/binance-spot-api-docs/testnet/general-info#ui-klines "Direct link to ui-klines")
-
-On the Spot Test Network, these 2 requests always return the same data. 
-
-* * *
-
-###  What are RSA API Keys? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-rsa-keys "Direct link to 
-        What are RSA API Keys?
-")
-
-RSA API Keys are an alternative to the typical HMAC-SHA-256 API Keys that are used to authenticate your requests on the Spot API. 
-
-Unlike HMAC-SHA-256 API Keys where we generate the secret signing key for you, with RSA API Keys, *you* generate a pair of public+private RSA keys, send us the public key, and sign your requests with your private key. 
-
-* * *
-
-###  What type of RSA keys are supported? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-rsa-types "Direct link to 
-        What type of RSA keys are supported?
-")
-
-We support RSA keys of any length from 2048 bits up to 4096 bits. We recommend **2048 bits keys** as a good balance between security and signature speed. 
-
-When generating the RSA signature, use the **PKCS#1 v1.5** signature scheme. This is the default when using OpenSSL. We currently do not support the PSS signature scheme. 
-
-* * *
-
-###  How can I use RSA API Keys? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-rsa-how-to "Direct link to 
-        How can I use RSA API Keys?
-")
-
-Step 1: Generate the private key `test-prv-key.pem`. **Do not share this file with anyone!**
-
-openssl genrsa -out test-prv-key.pem 2048
-
-Step 2: Generate the public key `test-pub-key.pem` from the private key. 
-
-openssl rsa -in test-prv-key.pem -pubout -outform PEM -out test-pub-key.pem
-
-The public key should look something like this: 
-    
-    
-    -----BEGIN PUBLIC KEY-----  
-    bL4DUXwR3ijFSXzcecQtVFU1zVWcSQd0Meztl3DLX42l/8EALJx3LSz9YKS0PMQW  
-    MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAv9ij99RAJM4JLl8Rg47b  
-    dJXMrv84WL1OK/gid4hCnxo083LYLXUpIqMmL+O6fmXAvsvkyMyT520Cw0ZNCrUk  
-    WoCjGE4JZZGF4wOkWdF37JFWbDnE/GF5mAykKj+OMaECBlZ207KleQqgVzHjKuCb  
-    hPMuBVVD3IhjBfIc7EEM438LbtayMDx4dviPWwm127jwn8qd9H3kv5JBoDfsdYMB  
-    3k39r724CljqlAfX33GpbV2LvEkL6Da3OFk+grfN98X2pCBRz5+1N95I2cRD7o+j  
-    wtCr+65E+Gqjo4OI60F9Gq5GDcrnudnUw13a4zwlU6W+Cy8gJ4R0CcKTc4+VhYVX  
-    5wW2tzLVnDqvjIN8hjhgtmUv8hr19Wn+42ev+5sNtO5QAS6sJMJG5D+cpxCNhei1  
-    Xm+1zXliaA1fvVYRqon2MdHcedFeAjzVtX38+Xweytowydcq2V/9pUUNZIzUqX7t  
-    Zr3F+Ao3QOb/CuWbUBpUcbXfGv7AI1ozP8LRByyu6O8Z1dZNdkdjWVt83maUrIJH  
-    jjc7jlZY9JbH6EyYV5TenjJaupvdlx72vA7Fcgevx87seog2JALAJqZQNT+t9/tm  
-    rTUSEp3t4aINKUC1QC0CYKECAwEAAQ==  
-    -----END PUBLIC KEY-----  
-    
-
-Step 3: Register your public key on the Spot Test Network. 
-
-During registration, we will generate an API Key for you that you will have to put in the `X-MBX-APIKEY` header of your requests, exactly the same way as you would do for HMAC-SHA-256 API Keys. 
-
-Step 4: When you send a request to the Spot Test Network, sign the payload using your private key. 
-
-Here is an example Bash script to post a new order and sign the request using OpenSSL. You can adapt it to your favorite programming language: 
-    
-    
-    #!/usr/bin/env bash  
-      
-    # Set up authentication:  
-    API_KEY="put your own API Key here"  
-    PRIVATE_KEY_PATH="test-prv-key.pem"  
-      
-    # Set up the request:  
-    API_METHOD="POST"  
-    API_CALL="api/v3/order"  
-    API_PARAMS="symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2"  
-      
-    # Sign the request:  
-    timestamp=$(date +%s000)  
-    api_params_with_timestamp="$API_PARAMS&timestamp=$timestamp"  
-    signature=$(echo -n "$api_params_with_timestamp" \  
-                | openssl dgst -sha256 -sign "$PRIVATE_KEY_PATH" \  
-                | openssl enc -base64 -A)  
-      
-    # Send the request:  
-    curl -H "X-MBX-APIKEY: $API_KEY" -X "$API_METHOD" \  
-        "https://testnet.binance.vision/$API_CALL?$api_params_with_timestamp" \  
-        --data-urlencode "signature=$signature"  
-    
-
-* * *
-
-###  What are Ed25519 API keys? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-ed25519-keys "Direct link to 
-        What are Ed25519 API keys?
-")
-
-Ed25519 API keys are an alternative to [RSA API keys](/docs/binance-spot-api-docs/testnet/general-info#faq-rsa-keys), using asymmetric cryptography to authenticate your requests on the Spot API. 
-
-Like RSA API keys, Ed25519 keys are _asymmetric_ : you generate a keypair, share the public key with Binance, and use your private key to sign requests. 
-
-* * *
-
-###  Why use Ed25519 instead of RSA API keys? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-ed25519-vs-rsa "Direct link to 
-        Why use Ed25519 instead of RSA API keys?
-")
-
-Ed25519 digital signature scheme provides security comparable to 3072-bit RSA keys, while having much smaller signatures that are faster to compute: 
-
-API key type | Signature size | Signature operation  
----|---|---  
-HMAC-SHA-256 | 64 bytes | 0.00 ms  
-Ed25519 | 88 bytes | 0.03 ms  
-RSA (2048-bit) | 344 bytes | 0.55 ms  
-RSA (4096-bit) | 684 bytes | 3.42 ms  
-  
-* * *
-
-###  How can I use Ed25519 API keys? [​](/docs/binance-spot-api-docs/testnet/general-info#faq-ed25519-how-to "Direct link to 
-        How can I use Ed25519 API keys?
-")
-
-Step 1: Generate the private key `test-prv-key.pem`. **Do not share this file with anyone!**
-
-openssl genpkey -algorithm ed25519 -out test-prv-key.pem
-
-Step 2: Compute the public key `test-pub-key.pem` from the private key. 
-
-openssl pkey -pubout -in test-prv-key.pem -out test-pub-key.pem
-
-The public key should look something like this: 
-    
-    
-    -----BEGIN PUBLIC KEY-----  
-    MCowBQYDK2VwAyEACeCSz7VJkh3Bb+NF794hLMU8fLB9Zr+/tGMdVKCC2eo=  
-    -----END PUBLIC KEY-----  
-    
-
-Step 3: Register your public key on the Spot Test Network. 
-
-During registration, we will generate an API key for you. Please put it in the `X-MBX-APIKEY` header of your requests, exactly the same way as with other API key types. 
-
-Step 4: When you send a request to the Spot Test Network, sign the payload using your private key. 
-
-Here is an example in Python that posts a new order signed with Ed25519 key. You can adapt it to your favorite programming language. 
-    
-    
-    #!/usr/bin/env python3  
-      
-    import base64  
-    import requests  
-    import time  
-    from cryptography.hazmat.primitives.serialization import load_pem_private_key  
-      
-    # Set up authentication  
-    API_KEY='put your own API Key here'  
-    PRIVATE_KEY_PATH='test-prv-key.pem'  
-      
-    # Load the private key.  
-    # In this example the key is expected to be stored without encryption,  
-    # but we recommend using a strong password for improved security.  
-    with open(PRIVATE_KEY_PATH, 'rb') as f:  
-        private_key = load_pem_private_key(data=f.read(),  
-                                           password=None)  
-      
-    # Set up the request parameters  
-    params = {  
-        'symbol':       'BTCUSDT',  
-        'side':         'SELL',  
-        'type':         'LIMIT',  
-        'timeInForce':  'GTC',  
-        'quantity':     '1.0000000',  
-        'price':        '0.20',  
-    }  
-      
-    # Timestamp the request  
-    timestamp = int(time.time() * 1000) # UNIX timestamp in milliseconds  
-    params['timestamp'] = timestamp  
-      
-    # Sign the request  
-    payload = '&'.join([f'{param}={value}' for param, value in params.items()])  
-    signature = base64.b64encode(private_key.sign(payload.encode('ASCII')))  
-    params['signature'] = signature  
-      
-    # Send the request  
-    headers = {  
-        'X-MBX-APIKEY': API_KEY,  
-    }  
-    response = requests.post(  
-        'https://testnet.binance.vision/api/v3/order',  
-        headers=headers,  
-        data=params,  
-    )  
-    print(response.json())
+**Update Speed:** 50ms
 
 ---
 
-# General Info
+# SBE Market Data Streams
 
-###  How can I use the Spot Test Network? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-how-to-use "
-        How can I use the Spot Test Network?
-的直接链接")
+## General Information[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#general-information "General Information的直接链接")
 
-Step 1: Log in on this [website](https://testnet.binance.vision/), and generate an API Key. 
+  * The base endpoint is **stream-sbe.testnet.binance.vision** or **stream-sbe.testnet.binance.vision:9443**.
+  * To retrieve market data in JSON format, please refer to [this page](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams).
+  * SBE schema used for decoding the streams can be found [here](https://github.com/binance/binance-spot-api-docs/blob/master/sbe/schemas/stream_1_0.xml).
+  * All symbols in stream names are **lowercase**.
+  * You can subscribe to a single stream at **/ws/ <streamName>**.
+  * You can subscribe to multiple streams at **/stream?streams= <streamName1>/<streamName2>/<streamName3>**.
+  * A single connection to **stream-sbe.testnet.binance.vision** is **only valid for 24 hours** ; expect to be disconnected at the 24 hour mark.
+  * All time and timestamp fields are in **microseconds**.
+  * **An API Key is necessary for access**. 
+    * Only Ed25519 keys are allowed.
+    * Please put your API Key in the `X-MBX-APIKEY` header when opening the connection. Timestamp and signature are not necessary.
+    * No extra API key permissions are necessary to access public market data. Symbol whitelist also does not affect access to SBE Market Data Streams.
+    * However, if you use an IP whitelist for the API key, only specified IP addresses are allowed to use the API key.
+  * The server sends a `ping frame` every 20 seconds. 
+    * If the server does not receive a `pong frame` back from you within a minute, the connection will be closed.
+    * When you receive a ping, you must send a pong with a copy of ping's payload as soon as possible.
+    * Unsolicited `pong frames` are allowed, but will not prevent disconnection. **It is recommended that the payload for these pong frames are empty.**
+  * [Live Subscribing and Unsubscribing](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#live-subscribingunsubscribing-to-streams) is also supported. 
+    * You must send the subscription requests in JSON, and will receive the subscription response also in JSON.
+    * You can differentiate subscription responses from market data events by looking at the WebSocket frame type: subscription responses are always sent in text frames (containing JSON), and events are always sent in binary frames (containing SBE).
 
-Step 2: Follow the [official documentation of the Spot API](https://developers.binance.com/docs/binance-spot-api-docs/CHANGELOG), replacing the URLs of the endpoints with the following values: 
 
-Spot API URLs | Spot Test Network URLs  
----|---  
-  
-  * https://api.binance.com/api
-  * https://api-gcp.binance.com/api
-  * https://api1.binance.com/api
-  * https://api2.binance.com/api
-  * https://api3.binance.com/api
-  * https://api4.binance.com/api
 
-| 
+## WebSocket Limits[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#websocket-limits "WebSocket Limits的直接链接")
 
-  * **https://testnet.binance.vision/api**
-  * **https://api1.testnet.binance.vision/api**
+  * WebSocket connections have a rate limit of **5 requests per second**. 
+    * Only messages from your client are considered: 
+      * `PING frame`
+      * `PONG frame`
+      * `Text frame` with JSON control request
+    * Events pushed by the server are not rate-limited.
+    * Connections that go beyond the limit will be closed. Repeatedly disconnected IP addresses may be banned.
+  * A single connection can listen to a maximum of 1024 streams.
+  * There is a limit of **300 connection attempts every 5 minutes per IP address**.
 
-  
-  
-  * wss://ws-api.binance.com/ws-api/v3
-  * wss://ws-api.binance.com:9443/ws-api/v3
 
-| 
 
-  * **wss://ws-api.testnet.binance.vision/ws-api/v3**
-  * **wss://ws-api.testnet.binance.vision:9443/ws-api/v3**
+## Available Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#available-streams "Available Streams的直接链接")
 
-  
-  
-  * wss://stream.binance.com/ws
-  * wss://stream.binance.com:9443/ws
+### Trades Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#trades-streams "Trades Streams的直接链接")
 
-| 
+Raw trade information, pushed in real-time.
 
-  * **wss://stream.testnet.binance.vision/stream**
-  * **wss://stream.testnet.binance.vision:9443/stream**
+**SBE Message Name:** `TradesStreamEvent`
 
-  
-  
-  * wss://stream.binance.com/stream
-  * wss://stream.binance.com:9443/stream
+**Stream Name** : <symbol>@trade
 
-| 
+**Update Speed** : Real time
 
-  * **wss://stream.testnet.binance.vision/stream**
-  * **wss://stream.testnet.binance.vision:9443/stream**
+### Best Bid/Ask Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#best-bidask-streams "Best Bid/Ask Streams的直接链接")
 
-  
-  
-  * wss://stream-sbe.binance.com/ws
-  * wss://stream-sbe.binance.com:9443/ws
+The best bid and ask price and quantity, pushed in real-time when the order book changes.
 
-| 
+> [!NOTE] Best bid/ask streams in SBE are the equivalent of bookTicker streams in JSON, except they support auto-culling, and also include the `eventTime` field.
 
-  * **wss://stream-sbe.testnet.binance.vision/ws**
-  * **wss://stream-sbe.testnet.binance.vision:9443/ws**
+**SBE Message Name:** `BestBidAskStreamEvent`
 
-  
-  
-  * wss://stream-sbe.binance.com/stream
-  * wss://stream-sbe.binance.com:9443/stream
+**Stream Name** : <symbol>@bestBidAsk
 
-| 
+**Update Speed** : Real time
 
-  * **wss://stream-sbe.testnet.binance.vision/stream**
-  * **wss://stream-sbe.testnet.binance.vision:9443/stream**
+SBE best bid/ask streams use **auto-culling** : when the system is under high load, it may drop outdated events instead of queuing all events and delivering them with a delay.
 
-  
-  
-  * tcp+tls://fix-oe.binance.com:9000
+For example, if a best bid/ask event is generated at time T2 when there is still an undelivered event queued at time T1 (where T1 < T2), the event for T1 is dropped, and the system will deliver only the event for T2. This is done on a per-symbol basis.
 
-| 
+### Diff. Depth Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#diff-depth-streams "Diff. Depth Streams的直接链接")
 
-  * **tcp+tls://fix-oe.testnet.binance.vision:9000**
+Incremental updates to the order book, pushed at regular intervals. Use this stream to maintain a local order book.
 
-  
-  
-  * tcp+tls://fix-dc.binance.com:9000
+[How to manage a local order book.](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams#how-to-manage-a-local-order-book-correctly)
 
-| 
+**SBE Message Name:** `DepthDiffStreamEvent`
 
-  * **tcp+tls://fix-dc.testnet.binance.vision:9000**
+**Stream Name** : <symbol>@depth
 
-  
-  
-  * tcp+tls://fix-md.binance.com:9000
+**Update Speed:** 25ms
 
-| 
+### Partial Book Depth Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#partial-book-depth-streams "Partial Book Depth Streams的直接链接")
 
-  * **tcp+tls://fix-md.testnet.binance.vision:9000**
+Snapshots of the top 20 levels of the order book, pushed at regular intervals.
 
-  
-  
-* * *
+**SBE Message Name:** `DepthSnapshotStreamEvent`
 
-###  Can I use the `/sapi` endpoints on the Spot Test Network? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-supported-endpoints "faq-supported-endpoints的直接链接")
+**Stream Name** : <symbol>@depth20
 
-No, only the `/api` endpoints are available on the Spot Test Network: 
-
-  * [Market Data Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints)
-  * [Market Data Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/market-data-requests)
-  * [Websocket Market Streams](https://developers.binance.com/docs/binance-spot-api-docs/web-socket-streams)
-  * [Trading Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/trading-endpoints)
-  * [Account Endpoints (REST API)](https://developers.binance.com/docs/binance-spot-api-docs/rest-api/account-endpoints)
-  * [Trading Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/trading-requests)
-  * [Account Requests (WebSocket API)](https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/account-requests)
-  * [User Data Streams](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream)
-
-
-
-* * *
-
-###  How to get funds in/out of the Spot Test Network? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-funds-transfer "
-        How to get funds in/out of the Spot Test Network?
-的直接链接")
-
-All users registering on the Spot Test Network automatically receive a balance in many different assets. Please note that these are not real assets and can be used only on the Spot Test Network itself. 
-
-All funds on the Spot Test Network are virtual, and can not be transferred in/out of the Spot Test Network. 
-
-* * *
-
-###  What are the restrictions on the Spot Test Network? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-restrictions "
-        What are the restrictions on the Spot Test Network?
-的直接链接")
-
-**IP Limits** , **Order Rate Limits** , **Exchange Filters** and **Symbol Filters** on the Spot Test Network are generally the same as on the Spot API. 
-
-All users are encouraged to regularly query the API to get the most up-to-date rate limits & filters, for example by doing: 
-
-curl "https://testnet.binance.vision/api/v3/exchangeInfo"
-
-* * *
-
-###  All my data has disappeared! What happened? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-periodic-reset "
-        All my data has disappeared! What happened?
-的直接链接")
-
-The Spot Test Network is periodically reset to a blank state. That includes all pending and executed orders. During that reset procedure, all users automatically receive a fresh allowance of all assets. 
-
-These resets happen approximately **once per month** , and we do not offer prior notification for them. 
-
-Starting from August 2020, API Keys are preserved during resets. Users no longer need to re-register new API Keys after a reset. 
-
-* * *
-
-###  What is the difference between `klines` and `uiKlines`? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#ui-klines "ui-klines的直接链接")
-
-On the Spot Test Network, these 2 requests always return the same data. 
-
-* * *
-
-###  What are RSA API Keys? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-rsa-keys "
-        What are RSA API Keys?
-的直接链接")
-
-RSA API Keys are an alternative to the typical HMAC-SHA-256 API Keys that are used to authenticate your requests on the Spot API. 
-
-Unlike HMAC-SHA-256 API Keys where we generate the secret signing key for you, with RSA API Keys, *you* generate a pair of public+private RSA keys, send us the public key, and sign your requests with your private key. 
-
-* * *
-
-###  What type of RSA keys are supported? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-rsa-types "
-        What type of RSA keys are supported?
-的直接链接")
-
-We support RSA keys of any length from 2048 bits up to 4096 bits. We recommend **2048 bits keys** as a good balance between security and signature speed. 
-
-When generating the RSA signature, use the **PKCS#1 v1.5** signature scheme. This is the default when using OpenSSL. We currently do not support the PSS signature scheme. 
-
-* * *
-
-###  How can I use RSA API Keys? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-rsa-how-to "
-        How can I use RSA API Keys?
-的直接链接")
-
-Step 1: Generate the private key `test-prv-key.pem`. **Do not share this file with anyone!**
-
-openssl genrsa -out test-prv-key.pem 2048
-
-Step 2: Generate the public key `test-pub-key.pem` from the private key. 
-
-openssl rsa -in test-prv-key.pem -pubout -outform PEM -out test-pub-key.pem
-
-The public key should look something like this: 
-    
-    
-    -----BEGIN PUBLIC KEY-----  
-    bL4DUXwR3ijFSXzcecQtVFU1zVWcSQd0Meztl3DLX42l/8EALJx3LSz9YKS0PMQW  
-    MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAv9ij99RAJM4JLl8Rg47b  
-    dJXMrv84WL1OK/gid4hCnxo083LYLXUpIqMmL+O6fmXAvsvkyMyT520Cw0ZNCrUk  
-    WoCjGE4JZZGF4wOkWdF37JFWbDnE/GF5mAykKj+OMaECBlZ207KleQqgVzHjKuCb  
-    hPMuBVVD3IhjBfIc7EEM438LbtayMDx4dviPWwm127jwn8qd9H3kv5JBoDfsdYMB  
-    3k39r724CljqlAfX33GpbV2LvEkL6Da3OFk+grfN98X2pCBRz5+1N95I2cRD7o+j  
-    wtCr+65E+Gqjo4OI60F9Gq5GDcrnudnUw13a4zwlU6W+Cy8gJ4R0CcKTc4+VhYVX  
-    5wW2tzLVnDqvjIN8hjhgtmUv8hr19Wn+42ev+5sNtO5QAS6sJMJG5D+cpxCNhei1  
-    Xm+1zXliaA1fvVYRqon2MdHcedFeAjzVtX38+Xweytowydcq2V/9pUUNZIzUqX7t  
-    Zr3F+Ao3QOb/CuWbUBpUcbXfGv7AI1ozP8LRByyu6O8Z1dZNdkdjWVt83maUrIJH  
-    jjc7jlZY9JbH6EyYV5TenjJaupvdlx72vA7Fcgevx87seog2JALAJqZQNT+t9/tm  
-    rTUSEp3t4aINKUC1QC0CYKECAwEAAQ==  
-    -----END PUBLIC KEY-----  
-    
-
-Step 3: Register your public key on the Spot Test Network. 
-
-During registration, we will generate an API Key for you that you will have to put in the `X-MBX-APIKEY` header of your requests, exactly the same way as you would do for HMAC-SHA-256 API Keys. 
-
-Step 4: When you send a request to the Spot Test Network, sign the payload using your private key. 
-
-Here is an example Bash script to post a new order and sign the request using OpenSSL. You can adapt it to your favorite programming language: 
-    
-    
-    #!/usr/bin/env bash  
-      
-    # Set up authentication:  
-    API_KEY="put your own API Key here"  
-    PRIVATE_KEY_PATH="test-prv-key.pem"  
-      
-    # Set up the request:  
-    API_METHOD="POST"  
-    API_CALL="api/v3/order"  
-    API_PARAMS="symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2"  
-      
-    # Sign the request:  
-    timestamp=$(date +%s000)  
-    api_params_with_timestamp="$API_PARAMS&timestamp=$timestamp"  
-    signature=$(echo -n "$api_params_with_timestamp" \  
-                | openssl dgst -sha256 -sign "$PRIVATE_KEY_PATH" \  
-                | openssl enc -base64 -A)  
-      
-    # Send the request:  
-    curl -H "X-MBX-APIKEY: $API_KEY" -X "$API_METHOD" \  
-        "https://testnet.binance.vision/$API_CALL?$api_params_with_timestamp" \  
-        --data-urlencode "signature=$signature"  
-    
-
-* * *
-
-###  What are Ed25519 API keys? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-ed25519-keys "
-        What are Ed25519 API keys?
-的直接链接")
-
-Ed25519 API keys are an alternative to [RSA API keys](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-rsa-keys), using asymmetric cryptography to authenticate your requests on the Spot API. 
-
-Like RSA API keys, Ed25519 keys are _asymmetric_ : you generate a keypair, share the public key with Binance, and use your private key to sign requests. 
-
-* * *
-
-###  Why use Ed25519 instead of RSA API keys? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-ed25519-vs-rsa "
-        Why use Ed25519 instead of RSA API keys?
-的直接链接")
-
-Ed25519 digital signature scheme provides security comparable to 3072-bit RSA keys, while having much smaller signatures that are faster to compute: 
-
-API key type | Signature size | Signature operation  
----|---|---  
-HMAC-SHA-256 | 64 bytes | 0.00 ms  
-Ed25519 | 88 bytes | 0.03 ms  
-RSA (2048-bit) | 344 bytes | 0.55 ms  
-RSA (4096-bit) | 684 bytes | 3.42 ms  
-  
-* * *
-
-###  How can I use Ed25519 API keys? [​](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-ed25519-how-to "
-        How can I use Ed25519 API keys?
-的直接链接")
-
-Step 1: Generate the private key `test-prv-key.pem`. **Do not share this file with anyone!**
-
-openssl genpkey -algorithm ed25519 -out test-prv-key.pem
-
-Step 2: Compute the public key `test-pub-key.pem` from the private key. 
-
-openssl pkey -pubout -in test-prv-key.pem -out test-pub-key.pem
-
-The public key should look something like this: 
-    
-    
-    -----BEGIN PUBLIC KEY-----  
-    MCowBQYDK2VwAyEACeCSz7VJkh3Bb+NF794hLMU8fLB9Zr+/tGMdVKCC2eo=  
-    -----END PUBLIC KEY-----  
-    
-
-Step 3: Register your public key on the Spot Test Network. 
-
-During registration, we will generate an API key for you. Please put it in the `X-MBX-APIKEY` header of your requests, exactly the same way as with other API key types. 
-
-Step 4: When you send a request to the Spot Test Network, sign the payload using your private key. 
-
-Here is an example in Python that posts a new order signed with Ed25519 key. You can adapt it to your favorite programming language. 
-    
-    
-    #!/usr/bin/env python3  
-      
-    import base64  
-    import requests  
-    import time  
-    from cryptography.hazmat.primitives.serialization import load_pem_private_key  
-      
-    # Set up authentication  
-    API_KEY='put your own API Key here'  
-    PRIVATE_KEY_PATH='test-prv-key.pem'  
-      
-    # Load the private key.  
-    # In this example the key is expected to be stored without encryption,  
-    # but we recommend using a strong password for improved security.  
-    with open(PRIVATE_KEY_PATH, 'rb') as f:  
-        private_key = load_pem_private_key(data=f.read(),  
-                                           password=None)  
-      
-    # Set up the request parameters  
-    params = {  
-        'symbol':       'BTCUSDT',  
-        'side':         'SELL',  
-        'type':         'LIMIT',  
-        'timeInForce':  'GTC',  
-        'quantity':     '1.0000000',  
-        'price':        '0.20',  
-    }  
-      
-    # Timestamp the request  
-    timestamp = int(time.time() * 1000) # UNIX timestamp in milliseconds  
-    params['timestamp'] = timestamp  
-      
-    # Sign the request  
-    payload = '&'.join([f'{param}={value}' for param, value in params.items()])  
-    signature = base64.b64encode(private_key.sign(payload.encode('ASCII')))  
-    params['signature'] = signature  
-      
-    # Send the request  
-    headers = {  
-        'X-MBX-APIKEY': API_KEY,  
-    }  
-    response = requests.post(  
-        'https://testnet.binance.vision/api/v3/order',  
-        headers=headers,  
-        data=params,  
-    )  
-    print(response.json())
+**Update Speed:** 50ms

@@ -2,59 +2,23 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Account-Update
 api_type: Trading
-updated_at: 2026-01-15T23:48:39.755472
+updated_at: 2026-05-27 18:57:13.700431
 ---
 
-# Payload: Account Update
+# Payload: Balance Update
 
-## Event Description[​](/docs/margin_trading/trade-data-stream/Event-Account-Update#event-description "Direct link to Event Description")
+The Margin account uses the same `balanceUpdate` event payload as the Spot account.
 
-`outboundAccountPosition` is sent any time an account balance has changed and contains the assets that were possibly changed by the event that generated the balance change.
+Please refer to the Spot User Data Streams documentation for the full event description, fields, and response example:
 
-## Event Name[​](/docs/margin_trading/trade-data-stream/Event-Account-Update#event-name "Direct link to Event Name")
-
-`outboundAccountPosition`
-
-## Response Example[​](/docs/margin_trading/trade-data-stream/Event-Account-Update#response-example "Direct link to Response Example")
-    
-    
-    {  
-      "e": "outboundAccountPosition", //Event type  
-      "E": 1564034571105,             //Event Time  
-      "u": 1564034571073,             //Time of last account update  
-      "B": [                          //Balances Array  
-        {  
-          "a": "ETH",                 //Asset  
-          "f": "10000.000000",        //Free  
-          "l": "0.000000"             //Locked  
-        }  
-      ]  
-    }
+[Spot User Data Streams - Balance Update](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream#balance-update)
 
 ---
 
-# 账户更新
+# 余额更新
 
-## 事件描述[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Account-Update#事件描述 "事件描述的直接链接")
+杠杆账户使用与现货账户相同的 `balanceUpdate` 事件内容。
 
-每当帐户余额发生更改时，都会发送一个事件`outboundAccountPosition`，其中包含可能由生成余额变动的事件而变动的资产。
+完整的事件描述、字段说明和响应示例，请参阅现货用户数据流文档：
 
-## 事件类型[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Account-Update#事件类型 "事件类型的直接链接")
-
-`outboundAccountPosition`
-
-## 响应示例[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Account-Update#响应示例 "响应示例的直接链接")
-    
-    
-    {  
-      "e": "outboundAccountPosition", // 事件类型  
-      "E": 1564034571105,             // 事件时间  
-      "u": 1564034571073,             // 账户末次更新时间戳  
-      "B": [                          // 余额  
-        {  
-          "a": "ETH",                 // 资产名称  
-          "f": "10000.000000",        // 可用余额  
-          "l": "0.000000"             // 冻结余额  
-        }  
-      ]  
-    }
+[现货用户数据流 - 余额更新](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/user-data-stream#%E4%BD%99%E9%A2%9D%E6%9B%B4%E6%96%B0)

@@ -2,71 +2,75 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading
 api_type: Trading
-updated_at: 2026-01-15T23:48:43.701182
+updated_at: 2026-05-27 18:57:22.888790
 ---
 
-# Edit ip for Special Key(Low-Latency Trading)(TRADE)
+# Get Small Liability Exchange Coin List (USER_DATA)
 
-## API Description[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#api-description "Direct link to API Description")
 
-Edit ip restriction. This only applies to Special Key for Low Latency Trading.
+Query the coins which can be small liability exchange
 
-You need to enable Permits “Enable Spot & Margin Trading” option for the API Key which requests this endpoint.
+## HTTP Request[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#http-request "Direct link to HTTP Request")
 
-## HTTP Request[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#http-request "Direct link to HTTP Request")
+GET `/sapi/v1/margin/exchange-small-liability`
 
-PUT `/sapi/v1/margin/apiKey/ip`
+## Request Weight(IP)[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#request-weightip "Direct link to Request Weight\(IP\)")
 
-## Request Weight[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#request-weight "Direct link to Request Weight")
+**100**
 
-**1(UID)**
-
-## Request Parameters[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
-ip| STRING| YES| Can be added in batches, separated by commas. Max 30 for an API key  
-recvWindow| LONG| NO| The value cannot be greater than `60000`  
+recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#response-example "Direct link to Response Example")
     
     
-    {  
-    }
+    [  
+        {  
+          "asset": "ETH",  
+          "interest": "0.00083334",  
+          "principal": "0.001",  
+          "liabilityAsset": "USDT",  
+          "liabilityQty": 0.3552  
+        }  
+    ]
 
 ---
 
-# 修改可供SpecialKey执行的IP地址(TRADE)
+# 查询可小额负债转换的资产 (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#接口描述 "接口描述的直接链接")
 
-修改可供低延迟交易的SpecialKey执行的IP地址, 仅适用低延迟交易SpecialKey。
+查询可小额负债转换的币种
 
-该接口需开通“Enable Spot & Margin Trading”的权限。
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#http请求 "HTTP请求的直接链接")
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#http请求 "HTTP请求的直接链接")
+GET `/sapi/v1/margin/exchange-small-liability`
 
-PUT `/sapi/v1/margin/apiKey/ip`
+## 请求权重(IP)[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#请求权重ip "请求权重\(IP\)的直接链接")
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#请求权重 "请求权重的直接链接")
+**100**
 
-**1(UID)**
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#请求参数 "请求参数的直接链接")
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#请求参数 "请求参数的直接链接")
-
-Name| Type| Mandatory| Description  
+名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
-ip| STRING| YES| Can be added in batches, separated by commas. Max 30 for an API key  
-recvWindow| LONG| NO| The value cannot be greater than `60000`  
+recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List#响应示例 "响应示例的直接链接")
     
     
-    {  
-    }
+    [  
+        {  
+          "asset": "ETH",  
+          "interest": "0.00083334",  
+          "principal": "0.001",  
+          "liabilityAsset": "USDT",  
+          "liabilityQty": 0.3552  
+        }  
+    ]

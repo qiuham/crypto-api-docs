@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-List-Schedule
 api_type: Market Data
-updated_at: 2026-01-15T23:48:31.411655
+updated_at: 2026-05-27 18:56:48.900255
 ---
 
 # Get list Schedule (MARKET_DATA)
@@ -66,7 +66,7 @@ GET `/sapi/v1/margin/list-schedule`
 
 **100**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-List-Schedule#�请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-List-Schedule#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  

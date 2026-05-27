@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/trading-endpoints
 api_type: REST
-updated_at: 2026-01-15T23:36:19.568182
+updated_at: 2026-05-27 18:54:32.107088
 ---
 
 # Trading endpoints
@@ -218,6 +218,7 @@ Field| Description| Visibility conditions| Examples
 `pegOffsetType`| Price peg offset type| Only for pegged orders, if requested| `"pegOffsetType": "PRICE_LEVEL"`  
 `pegOffsetValue`| Price peg offset value| Only for pegged orders, if requested| `"pegOffsetValue": 5`  
 `peggedPrice`| Current price order is pegged at| Only for pegged orders, once determined| `"peggedPrice": "87523.83710000"`  
+`expiryReason`| Cause of the order’s expiration| When an order has expired| `"expiryReason": "INSUFFICIENT_LIQUIDITY"`  
   
 ### Test new order (TRADE)[​](/docs/binance-spot-api-docs/rest-api/trading-endpoints#test-new-order-trade "Direct link to Test new order \(TRADE\)")
     
@@ -498,11 +499,12 @@ timestamp| LONG| YES|
     POST /api/v3/order/cancelReplace  
     
 
-Cancels an existing order and places a new order on the same symbol.
+  * Cancels an existing order and places a new order on the same symbol.
+  * Filters and Order Count are evaluated before the processing of the cancellation and order placement occurs.
+  * A new order that was not attempted (i.e. when `newOrderResult: NOT_ATTEMPTED`), will still increase the unfilled order count by 1.
+  * You can only cancel an individual order from an orderList using this endpoint, but the result is the same as canceling the entire orderList.
 
-Filters and Order Count are evaluated before the processing of the cancellation and order placement occurs.
 
-A new order that was not attempted (i.e. when `newOrderResult: NOT_ATTEMPTED`), will still increase the unfilled order count by 1.
 
 **Weight:** 1
 
@@ -1072,8 +1074,8 @@ belowType| ENUM| Yes| Supported values: `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PR
 belowClientOrderId| STRING| No| Arbitrary unique ID among open orders for the below order. Automatically generated if not sent  
 belowIcebergQty| LONG| No| Note that this can only be used if `belowTimeInForce` is `GTC`.  
 belowPrice| DECIMAL| No| Can be used if `belowType` is `STOP_LOSS_LIMIT`, `LIMIT_MAKER`, or `TAKE_PROFIT_LIMIT` to specify the limit price.  
-belowStopPrice| DECIMAL| No| Can be used if `belowType` is `STOP_LOSS`, `STOP_LOSS_LIMIT, TAKE_PROFIT` or `TAKE_PROFIT_LIMIT`   
-Either belowStopPrice or belowTrailingDelta or both, must be specified.  
+belowStopPrice| DECIMAL| No| Can be used if `belowType` is `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT` or `TAKE_PROFIT_LIMIT`   
+Either `belowStopPrice` or `belowTrailingDelta` or both, must be specified.  
 belowTrailingDelta| LONG| No| See [Trailing Stop order FAQ](/docs/binance-spot-api-docs/faqs/trailing-stop-faq).  
 belowTimeInForce| ENUM| No| Required if `belowType` is `STOP_LOSS_LIMIT` or `TAKE_PROFIT_LIMIT`.  
 belowStrategyId| LONG| No| Arbitrary numeric value identifying the below order within an order strategy.  
@@ -1369,8 +1371,8 @@ pendingAbovePegOffsetValue| INT| NO|
 pendingBelowType| ENUM| NO| Supported values: `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`,`TAKE_PROFIT_LIMIT`  
 pendingBelowClientOrderId| STRING| NO| Arbitrary unique ID among open orders for the pending below order.  
 Automatically generated if not sent.  
-pendingBelowPrice| DECIMAL| NO| Can be used if `pendingBelowType` is `STOP_LOSS_LIMIT` or `TAKE_PROFIT_LIMIT` to specify limit price  
-pendingBelowStopPrice| DECIMAL| NO| Can be used if `pendingBelowType` is `STOP_LOSS`, `STOP_LOSS_LIMIT, TAKE_PROFIT or TAKE_PROFIT_LIMIT`.   
+pendingBelowPrice| DECIMAL| NO| Can be used if `pendingBelowType` is `STOP_LOSS_LIMIT` or `TAKE_PROFIT_LIMIT` to specify limit price.  
+pendingBelowStopPrice| DECIMAL| NO| Can be used if `pendingBelowType` is `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, or `TAKE_PROFIT_LIMIT`.  
 Either `pendingBelowStopPrice` or `pendingBelowTrailingDelta` or both, must be specified.  
 pendingBelowTrailingDelta| DECIMAL| NO|   
 pendingBelowIcebergQty| DECIMAL| NO| This can only be used if `pendingBelowTimeInForce` is `GTC`, or if `pendingBelowType` is `LIMIT_MAKER`.  
@@ -2010,8 +2012,8 @@ With `computeCommissionRates`
 ---|---|---|---  
 symbol| STRING| YES|   
 side| ENUM| YES| 详见枚举定义：[订单方向](/docs/zh-CN/binance-spot-api-docs/enums#side)  
-type| ENUM| YES| 详见枚举定义：[订单类型](/docs/zh-CN/binance-spot-api-docs/enums#ordertype)  
-timeInForce| ENUM| NO| 详见枚举定义：[生效时间](/docs/zh-CN/binance-spot-api-docs/enums.md./general-endpoints#timeinforce)  
+type| ENUM| YES| 详见枚举定义：[订单类型](/docs/zh-CN/binance-spot-api-docs/enums#ordertypes)  
+timeInForce| ENUM| NO| 详见枚举定义：[生效时间](/docs/zh-CN/binance-spot-api-docs/enums_CN.md./general-endpoints#timeinforce)  
 quantity| DECIMAL| NO|   
 quoteOrderQty| DECIMAL| NO|   
 price| DECIMAL| NO|   
@@ -2472,11 +2474,12 @@ timestamp| LONG| YES|
     POST /api/v3/order/cancelReplace  
     
 
-撤消挂单并在同个交易对上重新下单。
+  * 撤消同一交易对上的一个现有订单并重新下单。
+  * 在执行撤单和下单操作之前，会先评估过滤器和订单数量。
+  * 即使新订单未被尝试（即 `newOrderResult: NOT_ATTEMPTED`），未成交订单数量仍会增加1。
+  * 通过此接口只能撤消订单列表中的单个订单，但结果与撤消整个订单列表相同。
 
-在撤消订单和下单前会判断: 1) 过滤器参数, 以及 2) 目前下单数量。
 
-即使请求中没有尝试发送新订单，比如(`newOrderResult: NOT_ATTEMPTED`)，未成交订单的数量仍然会加1。
 
 **权重:** 1
 
@@ -2993,7 +2996,7 @@ timestamp| LONG| YES|
     }  
     
 
-#### New Order list - OCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#new-order-list---oco-trade "New Order list - OCO \(TRADE\)的直接链接")
+#### 新订单列表 - OCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#新订单列表---oco-trade "新订单列表 - OCO \(TRADE\)的直接链接")
     
     
     POST /api/v3/orderList/oco  
@@ -3132,7 +3135,7 @@ timestamp| LONG| Yes|
     }  
     
 
-#### New Order List - OTO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#new-order-list---oto-trade "New Order List - OTO \(TRADE\)的直接链接")
+#### 新订单列表 - OTO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#新订单列表---oto-trade "新订单列表 - OTO \(TRADE\)的直接链接")
     
     
     POST /api/v3/orderList/oto  
@@ -3277,7 +3280,7 @@ timestamp| LONG| YES|
 
 **注意:** 上面的 payload 没有显示所有可以出现的字段，更多请看 [订单响应中的特定条件时才会出现的字段](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#conditional-fields-in-order-responses) 部分。
 
-#### New Order List - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#new-order-list---otoco-trade "New Order List - OTOCO \(TRADE\)的直接链接")
+#### 新订单列表 - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#新订单列表---otoco-trade "新订单列表 - OTOCO \(TRADE\)的直接链接")
     
     
     POST /api/v3/orderList/otoco  
@@ -3463,7 +3466,7 @@ timestamp| LONG| YES|
 
 **注意:** 上面的 payload 没有显示所有可以出现的字段，更多请看 [订单响应中的特定条件时才会出现的字段](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#conditional-fields-in-order-responses) 部分。
 
-#### New Order List - OPO（TRADE）[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#new-order-list---opotrade "New Order List - OPO（TRADE）的直接链接")
+#### 新订单列表 - OPO（TRADE）[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#新订单列表---opotrade "新订单列表 - OPO（TRADE）的直接链接")
     
     
     POST /api/v3/orderList/opo  
@@ -3582,13 +3585,13 @@ timestamp| LONG| YES| 时间戳
 
 **注意:** 上面的 payload 没有显示所有可以出现的字段，更多请看 [订单响应中的特定条件时才会出现的字段](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#conditional-fields-in-order-responses) 部分。
 
-#### New Order List - OPOCO (../TRADE）[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#new-order-list---opoco-trade "New Order List - OPOCO \(../TRADE）的直接链接")
+#### 新订单列表 - OPOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/rest-api/trading-endpoints#新订单列表---opoco-trade "新订单列表 - OPOCO \(TRADE\)的直接链接")
     
     
     POST /api/v3/orderList/opoco  
     
 
-发送一个 [OPOCO](https://github.com/binance/binance-spot-api-docs/blob/master/faqs/opo) 订单。
+发送一个 [OPOCO](/docs/zh-CN/binance-spot-api-docs/https://github.com/binance/binance-spot-api-docs/blob/master/faqs/opo) 订单。
 
 **权重** : 1
 

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Query-Order
 api_type: Trading
-updated_at: 2026-01-15T23:50:19.932171
+updated_at: 2026-05-27 19:00:57.756445
 ---
 
 # Query limit open orders (USER_DATA)
@@ -21,9 +21,9 @@ GET `/sapi/v1/convert/limit/queryOpenOrders`
 
 ## Request Parameters[​](/docs/convert/trade/Query-Order#request-parameters "Direct link to Request Parameters")
 
-名称| 类型| 是否必需| 描述  
+Name| Type| Mandatory| Description  
 ---|---|---|---  
-recvWindow| LONG| NO| 该值不大于60000  
+recvWindow| LONG| NO| The value cannot be greater than 60000  
 timestamp| LONG| YES|   
   
 ## Response Example[​](/docs/convert/trade/Query-Order#response-example "Direct link to Response Example")

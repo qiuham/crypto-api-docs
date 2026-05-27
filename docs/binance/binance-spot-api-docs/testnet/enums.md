@@ -2,349 +2,877 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/enums
 api_type: REST
-updated_at: 2026-01-15T23:36:24.867468
+updated_at: 2026-05-27 18:54:41.389309
 ---
 
-# ENUM Definitions
+# Filters
 
-This will apply for both REST API and WebSocket API.
+Filters define trading rules on a symbol or an exchange. Filters come in three forms: `symbol filters`, `exchange filters` and `asset filters`.
 
-## Symbol status (status):[​](/docs/binance-spot-api-docs/testnet/enums#symbol-status-status "Direct link to Symbol status \(status\):")
+## Symbol filters[​](/docs/binance-spot-api-docs/testnet/filters#symbol-filters "Direct link to Symbol filters")
 
-  * `TRADING`
-  * `END_OF_DAY`
-  * `HALT`
-  * `BREAK`
+### PRICE_FILTER[​](/docs/binance-spot-api-docs/testnet/filters#price_filter "Direct link to PRICE_FILTER")
 
+The `PRICE_FILTER` defines the `price` rules for a symbol. There are 3 parts:
 
-
-## Account and Symbol Permissions (permissions)[​](/docs/binance-spot-api-docs/testnet/enums#account-and-symbol-permissions-permissions "Direct link to Account and Symbol Permissions \(permissions\)")
-
-  * `SPOT`
+  * `minPrice` defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0.
+  * `maxPrice` defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0.
+  * `tickSize` defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0.
 
 
 
-## Order status (status)[​](/docs/binance-spot-api-docs/testnet/enums#order-status-status "Direct link to Order status \(status\)")
+Any of the above variables can be set to 0, which disables that rule in the `price filter`. In order to pass the `price filter`, the following must be true for `price`/`stopPrice` of the enabled rules:
 
-Status| Description  
----|---  
-`NEW`| The order has been accepted by the engine.  
-`PENDING_NEW`| The order is in a pending phase until the working order of an order list has been fully filled.  
-`PARTIALLY_FILLED`| A part of the order has been filled.  
-`FILLED`| The order has been completed.  
-`CANCELED`| The order has been canceled by the user.  
-`PENDING_CANCEL`| Currently unused  
-`REJECTED`| The order was not accepted by the engine and not processed.  
-`EXPIRED`| The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill)   
-or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance)  
-`EXPIRED_IN_MATCH`| The order was expired by the exchange due to STP. (e.g. an order with `EXPIRE_TAKER` will match with existing orders on the book with the same account or same `tradeGroupId`)  
-  
-## Order List Status (listStatusType)[​](/docs/binance-spot-api-docs/testnet/enums#order-list-status-liststatustype "Direct link to Order List Status \(listStatusType\)")
-
-Status| Description  
----|---  
-`RESPONSE`| This is used when the ListStatus is responding to a failed action. (E.g. order list placement or cancellation)  
-`EXEC_STARTED`| The order list has been placed or there is an update to the order list status.  
-`UPDATED`| The clientOrderId of an order in the order list has been changed.  
-`ALL_DONE`| The order list has finished executing and thus is no longer active.  
-  
-## Order List Order Status (listOrderStatus)[​](/docs/binance-spot-api-docs/testnet/enums#order-list-order-status-listorderstatus "Direct link to Order List Order Status \(listOrderStatus\)")
-
-Status| Description  
----|---  
-`EXECUTING`| Either an order list has been placed or there is an update to the status of the list.  
-`ALL_DONE`| An order list has completed execution and thus no longer active.  
-`REJECT`| The List Status is responding to a failed action either during order placement or order canceled.  
-  
-## ContingencyType[​](/docs/binance-spot-api-docs/testnet/enums#contingencytype "Direct link to ContingencyType")
-
-  * `OCO`
-  * `OTO`
+  * `price` >= `minPrice`
+  * `price` <= `maxPrice`
+  * `price` % `tickSize` == 0
 
 
 
-## AllocationType[​](/docs/binance-spot-api-docs/testnet/enums#allocationtype "Direct link to AllocationType")
-
-  * `SOR`
-
-
-
-## Order types (orderTypes, type)[​](/docs/binance-spot-api-docs/testnet/enums#order-types-ordertypes-type "Direct link to Order types \(orderTypes, type\)")
-
-  * `LIMIT`
-  * `MARKET`
-  * `STOP_LOSS`
-  * `STOP_LOSS_LIMIT`
-  * `TAKE_PROFIT`
-  * `TAKE_PROFIT_LIMIT`
-  * `LIMIT_MAKER`
-
-
-
-## Order Response Type (newOrderRespType)[​](/docs/binance-spot-api-docs/testnet/enums#order-response-type-neworderresptype "Direct link to Order Response Type \(newOrderRespType\)")
-
-  * `ACK`
-  * `RESULT`
-  * `FULL`
-
-
-
-## Working Floor[​](/docs/binance-spot-api-docs/testnet/enums#working-floor "Direct link to Working Floor")
-
-  * `EXCHANGE`
-  * `SOR`
-
-
-
-## Order side (side)[​](/docs/binance-spot-api-docs/testnet/enums#order-side-side "Direct link to Order side \(side\)")
-
-  * `BUY`
-  * `SELL`
-
-
-
-## Time in force (timeInForce)[​](/docs/binance-spot-api-docs/testnet/enums#time-in-force-timeinforce "Direct link to Time in force \(timeInForce\)")
-
-This sets how long an order will be active before expiration.
-
-Status| Description  
----|---  
-`GTC`| Good Til Canceled   
-An order will be on the book unless the order is canceled.  
-`IOC`| Immediate Or Cancel   
-An order will try to fill the order as much as it can before the order expires.  
-`FOK`| Fill or Kill   
-An order will expire if the full order cannot be filled upon execution.  
-  
-## Rate limiters (rateLimitType)[​](/docs/binance-spot-api-docs/testnet/enums#rate-limiters-ratelimittype "Direct link to Rate limiters \(rateLimitType\)")
-
-  * REQUEST_WEIGHT
-
-
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "REQUEST_WEIGHT",  
-        "interval": "MINUTE",  
-        "intervalNum": 1,  
-        "limit": 6000  
+        "filterType": "PRICE_FILTER",  
+        "minPrice": "0.00000100",  
+        "maxPrice": "100000.00000000",  
+        "tickSize": "0.00000100"  
     }  
     
 
-  * ORDERS
+### PERCENT_PRICE[​](/docs/binance-spot-api-docs/testnet/filters#percent_price "Direct link to PERCENT_PRICE")
+
+The `PERCENT_PRICE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
+
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
 
+
+An order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "ORDERS",  
-        "interval": "SECOND",  
-        "intervalNum": 1,  
+        "filterType": "PERCENT_PRICE",  
+        "multiplierUp": "1.3000",  
+        "multiplierDown": "0.7000",  
+        "avgPriceMins": 5  
+    }  
+    
+
+### PERCENT_PRICE_BY_SIDE[​](/docs/binance-spot-api-docs/testnet/filters#percent_price_by_side "Direct link to PERCENT_PRICE_BY_SIDE")
+
+The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
+
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
+
+
+
+There is a different range depending on whether an order is placed on the `BUY` side or the `SELL` side.
+
+A `BUY` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+A `SELL` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "PERCENT_PRICE_BY_SIDE",  
+        "bidMultiplierUp": "1.2",  
+        "bidMultiplierDown": "0.2",  
+        "askMultiplierUp": "5",  
+        "askMultiplierDown": "0.8",  
+        "avgPriceMins": 1  
+    }  
+    
+
+### LOT_SIZE[​](/docs/binance-spot-api-docs/testnet/filters#lot_size "Direct link to LOT_SIZE")
+
+The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol. There are 3 parts:
+
+  * `minQty` defines the minimum `quantity`/`icebergQty` allowed.
+  * `maxQty` defines the maximum `quantity`/`icebergQty` allowed.
+  * `stepSize` defines the intervals that a `quantity`/`icebergQty` can be increased/decreased by.
+
+
+
+In order to pass the `lot size`, the following must be true for `quantity`/`icebergQty`:
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
+    }  
+    
+
+### MIN_NOTIONAL[​](/docs/binance-spot-api-docs/testnet/filters#min_notional "Direct link to MIN_NOTIONAL")
+
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+
+  * An order's notional value is the `price` * `quantity`.
+  * `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MIN_NOTIONAL",  
+        "minNotional": "0.00100000",  
+        "applyToMarket": true,  
+        "avgPriceMins": 5  
+    }  
+    
+
+### NOTIONAL[​](/docs/binance-spot-api-docs/testnet/filters#notional "Direct link to NOTIONAL")
+
+The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.
+
+  * `applyMinToMarket` determines whether `minNotional` will be applied to `MARKET` orders.
+  * `applyMaxToMarket` determines whether `maxNotional` will be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "NOTIONAL",  
+        "minNotional": "10.00000000",  
+        "applyMinToMarket": false,  
+        "maxNotional": "10000.00000000",  
+        "applyMaxToMarket": false,  
+        "avgPriceMins": 5  
+    }  
+    
+
+### ICEBERG_PARTS[​](/docs/binance-spot-api-docs/testnet/filters#iceberg_parts "Direct link to ICEBERG_PARTS")
+
+The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have. The number of `ICEBERG_PARTS` is defined as `CEIL(qty / icebergQty)`.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "ICEBERG_PARTS",  
         "limit": 10  
     }  
     
 
-  * RAW_REQUESTS
+### MARKET_LOT_SIZE[​](/docs/binance-spot-api-docs/testnet/filters#market_lot_size "Direct link to MARKET_LOT_SIZE")
+
+The `MARKET_LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for `MARKET` orders on a symbol. There are 3 parts:
+
+  * `minQty` defines the minimum `quantity` allowed.
+  * `maxQty` defines the maximum `quantity` allowed.
+  * `stepSize` defines the intervals that a `quantity` can be increased/decreased by.
 
 
+
+In order to pass the `market lot size`, the following must be true for `quantity`:
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "RAW_REQUESTS",  
-        "interval": "MINUTE",  
-        "intervalNum": 5,  
-        "limit": 61000  
+        "filterType": "MARKET_LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-## Rate limit intervals (interval)[​](/docs/binance-spot-api-docs/testnet/enums#rate-limit-intervals-interval "Direct link to Rate limit intervals \(interval\)")
+### MAX_NUM_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#max_num_orders "Direct link to MAX_NUM_ORDERS")
 
-  * SECOND
-  * MINUTE
-  * DAY
+The `MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on a symbol. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDERS",  
+        "maxNumOrders": 25  
+    }  
+    
+
+### MAX_NUM_ALGO_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#max_num_algo_orders "Direct link to MAX_NUM_ALGO_ORDERS")
+
+The `MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on a symbol. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 5  
+    }  
+    
+
+### MAX_NUM_ICEBERG_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#max_num_iceberg_orders "Direct link to MAX_NUM_ICEBERG_ORDERS")
+
+The `MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of `ICEBERG` orders an account is allowed to have open on a symbol. An `ICEBERG` order is any order where the `icebergQty` is > 0.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 5  
+    }  
+    
+
+### MAX_POSITION[​](/docs/binance-spot-api-docs/testnet/filters#max_position "Direct link to MAX_POSITION")
+
+The `MAX_POSITION` filter defines the allowed maximum position an account can have on the base asset of a symbol. An account's position defined as the sum of the account's:
+
+  1. free balance of the base asset
+  2. locked balance of the base asset
+  3. sum of the qty of all open BUY orders
 
 
 
-## STP Modes[​](/docs/binance-spot-api-docs/testnet/enums#stp-modes "Direct link to STP Modes")
+`BUY` orders will be rejected if the account's position is greater than the maximum position allowed.
 
-Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq) to learn more.
+If an order's `quantity` can cause the position to overflow, this will also fail the `MAX_POSITION` filter.
 
-  * `NONE`
-  * `EXPIRE_MAKER`
-  * `EXPIRE_TAKER`
-  * `EXPIRE_BOTH`
-  * `DECREMENT`
-  * `TRANSFER`
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_POSITION",  
+        "maxPosition": "10.00000000"  
+    }  
+    
+
+### TRAILING_DELTA[​](/docs/binance-spot-api-docs/testnet/filters#trailing_delta "Direct link to TRAILING_DELTA")
+
+The `TRAILING_DELTA` filter defines the minimum and maximum value for the parameter [`trailingDelta`](/docs/binance-spot-api-docs/faqs/trailing-stop-faq).
+
+In order for a trailing stop order to pass this filter, the following must be true:
+
+For `STOP_LOSS BUY`, `STOP_LOSS_LIMIT_BUY`,`TAKE_PROFIT SELL` and `TAKE_PROFIT_LIMIT SELL` orders:
+
+  * `trailingDelta` >= `minTrailingAboveDelta`
+  * `trailingDelta` <= `maxTrailingAboveDelta`
+
+
+
+For `STOP_LOSS SELL`, `STOP_LOSS_LIMIT SELL`, `TAKE_PROFIT BUY`, and `TAKE_PROFIT_LIMIT BUY` orders:
+
+  * `trailingDelta` >= `minTrailingBelowDelta`
+  * `trailingDelta` <= `maxTrailingBelowDelta`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "TRAILING_DELTA",  
+        "minTrailingAboveDelta": 10,  
+        "maxTrailingAboveDelta": 2000,  
+        "minTrailingBelowDelta": 10,  
+        "maxTrailingBelowDelta": 2000  
+    }  
+    
+
+### MAX_NUM_ORDER_AMENDS[​](/docs/binance-spot-api-docs/testnet/filters#max_num_order_amends "Direct link to MAX_NUM_ORDER_AMENDS")
+
+The `MAX_NUM_ORDER_AMENDS` filter defines the maximum number of times an order can be [amended](/docs/binance-spot-api-docs/faqs/order_amend_keep_priority) on the given symbol.
+
+If there are too many order amendments made on a single order, you will receive the `-2038` error code.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDER_AMENDS",  
+        "maxNumOrderAmends": 10  
+    }  
+    
+
+### MAX_NUM_ORDER_LISTS[​](/docs/binance-spot-api-docs/testnet/filters#max_num_order_lists "Direct link to MAX_NUM_ORDER_LISTS")
+
+The `MAX_NUM_ORDER_LISTS` filter defines the maximum number of open order lists an account can have on a symbol. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
+    }  
+    
+
+## Exchange Filters[​](/docs/binance-spot-api-docs/testnet/filters#exchange-filters "Direct link to Exchange Filters")
+
+### EXCHANGE_MAX_NUM_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#exchange_max_num_orders "Direct link to EXCHANGE_MAX_NUM_ORDERS")
+
+The `EXCHANGE_MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on the exchange. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ORDERS",  
+        "maxNumOrders": 1000  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ALGO_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#exchange_max_num_algo_orders "Direct link to EXCHANGE_MAX_NUM_ALGO_ORDERS")
+
+The `EXCHANGE_MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on the exchange. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 200  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ICEBERG_ORDERS[​](/docs/binance-spot-api-docs/testnet/filters#exchange_max_num_iceberg_orders "Direct link to EXCHANGE_MAX_NUM_ICEBERG_ORDERS")
+
+The `EXCHANGE_MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of iceberg orders an account is allowed to have open on the exchange.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 10000  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/binance-spot-api-docs/testnet/filters#exchange_max_num_order_lists "Direct link to EXCHANGE_MAX_NUM_ORDER_LISTS")
+
+The `EXCHANGE_MAX_NUM_ORDER_LISTS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
+    }  
+    
+
+## Asset Filters[​](/docs/binance-spot-api-docs/testnet/filters#asset-filters "Direct link to Asset Filters")
+
+### MAX_ASSET[​](/docs/binance-spot-api-docs/testnet/filters#max_asset "Direct link to MAX_ASSET")
+
+The `MAX_ASSET` filter defines the maximum quantity of an asset that an account is allowed to transact in a single order.
+
+  * When the asset is a symbol's base asset, the limit applies to the order's quantity.
+  * When the asset is a symbol's quote asset, the limit applies to the order's notional value.
+  * For example, a MAX_ASSET filter for USDC applies to all symbols that have USDC as either a base or quote asset, such as: 
+    * USDCBNB
+    * BNBUSDC
+
+
+
+**/myFilters format:**
+    
+    
+    {  
+        "filterType": "MAX_ASSET",  
+        "asset": "USDC",  
+        "limit": "42.00000000"  
+    }
 
 ---
 
-# ENUM Definitions
+# Filters
 
-This will apply for both REST API and WebSocket API.
+Filters define trading rules on a symbol or an exchange. Filters come in three forms: `symbol filters`, `exchange filters` and `asset filters`.
 
-## Symbol status (status):[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#symbol-status-status "Symbol status \(status\):的直接链接")
+## Symbol filters[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#symbol-filters "Symbol filters的直接链接")
 
-  * `TRADING`
-  * `END_OF_DAY`
-  * `HALT`
-  * `BREAK`
+### PRICE_FILTER[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#price_filter "PRICE_FILTER的直接链接")
 
+The `PRICE_FILTER` defines the `price` rules for a symbol. There are 3 parts:
 
-
-## Account and Symbol Permissions (permissions)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#account-and-symbol-permissions-permissions "Account and Symbol Permissions \(permissions\)的直接链接")
-
-  * `SPOT`
+  * `minPrice` defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0.
+  * `maxPrice` defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0.
+  * `tickSize` defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0.
 
 
 
-## Order status (status)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-status-status "Order status \(status\)的直接链接")
+Any of the above variables can be set to 0, which disables that rule in the `price filter`. In order to pass the `price filter`, the following must be true for `price`/`stopPrice` of the enabled rules:
 
-Status| Description  
----|---  
-`NEW`| The order has been accepted by the engine.  
-`PENDING_NEW`| The order is in a pending phase until the working order of an order list has been fully filled.  
-`PARTIALLY_FILLED`| A part of the order has been filled.  
-`FILLED`| The order has been completed.  
-`CANCELED`| The order has been canceled by the user.  
-`PENDING_CANCEL`| Currently unused  
-`REJECTED`| The order was not accepted by the engine and not processed.  
-`EXPIRED`| The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill)   
-or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance)  
-`EXPIRED_IN_MATCH`| The order was expired by the exchange due to STP. (e.g. an order with `EXPIRE_TAKER` will match with existing orders on the book with the same account or same `tradeGroupId`)  
-  
-## Order List Status (listStatusType)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-list-status-liststatustype "Order List Status \(listStatusType\)的直接链接")
-
-Status| Description  
----|---  
-`RESPONSE`| This is used when the ListStatus is responding to a failed action. (E.g. order list placement or cancellation)  
-`EXEC_STARTED`| The order list has been placed or there is an update to the order list status.  
-`UPDATED`| The clientOrderId of an order in the order list has been changed.  
-`ALL_DONE`| The order list has finished executing and thus is no longer active.  
-  
-## Order List Order Status (listOrderStatus)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-list-order-status-listorderstatus "Order List Order Status \(listOrderStatus\)的直接链接")
-
-Status| Description  
----|---  
-`EXECUTING`| Either an order list has been placed or there is an update to the status of the list.  
-`ALL_DONE`| An order list has completed execution and thus no longer active.  
-`REJECT`| The List Status is responding to a failed action either during order placement or order canceled.  
-  
-## ContingencyType[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#contingencytype "ContingencyType的直接链接")
-
-  * `OCO`
-  * `OTO`
+  * `price` >= `minPrice`
+  * `price` <= `maxPrice`
+  * `price` % `tickSize` == 0
 
 
 
-## AllocationType[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#allocationtype "AllocationType的直接链接")
-
-  * `SOR`
-
-
-
-## Order types (orderTypes, type)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-types-ordertypes-type "Order types \(orderTypes, type\)的直接链接")
-
-  * `LIMIT`
-  * `MARKET`
-  * `STOP_LOSS`
-  * `STOP_LOSS_LIMIT`
-  * `TAKE_PROFIT`
-  * `TAKE_PROFIT_LIMIT`
-  * `LIMIT_MAKER`
-
-
-
-## Order Response Type (newOrderRespType)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-response-type-neworderresptype "Order Response Type \(newOrderRespType\)的直接链接")
-
-  * `ACK`
-  * `RESULT`
-  * `FULL`
-
-
-
-## Working Floor[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#working-floor "Working Floor的直接链接")
-
-  * `EXCHANGE`
-  * `SOR`
-
-
-
-## Order side (side)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#order-side-side "Order side \(side\)的直接链接")
-
-  * `BUY`
-  * `SELL`
-
-
-
-## Time in force (timeInForce)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#time-in-force-timeinforce "Time in force \(timeInForce\)的直接链接")
-
-This sets how long an order will be active before expiration.
-
-Status| Description  
----|---  
-`GTC`| Good Til Canceled   
-An order will be on the book unless the order is canceled.  
-`IOC`| Immediate Or Cancel   
-An order will try to fill the order as much as it can before the order expires.  
-`FOK`| Fill or Kill   
-An order will expire if the full order cannot be filled upon execution.  
-  
-## Rate limiters (rateLimitType)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#rate-limiters-ratelimittype "Rate limiters \(rateLimitType\)的直接链接")
-
-  * REQUEST_WEIGHT
-
-
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "REQUEST_WEIGHT",  
-        "interval": "MINUTE",  
-        "intervalNum": 1,  
-        "limit": 6000  
+        "filterType": "PRICE_FILTER",  
+        "minPrice": "0.00000100",  
+        "maxPrice": "100000.00000000",  
+        "tickSize": "0.00000100"  
     }  
     
 
-  * ORDERS
+### PERCENT_PRICE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#percent_price "PERCENT_PRICE的直接链接")
+
+The `PERCENT_PRICE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
+
+  * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
 
+
+An order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "ORDERS",  
-        "interval": "SECOND",  
-        "intervalNum": 1,  
+        "filterType": "PERCENT_PRICE",  
+        "multiplierUp": "1.3000",  
+        "multiplierDown": "0.7000",  
+        "avgPriceMins": 5  
+    }  
+    
+
+### PERCENT_PRICE_BY_SIDE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#percent_price_by_side "PERCENT_PRICE_BY_SIDE的直接链接")
+
+The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
+
+  * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
+
+
+
+There is a different range depending on whether an order is placed on the `BUY` side or the `SELL` side.
+
+A `BUY` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+A `SELL` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "PERCENT_PRICE_BY_SIDE",  
+        "bidMultiplierUp": "1.2",  
+        "bidMultiplierDown": "0.2",  
+        "askMultiplierUp": "5",  
+        "askMultiplierDown": "0.8",  
+        "avgPriceMins": 1  
+    }  
+    
+
+### LOT_SIZE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#lot_size "LOT_SIZE的直接链接")
+
+The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol. There are 3 parts:
+
+  * `minQty` defines the minimum `quantity`/`icebergQty` allowed.
+  * `maxQty` defines the maximum `quantity`/`icebergQty` allowed.
+  * `stepSize` defines the intervals that a `quantity`/`icebergQty` can be increased/decreased by.
+
+
+
+In order to pass the `lot size`, the following must be true for `quantity`/`icebergQty`:
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
+    }  
+    
+
+### MIN_NOTIONAL[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#min_notional "MIN_NOTIONAL的直接链接")
+
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+
+  * An order's notional value is the `price` * `quantity`.
+  * `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MIN_NOTIONAL",  
+        "minNotional": "0.00100000",  
+        "applyToMarket": true,  
+        "avgPriceMins": 5  
+    }  
+    
+
+### NOTIONAL[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#notional "NOTIONAL的直接链接")
+
+The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.
+
+  * `applyMinToMarket` determines whether `minNotional` will be applied to `MARKET` orders.
+  * `applyMaxToMarket` determines whether `maxNotional` will be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "NOTIONAL",  
+        "minNotional": "10.00000000",  
+        "applyMinToMarket": false,  
+        "maxNotional": "10000.00000000",  
+        "applyMaxToMarket": false,  
+        "avgPriceMins": 5  
+    }  
+    
+
+### ICEBERG_PARTS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#iceberg_parts "ICEBERG_PARTS的直接链接")
+
+The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have. The number of `ICEBERG_PARTS` is defined as `CEIL(qty / icebergQty)`.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "ICEBERG_PARTS",  
         "limit": 10  
     }  
     
 
-  * RAW_REQUESTS
+### MARKET_LOT_SIZE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#market_lot_size "MARKET_LOT_SIZE的直接链接")
+
+The `MARKET_LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for `MARKET` orders on a symbol. There are 3 parts:
+
+  * `minQty` defines the minimum `quantity` allowed.
+  * `maxQty` defines the maximum `quantity` allowed.
+  * `stepSize` defines the intervals that a `quantity` can be increased/decreased by.
 
 
+
+In order to pass the `market lot size`, the following must be true for `quantity`:
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "rateLimitType": "RAW_REQUESTS",  
-        "interval": "MINUTE",  
-        "intervalNum": 5,  
-        "limit": 61000  
+        "filterType": "MARKET_LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-## Rate limit intervals (interval)[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#rate-limit-intervals-interval "Rate limit intervals \(interval\)的直接链接")
+### MAX_NUM_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_num_orders "MAX_NUM_ORDERS的直接链接")
 
-  * SECOND
-  * MINUTE
-  * DAY
+The `MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on a symbol. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDERS",  
+        "maxNumOrders": 25  
+    }  
+    
+
+### MAX_NUM_ALGO_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_num_algo_orders "MAX_NUM_ALGO_ORDERS的直接链接")
+
+The `MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on a symbol. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 5  
+    }  
+    
+
+### MAX_NUM_ICEBERG_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_num_iceberg_orders "MAX_NUM_ICEBERG_ORDERS的直接链接")
+
+The `MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of `ICEBERG` orders an account is allowed to have open on a symbol. An `ICEBERG` order is any order where the `icebergQty` is > 0.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 5  
+    }  
+    
+
+### MAX_POSITION[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_position "MAX_POSITION的直接链接")
+
+The `MAX_POSITION` filter defines the allowed maximum position an account can have on the base asset of a symbol. An account's position defined as the sum of the account's:
+
+  1. free balance of the base asset
+  2. locked balance of the base asset
+  3. sum of the qty of all open BUY orders
 
 
 
-## STP Modes[​](/docs/zh-CN/binance-spot-api-docs/testnet/enums#stp-modes "STP Modes的直接链接")
+`BUY` orders will be rejected if the account's position is greater than the maximum position allowed.
 
-Read [Self Trade Prevention (STP) FAQ](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq.md) to learn more.
+If an order's `quantity` can cause the position to overflow, this will also fail the `MAX_POSITION` filter.
 
-  * `NONE`
-  * `EXPIRE_MAKER`
-  * `EXPIRE_TAKER`
-  * `EXPIRE_BOTH`
-  * `DECREMENT`
-  * `TRANSFER`
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_POSITION",  
+        "maxPosition": "10.00000000"  
+    }  
+    
+
+### TRAILING_DELTA[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#trailing_delta "TRAILING_DELTA的直接链接")
+
+The `TRAILING_DELTA` filter defines the minimum and maximum value for the parameter [`trailingDelta`](/docs/zh-CN/binance-spot-api-docs/faqs/trailing-stop-faq.md).
+
+In order for a trailing stop order to pass this filter, the following must be true:
+
+For `STOP_LOSS BUY`, `STOP_LOSS_LIMIT_BUY`,`TAKE_PROFIT SELL` and `TAKE_PROFIT_LIMIT SELL` orders:
+
+  * `trailingDelta` >= `minTrailingAboveDelta`
+  * `trailingDelta` <= `maxTrailingAboveDelta`
+
+
+
+For `STOP_LOSS SELL`, `STOP_LOSS_LIMIT SELL`, `TAKE_PROFIT BUY`, and `TAKE_PROFIT_LIMIT BUY` orders:
+
+  * `trailingDelta` >= `minTrailingBelowDelta`
+  * `trailingDelta` <= `maxTrailingBelowDelta`
+
+
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "TRAILING_DELTA",  
+        "minTrailingAboveDelta": 10,  
+        "maxTrailingAboveDelta": 2000,  
+        "minTrailingBelowDelta": 10,  
+        "maxTrailingBelowDelta": 2000  
+    }  
+    
+
+### MAX_NUM_ORDER_AMENDS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_num_order_amends "MAX_NUM_ORDER_AMENDS的直接链接")
+
+The `MAX_NUM_ORDER_AMENDS` filter defines the maximum number of times an order can be [amended](/docs/zh-CN/binance-spot-api-docs/faqs/order_amend_keep_priority.md) on the given symbol.
+
+If there are too many order amendments made on a single order, you will receive the `-2038` error code.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDER_AMENDS",  
+        "maxNumOrderAmends": 10  
+    }  
+    
+
+### MAX_NUM_ORDER_LISTS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_num_order_lists "MAX_NUM_ORDER_LISTS的直接链接")
+
+The `MAX_NUM_ORDER_LISTS` filter defines the maximum number of open order lists an account can have on a symbol. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
+    }  
+    
+
+## Exchange Filters[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange-filters "Exchange Filters的直接链接")
+
+### EXCHANGE_MAX_NUM_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange_max_num_orders "EXCHANGE_MAX_NUM_ORDERS的直接链接")
+
+The `EXCHANGE_MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on the exchange. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ORDERS",  
+        "maxNumOrders": 1000  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ALGO_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange_max_num_algo_orders "EXCHANGE_MAX_NUM_ALGO_ORDERS的直接链接")
+
+The `EXCHANGE_MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on the exchange. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 200  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ICEBERG_ORDERS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange_max_num_iceberg_orders "EXCHANGE_MAX_NUM_ICEBERG_ORDERS的直接链接")
+
+The `EXCHANGE_MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of iceberg orders an account is allowed to have open on the exchange.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 10000  
+    }  
+    
+
+### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange_max_num_order_lists "EXCHANGE_MAX_NUM_ORDER_LISTS的直接链接")
+
+The `EXCHANGE_MAX_NUM_ORDER_LISTS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
+    
+    
+    {  
+        "filterType": "EXCHANGE_MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
+    }  
+    
+
+## Asset Filters[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#asset-filters "Asset Filters的直接链接")
+
+### MAX_ASSET[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#max_asset "MAX_ASSET的直接链接")
+
+The `MAX_ASSET` filter defines the maximum quantity of an asset that an account is allowed to transact in a single order.
+
+  * When the asset is a symbol's base asset, the limit applies to the order's quantity.
+  * When the asset is a symbol's quote asset, the limit applies to the order's notional value.
+  * For example, a MAX_ASSET filter for USDC applies to all symbols that have USDC as either a base or quote asset, such as: 
+    * USDCBNB
+    * BNBUSDC
+
+
+
+**/myFilters format:**
+    
+    
+    {  
+        "filterType": "MAX_ASSET",  
+        "asset": "USDC",  
+        "limit": "42.00000000"  
+    }

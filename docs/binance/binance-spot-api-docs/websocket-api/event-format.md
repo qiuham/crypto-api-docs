@@ -2,13 +2,13 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/event-format
 api_type: WebSocket
-updated_at: 2026-01-15T23:37:13.526899
+updated_at: 2026-05-27 18:55:03.347666
 ---
 
 # Event format
 
-[User Data Stream](/docs/binance-spot-api-docs/user-data-stream) events for non-SBE sessions are sent as JSON in **text frames** , one event per frame.
-
+[User Data Stream](/docs/binance-spot-api-docs/user-data-stream) events for non-SBE sessions are sent as JSON in **text frames** , one event per frame.  
+  
 Events in [SBE sessions](/docs/binance-spot-api-docs/faqs/sbe_faq) will be sent as **binary frames**.
 
 Please refer to [`userDataStream.subscribe`](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-stream-subscribe) for details on how to subscribe to User Data Stream in WebSocket API.
@@ -49,11 +49,11 @@ Name| Type| Mandatory| Description
 
 # 事件格式
 
-[用户数据流](/docs/zh-CN/binance-spot-api-docs/user-data-stream)中的非 SBE 会话事件以 JSON 格式在 **text 帧** 中发送，每帧一个事件。
-
+[用户数据流](/docs/zh-CN/binance-spot-api-docs/user-data-stream)中的非 SBE 会话事件以 JSON 格式在 **text 帧** 中发送，每帧一个事件。  
+  
 [SBE 会话](/docs/zh-CN/binance-spot-api-docs/faqs/sbe_faq)中的事件将作为 **二进制帧** 发送。
 
-有关如何在 WebSocket API 中订阅用户数据流的详细信息，请参阅 [`订阅用户数据流`](/docs/zh-CN/binance-spot-api-docs/websocket-api/event-format#user_data_stream_susbcribe)。
+有关如何在 WebSocket API 中订阅用户数据流的详细信息，请参阅 [`订阅用户数据流`](/docs/zh-CN/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-stream-subscribe)。
 
 事件示例:
     

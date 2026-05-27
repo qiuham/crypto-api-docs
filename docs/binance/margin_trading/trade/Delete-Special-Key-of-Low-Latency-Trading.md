@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Delete-Special-Key-of-Low-Latency-Trading
 api_type: Trading
-updated_at: 2026-01-15T23:48:43.642155
+updated_at: 2026-05-27 18:57:19.232165
 ---
 
 # Delete Special Key(Low-Latency Trading)(TRADE)

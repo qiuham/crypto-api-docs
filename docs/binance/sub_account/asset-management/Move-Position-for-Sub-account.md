@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Move-Position-for-Sub-account
 api_type: Account
-updated_at: 2026-01-15T23:51:09.131282
+updated_at: 2026-05-27 19:02:28.614954
 ---
 
 # Move Position for Sub-account (For Master Account) (USER_DATA)
@@ -34,7 +34,7 @@ timestamp| LONG| YES|
 >   * This function only support VIP level 7-9.
 >   * Only master account can use the function
 >   * Quantity should be positive number only
->   * The function support normal account, PM PRO and PM PRO SPAN.
+>   * The function support normal account, PM PRO, PM PRO SPAN and PM Retail.
 >   * Only support for from account has positions
 >   * For all orders in the same orderArgs request, if any symbol’s total close position quantity is bigger than the symbol’s current position quantity, all batch orders in the same list will fail simultaneously.
 >   * Only support cross margin mode
@@ -104,7 +104,7 @@ timestamp| LONG| YES|
 >   * 该功能仅对VIP7-9开放.
 >   * 只有母账户可以调用此接口。
 >   * Quantity 必须为正数。
->   * 本功能支持普通合约账户, PM PRO 和 PM PRO SPAN 用户的仓位转移。
+>   * 本功能支持普通合约账户, PM PRO, PM PRO SPAN 和 PM Retail 用户的仓位转移。
 >   * 只有 from account 存在仓位才能调用此功能。
 >   * 在同一个 orderArgs 的请求, 如果任何symbol的平仓总量大于该symbol的当前持仓量，则整个请求的订单都会失败。
 >   * 仅支持全仓的仓位模式。

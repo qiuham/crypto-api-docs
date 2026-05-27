@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/one-click-arrival-deposite-apply
 api_type: REST
-updated_at: 2026-01-15T23:49:39.788971
+updated_at: 2026-05-27 18:59:34.021288
 ---
 
 # One click arrival deposit apply (for expired address deposit) (USER_DATA)
@@ -38,7 +38,7 @@ subUserId| LONG| NO| Sub-userId of parent user
     {  
         "code": "000000",  
         "message": "success",  
-        "data":true,  
+        "data": true,  
         "success": true  
     }
 
@@ -77,6 +77,6 @@ subUserId| LONG| NO| 母账户的子账户userId
     {  
         "code": "000000",  
         "message": "success",  
-        "data":true,  
+        "data": true,  
         "success": true  
     }

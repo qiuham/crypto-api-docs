@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/market-data-requests
 api_type: WebSocket
-updated_at: 2026-01-15T23:37:13.788175
+updated_at: 2026-05-27 18:55:09.121865
 ---
 
 # Market data requests
@@ -218,6 +218,64 @@ Notes:
     }  
     
 
+### Historical Block Trades[​](/docs/binance-spot-api-docs/websocket-api/market-data-requests#historical-block-trades "Direct link to Historical Block Trades")
+    
+    
+    {  
+        "id": "189da436-d4bd-48ca-9f95-9f613d621717",  
+        "method": "blockTrades.historical",  
+        "params": {  
+            "symbol": "BNBBTC",  
+            "fromId": 582,  
+            "limit": 1  
+        }  
+    }  
+    
+
+Get block trades.
+
+**Weight:** 25
+
+**Parameters:**
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+`symbol`| STRING| YES|   
+`fromId`| LONG| YES| Block trade ID to fetch from  
+`limit`| LONG| NO| Default: 500; Maximum: 1000  
+  
+**Data Source:** Database
+
+**Response:**
+    
+    
+    {  
+        "id": "cffc9c7d-4efc-4ce0-b587-6b87448f052a",  
+        "status": 200,  
+        "result":  
+        [  
+            {  
+                "id": 582,  
+                "price": "0.052",  
+                "qty": "5838",  
+                "quoteQty": "303.576",  
+                "time": 1772506983321,  
+                "isBuyerMaker": true  
+            }  
+        ],  
+        "rateLimits":  
+        [  
+            {  
+                "rateLimitType": "REQUEST_WEIGHT",  
+                "interval": "MINUTE",  
+                "intervalNum": 1,  
+                "limit": 6000,  
+                "count": 10  
+            }  
+        ]  
+    }  
+    
+
 ### Aggregate trades[​](/docs/binance-spot-api-docs/websocket-api/market-data-requests#aggregate-trades "Direct link to Aggregate trades")
     
     
@@ -324,7 +382,7 @@ Klines are uniquely identified by their open & close time.
 
 If you need access to real-time kline updates, please consider using WebSocket Streams:
 
-  * [`<symbol>@kline_<interval>`](/docs/binance-spot-api-docs/web-socket-streams#klinecandlestick-streams)
+  * [`<symbol>@kline_<interval>`](/docs/binance-spot-api-docs/web-socket-streams#klinecandlestick-streams-for-utc)
 
 
 
@@ -545,7 +603,7 @@ Get 24-hour rolling window price change statistics.
 
 If you need to continuously monitor trading statistics, please consider using WebSocket Streams:
 
-  * [`<symbol>@ticker`](/docs/binance-spot-api-docs/web-socket-streams#individual-symbol-ticker-streams) or [`!ticker@arr`](/docs/binance-spot-api-docs/web-socket-streams#all-market-tickers-stream)
+  * [`<symbol>@ticker`](/docs/binance-spot-api-docs/web-socket-streams#individual-symbol-ticker-streams)
   * [`<symbol>@miniTicker`](/docs/binance-spot-api-docs/web-socket-streams#individual-symbol-mini-ticker-stream) or [`!miniTicker@arr`](/docs/binance-spot-api-docs/web-socket-streams#all-market-mini-tickers-stream)
 
 
@@ -1356,6 +1414,144 @@ If more than one symbol is requested, response returns an array:
                 "count": 4  
             }  
         ]  
+    }  
+    
+
+### Query Reference Price[​](/docs/binance-spot-api-docs/websocket-api/market-data-requests#query-reference-price "Direct link to Query Reference Price")
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "method": "referencePrice",  
+      "params": {  
+        "symbol": "BAZUSD"  
+      }  
+    }  
+    
+
+**Weight:** 2
+
+**Parameters** :
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+`symbol`| STRING| Yes|   
+  
+**Data Source:** Memory
+
+**Response:**
+
+If a reference price is set:
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "status": 200,  
+      "result": {  
+        "symbol": "BAZUSD",  
+        "referencePrice": "0.00501900",  
+        "timestamp": 1770946889251  // Timestamp when the reference price was valid  
+      }  
+    }  
+    
+
+If no reference price is set:
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "status": 200,  
+      "result": {  
+        "symbol": "BAZUSD",  
+        "referencePrice": null,  
+        "timestamp": 1770946889251  // Timestamp when the reference price was valid  
+      }  
+    }  
+    
+
+If no reference price has ever been set:
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 200,  
+        "result":  
+        {  
+            "code": -2043,  
+            "msg": "This symbol doesn't have a reference price."  
+        }  
+    }  
+    
+
+### Query Reference Price Calculation[​](/docs/binance-spot-api-docs/websocket-api/market-data-requests#query-reference-price-calculation "Direct link to Query Reference Price Calculation")
+    
+    
+    {  
+      "id": "5132affa-0aba-4831-b475-f262504556b41",  
+      "method": "referencePrice.calculation",  
+      "params": {  
+        "symbol": "BAZUSD"  
+      }  
+    }  
+    
+
+Describes how reference price is calculated for a given symbol.
+
+**Weight:** 2
+
+**Parameters** :
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+`symbol`| STRING| Yes|   
+`symbolStatus`| ENUM| No| Supported values: `TRADING`, `HALT`, `BREAK`  
+  
+**Data Source:** Memory
+
+**Response:**
+
+If reference price is not being calculated:
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 400,  
+        "error":  
+        {  
+            "code": -2043,  
+            "msg": "This symbol doesn't have a reference price."  
+        }  
+    }  
+    
+
+If the reference price is being calculated by the matching engine as an arithmetic mean:
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 200,  
+        "result":  
+        {  
+            "symbol": "BAZUSD",  
+            "calculationType": "ARITHMETIC_MEAN",  
+            "bucketCount": 10,  
+            "bucketWidthMs": 1000  
+        }  
+    }  
+    
+
+If the reference price is being calculated outside the matching engine:
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 200,  
+        "result":  
+        {  
+            "symbol": "BAZUSD",  
+            "calculationType": "EXTERNAL",  
+            "externalCalculationId": 42  
+        }  
     }
 
 ---
@@ -1562,6 +1758,64 @@ If more than one symbol is requested, response returns an array:
             }  
         ],  
         "rateLimits": [  
+            {  
+                "rateLimitType": "REQUEST_WEIGHT",  
+                "interval": "MINUTE",  
+                "intervalNum": 1,  
+                "limit": 6000,  
+                "count": 10  
+            }  
+        ]  
+    }  
+    
+
+### 查询历史大宗交易[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/market-data-requests#查询历史大宗交易 "查询历史大宗交易的直接链接")
+    
+    
+    {  
+        "id": "189da436-d4bd-48ca-9f95-9f613d621717",  
+        "method": "blockTrades.historical",  
+        "params": {  
+            "symbol": "BNBBTC",  
+            "fromId": 582,  
+            "limit": 1  
+        }  
+    }  
+    
+
+获取历史大宗交易。
+
+**权重:** 25
+
+**参数:**
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+`symbol`| STRING| YES|   
+`fromId`| LONG| YES| 起始大宗交易ID  
+`limit`| LONG| NO| 默认值：500; 最大值：1000  
+  
+**数据源:** 数据库
+
+**响应:**
+    
+    
+    {  
+        "id": "cffc9c7d-4efc-4ce0-b587-6b87448f052a",  
+        "status": 200,  
+        "result":  
+        [  
+            {  
+                "id": 582,  
+                "price": "0.052",  
+                "qty": "5838",  
+                "quoteQty": "303.576",  
+                "time": 1772506983321,  
+                "isBuyerMaker": true  
+            }  
+        ],  
+        "rateLimits":  
+        [  
             {  
                 "rateLimitType": "REQUEST_WEIGHT",  
                 "interval": "MINUTE",  
@@ -2099,7 +2353,7 @@ symbolStatus | ENUM | NO | 过滤具有此 `tradingStatus` 的交易对。
 
 **参数:**
 
-参数名 | 类型 | 是否必需 | 描述  
+名称 | 类型 | 是否必需 | 描述  
 ---|---|---|---  
 `symbol` | STRING | YES | 查询单交易对的行情  
 `symbols` | ARRAY of STRING | 查询多交易对行情  
@@ -2707,4 +2961,132 @@ symbolStatus | ENUM | NO | 过滤具有此 `tradingStatus` 的交易对。
                 "count": 4  
             }  
         ]  
+    }  
+    
+
+### 查询参考价格[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/market-data-requests#查询参考价格 "查询参考价格的直接链接")
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "method": "referencePrice",  
+      "params": {  
+        "symbol": "BAZUSD"  
+      }  
+    }  
+    
+
+**权重：** 2
+
+**参数：**
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+`symbol`| STRING| YES|   
+  
+**数据来源：** 缓存
+
+**响应示例：**
+
+如果设置了参考价格：
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "status": 200,  
+      "result": {  
+        "symbol": "BAZUSD",  
+        "referencePrice": "0.00501900",  
+        "timestamp": 1770946889251     //参考价格生效的时间  
+      }  
+    }  
+    
+
+如果未设置参考价格：
+    
+    
+    {  
+      "id": "5132affb-0aba-4821-b475-f262504556b43",  
+      "status": 200,  
+      "result": {  
+        "symbol": "BAZUSD",  
+        "referencePrice": null,  
+        "timestamp": 1770946889251      //参考价格生效的时间  
+      }  
+    }  
+    
+
+如果从未设置过参考价格：
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 200,  
+        "result":  
+        {  
+            "code": -2043,  
+            "msg": "This symbol doesn't have a reference price."  
+        }  
+    }  
+    
+
+### 查询参考价格计算方式[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/market-data-requests#查询参考价格计算方式 "查询参考价格计算方式的直接链接")
+    
+    
+    {  
+      "id": "5132affa-0aba-4831-b475-f262504556b41",  
+      "method": "referencePrice.calculation",  
+      "params": {  
+        "symbol": "BAZUSD"  
+      }  
+    }  
+    
+
+描述指定交易对参考价格的计算方式。
+
+**权重：** 2
+
+**参数：**
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+`symbol`| STRING| YES|   
+`symbolStatus`| ENUM| NO| 支持的值：`TRADING`（正常交易中）、`HALT`（交易终止）、`BREAK`（交易暂停）  
+  
+**数据来源：** 缓存
+
+**响应示例：**
+
+如果参考价格未被计算：
+    
+    
+    {  
+        "id": "5132affa-0aba-4831-b475-f262504556b41",  
+        "status": 400,  
+        "error":  
+        {  
+            "code": -2043,  
+            "msg": "This symbol doesn't have a reference price."  
+        }  
+    }  
+    
+
+如果参考价格由撮合引擎以算术平均数计算：
+    
+    
+    {  
+      "symbol": "BAZUSD",  
+      "calculationType": "ARITHMETIC_MEAN",  
+      "bucketCount": 10,  
+      "bucketWidthMs": 1000  
+    }  
+    
+
+如果参考价格由撮合引擎外部计算：
+    
+    
+    {  
+      "symbol": "BAZUSD",  
+      "calculationType": "EXTERNAL",  
+      "externalCalculationId": 42  
     }

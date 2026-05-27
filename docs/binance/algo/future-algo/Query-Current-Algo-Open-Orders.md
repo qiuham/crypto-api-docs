@@ -2,27 +2,30 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Query-Current-Algo-Open-Orders
 api_type: REST
-updated_at: 2026-01-15T23:49:10.569460
+updated_at: 2026-05-27 18:58:23.180946
 ---
 
-# Query Current Algo Open Orders(USER_DATA)
+# Query Sub Orders(USER_DATA)
 
-## API Description[​](/docs/algo/future-algo/Query-Current-Algo-Open-Orders#api-description "Direct link to API Description")
+## API Description[​](/docs/algo/future-algo/Query-Sub-Orders#api-description "Direct link to API Description")
 
-Query Current Algo Open Orders
+Get respective sub orders for a specified algoId
 
-## HTTP Request[​](/docs/algo/future-algo/Query-Current-Algo-Open-Orders#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/algo/future-algo/Query-Sub-Orders#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/algo/futures/openOrders`
+GET `/sapi/v1/algo/futures/subOrders `
 
-## Request Weight(IP)[​](/docs/algo/future-algo/Query-Current-Algo-Open-Orders#request-weightip "Direct link to Request Weight\(IP\)")
+## Request Weight(IP)[​](/docs/algo/future-algo/Query-Sub-Orders#request-weightip "Direct link to Request Weight\(IP\)")
 
 **1**
 
-## Request Parameters[​](/docs/algo/future-algo/Query-Current-Algo-Open-Orders#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/algo/future-algo/Query-Sub-Orders#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
+algoId| LONG| YES|   
+page| INT| NO| Default is 1  
+pageSize| INT| NO| MIN 1, MAX 100; Default 100  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
@@ -31,51 +34,56 @@ timestamp| LONG| YES|
 > 
 
 
-## Response Example[​](/docs/algo/future-algo/Query-Current-Algo-Open-Orders#response-example "Direct link to Response Example")
+## Response Example[​](/docs/algo/future-algo/Query-Sub-Orders#response-example "Direct link to Response Example")
     
     
     {  
         "total": 1,  
-        "orders": [  
+        "executedQty": "1.000",  
+        "executedAmt": "3229.44000000",  
+        "subOrders": [  
             {  
-                "algoId": 14517,  
-                "symbol": "ETHUSDT",  
+                "algoId": 13723,  
+                "orderId": 8389765519993908929,  
+                "orderStatus": "FILLED",  
+                "executedQty": "1.000",  
+                "executedAmt": "3229.44000000",  
+                "feeAmt": "-1.61471999",  
+                "feeAsset": "USDT",  
+                "bookTime": 1649319001964,  
+                "avgPrice": "3229.44",  
                 "side": "SELL",  
-                "positionSide": "SHORT",  
-                "totalQty": "5.000",  
-                "executedQty": "0.000",  
-                "executedAmt": "0.00000000",  
-                "avgPrice": "0.00",  
-                "clientAlgoId": "d7096549481642f8a0bb69e9e2e31f2e",  
-                "bookTime": 1649756817004,  
-                "endTime": 0,  
-                "algoStatus": "WORKING",  
-                "algoType": "VP",  
-                "urgency": "LOW"  
+                "symbol": "ETHUSDT",  
+                "subId": 1,  
+                "timeInForce": "IMMEDIATE_OR_CANCEL",  
+                "origQty": "1.000"  
             }  
         ]  
     }
 
 ---
 
-# 查询当前策略订单挂单(USER_DATA)
+# 查询执行子订单(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/algo/future-algo/Query-Current-Algo-Open-Orders#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/algo/future-algo/Query-Sub-Orders#接口描述 "接口描述的直接链接")
 
-查询当前策略订单挂单
+获取指定 algoId 的相应子订单
 
-## HTTP请求[​](/docs/zh-CN/algo/future-algo/Query-Current-Algo-Open-Orders#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/algo/future-algo/Query-Sub-Orders#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/algo/futures/openOrders`
+GET `/sapi/v1/algo/futures/subOrders`
 
-## 请求权重(IP)[​](/docs/zh-CN/algo/future-algo/Query-Current-Algo-Open-Orders#请求权重ip "请求权重\(IP\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/algo/future-algo/Query-Sub-Orders#请求权重ip "请求权重\(IP\)的直接链接")
 
 **1**
 
-## 请求参数[​](/docs/zh-CN/algo/future-algo/Query-Current-Algo-Open-Orders#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/algo/future-algo/Query-Sub-Orders#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
+algoId| LONG| YES|   
+page| INT| NO| 默认1  
+pageSize| INT| NO| 最小 1， 最大 100; 默认 100  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
@@ -84,27 +92,29 @@ timestamp| LONG| YES|
 > 
 
 
-## 响应示例[​](/docs/zh-CN/algo/future-algo/Query-Current-Algo-Open-Orders#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/algo/future-algo/Query-Sub-Orders#响应示例 "响应示例的直接链接")
     
     
     {  
         "total": 1,  
-        "orders": [  
-            {   
-                "algoId": 14517,      //策略订单ID  
-                "symbol": "ETHUSDT",  //交易对  
-                "side": "SELL",       //买卖方向  
-                "positionSide": "SHORT", //持仓模式  
-                "totalQty": "5.000",     //总共下单数量  
-                "executedQty": "0.000",  //执行数量  
-                "executedAmt": "0.00000000",   //执行价值  
-                "avgPrice": "0.00",            //平均价格  
-                "clientAlgoId": "d7096549481642f8a0bb69e9e2e31f2e",  //用户自定义策略订单ID  
-                "bookTime": 1649756817004,     //用户下单时间   
-                "endTime": 0,                  //结束时间  
-                "algoStatus": "WORKING",       //策略订单状态  
-                "algoType": "VP",              //策略订单类型  
-                "urgency": "LOW"               //执行速率  
+        "executedQty": "1.000",  
+        "executedAmt": "3229.44000000",  
+        "subOrders": [  
+            {  
+                "algoId": 13723,    //策略订单ID  
+                "orderId": 8389765519993908929,  //子订单ID  
+                "orderStatus": "FILLED",         //子订单状态  
+                "executedQty": "1.000",          //执行数量  
+                "executedAmt": "3229.44000000",  //执行价值  
+                "feeAmt": "-1.61471999",         //手续费  
+                "feeAsset": "USDT",              //手续费币种  
+                "bookTime": 1649319001964,       //下单时间  
+                "avgPrice": "3229.44",           //平均价格  
+                "side": "SELL",                  //买卖方向  
+                "symbol": "ETHUSDT",             //交易对  
+                "subId": 1,                      //子订单执行顺序ID  
+                "timeInForce": "IMMEDIATE_OR_CANCEL",  //有效方式  
+                "origQty": "1.000"              //原始委托数量  
             }  
         ]  
     }

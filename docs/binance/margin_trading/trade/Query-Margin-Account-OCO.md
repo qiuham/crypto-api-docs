@@ -2,109 +2,117 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Account-OCO
 api_type: Trading
-updated_at: 2026-01-15T23:48:55.311815
+updated_at: 2026-05-27 18:57:51.674640
 ---
 
-# Query Margin Account's OCO (USER_DATA)
+# Query Margin Account's Open Orders (USER_DATA)
 
-## API Description[​](/docs/margin_trading/trade/Query-Margin-Account-OCO#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/trade/Query-Margin-Account-Open-Orders#api-description "Direct link to API Description")
 
-Retrieves a specific OCO based on provided optional parameters
+Query Margin Account's Open Orders
 
-## HTTP Request[​](/docs/margin_trading/trade/Query-Margin-Account-OCO#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/trade/Query-Margin-Account-Open-Orders#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/margin/orderList`
+GET `/sapi/v1/margin/openOrders`
 
-## Request Weight[​](/docs/margin_trading/trade/Query-Margin-Account-OCO#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/margin_trading/trade/Query-Margin-Account-Open-Orders#request-weight "Direct link to Request Weight")
 
 **10(IP)**
 
-## Request Parameters[​](/docs/margin_trading/trade/Query-Margin-Account-OCO#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/trade/Query-Margin-Account-Open-Orders#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
+symbol| STRING| NO|   
 isIsolated| STRING| NO| for isolated margin or not, "TRUE", "FALSE"，default "FALSE"  
-symbol| STRING| NO| mandatory for isolated margin, not supported for cross margin  
-orderListId| LONG| NO| Either `orderListId` or `origClientOrderId` must be provided  
-origClientOrderId| STRING| NO| Either `orderListId` or `origClientOrderId` must be provided  
 recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/margin_trading/trade/Query-Margin-Account-OCO#response-example "Direct link to Response Example")
+  * If the symbol is not sent, orders for all symbols will be returned in an array.
+  * When all symbols are returned, the number of requests counted against the rate limiter is equal to the number of symbols currently trading on the exchange.
+  * If isIsolated ="TRUE", symbol must be sent.
+
+
+
+## Response Example[​](/docs/margin_trading/trade/Query-Margin-Account-Open-Orders#response-example "Direct link to Response Example")
     
     
-    {  
-      "orderListId": 27,  
-      "contingencyType": "OCO",  
-      "listStatusType": "EXEC_STARTED",  
-      "listOrderStatus": "EXECUTING",  
-      "listClientOrderId": "h2USkA5YQpaXHPIrkd96xE",  
-      "transactionTime": 1565245656253,  
-      "symbol": "LTCBTC",  
-      "isIsolated": false,       // if isolated margin  
-      "orders": [  
-        {  
-          "symbol": "LTCBTC",  
-          "orderId": 4,  
-          "clientOrderId": "qD1gy3kc3Gx0rihm9Y3xwS"  
-        },  
-        {  
-          "symbol": "LTCBTC",  
-          "orderId": 5,  
-          "clientOrderId": "ARzZ9I00CPM8i3NhmU9Ega"  
-        }  
-      ]  
-    }
+    [  
+       {  
+           "clientOrderId": "qhcZw71gAkCCTv0t0k8LUK",  
+           "cummulativeQuoteQty": "0.00000000",  
+           "executedQty": "0.00000000",  
+           "icebergQty": "0.00000000",  
+           "isWorking": true,  
+           "orderId": 211842552,  
+           "origQty": "0.30000000",  
+           "price": "0.00475010",  
+           "side": "SELL",  
+           "status": "NEW",  
+           "stopPrice": "0.00000000",  
+           "symbol": "BNBBTC",  
+           "isIsolated": true,  
+           "time": 1562040170089,  
+           "timeInForce": "GTC",  
+           "type": "LIMIT",  
+           "selfTradePreventionMode": "NONE",  
+           "updateTime": 1562040170089  
+    	}  
+    ]
 
 ---
 
-# 查询杠杆账户 OCO (USER_DATA)
+# 查询杠杆账户挂单记录 (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-OCO#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Open-Orders#接口描述 "接口描述的直接链接")
 
-根据提供的可选参数检索特定的杠杆账户 OCO 订单。
+查询杠杆账户挂单记录
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-OCO#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Open-Orders#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/orderList`
+GET `/sapi/v1/margin/openOrders`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-OCO#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Open-Orders#请求权重 "请求权重的直接链接")
 
 **10(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-OCO#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Open-Orders#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
+symbol| STRING| NO|   
 isIsolated| STRING| NO| 是否逐仓杠杆，"TRUE", "FALSE", 默认 "FALSE"  
-symbol| STRING| NO| 逐仓杠杆必填，全仓杠杆不支持该参数  
-orderListId| LONG| NO| `orderListId` 或 `origClientOrderId` 必须提供一个。  
-origClientOrderId| STRING| NO| `orderListId` 或 `origClientOrderId` 必须提供一个。  
-recvWindow| LONG| NO| 赋值不得大于 `60000`  
+recvWindow| LONG| NO| 赋值不能大于 `60000`  
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-OCO#响应示例 "响应示例的直接链接")
+  * 如未发送symbol，返回所有 symbols 订单记录。
+  * 当返回所有symbols时，针对限速器计数的请求数量等于当前在交易所交易的symbols数量。
+  * 如果 isIsolated = "TRUE", symbol 为必填
+
+
+
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Open-Orders#响应示例 "响应示例的直接链接")
     
     
-    {  
-        "orderListId": 27,  
-        "contingencyType": "OCO",  
-        "listStatusType": "EXEC_STARTED",  
-        "listOrderStatus": "EXECUTING",  
-        "listClientOrderId": "h2USkA5YQpaXHPIrkd96xE",  
-        "transactionTime": 1565245656253,  
-        "symbol": "LTCBTC",  
-        "isIsolated": true,       // 是否是逐仓symbol交易   
-        "orders": [  
-            {  
-                "symbol": "LTCBTC",  
-                "orderId": 4,  
-                "clientOrderId": "qD1gy3kc3Gx0rihm9Y3xwS"  
-            },  
-            {  
-                "symbol": "LTCBTC",  
-                "orderId": 5,  
-                "clientOrderId": "ARzZ9I00CPM8i3NhmU9Ega"  
-            }  
-        ]  
-    }
+    [  
+       {  
+           "clientOrderId": "qhcZw71gAkCCTv0t0k8LUK",  
+           "cummulativeQuoteQty": "0.00000000",  
+           "executedQty": "0.00000000",  
+           "icebergQty": "0.00000000",  
+           "isWorking": true,  
+           "orderId": 211842552,  
+           "origQty": "0.30000000",  
+           "price": "0.00475010",  
+           "side": "SELL",  
+           "status": "NEW",  
+           "stopPrice": "0.00000000",  
+           "symbol": "BNBBTC",  
+           "isIsolated": true,       // 是否是逐仓symbol交易  
+           "time": 1562040170089,  
+           "timeInForce": "GTC",  
+           "type": "LIMIT",  
+           "selfTradePreventionMode": "NONE",  
+           "updateTime": 1562040170089  
+    	}  
+    ]

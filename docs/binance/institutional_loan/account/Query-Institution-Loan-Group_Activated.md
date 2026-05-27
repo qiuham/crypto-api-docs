@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/account/Query-Institution-Loan-Group_Activated
 api_type: Account
-updated_at: 2026-01-15T23:50:29.434523
+updated_at: 2026-05-27 19:01:11.071847
 ---
 
 # Query Active Risk Units(USER_DATA)

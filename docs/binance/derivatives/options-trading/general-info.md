@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/options-trading/general-info
 api_type: REST
-updated_at: 2026-01-15T23:40:56.849917
+updated_at: 2026-05-27 18:55:42.174324
 ---
 
 # General Info
@@ -359,7 +359,7 @@ Note that the signature is different in example 3. There is no & between "GTC" a
 
 
 
-## 接口鉴权类型[​](/docs/zh-CN/derivatives/options-trading/general-info#接口鉴�权类型 "接口鉴权类型的直接链接")
+## 接口鉴权类型[​](/docs/zh-CN/derivatives/options-trading/general-info#接口鉴权类型 "接口鉴权类型的直接链接")
 
   * 每个接口都有自己的鉴权类型，鉴权类型决定了访问时应当进行何种鉴权
   * 如果需要 API-key，应当在HTTP头中以`X-MBX-APIKEY`字段传递

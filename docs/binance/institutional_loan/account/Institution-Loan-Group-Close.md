@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/account/Institution-Loan-Group-Close
 api_type: Account
-updated_at: 2026-01-15T23:50:26.646027
+updated_at: 2026-05-27 19:01:06.780043
 ---
 
 # Close Risk Unit (TRADE)
@@ -48,7 +48,7 @@ status| STRING| CLOSED:This risk unit has been closed successfully
 
 ---
 
-# 关闭风险单位 (USER_DATA)
+# 关闭风险单位 (TRADE)
 
 ## 接口描述[​](/docs/zh-CN/institutional_loan/account/Institution-Loan-Group-Close#接口描述 "接口描述的直接链接")
 

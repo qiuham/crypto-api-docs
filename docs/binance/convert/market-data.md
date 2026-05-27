@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/market-data
 api_type: Market Data
-updated_at: 2026-01-15T23:50:15.981270
+updated_at: 2026-05-27 19:00:43.460438
 ---
 
 # List All Convert Pairs
@@ -41,7 +41,7 @@ toAsset| STRING| EITHER OR BOTH| User receives coin
         "fromAssetMinAmount":"0.0004",  
         "fromAssetMaxAmount":"50",  
         "toAssetMinAmount":"20",  
-        "toAssetMaxAmount":"2500000"  
+        "toAssetMaxAmount":"9E+24" // 9E+24 signals that this symbol has a very large upper limit close to infinity  
       }  
     ]
 
@@ -83,6 +83,6 @@ toAsset| STRING| EITHER OR BOTH| 用户买入币种
         "fromAssetMinAmount":"0.0004",  
         "fromAssetMaxAmount":"50",  
         "toAssetMinAmount":"20",  
-        "toAssetMaxAmount":"2500000"  
+        "toAssetMaxAmount":"9E+24" // 9E+24 表示该符号的上限非常大，接近无穷大  
       }  
     ]

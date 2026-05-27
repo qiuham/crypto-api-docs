@@ -2,149 +2,191 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records
 api_type: REST
-updated_at: 2026-01-15T23:50:29.572060
+updated_at: 2026-05-27 19:01:15.578064
 ---
 
-# Risk Unit borrow/repay records(TRADE)
+# Risk Unit Interest History(USER_DATA)
 
-#### API Description[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#api-description "Direct link to API Description")
+## API Description[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#api-description "Direct link to API Description")
 
-Get borrow/repay records in the Institution Loan Risk Unit. This endpoint is accessible only with the credit account API key.
+Query Institutional loan risk unit interest history. This endpoint is accessible only with the credit account API key.
 
-#### HTTP Request[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#http-request "Direct link to HTTP Request")
 
-GET /sapi/v1/margin/loan-group/borrow-repay
+GET /sapi/v1/margin/loan-group/interest-history
 
-#### Request Weight[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#request-weight "Direct link to Request Weight")
 
 10(IP)
 
-#### RequestParameters[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#requestparameters "Direct link to RequestParameters")
+## RequestParameters[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#requestparameters "Direct link to RequestParameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
 groupId| LONG| NO| Risk unit unique identifier  
-type| STRING| YES| BORROW or REPAY  
 asset| STRING| NO| Asset Name , USDT or USDC  
 startTime| LONG| NO|   
 endTime| LONG| NO|   
 current| LONG| NO| The currently querying page. Start from 1. Default:1  
 size| LONG| NO| Default:10 Max:100  
-recvWindow| LONG| NO| The value cannot be greater than 60000  
-timestamp| LONG| YES|   
   
-  * Credit account can query either activated risk unit or closed risk unit with the specific groupId. The current activated risk unit will be returned if the parameter of groupId is not input.
-  * Response in descending order
-  * If the asset parameter is provided, the maximum query time range is 30 days ahead of endTime; if the asset parameter is not provided the maximum query time range is 7 days ahead of endTime
-  * If neither startTime nor endTime is sent, the recent 7-day data will be returned.
-  * startTime set as endTime - 7days by default, endTime set as current time by default
-  * The length of startTime and endTime cannot exceed 100 days, otherwise an error is reported and no record is returned.
+  * Credit account can query currently activated and closed risk units using the parameter groupId. If groupId is empty, only currently activated risk units are returned.
+  * Responses are returned in descending order.
+  * The max interval between startTime and endTime is 100 days. This is required to ensure data accuracy.
+  * If startTime and endTime are not provided, data from the last 7 days is returned by default.
+  * If startTime is provided but endTime is omitted, returns records of [max(startTime, now-30d), now].
+  * If startTime is omitted but endTime is provided, returns records of [endTime-7, endTime].
 
 
 
-#### Response Example[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#response-example "Direct link to Response Example")
+## Response Example[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#response-example "Direct link to Response Example")
     
     
     {  
-    "total": 1,  
+      "total": 2,  
+      
     "rows": [  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "status": "CONFIRM",  
-    "type": "BORROW",//BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
-    },  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "status": "FAILED",  
-    "type": "BORROW", //BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
-    },  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "principal": 298,  
-    "interest": 2,  
-    "status": "CONFIRM",  
-    "type": "REPAY", //BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
+      
+      {  
+      
+        "groupId": 2,  
+      
+        "assetName": "USDC",  
+      
+        "principal": 851340.57601652,  
+      
+        "interestRate": 0.00000833,  
+      
+        "interest": 7.09447643,  
+      
+        "interestTimestamp": 1746442800000  
+      
+      },  
+      
+      {  
+      
+        "groupId": 2,  
+      
+        "assetName": "USDC",  
+      
+        "principal": 851340.57601652,  
+      
+        "interestRate": 0.00000833,  
+      
+        "interest": 7.09447643,  
+      
+        "interestTimestamp": 1746439200000  
+      
+      }  
+    ]  
     }  
-    ]}
+    
+
+## Response detail description[​](/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#response-detail-description "Direct link to Response detail description")
+
+Parameter| Type| Description  
+---|---|---  
+total| STRING| Number of historical interest records  
+rows| OBJECT ARRAY|   
+  
+→ groupId| STRING| Risk unit unique identifier  
+→ assetName| STRING| Borrowed asset name  
+→ principal| STRING| Principal amount  
+→ interestRate| STRING| Hourly interest rate  
+→ interest| STRING| Interest amount  
+→ interestTimestamp| LONG| Interest last update timestamp (milliseconds)
 
 ---
 
-# 查询风险单元借贷/还款记录 (USER_DATA)
+# 风险单位历史利息 (USER_DATA)
 
-#### 接口描述[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#接口描述 "接口描述的直接链接")
 
-查询风险单位借贷/还款记录，仅支持放贷账户调用该接口。
+查询机构贷风险单位给定时间段内的利息历史记录。此接口仅可使用信用账户API Key访问。
 
-#### HTTP请求[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#http请求 "HTTP请求的直接链接")
+## HTTP 请求[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#http-请求 "HTTP 请求的直接链接")
 
-GET /sapi/v1/margin/loan-group/borrow-repay
+GET /sapi/v1/margin/loan-group/interest-history
 
-#### 请求权重[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#请求权重 "请求权重的直接链接")
 
 10(IP)
 
-#### 请求参数[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#请求参数 "请求参数的直接链接")
 
-名称| 类型| 是否必需| 描述  
+名称| 类型| 是否必须| 描述  
 ---|---|---|---  
 groupId| LONG| NO| 唯一风险单位标识符  
-type| STRING| YES| 操作类型：BORROW、REPAY  
 asset| STRING| NO| 资产名称， 如 USDT 或 USDC  
-startTime| LONG| NO| 开始时间  
-endTime| LONG| NO| 结束时间  
-current| LONG| NO| 当前查询页。 开始值 1。 默认:1  
+startTime| LONG| NO|   
+  
+endTime| LONG| NO|   
+  
+current| LONG| NO| 当前查询页。 开始值 1. 默认:1  
 size| LONG| NO| 默认:10 最大:100  
-recvWindow| LONG| NO|   
-timestamp| LONG| YES|   
   
   * 放贷账户可根据参数groupId查询当前生效状态 风险单位和已经关闭的风险单位，若groupId为空，则返回当前生效状态 的风险单位。
   * 响应返回为降序排列。
-  * 若传了asset参数，最大查询时间范围为endTime往前30天；不传asset参数，最大查询时间范围为endTime往前7天。
-  * 若startTime和endTime没传，则默认返回最近7天数据。
-  * startTime不传，默认endTime-7天；结束时间不传，默认当前时间。
-  * startTime和endTime时间长度不能超过100天，否则报错，无返回记录。
+  * 查询时间范围最大不得超过100天。这是确保数据正确性必须的。
+  * 若startTime和endTime没传，则默认返回最近7天数据
+  * 如果startTime传递了而endTime没传，则返回 startTime到现在的利息历史记录；若startTime至今超过30天，则返回过去30天的利息历史记录。
+  * 如果startTime没传而endTime传递了，则返回 endTime之前7天的利息历史记录
 
 
 
-#### 响应示例[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Borrow-Repay-Records#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#响应示例 "响应示例的直接链接")
     
     
     {  
-    "total": 1,  
+      "total": 2,  
+      
     "rows": [  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "status": "CONFIRM",  
-    "type": "BORROW", //BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
-    },  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "status": "FAILED",  
-    "type": "BORROW", //BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
-    },  
-    {  
-    "tranId": 1648963682,  
-    "assetName": "USDT",  
-    "amount": 300,  
-    "principal": 298,  
-    "interest": 2,  
-    "status": "CONFIRM",  
-    "type": "REPAY", //BORROW, NORMAL_REPAY, FORCE_REPAY  
-    "timestamp": 1750420899036 // Create Time  
+      
+      {  
+      
+        "groupId": 2,  
+      
+        "assetName": "USDC",  
+      
+        "principal": 851340.57601652,  
+      
+        "interestRate": 0.00000833,  
+      
+        "interest": 7.09447643,  
+      
+        "interestTimestamp": 1746442800000  
+      
+      },  
+      
+      {  
+      
+        "groupId": 2,  
+      
+        "assetName": "USDC",  
+      
+        "principal": 851340.57601652,  
+      
+        "interestRate": 0.00000833,  
+      
+        "interest": 7.09447643,  
+      
+        "interestTimestamp": 1746439200000  
+      
+      }  
+    ]  
     }  
-    ]}
+    
+
+## 响应信息详解：[​](/docs/zh-CN/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History#响应信息详解 "响应信息详解：的直接链接")
+
+参数| 类型| 描述  
+---|---|---  
+total| STRINGString| 查询到的历史利息记录数量  
+rows| OBJECT ARRAY|   
+  
+→ groupId| STRINGString| 唯一风险单位标识符  
+→ assetName| STRING| 借款币种名称  
+→ principal| STRING| 借款本金  
+→ interestRate| STRING| 借款小时利率  
+→ interest| STRING| 利息金额  
+→ interestTimestamp| LONG| 利率最后更新时间戳（毫秒

@@ -2,10 +2,10 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade
 api_type: Trading
-updated_at: 2026-01-15T23:50:16.169102
+updated_at: 2026-05-27 19:00:47.956753
 ---
 
-# Send Quote Request(USER_DATA)
+# Send Quote Request(TRADE)
 
 ## API Description[​](/docs/convert/trade#api-description "Direct link to API Description")
 
@@ -51,7 +51,7 @@ timestamp| LONG| YES|
 
 ---
 
-# 发送获取报价请求(USER_DATA)
+# 发送获取报价请求(TRADE)
 
 ## 接口描述[​](/docs/zh-CN/convert/trade#接口描述 "接口描述的直接链接")
 

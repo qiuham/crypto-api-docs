@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital
 api_type: REST
-updated_at: 2026-01-15T23:49:36.451651
+updated_at: 2026-05-27 18:59:25.152636
 ---
 
 # All Coins' Information (USER_DATA)
@@ -52,8 +52,8 @@ timestamp| LONG| YES|
                     "isDefault": false,  
                     "depositEnable": true,  
                     "withdrawEnable": true,  
-                    "depositDesc": "",   // shown only when "depositEnable" is false.  
-                    "withdrawDesc": "",  // shown only when "withdrawEnable" is false.  
+                    "depositDesc": "",                                                   // shown only when "depositEnable" is false.  
+                    "withdrawDesc": "",                                                  // shown only when "withdrawEnable" is false.  
                     "specialTips": "",  
                     "specialWithdrawTips": "",  
                     "name": "BNB Smart Chain (BEP20)",  
@@ -63,17 +63,17 @@ timestamp| LONG| YES|
                     "withdrawFee": "10",  
                     "withdrawMin": "20",  
                     "withdrawMax": "9999999999",  
-                    "withdrawInternalMin": "0.01", // Minimum internal transfer amount  
+                    "withdrawInternalMin": "0.01",                                       // Minimum internal transfer amount  
                     "depositDust": "0.01",  
-                    "minConfirm": 5,  // min number for balance confirmation  
-                    "unLockConfirm": 0,  // confirmation number for balance unlock  
-                    "sameAddress": false,  // Obsoleted, recomment to use withdrawTag  
-                    "withdrawTag": false, // If the coin needs to provide memo to withdraw  
+                    "minConfirm": 5,                                                     // min number for balance confirmation  
+                    "unLockConfirm": 0,                                                  // confirmation number for balance unlock  
+                    "sameAddress": false,                                                // Obsoleted, recomment to use withdrawTag  
+                    "withdrawTag": false,                                                // If the coin needs to provide memo to withdraw  
                     "estimatedArrivalTime": 1,  
                     "busy": false,  
                     "contractAddressUrl": "https://bscscan.com/token/",  
                     "contractAddress": "0xc748673057861a797275cd8a068abb95a902e8de",  
-                    "denomination": 1000000   // 1 1MBABYDOGE = 1000000 BABYDOGE  
+                    "denomination": 1000000                                              // 1 1MBABYDOGE = 1000000 BABYDOGE  
                 },  
                 {  
                     "network": "ETH",  
@@ -93,7 +93,7 @@ timestamp| LONG| YES|
                     "withdrawFee": "1511",  
                     "withdrawMin": "3022",  
                     "withdrawMax": "9999999999",  
-                    "withdrawInternalMin": "0.01",    
+                    "withdrawInternalMin": "0.01",  
                     "depositDust": "0.01",  
                     "minConfirm": 6,  
                     "unLockConfirm": 64,  
@@ -103,7 +103,7 @@ timestamp| LONG| YES|
                     "busy": false,  
                     "contractAddressUrl": "https://etherscan.io/address/",  
                     "contractAddress": "0xac57de9c1a09fec648e93eb98875b212db0d460b",  
-                    "denomination": 1000000   
+                    "denomination": 1000000  
                 }  
             ]  
         }  
@@ -158,8 +158,8 @@ timestamp| LONG| YES|
                     "isDefault": false,  
                     "depositEnable": true,  
                     "withdrawEnable": true,  
-                    "depositDesc": "",   // 仅在充值关闭时返回  
-                    "withdrawDesc": "",  // 仅在提现关闭时返回  
+                    "depositDesc": "",                                                   // 仅在充值关闭时返回  
+                    "withdrawDesc": "",                                                  // 仅在提现关闭时返回  
                     "specialTips": "",  
                     "specialWithdrawTips": "",  
                     "name": "BNB Smart Chain (BEP20)",  
@@ -169,17 +169,17 @@ timestamp| LONG| YES|
                     "withdrawFee": "10",  
                     "withdrawMin": "20",  
                     "withdrawMax": "9999999999",  
-                    "withdrawInternalMin": "0.01",  // 内部转账最小提现数  
+                    "withdrawInternalMin": "0.01",                                       // 内部转账最小提现数  
                     "depositDust": "0.01",  
-                    "minConfirm": 5,  // 上账所需的最小确认数  
-                    "unLockConfirm": 0,  // 解锁需要的确认数   
-                    "sameAddress": false, // 过时字段，建议使用withdrawTag  
-                    "withdrawTag": false, // 提现时是否需要memo  
+                    "minConfirm": 5,                                                     // 上账所需的最小确认数  
+                    "unLockConfirm": 0,                                                  // 解锁需要的确认数  
+                    "sameAddress": false,                                                // 过时字段，建议使用withdrawTag  
+                    "withdrawTag": false,                                                // 提现时是否需要memo  
                     "estimatedArrivalTime": 1,  
                     "busy": false,  
                     "contractAddressUrl": "https://bscscan.com/token/",  
                     "contractAddress": "0xc748673057861a797275cd8a068abb95a902e8de",  
-                    "denomination": 1000000  // 1 1MBABYDOGE = 1000000 BABYDOGE  
+                    "denomination": 1000000                                              // 1 1MBABYDOGE = 1000000 BABYDOGE  
                 },  
                 {  
                     "network": "ETH",  
@@ -199,7 +199,7 @@ timestamp| LONG| YES|
                     "withdrawFee": "1511",  
                     "withdrawMin": "3022",  
                     "withdrawMax": "9999999999",  
-                    "withdrawInternalMin": "0.01",    
+                    "withdrawInternalMin": "0.01",  
                     "depositDust": "0.01",  
                     "minConfirm": 6,  
                     "unLockConfirm": 64,  
@@ -209,7 +209,7 @@ timestamp| LONG| YES|
                     "busy": false,  
                     "contractAddressUrl": "https://etherscan.io/address/",  
                     "contractAddress": "0xac57de9c1a09fec648e93eb98875b212db0d460b",  
-                    "denomination": 1000000   
+                    "denomination": 1000000  
                 }  
             ]  
         }  

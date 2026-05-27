@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Get-Convert-Trade-History
 api_type: Trading
-updated_at: 2026-01-15T23:50:19.742851
+updated_at: 2026-05-27 19:00:52.839777
 ---
 
 # Get Convert Trade History(USER_DATA)

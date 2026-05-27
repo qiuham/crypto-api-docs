@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/alpha/market-data/general-info
 api_type: Market Data
-updated_at: 2026-01-15T23:50:41.904512
+updated_at: 2026-05-27 19:01:44.387453
 ---
 
 # General Info

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/withdraw
 api_type: REST
-updated_at: 2026-01-15T23:49:55.224535
+updated_at: 2026-05-27 19:00:08.356702
 ---
 
 # Withdraw (for local entities that require travel rule) (USER_DATA)
@@ -47,9 +47,9 @@ questionnaire| STRING| YES| JSON format questionnaire answers.
     
     
     {  
-      "trId": 123456, # The travel rule record Id  
-      "accpted": true, # Whether the withdraw request is accepted  
-      "info": "Withdraw request accepted" # The detailed infomation of the withdrawal result.  
+        "trId": 123456,                         // The travel rule record Id  
+        "accpted": true,                        // Whether the withdraw request is accepted  
+        "info": "Withdraw request accepted"     // The detailed infomation of the withdrawal result.  
     }
 
 ---
@@ -96,7 +96,7 @@ questionnaire| STRING| YES| JSON 格式的问卷回答。
     
     
     {  
-        "trId": 123456, # Travel Rule记录ID  
-        "accpted": true, # 提币请求是否被接受  
-        "info": "Withdraw request accepted" # 提现结果的详细信息  
+        "trId": 123456,                         // Travel Rule记录ID  
+        "accpted": true,                        // 提币请求是否被接受  
+        "info": "Withdraw request accepted"     // 提现结果的详细信息  
     }

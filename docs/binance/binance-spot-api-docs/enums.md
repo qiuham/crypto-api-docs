@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/enums
 api_type: REST
-updated_at: 2026-01-15T23:35:52.439314
+updated_at: 2026-05-27 18:53:46.725270
 ---
 
 # ENUM Definitions
@@ -202,6 +202,38 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
   * `DECREMENT`
   * `TRANSFER`
 
+
+
+## Execution types:[​](/docs/binance-spot-api-docs/enums#execution-types "Direct link to Execution types:")
+
+Status| Description  
+---|---  
+`NEW`| The order has been accepted into the engine.  
+`CANCELED`| The order has been canceled by the user.  
+`REPLACED`| The order has been amended.  
+`REJECTED`| The order has been rejected and was not processed (e.g. Cancel Replace Orders wherein the new order placement is rejected but the request to cancel request succeeds.)  
+`TRADE`| Part of the order or all of the order's quantity has filled.  
+`EXPIRED`| The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill) or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance).  
+`TRADE_PREVENTION`| The order has expired due to STP.  
+  
+## Execution Rules[​](/docs/binance-spot-api-docs/enums#execution-rules "Direct link to Execution Rules")
+
+  * `PRICE_RANGE`
+
+
+
+## Expiry Reasons[​](/docs/binance-spot-api-docs/enums#expiry-reasons "Direct link to Expiry Reasons")
+
+  * `NONE`
+  * `REJECTED`
+  * `EXCHANGE_CANCELED`
+  * `OCO_TRIGGER`
+  * `OTO_PHASE_ONE_EXPIRED`
+  * `UNFILLED_IOC_QUANTITY_EXPIRED`
+  * `UNFILLED_FOK_ORDER_EXPIRED`
+  * `INSUFFICIENT_LIQUIDITY`
+  * `EXECUTION_RULE_PRICE_RANGE_EXCEEDED`
+
 ---
 
 # 枚举定义
@@ -254,7 +286,7 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
 状态| 描述  
 ---|---  
 `NEW`| 该订单被交易引擎接受。  
-`PENDING_NEW`| 该订单处于待处理 (`PENDING`) 阶段，直到其所属订单组（order list） 中的 `working order` 完全成交。  
+`PENDING_NEW`| 该订单处于待处理 (`PENDING`) 阶段，直到其所属订单列表（order list） 中的 `working order` 完全成交。  
 `PARTIALLY_FILLED`| 部分订单已被成交。  
 `FILLED`| 订单已完全成交。  
 `CANCELED`| 用户撤销了订单。  
@@ -264,24 +296,24 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
 或者被交易引擎取消（例如，在强平期间被取消的订单，在交易所维护期间被取消的订单）  
 `EXPIRED_IN_MATCH`| 表示订单由于 STP 而过期。（例如，带有 `EXPIRE_TAKER` 的订单与账簿上同属相同帐户或相同 `tradeGroupId` 的现有订单匹配）  
   
-## 订单组（order list）状态 （状态类型集 listStatusType）[​](/docs/zh-CN/binance-spot-api-docs/enums#订单组order-list状态-状态类型集-liststatustype "订单组（order list）状态 �（状态类型集 listStatusType）的直接链接")
+## 订单列表（order list）状态 （状态类型集 listStatusType）[​](/docs/zh-CN/binance-spot-api-docs/enums#订单列表order-list状态-状态类型集-liststatustype "订单列表（order list）状态 （状态类型集 listStatusType）的直接链接")
 
 状态| 描述  
 ---|---  
-`RESPONSE`| 在 ListStatus 用于响应失败的操作时会被使用。（例如，下订单组或取消订单组）  
-`EXEC_STARTED`| 订单组已被下达或订单组状态有更新。  
-`UPDATED`| 订单组里的某个订单的 clientOrderId 被改变。  
-`ALL_DONE`| 订单组执行结束，因此不再处于活动状态。  
+`RESPONSE`| 在 ListStatus 用于响应失败的操作时会被使用。（例如，下订单列表或取消订单列表）  
+`EXEC_STARTED`| 订单列表已被下达或订单列表状态有更新。  
+`UPDATED`| 订单列表里的某个订单的 clientOrderId 被改变。  
+`ALL_DONE`| 订单列表执行结束，因此不再处于活动状态。  
   
-## 订单组（order list）中的订单状态 （订单状态集 listOrderStatus）[​](/docs/zh-CN/binance-spot-api-docs/enums#订单组order-list中的订单状态-订单状态集-listorderstatus "订单组（order list）中的订单状态 （订单状态集 listOrderStatus）的直接链接")
+## 订单列表（order list）中的订单状态 （订单状态集 listOrderStatus）[​](/docs/zh-CN/binance-spot-api-docs/enums#订单列表order-list中的订单状态-订单状态集-listorderstatus "订单列表（order list）中的订单状态 （订单状态集 listOrderStatus）的直接链接")
 
 状态| 描述  
 ---|---  
-`EXECUTING`| 订单组已被下达或订单组状态有更新。  
-`ALL_DONE`| 订单组执行结束，因此不再处于活动状态。  
-`REJECT`| 在 ListStatus 用于响应在下单阶段或取消订单组期间的失败操作时会被使用，  
+`EXECUTING`| 订单列表已被下达或订单列表状态有更新。  
+`ALL_DONE`| 订单列表执行结束，因此不再处于活动状态。  
+`REJECT`| 在 ListStatus 用于响应在下单阶段或取消订单列表期间的失败操作时会被使用，  
   
-## 订单组的类型[​](/docs/zh-CN/binance-spot-api-docs/enums#订单组的类型 "订单组的类型的直接链接")
+## 订单列表的类型[​](/docs/zh-CN/binance-spot-api-docs/enums#订单列表的类型 "订单列表的类型的直接链接")
 
   * `OCO`
   * `OTO`
@@ -343,7 +375,7 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
   
 ## 速率限制种类（rateLimitType）[​](/docs/zh-CN/binance-spot-api-docs/enums#速率限制种类ratelimittype "速率限制种类（rateLimitType）的直接链接")
 
-  * REQUESTS_WEIGHT - 单位时间请求权重之和上限
+  * REQUEST_WEIGHT - 单位时间请求权重之和上限
 
 
     
@@ -356,7 +388,7 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
     }  
     
 
-  * ORDERS - 单位时间下单(撤单)次数上限
+  * ORDERS - 单位时间下单次数上限
 
 
     
@@ -400,3 +432,35 @@ Read [Self Trade Prevention (STP) FAQ](/docs/binance-spot-api-docs/faqs/stp_faq)
   * `EXPIRE_BOTH`
   * `DECREMENT`
   * `TRANSFER`
+
+
+
+## 可能的执行类型:[​](/docs/zh-CN/binance-spot-api-docs/enums#可能的执行类型 "可能的执行类型:的直接链接")
+
+状态| 描述  
+---|---  
+`NEW`| 新订单已被引擎接受。  
+`CANCELED`| 订单被用户取消。  
+`REPLACED`| 订单已被修改。  
+`REJECTED`| 新订单被拒绝 （e.g. 在撤消挂单再下单时，其中新订单被拒绝但撤消挂单请求成功）。  
+`TRADE`| 订单有新成交。  
+`EXPIRED`| 订单已根据 Time In Force 参数的规则取消（e.g. 没有成交的 LIMIT FOK 订单或部分成交的 LIMIT IOC 订单）或者被交易所取消（e.g. 强平或维护期间取消的订单）。  
+`TRADE_PREVENTION`| 订单因 STP 触发而过期。  
+  
+## 执行规则[​](/docs/zh-CN/binance-spot-api-docs/enums#执行规则 "执行规则的直接链接")
+
+  * `PRICE_RANGE`
+
+
+
+## 过期原因[​](/docs/zh-CN/binance-spot-api-docs/enums#过期原因 "过期原因的直接链接")
+
+  * `NONE`
+  * `REJECTED`
+  * `EXCHANGE_CANCELED`
+  * `OCO_TRIGGER`
+  * `OTO_PHASE_ONE_EXPIRED`
+  * `UNFILLED_IOC_QUANTITY_EXPIRED`
+  * `UNFILLED_FOK_ORDER_EXPIRED`
+  * `INSUFFICIENT_LIQUIDITY`
+  * `EXECUTION_RULE_PRICE_RANGE_EXCEEDED`

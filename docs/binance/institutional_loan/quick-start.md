@@ -2,128 +2,275 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/quick-start
 api_type: REST
-updated_at: 2026-01-15T23:50:33.288946
+updated_at: 2026-05-27 19:01:31.222213
 ---
 
-# Quick Start
+# Get Risk Unit Force Liquidation Record(USER_DATA)
 
-## API Key Setup[​](/docs/institutional_loan/quick-start#api-key-setup "Direct link to API Key Setup")
+#### API Description[​](/docs/institutional_loan/trade#api-description "Direct link to API Description")
 
-  * Some endpoints will require an API Key. Please refer to [this page](https://www.binance.com/en/support/articles/360002502072) regarding API key creation.
-  * Once API key is created, it is recommended to set IP restrictions on the key for security reasons.
-  * **Never share your API key/secret key to ANYONE.**
+Get Institution Loan Risk Unit Force Liquidation Record. This endpoint is accessible only with the credit account API key.
 
-If the API keys were accidentally shared, please delete them immediately and create a new key. 
+#### HTTP Request[​](/docs/institutional_loan/trade#http-request "Direct link to HTTP Request")
 
-## API Key Restrictions[​](/docs/institutional_loan/quick-start#api-key-restrictions "Direct link to API Key Restrictions")
+GET /sapi/v1/margin/loan-group/force-liquidation
 
-  * After creating the API key, the default restrictions is `Enable Reading`.
-  * To **enable withdrawals via the API** , the API key restriction needs to be modified through the Binance UI.
+#### Request Weight[​](/docs/institutional_loan/trade#request-weight "Direct link to Request Weight")
+
+1(IP)
+
+#### Request Parameters[​](/docs/institutional_loan/trade#request-parameters "Direct link to Request Parameters")
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+groupId| LONG| NO| Risk unit unique identifier  
+startTime| LONG| NO|   
+  
+endTime| LONG| NO|   
+  
+current| LONG| NO| The currently querying page. Start from 1. Default:1  
+size| LONG| NO| Default:10 Max:100  
+recvWindow| LONG| NO| The value cannot be greater than 60000  
+timestamp| LONG| YES|   
+  
+  
+  * Credit account may query currently activated and closed risk unit based on the parameter groupId. If groupId is empty, only currently activated risk units will be returned.
+  * Responses are returned in descending order.
+  * If startTime and endTime are not provided, data from the last 7 days will be returned by default.
+  * If startTime is omitted, it defaults to endTime minus 7 days.
+  * If endTime is omitted, it defaults to the current time.
+  * The time span between startTime and endTime must not exceed 100 days; otherwise, an error will be returned with no records.
 
 
 
-## Enabling Accounts[​](/docs/institutional_loan/quick-start#enabling-accounts "Direct link to Enabling Accounts")
+#### Response Example[​](/docs/institutional_loan/trade#response-example "Direct link to Response Example")
+    
+    
+    {  
+      "total": 2,  
+      "rows": [  
+        {  
+          "groupId": 6,  
+          "startLtv": 1,  
+          "endLtv": 0,  
+          "liquidationStartTime": 1748381716906,  
+          "liquidationEndTime": 1748525848742,  
+          "totalNetEquity": 16671.5507973,  
+          "totalMaintenanceMargin": 0,  
+          "totalLiability": 16667.926,  
+          "liquidationSnapshot": {  
+            "snapshots": [  
+              {  
+                "subEmail": "1000255973134@test.com",  
+                "memberType": "CREDIT",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "12671.05079731",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973134@test.com",  
+                "memberType": "CREDIT",  
+                "walletType": "SPOT",  
+                "netEquity": "0E-8",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973138@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "1000.25333000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973137@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "1000.24667000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973135@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "CROSS_MARGIN",  
+                "netEquity": "1000.00000000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973136@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "CROSS_MARGIN",  
+                "netEquity": "1000.00000000",  
+                "maintainMargin": "0E-8"  
+              }  
+            ],  
+            "liabilities":   
+              {"assetName": "USDT",  
+                "principal": "11667.92600000",  
+                "interest": "5000.00000000"  
+              }  
+          }  
+        }  
+      ]  
+    }  
+    
 
-### Spot Account[​](/docs/institutional_loan/quick-start#spot-account "Direct link to Spot Account")
+## Response detail description:[​](/docs/institutional_loan/trade#response-detail-description "Direct link to Response detail description:")
 
-A `SPOT` account is provided by default upon creation of a Binance Account.
-
-### Margin Account[​](/docs/institutional_loan/quick-start#margin-account "Direct link to Margin Account")
-
-To enable a `MARGIN` account for Margin Trading, please refer to the [Margin Trading Guide](https://www.binance.vision/tutorials/binance-margin-trading-guide)
-
-## API Library[​](/docs/institutional_loan/quick-start#api-library "Direct link to API Library")
-
-### Python connector[​](/docs/institutional_loan/quick-start#python-connector "Direct link to Python connector")
-
-This is a lightweight library that works as a connector to Binance public API, written in Python.
-
-<https://github.com/binance/binance-connector-python>
-
-### Javascript connector[​](/docs/institutional_loan/quick-start#javascript-connector "Direct link to Javascript connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for JavaScript users.
-
-<https://github.com/binance/binance-connector-js>
-
-### Ruby connector[​](/docs/institutional_loan/quick-start#ruby-connector "Direct link to Ruby connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for Ruby users.
-
-<https://github.com/binance/binance-connector-ruby>
-
-### DotNET connector[​](/docs/institutional_loan/quick-start#dotnet-connector "Direct link to DotNET connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for C# users.
-
-<https://github.com/binance/binance-connector-dotnet>
-
-### Java connector[​](/docs/institutional_loan/quick-start#java-connector "Direct link to Java connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for Java users.
-
-<https://github.com/binance/binance-connector-java>
-
-### Postman Collections[​](/docs/institutional_loan/quick-start#postman-collections "Direct link to Postman Collections")
-
-There is now a Postman collection containing the API endpoints for quick and easy use.
-
-This is recommended for new users who want to get a quick-start into using the API.
-
-For more information please refer to this page: [Binance API Postman](https://github.com/binance/binance-api-postman)
-
-### Swagger[​](/docs/institutional_loan/quick-start#swagger "Direct link to Swagger")
-
-A YAML file with OpenAPI specification on the RESTful API is available to be used, as well as a Swagger UI page for the consulting.
-
-<https://github.com/binance/binance-api-swagger>
+Parameter| Type| Description  
+---|---|---  
+total| LONG| Total risk unit number  
+rows| OBJECT ARRAY|   
+→ groupId| Long| Risk unit unique identifier  
+→ startLtv| LONG| The initial LTV for the risk unit  
+→ endLtv| LONG| The current LTV for the risk unit  
+→ liquidationStartTime| Long| Liquidation start timestamp (milliseconds)  
+→ liquidationEndTime| Long| Liquidation end timestamp (milliseconds)  
+→ totalNetEquity| String| ∑Equity in all PM sub account + ( ∑Collateral Value - ∑(Liability + Interest) in all Cross Margin account + Free accepted tokens in spot  
+→totalMaintenanceMargin| String| Aggregated Maintenance Margin  
+→ totalLiability| String| Outstanding Loan Principal + Outstanding Loan Interest  
+liquidationSnapshot| OBJECT ARRAY|   
+snapshots| OBJECT ARRAY|   
+→ subEmail| String| Sub account registered email  
+→ memberType| String| memberType can be "CREDIT" or "COLLATERAL"  
+→ walletType| String| Account type for sub account . It can be "PORTFOLIO_MARGIN", "SPOT" or "CROSS_MARGIN"  
+→ netEquity| String| Net equity in wallet  
+→ maintainMargin| String| Maintenance margin required  
+liabilities| OBJECT ARRAY|   
+→ assetName| String| Asset name  
+→ principal| String| Outstanding loan principal amount  
+→ interest| String| Outstanding loan interest
 
 ---
 
-# 快速开始
+# 查询风险单元强制平仓记录 (USER_DATA)
 
-## API Key 权限设置[​](/docs/zh-CN/institutional_loan/quick-start#api-key-权限设置 "API Key 权限设置的直接链接")
+#### 接口描述[​](/docs/zh-CN/institutional_loan/trade#接口描述 "接口描述的直接链接")
 
-  * 新创建的API的默认权限是 `只读`。
-  * 如果需要通过API提款, 需要在UI修改权限, 选中 `允许提现`。
+获取风险单位强制平仓记录。 仅支持放贷账户调用该接口。
+
+#### HTTP请求[​](/docs/zh-CN/institutional_loan/trade#http请求 "HTTP请求的直接链接")
+
+GET /sapi/v1/margin/loan-group/force-liquidation
+
+#### 请求权重[​](/docs/zh-CN/institutional_loan/trade#请求权重 "请求权重的直接链接")
+
+1(IP)
+
+#### 请求参数[​](/docs/zh-CN/institutional_loan/trade#请求参数 "请求参数的直接链接")
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+groupId| LONG| NO| 唯一风险单位标识符  
+startTime| LONG| NO| 开始时间  
+endTime| LONG| NO| 结束时间  
+current| LONG| NO| 当前查询页。 开始值 1. 默认:1  
+size| LONG| NO| 默认:10 最大:100  
+recvWindow| LONG| NO|   
+  
+timestamp| LONG| YES|   
+  
+  
+  * 放贷账户可根据参数groupId查询当前生效状态 风险单位和已经关闭的风险单位，若groupId为空，则返回当前生效状态 的风险单位。
+  * 响应返回为降序排列。
+  * 若startTime和endTime没传，则默认返回最近7天数据。
+  * startTime不传，默认endTime-7天；结束时间不传，默认当前时间。
+  * startTime和endTime时间长度不能超过100天，否则报错，无返回记录。
 
 
 
-## 账户[​](/docs/zh-CN/institutional_loan/quick-start#账户 "账户的直接链接")
+#### 响应示例[​](/docs/zh-CN/institutional_loan/trade#响应示例 "响应示例的直接链接")
+    
+    
+    {  
+      "total": 2,  
+      "rows": [  
+        {  
+          "groupId": 6,  
+          "startLtv": 1,  
+          "endLtv": 0,  
+          "liquidationStartTime": 1748381716906,  
+          "liquidationEndTime": 1748525848742,  
+          "totalNetEquity": 16671.5507973,  
+          "totalMaintenanceMargin": 0,  
+          "totalLiability": 16667.926,  
+          "liquidationSnapshot": {  
+            "snapshots": [  
+              {  
+                "subEmail": "1000255973134@test.com",  
+                "memberType": "CREDIT",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "12671.05079731",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973134@test.com",  
+                "memberType": "CREDIT",  
+                "walletType": "SPOT",  
+                "netEquity": "0E-8",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973138@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "1000.25333000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973137@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "PORTFOLIO_MARGIN",  
+                "netEquity": "1000.24667000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973135@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "CROSS_MARGIN",  
+                "netEquity": "1000.00000000",  
+                "maintainMargin": "0E-8"  
+              },  
+              {  
+                "subEmail": "1000255973136@test.com",  
+                "memberType": "COLLATERAL",  
+                "walletType": "CROSS_MARGIN",  
+                "netEquity": "1000.00000000",  
+                "maintainMargin": "0E-8"  
+              }  
+            ],  
+            "liabilities":   
+              {"assetName": "USDT",  
+                "principal": "11667.92600000",  
+                "interest": "5000.00000000"  
+              }  
+          }  
+        }  
+      ]  
+    }  
+    
 
-### 现货账户[​](/docs/zh-CN/institutional_loan/quick-start#现货账户 "现货账户的直接链接")
+## Response detail description:[​](/docs/zh-CN/institutional_loan/trade#response-detail-description "Response detail description:的直接链接")
 
-新注册的币安账号都会有一个现货(`SPOT`)账号。
-
-### 杠杆账户[​](/docs/zh-CN/institutional_loan/quick-start#杠杆账户 "杠杆账户的直接链接")
-
-为了开设杠杆(`MARGIN`)账户, 可以参考[Binance杠杆交易账户设置指南](https://www.binance.vision/zh/tutorials/binance-margin-trading-guide)
-
-## API 代码库[​](/docs/zh-CN/institutional_loan/quick-start#api-代码库 "API 代码库的直接链接")
-
-### Connectors[​](/docs/zh-CN/institutional_loan/quick-start#connectors "Connectors的直接链接")
-
-以下有一些轻量级的代码库，使不同语言的用户能够直接调用现货的 Binance 公共 API：
-
-  * Python <https://github.com/binance/binance-connector-python>
-  * JavaScript <https://github.com/binance/binance-connector-js>
-  * Ruby <https://github.com/binance/binance-connector-ruby>
-  * DotNET C# <https://github.com/binance/binance-connector-dotnet>
-  * Java <https://github.com/binance/binance-connector-java>
-  * Rust <https://github.com/binance/binance-spot-connector-rust>
-  * PHP <https://github.com/binance/binance-connector-php>
-  * Go <https://github.com/binance/binance-connector-go>
-
-
-
-### Postman Collections[​](/docs/zh-CN/institutional_loan/quick-start#postman-collections "Postman Collections的直接链接")
-
-Postman 集合现已推出。推荐给寻求快速和轻松地开始使用 API 的新用户。
-
-<https://github.com/binance/binance-api-postman>
-
-### Swagger[​](/docs/zh-CN/institutional_loan/quick-start#swagger "Swagger的直接链接")
-
-以下有提供包含 RESTful API 的 OpenAPI 规范的 YAML 文件，以及可供参考的 Swagger UI 页面。
-
-<https://github.com/binance/binance-api-swagger>
+Parameter| Type| Description  
+---|---|---  
+total| LONG| 风险单位数量  
+rows| OBJECT ARRAY|   
+→ groupId| Long| 唯一风险单位标识符  
+→ startLtv| LONG| 初始贷款价值比  
+→ endLtv| LONG| 最新贷款价值比  
+→ liquidationStartTime| Long| 强平开始时间 (毫秒)  
+→ liquidationEndTime| Long| 强平结束时间 (毫秒)  
+→ totalNetEquity| String| Σ所有统一账户子账户抵押品权益 + Σ 抵押品价值 - Σ 全仓杠杆账户（负债 + 利息） + 现货可用资产  
+→totalMaintenanceMargin| String| 维持保证金总额  
+→ totalLiability| String| 未偿还贷款本金 + 未偿还贷款利息  
+liquidationSnapshot| OBJECT ARRAY|   
+snapshots| OBJECT ARRAY|   
+→ subEmail| String| Sub account registered email  
+→ memberType| String| 子账号类型，可取值"CREDIT" 或 "COLLATERAL"  
+→ walletType| String| 钱包类型，可取值 "PORTFOLIO_MARGIN", "SPOT" 或 "CROSS_MARGIN"  
+→ netEquity| String| 账户净资产  
+→ maintainMargin| String| 维持保证金  
+liabilities| OBJECT ARRAY|   
+→ assetName| String| 币种名称  
+→ principal| String| 未偿还贷款本金  
+→ interest| String| 未偿还利息

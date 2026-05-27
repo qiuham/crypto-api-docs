@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-New-OCO
 api_type: Trading
-updated_at: 2026-01-15T23:48:47.204885
+updated_at: 2026-05-27 18:57:33.566580
 ---
 
 # Margin Account New OCO (TRADE)
@@ -17,8 +17,11 @@ POST /sapi/v1/margin/order/oco
 
 ## Request Weight[​](/docs/margin_trading/trade/Margin-Account-New-OCO#request-weight "Direct link to Request Weight")
 
-**6(UID)**
-
+Condition| Request Weight  
+---|---  
+`sideEffectType` is **not** `MARGIN_BUY` or `AUTO_BORROW_REPAY`| **6(UID)**  
+`sideEffectType` is `MARGIN_BUY` or `AUTO_BORROW_REPAY`| **1500(UID)**  
+  
 ## Request Parameters[​](/docs/margin_trading/trade/Margin-Account-New-OCO#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
@@ -124,8 +127,11 @@ POST /sapi/v1/margin/order/oco
 
 ## 请求权重[​](/docs/zh-CN/margin_trading/trade/Margin-Account-New-OCO#请求权重 "请求权重的直接链接")
 
-**6(UID)**
-
+条件| 请求权重  
+---|---  
+`sideEffectType` **不是** `MARGIN_BUY` 或 `AUTO_BORROW_REPAY`| **6(UID)**  
+`sideEffectType` 是 `MARGIN_BUY` 或 `AUTO_BORROW_REPAY`| **1500(UID)**  
+  
 ## 请求参数[​](/docs/zh-CN/margin_trading/trade/Margin-Account-New-OCO#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  

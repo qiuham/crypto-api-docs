@@ -2,257 +2,128 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot
 api_type: Account
-updated_at: 2026-01-15T23:51:32.266874
+updated_at: 2026-05-27 19:03:10.711834
 ---
 
-# Query Managed Sub-account Snapshot (For Investor Master Account) (USER_DATA)
+# Quick Start
 
-## API Description[​](/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#api-description "Direct link to API Description")
+## API Key Setup[​](/docs/sub_account/quick-start#api-key-setup "Direct link to API Key Setup")
 
-Query Managed Sub-account Snapshot
+  * Some endpoints will require an API Key. Please refer to [this page](https://www.binance.com/en/support/articles/360002502072) regarding API key creation.
+  * Once API key is created, it is recommended to set IP restrictions on the key for security reasons.
+  * **Never share your API key/secret key to ANYONE.**
 
-## HTTP Request[​](/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#http-request "Direct link to HTTP Request")
+If the API keys were accidentally shared, please delete them immediately and create a new key. 
 
-GET `/sapi/v1/managed-subaccount/accountSnapshot`
+## API Key Restrictions[​](/docs/sub_account/quick-start#api-key-restrictions "Direct link to API Key Restrictions")
 
-## Request Weight(IP)[​](/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#request-weightip "Direct link to Request Weight\(IP\)")
-
-**2400**
-
-## Request Parameters[​](/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#request-parameters "Direct link to Request Parameters")
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-email| STRING| YES|   
-type| STRING| YES| "SPOT", "MARGIN"（cross）, "FUTURES"（UM）  
-startTime| LONG| NO|   
-endTime| LONG| NO|   
-limit| INT| NO| min 7, max 30, default 7  
-recvWindow| LONG| NO|   
-timestamp| LONG| YES|   
-  
->   * The query time period must be less then 30 days
->   * Support query within the last one month only
->   * If startTimeand endTime not sent, return records of the last 7 days by default
-> 
+  * After creating the API key, the default restrictions is `Enable Reading`.
+  * To **enable withdrawals via the API** , the API key restriction needs to be modified through the Binance UI.
 
 
-## Response Example[​](/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#response-example "Direct link to Response Example")
-    
-    
-    {  
-       "code":200, // 200 for success; others are error codes  
-       "msg":"", // error message  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "balances":[  
-                   {  
-                      "asset":"BTC",  
-                      "free":"0.09905021",  
-                      "locked":"0.00000000"  
-                   },  
-                   {  
-                      "asset":"USDT",  
-                      "free":"1.89109409",  
-                      "locked":"0.00000000"  
-                   }  
-                ],  
-                "totalAssetOfBtc":"0.09942700"  
-             },  
-             "type":"spot",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }  
-    
 
-> OR
-    
-    
-    {  
-       "code":200, // 200 for success; others are error codes  
-       "msg":"", // error message  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "marginLevel":"2748.02909813",  
-                "totalAssetOfBtc":"0.00274803",  
-                "totalLiabilityOfBtc":"0.00000100",  
-                "totalNetAssetOfBtc":"0.00274750",  
-                "userAssets":[  
-                   {  
-                      "asset":"XRP",  
-                      "borrowed":"0.00000000",  
-                      "free":"1.00000000",  
-                      "interest":"0.00000000",  
-                      "locked":"0.00000000",  
-                      "netAsset":"1.00000000"  
-                   }  
-                ]  
-             },  
-             "type":"margin",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }  
-    
+## Enabling Accounts[​](/docs/sub_account/quick-start#enabling-accounts "Direct link to Enabling Accounts")
 
-> OR
-    
-    
-    {  
-       "code":200, // 200 for success; others are error codes  
-       "msg":"", // error message  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "assets":[  
-                   {  
-                      "asset":"USDT",  
-                      "marginBalance":"118.99782335",  
-                      "walletBalance":"120.23811389"  
-                   }  
-                ],  
-                "position":[  
-                   {  
-                      "entryPrice":"7130.41000000",  
-                      "markPrice":"7257.66239673",  
-                      "positionAmt":"0.01000000",  
-                      "symbol":"BTCUSDT",  
-                      "unRealizedProfit":"1.24029054"  // Only show the value at the time of opening the position  
-                   }  
-                ]  
-             },  
-             "type":"futures",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }
+### Spot Account[​](/docs/sub_account/quick-start#spot-account "Direct link to Spot Account")
+
+A `SPOT` account is provided by default upon creation of a Binance Account.
+
+### Margin Account[​](/docs/sub_account/quick-start#margin-account "Direct link to Margin Account")
+
+To enable a `MARGIN` account for Margin Trading, please refer to the [Margin Trading Guide](https://www.binance.vision/tutorials/binance-margin-trading-guide)
+
+## API Library[​](/docs/sub_account/quick-start#api-library "Direct link to API Library")
+
+### Python connector[​](/docs/sub_account/quick-start#python-connector "Direct link to Python connector")
+
+This is a lightweight library that works as a connector to Binance public API, written in Python.
+
+<https://github.com/binance/binance-connector-python>
+
+### Javascript connector[​](/docs/sub_account/quick-start#javascript-connector "Direct link to Javascript connector")
+
+This is a lightweight library that works as a connector to Binance public API, written for JavaScript users.
+
+<https://github.com/binance/binance-connector-js>
+
+### Ruby connector[​](/docs/sub_account/quick-start#ruby-connector "Direct link to Ruby connector")
+
+This is a lightweight library that works as a connector to Binance public API, written for Ruby users.
+
+<https://github.com/binance/binance-connector-ruby>
+
+### DotNET connector[​](/docs/sub_account/quick-start#dotnet-connector "Direct link to DotNET connector")
+
+This is a lightweight library that works as a connector to Binance public API, written for C# users.
+
+<https://github.com/binance/binance-connector-dotnet>
+
+### Java connector[​](/docs/sub_account/quick-start#java-connector "Direct link to Java connector")
+
+This is a lightweight library that works as a connector to Binance public API, written for Java users.
+
+<https://github.com/binance/binance-connector-java>
+
+### Postman Collections[​](/docs/sub_account/quick-start#postman-collections "Direct link to Postman Collections")
+
+There is now a Postman collection containing the API endpoints for quick and easy use.
+
+This is recommended for new users who want to get a quick-start into using the API.
+
+For more information please refer to this page: [Binance API Postman](https://github.com/binance/binance-api-postman)
+
+### Swagger[​](/docs/sub_account/quick-start#swagger "Direct link to Swagger")
+
+A YAML file with OpenAPI specification on the RESTful API is available to be used, as well as a Swagger UI page for the consulting.
+
+<https://github.com/binance/binance-api-swagger>
 
 ---
 
-# 查询托管子账户资产快照 (适用投资人母账户) (USER_DATA)
+# 快速开始
 
-## 接口描述[​](/docs/zh-CN/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#接口描述 "接口描述的直接链接")
+## API Key 权限设置[​](/docs/zh-CN/sub_account/quick-start#api-key-权限设置 "API Key 权限设置的直接链接")
 
-查询托管子账户资产快照
-
-## HTTP请求[​](/docs/zh-CN/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#http请求 "HTTP请求的直接链接")
-
-GET `/sapi/v1/managed-subaccount/accountSnapshot`
-
-## 请求权重(IP)[​](/docs/zh-CN/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#请求权重ip "请求权重\(IP\)的直接链接")
-
-**2400**
-
-## 请求参数[​](/docs/zh-CN/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#请求参数 "请求参数的直接链接")
-
-名称| 类型| 是否必需| 描述  
----|---|---|---  
-email| STRING| YES|   
-type| STRING| YES| "SPOT"（现货）, "MARGIN"（全仓）, "FUTURES"（U本位合约）  
-startTime| LONG| NO|   
-endTime| LONG| NO|   
-limit| INT| NO| min 7, max 30, default 7  
-recvWindow| LONG| NO|   
-timestamp| LONG| YES|   
-  
->   * 查询时间范围最大不得超过30天
->   * 仅支持查询最近 1 个月数据
->   * 若startTime和endTime没传，则默认返回最近7天数据
-> 
+  * 新创建的API的默认权限是 `只读`。
+  * 如果需要通过API提款, 需要在UI修改权限, 选中 `允许提现`。
 
 
-## 响应示例[​](/docs/zh-CN/sub_account/managed-sub-account/Query-Managed-Sub-account-Snapshot#响应示例 "响应示例的直接链接")
-    
-    
-    {  
-       "code":200, // 200表示返回正确，否则即为错误码  
-       "msg":"", // 与错误码对应的报错信息  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "balances":[  
-                   {  
-                      "asset":"BTC",  
-                      "free":"0.09905021",  
-                      "locked":"0.00000000"  
-                   },  
-                   {  
-                      "asset":"USDT",  
-                      "free":"1.89109409",  
-                      "locked":"0.00000000"  
-                   }  
-                ],  
-                "totalAssetOfBtc":"0.09942700"  
-             },  
-             "type":"spot",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }  
-    
 
-> 或
-    
-    
-    {  
-       "code":200, // 200表示返回正确，否则即为错误码  
-       "msg":"", // 与错误码对应的报错信息  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "marginLevel":"2748.02909813",  
-                "totalAssetOfBtc":"0.00274803",  
-                "totalLiabilityOfBtc":"0.00000100",  
-                "totalNetAssetOfBtc":"0.00274750",  
-                "userAssets":[  
-                   {  
-                      "asset":"XRP",  
-                      "borrowed":"0.00000000",  
-                      "free":"1.00000000",  
-                      "interest":"0.00000000",  
-                      "locked":"0.00000000",  
-                      "netAsset":"1.00000000"  
-                   }  
-                ]  
-             },  
-             "type":"margin",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }  
-    
+## 账户[​](/docs/zh-CN/sub_account/quick-start#账户 "账户的直接链接")
 
-> 或
-    
-    
-    {  
-       "code":200, // 200表示返回正确，否则即为错误码  
-       "msg":"", // 与错误码对应的报错信息  
-       "snapshotVos":[  
-          {  
-             "data":{  
-                "assets":[  
-                   {  
-                      "asset":"USDT",  
-                      "marginBalance":"118.99782335",  
-                      "walletBalance":"120.23811389"  
-                   }  
-                ],  
-                "position":[  
-                   {  
-                      "entryPrice":"7130.41000000",  
-                      "markPrice":"7257.66239673",  
-                      "positionAmt":"0.01000000",  
-                      "symbol":"BTCUSDT",  
-                      "unRealizedProfit":"1.24029054" //只显示开仓当时的未实现盈亏，不会实时更新，可以忽略  
-                   }  
-                ]  
-             },  
-             "type":"futures",  
-             "updateTime":1576281599000  
-          }  
-       ]  
-    }
+### 现货账户[​](/docs/zh-CN/sub_account/quick-start#现货账户 "现货账户的直接链接")
+
+新注册的币安账号都会有一个现货(`SPOT`)账号。
+
+### 杠杆账户[​](/docs/zh-CN/sub_account/quick-start#杠杆账户 "杠杆�账户的直接链接")
+
+为了开设杠杆(`MARGIN`)账户, 可以参考[Binance杠杆交易账户设置指南](https://www.binance.vision/zh/tutorials/binance-margin-trading-guide)
+
+## API 代码库[​](/docs/zh-CN/sub_account/quick-start#api-代码库 "API 代码库的直接链接")
+
+### Connectors[​](/docs/zh-CN/sub_account/quick-start#connectors "Connectors的直接链接")
+
+以下有一些轻量级的代码库，使不同语言的用户能够直接调用现货的 Binance 公共 API：
+
+  * Python <https://github.com/binance/binance-connector-python>
+  * JavaScript <https://github.com/binance/binance-connector-js>
+  * Ruby <https://github.com/binance/binance-connector-ruby>
+  * DotNET C# <https://github.com/binance/binance-connector-dotnet>
+  * Java <https://github.com/binance/binance-connector-java>
+  * Rust <https://github.com/binance/binance-spot-connector-rust>
+  * PHP <https://github.com/binance/binance-connector-php>
+  * Go <https://github.com/binance/binance-connector-go>
+
+
+
+### Postman Collections[​](/docs/zh-CN/sub_account/quick-start#postman-collections "Postman Collections的直接链接")
+
+Postman 集合现已推出。推荐给寻求快速和轻松地开始使用 API 的新用户。
+
+<https://github.com/binance/binance-api-postman>
+
+### Swagger[​](/docs/zh-CN/sub_account/quick-start#swagger "Swagger的直接链接")
+
+以下有提供包含 RESTful API 的 OpenAPI 规范的 YAML 文件，以及可供参考的 Swagger UI 页面。
+
+<https://github.com/binance/binance-api-swagger>

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/spot_glossary
 api_type: REST
-updated_at: 2026-01-15T23:36:05.657948
+updated_at: 2026-05-27 18:54:07.238368
 ---
 
 # SPOT API Glossary
@@ -1255,7 +1255,7 @@ Order Book
 
 Order List
 
-  * 订单列表；将多个订单组合为一个单元。请参考 `OCO` 与/或 `OTO`
+  * 订单列表；将多个订单列表合为一个单元。请参考 `OCO` 与/或 `OTO`
 
 
 
@@ -1586,7 +1586,7 @@ Smart Order Routing (SOR)
 
 User Data Stream
 
-  * 通过 WebSocket 推送及时的个人用户信息，包括了账户余额的变动，订单的更新等。请阅读 [WebSocket 账户接口](/docs/zh-CN/binance-spot-api-docs/user-data-stream) 来了解更多详情。
+  * 通过 WebSocket 推送及时的个人用户信息，包括了账户余额的变动，订单的更新等。请阅读 [用户数据流](/docs/zh-CN/binance-spot-api-docs/user-data-stream) 来了解更多详情。
 
 
 

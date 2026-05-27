@@ -2,3082 +2,1424 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/error-code
 api_type: REST
-updated_at: 2026-01-15T23:49:42.840281
+updated_at: 2026-05-27 18:59:42.144811
 ---
 
-# Error Codes
+# General Info
 
-> The error JSON payload:
+## General API Information[​](/docs/wallet/general-info#general-api-information "Direct link to General API Information")
+
+  * The following base endpoints are available: 
+    * **<https://api.binance.com>**
+    * **<https://api-gcp.binance.com>**
+    * **<https://api1.binance.com>**
+    * **<https://api2.binance.com>**
+    * **<https://api3.binance.com>**
+    * **<https://api4.binance.com>**
+  * The last 4 endpoints in the point above (`api1`-`api4`) might give better performance but have less stability. Please use whichever works best for your setup.
+  * All endpoints return either a JSON object or array.
+  * Data is returned in **ascending** order. Oldest first, newest last.
+  * All time and timestamp related fields are in **milliseconds**.
+
+
+
+### HTTP Return Codes[​](/docs/wallet/general-info#http-return-codes "Direct link to HTTP Return Codes")
+
+  * HTTP `4XX` return codes are used for malformed requests; the issue is on the sender's side.
+  * HTTP `403` return code is used when the WAF Limit (Web Application Firewall) has been violated.
+  * HTTP `409` return code is used when a cancelReplace order partially succeeds. (e.g. if the cancellation of the order fails but the new order placement succeeds.)
+  * HTTP `429` return code is used when breaking a request rate limit.
+  * HTTP `418` return code is used when an IP has been auto-banned for continuing to send requests after receiving `429` codes.
+  * HTTP `5XX` return codes are used for internal errors; the issue is on Binance's side. It is important to **NOT** treat this as a failure operation; the execution status is **UNKNOWN** and could have been a success.
+
+
+
+### Error Codes and Messages[​](/docs/wallet/general-info#error-codes-and-messages "Direct link to Error Codes and Messages")
+
+  * If there is an error, the API will return an error with a message of the reason.
+
+
+
+> The error payload on API and SAPI is as follows:
     
     
     {  
-      "code":-1121,  
-      "msg":"Invalid symbol."  
+      "code": -1121,  
+      "msg": "Invalid symbol."  
     }  
     
 
-Errors consist of two parts: an error code and a message. Codes are universal, but messages can vary.
+  * Specific error codes and messages defined in [Error Codes](/docs/wallet/general-info#error-codes).
 
-## 10xx - General Server or Network issues[​](/docs/wallet/error-code#10xx---general-server-or-network-issues "Direct link to 10xx - General Server or Network issues")
 
-### -1000 UNKNOWN[​](/docs/wallet/error-code#-1000-unknown "Direct link to -1000 UNKNOWN")
 
-  * An unknown error occurred while processing the request.
-  * An unknown error occurred while processing the request.[%s]
+### General Information on Endpoints[​](/docs/wallet/general-info#general-information-on-endpoints "Direct link to General Information on Endpoints")
 
+  * For `GET` endpoints, parameters must be sent as a `query string`.
+  * For `POST`, `PUT`, and `DELETE` endpoints, the parameters may be sent as a `query string` or in the `request body` with content type `application/x-www-form-urlencoded`. You may mix parameters between both the `query string` and `request body` if you wish to do so.
+  * Parameters may be sent in any order.
+  * If a parameter sent in both the `query string` and `request body`, the `query string` parameter will be used.
 
 
-### -1001 DISCONNECTED[​](/docs/wallet/error-code#-1001-disconnected "Direct link to -1001 DISCONNECTED")
 
-  * Internal error; unable to process your request. Please try again.
+* * *
 
+## LIMITS[​](/docs/wallet/general-info#limits "Direct link to LIMITS")
 
+### General Info on Limits[​](/docs/wallet/general-info#general-info-on-limits "Direct link to General Info on Limits")
 
-### -1002 UNAUTHORIZED[​](/docs/wallet/error-code#-1002-unauthorized "Direct link to -1002 UNAUTHORIZED")
+  * The following `intervalLetter` values for headers: 
+    * SECOND => S
+    * MINUTE => M
+    * HOUR => H
+    * DAY => D
+  * `intervalNum` describes the amount of the interval. For example, `intervalNum` 5 with `intervalLetter` M means "Every 5 minutes".
+  * The `/api/v3/exchangeInfo` `rateLimits` array contains objects related to the exchange's `RAW_REQUESTS`, `REQUEST_WEIGHT`, and `ORDERS` rate limits. These are further defined in the `ENUM definitions` section under `Rate limiters (rateLimitType)`.
+  * A 429 will be returned when either request rate limit or order rate limit is violated.
 
-  * You are not authorized to execute this request.
 
 
+### IP Limits[​](/docs/wallet/general-info#ip-limits "Direct link to IP Limits")
 
-### -1003 TOO_MANY_REQUESTS[​](/docs/wallet/error-code#-1003-too_many_requests "Direct link to -1003 TOO_MANY_REQUESTS")
+  * Every request will contain `X-MBX-USED-WEIGHT-(intervalNum)(intervalLetter)` in the response headers which has the current used weight for the IP for all request rate limiters defined.
+  * Each route has a `weight` which determines for the number of requests each endpoint counts for. Heavier endpoints and endpoints that do operations on multiple symbols will have a heavier `weight`.
+  * When a 429 is received, it's your obligation as an API to back off and not spam the API.
+  * **Repeatedly violating rate limits and/or failing to back off after receiving 429s will result in an automated IP ban (HTTP status 418).**
+  * IP bans are tracked and **scale in duration** for repeat offenders, **from 2 minutes to 3 days**.
+  * A `Retry-After` header is sent with a 418 or 429 responses and will give the **number of seconds** required to wait, in the case of a 429, to prevent a ban, or, in the case of a 418, until the ban is over.
+  * **The limits on the API are based on the IPs, not the API keys.**
 
-  * Too many requests queued.
-  * Too much request weight used; current limit is %s request weight per %s. Please use WebSocket Streams for live updates to avoid polling the API.
-  * Way too much request weight used; IP banned until %s. Please use WebSocket Streams for live updates to avoid bans.
+We recommend using the websocket for getting data as much as possible, as this will not count to the request rate limit. 
 
+### Order Rate Limits[​](/docs/wallet/general-info#order-rate-limits "Direct link to Order Rate Limits")
 
+  * Every successful order response will contain a `X-MBX-ORDER-COUNT-(intervalNum)(intervalLetter)` header which has the current order count for the account for all order rate limiters defined.
 
-### -1004 SERVER_BUSY[​](/docs/wallet/error-code#-1004-server_busy "Direct link to -1004 SERVER_BUSY")
+  * When the order count exceeds the limit, you will receive a 429 error without the `Retry-After` header. Please check the Order Rate Limit rules using `GET api/v3/exchangeInfo` and wait for reactivation accordingly.
 
-  * Server is busy, please wait and try again
+  * Rejected/unsuccessful orders are not guaranteed to have `X-MBX-ORDER-COUNT-**` headers in the response.
 
+  * **The order rate limit is counted against each account**.
 
+  * To monitor order count usage, refer to GET `api/v3/rateLimit/order`
 
-### -1006 UNEXPECTED_RESP[​](/docs/wallet/error-code#-1006-unexpected_resp "Direct link to -1006 UNEXPECTED_RESP")
 
-  * An unexpected response was received from the message bus. Execution status unknown.
 
 
+### Websocket Limits[​](/docs/wallet/general-info#websocket-limits "Direct link to Websocket Limits")
 
-### -1007 TIMEOUT[​](/docs/wallet/error-code#-1007-timeout "Direct link to -1007 TIMEOUT")
+  * WebSocket connections have a limit of 5 incoming messages per second. A message is considered: 
+    * A PING frame
+    * A PONG frame
+    * A JSON controlled message (e.g. subscribe, unsubscribe)
+  * A connection that goes beyond the limit will be disconnected; IPs that are repeatedly disconnected may be banned.
+  * A single connection can listen to a maximum of 1024 streams.
+  * There is a limit of **300 connections per attempt every 5 minutes per IP**.
 
-  * Timeout waiting for response from backend server. Send status unknown; execution status unknown.
 
 
+### /api/ and /sapi/ Limit Introduction[​](/docs/wallet/general-info#api-and-sapi-limit-introduction "Direct link to /api/ and /sapi/ Limit Introduction")
 
-### -1008 SERVER_BUSY[​](/docs/wallet/error-code#-1008-server_busy "Direct link to -1008 SERVER_BUSY")
+The `/api/*` and `/sapi/*` endpoints adopt either of two access limiting rules, IP limits or UID (account) limits.
 
-  * Spot server is currently overloaded with other requests. Please try again in a few minutes.
+  * Endpoints related to `/api/*`:
 
+    * According to the two modes of IP and UID (account) limit, each are independent.
+    * Endpoints share the 6000 per minute limit based on IP.
+    * Responses contain the header `X-MBX-USED-WEIGHT-(intervalNum)(intervalLetter)`, defining the weight used by the current IP.
+    * Successful order responses contain the header `X-MBX-ORDER-COUNT-(intervalNum)(intervalLetter)`, defining the order limit used by the UID.
+  * Endpoints related to `/sapi/*`:
 
+    * Endpoints are marked according to IP or UID limit and their corresponding weight value.
+    * Each endpoint with IP limits has an independent 12000 per minute limit.
+    * Each endpoint with UID limits has an independent 180000 per minute limit.
+    * Responses from endpoints with IP limits contain the header `X-SAPI-USED-IP-WEIGHT-1M`, defining the weight used by the current IP.
+    * Responses from endpoints with UID limits contain the header `X-SAPI-USED-UID-WEIGHT-1M`, defining the weight used by the current UID.
 
-### -1014 UNKNOWN_ORDER_COMPOSITION[​](/docs/wallet/error-code#-1014-unknown_order_composition "Direct link to -1014 UNKNOWN_ORDER_COMPOSITION")
 
-  * Unsupported order combination.
 
+* * *
 
+## Data Sources[​](/docs/wallet/general-info#data-sources "Direct link to Data Sources")
 
-### -1015 TOO_MANY_ORDERS[​](/docs/wallet/error-code#-1015-too_many_orders "Direct link to -1015 TOO_MANY_ORDERS")
+  * The API system is asynchronous, so some delay in the response is normal and expected.
+  * Each endpoint has a data source indicating where the data is being retrieved, and thus which endpoints have the most up-to-date response.
 
-  * Too many new orders.
-  * Too many new orders; current limit is %s orders per %s.
 
 
+These are the three sources, ordered by which is has the most up-to-date response to the one with potential delays in updates.
 
-### -1016 SERVICE_SHUTTING_DOWN[​](/docs/wallet/error-code#-1016-service_shutting_down "Direct link to -1016 SERVICE_SHUTTING_DOWN")
-
-  * This service is no longer available.
-
-
-
-### -1020 UNSUPPORTED_OPERATION[​](/docs/wallet/error-code#-1020-unsupported_operation "Direct link to -1020 UNSUPPORTED_OPERATION")
-
-  * This operation is not supported.
-
-
-
-### -1021 INVALID_TIMESTAMP[​](/docs/wallet/error-code#-1021-invalid_timestamp "Direct link to -1021 INVALID_TIMESTAMP")
-
-  * Timestamp for this request is outside of the recvWindow.
-  * Timestamp for this request was 1000ms ahead of the server's time.
-
-
-
-### -1022 INVALID_SIGNATURE[​](/docs/wallet/error-code#-1022-invalid_signature "Direct link to -1022 INVALID_SIGNATURE")
-
-  * Signature for this request is not valid.
-
-
-
-### -1099 Not found, authenticated, or authorized[​](/docs/wallet/error-code#-1099-not-found-authenticated-or-authorized "Direct link to -1099 Not found, authenticated, or authorized")
-
-  * This replaces error code -1999
-
-
-
-## 11xx - 2xxx Request issues[​](/docs/wallet/error-code#11xx---2xxx-request-issues "Direct link to 11xx - 2xxx Request issues")
-
-### -1100 ILLEGAL_CHARS[​](/docs/wallet/error-code#-1100-illegal_chars "Direct link to -1100 ILLEGAL_CHARS")
-
-  * Illegal characters found in a parameter.
-  * Illegal characters found in a parameter. %s
-  * Illegal characters found in parameter `%s`; legal range is `%s`.
-
-
-
-### -1101 TOO_MANY_PARAMETERS[​](/docs/wallet/error-code#-1101-too_many_parameters "Direct link to -1101 TOO_MANY_PARAMETERS")
-
-  * Too many parameters sent for this endpoint.
-  * Too many parameters; expected `%s` and received `%s`.
-  * Duplicate values for a parameter detected.
-
-
-
-### -1102 MANDATORY_PARAM_EMPTY_OR_MALFORMED[​](/docs/wallet/error-code#-1102-mandatory_param_empty_or_malformed "Direct link to -1102 MANDATORY_PARAM_EMPTY_OR_MALFORMED")
-
-  * A mandatory parameter was not sent, was empty/null, or malformed.
-  * Mandatory parameter `%s` was not sent, was empty/null, or malformed.
-  * Param `%s` or `%s` must be sent, but both were empty/null!
-
-
-
-### -1103 UNKNOWN_PARAM[​](/docs/wallet/error-code#-1103-unknown_param "Direct link to -1103 UNKNOWN_PARAM")
-
-  * An unknown parameter was sent.
-
-
-
-### -1104 UNREAD_PARAMETERS[​](/docs/wallet/error-code#-1104-unread_parameters "Direct link to -1104 UNREAD_PARAMETERS")
-
-  * Not all sent parameters were read.
-  * Not all sent parameters were read; read `%s` parameter(s) but was sent `%s`.
-
-
-
-### -1105 PARAM_EMPTY[​](/docs/wallet/error-code#-1105-param_empty "Direct link to -1105 PARAM_EMPTY")
-
-  * A parameter was empty.
-  * Parameter `%s` was empty.
-
-
-
-### -1106 PARAM_NOT_REQUIRED[​](/docs/wallet/error-code#-1106-param_not_required "Direct link to -1106 PARAM_NOT_REQUIRED")
-
-  * A parameter was sent when not required.
-  * Parameter `%s` sent when not required.
-
-
-
-### -1111 BAD_PRECISION[​](/docs/wallet/error-code#-1111-bad_precision "Direct link to -1111 BAD_PRECISION")
-
-  * Precision is over the maximum defined for this asset.
-
-
-
-### -1112 NO_DEPTH[​](/docs/wallet/error-code#-1112-no_depth "Direct link to -1112 NO_DEPTH")
-
-  * No orders on book for symbol.
-
-
-
-### -1114 TIF_NOT_REQUIRED[​](/docs/wallet/error-code#-1114-tif_not_required "Direct link to -1114 TIF_NOT_REQUIRED")
-
-  * TimeInForce parameter sent when not required.
-
-
-
-### -1115 INVALID_TIF[​](/docs/wallet/error-code#-1115-invalid_tif "Direct link to -1115 INVALID_TIF")
-
-  * Invalid timeInForce.
-
-
-
-### -1116 INVALID_ORDER_TYPE[​](/docs/wallet/error-code#-1116-invalid_order_type "Direct link to -1116 INVALID_ORDER_TYPE")
-
-  * Invalid orderType.
-
-
-
-### -1117 INVALID_SIDE[​](/docs/wallet/error-code#-1117-invalid_side "Direct link to -1117 INVALID_SIDE")
-
-  * Invalid side.
-
-
-
-### -1118 EMPTY_NEW_CL_ORD_ID[​](/docs/wallet/error-code#-1118-empty_new_cl_ord_id "Direct link to -1118 EMPTY_NEW_CL_ORD_ID")
-
-  * New client order ID was empty.
-
-
-
-### -1119 EMPTY_ORG_CL_ORD_ID[​](/docs/wallet/error-code#-1119-empty_org_cl_ord_id "Direct link to -1119 EMPTY_ORG_CL_ORD_ID")
-
-  * Original client order ID was empty.
-
-
-
-### -1120 BAD_INTERVAL[​](/docs/wallet/error-code#-1120-bad_interval "Direct link to -1120 BAD_INTERVAL")
-
-  * Invalid interval.
-
-
-
-### -1121 BAD_SYMBOL[​](/docs/wallet/error-code#-1121-bad_symbol "Direct link to -1121 BAD_SYMBOL")
-
-  * Invalid symbol.
-
-
-
-### -1125 INVALID_LISTEN_KEY[​](/docs/wallet/error-code#-1125-invalid_listen_key "Direct link to -1125 INVALID_LISTEN_KEY")
-
-  * This listenKey does not exist.
-
-
-
-### -1127 MORE_THAN_XX_HOURS[​](/docs/wallet/error-code#-1127-more_than_xx_hours "Direct link to -1127 MORE_THAN_XX_HOURS")
-
-  * Lookup interval is too big.
-  * More than %s hours between startTime and endTime.
-
-
-
-### -1128 OPTIONAL_PARAMS_BAD_COMBO[​](/docs/wallet/error-code#-1128-optional_params_bad_combo "Direct link to -1128 OPTIONAL_PARAMS_BAD_COMBO")
-
-  * Combination of optional parameters invalid.
-
-
-
-### -1130 INVALID_PARAMETER[​](/docs/wallet/error-code#-1130-invalid_parameter "Direct link to -1130 INVALID_PARAMETER")
-
-  * Invalid data sent for a parameter.
-  * Data sent for parameter `%s` is not valid.
-
-
-
-### -1131 BAD_RECV_WINDOW[​](/docs/wallet/error-code#-1131-bad_recv_window "Direct link to -1131 BAD_RECV_WINDOW")
-
-  * recvWindow must be less than 60000
-
-
-
-### -1134 BAD_STRATEGY_TYPE[​](/docs/wallet/error-code#-1134-bad_strategy_type "Direct link to -1134 BAD_STRATEGY_TYPE")
-
-  * `strategyType` was less than 1000000.
-
-
-
-#### -1145 INVALID_CANCEL_RESTRICTIONS[​](/docs/wallet/error-code#-1145-invalid_cancel_restrictions "Direct link to -1145 INVALID_CANCEL_RESTRICTIONS")
-
-  * `cancelRestrictions` has to be either `ONLY_NEW` or `ONLY_PARTIALLY_FILLED`.
-
-
-
-#### -1151 DUPLICATE_SYMBOLS[​](/docs/wallet/error-code#-1151-duplicate_symbols "Direct link to -1151 DUPLICATE_SYMBOLS")
-
-  * Symbol is present multiple times in the list.
-
-
-
-### -2010 NEW_ORDER_REJECTED[​](/docs/wallet/error-code#-2010-new_order_rejected "Direct link to -2010 NEW_ORDER_REJECTED")
-
-  * NEW_ORDER_REJECTED
-
-
-
-### -2011 CANCEL_REJECTED[​](/docs/wallet/error-code#-2011-cancel_rejected "Direct link to -2011 CANCEL_REJECTED")
-
-  * CANCEL_REJECTED
-
-
-
-### -2013 NO_SUCH_ORDER[​](/docs/wallet/error-code#-2013-no_such_order "Direct link to -2013 NO_SUCH_ORDER")
-
-  * Order does not exist.
-
-
-
-### -2014 BAD_API_KEY_FMT[​](/docs/wallet/error-code#-2014-bad_api_key_fmt "Direct link to -2014 BAD_API_KEY_FMT")
-
-  * API-key format invalid.
-
-
-
-### -2015 REJECTED_MBX_KEY[​](/docs/wallet/error-code#-2015-rejected_mbx_key "Direct link to -2015 REJECTED_MBX_KEY")
-
-  * Invalid API-key, IP, or permissions for action.
-
-
-
-### -2016 NO_TRADING_WINDOW[​](/docs/wallet/error-code#-2016-no_trading_window "Direct link to -2016 NO_TRADING_WINDOW")
-
-  * No trading window could be found for the symbol. Try ticker/24hrs instead.
-
-
-
-#### -2026 ORDER_ARCHIVED[​](/docs/wallet/error-code#-2026-order_archived "Direct link to -2026 ORDER_ARCHIVED")
-
-  * Order was canceled or expired with no executed qty over 90 days ago and has been archived.
-
-
-
-## 3xxx-5xxx SAPI-specific issues[​](/docs/wallet/error-code#3xxx-5xxx-sapi-specific-issues "Direct link to 3xxx-5xxx SAPI-specific issues")
-
-### -3000 INNER_FAILURE[​](/docs/wallet/error-code#-3000-inner_failure "Direct link to -3000 INNER_FAILURE")
-
-  * Internal server error.
-
-
-
-### -3001 NEED_ENABLE_2FA[​](/docs/wallet/error-code#-3001-need_enable_2fa "Direct link to -3001 NEED_ENABLE_2FA")
-
-  * Please enable 2FA first.
-
-
-
-### -3002 ASSET_DEFICIENCY[​](/docs/wallet/error-code#-3002-asset_deficiency "Direct link to -3002 ASSET_DEFICIENCY")
-
-  * We don't have this asset.
-
-
-
-### -3003 NO_OPENED_MARGIN_ACCOUNT[​](/docs/wallet/error-code#-3003-no_opened_margin_account "Direct link to -3003 NO_OPENED_MARGIN_ACCOUNT")
-
-  * Margin account does not exist.
-
-
-
-### -3004 TRADE_NOT_ALLOWED[​](/docs/wallet/error-code#-3004-trade_not_allowed "Direct link to -3004 TRADE_NOT_ALLOWED")
-
-  * Trade not allowed.
-
-
-
-### -3005 TRANSFER_OUT_NOT_ALLOWED[​](/docs/wallet/error-code#-3005-transfer_out_not_allowed "Direct link to -3005 TRANSFER_OUT_NOT_ALLOWED")
-
-  * Transferring out not allowed.
-
-
-
-### -3006 EXCEED_MAX_BORROWABLE[​](/docs/wallet/error-code#-3006-exceed_max_borrowable "Direct link to -3006 EXCEED_MAX_BORROWABLE")
-
-  * Your borrow amount has exceed maximum borrow amount.
-
-
-
-### -3007 HAS_PENDING_TRANSACTION[​](/docs/wallet/error-code#-3007-has_pending_transaction "Direct link to -3007 HAS_PENDING_TRANSACTION")
-
-  * You have pending transaction, please try again later.
-
-
-
-### -3008 BORROW_NOT_ALLOWED[​](/docs/wallet/error-code#-3008-borrow_not_allowed "Direct link to -3008 BORROW_NOT_ALLOWED")
-
-  * Borrow not allowed.
-
-
-
-### -3009 ASSET_NOT_MORTGAGEABLE[​](/docs/wallet/error-code#-3009-asset_not_mortgageable "Direct link to -3009 ASSET_NOT_MORTGAGEABLE")
-
-  * This asset are not allowed to transfer into margin account currently.
-
-
-
-### -3010 REPAY_NOT_ALLOWED[​](/docs/wallet/error-code#-3010-repay_not_allowed "Direct link to -3010 REPAY_NOT_ALLOWED")
-
-  * Repay not allowed.
-
-
-
-### -3011 BAD_DATE_RANGE[​](/docs/wallet/error-code#-3011-bad_date_range "Direct link to -3011 BAD_DATE_RANGE")
-
-  * Your input date is invalid.
-
-
-
-### -3012 ASSET_ADMIN_BAN_BORROW[​](/docs/wallet/error-code#-3012-asset_admin_ban_borrow "Direct link to -3012 ASSET_ADMIN_BAN_BORROW")
-
-  * Borrow is banned for this asset.
-
-
-
-### -3013 LT_MIN_BORROWABLE[​](/docs/wallet/error-code#-3013-lt_min_borrowable "Direct link to -3013 LT_MIN_BORROWABLE")
-
-  * Borrow amount less than minimum borrow amount.
-
-
-
-### -3014 ACCOUNT_BAN_BORROW[​](/docs/wallet/error-code#-3014-account_ban_borrow "Direct link to -3014 ACCOUNT_BAN_BORROW")
-
-  * Borrow is banned for this account.
-
-
-
-### -3015 REPAY_EXCEED_LIABILITY[​](/docs/wallet/error-code#-3015-repay_exceed_liability "Direct link to -3015 REPAY_EXCEED_LIABILITY")
-
-  * Repay amount exceeds borrow amount.
-
-
-
-### -3016 LT_MIN_REPAY[​](/docs/wallet/error-code#-3016-lt_min_repay "Direct link to -3016 LT_MIN_REPAY")
-
-  * Repay amount less than minimum repay amount.
-
-
-
-### -3017 ASSET_ADMIN_BAN_MORTGAGE[​](/docs/wallet/error-code#-3017-asset_admin_ban_mortgage "Direct link to -3017 ASSET_ADMIN_BAN_MORTGAGE")
-
-  * This asset are not allowed to transfer into margin account currently.
-
-
-
-### -3018 ACCOUNT_BAN_MORTGAGE[​](/docs/wallet/error-code#-3018-account_ban_mortgage "Direct link to -3018 ACCOUNT_BAN_MORTGAGE")
-
-  * Transferring in has been banned for this account.
-
-
-
-### -3019 ACCOUNT_BAN_ROLLOUT[​](/docs/wallet/error-code#-3019-account_ban_rollout "Direct link to -3019 ACCOUNT_BAN_ROLLOUT")
-
-  * Transferring out has been banned for this account.
-
-
-
-### -3020 EXCEED_MAX_ROLLOUT[​](/docs/wallet/error-code#-3020-exceed_max_rollout "Direct link to -3020 EXCEED_MAX_ROLLOUT")
-
-  * Transfer out amount exceeds max amount.
-
-
-
-### -3021 PAIR_ADMIN_BAN_TRADE[​](/docs/wallet/error-code#-3021-pair_admin_ban_trade "Direct link to -3021 PAIR_ADMIN_BAN_TRADE")
-
-  * Margin account are not allowed to trade this trading pair.
-
-
-
-### -3022 ACCOUNT_BAN_TRADE[​](/docs/wallet/error-code#-3022-account_ban_trade "Direct link to -3022 ACCOUNT_BAN_TRADE")
-
-  * You account's trading is banned.
-
-
-
-### -3023 WARNING_MARGIN_LEVEL[​](/docs/wallet/error-code#-3023-warning_margin_level "Direct link to -3023 WARNING_MARGIN_LEVEL")
-
-  * You can't transfer out/place order under current margin level.
-
-
-
-### -3024 FEW_LIABILITY_LEFT[​](/docs/wallet/error-code#-3024-few_liability_left "Direct link to -3024 FEW_LIABILITY_LEFT")
-
-  * The unpaid debt is too small after this repayment.
-
-
-
-### -3025 INVALID_EFFECTIVE_TIME[​](/docs/wallet/error-code#-3025-invalid_effective_time "Direct link to -3025 INVALID_EFFECTIVE_TIME")
-
-  * Your input date is invalid.
-
-
-
-### -3026 VALIDATION_FAILED[​](/docs/wallet/error-code#-3026-validation_failed "Direct link to -3026 VALIDATION_FAILED")
-
-  * Your input param is invalid.
-
-
-
-### -3027 NOT_VALID_MARGIN_ASSET[​](/docs/wallet/error-code#-3027-not_valid_margin_asset "Direct link to -3027 NOT_VALID_MARGIN_ASSET")
-
-  * Not a valid margin asset.
-
-
-
-### -3028 NOT_VALID_MARGIN_PAIR[​](/docs/wallet/error-code#-3028-not_valid_margin_pair "Direct link to -3028 NOT_VALID_MARGIN_PAIR")
-
-  * Not a valid margin pair.
-
-
-
-### -3029 TRANSFER_FAILED[​](/docs/wallet/error-code#-3029-transfer_failed "Direct link to -3029 TRANSFER_FAILED")
-
-  * Transfer failed.
-
-
-
-### -3036 ACCOUNT_BAN_REPAY[​](/docs/wallet/error-code#-3036-account_ban_repay "Direct link to -3036 ACCOUNT_BAN_REPAY")
-
-  * This account is not allowed to repay.
-
-
-
-### -3037 PNL_CLEARING[​](/docs/wallet/error-code#-3037-pnl_clearing "Direct link to -3037 PNL_CLEARING")
-
-  * PNL is clearing. Wait a second.
-
-
-
-### -3038 LISTEN_KEY_NOT_FOUND[​](/docs/wallet/error-code#-3038-listen_key_not_found "Direct link to -3038 LISTEN_KEY_NOT_FOUND")
-
-  * Listen key not found.
-
-
-
-### -3041 BALANCE_NOT_CLEARED[​](/docs/wallet/error-code#-3041-balance_not_cleared "Direct link to -3041 BALANCE_NOT_CLEARED")
-
-  * Balance is not enough
-
-
-
-### -3042 PRICE_INDEX_NOT_FOUND[​](/docs/wallet/error-code#-3042-price_index_not_found "Direct link to -3042 PRICE_INDEX_NOT_FOUND")
-
-  * PriceIndex not available for this margin pair.
-
-
-
-### -3043 TRANSFER_IN_NOT_ALLOWED[​](/docs/wallet/error-code#-3043-transfer_in_not_allowed "Direct link to -3043 TRANSFER_IN_NOT_ALLOWED")
-
-  * Transferring in not allowed.
-
-
-
-### -3044 SYSTEM_BUSY[​](/docs/wallet/error-code#-3044-system_busy "Direct link to -3044 SYSTEM_BUSY")
-
-  * System busy.
-
-
-
-### -3045 SYSTEM[​](/docs/wallet/error-code#-3045-system "Direct link to -3045 SYSTEM")
-
-  * The system doesn't have enough asset now.
-
-
-
-### -3999 NOT_WHITELIST_USER[​](/docs/wallet/error-code#-3999-not_whitelist_user "Direct link to -3999 NOT_WHITELIST_USER")
-
-  * This function is only available for invited users.
-
-
-
-### -4001 CAPITAL_INVALID[​](/docs/wallet/error-code#-4001-capital_invalid "Direct link to -4001 CAPITAL_INVALID")
-
-  * Invalid operation.
-
-
-
-### -4002 CAPITAL_IG[​](/docs/wallet/error-code#-4002-capital_ig "Direct link to -4002 CAPITAL_IG")
-
-  * Invalid get.
-
-
-
-### -4003 CAPITAL_IEV[​](/docs/wallet/error-code#-4003-capital_iev "Direct link to -4003 CAPITAL_IEV")
-
-  * Your input email is invalid.
-
-
-
-### -4004 CAPITAL_UA[​](/docs/wallet/error-code#-4004-capital_ua "Direct link to -4004 CAPITAL_UA")
-
-  * You don't login or auth.
-
-
-
-### -4005 CAPAITAL_TOO_MANY_REQUEST[​](/docs/wallet/error-code#-4005-capaital_too_many_request "Direct link to -4005 CAPAITAL_TOO_MANY_REQUEST")
-
-  * Too many new requests.
-
-
-
-### -4006 CAPITAL_ONLY_SUPPORT_PRIMARY_ACCOUNT[​](/docs/wallet/error-code#-4006-capital_only_support_primary_account "Direct link to -4006 CAPITAL_ONLY_SUPPORT_PRIMARY_ACCOUNT")
-
-  * Support main account only.
-
-
-
-### -4007 CAPITAL_ADDRESS_VERIFICATION_NOT_PASS[​](/docs/wallet/error-code#-4007-capital_address_verification_not_pass "Direct link to -4007 CAPITAL_ADDRESS_VERIFICATION_NOT_PASS")
-
-  * Address validation is not passed.
-
-
-
-### -4008 CAPITAL_ADDRESS_TAG_VERIFICATION_NOT_PASS[​](/docs/wallet/error-code#-4008-capital_address_tag_verification_not_pass "Direct link to -4008 CAPITAL_ADDRESS_TAG_VERIFICATION_NOT_PASS")
-
-  * Address tag validation is not passed.
-
-
-
-### -4010 CAPITAL_WHITELIST_EMAIL_CONFIRM[​](/docs/wallet/error-code#-4010-capital_whitelist_email_confirm "Direct link to -4010 CAPITAL_WHITELIST_EMAIL_CONFIRM")
-
-  * White list mail has been confirmed.
-
-
-
-### -4011 CAPITAL_WHITELIST_EMAIL_EXPIRED[​](/docs/wallet/error-code#-4011-capital_whitelist_email_expired "Direct link to -4011 CAPITAL_WHITELIST_EMAIL_EXPIRED")
-
-  * White list mail is invalid.
-
-
-
-### -4012 CAPITAL_WHITELIST_CLOSE[​](/docs/wallet/error-code#-4012-capital_whitelist_close "Direct link to -4012 CAPITAL_WHITELIST_CLOSE")
-
-  * White list is not opened.
-
-
-
-### -4013 CAPITAL_WITHDRAW_2FA_VERIFY[​](/docs/wallet/error-code#-4013-capital_withdraw_2fa_verify "Direct link to -4013 CAPITAL_WITHDRAW_2FA_VERIFY")
-
-  * 2FA is not opened.
-
-
-
-### -4014 CAPITAL_WITHDRAW_LOGIN_DELAY[​](/docs/wallet/error-code#-4014-capital_withdraw_login_delay "Direct link to -4014 CAPITAL_WITHDRAW_LOGIN_DELAY")
-
-  * Withdraw is not allowed within 2 min login.
-
-
-
-### -4015 CAPITAL_WITHDRAW_RESTRICTED_MINUTE[​](/docs/wallet/error-code#-4015-capital_withdraw_restricted_minute "Direct link to -4015 CAPITAL_WITHDRAW_RESTRICTED_MINUTE")
-
-  * Withdraw is limited.
-
-
-
-### -4016 CAPITAL_WITHDRAW_RESTRICTED_PASSWORD[​](/docs/wallet/error-code#-4016-capital_withdraw_restricted_password "Direct link to -4016 CAPITAL_WITHDRAW_RESTRICTED_PASSWORD")
-
-  * Within 24 hours after password modification, withdrawal is prohibited.
-
-
-
-### -4017 CAPITAL_WITHDRAW_RESTRICTED_UNBIND_2FA[​](/docs/wallet/error-code#-4017-capital_withdraw_restricted_unbind_2fa "Direct link to -4017 CAPITAL_WITHDRAW_RESTRICTED_UNBIND_2FA")
-
-  * Within 24 hours after the release of 2FA, withdrawal is prohibited.
-
-
-
-### -4018 CAPITAL_WITHDRAW_ASSET_NOT_EXIST[​](/docs/wallet/error-code#-4018-capital_withdraw_asset_not_exist "Direct link to -4018 CAPITAL_WITHDRAW_ASSET_NOT_EXIST")
-
-  * We don't have this asset.
-
-
-
-### -4019 CAPITAL_WITHDRAW_ASSET_PROHIBIT[​](/docs/wallet/error-code#-4019-capital_withdraw_asset_prohibit "Direct link to -4019 CAPITAL_WITHDRAW_ASSET_PROHIBIT")
-
-  * Current asset is not open for withdrawal.
-
-
-
-### -4021 CAPITAL_WITHDRAW_AMOUNT_MULTIPLE[​](/docs/wallet/error-code#-4021-capital_withdraw_amount_multiple "Direct link to -4021 CAPITAL_WITHDRAW_AMOUNT_MULTIPLE")
-
-  * Asset withdrawal must be an %s multiple of %s.
-
-
-
-### -4022 CAPITAL_WITHDRAW_MIN_AMOUNT[​](/docs/wallet/error-code#-4022-capital_withdraw_min_amount "Direct link to -4022 CAPITAL_WITHDRAW_MIN_AMOUNT")
-
-  * Not less than the minimum pick-up quantity %s.
-
-
-
-### -4023 CAPITAL_WITHDRAW_MAX_AMOUNT[​](/docs/wallet/error-code#-4023-capital_withdraw_max_amount "Direct link to -4023 CAPITAL_WITHDRAW_MAX_AMOUNT")
-
-  * Within 24 hours, the withdrawal exceeds the maximum amount.
-
-
-
-### -4024 CAPITAL_WITHDRAW_USER_NO_ASSET[​](/docs/wallet/error-code#-4024-capital_withdraw_user_no_asset "Direct link to -4024 CAPITAL_WITHDRAW_USER_NO_ASSET")
-
-  * You don't have this asset.
-
-
-
-### -4025 CAPITAL_WITHDRAW_USER_ASSET_LESS_THAN_ZERO[​](/docs/wallet/error-code#-4025-capital_withdraw_user_asset_less_than_zero "Direct link to -4025 CAPITAL_WITHDRAW_USER_ASSET_LESS_THAN_ZERO")
-
-  * The number of hold asset is less than zero.
-
-
-
-### -4026 CAPITAL_WITHDRAW_USER_ASSET_NOT_ENOUGH[​](/docs/wallet/error-code#-4026-capital_withdraw_user_asset_not_enough "Direct link to -4026 CAPITAL_WITHDRAW_USER_ASSET_NOT_ENOUGH")
-
-  * You have insufficient balance.
-
-
-
-### -4027 CAPITAL_WITHDRAW_GET_TRAN_ID_FAILURE[​](/docs/wallet/error-code#-4027-capital_withdraw_get_tran_id_failure "Direct link to -4027 CAPITAL_WITHDRAW_GET_TRAN_ID_FAILURE")
-
-  * Failed to obtain tranId.
-
-
-
-### -4028 CAPITAL_WITHDRAW_MORE_THAN_FEE[​](/docs/wallet/error-code#-4028-capital_withdraw_more_than_fee "Direct link to -4028 CAPITAL_WITHDRAW_MORE_THAN_FEE")
-
-  * The amount of withdrawal must be greater than the Commission.
-
-
-
-### -4029 CAPITAL_WITHDRAW_NOT_EXIST[​](/docs/wallet/error-code#-4029-capital_withdraw_not_exist "Direct link to -4029 CAPITAL_WITHDRAW_NOT_EXIST")
-
-  * The withdrawal record does not exist.
-
-
-
-### -4030 CAPITAL_WITHDRAW_CONFIRM_SUCCESS[​](/docs/wallet/error-code#-4030-capital_withdraw_confirm_success "Direct link to -4030 CAPITAL_WITHDRAW_CONFIRM_SUCCESS")
-
-  * Confirmation of successful asset withdrawal.
-
-
-
-### -4031 CAPITAL_WITHDRAW_CANCEL_FAILURE[​](/docs/wallet/error-code#-4031-capital_withdraw_cancel_failure "Direct link to -4031 CAPITAL_WITHDRAW_CANCEL_FAILURE")
-
-  * Cancellation failed.
-
-
-
-### -4032 CAPITAL_WITHDRAW_CHECKSUM_VERIFY_FAILURE[​](/docs/wallet/error-code#-4032-capital_withdraw_checksum_verify_failure "Direct link to -4032 CAPITAL_WITHDRAW_CHECKSUM_VERIFY_FAILURE")
-
-  * Withdraw verification exception.
-
-
-
-### -4033 CAPITAL_WITHDRAW_ILLEGAL_ADDRESS[​](/docs/wallet/error-code#-4033-capital_withdraw_illegal_address "Direct link to -4033 CAPITAL_WITHDRAW_ILLEGAL_ADDRESS")
-
-  * Illegal address.
-
-
-
-### -4034 CAPITAL_WITHDRAW_ADDRESS_CHEAT[​](/docs/wallet/error-code#-4034-capital_withdraw_address_cheat "Direct link to -4034 CAPITAL_WITHDRAW_ADDRESS_CHEAT")
-
-  * The address is suspected of fake.
-
-
-
-### -4035 CAPITAL_WITHDRAW_NOT_WHITE_ADDRESS[​](/docs/wallet/error-code#-4035-capital_withdraw_not_white_address "Direct link to -4035 CAPITAL_WITHDRAW_NOT_WHITE_ADDRESS")
-
-  * This address is not on the whitelist. Please join and try again.
-
-
-
-### -4036 CAPITAL_WITHDRAW_NEW_ADDRESS[​](/docs/wallet/error-code#-4036-capital_withdraw_new_address "Direct link to -4036 CAPITAL_WITHDRAW_NEW_ADDRESS")
-
-  * The new address needs to be withdrawn in {0} hours.
-
-
-
-### -4037 CAPITAL_WITHDRAW_RESEND_EMAIL_FAIL[​](/docs/wallet/error-code#-4037-capital_withdraw_resend_email_fail "Direct link to -4037 CAPITAL_WITHDRAW_RESEND_EMAIL_FAIL")
-
-  * Re-sending Mail failed.
-
-
-
-### -4038 CAPITAL_WITHDRAW_RESEND_EMAIL_TIME_OUT[​](/docs/wallet/error-code#-4038-capital_withdraw_resend_email_time_out "Direct link to -4038 CAPITAL_WITHDRAW_RESEND_EMAIL_TIME_OUT")
-
-  * Please try again in 5 minutes.
-
-
-
-### -4039 CAPITAL_USER_EMPTY[​](/docs/wallet/error-code#-4039-capital_user_empty "Direct link to -4039 CAPITAL_USER_EMPTY")
-
-  * The user does not exist.
-
-
-
-### -4040 CAPITAL_NO_CHARGE[​](/docs/wallet/error-code#-4040-capital_no_charge "Direct link to -4040 CAPITAL_NO_CHARGE")
-
-  * This address not charged.
-
-
-
-### -4041 CAPITAL_MINUTE_TOO_SMALL[​](/docs/wallet/error-code#-4041-capital_minute_too_small "Direct link to -4041 CAPITAL_MINUTE_TOO_SMALL")
-
-  * Please try again in one minute.
-
-
-
-### -4042 CAPITAL_CHARGE_NOT_RESET[​](/docs/wallet/error-code#-4042-capital_charge_not_reset "Direct link to -4042 CAPITAL_CHARGE_NOT_RESET")
-
-  * This asset cannot get deposit address again.
-
-
-
-### -4043 CAPITAL_ADDRESS_TOO_MUCH[​](/docs/wallet/error-code#-4043-capital_address_too_much "Direct link to -4043 CAPITAL_ADDRESS_TOO_MUCH")
-
-  * More than 100 recharge addresses were used in 24 hours.
-
-
-
-### -4044 CAPITAL_BLACKLIST_COUNTRY_GET_ADDRESS[​](/docs/wallet/error-code#-4044-capital_blacklist_country_get_address "Direct link to -4044 CAPITAL_BLACKLIST_COUNTRY_GET_ADDRESS")
-
-  * This is a blacklist country.
-
-
-
-### -4045 CAPITAL_GET_ASSET_ERROR[​](/docs/wallet/error-code#-4045-capital_get_asset_error "Direct link to -4045 CAPITAL_GET_ASSET_ERROR")
-
-  * Failure to acquire assets.
-
-
-
-### -4046 CAPITAL_AGREEMENT_NOT_CONFIRMED[​](/docs/wallet/error-code#-4046-capital_agreement_not_confirmed "Direct link to -4046 CAPITAL_AGREEMENT_NOT_CONFIRMED")
-
-  * Agreement not confirmed.
-
-
-
-### -4047 CAPITAL_DATE_INTERVAL_LIMIT[​](/docs/wallet/error-code#-4047-capital_date_interval_limit "Direct link to -4047 CAPITAL_DATE_INTERVAL_LIMIT")
-
-  * Time interval must be within 0-90 days
-
-
-
-### -4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT[​](/docs/wallet/error-code#-4060-capital_withdraw_user_asset_lock_deposit "Direct link to -4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT")
-
-  * As your deposit has not reached the required block confirmations, we have temporarily locked {0} asset
-
-
-
-### -5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF[​](/docs/wallet/error-code#-5001-asset_dribblet_convert_switch_off "Direct link to -5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF")
-
-  * Don't allow transfer to micro assets.
-
-
-
-### -5002 ASSET_ASSET_NOT_ENOUGH[​](/docs/wallet/error-code#-5002-asset_asset_not_enough "Direct link to -5002 ASSET_ASSET_NOT_ENOUGH")
-
-  * You have insufficient balance.
-
-
-
-### -5003 ASSET_USER_HAVE_NO_ASSET[​](/docs/wallet/error-code#-5003-asset_user_have_no_asset "Direct link to -5003 ASSET_USER_HAVE_NO_ASSET")
-
-  * You don't have this asset.
-
-
-
-### -5004 USER_OUT_OF_TRANSFER_FLOAT[​](/docs/wallet/error-code#-5004-user_out_of_transfer_float "Direct link to -5004 USER_OUT_OF_TRANSFER_FLOAT")
-
-  * The residual balances have exceeded 0.001BTC, Please re-choose.
-  * The residual balances of %s have exceeded 0.001BTC, Please re-choose.
-
-
-
-### -5005 USER_ASSET_AMOUNT_IS_TOO_LOW[​](/docs/wallet/error-code#-5005-user_asset_amount_is_too_low "Direct link to -5005 USER_ASSET_AMOUNT_IS_TOO_LOW")
-
-  * The residual balances of the BTC is too low
-  * The residual balances of %s is too low, Please re-choose.
-
-
-
-### -5006 USER_CAN_NOT_REQUEST_IN_24_HOURS[​](/docs/wallet/error-code#-5006-user_can_not_request_in_24_hours "Direct link to -5006 USER_CAN_NOT_REQUEST_IN_24_HOURS")
-
-  * Only transfer once in 24 hours.
-
-
-
-### -5007 AMOUNT_OVER_ZERO[​](/docs/wallet/error-code#-5007-amount_over_zero "Direct link to -5007 AMOUNT_OVER_ZERO")
-
-  * Quantity must be greater than zero.
-
-
-
-### -5008 ASSET_WITHDRAW_WITHDRAWING_NOT_ENOUGH[​](/docs/wallet/error-code#-5008-asset_withdraw_withdrawing_not_enough "Direct link to -5008 ASSET_WITHDRAW_WITHDRAWING_NOT_ENOUGH")
-
-  * Insufficient amount of returnable assets.
-
-
-
-### -5009 PRODUCT_NOT_EXIST[​](/docs/wallet/error-code#-5009-product_not_exist "Direct link to -5009 PRODUCT_NOT_EXIST")
-
-  * Product does not exist.
-
-
-
-### -5010 TRANSFER_FAIL[​](/docs/wallet/error-code#-5010-transfer_fail "Direct link to -5010 TRANSFER_FAIL")
-
-  * Asset transfer fail.
-
-
-
-### -5011 FUTURE_ACCT_NOT_EXIST[​](/docs/wallet/error-code#-5011-future_acct_not_exist "Direct link to -5011 FUTURE_ACCT_NOT_EXIST")
-
-  * future account not exists.
-
-
-
-### -5012 TRANSFER_PENDING[​](/docs/wallet/error-code#-5012-transfer_pending "Direct link to -5012 TRANSFER_PENDING")
-
-  * Asset transfer is in pending.
-
-
-
-### -5021 PARENT_SUB_HAVE_NO_RELATION[​](/docs/wallet/error-code#-5021-parent_sub_have_no_relation "Direct link to -5021 PARENT_SUB_HAVE_NO_RELATION")
-
-  * This parent sub have no relation
-
-
-
-### -5012 FUTURE_ACCT_OR_SUBRELATION_NOT_EXIST[​](/docs/wallet/error-code#-5012-future_acct_or_subrelation_not_exist "Direct link to -5012 FUTURE_ACCT_OR_SUBRELATION_NOT_EXIST")
-
-  * future account or sub relation not exists.
-
-
-
-## 6XXX - Savings Issues[​](/docs/wallet/error-code#6xxx---savings-issues "Direct link to 6XXX - Savings Issues")
-
-### -6001 DAILY_PRODUCT_NOT_EXIST[​](/docs/wallet/error-code#-6001-daily_product_not_exist "Direct link to -6001 DAILY_PRODUCT_NOT_EXIST")
-
-  * Daily product not exists.
-
-
-
-### -6003 DAILY_PRODUCT_NOT_ACCESSIBLE[​](/docs/wallet/error-code#-6003-daily_product_not_accessible "Direct link to -6003 DAILY_PRODUCT_NOT_ACCESSIBLE")
-
-  * Product not exist or you don't have permission
-
-
-
-### -6004 DAILY_PRODUCT_NOT_PURCHASABLE[​](/docs/wallet/error-code#-6004-daily_product_not_purchasable "Direct link to -6004 DAILY_PRODUCT_NOT_PURCHASABLE")
-
-  * Product not in purchase status
-
-
-
-### -6005 DAILY_LOWER_THAN_MIN_PURCHASE_LIMIT[​](/docs/wallet/error-code#-6005-daily_lower_than_min_purchase_limit "Direct link to -6005 DAILY_LOWER_THAN_MIN_PURCHASE_LIMIT")
-
-  * Smaller than min purchase limit
-
-
-
-### -6006 DAILY_REDEEM_AMOUNT_ERROR[​](/docs/wallet/error-code#-6006-daily_redeem_amount_error "Direct link to -6006 DAILY_REDEEM_AMOUNT_ERROR")
-
-  * Redeem amount error
-
-
-
-### -6007 DAILY_REDEEM_TIME_ERROR[​](/docs/wallet/error-code#-6007-daily_redeem_time_error "Direct link to -6007 DAILY_REDEEM_TIME_ERROR")
-
-  * Not in redeem time
-
-
-
-### -6008 DAILY_PRODUCT_NOT_REDEEMABLE[​](/docs/wallet/error-code#-6008-daily_product_not_redeemable "Direct link to -6008 DAILY_PRODUCT_NOT_REDEEMABLE")
-
-  * Product not in redeem status
-
-
-
-### -6009 REQUEST_FREQUENCY_TOO_HIGH[​](/docs/wallet/error-code#-6009-request_frequency_too_high "Direct link to -6009 REQUEST_FREQUENCY_TOO_HIGH")
-
-  * Request frequency too high
-
-
-
-### -6011 EXCEEDED_USER_PURCHASE_LIMIT[​](/docs/wallet/error-code#-6011-exceeded_user_purchase_limit "Direct link to -6011 EXCEEDED_USER_PURCHASE_LIMIT")
-
-  * Exceeding the maximum num allowed to purchase per user
-
-
-
-### -6012 BALANCE_NOT_ENOUGH[​](/docs/wallet/error-code#-6012-balance_not_enough "Direct link to -6012 BALANCE_NOT_ENOUGH")
-
-  * Balance not enough
-
-
-
-### -6013 PURCHASING_FAILED[​](/docs/wallet/error-code#-6013-purchasing_failed "Direct link to -6013 PURCHASING_FAILED")
-
-  * Purchasing failed
-
-
-
-### -6014 UPDATE_FAILED[​](/docs/wallet/error-code#-6014-update_failed "Direct link to -6014 UPDATE_FAILED")
-
-  * Exceed up-limit allowed to purchased
-
-
-
-### -6015 EMPTY_REQUEST_BODY[​](/docs/wallet/error-code#-6015-empty_request_body "Direct link to -6015 EMPTY_REQUEST_BODY")
-
-  * Empty request body
-
-
-
-### -6016 PARAMS_ERR[​](/docs/wallet/error-code#-6016-params_err "Direct link to -6016 PARAMS_ERR")
-
-  * Parameter err
-
-
-
-### -6017 NOT_IN_WHITELIST[​](/docs/wallet/error-code#-6017-not_in_whitelist "Direct link to -6017 NOT_IN_WHITELIST")
-
-  * Not in whitelist
-
-
-
-### -6018 ASSET_NOT_ENOUGH[​](/docs/wallet/error-code#-6018-asset_not_enough "Direct link to -6018 ASSET_NOT_ENOUGH")
-
-  * Asset not enough
-
-
-
-### -6019 PENDING[​](/docs/wallet/error-code#-6019-pending "Direct link to -6019 PENDING")
-
-  * Need confirm
-
-
-
-### -6020 PROJECT_NOT_EXISTS[​](/docs/wallet/error-code#-6020-project_not_exists "Direct link to -6020 PROJECT_NOT_EXISTS")
-
-  * Project not exists
-
-
-
-## 70xx - Futures[​](/docs/wallet/error-code#70xx---futures "Direct link to 70xx - Futures")
-
-### -7001 FUTURES_BAD_DATE_RANGE[​](/docs/wallet/error-code#-7001-futures_bad_date_range "Direct link to -7001 FUTURES_BAD_DATE_RANGE")
-
-  * Date range is not supported.
-
-
-
-### -7002 FUTURES_BAD_TYPE[​](/docs/wallet/error-code#-7002-futures_bad_type "Direct link to -7002 FUTURES_BAD_TYPE")
-
-  * Data request type is not supported.
-
-
-
-## 20xxx - Futures/Spot Algo[​](/docs/wallet/error-code#20xxx---futuresspot-algo "Direct link to 20xxx - Futures/Spot Algo")
-
-### -20121[​](/docs/wallet/error-code#-20121 "Direct link to -20121")
-
-  * Invalid symbol.
-
-
-
-### -20124[​](/docs/wallet/error-code#-20124 "Direct link to -20124")
-
-  * Invalid algo id or it has been completed.
-
-
-
-### -20130[​](/docs/wallet/error-code#-20130 "Direct link to -20130")
-
-  * Invalid data sent for a parameter.
-
-
-
-### -20132[​](/docs/wallet/error-code#-20132 "Direct link to -20132")
-
-  * The client algo id is duplicated.
-
-
-
-### -20194[​](/docs/wallet/error-code#-20194 "Direct link to -20194")
-
-  * Duration is too short to execute all required quantity.
-
-
-
-### -20195[​](/docs/wallet/error-code#-20195 "Direct link to -20195")
-
-  * The total size is too small.
-
-
-
-### -20196[​](/docs/wallet/error-code#-20196 "Direct link to -20196")
-
-  * The total size is too large.
-
-
-
-### -20198[​](/docs/wallet/error-code#-20198 "Direct link to -20198")
-
-  * Reach the max open orders allowed.
-
-
-
-### -20204[​](/docs/wallet/error-code#-20204 "Direct link to -20204")
-
-  * The notional of USD is less or more than the limit.
-
-
-
-## Filter failures[​](/docs/wallet/error-code#filter-failures "Direct link to Filter failures")
-
-Error message| Description  
+  * **Matching Engine** \- the data is from the matching Engine
+  * **Memory** \- the data is from a server's local or external memory
+  * **Database** \- the data is taken directly from a database
+
+Some endpoints can have more than 1 data source. (e.g. Memory => Database)   
+  
+This means that the endpoint will check the first Data Source, and if it cannot find the value it's looking for it will check the next one. 
+
+## Request Security[​](/docs/wallet/general-info#request-security "Direct link to Request Security")
+
+  * Each endpoint has a security type indicating required API key permissions, shown next to the endpoint name (e.g., [New order (TRADE)](/docs/wallet/general-info#place-new-order-trade)).
+  * If unspecified, the security type is `NONE`.
+  * Except for `NONE`, all endpoints with a security type are considered `SIGNED` requests (i.e. including a `signature`), except for [listenKey management](/docs/wallet/general-info#user-data-stream-requests).
+  * Secure endpoints require a valid API key to be specified and authenticated. 
+    * API keys can be created on the [API Management](https://www.binance.com/en/support/faq/360002502072) page of your Binance account.
+    * **Both API key and secret key are sensitive.** Never share them with anyone. If you notice unusual activity in your account, immediately revoke all the keys and contact Binance support.
+  * API keys can be configured to allow access only to certain types of secure endpoints. 
+    * For example, you can have an API key with `TRADE` permission for trading, while using a separate API key with `USER_DATA` permission to monitor your order status.
+    * By default, an API key cannot `TRADE`. You need to enable trading in API Management first.
+
+Security Type| Description  
 ---|---  
-"Filter failure: PRICE_FILTER"| `price` is too high, too low, and/or not following the tick size rule for the symbol.  
-"Filter failure: PERCENT_PRICE"| `price` is X% too high or X% too low from the average weighted price over the last Y minutes.  
-"Filter failure: PERCENT_PRICE_BY_SIDE"| `price` is X% too high or Y% too low from the `lastPrice` on that side (i.e. BUY/SELL)  
-"Filter failure: LOT_SIZE"| `quantity` is too high, too low, and/or not following the step size rule for the symbol.  
-"Filter failure: MIN_NOTIONAL"| `price` * `quantity` is too low to be a valid order for the symbol.  
-"Filter failure: ICEBERG_PARTS"| `ICEBERG` order would break into too many parts; icebergQty is too small.  
-"Filter failure: MARKET_LOT_SIZE"| `MARKET` order's `quantity` is too high, too low, and/or not following the step size rule for the symbol.  
-"Filter failure: MAX_POSITION"| The account's position has reached the maximum defined limit.   
+NONE| Endpoint can be accessed freely.  
+TRADE| Endpoint requires sending a valid API-Key and signature.  
+MARGIN| Endpoint requires sending a valid API-Key and signature.  
+USER_DATA| Endpoint requires sending a valid API-Key and signature.  
+USER_STREAM| Endpoint requires sending a valid API-Key.  
+MARKET_DATA| Endpoint requires sending a valid API-Key.  
   
-This is composed of the sum of the balance of the base asset, and the sum of the quantity of all open `BUY`orders.  
-"Filter failure: MAX_NUM_ORDERS"| Account has too many open orders on the symbol.  
-"Filter failure: MAX_NUM_ALGO_ORDERS"| Account has too many open stop loss and/or take profit orders on the symbol.  
-"Filter failure: MAX_NUM_ICEBERG_ORDERS"| Account has too many open iceberg orders on the symbol.  
-"Filter failure: TRAILING_DELTA"| `trailingDelta` is not within the defined range of the filter for that order type.  
-"Filter failure: EXCHANGE_MAX_NUM_ORDERS"| Account has too many open orders on the exchange.  
-"Filter failure: EXCHANGE_MAX_NUM_ALGO_ORDERS"| Account has too many open stop loss and/or take profit orders on the exchange.  
-  
-## 10xxx - Crypto Loans[​](/docs/wallet/error-code#10xxx---crypto-loans "Direct link to 10xxx - Crypto Loans")
+  * `TRADE`, `MARGIN` and `USER_DATA` endpoints are `SIGNED` endpoints.
 
-### -10001 SYSTEM_MAINTENANCE[​](/docs/wallet/error-code#-10001-system_maintenance "Direct link to -10001 SYSTEM_MAINTENANCE")
 
-  * The system is under maintenance, please try again later.
 
+### SIGNED Endpoint security[​](/docs/wallet/general-info#signed-endpoint-security "Direct link to SIGNED Endpoint security")
 
+  * `SIGNED` endpoints require an additional parameter, `signature`, to be sent in the `query string` or `request body`.
 
-### -10002 INVALID_INPUT[​](/docs/wallet/error-code#-10002-invalid_input "Direct link to -10002 INVALID_INPUT")
 
-  * Invalid input parameters.
 
+#### Signature Case Sensitivity[​](/docs/wallet/general-info#signature-case-sensitivity "Direct link to Signature Case Sensitivity")
 
+  * **HMAC:** Signatures generated using HMAC are **not case-sensitive**. This means the signature string can be verified regardless of letter casing.
+  * **RSA:** Signatures generated using RSA are **case-sensitive**.
+  * **Ed25519:** Signatures generated using Ed25519 are also **case-sensitive**
 
-### -10005 NO_RECORDS[​](/docs/wallet/error-code#-10005-no_records "Direct link to -10005 NO_RECORDS")
 
-  * No records found.
 
+Please consult [SIGNED request example (HMAC)](/docs/wallet/general-info#hmac-keys), [SIGNED request example (RSA)](/docs/wallet/general-info#rsa-keys), and [SIGNED request example (Ed25519)](/docs/wallet/general-info#ed25519-keys) on how to compute signature, depending on which API key type you are using.
 
+### Timing security[​](/docs/wallet/general-info#timing-security "Direct link to Timing security")
 
-### -10007 COIN_NOT_LOANABLE[​](/docs/wallet/error-code#-10007-coin_not_loanable "Direct link to -10007 COIN_NOT_LOANABLE")
+  * `SIGNED` requests also require a `timestamp` parameter which should be the current timestamp either in milliseconds or microseconds. (See [General API Information](/docs/wallet/general-info#general-api-information))
+  * An additional optional parameter, `recvWindow`, specifies for how long the request stays valid and may only be specified in milliseconds. 
+    * `recvWindow` supports up to three decimal places of precision (e.g., 6000.346) so that microseconds may be specified.
+    * If `recvWindow` is not sent, **it defaults to 5000 milliseconds**.
+    * Maximum `recvWindow` is 60000 milliseconds.
+  * Request processing logic is as follows:
 
-  * This coin is not loanable.
 
+    
+    
+    serverTime = getCurrentTime()  
+    if (timestamp < (serverTime + 1 second) && (serverTime - timestamp) <= recvWindow) {  
+      // begin processing request  
+      serverTime = getCurrentTime()  
+      if (serverTime - timestamp) <= recvWindow {  
+        // forward request to Matching Engine  
+      } else {  
+        // reject request  
+      }  
+      // finish processing request  
+    } else {  
+      // reject request  
+    }  
+    
 
+**Serious trading is about timing.** Networks can be unstable and unreliable, which can lead to requests taking varying amounts of time to reach the servers. With `recvWindow`, you can specify that the request must be processed within a certain number of milliseconds or be rejected by the server.
 
-### -10008 COIN_NOT_LOANABLE[​](/docs/wallet/error-code#-10008-coin_not_loanable "Direct link to -10008 COIN_NOT_LOANABLE")
+**It is recommended to use a small recvWindow of 5000 or less! The max cannot go beyond 60,000!**
 
-  * This coin is not loanable
+### SIGNED Endpoint Examples for POST /api/v3/order[​](/docs/wallet/general-info#signed-endpoint-examples-for-post-apiv3order "Direct link to SIGNED Endpoint Examples for POST /api/v3/order")
 
+#### HMAC Keys[​](/docs/wallet/general-info#hmac-keys "Direct link to HMAC Keys")
 
+The signature payload of your request is the query string concatenated without separator to the HTTP body. Any non-ASCII character must be percent-encoded before signing.
 
-### -10009 COIN_NOT_COLLATERAL[​](/docs/wallet/error-code#-10009-coin_not_collateral "Direct link to -10009 COIN_NOT_COLLATERAL")
+Here is a step-by-step example of how to send a valid signed payload from the Linux command line using `echo`, `openssl`, and `curl`. There is one example with a symbol name comprised entirely of ASCII characters and one example with a symbol name containing non-ASCII characters.
 
-  * This coin can not be used as collateral.
+Example API key and secret key:
 
-
-
-### -10010 COIN_NOT_COLLATERAL[​](/docs/wallet/error-code#-10010-coin_not_collateral "Direct link to -10010 COIN_NOT_COLLATERAL")
-
-  * This coin can not be used as collateral.
-
-
-
-### -10011 INSUFFICIENT_ASSET[​](/docs/wallet/error-code#-10011-insufficient_asset "Direct link to -10011 INSUFFICIENT_ASSET")
-
-  * Insufficient spot assets.
-
-
-
-### -10012 INVALID_AMOUNT[​](/docs/wallet/error-code#-10012-invalid_amount "Direct link to -10012 INVALID_AMOUNT")
-
-  * Invalid repayment amount.
-
-
-
-### -10013 INSUFFICIENT_AMOUNT[​](/docs/wallet/error-code#-10013-insufficient_amount "Direct link to -10013 INSUFFICIENT_AMOUNT")
-
-  * Insufficient collateral amount.
-
-
-
-### -10015 DEDUCTION_FAILED[​](/docs/wallet/error-code#-10015-deduction_failed "Direct link to -10015 DEDUCTION_FAILED")
-
-  * Collateral deduction failed.
-
-
-
-### -10016 LOAN_FAILED[​](/docs/wallet/error-code#-10016-loan_failed "Direct link to -10016 LOAN_FAILED")
-
-  * Failed to provide loan.
-
-
-
-### -10017 REPAY_EXCEED_DEBT[​](/docs/wallet/error-code#-10017-repay_exceed_debt "Direct link to -10017 REPAY_EXCEED_DEBT")
-
-  * Repayment amount exceeds debt.
-
-
-
-### -10018 INVALID_AMOUNT[​](/docs/wallet/error-code#-10018-invalid_amount "Direct link to -10018 INVALID_AMOUNT")
-
-  * Invalid repayment amount.
-
-
-
-### -10019 CONFIG_NOT_EXIST[​](/docs/wallet/error-code#-10019-config_not_exist "Direct link to -10019 CONFIG_NOT_EXIST")
-
-  * Configuration does not exists.
-
-
-
-### -10020 UID_NOT_EXIST[​](/docs/wallet/error-code#-10020-uid_not_exist "Direct link to -10020 UID_NOT_EXIST")
-
-  * User ID does not exist.
-
-
-
-### -10021 ORDER_NOT_EXIST[​](/docs/wallet/error-code#-10021-order_not_exist "Direct link to -10021 ORDER_NOT_EXIST")
-
-  * Order does not exist.
-
-
-
-### -10022 INVALID_AMOUNT[​](/docs/wallet/error-code#-10022-invalid_amount "Direct link to -10022 INVALID_AMOUNT")
-
-  * Invalid adjustment amount.
-
-
-
-### -10023 ADJUST_LTV_FAILED[​](/docs/wallet/error-code#-10023-adjust_ltv_failed "Direct link to -10023 ADJUST_LTV_FAILED")
-
-  * Failed to adjust LTV.
-
-
-
-### -10024 ADJUST_LTV_NOT_SUPPORTED[​](/docs/wallet/error-code#-10024-adjust_ltv_not_supported "Direct link to -10024 ADJUST_LTV_NOT_SUPPORTED")
-
-  * LTV adjustment not supported.
-
-
-
-### -10025 REPAY_FAILED[​](/docs/wallet/error-code#-10025-repay_failed "Direct link to -10025 REPAY_FAILED")
-
-  * Repayment failed.
-
-
-
-### -10026 INVALID_PARAMETER[​](/docs/wallet/error-code#-10026-invalid_parameter "Direct link to -10026 INVALID_PARAMETER")
-
-  * Invalid parameter.
-
-
-
-### -10028 INVALID_PARAMETER[​](/docs/wallet/error-code#-10028-invalid_parameter "Direct link to -10028 INVALID_PARAMETER")
-
-  * Invalid parameter.
-
-
-
-### -10029 AMOUNT_TOO_SMALL[​](/docs/wallet/error-code#-10029-amount_too_small "Direct link to -10029 AMOUNT_TOO_SMALL")
-
-  * Loan amount is too small.
-
-
-
-### -10030 AMOUNT_TOO_LARGE[​](/docs/wallet/error-code#-10030-amount_too_large "Direct link to -10030 AMOUNT_TOO_LARGE")
-
-  * Loan amount is too much.
-
-
-
-### -10031 QUOTA_REACHED[​](/docs/wallet/error-code#-10031-quota_reached "Direct link to -10031 QUOTA_REACHED")
-
-  * Individual loan quota reached.
-
-
-
-### -10032 REPAY_NOT_AVAILABLE[​](/docs/wallet/error-code#-10032-repay_not_available "Direct link to -10032 REPAY_NOT_AVAILABLE")
-
-  * Repayment is temporarily unavailable.
-
-
-
-### -10034 REPAY_NOT_AVAILABLE[​](/docs/wallet/error-code#-10034-repay_not_available "Direct link to -10034 REPAY_NOT_AVAILABLE")
-
-  * Repay with collateral is not available currently, please try to repay with borrowed coin.
-
-
-
-### -10039 AMOUNT_TOO_SMALL[​](/docs/wallet/error-code#-10039-amount_too_small "Direct link to -10039 AMOUNT_TOO_SMALL")
-
-  * Repayment amount is too small.
-
-
-
-### -10040 AMOUNT_TOO_LARGE[​](/docs/wallet/error-code#-10040-amount_too_large "Direct link to -10040 AMOUNT_TOO_LARGE")
-
-  * Repayment amount is too large.
-
-
-
-### -10041 INSUFFICIENT_AMOUNT[​](/docs/wallet/error-code#-10041-insufficient_amount "Direct link to -10041 INSUFFICIENT_AMOUNT")
-
-  * Due to high demand, there are currently insufficient loanable assets for {0}. Please adjust your borrow amount or try again tomorrow.
-
-
-
-### -10042 ASSET_NOT_SUPPORTED[​](/docs/wallet/error-code#-10042-asset_not_supported "Direct link to -10042 ASSET_NOT_SUPPORTED")
-
-  * asset %s is not supported
-
-
-
-### -10043 ASSET_NOT_SUPPORTED[​](/docs/wallet/error-code#-10043-asset_not_supported "Direct link to -10043 ASSET_NOT_SUPPORTED")
-
-  * {0} borrowing is currently not supported.
-
-
-
-### -10044 QUOTA_REACHED[​](/docs/wallet/error-code#-10044-quota_reached "Direct link to -10044 QUOTA_REACHED")
-
-  * Collateral amount has reached the limit. Please reduce your collateral amount or try with other collaterals.
-
-
-
-### -10045 COLLTERAL_REPAY_NOT_SUPPORTED[​](/docs/wallet/error-code#-10045-collteral_repay_not_supported "Direct link to -10045 COLLTERAL_REPAY_NOT_SUPPORTED")
-
-  * The loan coin does not support collateral repayment. Please try again later.
-
-
-
-### -10046 EXCEED_MAX_ADJUSTMENT[​](/docs/wallet/error-code#-10046-exceed_max_adjustment "Direct link to -10046 EXCEED_MAX_ADJUSTMENT")
-
-  * Collateral Adjustment exceeds the maximum limit. Please try again.
-
-
-
-### -10047 REGION_NOT_SUPPORTED[​](/docs/wallet/error-code#-10047-region_not_supported "Direct link to -10047 REGION_NOT_SUPPORTED")
-
-  * This coin is currently not supported in your location due to local regulations.
-
-
-
-## 13xxx - BLVT[​](/docs/wallet/error-code#13xxx---blvt "Direct link to 13xxx - BLVT")
-
-### -13000 BLVT_FORBID_REDEEM[​](/docs/wallet/error-code#-13000-blvt_forbid_redeem "Direct link to -13000 BLVT_FORBID_REDEEM")
-
-  * Redeption of the token is forbiden now
-
-
-
-### -13001 BLVT_EXCEED_DAILY_LIMIT[​](/docs/wallet/error-code#-13001-blvt_exceed_daily_limit "Direct link to -13001 BLVT_EXCEED_DAILY_LIMIT")
-
-  * Exceeds individual 24h redemption limit of the token
-
-
-
-### -13002 BLVT_EXCEED_TOKEN_DAILY_LIMIT[​](/docs/wallet/error-code#-13002-blvt_exceed_token_daily_limit "Direct link to -13002 BLVT_EXCEED_TOKEN_DAILY_LIMIT")
-
-  * Exceeds total 24h redemption limit of the token
-
-
-
-### -13003 BLVT_FORBID_PURCHASE[​](/docs/wallet/error-code#-13003-blvt_forbid_purchase "Direct link to -13003 BLVT_FORBID_PURCHASE")
-
-  * Subscription of the token is forbiden now
-
-
-
-### -13004 BLVT_EXCEED_DAILY_PURCHASE_LIMIT[​](/docs/wallet/error-code#-13004-blvt_exceed_daily_purchase_limit "Direct link to -13004 BLVT_EXCEED_DAILY_PURCHASE_LIMIT")
-
-  * Exceeds individual 24h subscription limit of the token
-
-
-
-### -13005 BLVT_EXCEED_TOKEN_DAILY_PURCHASE_LIMIT[​](/docs/wallet/error-code#-13005-blvt_exceed_token_daily_purchase_limit "Direct link to -13005 BLVT_EXCEED_TOKEN_DAILY_PURCHASE_LIMIT")
-
-  * Exceeds total 24h subscription limit of the token
-
-
-
-### -13006 BLVT_PURCHASE_LESS_MIN_AMOUNT[​](/docs/wallet/error-code#-13006-blvt_purchase_less_min_amount "Direct link to -13006 BLVT_PURCHASE_LESS_MIN_AMOUNT")
-
-  * Subscription amount is too small
-
-
-
-### -13007 BLVT_PURCHASE_AGREEMENT_NOT_SIGN[​](/docs/wallet/error-code#-13007-blvt_purchase_agreement_not_sign "Direct link to -13007 BLVT_PURCHASE_AGREEMENT_NOT_SIGN")
-
-  * The Agreement is not signed
-
-
-
-## 12xxx - Liquid Swap[​](/docs/wallet/error-code#12xxx---liquid-swap "Direct link to 12xxx - Liquid Swap")
-
-### -12014 TOO MANY REQUESTS[​](/docs/wallet/error-code#-12014-too-many-requests "Direct link to -12014 TOO MANY REQUESTS")
-
-  * More than 1 request in 2 seconds
-
-
-
-
-## 18xxx - Binance Code[​](/docs/wallet/error-code#18xxx---binance-code "Direct link to 18xxx - Binance Code")
-
-### -18002[​](/docs/wallet/error-code#-18002 "Direct link to -18002")
-
-  * The total amount of codes you created has exceeded the 24-hour limit, please try again after UTC 0
-
-
-
-### -18003[​](/docs/wallet/error-code#-18003 "Direct link to -18003")
-
-  * Too many codes created in 24 hours, please try again after UTC 0
-
-
-
-### -18004[​](/docs/wallet/error-code#-18004 "Direct link to -18004")
-
-  * Too many invalid redeem attempts in 24 hours, please try again after UTC 0
-
-
-
-### -18005[​](/docs/wallet/error-code#-18005 "Direct link to -18005")
-
-  * Too many invalid verify attempts, please try later
-
-
-
-### -18006[​](/docs/wallet/error-code#-18006 "Direct link to -18006")
-
-  * The amount is too small, please re-enter
-
-
-
-### -18007[​](/docs/wallet/error-code#-18007 "Direct link to -18007")
-
-  * This token is not currently supported, please re-enter
-
-
-
-## 21xxx - Portfolio Margin Account[​](/docs/wallet/error-code#21xxx---portfolio-margin-account "Direct link to 21xxx - Portfolio Margin Account")
-
-### -21001 USER_IS_NOT_UNIACCOUNT[​](/docs/wallet/error-code#-21001-user_is_not_uniaccount "Direct link to -21001 USER_IS_NOT_UNIACCOUNT")
-
-  * Request ID is not a Portfolio Margin Account.
-
-
-
-### -21002 UNI_ACCOUNT_CANT_TRANSFER_FUTURE[​](/docs/wallet/error-code#-21002-uni_account_cant_transfer_future "Direct link to -21002 UNI_ACCOUNT_CANT_TRANSFER_FUTURE")
-
-  * Portfolio Margin Account doesn't support transfer from margin to futures.
-
-
-
-### -21003 NET_ASSET_MUST_LTE_RATIO[​](/docs/wallet/error-code#-21003-net_asset_must_lte_ratio "Direct link to -21003 NET_ASSET_MUST_LTE_RATIO")
-
-  * Fail to retrieve margin assets.
-
-
-
-### -21004 USER_NO_LIABILITY[​](/docs/wallet/error-code#-21004-user_no_liability "Direct link to -21004 USER_NO_LIABILITY")
-
-  * User doesn’t have portfolio margin bankruptcy loan
-
-
-
-### -21005 NO_ENOUGH_ASSET[​](/docs/wallet/error-code#-21005-no_enough_asset "Direct link to -21005 NO_ENOUGH_ASSET")
-
-  * User’s spot wallet doesn’t have enough BUSD to repay portfolio margin bankruptcy loan
-
-
-
-### -21006 HAD_IN_PROCESS_REPAY[​](/docs/wallet/error-code#-21006-had_in_process_repay "Direct link to -21006 HAD_IN_PROCESS_REPAY")
-
-  * User had portfolio margin bankruptcy loan repayment in process
-
-
-
-### -21007 IN_FORCE_LIQUIDATION[​](/docs/wallet/error-code#-21007-in_force_liquidation "Direct link to -21007 IN_FORCE_LIQUIDATION")
-
-  * User failed to repay portfolio margin bankruptcy loan since liquidation was in process
-
-
-
-
-## Order Rejection Issues[​](/docs/wallet/error-code#order-rejection-issues "Direct link to Order Rejection Issues")
-
-Error messages like these are indicated when the error is coming specifically from the matching engine:
-
-  * `-1010 ERROR_MSG_RECEIVED`
-  * `-2010 NEW_ORDER_REJECTED`
-  * `-2011 CANCEL_REJECTED`
-
-
-
-The following messages which will indicate the specific error:
-
-Error message| Description  
+Key| Value  
 ---|---  
-"Unknown order sent."| The order (by either `orderId`, `clientOrderId`, `origClientOrderId`) could not be found.  
-"Duplicate order sent."| The `clientOrderId` is already in use.  
-"Market is closed."| The symbol is not trading.  
-"Account has insufficient balance for requested action."| Not enough funds to complete the action.  
-"Market orders are not supported for this symbol."| `MARKET` is not enabled on the symbol.  
-"Iceberg orders are not supported for this symbol."| `icebergQty` is not enabled on the symbol  
-"Stop loss orders are not supported for this symbol."| `STOP_LOSS` is not enabled on the symbol  
-"Stop loss limit orders are not supported for this symbol."| `STOP_LOSS_LIMIT` is not enabled on the symbol  
-"Take profit orders are not supported for this symbol."| `TAKE_PROFIT` is not enabled on the symbol  
-"Take profit limit orders are not supported for this symbol."| `TAKE_PROFIT_LIMIT` is not enabled on the symbol  
-"Price * QTY is zero or less."| `price` * `quantity` is too low  
-"IcebergQty exceeds QTY."| `icebergQty` must be less than the order quantity  
-"This action is disabled on this account."| Contact customer support; some actions have been disabled on the account.  
-"This account may not place or cancel orders."| Contact customer support; the account has trading ability disabled.  
-"Unsupported order combination"| The `orderType`, `timeInForce`, `stopPrice`, and/or `icebergQty` combination isn't allowed.  
-"Order would trigger immediately."| The order's stop price is not valid when compared to the last traded price.  
-"Cancel order is invalid. Check origClientOrderId and orderId."| No `origClientOrderId` or `orderId` was sent in.  
-"Order would immediately match and take."| `LIMIT_MAKER` order type would immediately match and trade, and not be a pure maker order.  
-"The relationship of the prices for the orders is not correct."| The prices set in the `OCO` is breaking the Price rules.   
+`apiKey`| vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A  
+`secretKey`| NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j  
   
-The rules are:   
+**WARNING: DO NOT SHARE YOUR API KEY AND SECRET KEY WITH ANYONE.**
+
+The example keys are provided here only for illustrative purposes.
+
+Example of request with a symbol name comprised entirely of ASCII characters:
+
+Parameter| Value  
+---|---  
+`symbol`| LTCBTC  
+`side`| BUY  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.1  
+`recvWindow`| 5000  
+`timestamp`| 1499827319559  
   
-`SELL Orders`: Limit Price > Last Price > Stop Price   
+Example of a request with a symbol name containing non-ASCII characters:
+
+Parameter| Value  
+---|---  
+`symbol`| １２３４５６  
+`side`| BUY  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.1  
+`recvWindow`| 5000  
+`timestamp`| 1499827319559  
   
-`BUY Orders`: Limit Price < Last Price < Stop Price  
-"OCO orders are not supported for this symbol"| `OCO` is not enabled on the symbol.  
-"Quote order qty market orders are not support for this symbol."| `MARKET` orders using the parameter `quoteOrderQty` are not enabled on this symbol.  
-"Trailing stop orders are not supported for this symbol."| Orders using `trailingDelta` are not enabled on the symbol.  
-"Order cancel-replace is not supported for this symbol."| `POST /api/v3/order/cancelReplace` (REST API) or `order.cancelReplace` (WebSocket API) is on enabled the symbol.  
-"This symbol is not permitted for this account."| Account and symbol do not have the same permissions. (e.g. `SPOT`, `MARGIN`, etc)  
-"This symbol is restricted for this account."| Account is unable to trade on that symbol. (e.g. An `ISOLATED_MARGIN` account cannot place `SPOT` orders.)  
-"Order was not canceled due to cancel restrictions."| Either `cancelRestrictions` was set to `ONLY_NEW` but the order status was not `NEW`   
-or   
-`cancelRestrictions` was set to `ONLY_PARTIALLY_FILLED` but the order status was not `PARTIALLY_FILLED`.  
+**Step 1: Construct the signature payload**
+
+  1. Format parameters as `parameter=value` pairs separated by `&`.
+  2. Percent-encode the string.
+
+
+
+For the first set of example parameters (ASCII only), the `parameter=value` string should look like this:
+    
+    
+    symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+For the second set of example parameters (some non-ASCII characters), the `parameter=value` string should look like this:
+    
+    
+    symbol=１２３４５６&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+**Step 2: Compute the signature**
+
+  1. Use the `secretKey` of your API key as the signing key for the HMAC-SHA-256 algorithm.
+  2. Sign the signature payload constructed in Step 1.
+  3. Encode the HMAC-SHA-256 output as a hex string.
+
+
+
+Note that `secretKey` and the payload are **case-sensitive** , while the resulting signature value is case-insensitive.
+
+**Example commands**
+
+For the first set of example parameters (ASCII only):
+    
+    
+    $ echo -n "symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559" | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    $ echo -n "symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559" | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    e1353ec6b14d888f1164ae9af8228a3dbd508bc82eb867db8ab6046442f33ef3  
+    
+
+**Step 3: Add signature to the request**
+
+Complete the request by adding the `signature` parameter to the query string.
+
+For the first set of example parameters (ASCII only):
+    
+    
+    curl -s -v -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71"  
+    
+
+For the second set of example parameters (some non-ASCII characters)
+    
+    
+    curl -s -v -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=e1353ec6b14d888f1164ae9af8228a3dbd508bc82eb867db8ab6046442f33ef3"  
+    
+
+Here is a sample Bash script performing all the steps above:
+    
+    
+    apiKey="vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"  
+    secretKey="NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    payload="symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559"  
+      
+    # Sign the request  
+      
+    signature=$(echo -n "$payload" | openssl dgst -sha256 -hmac "$secretKey")  
+    signature=${signature#*= }    # Keep only the part after the "= "  
+      
+    # Send the request  
+      
+    curl -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?$payload&signature=$signature"  
+      
+    
+
+#### RSA Keys[​](/docs/wallet/general-info#rsa-keys "Direct link to RSA Keys")
+
+The signature payload of your request is the query string concatenated without separator to the HTTP body. Any non-ASCII character must be percent-encoded before signing.
+
+To get your API key, you need to upload your RSA Public Key to your account and a corresponding API key will be provided for you.
+
+Only `PKCS#8` keys are supported.
+
+There is one example with a symbol name comprised entirely of ASCII characters and one example with a symbol name containing non-ASCII characters.
+
+These examples assume the private key is stored in the file `./test-prv-key.pem`.
+
+Key| Value  
+---|---  
+`apiKey`| CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ  
   
-## Errors regarding POST /api/v3/order/cancelReplace[​](/docs/wallet/error-code#errors-regarding-post-apiv3ordercancelreplace "Direct link to Errors regarding POST /api/v3/order/cancelReplace")
+Example of request with a symbol name comprised entirely of ASCII characters:
 
-### -2021 Order cancel-replace partially failed[​](/docs/wallet/error-code#-2021-order-cancel-replace-partially-failed "Direct link to -2021 Order cancel-replace partially failed")
+Parameter| Value  
+---|---  
+`symbol`| BTCUSDT  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+Example of a request with a symbol name containing non-ASCII characters:
 
-This code is sent when either the cancellation of the order failed or the new order placement failed but not both.
+Parameter| Value  
+---|---  
+`symbol`| １２３４５６  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+**Step 1: Construct the signature payload**
 
-### -2022 Order cancel-replace failed.[​](/docs/wallet/error-code#-2022-order-cancel-replace-failed "Direct link to -2022 Order cancel-replace failed.")
+  1. Format parameters as `parameter=value` pairs separated by `&`.
+  2. Percent-encode the string.
 
-This code is sent when both the cancellation of the order failed and the new order placement failed.
+
+
+For the first set of example parameters (ASCII only), the `parameter=value` string should look like this:
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+For the second set of example parameters (some non-ASCII characters), the `parameter=value` string should look like this:
+    
+    
+    symbol=１２３４５６=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+**Step 2: Compute the signature**
+
+  1. Sign the signature payload constructed in Step 1 using the RSASSA-PKCS1-v1_5 algorithm with SHA-256 hash function.
+  2. Encode the output in base64.
+
+
+
+Note that the payload and the resulting `signature` are **case-sensitive**.
+
+For the first set of example parameters (ASCII only):
+    
+    
+    $  echo -n 'symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000' | openssl dgst -sha256 -sign ./test-prv-key.pem | openssl enc -base64 -A | tr -d '\n'  
+    HZ8HOjiJ1s/igS9JA+n7+7Ti/ihtkRF5BIWcPIEluJP6tlbFM/Bf44LfZka/iemtahZAZzcO9TnI5uaXh3++lrqtNonCwp6/245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH+XxaCmR0WcvlKjNQnp12/eKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang/1WOq+Jaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT/fNnMRxFc7u+j3qI//5yuGuu14KR0MuQKKCSpViieD+fIti46sxPTsjSemoUKp0oXA==  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    $  echo -n 'symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000' | openssl dgst -sha256 -sign ./test-prv-key.pem | openssl enc -base64 -A | tr -d '\n'  
+      
+    qJtv66wyp/1mZE+mIFAAMUoTe8xkmLN7/eAZjuC9x1ocxovItHLl/sNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M+JNIMz5UFxfeA53rXjFlvsyH1Sig+OuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C/QMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt/GuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng==  
+    
+
+  3. Percent-encode the base64 string.
+
+
+
+For the first set of example parameters (ASCII only):
+    
+    
+    HZ8HOjiJ1s%2FigS9JA%2Bn7%2B7Ti%2FihtkRF5BIWcPIEluJP6tlbFM%2FBf44LfZka%2FiemtahZAZzcO9TnI5uaXh3%2B%2BlrqtNonCwp6%2F245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH%2BXxaCmR0WcvlKjNQnp12%2FeKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang%2F1WOq%2BJaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT%2FfNnMRxFc7u%2Bj3qI%2F%2F5yuGuu14KR0MuQKKCSpViieD%2BfIti46sxPTsjSemoUKp0oXA%3D%3D  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D  
+    
+
+**Step 3: Add signature to the request**
+
+Complete the request by adding the `signature` parameter to the query string.
+
+For the first set of example parameters (ASCII only):
+    
+    
+    curl -H "X-MBX-APIKEY: CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ" -X POST 'https://api.binance.com/api/v3/order?symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=HZ8HOjiJ1s%2FigS9JA%2Bn7%2B7Ti%2FihtkRF5BIWcPIEluJP6tlbFM%2FBf44LfZka%2FiemtahZAZzcO9TnI5uaXh3%2B%2BlrqtNonCwp6%2F245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH%2BXxaCmR0WcvlKjNQnp12%2FeKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang%2F1WOq%2BJaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT%2FfNnMRxFc7u%2Bj3qI%2F%2F5yuGuu14KR0MuQKKCSpViieD%2BfIti46sxPTsjSemoUKp0oXA%3D%3D'  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    curl -H "X-MBX-APIKEY: CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ" -X POST 'https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D'  
+    
+
+Here is a sample Bash script performing all the steps above:
+    
+    
+    function rawurlencode {  
+      local string="${1}"  
+      local strlen=${#string}  
+      local encoded=""  
+      local pos c o  
+      
+      for (( pos=0 ; pos<strlen ; pos++ )); do  
+         c=${string:$pos:1}  
+         case "$c" in  
+            [-_.~a-zA-Z0-9] ) o="${c}" ;;  
+            * )               printf -v o '%%%02x' "'$c"  
+         esac  
+         encoded+="${o}"  
+      done  
+      echo "${encoded}"  
+    }  
+      
+    API_KEY="put your own API Key here"  
+    PRIVATE_KEY_PATH="test-prv-key.pem"  
+    # Set up the request:  
+    API_METHOD="POST"  
+    API_CALL="api/v3/order"  
+    API_PARAMS="symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2"  
+    # Sign the request:  
+    timestamp=$(date +%s000)  
+    api_params_with_timestamp="$API_PARAMS&timestamp=$timestamp"  
+      
+    rawSignature=$(echo -n $api_params_with_timestamp | openssl dgst -keyform PEM -sha256 -sign $PRIVATE_KEY_PATH | openssl enc -base64 | tr -d '\n')  
+      
+    # Percent-encode the signature  
+    signature=$(rawurlencode "$rawSignature")  
+      
+    # Send the request:  
+    curl -H "X-MBX-APIKEY: $API_KEY" -X "$API_METHOD" \  
+        "https://api.binance.com/$API_CALL?$api_params_with_timestamp" \  
+        --data-urlencode "signature=$signature"  
+    
+
+#### Ed25519 Keys[​](/docs/wallet/general-info#ed25519-keys "Direct link to Ed25519 Keys")
+
+**Note: It is highly recommended to use Ed25519 API keys as it should provide the best performance and security out of all supported key types.**
+
+The signature payload of your request is the query string concatenated without separator to the HTTP body. Any non-ASCII character must be percent-encoded before signing.
+
+There is one example with a symbol name comprised entirely of ASCII characters and one example with a symbol name containing non-ASCII characters.
+
+These examples assume the private key is stored in the file `./test-prv-key.pem`.
+
+Key| Value  
+---|---  
+`apiKey`| 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO  
+  
+Example of request with a symbol name comprised entirely of ASCII characters.
+
+Parameter| Value  
+---|---  
+`symbol`| BTCUSDT  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+Example of a request with a symbol name containing non-ASCII characters.
+
+Parameter| Value  
+---|---  
+`symbol`| １２３４５６  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+**Step 1: Construct the signature payload**
+
+  1. Format parameters as `parameter=value` pairs separated by `&`.
+  2. Percent-encode the string.
+
+
+
+For the first set of example parameters (ASCII only), the `parameter=value` string should look like this:
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+For the second set of example parameters (some non-ASCII characters), the `parameter=value` string should look like this:
+    
+    
+    symbol=１２３４５６&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+After percent-encoding, the signature payload should look like this:
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+**Step 2: Compute the signature**
+
+  1. Sign the payload.
+  2. Encode the output as a base64 string.
+
+
+
+Note that the payload and the resulting `signature` are **case-sensitive**.
+
+For the first set of example parameters (ASCII only):
+    
+    
+    echo -n "symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000" | openssl dgst -keyform PEM -sha256 -sign ./test-prv-key.pem | openssl enc -base64 | tr -d '\n'  
+      
+    HaZnek7KOGa/k5+f6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD/DYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt+BZxEHBN9OYQKpoe0+ovjnXyVOaH8VUKhE/ghUWnThrXJr+hmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr/r+8n6qeEKMYB5j/1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61/ZJv5BTJpa+z5Lv1W9v6jHQWRX2O8uaG3KU/lR3spR7+oGlWOw=  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    echo -n "symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000" | openssl dgst -keyform PEM -sha256 -sign ./test-prv-key.pem | openssl enc -base64 | tr -d '\n'  
+      
+    qJtv66wyp/1mZE+mIFAAMUoTe8xkmLN7/eAZjuC9x1ocxovItHLl/sNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M+JNIMz5UFxfeA53rXjFlvsyH1Sig+OuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C/QMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt/GuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng==  
+    
+
+  3. Percent-encode the base64 string.
+
+
+
+For the first set of example parameters (ASCII only):
+    
+    
+    HaZnek7KOGa%2Fk5%2Bf6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD%2FDYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt%2BBZxEHBN9OYQKpoe0%2BovjnXyVOaH8VUKhE%2FghUWnThrXJr%2BhmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr%2Fr%2B8n6qeEKMYB5j%2F1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61%2FZJv5BTJpa%2Bz5Lv1W9v6jHQWRX2O8uaG3KU%2FlR3spR7%2BoGlWOw%3D  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D  
+    
+
+**Step 3: Add signature to the request**
+
+Complete the request by adding the `signature` parameter to the query string.
+
+For the first set of example parameters (ASCII only):
+    
+    
+    curl -H "X-MBX-APIKEY: 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO" -X POST 'https://api.binance.com/api/v3/order?symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=HaZnek7KOGa%2Fk5%2Bf6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD%2FDYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt%2BBZxEHBN9OYQKpoe0%2BovjnXyVOaH8VUKhE%2FghUWnThrXJr%2BhmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr%2Fr%2B8n6qeEKMYB5j%2F1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61%2FZJv5BTJpa%2Bz5Lv1W9v6jHQWRX2O8uaG3KU%2FlR3spR7%2BoGlWOw%3D'  
+    
+
+For the second set of example parameters (some non-ASCII characters):
+    
+    
+    curl -H "X-MBX-APIKEY: 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO" -X POST 'https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D'  
+    
+
+Here is a sample Python script performing all the steps above:
+    
+    
+    #!/usr/bin/env python3  
+      
+    import base64  
+    import requests  
+    import time  
+    import urllib.parse  
+    from cryptography.hazmat.primitives.serialization import load_pem_private_key  
+      
+    # Set up authentication  
+    API_KEY='put your own API Key here'  
+    PRIVATE_KEY_PATH='test-prv-key.pem'  
+      
+    # Load the private key.  
+    # In this example the key is expected to be stored without encryption,  
+    # but we recommend using a strong password for improved security.  
+    with open(PRIVATE_KEY_PATH, 'rb') as f:  
+        private_key = load_pem_private_key(data=f.read(), password=None)  
+      
+    # Set up the request parameters  
+    params = {  
+        'symbol':       'BTCUSDT',  
+        'side':         'SELL',  
+        'type':         'LIMIT',  
+        'timeInForce':  'GTC',  
+        'quantity':     '1.0000000',  
+        'price':        '0.20',  
+    }  
+      
+    # Timestamp the request  
+    timestamp = int(time.time() * 1000) # UNIX timestamp in milliseconds  
+    params['timestamp'] = timestamp  
+      
+    # Sign the request  
+    payload = urllib.parse.urlencode(params, encoding='UTF-8')  
+    signature = base64.b64encode(private_key.sign(payload.encode('ASCII')))  
+    params['signature'] = signature  
+      
+    # Send the request  
+    headers = {  
+        'X-MBX-APIKEY': API_KEY,  
+    }  
+    response = requests.post(  
+        'https://api.binance.com/api/v3/order',  
+        headers=headers,  
+        data=params,  
+    )  
+    print(response.json())  
+    
+
+A sample Bash script containing similar steps is available in the right side.
 
 ---
 
-# 错误代码
+# 基本信息
 
-> 错误JSON格式:
+## API 基本信息[​](/docs/zh-CN/wallet/general-info#api-基本信息 "API 基本信息的直接链接")
+
+  * 接口可能需要用户的 API Key，如何创建API-KEY请参考[这里](https://www.binance.com/cn/support/articles/360002502072)
+  * 本篇列出接口的 base URL 有: 
+    * **<https://api.binance.com>**
+    * **<https://api-gcp.binance.com>**
+    * **<https://api1.binance.com>**
+    * **<https://api2.binance.com>**
+    * **<https://api3.binance.com>**
+    * **<https://api4.binance.com>**
+  * 上述列表的最后4个接口 (`api1`-`api4`) 可能会提供更好的性能，但其稳定性略为逊色。因此，请务必使用最适合您现有配置的那款。
+  * 所有接口的响应都是 JSON 格式。
+  * 响应中如有数组，数组元素以时间**升序** 排列，越早的数据越提前。
+  * 所有时间、时间戳均为UNIX时间，单位为**毫秒** 。
+
+
+
+### HTTP 返回代码[​](/docs/zh-CN/wallet/general-info#http-返回代码 "HTTP 返回代码的直接链接")
+
+  * HTTP `4XX` 错误码用于指示错误的请求内容、行为、格式。问题在于请求者。
+  * HTTP `403` 错误码表示违反WAF限制(Web应用程序防火墙)。
+  * HTTP `409` 错误码表示重新下单(cancelReplace)的请求部分成功。(比如取消订单失败，但是下单成功了)
+  * HTTP `429` 错误码表示警告访问频次超限，即将被封IP。
+  * HTTP `418` 表示收到429后继续访问，于是被封了。
+  * HTTP `5XX` 错误码用于指示Binance服务侧的问题。
+
+
+
+### 接口错误代码[​](/docs/zh-CN/wallet/general-info#接口错误代码 "接口错误代码的直接链接")
+
+  * 使用接口 `/api/v3`, 以及 `/sapi/v1/margin`时, 每个接口都有可能抛出异常;
+
+
+
+> API 与 SAPI 的错误代码返回形式如下:
     
     
     {  
-      "code":-1121,  
-      "msg":"Invalid symbol."  
+      "code": -1121,  
+      "msg": "Invalid symbol."  
     }  
     
 
-错误由两部分组成：错误代码和消息。 代码是通用的，但是消息可能会有所不同。
+  * 具体的错误码及其解释在 [错误代码](/docs/zh-CN/wallet/general-info#cf68bca02a).
 
-## 10xx -常规服务器或网络问题[​](/docs/zh-CN/wallet/error-code#10xx--常规服务器或网络问题 "10xx -常规服务器或网络问题的直接链接")
 
-### -1000 UNKNOWN[​](/docs/zh-CN/wallet/error-code#-1000-unknown "-1000 UNKNOWN的直接链接")
 
-  * 处理请求时发生未知错误。
-  * 处理请求时发生未知错误。[%s]
+### 接口的基本信息[​](/docs/zh-CN/wallet/general-info#接口的基本信息 "接口的基本信息的直接链接")
 
+  * `GET` 方法的接口, 参数必须在 `query string`中发送。
+  * `POST`, `PUT`, 和 `DELETE` 方法的接口,参数可以在内容形式为`application/x-www-form-urlencoded`的 `query string` 中发送，也可以在 `request body` 中发送。 如果你喜欢，也可以混合这两种方式发送参数。
+  * 对参数的顺序不做要求。
+  * 但如果同一个参数名在query string和request body中都有，query string中的会被优先采用。
 
 
-### -1001 DISCONNECTED[​](/docs/zh-CN/wallet/error-code#-1001-disconnected "-1001 DISCONNECTED的直接链接")
 
-  * 内部错误; 无法处理您的请求。 请再试一次.
+* * *
 
+## 访问限制[​](/docs/zh-CN/wallet/general-info#访问限制 "访问限制的直接链接")
 
+### 访问限制基本信息[​](/docs/zh-CN/wallet/general-info#访问限制基本信息 "访问限制基本信息的直接链接")
 
-### -1002 UNAUTHORIZED[​](/docs/zh-CN/wallet/error-code#-1002-unauthorized "-1002 UNAUTHORIZED的直接链接")
+  * 以下 是`intervalLetter` 作为头部值:
 
-  * 您无权执行此请求。
+    * SECOND => S
+    * MINUTE => M
+    * HOUR => H
+    * DAY => D
+  * 在 `/api/v3/exchangeInfo` `rateLimits` 数组中包含与交易的有关RAW_REQUESTS，REQUEST_WEIGHT和ORDERS速率限制相关的对象。这些在 `限制种类 (rateLimitType)` 下的 `枚举定义` 部分中进一步定义。
 
+  * 违反任何一个速率限制时（访问频次限制或下单速率限制），将返回429。
 
 
-### -1003 TOO_MANY_REQUESTS[​](/docs/zh-CN/wallet/error-code#-1003-too_many_requests "-1003 TOO_MANY_REQUESTS的直接链接")
 
-  * 排队的请求过多。
-  * 请求权重过多； 当前限制是 %s 每 %s 的请求权重。 请使用 Websocket Streams 进行实时更新，以避免轮询API。
-  * 请求权重过多； IP被禁止，直到％s。 请使用 Websocket Streams 进行实时更新，以免被禁。
 
+### IP 访问限制[​](/docs/zh-CN/wallet/general-info#ip-访问限制 "IP 访问限制的直接链接")
 
+  * 每个请求将包含一个`X-MBX-USED-WEIGHT-(intervalNum)(intervalLetter)`的头，其中包含当前IP所有请求的已使用权重。
+  * 每一个接口均有一个相应的权重(weight)，有的接口根据参数不同可能拥有不同的权重。越消耗资源的接口权重就会越大。
+  * 收到429时，您有责任停止发送请求，不得滥用API。
+  * **收到429后仍然继续违反访问限制，会被封禁IP，并收到418错误码**
+  * 频繁违反限制，封禁时间会逐渐延长，**从最短2分钟到最长3天** 。
+  * `Retry-After`的头会与带有418或429的响应发送，并且会给出**以秒为单位** 的等待时长(如果是429)以防止禁令，或者如果是418，直到禁令结束。
+  * **访问限制是基于IP的，而不是API Key**
 
-### -1004 SERVER_BUSY[​](/docs/zh-CN/wallet/error-code#-1004-server_busy "-1004 SERVER_BUSY的直接链接")
+建议您尽可能多地使用websocket消息获取相应数据，以减少请求带来的访问限制压力。 
 
-  * 服务器正忙，请稍候再试。
+###下单频率限制
 
+  * 每个成功的下单回报将包含一个`X-MBX-ORDER-COUNT-(intervalNum)(intervalLetter)`的头，其中包含当前账户已用的下单限制数量。
+  * 当下单数超过限制时，会收到带有429但不含`Retry-After`头的响应。请检查 `GET api/v3/exchangeInfo` 的下单频率限制 (rateLimitType = ORDERS) 并等待封禁时间结束。
+  * 被拒绝或不成功的下单并不保证回报中包含以上头内容。
+  * **下单频率限制是基于每个账户计数的。**
+  * 用户可以通过接口 `GET api/v3/rateLimit/order` 来查询当前的下单量.
 
 
-### -1006 UNEXPECTED_RESP[​](/docs/zh-CN/wallet/error-code#-1006-unexpected_resp "-1006 UNEXPECTED_RESP的直接链接")
 
-  * 从消息总线收到意外的响应。 执行状态未知。
+### WEB SOCKET 连接限制[​](/docs/zh-CN/wallet/general-info#web-socket-连接限制 "WEB SOCKET 连接限制的直接链接")
 
+  * Websocket服务器每秒最多接受5个消息。消息包括: 
+    * PING帧
+    * PONG帧
+    * JSON格式的消息, 比如订阅, 断开订阅.
+  * 如果用户发送的消息超过限制，连接会被断开连接。反复被断开连接的IP有可能被服务器屏蔽。
+  * 单个连接最多可以订阅 **1024** 个Streams。
+  * 每IP地址、每5分钟最多可以发送300次连接请求。
 
 
-### -1007 TIMEOUT[​](/docs/zh-CN/wallet/error-code#-1007-timeout "-1007 TIMEOUT的直接链接")
 
-  * 等待后端服务器响应超时。 发送状态未知； 执行状态未知。
+### /api/ 与 /sapi/ 接口限频说明[​](/docs/zh-CN/wallet/general-info#api-与-sapi-接口限频说明 "/api/ 与 /sapi/ 接口限频说明的直接链接")
 
+`/api/*`接口和 `/sapi/*`接口采用两套不同的访问限频规则, 两者互相独立。
 
+  * `/api/*`的接口相关：
 
-### -1008 SERVER_BUSY[​](/docs/zh-CN/wallet/error-code#-1008-server_busy "-1008 SERVER_BUSY的直接链接")
+    * 按IP和按UID(account)两种模式分别统计, 两者互相独立。
+    * 以 `/api/*`开头的接口按IP限频，**且所有接口共用每分钟6,000限制** 。
+    * 每个请求将包含一个 `X-MBX-USED-WEIGHT-(intervalNum)(intervalLetter)`的头，包含当前IP所有请求的已使用权重。
+    * 每个成功的下单回报将包含一个`X-MBX-ORDER-COUNT-(intervalNum)(intervalLetter)`的头，其中包含当前账户已用的下单限制数量。
+  * `/sapi/*`的接口相关：
 
-  * 现货交易服务器当前因其他请求而过载。 请在几分钟后重试。
+    * 按IP和按UID(account)两种模式分别统计, 两者互相独立。
+    * 以`/sapi/*`开头的接口采用**单接口限频模式** 。按IP统计的权重单接口权重总额为每分钟12000；按照UID统计的单接口权重总额是每分钟180000。
+    * 每个接口会标明是按照IP或者按照UID统计, 以及相应请求一次的权重值。
+    * 按照IP统计的接口, 请求返回头里面会包含`X-SAPI-USED-IP-WEIGHT-1M=<value>`或`X-SAPI-USED-IP-WEIGHT-1S=<value>`, 包含当前IP所有请求已使用权重。
+    * 按照UID统计的接口, 请求返回头里面会包含`X-SAPI-USED-UID-WEIGHT-1M=<value>`或`X-SAPI-USED-UID-WEIGHT-1S=<value>`, 包含当前账户所有已用的UID权重。
 
 
 
-### -1014 UNKNOWN_ORDER_COMPOSITION[​](/docs/zh-CN/wallet/error-code#-1014-unknown_order_composition "-1014 UNKNOWN_ORDER_COMPOSITION的直接链接")
+* * *
 
-  * 不支持的订单组合。
+## 数据来源[​](/docs/zh-CN/wallet/general-info#数据来源 "数据来源的直接链接")
 
+  * 因为API系统是异步的, 所以返回的数据有延时很正常, 也在预期之中。
+  * 在每个接口中，都列出了其数据的来源，可以用于理解数据的时效性。
 
 
-### -1015 TOO_MANY_ORDERS[​](/docs/zh-CN/wallet/error-code#-1015-too_many_orders "-1015 TOO_MANY_ORDERS的直接链接")
 
-  * 新订单太多。
-  * 新订单太多； 当前限制为每％s ％s个订单。
+系统一共有3个数据来源，按照更新速度的先后排序。排在前面的数据最新，在后面就有可能存在延迟。
 
+  * **撮合引擎** \- 表示数据来源于撮合引擎
+  * **缓存** \- 表示数据来源于内部或者外部的缓存
+  * **数据库** \- 表示数据直接来源于数据库
 
+有些接口有不止一个数据源, 比如 `缓存 => 数据库`, 这表示接口会先从第一个数据源检查，如果没有数据，则检查下一个数据源。 
 
-### -1016 SERVICE_SHUTTING_DOWN[​](/docs/zh-CN/wallet/error-code#-1016-service_shutting_down "-1016 SERVICE_SHUTTING_DOWN的直接链接")
+## 请求鉴权类型[​](/docs/zh-CN/wallet/general-info#请求鉴权类型 "请求鉴权类型的直接链接")
 
-  * 该服务不可用。
+  * 每个接口都有一个鉴权类型，指示所需的 API 密钥权限，显示在接口名称旁边（例如，[下新订单 (TRADE)](/docs/zh-CN/wallet/general-info#place-new-order-trade)）。
+  * 如果未指定，则鉴权类型为 `NONE`。
+  * 除了为 `NONE` 外，所有具有鉴权类型的接口均视为 `SIGNED` 请求（即包含 `signature`），[listenKey 管理](/docs/zh-CN/wallet/general-info#user-data-stream-requests) 除外。
+  * 具有鉴权类型的接口需要提供有效的 API 密钥并验证通过。 
+    * API 密钥可在您的 Binance 账户的 [API 管理](https://www.binance.com/en/support/faq/360002502072) 页面创建。
+    * **API 密钥和密钥对均为敏感信息，切勿与他人分享。** 如果发现账户有异常活动，请立即撤销所有密钥并联系 Binance 支持。
+  * API 密钥可配置为仅允许访问某些鉴权接口。 
+    * 例如，您可以拥有具有 `TRADE` 权限的 API 密钥用于交易， 同时使用具有 `USER_DATA` 权限的另一个 API 密钥来监控订单状态。
+    * 默认情况下，API 密钥无法进行 `TRADE`，您需要先在 API 管理中启用交易权限。
 
-
-
-### -1020 UNSUPPORTED_OPERATION[​](/docs/zh-CN/wallet/error-code#-1020-unsupported_operation "-1020 UNSUPPORTED_OPERATION的直接链接")
-
-  * 不支持此操作。
-
-
-
-### -1021 INVALID_TIMESTAMP[​](/docs/zh-CN/wallet/error-code#-1021-invalid_timestamp "-1021 INVALID_TIMESTAMP的直接链接")
-
-  * 此请求的时间戳在recvWindow之外。
-  * 此请求的时间戳比服务器时间提前1000毫秒。
-
-
-
-### -1022 INVALID_SIGNATURE[​](/docs/zh-CN/wallet/error-code#-1022-invalid_signature "-1022 INVALID_SIGNATURE的直接链接")
-
-  * 此请求的签名无效。
-
-
-
-### -1099 Not found, authenticated, or authorized[​](/docs/zh-CN/wallet/error-code#-1099-not-found-authenticated-or-authorized "-1099 Not found, authenticated, or authorized的直接链接")
-
-  * 替换错误代码-1999
-
-
-
-## 11xx - 2xxx Request issues[​](/docs/zh-CN/wallet/error-code#11xx---2xxx-request-issues "11xx - 2xxx Request issues的直接链接")
-
-### -1100 ILLEGAL_CHARS[​](/docs/zh-CN/wallet/error-code#-1100-illegal_chars "-1100 ILLEGAL_CHARS的直接链接")
-
-  * 在参数中发现非法字符。
-  * 在参数中发现非法字符。`％s`
-  * 在参数`％s`中发现非法字符； 合法范围是`％s`。
-
-
-
-### -1101 TOO_MANY_PARAMETERS[​](/docs/zh-CN/wallet/error-code#-1101-too_many_parameters "-1101 TOO_MANY_PARAMETERS的直接链接")
-
-  * 为此端点发送的参数太多。
-  * 参数太多； 预期为`％s`并收到了`％s`。
-  * 检测到的参数值重复。
-
-
-
-### -1102 MANDATORY_PARAM_EMPTY_OR_MALFORMED[​](/docs/zh-CN/wallet/error-code#-1102-mandatory_param_empty_or_malformed "-1102 MANDATORY_PARAM_EMPTY_OR_MALFORMED的直接链接")
-
-  * 未发送强制性参数，该参数为空/空或格式错误。
-  * 强制参数`％s`未发送，为空/空或格式错误。
-  * 必须发送参数`％s`或`％s`，但两者均为空！
-
-
-
-### -1103 UNKNOWN_PARAM[​](/docs/zh-CN/wallet/error-code#-1103-unknown_param "-1103 UNKNOWN_PARAM的直接链接")
-
-  * 发送了未知参数。
-
-
-
-### -1104 UNREAD_PARAMETERS[​](/docs/zh-CN/wallet/error-code#-1104-unread_parameters "-1104 UNREAD_PARAMETERS的直接链接")
-
-  * 并非所有发送的参数都被读取。
-  * 并非所有发送的参数都被读取； 读取了`％s`参数，但被发送了`％s`。
-
-
-
-### -1105 PARAM_EMPTY[​](/docs/zh-CN/wallet/error-code#-1105-param_empty "-1105 PARAM_EMPTY的直接链接")
-
-  * 参数为空。
-  * 参数`％s`为空。
-
-
-
-### -1106 PARAM_NOT_REQUIRED[​](/docs/zh-CN/wallet/error-code#-1106-param_not_required "-1106 PARAM_NOT_REQUIRED的直接链接")
-
-  * 不需要时已发送参数。
-  * 不需要时发送参数`％s`。
-
-
-
-### -1111 BAD_PRECISION[​](/docs/zh-CN/wallet/error-code#-1111-bad_precision "-1111 BAD_PRECISION的直接链接")
-
-  * 精度超过为此资产定义的最大值。
-
-
-
-### -1112 NO_DEPTH[​](/docs/zh-CN/wallet/error-code#-1112-no_depth "-1112 NO_DEPTH的直接链接")
-
-  * 交易对没有挂单。
-
-
-
-### -1114 TIF_NOT_REQUIRED[​](/docs/zh-CN/wallet/error-code#-1114-tif_not_required "-1114 TIF_NOT_REQUIRED的直接链接")
-
-  * 不需要时发送了TimeInForce参数。
-
-
-
-### -1115 INVALID_TIF[​](/docs/zh-CN/wallet/error-code#-1115-invalid_tif "-1115 INVALID_TIF的直接链接")
-
-  * 无效 timeInForce.
-
-
-
-### -1116 INVALID_ORDER_TYPE[​](/docs/zh-CN/wallet/error-code#-1116-invalid_order_type "-1116 INVALID_ORDER_TYPE的直接链接")
-
-  * 无效订单类型。
-
-
-
-### -1117 INVALID_SIDE[​](/docs/zh-CN/wallet/error-code#-1117-invalid_side "-1117 INVALID_SIDE的直接链接")
-
-  * 无效买卖方向。
-
-
-
-### -1118 EMPTY_NEW_CL_ORD_ID[​](/docs/zh-CN/wallet/error-code#-1118-empty_new_cl_ord_id "-1118 EMPTY_NEW_CL_ORD_ID的直接链接")
-
-  * 新的客户订单ID为空。
-
-
-
-### -1119 EMPTY_ORG_CL_ORD_ID[​](/docs/zh-CN/wallet/error-code#-1119-empty_org_cl_ord_id "-1119 EMPTY_ORG_CL_ORD_ID的直接链接")
-
-  * 客户自定义的订单ID为空。
-
-
-
-### -1120 BAD_INTERVAL[​](/docs/zh-CN/wallet/error-code#-1120-bad_interval "-1120 BAD_INTERVAL的直接链接")
-
-  * 无效时间间隔。
-
-
-
-### -1121 BAD_SYMBOL[​](/docs/zh-CN/wallet/error-code#-1121-bad_symbol "-1121 BAD_SYMBOL的直接链接")
-
-  * 无效的交易对。
-
-
-
-### -1125 INVALID_LISTEN_KEY[​](/docs/zh-CN/wallet/error-code#-1125-invalid_listen_key "-1125 INVALID_LISTEN_KEY的直接链接")
-
-  * 该listenKey不存在。
-
-
-
-### -1127 MORE_THAN_XX_HOURS[​](/docs/zh-CN/wallet/error-code#-1127-more_than_xx_hours "-1127 MORE_THAN_XX_HOURS的直接链接")
-
-  * 查询间隔太大。
-  * 从开始时间到结束时间之间超过％s小时。
-
-
-
-### -1128 OPTIONAL_PARAMS_BAD_COMBO[​](/docs/zh-CN/wallet/error-code#-1128-optional_params_bad_combo "-1128 OPTIONAL_PARAMS_BAD_COMBO的直接链接")
-
-  * 可选参数组合无效。
-
-
-
-### -1130 INVALID_PARAMETER[​](/docs/zh-CN/wallet/error-code#-1130-invalid_parameter "-1130 INVALID_PARAMETER的直接链接")
-
-  * 发送的参数为无效数据。
-  * 发送参数`％s`的数据无效。
-
-
-
-### -1131 BAD_RECV_WINDOW[​](/docs/zh-CN/wallet/error-code#-1131-bad_recv_window "-1131 BAD_RECV_WINDOW的直接链接")
-
-  * `recvWindow` 必须小于 60000
-
-
-
-### -1134 BAD_STRATEGY_TYPE[​](/docs/zh-CN/wallet/error-code#-1134-bad_strategy_type "-1134 BAD_STRATEGY_TYPE的直接链接")
-
-  * `strategyType` 必须小于 1000000
-
-
-
-#### -1145 INVALID_CANCEL_RESTRICTIONS[​](/docs/zh-CN/wallet/error-code#-1145-invalid_cancel_restrictions "-1145 INVALID_CANCEL_RESTRICTIONS的直接链接")
-
-  * `cancelRestrictions` 必须是 `ONLY_NEW` 或者 `ONLY_PARTIALLY_FILLED`。
-
-
-
-#### -1151 重复的交易对[​](/docs/zh-CN/wallet/error-code#-1151-重复的交易对 "-1151 重复的交易对的直接链接")
-
-  * Symbol is present multiple times in the list.
-
-
-
-### -2010 NEW_ORDER_REJECTED[​](/docs/zh-CN/wallet/error-code#-2010-new_order_rejected "-2010 NEW_ORDER_REJECTED的直接链接")
-
-  * 新订单被拒绝
-
-
-
-### -2011 CANCEL_REJECTED[​](/docs/zh-CN/wallet/error-code#-2011-cancel_rejected "-2011 CANCEL_REJECTED的直接链接")
-
-  * 取消订单被拒绝
-
-
-
-### -2013 NO_SUCH_ORDER[​](/docs/zh-CN/wallet/error-code#-2013-no_such_order "-2013 NO_SUCH_ORDER的直接链接")
-
-  * 订单不存在。
-
-
-
-### -2014 BAD_API_KEY_FMT[​](/docs/zh-CN/wallet/error-code#-2014-bad_api_key_fmt "-2014 BAD_API_KEY_FMT的直接链接")
-
-  * API-key 格式无效。
-
-
-
-### -2015 REJECTED_MBX_KEY[​](/docs/zh-CN/wallet/error-code#-2015-rejected_mbx_key "-2015 REJECTED_MBX_KEY的直接链接")
-
-  * 无效的API密钥，IP或操作权限。
-
-
-
-### -2016 NO_TRADING_WINDOW[​](/docs/zh-CN/wallet/error-code#-2016-no_trading_window "-2016 NO_TRADING_WINDOW的直接链接")
-
-  * 找不到该交易对的交易窗口。 尝试改为24小时自动报价。
-
-
-
-#### -2026 ORDER_ARCHIVED[​](/docs/zh-CN/wallet/error-code#-2026-order_archived "-2026 ORDER_ARCHIVED的直接链接")
-
-  * 订单已被存档因为此订单被取消或过期，无交易数量而最后的更新已超过 90 天前。
-
-
-
-## 3xxx-5xxx SAPI 具体问题[​](/docs/zh-CN/wallet/error-code#3xxx-5xxx-sapi-具体问题 "3xxx-5xxx SAPI 具体问题的直接链接")
-
-### -3000 INNER_FAILURE[​](/docs/zh-CN/wallet/error-code#-3000-inner_failure "-3000 INNER_FAILURE的直接链接")
-
-  * 内部服务器错误。
-
-
-
-### -3001 NEED_ENABLE_2FA[​](/docs/zh-CN/wallet/error-code#-3001-need_enable_2fa "-3001 NEED_ENABLE_2FA的直接链接")
-
-  * 请先启用2FA。
-
-
-
-### -3002 ASSET_DEFICIENCY[​](/docs/zh-CN/wallet/error-code#-3002-asset_deficiency "-3002 ASSET_DEFICIENCY的直接链接")
-
-  * 此资产不存在。
-
-
-
-### -3003 NO_OPENED_MARGIN_ACCOUNT[​](/docs/zh-CN/wallet/error-code#-3003-no_opened_margin_account "-3003 NO_OPENED_MARGIN_ACCOUNT的直接链接")
-
-  * 杠杆账户不存在。
-
-
-
-### -3004 TRADE_NOT_ALLOWED[​](/docs/zh-CN/wallet/error-code#-3004-trade_not_allowed "-3004 TRADE_NOT_ALLOWED的直接链接")
-
-  * 禁止交易。
-
-
-
-### -3005 TRANSFER_OUT_NOT_ALLOWED[​](/docs/zh-CN/wallet/error-code#-3005-transfer_out_not_allowed "-3005 TRANSFER_OUT_NOT_ALLOWED的直接链接")
-
-  * 不允许转账。
-
-
-
-### -3006 EXCEED_MAX_BORROWABLE[​](/docs/zh-CN/wallet/error-code#-3006-exceed_max_borrowable "-3006 EXCEED_MAX_BORROWABLE的直接链接")
-
-  * 您的已借金额已超过最高可借金额。
-
-
-
-### -3007 HAS_PENDING_TRANSACTION[​](/docs/zh-CN/wallet/error-code#-3007-has_pending_transaction "-3007 HAS_PENDING_TRANSACTION的直接链接")
-
-  * 您有待处理的交易，请稍后再试。
-
-
-
-### -3008 BORROW_NOT_ALLOWED[​](/docs/zh-CN/wallet/error-code#-3008-borrow_not_allowed "-3008 BORROW_NOT_ALLOWED的直接链接")
-
-  * 不允许借款。
-
-
-
-### -3009 ASSET_NOT_MORTGAGEABLE[​](/docs/zh-CN/wallet/error-code#-3009-asset_not_mortgageable "-3009 ASSET_NOT_MORTGAGEABLE的直接链接")
-
-  * 此资产目前不允许转入杠杆账户。
-
-
-
-### -3010 REPAY_NOT_ALLOWED[​](/docs/zh-CN/wallet/error-code#-3010-repay_not_allowed "-3010 REPAY_NOT_ALLOWED的直接链接")
-
-  * 不允许还款。
-
-
-
-### -3011 BAD_DATE_RANGE[​](/docs/zh-CN/wallet/error-code#-3011-bad_date_range "-3011 BAD_DATE_RANGE的直接链接")
-
-  * 您输入的日期无效。
-
-
-
-### -3012 ASSET_ADMIN_BAN_BORROW[​](/docs/zh-CN/wallet/error-code#-3012-asset_admin_ban_borrow "-3012 ASSET_ADMIN_BAN_BORROW的直接链接")
-
-  * 此资产禁止借款。
-
-
-
-### -3013 LT_MIN_BORROWABLE[​](/docs/zh-CN/wallet/error-code#-3013-lt_min_borrowable "-3013 LT_MIN_BORROWABLE的直接链接")
-
-  * 借入金额少于最低借入金额。
-
-
-
-### -3014 ACCOUNT_BAN_BORROW[​](/docs/zh-CN/wallet/error-code#-3014-account_ban_borrow "-3014 ACCOUNT_BAN_BORROW的直接链接")
-
-  * 此帐户禁止借款。
-
-
-
-### -3015 REPAY_EXCEED_LIABILITY[​](/docs/zh-CN/wallet/error-code#-3015-repay_exceed_liability "-3015 REPAY_EXCEED_LIABILITY的直接链接")
-
-  * 还款额超过借款额。
-
-
-
-### -3016 LT_MIN_REPAY[​](/docs/zh-CN/wallet/error-code#-3016-lt_min_repay "-3016 LT_MIN_REPAY的直接链接")
-
-  * 还款额少于最低还款额。
-
-
-
-### -3017 ASSET_ADMIN_BAN_MORTGAGE[​](/docs/zh-CN/wallet/error-code#-3017-asset_admin_ban_mortgage "-3017 ASSET_ADMIN_BAN_MORTGAGE的直接链接")
-
-  * 此资产目前不允许转入保证金账户。
-
-
-
-### -3018 ACCOUNT_BAN_MORTGAGE[​](/docs/zh-CN/wallet/error-code#-3018-account_ban_mortgage "-3018 ACCOUNT_BAN_MORTGAGE的直接链接")
-
-  * 此帐户已禁止转入。
-
-
-
-### -3019 ACCOUNT_BAN_ROLLOUT[​](/docs/zh-CN/wallet/error-code#-3019-account_ban_rollout "-3019 ACCOUNT_BAN_ROLLOUT的直接链接")
-
-  * 此帐户禁止转出。
-
-
-
-### -3020 EXCEED_MAX_ROLLOUT[​](/docs/zh-CN/wallet/error-code#-3020-exceed_max_rollout "-3020 EXCEED_MAX_ROLLOUT的直接链接")
-
-  * 转出金额超过上限。
-
-
-
-### -3021 PAIR_ADMIN_BAN_TRADE[​](/docs/zh-CN/wallet/error-code#-3021-pair_admin_ban_trade "-3021 PAIR_ADMIN_BAN_TRADE的直接链接")
-
-  * 杠杆账户无法交易此交易对。
-
-
-
-### -3022 ACCOUNT_BAN_TRADE[​](/docs/zh-CN/wallet/error-code#-3022-account_ban_trade "-3022 ACCOUNT_BAN_TRADE的直接链接")
-
-  * 账号被禁止交易。
-
-
-
-### -3023 WARNING_MARGIN_LEVEL[​](/docs/zh-CN/wallet/error-code#-3023-warning_margin_level "-3023 WARNING_MARGIN_LEVEL的直接链接")
-
-  * 无法在当前杠杆倍数下转出资金或者下单
-
-
-
-### -3024 FEW_LIABILITY_LEFT[​](/docs/zh-CN/wallet/error-code#-3024-few_liability_left "-3024 FEW_LIABILITY_LEFT的直接链接")
-
-  * 付款之后未付款的债务太小
-
-
-
-### -3025 INVALID_EFFECTIVE_TIME[​](/docs/zh-CN/wallet/error-code#-3025-invalid_effective_time "-3025 INVALID_EFFECTIVE_TIME的直接链接")
-
-  * 输入时间有误。
-
-
-
-### -3026 VALIDATION_FAILED[​](/docs/zh-CN/wallet/error-code#-3026-validation_failed "-3026 VALIDATION_FAILED的直接链接")
-
-  * 输入参数有误。
-
-
-
-### -3027 NOT_VALID_MARGIN_ASSET[​](/docs/zh-CN/wallet/error-code#-3027-not_valid_margin_asset "-3027 NOT_VALID_MARGIN_ASSET的直接链接")
-
-  * 无效的杠杆资产。
-
-
-
-### -3028 NOT_VALID_MARGIN_PAIR[​](/docs/zh-CN/wallet/error-code#-3028-not_valid_margin_pair "-3028 NOT_VALID_MARGIN_PAIR的直接链接")
-
-  * 无效的杠杆交易对。
-
-
-
-### -3029 TRANSFER_FAILED[​](/docs/zh-CN/wallet/error-code#-3029-transfer_failed "-3029 TRANSFER_FAILED的直接链接")
-
-  * 转账失败。
-
-
-
-### -3036 ACCOUNT_BAN_REPAY[​](/docs/zh-CN/wallet/error-code#-3036-account_ban_repay "-3036 ACCOUNT_BAN_REPAY的直接链接")
-
-  * 此账号无法还款。
-
-
-
-### -3037 PNL_CLEARING[​](/docs/zh-CN/wallet/error-code#-3037-pnl_clearing "-3037 PNL_CLEARING的直接链接")
-
-  * `PNL`正在清帐，请稍等。
-
-
-
-### -3038 LISTEN_KEY_NOT_FOUND[​](/docs/zh-CN/wallet/error-code#-3038-listen_key_not_found "-3038 LISTEN_KEY_NOT_FOUND的直接链接")
-
-  * 找不到`Listen key`
-
-
-
-### -3041 BALANCE_NOT_CLEARED[​](/docs/zh-CN/wallet/error-code#-3041-balance_not_cleared "-3041 BALANCE_NOT_CLEARED的直接链接")
-
-  * 余额不足
-
-
-
-### -3042 PRICE_INDEX_NOT_FOUND[​](/docs/zh-CN/wallet/error-code#-3042-price_index_not_found "-3042 PRICE_INDEX_NOT_FOUND的直接链接")
-
-  * 该杠杆交易对无可用价格指数。
-
-
-
-### -3043 TRANSFER_IN_NOT_ALLOWED[​](/docs/zh-CN/wallet/error-code#-3043-transfer_in_not_allowed "-3043 TRANSFER_IN_NOT_ALLOWED的直接链接")
-
-  * 不允许转入。
-
-
-
-### -3044 SYSTEM_BUSY[​](/docs/zh-CN/wallet/error-code#-3044-system_busy "-3044 SYSTEM_BUSY�的直接链接")
-
-  * 系统繁忙。
-
-
-
-### -3045 SYSTEM[​](/docs/zh-CN/wallet/error-code#-3045-system "-3045 SYSTEM的直接链接")
-
-  * 系统目前没有足够可借的资产。
-
-
-
-### -3999 NOT_WHITELIST_USER[​](/docs/zh-CN/wallet/error-code#-3999-not_whitelist_user "-3999 NOT_WHITELIST_USER的直接链接")
-
-  * 此功能只面向邀请的用户。
-
-
-
-### -4001 CAPITAL_INVALID[​](/docs/zh-CN/wallet/error-code#-4001-capital_invalid "-4001 CAPITAL_INVALID的直接链接")
-
-  * 非法操作
-
-
-
-### -4002 CAPITAL_IG[​](/docs/zh-CN/wallet/error-code#-4002-capital_ig "-4002 CAPITAL_IG的直接链接")
-
-  * 非法获取
-
-
-
-### -4003 CAPITAL_IEV[​](/docs/zh-CN/wallet/error-code#-4003-capital_iev "-4003 CAPITAL_IEV的直接链接")
-
-  * 非法邮箱验证
-
-
-
-### -4004 CAPITAL_UA[​](/docs/zh-CN/wallet/error-code#-4004-capital_ua "-4004 CAPITAL_UA的直接链接")
-
-  * 未登录或者认证。
-
-
-
-### -4005 CAPAITAL_TOO_MANY_REQUEST[​](/docs/zh-CN/wallet/error-code#-4005-capaital_too_many_request "-4005 CAPAITAL_TOO_MANY_REQUEST的直接链接")
-
-  * 请求太频繁。
-
-
-
-### -4006 CAPITAL_ONLY_SUPPORT_PRIMARY_ACCOUNT[​](/docs/zh-CN/wallet/error-code#-4006-capital_only_support_primary_account "-4006 CAPITAL_ONLY_SUPPORT_PRIMARY_ACCOUNT的直接链接")
-
-  * 只支持主账号。
-
-
-
-### -4007 CAPITAL_ADDRESS_VERIFICATION_NOT_PASS[​](/docs/zh-CN/wallet/error-code#-4007-capital_address_verification_not_pass "-4007 CAPITAL_ADDRESS_VERIFICATION_NOT_PASS的直接链接")
-
-  * 地址的没有通过校验。
-
-
-
-### -4008 CAPITAL_ADDRESS_TAG_VERIFICATION_NOT_PASS[​](/docs/zh-CN/wallet/error-code#-4008-capital_address_tag_verification_not_pass "-4008 CAPITAL_ADDRESS_TAG_VERIFICATION_NOT_PASS的直接链接")
-
-  * 地址的标记信息(`tag`)没有通过校验。
-
-
-
-### -4010 CAPITAL_WHITELIST_EMAIL_CONFIRM[​](/docs/zh-CN/wallet/error-code#-4010-capital_whitelist_email_confirm "-4010 CAPITAL_WHITELIST_EMAIL_CONFIRM的直接链接")
-
-  * 确认电子邮件已经列入白名单。
-
-
-
-### -4011 CAPITAL_WHITELIST_EMAIL_EXPIRED[​](/docs/zh-CN/wallet/error-code#-4011-capital_whitelist_email_expired "-4011 CAPITAL_WHITELIST_EMAIL_EXPIRED的直接链接")
-
-  * 列入白名单的电子邮件无效。
-
-
-
-### -4012 CAPITAL_WHITELIST_CLOSE[​](/docs/zh-CN/wallet/error-code#-4012-capital_whitelist_close "-4012 CAPITAL_WHITELIST_CLOSE的直接链接")
-
-  * 白名单未打开。
-
-
-
-### -4013 CAPITAL_WITHDRAW_2FA_VERIFY[​](/docs/zh-CN/wallet/error-code#-4013-capital_withdraw_2fa_verify "-4013 CAPITAL_WITHDRAW_2FA_VERIFY的直接链接")
-
-  * 2FA未打开。
-
-
-
-### -4014 CAPITAL_WITHDRAW_LOGIN_DELAY[​](/docs/zh-CN/wallet/error-code#-4014-capital_withdraw_login_delay "-4014 CAPITAL_WITHDRAW_LOGIN_DELAY的直接链接")
-
-  * 在登录后的2分钟之内不允许提款。
-
-
-
-### -4015 CAPITAL_WITHDRAW_RESTRICTED_MINUTE[​](/docs/zh-CN/wallet/error-code#-4015-capital_withdraw_restricted_minute "-4015 CAPITAL_WITHDRAW_RESTRICTED_MINUTE的直接链接")
-
-  * 暂停提款
-
-
-
-### -4016 CAPITAL_WITHDRAW_RESTRICTED_PASSWORD[​](/docs/zh-CN/wallet/error-code#-4016-capital_withdraw_restricted_password "-4016 CAPITAL_WITHDRAW_RESTRICTED_PASSWORD的直接链接")
-
-  * 在密码修改后的24小时之内不允许提款。
-
-
-
-### -4017 CAPITAL_WITHDRAW_RESTRICTED_UNBIND_2FA[​](/docs/zh-CN/wallet/error-code#-4017-capital_withdraw_restricted_unbind_2fa "-4017 CAPITAL_WITHDRAW_RESTRICTED_UNBIND_2FA的直接链接")
-
-  * 在2FA发行后的24小时之内不允许提款。
-
-
-
-### -4018 CAPITAL_WITHDRAW_ASSET_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-4018-capital_withdraw_asset_not_exist "-4018 CAPITAL_WITHDRAW_ASSET_NOT_EXIST的直接链接")
-
-  * 此资产不存在。
-
-
-
-### -4019 CAPITAL_WITHDRAW_ASSET_PROHIBIT[​](/docs/zh-CN/wallet/error-code#-4019-capital_withdraw_asset_prohibit "-4019 CAPITAL_WITHDRAW_ASSET_PROHIBIT的直接链接")
-
-  * 此资产不允许提款。
-
-
-
-### -4021 CAPITAL_WITHDRAW_AMOUNT_MULTIPLE[​](/docs/zh-CN/wallet/error-code#-4021-capital_withdraw_amount_multiple "-4021 CAPITAL_WITHDRAW_AMOUNT_MULTIPLE的直接链接")
-
-  * 资产的提款数量必须是％s的％s倍。
-
-
-
-### -4022 CAPITAL_WITHDRAW_MIN_AMOUNT[​](/docs/zh-CN/wallet/error-code#-4022-capital_withdraw_min_amount "-4022 CAPITAL_WITHDRAW_MIN_AMOUNT的直接链接")
-
-  * 不须少于最低的提款数量％s。
-
-
-
-### -4023 CAPITAL_WITHDRAW_MAX_AMOUNT[​](/docs/zh-CN/wallet/error-code#-4023-capital_withdraw_max_amount "-4023 CAPITAL_WITHDRAW_MAX_AMOUNT的直接链接")
-
-  * 在24小时之内，不须超过最高的提款数量。
-
-
-
-### -4024 CAPITAL_WITHDRAW_USER_NO_ASSET[​](/docs/zh-CN/wallet/error-code#-4024-capital_withdraw_user_no_asset "-4024 CAPITAL_WITHDRAW_USER_NO_ASSET的直接链接")
-
-  * 当前用户没有此资产。
-
-
-
-### -4025 CAPITAL_WITHDRAW_USER_ASSET_LESS_THAN_ZERO[​](/docs/zh-CN/wallet/error-code#-4025-capital_withdraw_user_asset_less_than_zero "-4025 CAPITAL_WITHDRAW_USER_ASSET_LESS_THAN_ZERO的直接链接")
-
-  * 持有资产的数量小于零。
-
-
-
-### -4026 CAPITAL_WITHDRAW_USER_ASSET_NOT_ENOUGH[​](/docs/zh-CN/wallet/error-code#-4026-capital_withdraw_user_asset_not_enough "-4026 CAPITAL_WITHDRAW_USER_ASSET_NOT_ENOUGH的直接链接")
-
-  * 此资产余额不足。
-
-
-
-### -4027 CAPITAL_WITHDRAW_GET_TRAN_ID_FAILURE[​](/docs/zh-CN/wallet/error-code#-4027-capital_withdraw_get_tran_id_failure "-4027 CAPITAL_WITHDRAW_GET_TRAN_ID_FAILURE的直接链接")
-
-  * 无法获取tranId。
-
-
-
-### -4028 CAPITAL_WITHDRAW_MORE_THAN_FEE[​](/docs/zh-CN/wallet/error-code#-4028-capital_withdraw_more_than_fee "-4028 CAPITAL_WITHDRAW_MORE_THAN_FEE的直接链接")
-
-  * 提款金额必须多于佣金额。
-
-
-
-### -4029 CAPITAL_WITHDRAW_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-4029-capital_withdraw_not_exist "-4029 CAPITAL_WITHDRAW_NOT_EXIST的直接链接")
-
-  * 此提款记录不存在。
-
-
-
-### -4030 CAPITAL_WITHDRAW_CONFIRM_SUCCESS[​](/docs/zh-CN/wallet/error-code#-4030-capital_withdraw_confirm_success "-4030 CAPITAL_WITHDRAW_CONFIRM_SUCCESS的直接链接")
-
-  * 提款资产成功。
-
-
-
-### -4031 CAPITAL_WITHDRAW_CANCEL_FAILURE[​](/docs/zh-CN/wallet/error-code#-4031-capital_withdraw_cancel_failure "-4031 CAPITAL_WITHDRAW_CANCEL_FAILURE的直接链接")
-
-  * 取消提款失败。
-
-
-
-### -4032 CAPITAL_WITHDRAW_CHECKSUM_VERIFY_FAILURE[​](/docs/zh-CN/wallet/error-code#-4032-capital_withdraw_checksum_verify_failure "-4032 CAPITAL_WITHDRAW_CHECKSUM_VERIFY_FAILURE的直接链接")
-
-  * 验证提款失败。
-
-
-
-### -4033 CAPITAL_WITHDRAW_ILLEGAL_ADDRESS[​](/docs/zh-CN/wallet/error-code#-4033-capital_withdraw_illegal_address "-4033 CAPITAL_WITHDRAW_ILLEGAL_ADDRESS的直接链接")
-
-  * 提款地址不合法。
-
-
-
-### -4034 CAPITAL_WITHDRAW_ADDRESS_CHEAT[​](/docs/zh-CN/wallet/error-code#-4034-capital_withdraw_address_cheat "-4034 CAPITAL_WITHDRAW_ADDRESS_CHEAT的直接链接")
-
-  * 当前地址有异常。
-
-
-
-### -4035 CAPITAL_WITHDRAW_NOT_WHITE_ADDRESS[​](/docs/zh-CN/wallet/error-code#-4035-capital_withdraw_not_white_address "-4035 CAPITAL_WITHDRAW_NOT_WHITE_ADDRESS的直接链接")
-
-  * 此地址不在白名单上。请加入然后重试。
-
-
-
-### -4036 CAPITAL_WITHDRAW_NEW_ADDRESS[​](/docs/zh-CN/wallet/error-code#-4036-capital_withdraw_new_address "-4036 CAPITAL_WITHDRAW_NEW_ADDRESS的直接链接")
-
-  * 新地址在{0}小时后才可以提款。
-
-
-
-### -4037 CAPITAL_WITHDRAW_RESEND_EMAIL_FAIL[​](/docs/zh-CN/wallet/error-code#-4037-capital_withdraw_resend_email_fail "-4037 CAPITAL_WITHDRAW_RESEND_EMAIL_FAIL的直接链接")
-
-  * 重新发送邮件失败。
-
-
-
-### -4038 CAPITAL_WITHDRAW_RESEND_EMAIL_TIME_OUT[​](/docs/zh-CN/wallet/error-code#-4038-capital_withdraw_resend_email_time_out "-4038 CAPITAL_WITHDRAW_RESEND_EMAIL_TIME_OUT的直接链接")
-
-  * 请5分钟后重试。
-
-
-
-### -4039 CAPITAL_USER_EMPTY[​](/docs/zh-CN/wallet/error-code#-4039-capital_user_empty "-4039 CAPITAL_USER_EMPTY的直接链接")
-
-  * 用户不存在。
-
-
-
-### -4041 CAPITAL_MINUTE_TOO_SMALL[​](/docs/zh-CN/wallet/error-code#-4041-capital_minute_too_small "-4041 CAPITAL_MINUTE_TOO_SMALL的直接链接")
-
-  * 请一分钟后重试。
-
-
-
-### -4042 CAPITAL_CHARGE_NOT_RESET[​](/docs/zh-CN/wallet/error-code#-4042-capital_charge_not_reset "-4042 CAPITAL_CHARGE_NOT_RESET的直接链接")
-
-  * 资产无法重新获取存款地址。
-
-
-
-### -4043 CAPITAL_ADDRESS_TOO_MUCH[​](/docs/zh-CN/wallet/error-code#-4043-capital_address_too_much "-4043 CAPITAL_ADDRESS_TOO_MUCH的直接链接")
-
-  * 在24小时之内充值超过100多个地址。
-
-
-
-### -4044 CAPITAL_BLACKLIST_COUNTRY_GET_ADDRESS[​](/docs/zh-CN/wallet/error-code#-4044-capital_blacklist_country_get_address "-4044 CAPITAL_BLACKLIST_COUNTRY_GET_ADDRESS的直接链接")
-
-  * 此国家在黑名单上。
-
-
-
-### -4045 CAPITAL_GET_ASSET_ERROR[​](/docs/zh-CN/wallet/error-code#-4045-capital_get_asset_error "-4045 CAPITAL_GET_ASSET_ERROR的直接链接")
-
-  * 获得资产失败。
-
-
-
-### -4046 CAPITAL_AGREEMENT_NOT_CONFIRMED[​](/docs/zh-CN/wallet/error-code#-4046-capital_agreement_not_confirmed "-4046 CAPITAL_AGREEMENT_NOT_CONFIRMED的直接链接")
-
-  * 协议未确认。
-
-
-
-### -4047 CAPITAL_DATE_INTERVAL_LIMIT[​](/docs/zh-CN/wallet/error-code#-4047-capital_date_interval_limit "-4047 CAPITAL_DATE_INTERVAL_LIMIT的直接链接")
-
-  * 时间间隔必须在0-90天之内
-
-
-
-### -4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT[​](/docs/zh-CN/wallet/error-code#-4060-capital_withdraw_user_asset_lock_deposit "-4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT的直接链接")
-
-  * 体现仍在区块确认中，暂时锁定部分资产
-
-
-
-### -5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF[​](/docs/zh-CN/wallet/error-code#-5001-asset_dribblet_convert_switch_off "-5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF的直接链接")
-
-  * 不允许转移到微型资产。
-
-
-
-### -5002 ASSET_ASSET_NOT_ENOUGH[​](/docs/zh-CN/wallet/error-code#-5002-asset_asset_not_enough "-5002 ASSET_ASSET_NOT_ENOUGH的直接链接")
-
-  * 此余额不足。
-
-
-
-### -5003 ASSET_USER_HAVE_NO_ASSET[​](/docs/zh-CN/wallet/error-code#-5003-asset_user_have_no_asset "-5003 ASSET_USER_HAVE_NO_ASSET的直接链接")
-
-  * 此资产不存在。
-
-
-
-### -5004 USER_OUT_OF_TRANSFER_FLOAT[​](/docs/zh-CN/wallet/error-code#-5004-user_out_of_transfer_float "-5004 USER_OUT_OF_TRANSFER_FLOAT的直接链接")
-
-  * 剩余余额已超过0.001BTC，请重新选择。
-  * ％s的剩余余额已超过0.001BTC，请重新选择。
-
-
-
-### -5005 USER_ASSET_AMOUNT_IS_TOO_LOW[​](/docs/zh-CN/wallet/error-code#-5005-user_asset_amount_is_too_low "-5005 USER_ASSET_AMOUNT_IS_TOO_LOW的直接链接")
-
-  * BTC的剩余余额太低，请重新选择。
-  * ％s的剩余余额太低，请重新选择。
-
-
-
-### -5006 USER_CAN_NOT_REQUEST_IN_24_HOURS[​](/docs/zh-CN/wallet/error-code#-5006-user_can_not_request_in_24_hours "-5006 USER_CAN_NOT_REQUEST_IN_24_HOURS的直接链接")
-
-  * 24小时内只能转账一次。
-
-
-
-### -5007 AMOUNT_OVER_ZERO[​](/docs/zh-CN/wallet/error-code#-5007-amount_over_zero "-5007 AMOUNT_OVER_ZERO的直接链接")
-
-  * 数量必须大于零。
-
-
-
-### -5008 ASSET_WITHDRAW_WITHDRAWING_NOT_ENOUGH[​](/docs/zh-CN/wallet/error-code#-5008-asset_withdraw_withdrawing_not_enough "-5008 ASSET_WITHDRAW_WITHDRAWING_NOT_ENOUGH的直接链接")
-
-  * 可退回资产的金额不足。
-
-
-
-### -5009 PRODUCT_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-5009-product_not_exist "-5009 PRODUCT_NOT_EXIST的直接链接")
-
-  * 产品不存在。
-
-
-
-### -5010 TRANSFER_FAIL[​](/docs/zh-CN/wallet/error-code#-5010-transfer_fail "-5010 TRANSFER_FAIL的直接链接")
-
-  * 资产转移失败。
-
-
-
-### -5011 FUTURE_ACCT_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-5011-future_acct_not_exist "-5011 FUTURE_ACCT_NOT_EXIST的直接链接")
-
-  * 合约帐户不存在。
-
-
-
-### -5012 TRANSFER_PENDING[​](/docs/zh-CN/wallet/error-code#-5012-transfer_pending "-5012 TRANSFER_PENDING的直接链接")
-
-  * 资产转移正在进行中。
-
-
-
-### -5021 PARENT_SUB_HAVE_NO_RELATION[​](/docs/zh-CN/wallet/error-code#-5021-parent_sub_have_no_relation "-5021 PARENT_SUB_HAVE_NO_RELATION的直接链接")
-
-  * 当前的子账户和母账户没有从属关系。
-
-
-
-### -5012 FUTURE_ACCT_OR_SUBRELATION_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-5012-future_acct_or_subrelation_not_exist "-5012 FUTURE_ACCT_OR_SUBRELATION_NOT_EXIST的直接链接")
-
-  * 合约帐户或子账户关系不存在。
-
-
-
-## 6XXX - 币安宝相关[​](/docs/zh-CN/wallet/error-code#6xxx---币安宝相关 "6XXX - 币安宝相关的直接链接")
-
-### -6001 DAILY_PRODUCT_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-6001-daily_product_not_exist "-6001 DAILY_PRODUCT_NOT_EXIST的直接链接")
-
-  * 理财产品不存在.
-
-
-
-### -6003 DAILY_PRODUCT_NOT_ACCESSIBLE[​](/docs/zh-CN/wallet/error-code#-6003-daily_product_not_accessible "-6003 DAILY_PRODUCT_NOT_ACCESSIBLE的直接链接")
-
-  * 产品不存在或者没有权限。
-
-
-
-### -6004 DAILY_PRODUCT_NOT_PURCHASABLE[​](/docs/zh-CN/wallet/error-code#-6004-daily_product_not_purchasable "-6004 DAILY_PRODUCT_NOT_PURCHASABLE的直接链接")
-
-  * 产品无法购买。
-
-
-
-### -6005 DAILY_LOWER_THAN_MIN_PURCHASE_LIMIT[​](/docs/zh-CN/wallet/error-code#-6005-daily_lower_than_min_purchase_limit "-6005 DAILY_LOWER_THAN_MIN_PURCHASE_LIMIT的直接链接")
-
-  * 低于可以购买的最小限额。
-
-
-
-### -6006 DAILY_REDEEM_AMOUNT_ERROR[​](/docs/zh-CN/wallet/error-code#-6006-daily_redeem_amount_error "-6006 DAILY_REDEEM_AMOUNT_ERROR的直接链接")
-
-  * 赎回额度有误。
-
-
-
-### -6007 DAILY_REDEEM_TIME_ERROR[​](/docs/zh-CN/wallet/error-code#-6007-daily_redeem_time_error "-6007 DAILY_REDEEM_TIME_ERROR的直接链接")
-
-  * 不在赎回的时间内。
-
-
-
-### -6008 DAILY_PRODUCT_NOT_REDEEMABLE[​](/docs/zh-CN/wallet/error-code#-6008-daily_product_not_redeemable "-6008 DAILY_PRODUCT_NOT_REDEEMABLE的直接链接")
-
-  * 产品暂时无法赎回。
-
-
-
-### -6009 REQUEST_FREQUENCY_TOO_HIGH[​](/docs/zh-CN/wallet/error-code#-6009-request_frequency_too_high "-6009 REQUEST_FREQUENCY_TOO_HIGH的直接链接")
-
-  * 发送请求太频繁。
-
-
-
-### -6011 EXCEEDED_USER_PURCHASE_LIMIT[​](/docs/zh-CN/wallet/error-code#-6011-exceeded_user_purchase_limit "-6011 EXCEEDED_USER_PURCHASE_LIMIT的直接链接")
-
-  * 超购每个月用户可以申购的最大次数。
-
-
-
-### -6012 BALANCE_NOT_ENOUGH[​](/docs/zh-CN/wallet/error-code#-6012-balance_not_enough "-6012 BALANCE_NOT_ENOUGH的直接链接")
-
-  * 余额不足。
-
-
-
-### -6013 PURCHASING_FAILED[​](/docs/zh-CN/wallet/error-code#-6013-purchasing_failed "-6013 PURCHASING_FAILED的直接链接")
-
-  * 申购失败。
-
-
-
-### -6014 UPDATE_FAILED[​](/docs/zh-CN/wallet/error-code#-6014-update_failed "-6014 UPDATE_FAILED的直接链接")
-
-  * 超过可以申购的最大上限。
-
-
-
-### -6015 EMPTY_REQUEST_BODY[​](/docs/zh-CN/wallet/error-code#-6015-empty_request_body "-6015 EMPTY_REQUEST_BODY的直接链接")
-
-  * 请求的`body`为空。
-
-
-
-### -6016 PARAMS_ERR[​](/docs/zh-CN/wallet/error-code#-6016-params_err "-6016 PARAMS_ERR的直接链接")
-
-  * 请求的参数有误。
-
-
-
-### -6017 NOT_IN_WHITELIST[​](/docs/zh-CN/wallet/error-code#-6017-not_in_whitelist "-6017 NOT_IN_WHITELIST的直接链接")
-
-  * 不在白名单里面。
-
-
-
-### -6018 ASSET_NOT_ENOUGH[​](/docs/zh-CN/wallet/error-code#-6018-asset_not_enough "-6018 ASSET_NOT_ENOUGH的直接链接")
-
-  * 资产不足。
-
-
-
-### -6019 PENDING[​](/docs/zh-CN/wallet/error-code#-6019-pending "-6019 PENDING的直接链接")
-
-  * 需要进一步确认。
-
-
-
-### -6020 PROJECT_NOT_EXISTS[​](/docs/zh-CN/wallet/error-code#-6020-project_not_exists "-6020 PROJECT_NOT_EXISTS的直接链接")
-
-  * 此项目不存在。
-
-
-
-## 70xx - 期货[​](/docs/zh-CN/wallet/error-code#70xx---期货 "70xx - 期货的直接链接")
-
-### -7001 FUTURES_BAD_DATE_RANGE[​](/docs/zh-CN/wallet/error-code#-7001-futures_bad_date_range "-7001 FUTURES_BAD_DATE_RANGE的直接链接")
-
-  * 此日期范围不支持。
-
-
-
-### -7002 FUTURES_BAD_TYPE[​](/docs/zh-CN/wallet/error-code#-7002-futures_bad_type "-7002 FUTURES_BAD_TYPE的直接链接")
-
-  * 此数据请求类型不支持。
-
-
-
-## 20xxx - 合约/现货策略交易[​](/docs/zh-CN/wallet/error-code#20xxx---合约现货策略交易 "20xxx - 合约/现货策略交易的直接链接")
-
-### -20121 Invalid symbol[​](/docs/zh-CN/wallet/error-code#-20121-invalid-symbol "-20121 Invalid symbol的直接链接")
-
-  * 无效交易对。
-
-
-
-### -20124 Invalid algo id or it has been completed[​](/docs/zh-CN/wallet/error-code#-20124-invalid-algo-id-or-it-has-been-completed "-20124 Invalid algo id or it has been completed的直接链接")
-
-  * 无效的策略订单ID或者它已经被执行。
-
-
-
-### -20130 Invalid data sent for a parameter[​](/docs/zh-CN/wallet/error-code#-20130-invalid-data-sent-for-a-parameter "-20130 Invalid data sent for a parameter的直接链接")
-
-  * 无效数据。
-
-
-
-### -20132 The client algo id is duplicated[​](/docs/zh-CN/wallet/error-code#-20132-the-client-algo-id-is-duplicated "-20132 The client algo id is duplicated的直接链接")
-
-  * 用户自定义策略订单ID重复。
-
-
-
-### -20194 Duration is too short to execute all required quantity[​](/docs/zh-CN/wallet/error-code#-20194-duration-is-too-short-to-execute-all-required-quantity "-20194 Duration is too short to execute all required quantity的直接链接")
-
-  * Duration 时间太短不足以执行用户选择的订单数量。
-
-
-
-### -20195 The total size is too small[​](/docs/zh-CN/wallet/error-code#-20195-the-total-size-is-too-small "-20195 The total size is too small的直接链接")
-
-  * 下单数量太小。
-
-
-
-### -20196 The total size is too large[​](/docs/zh-CN/wallet/error-code#-20196-the-total-size-is-too-large "-20196 The total size is too large的直接链接")
-
-  * 下单数量太大。
-
-
-
-### -20198 Reach the max open orders allowed[​](/docs/zh-CN/wallet/error-code#-20198-reach-the-max-open-orders-allowed "-20198 Reach the max open orders allowed的直接链接")
-
-  * 达到了最大挂单上限。
-
-
-
-### -20204 The notional of USD is less or more than the limit[​](/docs/zh-CN/wallet/error-code#-20204-the-notional-of-usd-is-less-or-more-than-the-limit "-20204 The notional of USD is less or more than the limit的直接链接")
-
-  * 订单小于最小USD名义价值
-
-
-
-## 过滤器故障[​](/docs/zh-CN/wallet/error-code#过�滤器故障 "过滤器故障的直接链接")
-
-报错信息| 描述  
+鉴权类型| 描述  
 ---|---  
-"Filter failure: PRICE_FILTER"| "价格"过高，过低和/或不遵循交易对的最小价格规则。  
-"Filter failure: PERCENT_PRICE"| "价格"比最近Y分钟的平均加权价格高X％或X％太低。  
-"Filter failure: PERCENT_PRICE_BY_SIDE"| `price` 在当前方向上(`BUY`或者`SELL`)比`lastPrice`价格超过X%或者低于Y%。  
-"Filter failure: LOT_SIZE"| "数量"太高，太低和/或不遵循该交易对的步长规则。  
-"Filter failure: MIN_NOTIONAL"| 价格*数量太低，无法成为该交易对的有效订单。  
-"Filter failure: ICEBERG_PARTS"| `ICEBERG` 订单会分成太多部分； icebergQty太小。  
-"Filter failure: MARKET_LOT_SIZE"| "MARKET"订单的"数量"过高，过低和/或未遵循交易对的步长规则。  
-"Filter failure: MAX_POSITION"| 达到账户的最大仓位限制。这包括了账户的余额总额，以及所有处于open的买单的数量总和。  
-"Filter failure: MAX_NUM_ORDERS"| 客户在交易对上有太多挂单。  
-"Filter failure: MAX_ALGO_ORDERS"| 账户有太多未平仓止损和/或在交易对上执行获利指令。  
-"Filter failure: MAX_NUM_ICEBERG_ORDERS"| 客户在交易对上有太多 iceberg 挂单。  
-"Filter failure: TRAILING_DELTA"| `trailingDelta` 值不在限定的范围内.  
-"Filter failure: EXCHANGE_MAX_NUM_ORDERS"| 帐户上的交易所有太多挂单。  
-"Filter failure: EXCHANGE_MAX_ALGO_ORDERS"| 帐户有太多止损挂单和/或在交易所收取获利指令。  
+NONE| 不需要鉴权的接口  
+TRADE| 需要有效的 API-Key 和签名  
+MARGIN| 需要有效的 API-Key 和签名  
+USER_DATA| 需要有效的 API-Key 和签名  
+USER_STREAM| 需要有效的 API-Key  
+MARKET_DATA| 需要有效的 API-Key  
   
-## 10xxx - 质押借币[​](/docs/zh-CN/wallet/error-code#10xxx---质押借币 "10xxx - 质押借币的直接链接")
+### 需要签名的接口[​](/docs/zh-CN/wallet/general-info#需要签名的接口 "需要签名的接口的直接链接")
 
-### -10001 SYSTEM_MAINTENANCE[​](/docs/zh-CN/wallet/error-code#-10001-system_maintenance "-10001 SYSTEM_MAINTENANCE的直接链接")
+  * 调用`SIGNED` 接口时，除了接口本身所需的参数外，还需要在 `query string` 或 `request body` 中传递 `signature`, 即签名参数。
 
-  * 系统维护中，请稍后再试
 
 
+#### 签名是否是大小写敏感的[​](/docs/zh-CN/wallet/general-info#签名是否是大小写敏感的 "签名是否是大小写敏感的的直接链接")
 
-### -10002 INVALID_INPUT[​](/docs/zh-CN/wallet/error-code#-10002-invalid_input "-10002 INVALID_INPUT的直接链接")
+  * **HMAC：** 使用 HMAC 生成的签名**不区分大小写** 。这意味着无论字母大小写如何，签名字符串都可以被验证。
+  * **RSA：** 使用 RSA 生成的签名是**大小写敏感的** 。
+  * **Ed25519：** 使用 Ed25519 生成的签名也是**大小写敏感的** 。
 
-  * 无效的输入参数
 
 
+请参阅[已签名请求示例 (HMAC)](/docs/zh-CN/wallet/general-info#hmac-keys)、[已签名请求示例 (RSA)](/docs/zh-CN/wallet/general-info#rsa-keys) 和[已签名请求示例 (Ed25519)](/docs/zh-CN/wallet/general-info#ed25519-keys)，了解如何根据您使用的 API 密钥类型计算签名。
 
-### -10005 NO_RECORDS[​](/docs/zh-CN/wallet/error-code#-10005-no_records "-10005 NO_RECORDS的直接链接")
+### 时间同步安全[​](/docs/zh-CN/wallet/general-info#时间同步安全 "时间同步安全的直接链��接")
 
-  * 暂无记录
+  * `SIGNED` 请求还需要一个 `timestamp` 参数，该参数应为当前时间戳，单位为毫秒或微秒。（参见 [通用 API 信息](/docs/zh-CN/wallet/general-info#general-api-information)）
+  * 另一个可选参数 `recvWindow`，用以指定请求的有效期，只能以毫秒为单位。 
+    * `recvWindow` 扩展为三位小数（例如 6000.346），以便可以指定微秒。
+    * 如果未发送 `recvWindow`，则 **默认值为 5000 毫秒** 。
+    * `recvWindow` 的最大值为 60000 毫秒。
+  * 请求处理逻辑如下：
 
 
+    
+    
+    serverTime = getCurrentTime()  
+    if (timestamp < (serverTime + 1 second) && (serverTime - timestamp) <= recvWindow) {  
+      // 开始处理请求  
+      serverTime = getCurrentTime()  
+      if (serverTime - timestamp) <= recvWindow {  
+        // 将请求转发到撮合引擎  
+      } else {  
+        // 拒绝请求  
+      }  
+      // 结束处理请求  
+    } else {  
+      // 拒绝请求  
+    }  
+    
 
-### -10007 COIN_NOT_LOANABLE[​](/docs/zh-CN/wallet/error-code#-10007-coin_not_loanable "-10007 COIN_NOT_LOANABLE的直接链接")
+**关于交易时效性** 互联网状况并不100%可靠，不可完全依赖,因此你的程序本地到币安服务器的时延会有抖动. 这是我们设置`recvWindow`的目的所在，如果你从事高频交易，对交易时效性有较高的要求，可以灵活设置`recvWindow`以达到你的要求。 **不推荐使用5秒以上的recvWindow。最大值不能超过60秒！**
 
-  * 该币种暂不支持借贷
+### POST /api/v3/order 的签名示例[​](/docs/zh-CN/wallet/general-info#post-apiv3order-的签名示例 "POST /api/v3/order 的签名示例的直接链接")
 
+#### HMAC Keys[​](/docs/zh-CN/wallet/general-info#hmac-keys "HMAC Keys的直接链接")
 
+不使用分隔符，把查询字符串与 `HTTP body` 连接在一起将生成请求的签名 payload。任何非 ASCII 字符在签名前都必须进行百分比编码（percent-encoded）。
 
-### -10008 COIN_NOT_LOANABLE[​](/docs/zh-CN/wallet/error-code#-10008-coin_not_loanable "-10008 COIN_NOT_LOANABLE的直接链接")
+以下示例分步演示如何使用 `echo`、`openssl` 和 `curl` 从 Linux 命令行发送有效的签名 payload。其中一个例子中的交易对名称完全由 ASCII 字符组成，另一个例子中的交易对名称则包含非 ASCII 字符。
 
-  * 该币种暂不支持借贷
+API 密钥和密钥示例：
 
-
-
-### -10009 COIN_NOT_COLLATERAL[​](/docs/zh-CN/wallet/error-code#-10009-coin_not_collateral "-10009 COIN_NOT_COLLATERAL的直接链接")
-
-  * 该币种暂不支持抵押
-
-
-
-### -10010 COIN_NOT_COLLATERAL[​](/docs/zh-CN/wallet/error-code#-10010-coin_not_collateral "-10010 COIN_NOT_COLLATERAL的直接链接")
-
-  * 该币种暂不支持抵押
-
-
-
-### -10011 INSUFFICIENT_ASSET[​](/docs/zh-CN/wallet/error-code#-10011-insufficient_asset "-10011 INSUFFICIENT_ASSET的直接链接")
-
-  * 现货资产不足
-
-
-
-### -10012 INVALID_AMOUNT[​](/docs/zh-CN/wallet/error-code#-10012-invalid_amount "-10012 INVALID_AMOUNT的直接链接")
-
-  * 无效的还款金额
-
-
-
-### -10013 INSUFFICIENT_AMOUNT[​](/docs/zh-CN/wallet/error-code#-10013-insufficient_amount "-10013 INSUFFICIENT_AMOUNT的直接链接")
-
-  * 抵押资产不足
-
-
-
-### -10015 DEDUCTION_FAILED[​](/docs/zh-CN/wallet/error-code#-10015-deduction_failed "-10015 DEDUCTION_FAILED的直接链接")
-
-  * 抵押资产扣款失败
-
-
-
-### -10016 LOAN_FAILED[​](/docs/zh-CN/wallet/error-code#-10016-loan_failed "-10016 LOAN_FAILED的直接链接")
-
-  * 放贷失败
-
-
-
-### -10017 REPAY_EXCEED_DEBT[​](/docs/zh-CN/wallet/error-code#-10017-repay_exceed_debt "-10017 REPAY_EXCEED_DEBT的直接链接")
-
-  * 还款金额超过负债金额
-
-
-
-### -10018 INVALID_AMOUNT[​](/docs/zh-CN/wallet/error-code#-10018-invalid_amount "-10018 INVALID_AMOUNT的直接链接")
-
-  * 无效的还款金额
-
-
-
-### -10019 CONFIG_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-10019-config_not_exist "-10019 CONFIG_NOT_EXIST的直接链接")
-
-  * 配置不存在
-
-
-
-### -10020 UID_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-10020-uid_not_exist "-10020 UID_NOT_EXIST的直接链接")
-
-  * 用户ID不存在
-
-
-
-### -10021 ORDER_NOT_EXIST[​](/docs/zh-CN/wallet/error-code#-10021-order_not_exist "-10021 ORDER_NOT_EXIST的直接链接")
-
-  * 订单不存在
-
-
-
-### -10022 INVALID_AMOUNT[​](/docs/zh-CN/wallet/error-code#-10022-invalid_amount "-10022 INVALID_AMOUNT的直接链接")
-
-  * 无效的调整金额
-
-
-
-### -10023 ADJUST_LTV_FAILED[​](/docs/zh-CN/wallet/error-code#-10023-adjust_ltv_failed "-10023 ADJUST_LTV_FAILED的直接链接")
-
-  * 调整质押率失败
-
-
-
-### -10024 ADJUST_LTV_NOT_SUPPORTED[​](/docs/zh-CN/wallet/error-code#-10024-adjust_ltv_not_supported "-10024 ADJUST_LTV_NOT_SUPPORTED的直接链接")
-
-  * 暂不支持调整质押率
-
-
-
-### -10025 REPAY_FAILED[​](/docs/zh-CN/wallet/error-code#-10025-repay_failed "-10025 REPAY_FAILED的直接链接")
-
-  * 还款失败
-
-
-
-### -10026 INVALID_PARAMETER[​](/docs/zh-CN/wallet/error-code#-10026-invalid_parameter "-10026 INVALID_PARAMETER的直接链接")
-
-  * 无效的参数
-
-
-
-### -10028 INVALID_PARAMETER[​](/docs/zh-CN/wallet/error-code#-10028-invalid_parameter "-10028 INVALID_PARAMETER的直接链接")
-
-  * 无效的参数
-
-
-
-### -10029 AMOUNT_TOO_SMALL[​](/docs/zh-CN/wallet/error-code#-10029-amount_too_small "-10029 AMOUNT_TOO_SMALL的直接链接")
-
-  * 借贷金额过小
-
-
-
-### -10030 AMOUNT_TOO_LARGE[​](/docs/zh-CN/wallet/error-code#-10030-amount_too_large "-10030 AMOUNT_TOO_LARGE的直接链接")
-
-  * 借贷金额过大
-
-
-
-### -10031 QUOTA_REACHED[​](/docs/zh-CN/wallet/error-code#-10031-quota_reached "-10031 QUOTA_REACHED的直接链接")
-
-  * 已达到个人借贷限额
-
-
-
-### -10032 REPAY_NOT_AVAILABLE[​](/docs/zh-CN/wallet/error-code#-10032-repay_not_available "-10032 REPAY_NOT_AVAILABLE的直接链接")
-
-  * 暂不支持换款
-
-
-
-### -10034 REPAY_NOT_AVAILABLE[​](/docs/zh-CN/wallet/error-code#-10034-repay_not_available "-10034 REPAY_NOT_AVAILABLE的直接链接")
-
-  * 抵押物还款暂时不支持，请尝试用借贷币还款。
-
-
-
-### -10039 AMOUNT_TOO_SMALL[​](/docs/zh-CN/wallet/error-code#-10039-amount_too_small "-10039 AMOUNT_TOO_SMALL的直接链接")
-
-  * 还款金额过小
-
-
-
-### -10040 AMOUNT_TOO_LARGE[​](/docs/zh-CN/wallet/error-code#-10040-amount_too_large "-10040 AMOUNT_TOO_LARGE的直接链接")
-
-  * 还款金额过大
-
-
-
-### -10041 INSUFFICIENT_AMOUNT[​](/docs/zh-CN/wallet/error-code#-10041-insufficient_amount "-10041 INSUFFICIENT_AMOUNT的直接链接")
-
-  * 由于借贷需求过多，系统剩余可借{0}额度不足。请调整借贷金额或明天再试。
-
-
-
-### -10042 ASSET_NOT_SUPPORTED[​](/docs/zh-CN/wallet/error-code#-10042-asset_not_supported "-10042 ASSET_NOT_SUPPORTED的直接链接")
-
-  * 暂不支持%s币种
-
-
-
-### -10043 ASSET_NOT_SUPPORTED[​](/docs/zh-CN/wallet/error-code#-10043-asset_not_supported "-10043 ASSET_NOT_SUPPORTED的直接链接")
-
-  * 暂不支持{0} 借贷
-
-
-
-### -10044 QUOTA_REACHED[​](/docs/zh-CN/wallet/error-code#-10044-quota_reached "-10044 QUOTA_REACHED的直接链接")
-
-  * 抵押物数量已达到限额，请调整抵押金额或使用其他抵押资产。
-
-
-
-### -10045 COLLTERAL_REPAY_NOT_SUPPORTED[​](/docs/zh-CN/wallet/error-code#-10045-collteral_repay_not_supported "-10045 COLLTERAL_REPAY_NOT_SUPPORTED的直接链接")
-
-  * 该借贷币种暂不支持抵押物还款，请稍后再试。
-
-
-
-### -10046 EXCEED_MAX_ADJUSTMENT[​](/docs/zh-CN/wallet/error-code#-10046-exceed_max_adjustment "-10046 EXCEED_MAX_ADJUSTMENT的直接链接")
-
-  * 调整抵押物超过最大限额，请重试。
-
-
-
-### -10047 REGION_NOT_SUPPORTED[​](/docs/zh-CN/wallet/error-code#-10047-region_not_supported "-10047 REGION_NOT_SUPPORTED的直接链接")
-
-  * 受当地法规管制，您所在地区暂不支持该币种。
-
-
-
-
-## 13xxx - 杠杆代币[​](/docs/zh-CN/wallet/error-code#13xxx---杠杆代币 "13xxx - 杠杆代币的直接链接")
-
-### -13000 BLVT_FORBID_REDEEM[​](/docs/zh-CN/wallet/error-code#-13000-blvt_forbid_redeem "-13000 BLVT_FORBID_REDEEM的直接链接")
-
-  * 当前该杠杆代币关闭赎回
-
-
-
-### -13001 BLVT_EXCEED_DAILY_LIMIT[​](/docs/zh-CN/wallet/error-code#-13001-blvt_exceed_daily_limit "-13001 BLVT_EXCEED_DAILY_LIMIT的直接链接")
-
-  * 超过该代币个人24小时赎回金额上限
-
-
-
-### -13002 BLVT_EXCEED_TOKEN_DAILY_LIMIT[​](/docs/zh-CN/wallet/error-code#-13002-blvt_exceed_token_daily_limit "-13002 BLVT_EXCEED_TOKEN_DAILY_LIMIT的直接链接")
-
-  * 超过该代币全局24小时赎回金额上限
-
-
-
-### -13003 BLVT_FORBID_PURCHASE[​](/docs/zh-CN/wallet/error-code#-13003-blvt_forbid_purchase "-13003 BLVT_FORBID_PURCHASE的直接链接")
-
-  * 当前该杠杆代币关闭申购
-
-
-
-### -13004 BLVT_EXCEED_DAILY_PURCHASE_LIMIT[​](/docs/zh-CN/wallet/error-code#-13004-blvt_exceed_daily_purchase_limit "-13004 BLVT_EXCEED_DAILY_PURCHASE_LIMIT的直接链接")
-
-  * 超过该代币个人24小时申购金额上限
-
-
-
-### -13005 BLVT_EXCEED_TOKEN_DAILY_PURCHASE_LIMIT[​](/docs/zh-CN/wallet/error-code#-13005-blvt_exceed_token_daily_purchase_limit "-13005 BLVT_EXCEED_TOKEN_DAILY_PURCHASE_LIMIT的直接链接")
-
-  * 超过该代币全局24小时申购金额上限
-
-
-
-### -13006 BLVT_PURCHASE_LESS_MIN_AMOUNT[​](/docs/zh-CN/wallet/error-code#-13006-blvt_purchase_less_min_amount "-13006 BLVT_PURCHASE_LESS_MIN_AMOUNT的直接链接")
-
-  * 申购金额低于规定下限
-
-
-
-### -13007 BLVT_PURCHASE_AGREEMENT_NOT_SIGN[​](/docs/zh-CN/wallet/error-code#-13007-blvt_purchase_agreement_not_sign "-13007 BLVT_PURCHASE_AGREEMENT_NOT_SIGN的直接链接")
-
-  * 没有签署开通交易协议
-
-
-
-## 12xxx - 流动性挖矿[​](/docs/zh-CN/wallet/error-code#12xxx---流动性挖矿 "12xxx - 流动性挖矿的直接链接")
-
-### -12014 TOO MANY REQUESTS[​](/docs/zh-CN/wallet/error-code#-12014-too-many-requests "-12014 TOO MANY REQUESTS的直接链接")
-
-  * 2秒内接收的请求数量多于1条
-
-
-
-## 18xxx - 币安码[​](/docs/zh-CN/wallet/error-code#18xxx---币安码 "18xxx - 币安码的直接链接")
-
-### -18002[​](/docs/zh-CN/wallet/error-code#-18002 "-18002的直接链接")
-
-  * The total amount of codes you created has exceeded the 24-hour limit, please try again after UTC 0
-  * 24小时内制码总金额已超过限额，请UTC0点后再尝试
-
-
-
-### -18003[​](/docs/zh-CN/wallet/error-code#-18003 "-18003的直接链接")
-
-  * Too many codes created in 24 hours, please try again after UTC 0
-  * 24小时内制码总次数已超过限额，请UTC0点后再尝试
-
-
-
-### -18004[​](/docs/zh-CN/wallet/error-code#-18004 "-18004的直接链接")
-
-  * Too many invalid redeem attempts in 24 hours, please try again after UTC 0
-  * 24小时内兑现币安码输错次数已超过限额，请UTC0点后再尝试
-
-
-
-### -18005[​](/docs/zh-CN/wallet/error-code#-18005 "-18005的直接链接")
-
-  * Too many invalid verify attempts, please try later
-  * 参考号输错次数过多，请稍后再试
-
-
-
-### -18006[​](/docs/zh-CN/wallet/error-code#-18006 "-18006的直接链接")
-
-  * The amount is too small, please re-enter
-  * 金额过小，请重新输入
-
-
-
-### -18007[​](/docs/zh-CN/wallet/error-code#-18007 "-18007的直接链接")
-
-  * This token is not currently supported, please re-enter
-  * 尚未支持该币种，请重新输入
-
-
-
-## 21xxx - 統一帳戶[​](/docs/zh-CN/wallet/error-code#21xxx---統一帳戶 "21xxx - 統一帳戶的直接链接")
-
-### -21001 USER_IS_NOT_UNIACCOUNT[​](/docs/zh-CN/wallet/error-code#-21001-user_is_not_uniaccount "-21001 USER_IS_NOT_UNIACCOUNT的直接链接")
-
-  * 尚未开通统一账户。
-
-
-
-### -21002 UNI_ACCOUNT_CANT_TRANSFER_FUTURE[​](/docs/zh-CN/wallet/error-code#-21002-uni_account_cant_transfer_future "-21002 UNI_ACCOUNT_CANT_TRANSFER_FUTURE的直接链接")
-
-  * 统一账户禁用margin向futures转账。
-
-
-
-### -21003 NET_ASSET_MUST_LTE_RATIO[​](/docs/zh-CN/wallet/error-code#-21003-net_asset_must_lte_ratio "-21003 NET_ASSET_MUST_LTE_RATIO的直接链接")
-
-  * margin资产更新失败。
-
-
-
-### -21004 USER_NO_LIABILITY[​](/docs/zh-CN/wallet/error-code#-21004-user_no_liability "-21004 USER_NO_LIABILITY的直接链接")
-
-  * 用户不存在统一账户穿仓负债
-
-
-
-### -21005 NO_ENOUGH_ASSET[​](/docs/zh-CN/wallet/error-code#-21005-no_enough_asset "-21005 NO_ENOUGH_ASSET的直接链接")
-
-  * 用户现货钱包BUSD资产不足以偿还统一账户穿仓负债
-
-
-
-### -21006 HAD_IN_PROCESS_REPAY[​](/docs/zh-CN/wallet/error-code#-21006-had_in_process_repay "-21006 HAD_IN_PROCESS_REPAY的直接链接")
-
-  * 用户存在正在偿还的统一账户穿仓负债
-
-
-
-### -21007 IN_FORCE_LIQUIDATION[​](/docs/zh-CN/wallet/error-code#-21007-in_force_liquidation "-21007 IN_FORCE_LIQUIDATION的直接链接")
-
-  * 强平进行中，用户偿还统一账户穿仓负债失败
-
-
-
-## 订单拒绝错误[​](/docs/zh-CN/wallet/error-code#订单拒绝错误 "订单拒绝错误的直接链接")
-
-以下错误代码表示撮合引擎返回的订单相关错误:
-
-  * `-1010 ERROR_MSG_RECEIVED`
-  * `-2010 NEW_ORDER_REJECTED`
-  * `-2011 CANCEL_REJECTED`
-
-
-
-结合以下消息将指示特定的错误：
-
-错误信息| 描述  
+Key| Value  
 ---|---  
-"Unknown order sent."| 找不到订单(通过"orderId"，"clientOrderId"，"origClientOrderId")  
-"Duplicate order sent."| `clientOrderId`已经被使用  
-"Market is closed."| 该交易对不在交易范围  
-"Account has insufficient balance for requested action."| 没有足够的资金来完成行动  
-"Market orders are not supported for this symbol."| 交易对上未启用"MARKET"  
-"Iceberg orders are not supported for this symbol."| 交易对上未启用`icebergQty`  
-"Stop loss orders are not supported for this symbol."| 交易对上未启用 `STOP_LOSS`  
-"Stop loss limit orders are not supported for this symbol."| 交易对上未启`STOP_LOSS_LIMIT`  
-"Take profit orders are not supported for this symbol."| 交易对上未启用`TAKE_PROFIT`  
-"Take profit limit orders are not supported for this symbol."| 交易对上未启用`TAKE_PROFIT_LIMIT`  
-"Price * QTY is zero or less."| `price` * `quantity`太小  
-"IcebergQty exceeds QTY."| `icebergQty` 必须少于订单数量  
-"This action is disabled on this account."| 联系客户支持； 该账户已禁用了某些操作。  
-"This account may not place or cancel orders."| 联系客户支持： 该账户已被禁用了交易操作。  
-"Unsupported order combination"| 不允许组合`orderType`, `timeInForce`, `stopPrice`, 和/或 `icebergQty` 。  
-"Order would trigger immediately."| 与最后交易价格相比，订单的止损价无效。  
-"Cancel order is invalid. Check origClientOrderId and orderId."| 未发送`origClientOrderId` 或`orderId` 。  
-"Order would immediately match and take."| `LIMIT_MAKER` 订单类型将立即匹配并进行交易，而不是纯粹的生成订单。  
-"The relationship of the prices for the orders is not correct."| `OCO`订单中设置的价格不符合报价规则：  
+`apiKey`| vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A  
+`secretKey`| NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j  
   
-The rules are:   
+**警告：请勿与任何人分享您的 API 密钥和秘钥。**
+
+此处提供的示例密钥仅用于示范说明目的。
+
+交易对名称完全由 ASCII 字符组成的请求示例：
+
+参数| 取值  
+---|---  
+`symbol`| LTCBTC  
+`side`| BUY  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.1  
+`recvWindow`| 5000  
+`timestamp`| 1499827319559  
   
-`SELL Orders`: Limit Price > Last Price > Stop Price   
+交易对名称包含非 ASCII 字符的请求示例：
+
+参数| 取值  
+---|---  
+`symbol`| １２３４５６  
+`side`| BUY  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.1  
+`recvWindow`| 5000  
+`timestamp`| 1499827319559  
   
-`BUY Orders`: Limit Price < Last Price < Stop Price  
-"OCO orders are not supported for this symbol"| `OCO`订单不支持该交易对  
-"Quote order qty market orders are not support for this symbol."| 这个交易对，市价单不支持参数`quoteOrderQty`  
-"Trailing stop orders are not supported for this symbol."| 此symbol不支持 `trailingDelta` ｜  
-"Order cancel-replace is not supported for this symbol."| 此symbol不支持 `POST /api/v3/order/cancelReplace` 或者 `order.cancelReplace` (WebSocket API) ｜  
-"This symbol is not permitted for this account."| 账户和交易对的权限不一致 (比如 `SPOT`, `MARGIN` 等)。｜  
-"This symbol is restricted for this account."| 账户没有权限在此交易对交易 (比如账户只拥有 `ISOLATED_MARGIN`权限，则无法下`SPOT` 订单)。 ｜  
-"Order was not canceled due to cancel restrictions."| `cancelRestrictions` 设置为 `ONLY_NEW` 但订单状态不是 `NEW`   
-或   
-`cancelRestrictions` 设置为 `ONLY_PARTIALLY_FILLED` 但订单状态不是 `PARTIALLY_FILLED`。 ｜  
+**第一步: 构建签名 payload。**
+
+  1. 将参数格式化为 `参数=取值` 对并用 `&` 分隔每个参数对。
+  2. 对字符串进行百分比编码（percent-encoded）。
+
+
+
+对于第一组示例参数（仅限 ASCII 字符）， `parameter=value` 字符串将如下所示：
+    
+    
+    symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符），`parameter=value` 字符串将如下所示：
+    
+    
+    symbol=１２３４５６&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559  
+    
+
+**第二步: 计算签名。**
+
+  1. 使用 API 密钥中的 `secretKey` 作为 HMAC-SHA-256 算法的签名密钥。
+  2. 对步骤 1 中构建的签名 payload 进行签名。
+  3. 将 HMAC-SHA-256 的输出编码为十六进制字符串。
+
+
+
+请注意，`secretKey` 和 payload 是**大小写敏感的** ，而生成的签名值是不区分大小写的。
+
+**示例命令**
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    $ echo -n "symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559" | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    $ echo -n "symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559" | openssl dgst -sha256 -hmac "NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    e1353ec6b14d888f1164ae9af8228a3dbd508bc82eb867db8ab6046442f33ef3  
+    
+
+**第三步: 为请求添加签名**
+
+通过在查询字符串中添加 `signature` 参数来完成请求。
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    curl -s -v -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71"  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    curl -s -v -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559&signature=e1353ec6b14d888f1164ae9af8228a3dbd508bc82eb867db8ab6046442f33ef3"  
+    
+
+以下是一个执行上述所有步骤的 Bash 脚本示例：
+    
+    
+    apiKey="vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"  
+    secretKey="NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j"  
+      
+    payload="symbol=LTCBTC&side=BUY&type=LIMIT&timeInForce=GTC&quantity=1&price=0.1&recvWindow=5000&timestamp=1499827319559"  
+      
+    # 对请求进行签名  
+      
+    signature=$(echo -n "$payload" | openssl dgst -sha256 -hmac "$secretKey")  
+    signature=${signature#*= }    # Keep only the part after the "= "  
+      
+    # 发送请求  
+      
+    curl -H "X-MBX-APIKEY: $apiKey" -X POST "https://api.binance.com/api/v3/order?$payload&signature=$signature"  
+      
+    
+
+#### RSA Keys[​](/docs/zh-CN/wallet/general-info#rsa-keys "RSA Keys的直接链接")
+
+不使用分隔符，把查询字符串与 `HTTP body` 连接在一起将生成请求的签名 payload。任何非 ASCII 字符在签名前都必须进行百分比编码（percent-encoded）。
+
+要获取 API 密钥，您需要将 RSA 公钥上传到您的帐户中，系统将为您提供相应的 API 密钥。
+
+仅支持 `PKCS#8` 密钥。
+
+在以下示例中，其中一个例子中的交易对名称完全由 ASCII 字符组成，另一个例子中的交易对名称则包含非 ASCII 字符。
+
+这些示例假设私钥存储在文件 `./test-prv-key.pem` 中。
+
+Key| Value  
+---|---  
+`apiKey`| CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ  
   
-## 关于 POST /api/v3/order/cancelReplace 的错误[​](/docs/zh-CN/wallet/error-code#关于-post-apiv3ordercancelreplace-的错误 "关于 POST /api/v3/order/cancelReplace 的错误的直接链接")
+交易对名称完全由 ASCII 字符组成的请求示例：
 
-### -2021 Order cancel-replace partially failed[​](/docs/zh-CN/wallet/error-code#-2021-order-cancel-replace-partially-failed "-2021 Order cancel-replace partially failed的直接链接")
+参数| 取值  
+---|---  
+`symbol`| BTCUSDT  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+交易对名称包含非 ASCII 字符的请求示例：
 
-收到该错误码代表撤单**或者** 下单失败。
+参数| 取值  
+---|---  
+`symbol`| １２３４５６  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+**第一步: 构建签名 payload。**
 
-### -2022 Order cancel-replace failed.[​](/docs/zh-CN/wallet/error-code#-2022-order-cancel-replace-failed "-2022 Order cancel-replace failed.的直接链接")
+  1. 将参数格式化为 `参数=取值` 对并用 `&` 分隔每个参数对。
+  2. 对字符串进行百分比编码（percent-encoded）。
 
-收到该错误码代表撤单**和** 下单都失败。
+
+
+对于第一组示例参数（仅限 ASCII 字符）， `parameter=value` 字符串将如下所示：
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符），`parameter=value` 字符串将如下所示：
+    
+    
+    symbol=１２３４５６=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+**第二步: 计算签名。**
+
+  1. 使用 RSASSA-PKCS1-v1_5 算法和 SHA-256 哈希函数对步骤 1 中构建的签名 payload 进行签名。
+  2. 将输出结果编码为 base64 格式。
+
+
+
+请注意，payload 和生成的`签名值`是**大小写敏感的** 。
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    $  echo -n 'symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000' | openssl dgst -sha256 -sign ./test-prv-key.pem | openssl enc -base64 -A | tr -d '\n'  
+    HZ8HOjiJ1s/igS9JA+n7+7Ti/ihtkRF5BIWcPIEluJP6tlbFM/Bf44LfZka/iemtahZAZzcO9TnI5uaXh3++lrqtNonCwp6/245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH+XxaCmR0WcvlKjNQnp12/eKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang/1WOq+Jaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT/fNnMRxFc7u+j3qI//5yuGuu14KR0MuQKKCSpViieD+fIti46sxPTsjSemoUKp0oXA==  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    $  echo -n 'symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000' | openssl dgst -sha256 -sign ./test-prv-key.pem | openssl enc -base64 -A | tr -d '\n'  
+      
+    qJtv66wyp/1mZE+mIFAAMUoTe8xkmLN7/eAZjuC9x1ocxovItHLl/sNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M+JNIMz5UFxfeA53rXjFlvsyH1Sig+OuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C/QMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt/GuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng==  
+    
+
+  3. 对 base64 格式的字符串进行百分比编码（percent-encoded）。
+
+
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    HZ8HOjiJ1s%2FigS9JA%2Bn7%2B7Ti%2FihtkRF5BIWcPIEluJP6tlbFM%2FBf44LfZka%2FiemtahZAZzcO9TnI5uaXh3%2B%2BlrqtNonCwp6%2F245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH%2BXxaCmR0WcvlKjNQnp12%2FeKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang%2F1WOq%2BJaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT%2FfNnMRxFc7u%2Bj3qI%2F%2F5yuGuu14KR0MuQKKCSpViieD%2BfIti46sxPTsjSemoUKp0oXA%3D%3D  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D  
+    
+
+**第三步: 为请求添加签名**
+
+通过在查询字符串中添加 `signature` 参数来完成请求。
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    curl -H "X-MBX-APIKEY: CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ" -X POST 'https://api.binance.com/api/v3/order?symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=HZ8HOjiJ1s%2FigS9JA%2Bn7%2B7Ti%2FihtkRF5BIWcPIEluJP6tlbFM%2FBf44LfZka%2FiemtahZAZzcO9TnI5uaXh3%2B%2BlrqtNonCwp6%2F245UFWkiW1elpgtVAmJPbogcAv6rSlokztAfWk296ZJXzRDYAtzGH0gq7CgSJKfH%2BXxaCmR0WcvlKjNQnp12%2FeKXJYO4tDap8UCBLuyxDnR7oJKLHQHJLP0r0EAVOOSIbrFang%2F1WOq%2BJaq4Efc4XpnTgnwlBbWTmhWDR1pvS9iVEzcSYLHT%2FfNnMRxFc7u%2Bj3qI%2F%2F5yuGuu14KR0MuQKKCSpViieD%2BfIti46sxPTsjSemoUKp0oXA%3D%3D'  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    curl -H "X-MBX-APIKEY: CAvIjXy3F44yW6Pou5k8Dy1swsYDWJZLeoK2r8G4cFDnE9nosRppc2eKc1T8TRTQ" -X POST 'https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D'  
+    
+
+以下是一个执行上述所有步骤的 Bash 脚本示例：
+    
+    
+    function rawurlencode {  
+      local string="${1}"  
+      local strlen=${#string}  
+      local encoded=""  
+      local pos c o  
+      
+      for (( pos=0 ; pos<strlen ; pos++ )); do  
+         c=${string:$pos:1}  
+         case "$c" in  
+            [-_.~a-zA-Z0-9] ) o="${c}" ;;  
+            * )               printf -v o '%%%02x' "'$c"  
+         esac  
+         encoded+="${o}"  
+      done  
+      echo "${encoded}"  
+    }  
+      
+    # 设置身份验证：  
+    API_KEY="替换成您的 API Key"  
+    PRIVATE_KEY_PATH="test-prv-key.pem"  
+    # 设置您的请求:  
+    API_METHOD="POST"  
+    API_CALL="api/v3/order"  
+    API_PARAMS="symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2"  
+    # 计算签名：  
+    timestamp=$(date +%s000)  
+    api_params_with_timestamp="$API_PARAMS&timestamp=$timestamp"  
+      
+    rawSignature=$(echo -n $api_params_with_timestamp | openssl dgst -keyform PEM -sha256 -sign $PRIVATE_KEY_PATH | openssl enc -base64 | tr -d '\n')  
+      
+    # 对签名编码进行百分号编码（percent-encoding）  
+    signature=$(rawurlencode "$rawSignature")  
+      
+    # 发送请求：  
+    curl -H "X-MBX-APIKEY: $API_KEY" -X "$API_METHOD" \  
+        "https://api.binance.com/$API_CALL?$api_params_with_timestamp" \  
+        --data-urlencode "signature=$signature"  
+    
+
+#### Ed25519 Keys[​](/docs/zh-CN/wallet/general-info#ed25519-keys "Ed25519 Keys的直接链接")
+
+**我们强烈建议使用 Ed25519 API keys** ，因为它在所有受支持的 API key 类型中提供最佳性能和安全性。
+
+不使用分隔符，把查询字符串与 `HTTP body` 连接在一起将生成请求的签名 payload。任何非 ASCII 字符在签名前都必须进行百分比编码（percent-encoded）。
+
+在以下示例中，其中一个例子中的交易对名称完全由 ASCII 字符组成，另一个例子中的交易对名称则包含非 ASCII 字符。
+
+这些示例假设私钥存储在文件 `./test-prv-key.pem` 中。
+
+Key| Value  
+---|---  
+`apiKey`| 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO  
+  
+交易对名称完全由 ASCII 字符组成的请求示例：
+
+参数| 取值  
+---|---  
+`symbol`| BTCUSDT  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+交易对名称包含非 ASCII 字符的请求示例：
+
+参数| 取值  
+---|---  
+`symbol`| １２３４５６  
+`side`| SELL  
+`type`| LIMIT  
+`timeInForce`| GTC  
+`quantity`| 1  
+`price`| 0.2  
+`timestamp`| 1668481559918  
+`recvWindow`| 5000  
+  
+**第一步: 构建签名 payload。**
+
+  1. 将参数格式化为 `参数=取值` 对并用 `&` 分隔每个参数对。
+  2. 对字符串进行百分比编码（percent-encoded）。
+
+
+
+对于第一组示例参数（仅限 ASCII 字符）， `parameter=value` 字符串将如下所示：
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符），`parameter=value` 字符串将如下所示：
+    
+    
+    symbol=１２３４５６&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+对字符串进行百分比编码（percent-encoded）后，签名 payload 如下所示：
+    
+    
+    symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000  
+    
+
+**第二步: 计算签名。**
+
+  1. 对 payload 进行签名。
+  2. 将输出结果编码为 base64 格式。
+
+
+
+请注意，payload 和生成的`签名值`是**大小写敏感的** 。
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    echo -n "symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000" | openssl dgst -keyform PEM -sha256 -sign ./test-prv-key.pem | openssl enc -base64 | tr -d '\n'  
+      
+    HaZnek7KOGa/k5+f6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD/DYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt+BZxEHBN9OYQKpoe0+ovjnXyVOaH8VUKhE/ghUWnThrXJr+hmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr/r+8n6qeEKMYB5j/1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61/ZJv5BTJpa+z5Lv1W9v6jHQWRX2O8uaG3KU/lR3spR7+oGlWOw=  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    echo -n "symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000" | openssl dgst -keyform PEM -sha256 -sign ./test-prv-key.pem | openssl enc -base64 | tr -d '\n'  
+      
+    qJtv66wyp/1mZE+mIFAAMUoTe8xkmLN7/eAZjuC9x1ocxovItHLl/sNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M+JNIMz5UFxfeA53rXjFlvsyH1Sig+OuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C/QMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt/GuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng==  
+    
+
+  3. 对 base64 格式的字符串进行百分比编码（percent-encoded）。
+
+
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    HaZnek7KOGa%2Fk5%2Bf6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD%2FDYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt%2BBZxEHBN9OYQKpoe0%2BovjnXyVOaH8VUKhE%2FghUWnThrXJr%2BhmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr%2Fr%2B8n6qeEKMYB5j%2F1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61%2FZJv5BTJpa%2Bz5Lv1W9v6jHQWRX2O8uaG3KU%2FlR3spR7%2BoGlWOw%3D  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D  
+    
+
+**第三步: 为请求添加签名**
+
+通过在查询字符串中添加 `signature` 参数来完成请求。
+
+对于第一组示例参数（仅限 ASCII 字符）：
+    
+    
+    curl -H "X-MBX-APIKEY: 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO" -X POST 'hhttps://api.binance.com/api/v3/order?symbol=BTCUSDT&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=HaZnek7KOGa%2Fk5%2Bf6Q1nw8lzMUpo36mRVvvLHCMUCXxlmdQQGZge1luAUKnleD%2FDYeD19YrqzeHbb6xU3MkSIXKhAO1MaYq48uGVYb3vJScEZVOutgMInrZzUcCWNulNkfcbmExSiymCZ5xQBw5QDuzpuDFqRZ1Xt%2BBZxEHBN9OYQKpoe0%2BovjnXyVOaH8VUKhE%2FghUWnThrXJr%2BhmSc5t7ggjiVPQc7pGn3qSNGCQwdpkQC9GHMr%2Fr%2B8n6qeEKMYB5j%2F1wC4d8Jae8FQiU8xcXR0NlUgV2LAw61%2FZJv5BTJpa%2Bz5Lv1W9v6jHQWRX2O8uaG3KU%2FlR3spR7%2BoGlWOw%3D'  
+    
+
+对于第二组示例参数（包含一些 Unicode 字符）：
+    
+    
+    curl -H "X-MBX-APIKEY: 4yNzx3yWC5bS6YTwEkSRaC0nRmSQIIStAUOh1b6kqaBrTLIhjCpI5lJH8q8R8WNO" -X POST 'https://api.binance.com/api/v3/order?symbol=%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%94%EF%BC%95%EF%BC%96&&side=SELL&type=LIMIT&timeInForce=GTC&quantity=1&price=0.2&timestamp=1668481559918&recvWindow=5000&signature=qJtv66wyp%2F1mZE%2BmIFAAMUoTe8xkmLN7%2FeAZjuC9x1ocxovItHLl%2FsNK7Wq8QjgiHqGn0bb8P7yVvGBEd1gFe71NQ8aM0M%2BJNIMz5UFxfeA53rXjFlvsyH1Sig%2BOuO9Nz5nhCaJ6bEfj2iuv7w27pB3L8MVqmoCi6D9C%2FQMiLxtPaR70CxtnvoOlIgPmpv2bQy029A31NEK19ieVLkoyp1EUkXRaX3v0mohx8yMnUG1dhX9nUg3Oy8TYZ03DQy7kHDGkMKisNX7rt%2FGuGx1HIgjFclDGLsbAFIodvSLjm9FbseasMELoxlAJDlwRnW8zo5sQmL0Fz7ao935QBynrng%3D%3D'  
+    
+
+以下是一个执行上述所有步骤的 Bash 脚本示例：
+    
+    
+    #!/usr/bin/env python3  
+      
+    import base64  
+    import requests  
+    import time  
+    import urllib.parse  
+    from cryptography.hazmat.primitives.serialization import load_pem_private_key  
+      
+    # 设置身份验证：  
+    API_KEY='替换成您的 API Key'  
+    PRIVATE_KEY_PATH='test-prv-key.pem'  
+      
+    # 加载 private key。  
+    # 在这个例子中，private key 没有加密，但我们建议使用强密码以提高安全性。  
+    with open(PRIVATE_KEY_PATH, 'rb') as f:  
+        private_key = load_pem_private_key(data=f.read(), password=None)  
+      
+    # 设置请求参数：  
+    params = {  
+        'symbol':       'BTCUSDT',  
+        'side':         'SELL',  
+        'type':         'LIMIT',  
+        'timeInForce':  'GTC',  
+        'quantity':     '1.0000000',  
+        'price':        '0.20',  
+    }  
+      
+    # 参数中加时间戳：  
+    timestamp = int(time.time() * 1000) # 以毫秒为单位的 UNIX 时间戳  
+    params['timestamp'] = timestamp  
+      
+    # 参数中加签名：  
+    payload = urllib.parse.urlencode(params, encoding='UTF-8')  
+    signature = base64.b64encode(private_key.sign(payload.encode('ASCII')))  
+    params['signature'] = signature  
+      
+    # 发送请求：  
+    headers = {  
+        'X-MBX-APIKEY': API_KEY,  
+    }  
+    response = requests.post(  
+        'https://api.binance.com/api/v3/order',  
+        headers=headers,  
+        data=params,  
+    )  
+    print(response.json())

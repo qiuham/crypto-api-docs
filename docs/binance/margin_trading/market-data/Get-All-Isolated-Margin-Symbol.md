@@ -2,95 +2,77 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol
 api_type: Market Data
-updated_at: 2026-01-15T23:48:31.165086
+updated_at: 2026-05-27 18:56:44.019839
 ---
 
-# Get All Isolated Margin Symbol(MARKET_DATA)
+# Get All Margin Assets (MARKET_DATA)
 
-## API Description[​](/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#api-description "Direct link to API Description")
 
-Get All Isolated Margin Symbol
+Get All Margin Assets.
 
-## HTTP Request[​](/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/margin/isolated/allPairs`
+GET `/sapi/v1/margin/allAssets`
 
-## Request Weight[​](/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#request-weight "Direct link to Request Weight")
 
-**10(IP)**
+**1(IP)**
 
-## Request Parameters[​](/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-symbol| STRING| NO|   
-recvWindow| LONG| NO| No more than 60000  
-timestamp| LONG| YES|   
+asset| STRING| NO|   
   
-## Response Example[​](/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#response-example "Direct link to Response Example")
     
     
     [  
-        {  
-            "base": "BNB",  
-            "isBuyAllowed": true,  
-            "isMarginTrade": true,  
-            "isSellAllowed": true,  
-            "quote": "BTC",  
-            "symbol": "BNBBTC"       
-        },  
-        {  
-            "base": "TRX",  
-            "isBuyAllowed": true,  
-            "isMarginTrade": true,  
-            "isSellAllowed": true,  
-            "quote": "BTC",  
-            "symbol": "TRXBTC"      
-        }  
+      {  
+        "assetFullName": "USD coin",  
+        "assetName": "USDC",  
+        "isBorrowable": true,  
+        "isMortgageable": true,  
+        "userMinBorrow": "0.00000000",  
+        "userMinRepay": "0.00000000",  
+        "delistTime": 1704973040  
+      }  
     ]
 
 ---
 
-# 获取所有逐仓杠杆交易对(MARKET_DATA)
+# 获取所有杠杆资产信息 (MARKET_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#接口描述 "接口描述的直接链接")
 
-获取所有逐仓杠杆交易对
+获取所有杠杆资产信息
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/isolated/allPairs`
+GET `/sapi/v1/margin/allAssets`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#请求权重 "请求权重的直接链接")
 
-**10(IP)**
+**1(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#请求参数 "请求参数的直接链接")
 
-名称| 类型| 是否必需| 描述  
+Name| Type| Mandatory| Description  
 ---|---|---|---  
-symbol| STRING| NO|   
-recvWindow| LONG| NO| 赋值不能大于 60000  
-timestamp| LONG| YES|   
+asset| STRING| NO|   
   
-## 响应示例[​](/docs/zh-CN/margin_trading/market-data/Get-All-Isolated-Margin-Symbol#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#响应示例 "响应示例的直接链接")
     
     
     [  
-        {  
-            "base": "BNB",  
-            "isBuyAllowed": true,  
-            "isMarginTrade": true,  
-            "isSellAllowed": true,  
-            "quote": "BTC",  
-            "symbol": "BNBBTC"       
-        },  
-        {  
-            "base": "TRX",  
-            "isBuyAllowed": true,  
-            "isMarginTrade": true,  
-            "isSellAllowed": true,  
-            "quote": "BTC",  
-            "symbol": "TRXBTC"      
-        }  
+      {  
+        "assetFullName": "USD coin",  
+        "assetName": "USDC",  
+        "isBorrowable": true,  
+        "isMortgageable": true,  
+        "userMinBorrow": "0.00000000",  
+        "userMinRepay": "0.00000000",  
+        "delistTime": 1704973040  
+      }  
     ]

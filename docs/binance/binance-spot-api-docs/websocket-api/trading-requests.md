@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/trading-requests
 api_type: WebSocket
-updated_at: 2026-01-15T23:37:21.405142
+updated_at: 2026-05-27 18:55:20.624375
 ---
 
 # Trading requests
@@ -360,6 +360,7 @@ Field| Description| Visibility conditions| Examples
 `pegOffsetType`| Price peg offset type| Only for pegged orders, if requested| `"pegOffsetType": "PRICE_LEVEL"`  
 `pegOffsetValue`| Price peg offset value| Only for pegged orders, if requested| `"pegOffsetValue": 5`  
 `peggedPrice`| Current price order is pegged at| Only for pegged orders, once determined| `"peggedPrice": "87523.83710000"`  
+`expiryReason`| Cause of the order’s expiration| When an order has expired| `"expiryReason": "INSUFFICIENT_LIQUIDITY"`  
   
 ### Test new order (TRADE)[​](/docs/binance-spot-api-docs/websocket-api/trading-requests#test-new-order-trade "Direct link to Test new order \(TRADE\)")
     
@@ -684,9 +685,11 @@ When an order list is canceled:
     }  
     
 
-Cancel an existing order and immediately place a new order instead of the canceled one.
+  * Cancel an existing order and immediately place a new order instead of the canceled one.
+  * A new order that was not attempted (i.e. when `newOrderResult: NOT_ATTEMPTED`), will still increase the unfilled order count by 1.
+  * You can only cancel an individual order from an orderList using this method, but the result is the same as canceling the entire orderList.
 
-A new order that was not attempted (i.e. when `newOrderResult: NOT_ATTEMPTED`), will still increase the unfilled order count by 1.
+
 
 **Weight:** 1
 
@@ -2072,7 +2075,7 @@ Place an OTOCO.
   * The first order is called the **working order** and must be `LIMIT` or `LIMIT_MAKER`. Initially, only the working order goes on the order book. 
     * The behavior of the working order is the same as the [OTO](/docs/binance-spot-api-docs/websocket-api/trading-requests#place-new-order-list---oto-trade).
   * OTOCO has 2 pending orders (pending above and pending below), forming an OCO pair. The pending orders are only placed on the order book when the working order gets **fully filled**. 
-    * The rules of the pending above and pending below follow the same rules as the [Order list OCO](/docs/binance-spot-api-docs/websocket-api/trading-requests#new-order-list---oco-trade).
+    * The rules of the pending above and pending below follow the same rules as the [Order list OCO](/docs/binance-spot-api-docs/websocket-api/trading-requests#place-new-order-list---oco-trade).
   * OTOCOs add **3 orders** to the `EXCHANGE_MAX_NUM_ORDERS` filter and `MAX_NUM_ORDERS` filter.
 
 
@@ -2097,7 +2100,7 @@ A new order list with the same listClientOrderId is accepted only when the previ
 Automatically generated if not sent.  
 `workingPrice`| DECIMAL| YES|   
 `workingQuantity`| DECIMAL| YES|   
-`workingIcebergQty`| DECIMAL| NO| This can only be used if `workingTimeInForce` is `GTC`.  
+`workingIcebergQty`| DECIMAL| NO| This can only be used if `workingTimeInForce` is `GTC`, or if `workingType` is `LIMIT_MAKER`.  
 `workingTimeInForce`| ENUM| NO| Supported values: [Time In Force](/docs/binance-spot-api-docs/enums#timeinforce)  
 `workingStrategyId`| LONG| NO| Arbitrary numeric value identifying the working order within an order strategy.  
 `workingStrategyType`| INT| NO| Arbitrary numeric value identifying the working order strategy.   
@@ -2730,7 +2733,7 @@ Places an order using smart order routing (SOR).
 
 This adds 1 order to the `EXCHANGE_MAX_ORDERS` filter and the `MAX_NUM_ORDERS` filter.
 
-Read [SOR FAQ](/docs/faqs/sor_faq) to learn more.
+Read [SOR FAQ](/docs/binance-spot-api-docs/faqs/sor_faq) to learn more.
 
 **Weight:** 1
 
@@ -3257,7 +3260,7 @@ TIF| 描述
 `pegOffsetValue`| 挂钩价格偏移值| 如若需要，仅用于挂钩订单| `"pegOffsetValue": 5`  
 `peggedPrice`| 订单对应的当前挂钩价格| 一旦确定，仅用于挂钩订单| `"peggedPrice": "87523.83710000"`  
   
-### 测试下单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#测试下单-trade "测试下单 \(TRADE\)的直接链接")
+### 测试下单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#测试下单-trade "测�试下单 \(TRADE\)的直接链接")
     
     
     {  
@@ -3580,9 +3583,11 @@ TIF| 描述
     }  
     
 
-撤消挂单并在同个交易对上重新下单。
+  * 撤消一个现有订单，并立即重新下单。
+  * 即使新订单未被尝试（即 `newOrderResult: NOT_ATTEMPTED`），未成交订单数量仍会增加1。
+  * 通过此接口只能撤消订单列表中的单个订单，但结果与撤消整个订单列表相同。
 
-即使请求中没有尝试发送新订单，比如(`newOrderResult: NOT_ATTEMPTED`)，未成交订单的数量仍然会加1。
+
 
 **权重:** 1
 
@@ -4929,7 +4934,7 @@ TIF| 描述
 
 **注意:** 上面的 payload 没有显示所有可以出现的字段，更多请看 [订单响应中的特定条件时才会出现的字段](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#conditional-fields-in-order-responses) 部分。
 
-#### 发送新订单列表 - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#发送新订单列表---otoco-trade "发送新订单列表 - OTOCO \(TRADE\)的直接链接")
+#### 发送新订单列表 - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#发送新订单列表---otoco-trade "发送新订单��列表 - OTOCO \(TRADE\)的直接链接")
     
     
     {  
@@ -5356,7 +5361,7 @@ TIF| 描述
 `pendingAboveClientOrderId`| STRING| NO| 待执行上方订单中开放订单的任意唯一 ID。如果未发送，则自动生成。  
 `pendingAbovePrice`| DECIMAL| NO| 当 `pendingAboveType` 为 `STOP_LOSS_LIMIT`、`LIMIT_MAKER` 或 `TAKE_PROFIT_LIMIT` 时，可用于指定限价。  
 `pendingAboveStopPrice`| DECIMAL| NO| 当 `pendingAboveType` 为 `STOP_LOSS`、`STOP_LOSS_LIMIT`、`TAKE_PROFIT`、`TAKE_PROFIT_LIMIT` 时可用。  
-`pendingAboveTrailingDelta`| DECIMAL| NO| 详见 [追踪止盈止损订单常见问题](/docs/zh-CN/faqs/trailing-stop-faq)  
+`pendingAboveTrailingDelta`| DECIMAL| NO| 详见 [追踪止盈止损订单常见问题](/docs/zh-CN/binance-spot-api-docs/faqs/trailing-stop-faq)  
 `pendingAboveIcebergQty`| DECIMAL| NO| 仅当 `pendingAboveTimeInForce` 为 `GTC` 或 `pendingAboveType` 为 `LIMIT_MAKER` 时可用。  
 `pendingAboveTimeInForce`| ENUM| NO|   
 `pendingAboveStrategyId`| LONG| NO| 用于标识订单策略中待执行上方订单的任意数值。  
@@ -5594,7 +5599,9 @@ TIF| 描述
     }  
     
 
-### 下 SOR 订单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#下-sor-订单-trade "下 SOR 订单 \(TRADE\)的直接链接")
+### SOR[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#sor "SOR的直接链接")
+
+#### 下 SOR 订单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#下-sor-订单-trade "下 SOR 订单 \(TRADE\)的直接链接")
     
     
     {  
@@ -5618,7 +5625,7 @@ TIF| 描述
 
 这个请求会把1个订单添加到 `EXCHANGE_MAX_ORDERS` 过滤器和 `MAX_NUM_ORDERS` 过滤器中。
 
-请参阅 [智能指令路由 (SOR)](/docs/zh-CN/faqs/sor_faq) 来了解更多详情。
+请参阅 [智能指令路由 (SOR)](/docs/zh-CN/binance-spot-api-docs/faqs/sor_faq) 来了解更多详情。
 
 **权重:** 1
 

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-history-v2
 api_type: REST
-updated_at: 2026-01-15T23:49:50.492151
+updated_at: 2026-05-27 18:59:58.482917
 ---
 
 # Deposit History V2 (for local entities that required travel rule) (supporting network) (USER_DATA)
@@ -36,6 +36,7 @@ timestamp| LONG| YES|
   
 >   * Please notice the default `startTime` and `endTime` to make sure that time interval is within 0-90 days.
 >   * If both `startTime` and `endTime` are sent, time between `startTime` and `endTime` must be less than 90 days.
+>   * Please, note that due to network-specific characteristics, the returned source address may be inaccurate. If multiple source addresses are found, only the first one will be returned.
 > 
 
 
@@ -49,14 +50,14 @@ timestamp| LONG| YES|
             "network": "AVAXC",  
             "coin": "AVAX",  
             "depositStatus": 1,  
-            "travelRuleReqStatus": 0, // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED   
+            "travelRuleReqStatus": 0,                                                         // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED  
             "address": "0x0010627ab66d69232f4080d54e0f838b4dc3894a",  
             "addressTag": "",  
             "txId": "0xdde578983015741eed764e7ca10defb5a2caafdca3db5f92872d24a96beb1879",  
             "transferType": 0,  
             "confirmTimes": "12/12",  
-            "requireQuestionnaire": false, // true: This deposit require user to answer questionnaire to get it credited  
-                                           // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
+            "requireQuestionnaire": false,                                                    // true: This deposit require user to answer questionnaire to get it credited  
+                                                                                              // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
             "questionnaire": {  
                 "vaspName": "BINANCE",  
                 "depositOriginator": 0  
@@ -112,14 +113,14 @@ timestamp| LONG| YES|
             "network": "AVAXC",  
             "coin": "AVAX",  
             "depositStatus": 1,  
-            "travelRuleReqStatus": 0, // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED   
+            "travelRuleReqStatus": 0,                                                         // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED  
             "address": "0x0010627ab66d69232f4080d54e0f838b4dc3894a",  
             "addressTag": "",  
             "txId": "0xdde578983015741eed764e7ca10defb5a2caafdca3db5f92872d24a96beb1879",  
             "transferType": 0,  
             "confirmTimes": "12/12",  
-            "requireQuestionnaire": false, // true: This deposit require user to answer questionnaire to get it credited  
-                                           // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
+            "requireQuestionnaire": false,                                                    // true: This deposit require user to answer questionnaire to get it credited  
+                                                                                              // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
             "questionnaire": {  
                 "vaspName": "BINANCE",  
                 "depositOriginator": 0  

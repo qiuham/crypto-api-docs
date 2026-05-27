@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/managed-sub-account/Query-Managed-Sub-account-Margin-Asset-Details
 api_type: Account
-updated_at: 2026-01-15T23:51:32.201985
+updated_at: 2026-05-27 19:03:07.658096
 ---
 
 # Query Managed Sub-account Margin Asset Details (For Investor Master Account) (USER_DATA)

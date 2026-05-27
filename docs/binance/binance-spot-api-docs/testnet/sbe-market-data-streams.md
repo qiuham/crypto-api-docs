@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/sbe-market-data-streams
 api_type: Market Data
-updated_at: 2026-01-15T23:36:43.114403
+updated_at: 2026-05-27 18:54:47.973180
 ---
 
 # SBE Market Data Streams
@@ -84,7 +84,7 @@ Incremental updates to the order book, pushed at regular intervals. Use this str
 
 **Stream Name** : <symbol>@depth
 
-**Update Speed:** 50ms
+**Update Speed:** 25ms
 
 ### Partial Book Depth Streams[​](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#partial-book-depth-streams "Direct link to Partial Book Depth Streams")
 
@@ -177,7 +177,7 @@ Incremental updates to the order book, pushed at regular intervals. Use this str
 
 **Stream Name** : <symbol>@depth
 
-**Update Speed:** 50ms
+**Update Speed:** 25ms
 
 ### Partial Book Depth Streams[​](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#partial-book-depth-streams "Partial Book Depth Streams的直接链接")
 

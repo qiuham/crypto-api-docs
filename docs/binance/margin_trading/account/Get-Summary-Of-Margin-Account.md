@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Get-Summary-Of-Margin-Account
 api_type: Account
-updated_at: 2026-01-15T23:48:17.734565
+updated_at: 2026-05-27 18:56:11.924153
 ---
 
 # Get Summary of Margin account (USER_DATA)

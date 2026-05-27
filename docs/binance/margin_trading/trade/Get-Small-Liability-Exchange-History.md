@@ -2,91 +2,249 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Get-Small-Liability-Exchange-History
 api_type: Trading
-updated_at: 2026-01-15T23:48:43.826250
+updated_at: 2026-05-27 18:57:27.650121
 ---
 
-# Get Small Liability Exchange History (USER_DATA)
+# Margin Account Cancel all Open Orders on a Symbol (TRADE)
 
-## API Description[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-History#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#api-description "Direct link to API Description")
 
-Get Small liability Exchange History
+Cancels all active orders on a symbol for margin account.  
+  
+This includes OCO orders.
 
-## HTTP Request[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-History#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/margin/exchange-small-liability-history`
+DELETE /sapi/v1/margin/openOrders
 
-## Request Weight[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-History#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#request-weight "Direct link to Request Weight")
 
-**100(UID)**
+**1**
 
-## Request Parameters[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-History#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-current| INT| YES| Currently querying page. Start from 1. Default:1  
-size| INT| YES| Default:10, Max:100  
-startTime| LONG| NO| Default: 30 days from current timestamp  
-endTime| LONG| NO| Default: present timestamp  
-recvWindow| LONG| NO|   
+symbol| STRING| YES|   
+isIsolated| STRING| NO| for isolated margin or not, "TRUE", "FALSE"，default "FALSE"  
+recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/margin_trading/trade/Get-Small-Liability-Exchange-History#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#response-example "Direct link to Response Example")
     
     
-    {  
-        "total": 1,  
-        "rows": [  
+    [  
+      {  
+        "symbol": "BTCUSDT",  
+        "isIsolated": true,       // if isolated margin  
+        "origClientOrderId": "E6APeyTJvkMvLMYMqu1KQ4",  
+        "orderId": 11,  
+        "orderListId": -1,  
+        "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+        "price": "0.089853",  
+        "origQty": "0.178622",  
+        "executedQty": "0.000000",  
+        "cummulativeQuoteQty": "0.000000",  
+        "status": "CANCELED",  
+        "timeInForce": "GTC",  
+        "type": "LIMIT",  
+        "side": "BUY",  
+        "selfTradePreventionMode": "NONE"  
+      },  
+      {  
+        "symbol": "BTCUSDT",  
+        "isIsolated": false,       // if isolated margin  
+        "origClientOrderId": "A3EF2HCwxgZPFMrfwbgrhv",  
+        "orderId": 13,  
+        "orderListId": -1,  
+        "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+        "price": "0.090430",  
+        "origQty": "0.178622",  
+        "executedQty": "0.000000",  
+        "cummulativeQuoteQty": "0.000000",  
+        "status": "CANCELED",  
+        "timeInForce": "GTC",  
+        "type": "LIMIT",  
+        "side": "BUY",  
+        "selfTradePreventionMode": "NONE"  
+      },  
+      {  
+        "orderListId": 1929,  
+        "contingencyType": "OCO",  
+        "listStatusType": "ALL_DONE",  
+        "listOrderStatus": "ALL_DONE",  
+        "listClientOrderId": "2inzWQdDvZLHbbAmAozX2N",  
+        "transactionTime": 1585230948299,  
+        "symbol": "BTCUSDT",  
+        "isIsolated": true,       // if isolated margin  
+        "orders": [  
           {  
-            "asset": "ETH",  
-            "amount": "0.00083434",  
-            "targetAsset": "BUSD",  
-            "targetAmount": "1.37576819",  
-            "bizType": "EXCHANGE_SMALL_LIABILITY",  
-            "timestamp": 1672801339253  
+            "symbol": "BTCUSDT",  
+            "orderId": 20,  
+            "clientOrderId": "CwOOIPHSmYywx6jZX77TdL"  
+          },  
+          {  
+            "symbol": "BTCUSDT",  
+            "orderId": 21,  
+            "clientOrderId": "461cPg51vQjV3zIMOXNz39"  
+          }  
+        ],  
+        "orderReports": [  
+          {  
+            "symbol": "BTCUSDT",  
+            "origClientOrderId": "CwOOIPHSmYywx6jZX77TdL",  
+            "orderId": 20,  
+            "orderListId": 1929,  
+            "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+            "price": "0.668611",  
+            "origQty": "0.690354",  
+            "executedQty": "0.000000",  
+            "cummulativeQuoteQty": "0.000000",  
+            "status": "CANCELED",  
+            "timeInForce": "GTC",  
+            "type": "STOP_LOSS_LIMIT",  
+            "side": "BUY",  
+            "stopPrice": "0.378131",  
+            "icebergQty": "0.017083"  
+          },  
+          {  
+            "symbol": "BTCUSDT",  
+            "origClientOrderId": "461cPg51vQjV3zIMOXNz39",  
+            "orderId": 21,  
+            "orderListId": 1929,  
+            "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+            "price": "0.008791",  
+            "origQty": "0.690354",  
+            "executedQty": "0.000000",  
+            "cummulativeQuoteQty": "0.000000",  
+            "status": "CANCELED",  
+            "timeInForce": "GTC",  
+            "type": "LIMIT_MAKER",  
+            "side": "BUY",  
+            "icebergQty": "0.639962"  
           }  
         ]  
-    }
+      }  
+    ]
 
 ---
 
-# 查询全仓杠杆小额负债转换历史  (USER_DATA)
+# 杠杆账户撤销单一交易对的所有挂单 (TRADE)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-History#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#接口描述 "接口描述的直接链接")
 
-查询全仓杠杆小额负债转换历史
+杠杆账户撤销单一交易对下所有挂单, 包括OCO的挂单。
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-History#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/exchange-small-liability-history`
+DELETE /sapi/v1/margin/openOrders
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-History#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#请求权重 "请求权重的直接链接")
 
-**100(UID)**
+**1**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-History#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-current| INT| YES| 当前页面，默认1，最小值为1  
-size| INT| YES| 页面大小，默认10，最大值为100  
-startTime| LONG| NO| 默认当前时间30天前的时间戳  
-endTime| LONG| NO| 默认当前时间戳  
-recvWindow| LONG| NO|   
+symbol| STRING| YES|   
+isIsolated| STRING| NO| 是否逐仓杠杆，"TRUE", "FALSE", 默认 "FALSE"  
+recvWindow| LONG| NO| 赋值不能大于 `60000`  
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Get-Small-Liability-Exchange-History#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Margin-Account-Cancel-All-Open-Orders#响应示例 "响应示例的直接链接")
     
     
-    {  
-        "total": 1,  
-        "rows": [  
+    [  
+      {  
+        "symbol": "BTCUSDT",  
+        "isIsolated": true,       // 是否是逐仓symbol交易   
+        "origClientOrderId": "E6APeyTJvkMvLMYMqu1KQ4",  
+        "orderId": 11,  
+        "orderListId": -1,  
+        "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+        "price": "0.089853",  
+        "origQty": "0.178622",  
+        "executedQty": "0.000000",  
+        "cummulativeQuoteQty": "0.000000",  
+        "status": "CANCELED",  
+        "timeInForce": "GTC",  
+        "type": "LIMIT",  
+        "side": "BUY",  
+        "selfTradePreventionMode": "NONE"  
+      },  
+      {  
+        "symbol": "BTCUSDT",  
+        "isIsolated": false,       // 是否是逐仓symbol交易   
+        "origClientOrderId": "A3EF2HCwxgZPFMrfwbgrhv",  
+        "orderId": 13,  
+        "orderListId": -1,  
+        "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+        "price": "0.090430",  
+        "origQty": "0.178622",  
+        "executedQty": "0.000000",  
+        "cummulativeQuoteQty": "0.000000",  
+        "status": "CANCELED",  
+        "timeInForce": "GTC",  
+        "type": "LIMIT",  
+        "side": "BUY",  
+        "selfTradePreventionMode": "NONE"  
+      },  
+      {  
+        "orderListId": 1929,  
+        "contingencyType": "OCO",  
+        "listStatusType": "ALL_DONE",  
+        "listOrderStatus": "ALL_DONE",  
+        "listClientOrderId": "2inzWQdDvZLHbbAmAozX2N",  
+        "transactionTime": 1585230948299,  
+        "symbol": "BTCUSDT",  
+        "isIsolated": true,       // 是否是逐仓symbol交易   
+        "orders": [  
           {  
-            "asset": "ETH",  
-            "amount": "0.00083434",  
-            "targetAsset": "BUSD",  
-            "targetAmount": "1.37576819",  
-            "bizType": "EXCHANGE_SMALL_LIABILITY",  
-            "timestamp": 1672801339253  
+            "symbol": "BTCUSDT",  
+            "orderId": 20,  
+            "clientOrderId": "CwOOIPHSmYywx6jZX77TdL"  
+          },  
+          {  
+            "symbol": "BTCUSDT",  
+            "orderId": 21,  
+            "clientOrderId": "461cPg51vQjV3zIMOXNz39"  
+          }  
+        ],  
+        "orderReports": [  
+          {  
+            "symbol": "BTCUSDT",  
+            "origClientOrderId": "CwOOIPHSmYywx6jZX77TdL",  
+            "orderId": 20,  
+            "orderListId": 1929,  
+            "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+            "price": "0.668611",  
+            "origQty": "0.690354",  
+            "executedQty": "0.000000",  
+            "cummulativeQuoteQty": "0.000000",  
+            "status": "CANCELED",  
+            "timeInForce": "GTC",  
+            "type": "STOP_LOSS_LIMIT",  
+            "side": "BUY",  
+            "stopPrice": "0.378131",  
+            "icebergQty": "0.017083"  
+          },  
+          {  
+            "symbol": "BTCUSDT",  
+            "origClientOrderId": "461cPg51vQjV3zIMOXNz39",  
+            "orderId": 21,  
+            "orderListId": 1929,  
+            "clientOrderId": "pXLV6Hz6mprAcVYpVMTGgx",  
+            "price": "0.008791",  
+            "origQty": "0.690354",  
+            "executedQty": "0.000000",  
+            "cummulativeQuoteQty": "0.000000",  
+            "status": "CANCELED",  
+            "timeInForce": "GTC",  
+            "type": "LIMIT_MAKER",  
+            "side": "BUY",  
+            "icebergQty": "0.639962"  
           }  
         ]  
-    }
+      }  
+    ]

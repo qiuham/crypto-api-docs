@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-All-Margin-Assets
 api_type: Market Data
-updated_at: 2026-01-15T23:48:31.229947
+updated_at: 2026-05-27 18:56:44.636602
 ---
 
 # Get All Margin Assets (MARKET_DATA)
@@ -21,7 +21,7 @@ GET `/sapi/v1/margin/allAssets`
 
 ## Request Parameters[​](/docs/margin_trading/market-data/Get-All-Margin-Assets#request-parameters "Direct link to Request Parameters")
 
-名称| 类型| 是否必需| 描述  
+Name| Type| Mandatory| Description  
 ---|---|---|---  
 asset| STRING| NO|   
   
@@ -56,7 +56,7 @@ GET `/sapi/v1/margin/allAssets`
 
 **1(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#请�求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Get-All-Margin-Assets#请求参数 "请求参数的直接链接")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  

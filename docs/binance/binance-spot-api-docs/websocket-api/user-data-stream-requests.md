@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests
 api_type: WebSocket
-updated_at: 2026-01-15T23:37:22.375551
+updated_at: 2026-05-27 18:55:22.283123
 ---
 
 # User Data Stream requests
@@ -14,7 +14,7 @@ updated_at: 2026-01-15T23:37:22.375551
   * [User Data Stream](/docs/binance-spot-api-docs/user-data-stream) subscriptions allow you to receive all the events related to a given account on a WebSocket connection.
   * There are 2 ways to start a subscription: 
     * If you have an authenticated session, then you can subscribe to events for that authenticated account using [`userDataStream.subscribe`](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-stream-subscribe).
-    * In any session, authenticated or not, you can subscribe to events for one or more accounts for which you can provide an API Key signature, using [`userdataStream.subscribe.signature`](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-signature).
+    * In any session, authenticated or not, you can subscribe to events for one or more accounts for which you can provide an API Key signature, using [`userDataStream.subscribe.signature`](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#user-data-signature).
     * You can have only one active subscription for a given account on a given connection.
   * Subscriptions are identified by a `subscriptionId` which is returned when starting the subscription. That `subscriptionId` allows you to map the events you receive to a given subscription. 
     * All active subscriptions for a session can be found using [`session.subscriptions`](/docs/binance-spot-api-docs/websocket-api/user-data-stream-requests#session-subscription).
@@ -79,7 +79,7 @@ Subscribe to the User Data Stream in the current WebSocket connection.
 
 Stop listening to the User Data Stream in the current WebSocket connection.
 
-Note that `session.logout` will only close the subscription created with `userdataStream.subscribe` but not subscriptions opened with `userDataStream.subscribe.signature`.
+Note that `session.logout` will only close the subscription created with `userDataStream.subscribe` but not subscriptions opened with `userDataStream.subscribe.signature`.
 
 **Weight** : 2
 
@@ -160,6 +160,8 @@ Name| Type| Mandatory| Description
 `apiKey`| STRING| Yes|   
 `timestamp`| LONG| Yes|   
 `signature`| STRING| Yes|   
+`recvWindow`| DECIMAL| No| The value cannot be greater than `60000`.   
+Supports up to three decimal places of precision (e.g., 6000.346) so that microseconds may be specified.  
   
 **Data Source:** Memory
 
@@ -202,7 +204,7 @@ Name| Type| Mandatory| Description
 
 
 
-#### 订阅用户数据流 (USER_STREAM)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/user-data-stream-requests#订阅用户数据流-user_stream "订阅用户��数据流 \(USER_STREAM\)的直接链接")
+#### 订阅用户数据流 (USER_STREAM)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/user-data-stream-requests#订阅用户数据流-user_stream "订阅用户数据流 \(USER_STREAM\)的直接链接")
     
     
     {  
@@ -250,7 +252,7 @@ Name| Type| Mandatory| Description
 
 取消订阅当前 WebSocket 连接中的用户数据流。
 
-请注意 `session.logout` 只会关闭由 `userdataStream.subscribe` 创建的订阅，并不会关闭通过 `userDataStream.subscribe.signature` 创建的订阅。
+请注意 `session.logout` 只会关闭由 `userDataStream.subscribe` 创建的订阅，并不会关闭通过 `userDataStream.subscribe.signature` 创建的订阅。
 
 **权重:** 2
 
@@ -331,6 +333,8 @@ Name| Type| Mandatory| Description
 `apiKey`| STRING| Yes|   
 `timestamp`| LONG| Yes|   
 `signature`| STRING| Yes|   
+`recvWindow`| DECIMAL| No| 最大值为 `60000` 毫秒。   
+支持最多三位小数的精度（例如 6000.346），以便可以指定微秒。  
   
 **数据源:** 缓存
 

@@ -2,77 +2,119 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest
 api_type: Trading
-updated_at: 2026-01-15T23:49:23.381491
+updated_at: 2026-05-27 18:58:58.516820
 ---
 
-# Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)
+# Asset Dividend Record (USER_DATA)
 
-## API Description[​](/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#api-description "Direct link to API Description")
+## API Description[​](/docs/wallet/asset/assets-divided-record#api-description "Direct link to API Description")
 
-Toggle BNB Burn On Spot Trade And Margin Interest
+Query asset dividend record.
 
-## HTTP Request[​](/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/wallet/asset/assets-divided-record#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/bnbBurn`
+GET `/sapi/v1/asset/assetDividend`
 
-## Request Weight[​](/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#request-weight "Direct link to Request Weight")
+## Request Weight(IP)[​](/docs/wallet/asset/assets-divided-record#request-weightip "Direct link to Request Weight\(IP\)")
 
-**1(IP)**
+**10**
 
-## Request Parameters[​](/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/asset/assets-divided-record#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-spotBNBBurn| STRING| NO| "true" or "false"; Determines whether to use BNB to pay for trading fees on SPOT  
-interestBNBBurn| STRING| NO| "true" or "false"; Determines whether to use BNB to pay for margin loan's interest  
-recvWindow| LONG| NO| No more than 60000  
+asset| STRING| NO|   
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| Default 20, max 500  
+recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-  * "spotBNBBurn" and "interestBNBBurn" should be sent at least one.
+>   * There cannot be more than 180 days between parameter `startTime` and `endTime`.
+> 
 
 
-
-## Response Example[​](/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#response-example "Direct link to Response Example")
+## Response Example[​](/docs/wallet/asset/assets-divided-record#response-example "Direct link to Response Example")
     
     
     {  
-       "spotBNBBurn":true,  
-       "interestBNBBurn": false     
+        "rows": [  
+            {  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 //direction: 1 for Asset credited (inflow), -1 for Asset debited (outflow)  
+            },  
+            {  
+                "id": 1631750237,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
+            }  
+        ],  
+        "total": 2  
     }
 
 ---
 
-# 现货交易和杠杆利息BNB抵扣开关(USER_DATA)
+# 资产利息记录(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/wallet/asset/assets-divided-record#接口描述 "接口描述的直接链接")
 
-现货交易和杠杆利息BNB抵扣开关
+获取资产利息记录。
 
-## HTTP请求[​](/docs/zh-CN/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/asset/assets-divided-record#http请求 "HTTP请求的直接链接")
 
-POST `/sapi/v1/bnbBurn`
+GET `/sapi/v1/asset/assetDividend`
 
-## 请求权重[​](/docs/zh-CN/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#请求权重 "请求权重的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/wallet/asset/assets-divided-record#请求权重ip "请求权重\(IP\)的直接链接")
 
-**1(IP)**
+**10**
 
-## 请求参数[​](/docs/zh-CN/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/asset/assets-divided-record#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-spotBNBBurn| STRING| NO| "true" or "false", 是否使用BNB支付现货交易的手续费  
-interestBNBBurn| STRING| NO| "true" or "false", 是否使用BNB支付杠杆贷款的利息  
-recvWindow| LONG| NO| 赋值不能大于 60000  
+asset| STRING| NO|   
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| Default 20, max 500  
+recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-  * "spotBNBBurn" 和 "interestBNBBurn" 二者必须传至少一个
+>   * `startTime` 与 `endTime`之间最多只可以相差180天。
+> 
 
 
-
-## 响应示例[​](/docs/zh-CN/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/wallet/asset/assets-divided-record#响应示例 "响应示例的直接链接")
     
     
     {  
-       "spotBNBBurn":true,  
-       "interestBNBBurn": false     
+        "rows": [  
+            {  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 // direction：1 表示资产记账入账（资产流入），-1 表示资产记账出账（资产流出）  
+            },  
+            {  
+                "id": 1631750237,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
+            }  
+        ],  
+        "total": 2  
     }

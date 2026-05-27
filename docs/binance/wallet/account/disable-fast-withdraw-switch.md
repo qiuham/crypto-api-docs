@@ -2,70 +2,97 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/account/disable-fast-withdraw-switch
 api_type: Account
-updated_at: 2026-01-15T23:49:23.202148
+updated_at: 2026-05-27 18:58:53.309411
 ---
 
-# Disable Fast Withdraw Switch (USER_DATA)
+# Asset Detail (USER_DATA)
 
-## HTTP Request[​](/docs/wallet/account/disable-fast-withdraw-switch#http-request "Direct link to HTTP Request")
+## API Description[​](/docs/wallet/asset#api-description "Direct link to API Description")
 
-POST `/sapi/v1/account/disableFastWithdrawSwitch`
+Fetch details of assets supported on Binance.
 
-## Request Weight(IP)[​](/docs/wallet/account/disable-fast-withdraw-switch#request-weightip "Direct link to Request Weight\(IP\)")
+## HTTP Request[​](/docs/wallet/asset#http-request "Direct link to HTTP Request")
+
+GET `/sapi/v1/asset/assetDetail`
+
+## Request Weight(IP)[​](/docs/wallet/asset#request-weightip "Direct link to Request Weight\(IP\)")
 
 **1**
 
-## Request Parameters[​](/docs/wallet/account/disable-fast-withdraw-switch#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/asset#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
+asset| STRING| NO|   
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-  * **Caution:**
-
-This request will disable fastwithdraw switch under your account.   
-  
-You need to enable "trade" option for the api key which requests this endpoint.
+  * Please get network and other deposit or withdraw details from `GET /sapi/v1/capital/config/getall`.
 
 
 
-
-## Response Example[​](/docs/wallet/account/disable-fast-withdraw-switch#response-example "Direct link to Response Example")
+## Response Example[​](/docs/wallet/asset#response-example "Direct link to Response Example")
     
     
-    {}
+    {  
+        "CTR": {  
+            "minWithdrawAmount": "70.00000000",             // min withdraw amount  
+            "depositStatus": false,                         // deposit status (false if ALL of networks' are false)  
+            "withdrawFee": 35,                              // withdraw fee  
+            "withdrawStatus": true,                         // withdraw status (false if ALL of networks' are false)  
+            "depositTip": "Delisted, Deposit Suspended"     // reason  
+        },  
+        "SKY": {  
+            "minWithdrawAmount": "0.02000000",  
+            "depositStatus": true,  
+            "withdrawFee": 0.01,  
+            "withdrawStatus": true  
+        }  
+    }
 
 ---
 
-# 关闭站内划转(USER_DATA)
+# 上架资产详情 (USER_DATA)
 
-关闭站内划转
+## 接口描述[​](/docs/zh-CN/wallet/asset#接口描述 "接口描述的直接链接")
 
-## HTTP请求[​](/docs/zh-CN/wallet/account/disable-fast-withdraw-switch#http请求 "HTTP请求的直接链接")
+获取上架资产详情
 
-POST `/sapi/v1/account/disableFastWithdrawSwitch`
+## HTTP请求[​](/docs/zh-CN/wallet/asset#http请求 "HTTP请求的直接链接")
 
-## 请求权重(IP)[​](/docs/zh-CN/wallet/account/disable-fast-withdraw-switch#请求权重ip "请求权重\(IP\)的直接链接")
+GET `/sapi/v1/asset/assetDetail`
+
+## 请求权重(IP)[​](/docs/zh-CN/wallet/asset#请求权重ip "请求权重\(IP\)的直接链接")
 
 **1**
 
-## 请求参数[​](/docs/zh-CN/wallet/account/disable-fast-withdraw-switch#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/asset#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
+asset| STRING| NO|   
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-  * **注意:**
-        
-        此请求会关闭您账户的站内快速划转。您需要为api-key开通"trade"权限才能发送此请求。  
-        
+>   * 充提币信息，建议查询 `GET /sapi/v1/capital/config/getall` 获取详情。
+> 
 
 
-
-
-## 响应示例[​](/docs/zh-CN/wallet/account/disable-fast-withdraw-switch#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/wallet/asset#响应示例 "响应示例的直接链接")
     
     
-    {}
+    {  
+        "CTR": {  
+            "minWithdrawAmount": "70.00000000",             // 最小提现数量  
+            "depositStatus": false,                         // 是否可以充值(只有所有网络都关闭充值才为false)  
+            "withdrawFee": 35,                              // 提现手续费  
+            "withdrawStatus": true,                         // 是否开放提现(只有所有网络都关闭提币才为false)  
+            "depositTip": "Delisted, Deposit Suspended"     // 暂停充值的原因(如果暂停才有这一项)  
+        },  
+        "SKY": {  
+            "minWithdrawAmount": "0.02000000",  
+            "depositStatus": true,  
+            "withdrawFee": 0.01,  
+            "withdrawStatus": true  
+        }  
+    }

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/account/account-api-trading-status
 api_type: Account
-updated_at: 2026-01-15T23:49:20.753383
+updated_at: 2026-05-27 18:58:45.911996
 ---
 
 # Account API Trading Status (USER_DATA)
@@ -30,16 +30,17 @@ timestamp| LONG| YES|
     
     
     {  
-    	"data": {          // API trading status detail  
-    			"isLocked": false,   // API trading function is locked or not  
-    			"plannedRecoverTime": 0,  // If API trading function is locked, this is the planned recover time  
-    			"triggerCondition": {   
-    					"GCR": 150,  // Number of GTC orders  
-    					"IFER": 150, // Number of FOK/IOC orders  
-    					"UFR": 300   // Number of orders  
-    			},  
-    			"updateTime": 1547630471725     
-    	}  
+        "data": {  
+            // API trading status detail  
+            "isLocked": false,              // API trading function is locked or not  
+            "plannedRecoverTime": 0,        // If API trading function is locked, this is the planned recover time  
+            "triggerCondition": {  
+                "GCR": 150,                 // Number of GTC orders  
+                "IFER": 150,                // Number of FOK/IOC orders  
+                "UFR": 300                  // Number of orders  
+            },  
+            "updateTime": 1547630471725  
+        }  
     }
 
 ---
@@ -69,14 +70,15 @@ timestamp| LONG| YES|
     
     
     {  
-    	"data": {          // 账户API交易状态详情  
-    			"isLocked": false,   // API交易功能是否被锁  
-    			"plannedRecoverTime": 0,  // API交易功能被锁情况下的预计恢复时间  
-    			"triggerCondition": {   
-    					"GCR": 150,  // Number of GTC orders  
-    					"IFER": 150, // Number of FOK/IOC orders  
-    					"UFR": 300   // Number of orders  
-    			},  
-    			"updateTime": 1547630471725     
-    	}  
+        "data": {  
+            // 账户API交易状态详情  
+            "isLocked": false,              // API交易功能是否被锁  
+            "plannedRecoverTime": 0,        // API交易功能被锁情况下的预计恢复时间  
+            "triggerCondition": {  
+                "GCR": 150,                 // Number of GTC orders  
+                "IFER": 150,                // Number of FOK/IOC orders  
+                "UFR": 300                  // Number of orders  
+            },  
+            "updateTime": 1547630471725  
+        }  
     }

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/copy_trading/contact-us
 api_type: REST
-updated_at: 2026-01-15T23:50:02.933363
+updated_at: 2026-05-27 19:00:22.546319
 ---
 
 # Contact Us

@@ -2,31 +2,23 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/alpha/change-log
 api_type: REST
-updated_at: 2026-01-16T09:00:25.209792
+updated_at: 2026-05-27 19:01:43.158418
 ---
 
-# change log
+# General Info
 
-## 2025-07-22[​](/docs/alpha/change-log#2025-07-22 "Direct link to 2025-07-22")
+This is the documentation for the Binance Alpha Trade. All endpoints use HTTP GET requests and return data in JSON format. No authentication is required as they are public endpoints.
 
-### Market-data[​](/docs/alpha/change-log#market-data "Direct link to Market-data")
+## Important Note[​](/docs/alpha/market-data/general-info#important-note "Direct link to Important Note")
 
-  * Ticker (24hr Price Statistics)
-  * Aggregated Trades
-  * Get Exchange Info
-  * Klines
-  * Token List
+To use the endpoints that require a symbol parameter (e.g., for trading volume, historical trades, or Kline data), first call the Token List endpoint to retrieve the list of available tokens. From the response, identify the corresponding ALPHA token ID based on the symbol name (e.g., "ZKJ" or "QUQ"). Then, construct the symbol parameter in the format ALPHA_<token_id><quote_asset> (e.g., ALPHA_173USDT for token ID 173 with USDT).
 
 ---
 
-# 修改日志
+# 通用信息
 
-## 2025-07-22[​](/docs/zh-CN/alpha/change-log#2025-07-22 "2025-07-22的直接链接")
+这是关于币安Alpha交易的文档。所有接口均使用HTTP GET请求，返回JSON格式的数据。因为是公共接口，所以无需身份验证。
 
-### 市场数据[​](/docs/zh-CN/alpha/change-log#市场数据 "市场数据的直接链接")
+## 重要提示[​](/docs/zh-CN/alpha/market-data/general-info#重要提示 "重要提示的直接链接")
 
-  * 24hr价格变动情况
-  * 聚合交易查询
-  * 交易对信息
-  * K线
-  * Token列表
+对于需要symbol参数的接口（例如，交易量、历史交易或K线数据），请先调用Token列表接口以获取可用代币列表。在响应中，根据代币符号名称（例如 "ZKJ" 或 "QUQ"）确定对应的ALPHA代币ID。然后，按格式ALPHA_<token_id><quote_asset>构造symbol参数（例如，ALPHA_173USDT表示代币ID为173，计价资产为USDT的代币）。

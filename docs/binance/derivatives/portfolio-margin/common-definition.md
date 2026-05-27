@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/portfolio-margin/common-definition
 api_type: REST
-updated_at: 2026-01-15T23:45:14.866116
+updated_at: 2026-05-27 18:55:47.133680
 ---
 
 # Public API Definitions
@@ -100,6 +100,7 @@ updated_at: 2026-01-15T23:45:14.866116
 
   * STOP
   * STOP_MARKET
+  * LIMIT_MAKER
   * TAKE_PROFIT
   * TAKE_PROFIT_MARKET
   * TRAILING_STOP_MARKET
@@ -120,6 +121,7 @@ updated_at: 2026-01-15T23:45:14.866116
   * PARTIALLY_FILLED
   * FILLED
   * EXPIRED
+  * EXPIRED_IN_MATCH
 
 
 
@@ -383,6 +385,7 @@ The `MAX_NUM_ALGO_ORDERS` filter defines the maximum number of all kinds of algo
 
   * STOP
   * STOP_MARKET
+  * LIMIT_MAKER
   * TAKE_PROFIT
   * TAKE_PROFIT_MARKET
   * TRAILING_STOP_MARKET
@@ -437,6 +440,7 @@ The `MAX_NUM_ALGO_ORDERS` filter defines the maximum number of all kinds of algo
   * CANCELED 已撤销
   * REJECTED 订单被拒绝
   * EXPIRED 订单过期(根据timeInForce参数规则)
+  * EXPIRED_IN_MATCH 订单在撮合过程中被过期(例如STP自成交预防触发)
 
 
 

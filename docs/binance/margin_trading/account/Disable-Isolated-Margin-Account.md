@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Disable-Isolated-Margin-Account
 api_type: Account
-updated_at: 2026-01-15T23:48:14.359399
+updated_at: 2026-05-27 18:56:07.018721
 ---
 
 # Disable Isolated Margin Account (TRADE)

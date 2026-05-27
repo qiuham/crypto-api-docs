@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/filters
 api_type: REST
-updated_at: 2026-01-15T23:36:25.016133
+updated_at: 2026-05-27 18:54:42.671080
 ---
 
 # Filters
@@ -42,12 +42,18 @@ Any of the above variables can be set to 0, which disables that rule in the `pri
 
 ### PERCENT_PRICE[​](/docs/binance-spot-api-docs/testnet/filters#percent_price "Direct link to PERCENT_PRICE")
 
-The `PERCENT_PRICE` filter defines the valid range for the price based on the average of the previous trades. `avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.
+The `PERCENT_PRICE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-In order to pass the `percent price`, the following must be true for `price`:
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
-  * `price` <= `weightedAveragePrice` * `multiplierUp`
-  * `price` >= `weightedAveragePrice` * `multiplierDown`
+
+
+An order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
 
 
 
@@ -64,21 +70,27 @@ In order to pass the `percent price`, the following must be true for `price`:
 
 ### PERCENT_PRICE_BY_SIDE[​](/docs/binance-spot-api-docs/testnet/filters#percent_price_by_side "Direct link to PERCENT_PRICE_BY_SIDE")
 
-The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for the price based on the average of the previous trades.  
-`avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.   
-There is a different range depending on whether the order is placed on the `BUY` side or the `SELL` side.
+The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-Buy orders will succeed on this filter if:
-
-  * `Order price` <= `weightedAveragePrice` * `bidMultiplierUp`
-  * `Order price` >= `weightedAveragePrice` * `bidMultiplierDown`
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
 
 
-Sell orders will succeed on this filter if:
+There is a different range depending on whether an order is placed on the `BUY` side or the `SELL` side.
 
-  * `Order Price` <= `weightedAveragePrice` * `askMultiplierUp`
-  * `Order Price` >= `weightedAveragePrice` * `askMultiplierDown`
+A `BUY` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+A `SELL` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
 
 
 
@@ -126,7 +138,22 @@ In order to pass the `lot size`, the following must be true for `quantity`/`iceb
 
 ### MIN_NOTIONAL[​](/docs/binance-spot-api-docs/testnet/filters#min_notional "Direct link to MIN_NOTIONAL")
 
-The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol. An order's notional value is the `price` * `quantity`. `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. Since `MARKET` orders have no price, the average price is used over the last `avgPriceMins` minutes. `avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+
+  * An order's notional value is the `price` * `quantity`.
+  * `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` >= `minNotional`
+
+
 
 **/exchangeInfo format:**
     
@@ -141,20 +168,23 @@ The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an orde
 
 ### NOTIONAL[​](/docs/binance-spot-api-docs/testnet/filters#notional "Direct link to NOTIONAL")
 
-The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.   
-  
-`applyMinToMarket` determines whether the `minNotional` will be applied to `MARKET` orders.   
-`applyMaxToMarket` determines whether the `maxNotional` will be applied to `MARKET` orders.
+The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.
 
-In order to pass this filter, the notional (`price * quantity`) has to pass the following conditions:
-
-  * `price * quantity` <= `maxNotional`
-  * `price * quantity` >= `minNotional`
-
+  * `applyMinToMarket` determines whether `minNotional` will be applied to `MARKET` orders.
+  * `applyMaxToMarket` determines whether `maxNotional` will be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
 
 
-For `MARKET` orders, the average price used over the last `avgPriceMins` minutes will be used for calculation.   
-If the `avgPriceMins` is 0, then the last price will be used.
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
 
 **/exchangeInfo format:**
     
@@ -376,7 +406,7 @@ The `EXCHANGE_MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of icebe
 
 ### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/binance-spot-api-docs/testnet/filters#exchange_max_num_order_lists "Direct link to EXCHANGE_MAX_NUM_ORDER_LISTS")
 
-The `EXCHANGE_MAX_NUM_ORDERS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
+The `EXCHANGE_MAX_NUM_ORDER_LISTS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
 
 **/exchangeInfo format:**
     
@@ -449,12 +479,18 @@ Any of the above variables can be set to 0, which disables that rule in the `pri
 
 ### PERCENT_PRICE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#percent_price "PERCENT_PRICE的直接链接")
 
-The `PERCENT_PRICE` filter defines the valid range for the price based on the average of the previous trades. `avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.
+The `PERCENT_PRICE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-In order to pass the `percent price`, the following must be true for `price`:
+  * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
-  * `price` <= `weightedAveragePrice` * `multiplierUp`
-  * `price` >= `weightedAveragePrice` * `multiplierDown`
+
+
+An order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
 
 
 
@@ -471,21 +507,27 @@ In order to pass the `percent price`, the following must be true for `price`:
 
 ### PERCENT_PRICE_BY_SIDE[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#percent_price_by_side "PERCENT_PRICE_BY_SIDE的直接链接")
 
-The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for the price based on the average of the previous trades.  
-`avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.   
-There is a different range depending on whether the order is placed on the `BUY` side or the `SELL` side.
+The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-Buy orders will succeed on this filter if:
-
-  * `Order price` <= `weightedAveragePrice` * `bidMultiplierUp`
-  * `Order price` >= `weightedAveragePrice` * `bidMultiplierDown`
+  * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
 
 
-Sell orders will succeed on this filter if:
+There is a different range depending on whether an order is placed on the `BUY` side or the `SELL` side.
 
-  * `Order Price` <= `weightedAveragePrice` * `askMultiplierUp`
-  * `Order Price` >= `weightedAveragePrice` * `askMultiplierDown`
+A `BUY` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+A `SELL` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
 
 
 
@@ -533,7 +575,22 @@ In order to pass the `lot size`, the following must be true for `quantity`/`iceb
 
 ### MIN_NOTIONAL[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#min_notional "MIN_NOTIONAL的直接链接")
 
-The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol. An order's notional value is the `price` * `quantity`. `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. Since `MARKET` orders have no price, the average price is used over the last `avgPriceMins` minutes. `avgPriceMins` is the number of minutes the average price is calculated over. 0 means the last price is used.
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+
+  * An order's notional value is the `price` * `quantity`.
+  * `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` >= `minNotional`
+
+
 
 **/exchangeInfo format:**
     
@@ -548,20 +605,23 @@ The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an orde
 
 ### NOTIONAL[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#notional "NOTIONAL的直接链接")
 
-The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.   
-  
-`applyMinToMarket` determines whether the `minNotional` will be applied to `MARKET` orders.   
-`applyMaxToMarket` determines whether the `maxNotional` will be applied to `MARKET` orders.
+The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.
 
-In order to pass this filter, the notional (`price * quantity`) has to pass the following conditions:
-
-  * `price * quantity` <= `maxNotional`
-  * `price * quantity` >= `minNotional`
-
+  * `applyMinToMarket` determines whether `minNotional` will be applied to `MARKET` orders.
+  * `applyMaxToMarket` determines whether `maxNotional` will be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules.md) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
 
 
-For `MARKET` orders, the average price used over the last `avgPriceMins` minutes will be used for calculation.   
-If the `avgPriceMins` is 0, then the last price will be used.
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
 
 **/exchangeInfo format:**
     
@@ -783,7 +843,7 @@ The `EXCHANGE_MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of icebe
 
 ### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/zh-CN/binance-spot-api-docs/testnet/filters#exchange_max_num_order_lists "EXCHANGE_MAX_NUM_ORDER_LISTS的直接链接")
 
-The `EXCHANGE_MAX_NUM_ORDERS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
+The `EXCHANGE_MAX_NUM_ORDER_LISTS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
 
 **/exchangeInfo format:**
     

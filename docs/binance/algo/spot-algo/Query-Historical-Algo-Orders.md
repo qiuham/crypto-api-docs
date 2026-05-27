@@ -2,109 +2,109 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/spot-algo/Query-Historical-Algo-Orders
 api_type: REST
-updated_at: 2026-01-15T23:49:14.371456
+updated_at: 2026-05-27 18:58:35.952894
 ---
 
-# Query Historical Algo Orders(USER_DATA)
+# Query Sub Orders(USER_DATA)
 
-## API Description[​](/docs/algo/spot-algo/Query-Historical-Algo-Orders#api-description "Direct link to API Description")
+## API Description[​](/docs/algo/spot-algo/Query-Sub-Orders#api-description "Direct link to API Description")
 
-Get all historical SPOT TWAP orders
+Get respective sub orders for a specified algoId
 
-## HTTP Request[​](/docs/algo/spot-algo/Query-Historical-Algo-Orders#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/algo/spot-algo/Query-Sub-Orders#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/algo/spot/historicalOrders`
+GET `/sapi/v1/algo/spot/subOrders`
 
-## Request Weight(IP)[​](/docs/algo/spot-algo/Query-Historical-Algo-Orders#request-weightip "Direct link to Request Weight\(IP\)")
+## Request Weight(IP)[​](/docs/algo/spot-algo/Query-Sub-Orders#request-weightip "Direct link to Request Weight\(IP\)")
 
 **1**
 
-## Request Parameters[​](/docs/algo/spot-algo/Query-Historical-Algo-Orders#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/algo/spot-algo/Query-Sub-Orders#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-symbol| STRING| NO| Trading symbol eg. BTCUSDT  
-side| ENUM| NO| BUY or SELL  
-startTime| LONG| NO| in milliseconds eg.1641522717552  
-endTime| LONG| NO| in milliseconds eg.1641522526562  
+algoId| LONG| YES|   
 page| INT| NO| Default is 1  
 pageSize| INT| NO| MIN 1, MAX 100; Default 100  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/algo/spot-algo/Query-Historical-Algo-Orders#response-example "Direct link to Response Example")
+## Response Example[​](/docs/algo/spot-algo/Query-Sub-Orders#response-example "Direct link to Response Example")
     
     
     {  
         "total": 1,  
-        "orders": [  
+        "executedQty": "1.000",  
+        "executedAmt": "3229.44000000",  
+        "subOrders": [  
             {  
-                "algoId": 14518,  
-                "symbol": "BNBUSDT",  
-                "side": "BUY",  
-                "totalQty": "100.00",  
-                "executedQty": "0.00",  
-                "executedAmt": "0.00000000",  
-                "avgPrice": "0.000",  
-                "clientAlgoId": "acacab56b3c44bef9f6a8f8ebd2a8408",  
-                "bookTime": 1649757019503,  
-                "endTime": 1649757088101,  
-                "algoStatus": "CANCELLED",  
-                "algoType": "VP",  
-                "urgency": "LOW"  
+                "algoId": 13723,  
+                "orderId": 8389765519993908929,  
+                "orderStatus": "FILLED",  
+                "executedQty": "1.000",  
+                "executedAmt": "3229.44000000",  
+                "feeAmt": "-1.61471999",  
+                "feeAsset": "USDT",  
+                "bookTime": 1649319001964,  
+                "avgPrice": "3229.44",  
+                "side": "SELL",  
+                "symbol": "ETHUSDT",  
+                "subId": 1,  
+                "timeInForce": "IMMEDIATE_OR_CANCEL",  
+                "origQty": "1.000"  
             }  
         ]  
     }
 
 ---
 
-# 查询历史策略订单(USER_DATA)
+# 查询执行子订单(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/algo/spot-algo/Query-Historical-Algo-Orders#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/algo/spot-algo/Query-Sub-Orders#接口描述 "接口描述的直接链接")
 
-查询现货TWAP历史订单
+获取指定 algoId 的相应子订单
 
-## HTTP请求[​](/docs/zh-CN/algo/spot-algo/Query-Historical-Algo-Orders#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/algo/spot-algo/Query-Sub-Orders#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/algo/spot/historicalOrders`
+GET `/sapi/v1/algo/spot/subOrders`
 
-## 请求权重(IP)[​](/docs/zh-CN/algo/spot-algo/Query-Historical-Algo-Orders#请求权重ip "请求权重\(IP\)的直接链接")
+## 请求权重[​](/docs/zh-CN/algo/spot-algo/Query-Sub-Orders#请求权重 "请求权重的直接链接")
 
 **1**
 
-## 请求参数[​](/docs/zh-CN/algo/spot-algo/Query-Historical-Algo-Orders#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/algo/spot-algo/Query-Sub-Orders#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-symbol| STRING| NO| 交易对 eg. BTCUSDT  
-side| ENUM| NO| BUY 或者 SELL  
-startTime| LONG| NO| 毫秒级时间戳 eg.1641522717552  
-endTime| LONG| NO| 毫秒级时间戳 eg.1641522526562  
-page| INT| NO| 默认 1  
-pageSize| INT| NO| 最小 1, 最大 100; 默认 100  
+algoId| LONG| YES|   
+page| INT| NO| 默认1  
+pageSize| INT| NO| 最小 1， 最大 100; 默认 100  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/algo/spot-algo/Query-Historical-Algo-Orders#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/algo/spot-algo/Query-Sub-Orders#响应示例 "响应示例的直接链接")
     
     
     {  
         "total": 1,  
-        "orders": [  
+        "executedQty": "1.000",  
+        "executedAmt": "3229.44000000",  
+        "subOrders": [  
             {  
-                "algoId": 14518,      //策略订单ID  
-                "symbol": "BNBUSDT",  //交易对  
-                "side": "BUY",        //买卖方向  
-                "totalQty": "100.00",    //总共下单数量  
-                "executedQty": "0.00",   //执行数量  
-                "executedAmt": "0.00000000",  //执行价值  
-                "avgPrice": "0.000",          //平均价格  
-                "clientAlgoId": "acacab56b3c44bef9f6a8f8ebd2a8408",  //用户自定义策略订单ID  
-                "bookTime": 1649757019503,    //用户下单时间  
-                "endTime": 1649757088101,     //结束时间  
-                "algoStatus": "CANCELLED",    //策略订单状态  
-                "algoType": "VP",             //策略订单类型  
-                "urgency": "LOW"              //执行速率  
+                "algoId": 13723,    //策略订单ID  
+                "orderId": 8389765519993908929,  //子订单ID  
+                "orderStatus": "FILLED",         //子订单状态  
+                "executedQty": "1.000",          //执行数量  
+                "executedAmt": "3229.44000000",  //执行价值  
+                "feeAmt": "-1.61471999",         //手续费  
+                "feeAsset": "USDT",              //手续费币种  
+                "bookTime": 1649319001964,       //下单时间  
+                "avgPrice": "3229.44",           //平均价格  
+                "side": "SELL",                  //买卖方向  
+                "symbol": "ETHUSDT",             //交易对  
+                "subId": 1,                      //子订单执行顺序ID  
+                "timeInForce": "IMMEDIATE_OR_CANCEL",  //有效方式  
+                "origQty": "1.000"              //原始委托数量  
             }  
         ]  
     }

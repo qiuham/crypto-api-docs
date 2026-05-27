@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Query-Isolated-Margin-Tier-Data
 api_type: Market Data
-updated_at: 2026-01-15T23:48:33.843618
+updated_at: 2026-05-27 18:56:54.699794
 ---
 
 # Query Isolated Margin Tier Data (USER_DATA)

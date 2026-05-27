@@ -2,91 +2,119 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/assets-can-convert-bnb
 api_type: REST
-updated_at: 2026-01-15T23:49:27.030584
+updated_at: 2026-05-27 18:58:59.135677
 ---
 
-# Get Assets That Can Be Converted Into BNB (USER_DATA)
+# Asset Dividend Record (USER_DATA)
 
-## API Description[​](/docs/wallet/asset/assets-can-convert-bnb#api-description "Direct link to API Description")
+## API Description[​](/docs/wallet/asset/assets-divided-record#api-description "Direct link to API Description")
 
-Get Assets That Can Be Converted Into BNB
+Query asset dividend record.
 
-## HTTP Request[​](/docs/wallet/asset/assets-can-convert-bnb#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/wallet/asset/assets-divided-record#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/asset/dust-btc`
+GET `/sapi/v1/asset/assetDividend`
 
-## Request Weight(IP)[​](/docs/wallet/asset/assets-can-convert-bnb#request-weightip "Direct link to Request Weight\(IP\)")
+## Request Weight(IP)[​](/docs/wallet/asset/assets-divided-record#request-weightip "Direct link to Request Weight\(IP\)")
 
-**1**
+**10**
 
-## Request Parameters[​](/docs/wallet/asset/assets-can-convert-bnb#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/asset/assets-divided-record#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-accountType| STRING| NO| `SPOT` or `MARGIN`,default `SPOT`  
+asset| STRING| NO|   
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| Default 20, max 500  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/wallet/asset/assets-can-convert-bnb#response-example "Direct link to Response Example")
+>   * There cannot be more than 180 days between parameter `startTime` and `endTime`.
+> 
+
+
+## Response Example[​](/docs/wallet/asset/assets-divided-record#response-example "Direct link to Response Example")
     
     
     {  
-        "details": [  
+        "rows": [  
             {  
-                "asset": "ADA",           
-                "assetFullName": "ADA",   
-                "amountFree": "6.21",   //Convertible amount  
-                "toBTC": "0.00016848",  //BTC amount  
-                "toBNB": "0.01777302",  //BNB amount（Not deducted commission fee）  
-                "toBNBOffExchange": "0.01741756", //BNB amount（Deducted commission fee）  
-                "exchange": "0.00035546" //Commission fee  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 //direction: 1 for Asset credited (inflow), -1 for Asset debited (outflow)  
+            },  
+            {  
+                "id": 1631750237,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
             }  
         ],  
-        "totalTransferBtc": "0.00016848",  
-        "totalTransferBNB": "0.01777302",  
-        "dribbletPercentage": "0.02"     //Commission fee  
+        "total": 2  
     }
 
 ---
 
-# 获取可以转换成BNB的小额资产 (USER_DATA)
+# 资产利息记录(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/wallet/asset/assets-can-convert-bnb#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/wallet/asset/assets-divided-record#接口描述 "接口描述的直接链接")
 
-获取可以转换成BNB的小额资产
+获取资产利息记录。
 
-## HTTP请求[​](/docs/zh-CN/wallet/asset/assets-can-convert-bnb#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/asset/assets-divided-record#http请求 "HTTP请求的直接链接")
 
-POST `/sapi/v1/asset/dust-btc`
+GET `/sapi/v1/asset/assetDividend`
 
-## 请求权重(IP)[​](/docs/zh-CN/wallet/asset/assets-can-convert-bnb#请求权重ip "请求权重\(IP\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/wallet/asset/assets-divided-record#请求权重ip "请求权重\(IP\)的直接链接")
 
-**1**
+**10**
 
-## 请求参数[​](/docs/zh-CN/wallet/asset/assets-can-convert-bnb#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/asset/assets-divided-record#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-accountType| STRING| NO| `SPOT`或`MARGIN`,默认`SPOT`  
+asset| STRING| NO|   
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| Default 20, max 500  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/wallet/asset/assets-can-convert-bnb#响应示例 "响应示例的直接链接")
+>   * `startTime` 与 `endTime`之间最多只可以相差180天。
+> 
+
+
+## 响应示例[​](/docs/zh-CN/wallet/asset/assets-divided-record#响应示例 "响应示例的直接链接")
     
     
     {  
-        "details": [  
+        "rows": [  
             {  
-                "asset": "ADA",         //资产名  
-                "assetFullName": "ADA", //资产全称  
-                "amountFree": "6.21",   //可转换数量  
-                "toBTC": "0.00016848",  //等值BTC  
-                "toBNB": "0.01777302",  //可转换BNB（未扣除手续费）  
-                "toBNBOffExchange": "0.01741756", //可转换BNB（已扣除手续费）  
-                "exchange": "0.00035546" //手续费  
+                "id": 1637366104,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189166000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1 // direction：1 表示资产记账入账（资产流入），-1 表示资产记账出账（资产流出）  
+            },  
+            {  
+                "id": 1631750237,  
+                "amount": "10.00000000",  
+                "asset": "BHFT",  
+                "divTime": 1563189165000,  
+                "enInfo": "BHFT distribution",  
+                "tranId": 2968885920,  
+                "direction": 1  
             }  
         ],  
-        "totalTransferBtc": "0.00016848",//全部资产等值BTC  
-        "totalTransferBNB": "0.01777302",//总共可以转换的BNB数量  
-        "dribbletPercentage": "0.02"     //转换手续费  
+        "total": 2  
     }

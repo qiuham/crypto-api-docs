@@ -2,187 +2,129 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/broker-withdraw
 api_type: REST
-updated_at: 2026-01-15T23:49:50.360140
+updated_at: 2026-05-27 18:59:57.243916
 ---
 
-# Broker Withdraw (for brokers of local entities that require travel rule) (USER_DATA)
+# Deposit History V2 (for local entities that required travel rule) (supporting network) (USER_DATA)
 
-## API Description[​](/docs/wallet/travel-rule/broker-withdraw#api-description "Direct link to API Description")
+## API Description[​](/docs/wallet/travel-rule/deposit-history-v2#api-description "Direct link to API Description")
 
-Submit a withdrawal request for brokers of local entities that required travel rule.
+Fetch deposit history for local entities that with required travel rule information.
 
-## HTTP Request[​](/docs/wallet/travel-rule/broker-withdraw#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/wallet/travel-rule/deposit-history-v2#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/localentity/broker/withdraw/apply`
+GET `/sapi/v2/localentity/deposit/history`
 
-## Request Weight(UID)[​](/docs/wallet/travel-rule/broker-withdraw#request-weightuid "Direct link to Request Weight\(UID\)")
+## Request Weight(IP)[​](/docs/wallet/travel-rule/deposit-history-v2#request-weightip "Direct link to Request Weight\(IP\)")
 
-**600**
+**1**
 
-## Request Parameters[​](/docs/wallet/travel-rule/broker-withdraw#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/travel-rule/deposit-history-v2#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-address| STRING| YES|   
-addressTag| STRING| NO| Secondary address identifier for coins like XRP,XMR etc.  
+depositId| STRING| NO| Comma(,) separated list of wallet tran Ids.  
+txId| STRING| NO| Comma(,) separated list of transaction Ids.  
 network| STRING| NO|   
-coin| STRING| YES|   
-addressName| STRING| NO| Description of the address. Address book cap is 200, space in name should be encoded into `%20`  
-amount| BigDECIMAL| YES|   
-withdrawOrderId| STRING| YES| withdrawID defined by the client (i.e. client's internal withdrawID)  
-transactionFeeFlag| BOOLEAN| NO| When making internal transfer, `true` for returning the fee to the destination account; `false` for returning the fee back to the departure account. Default `false`.  
-walletType| INTEGER| NO| The wallet type for withdraw，0-spot wallet ，1-funding wallet. Default walletType is the current "selected wallet" under wallet->Fiat and Spot/Funding->Deposit  
-questionnaire| STRING| YES| JSON format questionnaire answers.  
-originatorPii| STRING| YES| JSON format originator Pii, see StandardPii section below  
+coin| STRING| NO|   
+retrieveQuestionnaire| BOOLEAN| NO| true: return `questionnaire` within response.  
+startTime| LONG| NO| Default: 90 days from current timestamp  
+endTime| LONG| NO| Default: present timestamp  
+offset| INT| NO| Default:0  
+limit| INT| NO| Default:1000, Max:1000  
 timestamp| LONG| YES|   
-signature| STRING| YES| Must be the last parameter.  
   
->   * If `network` not send, return with default network of the coin, but if the address could not match default network, the withdraw will be rejected.
->   * You can get `network` in `networkList` of a coin in the response of `Get /sapi/v1/capital/config/getall (HMAC SHA256)`.
->   * Questionnaire is different for each local entity, please refer to the `Withdraw Questionnaire Contents` page.
->   * If getting error like `Questionnaire format not valid.` or `Questionnaire must not be blank`, please try to verify the format of the questionnaire and use URL-encoded format.
+>   * Please notice the default `startTime` and `endTime` to make sure that time interval is within 0-90 days.
+>   * If both `startTime` and `endTime` are sent, time between `startTime` and `endTime` must be less than 90 days.
+>   * Please, note that due to network-specific characteristics, the returned source address may be inaccurate. If multiple source addresses are found, only the first one will be returned.
 > 
 
 
-## StandardPii[​](/docs/wallet/travel-rule/broker-withdraw#standardpii "Direct link to StandardPii")
-
-**For Natural Person**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-piiType| INTEGER| YES| Fix to 0: Natural Person  
-latinNames| List| YES| In case a person have complicated names or multiple names, this parameter is a list  
-localNames| List| NO| In case a person have complicated names or multiple names, this parameter is a list  
-nationality| STRING| NO|   
-residenceCountry| STRING| YES|   
-nationalIdentifier| STRING| NO|   
-nationalIdentifierType| STRING| NO|   
-nationalIdentifierIssueCountry| STRING| NO|   
-dateOfBirth| STRING| NO| yyyy-mm-dd. Not required but strongly recommended. Providing DOB could greatly reduce false positive rate during risk checking process.  
-placeOfBirth| STRING| NO|   
-address| STRING| NO|   
-  
-**For Legal Person**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-piiType| INTEGER| YES| Fix to 1: Legal Person  
-latinName| STRING| YES| It's company name for Legal Person  
-localName| STRING| NO|   
-registrationCountry| STRING| YES|   
-nationalIdentifier| STRING| NO|   
-nationalIdentifierType| STRING| NO|   
-nationalIdentifierIssueCountry| STRING| NO|   
-registrationDate| STRING| NO| yyyy-mm-dd. Not required but strongly recommended.  
-address| STRING| NO|   
-walletAddress| STRING| NO|   
-walletTag| STRING| NO|   
-  
-**PiiName**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-firstName| STRING| YES| Mandatory for Natural person  
-middleName| STRING| NO|   
-lastName| STRING| NO|   
-  
-## Response Example[​](/docs/wallet/travel-rule/broker-withdraw#response-example "Direct link to Response Example")
+## Response Example[​](/docs/wallet/travel-rule/deposit-history-v2#response-example "Direct link to Response Example")
     
     
-    {  
-        "trId": 123456, # The travel rule record Id  
-        "accpted": true, # Whether the withdraw request is accepted  
-        "info": "Withdraw request accepted" # The detailed infomation of the withdrawal result.  
-    }
+    [  
+        {  
+            "depositId": "4615328107052018945",  
+            "amount": "0.01",  
+            "network": "AVAXC",  
+            "coin": "AVAX",  
+            "depositStatus": 1,  
+            "travelRuleReqStatus": 0,                                                         // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED  
+            "address": "0x0010627ab66d69232f4080d54e0f838b4dc3894a",  
+            "addressTag": "",  
+            "txId": "0xdde578983015741eed764e7ca10defb5a2caafdca3db5f92872d24a96beb1879",  
+            "transferType": 0,  
+            "confirmTimes": "12/12",  
+            "requireQuestionnaire": false,                                                    // true: This deposit require user to answer questionnaire to get it credited  
+                                                                                              // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
+            "questionnaire": {  
+                "vaspName": "BINANCE",  
+                "depositOriginator": 0  
+            },  
+            "insertTime": 1753053392000  
+        }  
+    ]
 
 ---
 
-# Broker Withdraw (for brokers of local entities that require travel rule) (USER_DATA)
+# 获取充值历史V2(针对需要旅行规则的本地站)(支持多网络)
 
-## API Description[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#api-description "API Description的直接链接")
+## 接口描述[​](/docs/zh-CN/wallet/travel-rule/deposit-history-v2#接口描述 "接口描述的直接链接")
 
-Submit a withdrawal request for brokers of local entities that required travel rule.
+获取充值历史(针对需要旅行规则的本地站)(支持多网络)
 
-## HTTP Request[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#http-request "HTTP Request的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/deposit-history-v2#http请求 "HTTP请求的直接链接")
 
-POST `/sapi/v1/localentity/broker/withdraw/apply`
+GET `/sapi/v2/localentity/deposit/history`
 
-## Request Weight(UID)[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#request-weightuid "Request Weight\(UID\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/wallet/travel-rule/deposit-history-v2#请求权重ip "请求权重\(IP\)的直接链接")
 
-**600**
+**1**
 
-## Request Parameters[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#request-parameters "Request Parameters的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/travel-rule/deposit-history-v2#请求参数 "请求参数的直接链接")
 
-Name| Type| Mandatory| Description  
+名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-address| STRING| YES|   
-addressTag| STRING| NO| Secondary address identifier for coins like XRP,XMR etc.  
+depositId| STRING| NO| 入金记录ID，支持多条查询，以半角逗号(,) 分隔  
+txId| STRING| NO| 链上TxId，支持多条查询，以半角逗号(,) 分隔  
 network| STRING| NO|   
-coin| STRING| YES|   
-addressName| STRING| NO| Description of the address. Address book cap is 200, space in name should be encoded into `%20`  
-amount| BigDECIMAL| YES|   
-withdrawOrderId| STRING| YES| withdrawID defined by the client (i.e. client's internal withdrawID)  
-transactionFeeFlag| BOOLEAN| NO| When making internal transfer, `true` for returning the fee to the destination account; `false` for returning the fee back to the departure account. Default `false`.  
-walletType| INTEGER| NO| The wallet type for withdraw，0-spot wallet ，1-funding wallet. Default walletType is the current "selected wallet" under wallet->Fiat and Spot/Funding->Deposit  
-questionnaire| STRING| YES| JSON format questionnaire answers.  
-originatorPii| STRING| YES| JSON format originator Pii, see StandardPii section below  
+coin| STRING| NO|   
+retrieveQuestionnaire| BOOLEAN| NO| true:返回的记录中带有问卷内容，false/缺省.  
+startTime| LONG| NO| 默认当前时间90天前的时间戳  
+endTime| LONG| NO| 默认当前时间戳  
+offset| INTEGER| NO| 默认:0  
+limit| INTEGER| NO| 默认:1000，最大1000  
 timestamp| LONG| YES|   
-signature| STRING| YES| Must be the last parameter.  
   
->   * If `network` not send, return with default network of the coin, but if the address could not match default network, the withdraw will be rejected.
->   * You can get `network` in `networkList` of a coin in the response of `Get /sapi/v1/capital/config/getall (HMAC SHA256)`.
->   * Questionnaire is different for each local entity, please refer to the `Withdraw Questionnaire Contents` page.
->   * If getting error like `Questionnaire format not valid.` or `Questionnaire must not be blank`, please try to verify the format of the questionnaire and use URL-encoded format.
+>   * 请注意`startTime` 与 `endTime` 的默认时间戳，保证请求时间间隔不超过90天。
+>   * 同时提交`startTime` 与 `endTime`间隔不得超过90天。
+>   * 请注意，由于网络特定的特性，返回的源地址可能不准确。 如果找到多个源地址，则仅返回第一个地址。
 > 
 
 
-## StandardPii[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#standardpii "StandardPii的直接链接")
-
-**For Natural Person**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-piiType| INTEGER| YES| Fix to 0: Natural Person  
-latinNames| List| YES| In case a person have complicated names or multiple names, this parameter is a list  
-localNames| List| NO| In case a person have complicated names or multiple names, this parameter is a list  
-nationality| STRING| NO|   
-residenceCountry| STRING| YES|   
-nationalIdentifier| STRING| NO|   
-nationalIdentifierType| STRING| NO|   
-nationalIdentifierIssueCountry| STRING| NO|   
-dateOfBirth| STRING| NO| yyyy-mm-dd. Not required but strongly recommended. Providing DOB could greatly reduce false positive rate during risk checking process.  
-placeOfBirth| STRING| NO|   
-address| STRING| NO|   
-  
-**For Legal Person**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-piiType| INTEGER| YES| Fix to 1: Legal Person  
-latinName| STRING| YES| It's company name for Legal Person  
-localName| STRING| NO|   
-registrationCountry| STRING| YES|   
-nationalIdentifier| STRING| NO|   
-nationalIdentifierType| STRING| NO|   
-nationalIdentifierIssueCountry| STRING| NO|   
-registrationDate| STRING| NO| yyyy-mm-dd. Not required but strongly recommended.  
-address| STRING| NO|   
-walletAddress| STRING| NO|   
-walletTag| STRING| NO|   
-  
-**PiiName**
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-firstName| STRING| YES| Mandatory for Natural person  
-middleName| STRING| NO|   
-lastName| STRING| NO|   
-  
-## Response Example[​](/docs/zh-CN/wallet/travel-rule/broker-withdraw#response-example "Response Example的直接链接")
+## 响应示例[​](/docs/zh-CN/wallet/travel-rule/deposit-history-v2#响应示例 "响应示例的直接链接")
     
     
-    {  
-        "trId": 123456, # The travel rule record Id  
-        "accpted": true, # Whether the withdraw request is accepted  
-        "info": "Withdraw request accepted" # The detailed infomation of the withdrawal result.  
-    }
+    [  
+        {  
+            "depositId": "4615328107052018945",  
+            "amount": "0.01",  
+            "network": "AVAXC",  
+            "coin": "AVAX",  
+            "depositStatus": 1,  
+            "travelRuleReqStatus": 0,                                                         // 0:PASS,2:REJECTED,3:PENDING,-1:FAILED  
+            "address": "0x0010627ab66d69232f4080d54e0f838b4dc3894a",  
+            "addressTag": "",  
+            "txId": "0xdde578983015741eed764e7ca10defb5a2caafdca3db5f92872d24a96beb1879",  
+            "transferType": 0,  
+            "confirmTimes": "12/12",  
+            "requireQuestionnaire": false,                                                    // true: This deposit require user to answer questionnaire to get it credited  
+                                                                                              // false: This deposit doesn't require user to answer questionnaire as it's already completed or information has been verified  
+            "questionnaire": {  
+                "vaspName": "BINANCE",  
+                "depositOriginator": 0  
+            },  
+            "insertTime": 1753053392000  
+        }  
+    ]

@@ -2,63 +2,23 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Balance-Update
 api_type: Trading
-updated_at: 2026-01-15T23:48:39.820802
+updated_at: 2026-05-27 18:57:14.314499
 ---
 
-# Payload: Balance update
+# Payload: Balance Update
 
-## Event Description[​](/docs/margin_trading/trade-data-stream/Event-Balance-Update#event-description "Direct link to Event Description")
+The Margin account uses the same `balanceUpdate` event payload as the Spot account.
 
-Balance Update occurs during the following:
+Please refer to the Spot User Data Streams documentation for the full event description, fields, and response example:
 
-  * Deposits or withdrawals from the account
-  * Transfer of funds between accounts (e.g. Spot to Margin)
-
-
-
-## Event Name[​](/docs/margin_trading/trade-data-stream/Event-Balance-Update#event-name "Direct link to Event Name")
-
-`balanceUpdate`
-
-## Response Example[​](/docs/margin_trading/trade-data-stream/Event-Balance-Update#response-example "Direct link to Response Example")
-
-> **Payload:**
-    
-    
-    {  
-      "e": "balanceUpdate",         //Event Type  
-      "E": 1573200697110,           //Event Time  
-      "a": "BTC",                   //Asset  
-      "d": "100.00000000",          //Balance Delta  
-      "T": 1573200697068            //Clear Time  
-    }
+[Spot User Data Streams - Balance Update](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream#balance-update)
 
 ---
 
 # 余额更新
 
-## 事件描述[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Balance-Update#事件描述 "事件描述的直接链接")
+杠杆账户使用与现货账户相同的 `balanceUpdate` 事件内容。
 
-当下列情形发生时更新:
+完整的事件描述、字段说明和响应示例，请参阅现货用户数据流文档：
 
-  * 账户发生充值或提取
-  * 交易账户之间发生划转(例如 现货向杠杆账户划转)
-
-
-
-## 事件类型[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Balance-Update#事件类型 "事件类型的直接链接")
-
-`USER_LIABILITY_CHANGE`
-
-## 响应示例[​](/docs/zh-CN/margin_trading/trade-data-stream/Event-Balance-Update#响应示例 "响应示例的直接链接")
-
-> **Payload:**
-    
-    
-    {  
-      "e": "balanceUpdate",         //Event Type  
-      "E": 1573200697110,           //Event Time  
-      "a": "ABC",                   //Asset  
-      "d": "100.00000000",          //Balance Delta  
-      "T": 1573200697068            //Clear Time  
-    }
+[现货用户数据流 - 余额更新](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/user-data-stream#%E4%BD%99%E9%A2%9D%E6%9B%B4%E6%96%B0)

@@ -2,10 +2,40 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/change-log
 api_type: REST
-updated_at: 2026-01-15T23:49:42.698636
+updated_at: 2026-05-27 18:59:38.397471
 ---
 
 # Change Log
+
+## 2026-05-22[​](/docs/wallet/change-log#2026-05-22 "Direct link to 2026-05-22")
+
+  * Added `accountType` parameter to the following endpoints: 
+    * `POST /sapi/v1/asset/dust-convert/convert`
+    * `POST /sapi/v1/asset/dust-convert/query-convertible-assets`
+
+
+
+* * *
+
+## 2026-04-28[​](/docs/wallet/change-log#2026-04-28 "Direct link to 2026-04-28")
+
+  * Added error code `-4106 TAG_NOT_SUPPORTED_FOR_NETWORK` to the [error code table](/docs/wallet/error-code).
+  * Updated `POST /sapi/v1/capital/withdraw/apply` documentation to clarify `addressTag` behavior for networks that do not support memo/tag.
+
+
+
+* * *
+
+## 2026-02-27[​](/docs/wallet/change-log#2026-02-27 "Direct link to 2026-02-27")
+
+  * Added a new field `identifier` to the response of `GET /sapi/v1/localentity/vasp`.
+  * Updated the Travel Rule deposit and withdrawal questionnaire: 
+    * The input parameter `vasp` should now use the `identifier` field from the `GET /sapi/v1/localentity/vasp` response instead of the previously expected `vaspCode`.
+    * Both `vaspCode` and `identifier` will be accepted for the `vasp` field in the deposit and withdrawal questionnaires during the transition period until **28 May 2026**.
+
+
+
+* * *
 
 ## 2025-12-26[​](/docs/wallet/change-log#2025-12-26 "Direct link to 2025-12-26")
 
@@ -726,6 +756,36 @@ The query time range of both endpoints are shortened to support data query withi
 ---
 
 # 更新日志
+
+## 2026-05-22[​](/docs/zh-CN/wallet/change-log#2026-05-22 "2026-05-22的直接链接")
+
+  * 以下接口新增 `accountType` 参数： 
+    * `POST /sapi/v1/asset/dust-convert/convert`
+    * `POST /sapi/v1/asset/dust-convert/query-convertible-assets`
+
+
+
+* * *
+
+## 2026-04-28[​](/docs/zh-CN/wallet/change-log#2026-04-28 "2026-04-28的直接链接")
+
+  * 在[错误代码表](/docs/zh-CN/wallet/error-code)中新增错误代码 `-4106 TAG_NOT_SUPPORTED_FOR_NETWORK`。
+  * 更新 `POST /sapi/v1/capital/withdraw/apply` 文档，说明不支持 memo/tag 的网络中 `addressTag` 的使用规则。
+
+
+
+* * *
+
+## 2026-02-27[​](/docs/zh-CN/wallet/change-log#2026-02-27 "2026-02-27的直接链接")
+
+  * 在 `GET /sapi/v1/localentity/vasp` 的响应中新增了字段 `identifier`。
+  * 更新了旅行规则（Travel Rule）存取款问卷： 
+    * 输入参数 `vasp` 现在应使用 `GET /sapi/v1/localentity/vasp` 响应中的 `identifier` 字段，替代之前预期的 `vaspCode`。
+    * 在过渡期内，存取款问卷的 `vasp` 字段将同时接受 `vaspCode` 和 `identifier`，该过渡期截至 **2026年5月28日** 。
+
+
+
+* * *
 
 ## 2025-12-26[​](/docs/zh-CN/wallet/change-log#2025-12-26 "2025-12-26的直接链接")
 

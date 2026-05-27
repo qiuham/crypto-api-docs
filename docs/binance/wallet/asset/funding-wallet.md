@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/funding-wallet
 api_type: REST
-updated_at: 2026-01-15T23:49:30.476633
+updated_at: 2026-05-27 18:59:11.194543
 ---
 
 # Funding Wallet (USER_DATA)
@@ -38,11 +38,11 @@ timestamp| LONG| YES|
     [  
         {  
             "asset": "USDT",  
-            "free": "1",    // avalible balance  
-            "locked": "0",  // locked asset  
-            "freeze": "0",  // freeze asset  
-            "withdrawing": "0",    
-            "btcValuation": "0.00000091"    
+            "free": "1",                     // avalible balance  
+            "locked": "0",                   // locked asset  
+            "freeze": "0",                   // freeze asset  
+            "withdrawing": "0",  
+            "btcValuation": "0.00000091"  
         }  
     ]
 
@@ -81,10 +81,10 @@ timestamp| LONG| YES|
     [  
         {  
             "asset": "USDT",  
-            "free": "1",    // 可用余额  
-            "locked": "0",  // 锁定资金  
-            "freeze": "0",  //冻结资金  
-            "withdrawing": "0",  // 提币  
-            "btcValuation": "0.00000091"  // btc估值  
+            "free": "1",                     // 可用余额  
+            "locked": "0",                   // 锁定资金  
+            "freeze": "0",                   // 冻结资金  
+            "withdrawing": "0",              // 提币  
+            "btcValuation": "0.00000091"     // btc估值  
         }  
     ]

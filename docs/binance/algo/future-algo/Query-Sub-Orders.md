@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Query-Sub-Orders
 api_type: REST
-updated_at: 2026-01-15T23:49:10.686734
+updated_at: 2026-05-27 18:58:24.422483
 ---
 
 # Query Sub Orders(USER_DATA)

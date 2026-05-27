@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-endpoints
 api_type: REST
-updated_at: 2026-01-15T23:36:14.871331
+updated_at: 2026-05-27 18:54:20.952810
 ---
 
 # General endpoints
@@ -159,6 +159,54 @@ Cannot be used in combination with `symbols` or `symbol`.
             {  
                 "baseAsset": "BTC",  
                 "symbols": ["BTCUSDT", "BTCUSDC"]  
+            }  
+        ]  
+    }  
+    
+
+### Query Execution Rules[​](/docs/binance-spot-api-docs/rest-api/general-endpoints#query-execution-rules "Direct link to Query Execution Rules")
+    
+    
+    GET /api/v3/executionRules  
+    
+
+**Weight**
+
+Parameter| Weight  
+---|---  
+`symbol`| 2  
+`symbols`| 2 for each `symbol`, capped at a max of 40  
+`symbolStatus`| 40  
+None| 40  
+  
+**Parameters:**
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+`symbol`| STRING| No| Query for specified symbol  
+`symbols`| STRING| No| Query for multiple symbols  
+`symbolStatus`| ENUM| Query for all symbols with the specified status. Supported values: `TRADING`, `HALT`, `BREAK`|   
+  
+**Note:** No combination of multiple parameters is allowed.
+
+**Data Source:** Memory
+
+**Response:**
+    
+    
+    {  
+        "symbolRules": [  
+            {  
+                "symbol": "BAZUSD",  
+                "rules": [  
+                    {  
+                        "ruleType": "PRICE_RANGE",  
+                        "bidLimitMultUp": "1.0001",  
+                        "bidLimitMultDown": "0.9999",  
+                        "askLimitMultUp": "1.0001",  
+                        "askLimitMultDown": "0.9999"  
+                    }  
+                ]  
             }  
         ]  
     }
@@ -328,6 +376,55 @@ symbolStatus| ENUM| No| 用于过滤具有此 `tradingStatus` 的交易对。有
             {  
                 "baseAsset": "BTC",  
                 "symbols": ["BTCUSDT", "BTCUSDC"]  
+            }  
+        ]  
+    }  
+    
+
+### 查询执行规则[​](/docs/zh-CN/binance-spot-api-docs/rest-api/general-endpoints#查询执行规则 "查询执行规则的直接链接")
+    
+    
+    GET /api/v3/executionRules  
+    
+
+**权重:**
+
+限制| 权重  
+---|---  
+`symbol`| 2  
+`symbols`| 权重为 2，最多支持 40  
+`symbolStatus`| 40  
+None| 40  
+  
+**参数:**
+
+名称| 类型| 是否必须| 描述  
+---|---|---|---  
+`symbol`| STRING| No| 查询指定的交易对  
+`symbols`| STRING| No| 查询多个交易对  
+`symbolStatus`| ENUM| 查询指定状态的所有交易对  
+支持的值：`TRADING`（正常交易中）、`HALT`（交易终止）、BREAK（交易暂停)|   
+  
+**注意：** 不允许多个参数组合使用。
+
+**数据源：** 缓存
+
+**响应：**
+    
+    
+    {  
+        "symbolRules": [  
+            {  
+                "symbol": "BAZUSD",  
+                "rules": [  
+                    {  
+                        "ruleType": "PRICE_RANGE",  
+                        "bidLimitMultUp": "1.0001",  
+                        "bidLimitMultDown": "0.9999",  
+                        "askLimitMultUp": "1.0001",  
+                        "askLimitMultDown": "0.9999"  
+                    }  
+                ]  
             }  
         ]  
     }

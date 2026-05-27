@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data
 api_type: Market Data
-updated_at: 2026-01-15T23:48:27.731784
+updated_at: 2026-05-27 18:56:39.779949
 ---
 
 # Cross margin collateral ratio (MARKET_DATA)

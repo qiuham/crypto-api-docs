@@ -2,128 +2,95 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/quick-start
 api_type: REST
-updated_at: 2026-01-15T23:50:16.108012
+updated_at: 2026-05-27 19:00:47.339349
 ---
 
-# Quick Start
+# Send Quote Request(TRADE)
 
-## API Key Setup[​](/docs/convert/quick-start#api-key-setup "Direct link to API Key Setup")
+## API Description[​](/docs/convert/trade#api-description "Direct link to API Description")
 
-  * Some endpoints will require an API Key. Please refer to [this page](https://www.binance.com/en/support/articles/360002502072) regarding API key creation.
-  * Once API key is created, it is recommended to set IP restrictions on the key for security reasons.
-  * **Never share your API key/secret key to ANYONE.**
+Request a quote for the requested token pairs
 
-If the API keys were accidentally shared, please delete them immediately and create a new key. 
+## HTTP Request[​](/docs/convert/trade#http-request "Direct link to HTTP Request")
 
-## API Key Restrictions[​](/docs/convert/quick-start#api-key-restrictions "Direct link to API Key Restrictions")
+POST `/sapi/v1/convert/getQuote`
 
-  * After creating the API key, the default restrictions is `Enable Reading`.
-  * To **enable withdrawals via the API** , the API key restriction needs to be modified through the Binance UI.
+## Request Weight[​](/docs/convert/trade#request-weight "Direct link to Request Weight")
+
+**200(UID)**
+
+## Request Parameters[​](/docs/convert/trade#request-parameters "Direct link to Request Parameters")
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+fromAsset| STRING| YES|   
+toAsset| STRING| YES|   
+fromAmount| DECIMAL| EITHER| When specified, it is the amount you will be debited after the conversion  
+toAmount| DECIMAL| EITHER| When specified, it is the amount you will be credited after the conversion  
+walletType| ENUM| NO| It is to choose which wallet of assets. The wallet selection is `SPOT`, `FUNDING` and `EARN`. Combination of wallet is supported i.e. `SPOT_FUNDING`, `FUNDING_EARN`, `SPOT_FUNDING_EARN` or `SPOT_EARN` Default is `SPOT`.  
+validTime| ENUM| NO| 10s, 30s, 1m, default 10s  
+recvWindow| LONG| NO| The value cannot be greater than 60000  
+timestamp| LONG| YES|   
+  
+  * Either fromAmount or toAmount should be sent
+  * `quoteId` will be returned only if you have enough funds to convert
 
 
 
-## Enabling Accounts[​](/docs/convert/quick-start#enabling-accounts "Direct link to Enabling Accounts")
-
-### Spot Account[​](/docs/convert/quick-start#spot-account "Direct link to Spot Account")
-
-A `SPOT` account is provided by default upon creation of a Binance Account.
-
-### Margin Account[​](/docs/convert/quick-start#margin-account "Direct link to Margin Account")
-
-To enable a `MARGIN` account for Margin Trading, please refer to the [Margin Trading Guide](https://www.binance.vision/tutorials/binance-margin-trading-guide)
-
-## API Library[​](/docs/convert/quick-start#api-library "Direct link to API Library")
-
-### Python connector[​](/docs/convert/quick-start#python-connector "Direct link to Python connector")
-
-This is a lightweight library that works as a connector to Binance public API, written in Python.
-
-<https://github.com/binance/binance-connector-python>
-
-### Javascript connector[​](/docs/convert/quick-start#javascript-connector "Direct link to Javascript connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for JavaScript users.
-
-<https://github.com/binance/binance-connector-js>
-
-### Ruby connector[​](/docs/convert/quick-start#ruby-connector "Direct link to Ruby connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for Ruby users.
-
-<https://github.com/binance/binance-connector-ruby>
-
-### DotNET connector[​](/docs/convert/quick-start#dotnet-connector "Direct link to DotNET connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for C# users.
-
-<https://github.com/binance/binance-connector-dotnet>
-
-### Java connector[​](/docs/convert/quick-start#java-connector "Direct link to Java connector")
-
-This is a lightweight library that works as a connector to Binance public API, written for Java users.
-
-<https://github.com/binance/binance-connector-java>
-
-### Postman Collections[​](/docs/convert/quick-start#postman-collections "Direct link to Postman Collections")
-
-There is now a Postman collection containing the API endpoints for quick and easy use.
-
-This is recommended for new users who want to get a quick-start into using the API.
-
-For more information please refer to this page: [Binance API Postman](https://github.com/binance/binance-api-postman)
-
-### Swagger[​](/docs/convert/quick-start#swagger "Direct link to Swagger")
-
-A YAML file with OpenAPI specification on the RESTful API is available to be used, as well as a Swagger UI page for the consulting.
-
-<https://github.com/binance/binance-api-swagger>
+## Response Example[​](/docs/convert/trade#response-example "Direct link to Response Example")
+    
+    
+    {  
+       "quoteId":"12415572564",  
+       "ratio":"38163.7",  
+       "inverseRatio":"0.0000262",  
+       "validTimestamp":1623319461670,  
+       "toAmount":"3816.37",  
+       "fromAmount":"0.1"  
+    }
 
 ---
 
-# 快速开始
+# 发送获取报价请求(TRADE)
 
-## API Key 权限设置[​](/docs/zh-CN/convert/quick-start#api-key-权限设置 "API Key 权限设置的直接链接")
+## 接口描述[​](/docs/zh-CN/convert/trade#接口描述 "接口描述的直接链接")
 
-  * 新创建的API的默认权限是 `只读`。
-  * 如果需要通过API提款, 需要在UI修改权限, 选中 `允许提现`。
+对所需的币对发送获取报价请求
 
+## HTTP请求[​](/docs/zh-CN/convert/trade#http请求 "HTTP请求的直接链接")
 
+POST `/sapi/v1/convert/getQuote`
 
-## 账户[​](/docs/zh-CN/convert/quick-start#账户 "账户的直接链接")
+## 请求权重[​](/docs/zh-CN/convert/trade#请求权重 "请求权重的直接链接")
 
-### 现货账户[​](/docs/zh-CN/convert/quick-start#现货账户 "现货账户的直接链接")
+**200(UID)**
 
-新注册的币安账号都会有一个现货(`SPOT`)账号。
+## 请求参数[​](/docs/zh-CN/convert/trade#请求参数 "请求参数的直接链接")
 
-### 杠杆账户[​](/docs/zh-CN/convert/quick-start#杠杆账户 "杠杆账户的直接链接")
-
-为了开设杠杆(`MARGIN`)账户, 可以参考[Binance杠杆交易账户设置指南](https://www.binance.vision/zh/tutorials/binance-margin-trading-guide)
-
-## API 代码库[​](/docs/zh-CN/convert/quick-start#api-代码库 "API 代码库的直接链接")
-
-### Connectors[​](/docs/zh-CN/convert/quick-start#connectors "Connectors的直接链接")
-
-以下有一些轻量级的代码库，使不同语言的用户能够直接调用现货的 Binance 公共 API：
-
-  * Python <https://github.com/binance/binance-connector-python>
-  * JavaScript <https://github.com/binance/binance-connector-js>
-  * Ruby <https://github.com/binance/binance-connector-ruby>
-  * DotNET C# <https://github.com/binance/binance-connector-dotnet>
-  * Java <https://github.com/binance/binance-connector-java>
-  * Rust <https://github.com/binance/binance-spot-connector-rust>
-  * PHP <https://github.com/binance/binance-connector-php>
-  * Go <https://github.com/binance/binance-connector-go>
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+fromAsset| STRING| YES|   
+toAsset| STRING| YES|   
+fromAmount| DECIMAL| EITHER| 这是成交后将被扣除的金额  
+toAmount| DECIMAL| EITHER| 这是成交后将会获得的金额  
+walletType| ENUM| NO| 这里可以选择支付钱包，可支持的钱包的选择有`SPOT`，`FUNDING`和`EARN`。组合钱包选择也可支持，如`SPOT_FUNDING`，`FUNDING_EARN`，`SPOT_FUNDING_EARN`或者`SPOT_EARN`。默认选择为`SPOT`。  
+validTime| ENUM| NO| 可以支持10s、30s、1m等值，默认值为 10s  
+recvWindow| LONG| NO| 此值不能大于 60000  
+timestamp| LONG| YES|   
+  
+>   * 参数fromAmount或者toAmount只需要提供其中一个。
+>   * `quoteId`仅在账户余额充足时返回。
+> 
 
 
-
-### Postman Collections[​](/docs/zh-CN/convert/quick-start#postman-collections "Postman Collections的直接链接")
-
-Postman 集合现已推出。推荐给寻求快速和轻松地开始使用 API 的新用户。
-
-<https://github.com/binance/binance-api-postman>
-
-### Swagger[​](/docs/zh-CN/convert/quick-start#swagger "Swagger的直接链接")
-
-以下有提供包含 RESTful API 的 OpenAPI 规范的 YAML 文件，以及可供参考的 Swagger UI 页面。
-
-<https://github.com/binance/binance-api-swagger>
+## 响应示例[​](/docs/zh-CN/convert/trade#响应示例 "响应示例的直接链接")
+    
+    
+    {  
+       "quoteId":"12415572564",  
+       "ratio":"38163.7",  
+       "inverseRatio":"0.0000262",  
+       "validTimestamp":1623319461670,  
+       "toAmount":"3816.37",  
+       "fromAmount":"0.1"  
+    }

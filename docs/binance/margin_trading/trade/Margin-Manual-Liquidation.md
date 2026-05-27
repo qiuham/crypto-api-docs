@@ -2,89 +2,93 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Manual-Liquidation
 api_type: Trading
-updated_at: 2026-01-15T23:48:51.288542
+updated_at: 2026-05-27 18:57:42.035441
 ---
 
-# Margin Manual Liquidation(MARGIN)
+# Query Liquidation Loan (USER_DATA)
 
-## API Description[​](/docs/margin_trading/trade/Margin-Manual-Liquidation#api-description "Direct link to API Description")
+## Description[​](/docs/margin_trading/trade/Query-Liquidation-Loan#description "Direct link to Description")
 
-Margin Manual Liquidation
+Query the current user's cross-margin liquidation loan information, including the original loan amount, repaid amount, and remaining amount.
 
-## HTTP Request[​](/docs/margin_trading/trade/Margin-Manual-Liquidation#http-request "Direct link to HTTP Request")
+When a cross-margin account is liquidated and the account equity turns negative (i.e., bankruptcy occurs), the system automatically generates a liquidation loan record to represent the deficit. Use this endpoint to check the current status of any outstanding liquidation loan.
 
-POST `/sapi/v1/margin/manual-liquidation`
+## HTTP Request[​](/docs/margin_trading/trade/Query-Liquidation-Loan#http-request "Direct link to HTTP Request")
 
-## Request Weight(UID)[​](/docs/margin_trading/trade/Margin-Manual-Liquidation#request-weightuid "Direct link to Request Weight\(UID\)")
+GET `/sapi/v1/margin/liquidation-loan`
 
-**3000**
+## Request Weight[​](/docs/margin_trading/trade/Query-Liquidation-Loan#request-weight "Direct link to Request Weight")
 
-## Request Parameters[​](/docs/margin_trading/trade/Margin-Manual-Liquidation#request-parameters "Direct link to Request Parameters")
+**100(UID)**
+
+## Request Parameters[​](/docs/margin_trading/trade/Query-Liquidation-Loan#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-type| STRING| YES| `MARGIN`,`ISOLATED`  
-symbol| STRING| NO| When type selects `ISOLATED`, `symbol` must be filled in  
-recvWindow| LONG| NO|   
+recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-Additional notes:
-
-  * This endpoint can support Cross Margin Classic Mode and Pro Mode.
-  * And only support Isolated Margin for restricted region.
-
-
-
-## Response Example[​](/docs/margin_trading/trade/Margin-Manual-Liquidation#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/trade/Query-Liquidation-Loan#response-example "Direct link to Response Example")
     
     
     {  
-      "asset": "ETH",  
-      "interest": "0.00083334",  
-      "principal": "0.001",  
-      "liabilityAsset": "USDT",  
-      "liabilityQty": 0.3552  
-    }
+        "asset": "USDC",  
+        "amount": "1000.00000000",  
+        "repaidAmount": "300.00000000",  
+        "remainingAmount": "700.00000000"  
+    }  
+    
+
+## Response Parameters[​](/docs/margin_trading/trade/Query-Liquidation-Loan#response-parameters "Direct link to Response Parameters")
+
+Name| Type| Description  
+---|---|---  
+asset| STRING| The asset of the liquidation loan (USDC by default)  
+amount| DECIMAL| Total liquidation loan amount  
+repaidAmount| DECIMAL| Amount that has been repaid  
+remainingAmount| DECIMAL| Outstanding amount remaining to be repaid
 
 ---
 
-# 杠杆手动强平(MARGIN)
+# 查询强平穿仓欠款 (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Margin-Manual-Liquidation#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#接口描述 "接口描述的直接链接")
 
-杠杆手动强平
+查询当前用户的全仓杠杆强平穿仓欠款信息，包括欠款总额、已还金额和剩余待偿还金额。
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Margin-Manual-Liquidation#http请求 "HTTP请求的直接链接")
+当用户的全仓杠杆账户触发强制平仓且发生穿仓时，系统会产生强平欠款记录（即穿仓导致的负债）。此接口允许用户查看尚未偿还的强平穿仓欠款余额。
 
-POST /sapi/v1/margin/manual-liquidation
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#http请求 "HTTP请求的直接链接")
 
-## 请求权重(UID)[​](/docs/zh-CN/margin_trading/trade/Margin-Manual-Liquidation#请求权重uid "请求权重\(UID\)的直接链接")
+GET `/sapi/v1/margin/liquidation-loan`
 
-**3000**
+## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#请求权重 "请求权重的直接链接")
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Margin-Manual-Liquidation#请求参数 "请求参数的直接链接")
+**100(UID)**
+
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-type| STRING| YES| `MARGIN`,`ISOLATED`  
-symbol| STRING| NO| `type`选择`ISOLATED`后，`symbol`需要填入  
-recvWindow| LONG| NO|   
+recvWindow| LONG| NO| 赋值不能大于 `60000`  
 timestamp| LONG| YES|   
   
-备注:
-
-  * 该接口支持全仓经典模式和专业模式。
-  * 逐仓仅支持受限区域。
-
-
-
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Margin-Manual-Liquidation#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#响应示例 "响应示例的直接链接")
     
     
     {  
-      "asset": "ETH",  
-      "interest": "0.00083334",  
-      "principal": "0.001",  
-      "liabilityAsset": "USDT",  
-      "liabilityQty": 0.3552  
-    }
+        "asset": "USDC",  
+        "amount": "1000.00000000",  
+        "repaidAmount": "300.00000000",  
+        "remainingAmount": "700.00000000"  
+    }  
+    
+
+## 响应参数[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan#响应参数 "响应参数的直接链接")
+
+名称| 类型| 描述  
+---|---|---  
+asset| STRING| 强平欠款资产（默认为USDC）  
+amount| DECIMAL| 强平穿仓欠款总额  
+repaidAmount| DECIMAL| 已偿还金额  
+remainingAmount| DECIMAL| 剩余未偿还金额

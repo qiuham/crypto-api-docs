@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream
 api_type: REST
-updated_at: 2026-01-15T23:37:08.246360
+updated_at: 2026-05-27 18:54:52.801771
 ---
 
 # User Data Streams for Binance
@@ -147,6 +147,7 @@ Field | Name | Description | Examples
 `gOT` | Pegged offset Type | `"gOT": "PRICE_LEVEL"`  
 `gOV` | Pegged Offset Value | `"gOV": 5`  
 `gp` | Pegged Price | `"gp": "1.00000000"`  
+`eR` | Expiry Reason | Appears when the order has expired. | `"eR": "INSUFFICIENT_LIQUIDITY"`  
   
 #### Order Reject Reason[​](/docs/binance-spot-api-docs/user-data-stream#order-reject-reason "Direct link to Order Reject Reason")
 
@@ -195,18 +196,19 @@ If the order is an order list, an event named `ListStatus` will be sent in addit
     }  
     
 
-**Execution types:**
+#### Order Expiry Reason[​](/docs/binance-spot-api-docs/user-data-stream#order-expiry-reason "Direct link to Order Expiry Reason")
 
-  * `NEW` \- The order has been accepted into the engine.
-  * `CANCELED` \- The order has been canceled by the user.
-  * `REPLACED` \- The order has been amended.
-  * `REJECTED` \- The order has been rejected and was not processed (e.g. Cancel Replace Orders wherein the new order placement is rejected but the request to cancel request succeeds.)
-  * `TRADE` \- Part of the order or all of the order's quantity has filled.
-  * `EXPIRED` \- The order was canceled according to the order type's rules (e.g. LIMIT FOK orders with no fill, LIMIT IOC or MARKET orders that partially fill) or by the exchange, (e.g. orders canceled during liquidation, orders canceled during maintenance).
-  * `TRADE_PREVENTION` \- The order has expired due to STP.
-
-
-
+Expiry Reason (`eR`)| Explanation  
+---|---  
+`REJECTED`| A contingent order or an order that was part of an OTO was rejected by the matching engine when trying to place it on the order book. Common reasons are lack of funds and rejection by filters.  
+`EXCHANGE_CANCELED`| The order was canceled by Binance.  
+`OCO_TRIGGER`| An order that was part of an OCO pair was canceled because the other order of the pair started working or the entire OCO expired.  
+`OTO_PHASE_ONE_EXPIRED`| The working order of the order list expired, thus expiring the entire order list.  
+`UNFILLED_IOC_QUANTITY_EXPIRED`| The IOC order was not fully filled and thus expired.  
+`UNFILLED_FOK_ORDER_EXPIRED`| The FOK order was not fully filled and thus expired.  
+`INSUFFICIENT_LIQUIDITY`| There were not enough orders in the order book to match with this order.  
+`EXECUTION_RULE_PRICE_RANGE_EXCEEDED`| The order attempted to trade at a price that would not meet the Price Range Execution Rule.  
+  
 Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum definitions.
 
 ## Event Stream Terminated[​](/docs/binance-spot-api-docs/user-data-stream#event-stream-terminated "Direct link to Event Stream Terminated")
@@ -251,7 +253,7 @@ Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum
 
 ---
 
-# WebSocket 账户接口
+# 用户数据流
 
 ## 一般信息[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#一般信息 "一般信息的直接链接")
 
@@ -313,7 +315,7 @@ Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum
     }  
     
 
-### 订单更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单更新 "订单更新的直接链接")
+### 订单更新[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单更新 "��订单更新的直接链接")
 
 订单通过`executionReport`事件进行更新。
 
@@ -392,6 +394,7 @@ Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum
 `gOT` | Pegged offset Type | `"gOT": "PRICE_LEVEL"`  
 `gOV` | Pegged Offset Value | `"gOV": 5`  
 `gp` | Pegged Price | `"gp": "1.00000000"`  
+`eR` | Expiry Reason | 当订单已过期时出现。 | `"eR": "INSUFFICIENT_LIQUIDITY"`  
   
 #### 订单拒绝原因[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单拒绝原因 "订单拒绝原因的直接链接")
 
@@ -405,7 +408,7 @@ Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum
 `WOULD_MATCH_IMMEDIATELY`| "Order would immediately match and take."  
 `OCO_BAD_PRICES`| "The relationship of the prices for the orders is not correct."  
   
-如果是一个订单组，则除了显示 `executionReport` 事件外，还将显示一个名为 `ListStatus` 的事件。
+如果是一个订单列表，则除了显示 `executionReport` 事件外，还将显示一个名为 `ListStatus` 的事件。
 
 **Payload**
     
@@ -439,18 +442,19 @@ Check the [Enums page](/docs/binance-spot-api-docs/enums) for more relevant enum
     }  
     
 
-**可能的执行类型:**
+#### 订单过期原因[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#订单过期原因 "订单过期原因的直接链接")
 
-  * `NEW` \- 新订单已被引擎接受。
-  * `CANCELED` \- 订单被用户取消。
-  * `REPLACED` \- 订单已被修改。
-  * `REJECTED` \- 新订单被拒绝 （e.g. 在撤消挂单再下单时，其中新订单被拒绝但撤消挂单请求成功）。
-  * `TRADE` \- 订单有新成交。
-  * `EXPIRED` \- 订单已根据 Time In Force 参数的规则取消（e.g. 没有成交的 LIMIT FOK 订单或部分成交的 LIMIT IOC 订单）或者被交易所取消（e.g. 强平或维护期间取消的订单）。
-  * `TRADE_PREVENTION` \- 订单因 STP 触发而过期。
-
-
-
+过期原因 (`eR`)| 说明  
+---|---  
+`REJECTED`| 当尝试将条件单或OTO（One-Triggers-the-Other）订单放入订单簿时，被撮合引擎拒绝。常见原因包括资金不足和过滤器拒绝。  
+`EXCHANGE_CANCELED`| 订单被币安取消。  
+`OCO_TRIGGER`| OCO（One-Cancels-the-Other）订单对中的一个订单被取消，因为其另一个订单开始生效或整个OCO订单对过期。  
+`OTO_PHASE_ONE_EXPIRED`| 订单列表中的生效订单过期，导致整个订单列表过期。  
+`UNFILLED_IOC_QUANTITY_EXPIRED`| IOC（立即成交或取消）订单未完全成交，因此过期。  
+`UNFILLED_FOK_ORDER_EXPIRED`| FOK（全部成交或取消）订单未完全成交，因此过期。  
+`INSUFFICIENT_LIQUIDITY`| 订单簿中没有足够的订单与该订单匹配。  
+`EXECUTION_RULE_PRICE_RANGE_EXCEEDED`| 订单尝试以不符合价格区间执行规则的价格进行交易。  
+  
 请查阅 [枚举定义](/docs/zh-CN/binance-spot-api-docs/enums) 文档获取更多枚举定义。
 
 ## 事件流已终止[​](/docs/zh-CN/binance-spot-api-docs/user-data-stream#事件流已终止 "事件流已终止的直接链接")

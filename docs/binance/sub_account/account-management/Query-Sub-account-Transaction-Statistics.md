@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/account-management/Query-Sub-account-Transaction-Statistics
 api_type: Account
-updated_at: 2026-01-15T23:50:55.099392
+updated_at: 2026-05-27 19:02:04.379524
 ---
 
 # Query Sub-account Transaction Statistics (For Master Account) (USER_DATA)

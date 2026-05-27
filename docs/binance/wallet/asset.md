@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset
 api_type: REST
-updated_at: 2026-01-15T23:49:23.320916
+updated_at: 2026-05-27 18:58:54.544673
 ---
 
 # Asset Detail (USER_DATA)
@@ -23,6 +23,7 @@ GET `/sapi/v1/asset/assetDetail`
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
+asset| STRING| NO|   
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
@@ -34,19 +35,19 @@ timestamp| LONG| YES|
     
     
     {  
-            "CTR": {  
-                "minWithdrawAmount": "70.00000000", //min withdraw amount  
-                "depositStatus": false,//deposit status (false if ALL of networks' are false)  
-                "withdrawFee": 35, // withdraw fee  
-                "withdrawStatus": true, //withdraw status (false if ALL of networks' are false)  
-                "depositTip": "Delisted, Deposit Suspended" //reason  
-            },  
-            "SKY": {  
-                "minWithdrawAmount": "0.02000000",  
-                "depositStatus": true,  
-                "withdrawFee": 0.01,  
-                "withdrawStatus": true  
-            }	  
+        "CTR": {  
+            "minWithdrawAmount": "70.00000000",             // min withdraw amount  
+            "depositStatus": false,                         // deposit status (false if ALL of networks' are false)  
+            "withdrawFee": 35,                              // withdraw fee  
+            "withdrawStatus": true,                         // withdraw status (false if ALL of networks' are false)  
+            "depositTip": "Delisted, Deposit Suspended"     // reason  
+        },  
+        "SKY": {  
+            "minWithdrawAmount": "0.02000000",  
+            "depositStatus": true,  
+            "withdrawFee": 0.01,  
+            "withdrawStatus": true  
+        }  
     }
 
 ---
@@ -82,16 +83,16 @@ timestamp| LONG| YES|
     
     {  
         "CTR": {  
-                "minWithdrawAmount": "70.00000000",   //最小提现数量  
-                "depositStatus": false,   //是否可以充值(只有所有网络都关闭充值才为false)  
-                "withdrawFee": 35,   // 提现手续费  
-                "withdrawStatus": true,    //是否开放提现(只有所有网络都关闭提币才为false)  
-                "depositTip": "Delisted, Deposit Suspended"   //暂停充值的原因(如果暂停才有这一项)  
-            },  
-            "SKY": {  
-                "minWithdrawAmount": "0.02000000",  
-                "depositStatus": true,  
-                "withdrawFee": 0.01,  
-                "withdrawStatus": true  
-            }  
+            "minWithdrawAmount": "70.00000000",             // 最小提现数量  
+            "depositStatus": false,                         // 是否可以充值(只有所有网络都关闭充值才为false)  
+            "withdrawFee": 35,                              // 提现手续费  
+            "withdrawStatus": true,                         // 是否开放提现(只有所有网络都关闭提币才为false)  
+            "depositTip": "Delisted, Deposit Suspended"     // 暂停充值的原因(如果暂停才有这一项)  
+        },  
+        "SKY": {  
+            "minWithdrawAmount": "0.02000000",  
+            "depositStatus": true,  
+            "withdrawFee": 0.01,  
+            "withdrawStatus": true  
+        }  
     }

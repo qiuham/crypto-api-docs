@@ -2,1824 +2,877 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/stp_faq
 api_type: REST
-updated_at: 2026-01-15T23:36:05.737599
+updated_at: 2026-05-27 18:54:10.690725
 ---
 
-# Self Trade Prevention (STP) FAQ
+# Filters
 
-**Disclaimer:**
+Filters define trading rules on a symbol or an exchange. Filters come in three forms: `symbol filters`, `exchange filters` and `asset filters`.
 
-  * The commissions and prices used here are fictional and do not imply anything about the actual setup on the live exchange.
+## Symbol filters[​](/docs/binance-spot-api-docs/filters#symbol-filters "Direct link to Symbol filters")
 
+### PRICE_FILTER[​](/docs/binance-spot-api-docs/filters#price_filter "Direct link to PRICE_FILTER")
 
+The `PRICE_FILTER` defines the `price` rules for a symbol. There are 3 parts:
 
-### What is Self Trade Prevention?[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-is-self-trade-prevention "Direct link to What is Self Trade Prevention?")
-
-Self Trade Prevention (or STP) prevents orders of users, or the user's `tradeGroupId` to match against their own.
-
-### What defines a self-trade?[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-defines-a-self-trade "Direct link to What defines a self-trade?")
-
-A self-trade can occur in either scenario:
-
-  * The order traded against the same account.
-  * The order traded against an account with the same `tradeGroupId`.
+  * `minPrice` defines the minimum `price`/`stopPrice` allowed; disabled on `minPrice` == 0.
+  * `maxPrice` defines the maximum `price`/`stopPrice` allowed; disabled on `maxPrice` == 0.
+  * `tickSize` defines the intervals that a `price`/`stopPrice` can be increased/decreased by; disabled on `tickSize` == 0.
 
 
 
-### What happens when STP is triggered?[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-happens-when-stp-is-triggered "Direct link to What happens when STP is triggered?")
+Any of the above variables can be set to 0, which disables that rule in the `price filter`. In order to pass the `price filter`, the following must be true for `price`/`stopPrice` of the enabled rules:
 
-There are five possible modes for what the system does when an order would create a self-trade.
+  * `price` >= `minPrice`
+  * `price` <= `maxPrice`
+  * `price` % `tickSize` == 0
 
-`NONE` \- This mode exempts the order from self-trade prevention. Accounts or Trade group IDs will not be compared, no orders will be expired, and the trade will occur.
 
-`EXPIRE_TAKER` \- This mode prevents a trade by immediately expiring the taker order's remaining quantity.
 
-`EXPIRE_MAKER` \- This mode prevents a trade by immediately expiring the potential maker order's remaining quantity.
-
-`EXPIRE_BOTH` \- This mode prevents a trade by immediately expiring both the taker and the potential maker orders' remaining quantities.
-
-`DECREMENT` \- This mode increases the `prevented quantity` of _both_ orders by the amount of the prevented match. The smaller of the two orders will expire, or both if they have the same quantity.
-
-`TRANSFER` \- If orders are from the same account, then the behavior is the same as `DECREMENT`. If orders are from different accounts with the same `tradeGroupId`, then in addition to the behavior of `DECREMENT`, the `last prevented quantity` and its notional are transferred between the two accounts.
-
-STP behavior is typically determined by the STP mode of the **taker order** only. The exception is that for STP `TRANSFER` to occur, both the maker and taker orders must specify STP mode `TRANSFER`. If the taker order specifies STP mode `TRANSFER`, but the maker order specifies a different STP mode, then the STP behavior is `DECREMENT`.
-
-In summary:
-
-Taker Order STP Mode| Maker Order STP Mode| Effective STP Mode  
----|---|---  
-`TRANSFER`| `TRANSFER`| `TRANSFER`  
-`TRANSFER`| `EXPIRE_MAKER`, `EXPIRE_TAKER`, `EXPIRE_BOTH`, `NONE`, `DECREMENT`| `DECREMENT`  
-`EXPIRE_MAKER`, `EXPIRE_TAKER`, `EXPIRE_BOTH`, `NONE`, `DECREMENT`| ANY STP MODE| STP mode of the Taker Order  
-  
-### What is a Trade Group Id?[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-is-a-trade-group-id "Direct link to What is a Trade Group Id?")
-
-Different accounts with the same `tradeGroupId` are considered part of the same "trade group". Orders submitted by members of a trade group are eligible for STP according to the taker-order's STP mode.
-
-A user can confirm if their accounts are under the same `tradeGroupId` from the API either from `GET /api/v3/account` (REST API) or `account.status` (WebSocket API) for each account.
-
-The field is also present in the response for `GET /api/v3/preventedMatches` (REST API) or `myPreventedMatches` (WebSocket API).
-
-If the value is `-1`, then the `tradeGroupId` has not been set for that account, so the STP may only take place between orders of the same account.
-
-### What is a Prevented Match?[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-is-a-prevented-match "Direct link to What is a Prevented Match?")
-
-When a self-trade is prevented, a prevented match is created. The orders in the prevented match have their prevented quantities increased and one or more orders expire.
-
-This is not to be confused with a trade, as no orders will match.
-
-This is a record of what orders could have self-traded.
-
-This can be queried through the endpoint `GET /api/v3/preventedMatches` on the REST API or `myPreventedMatches` on the WebSocket API.
-
-This is a sample of the output request for reference:
-    
-    
-    [  
-        {  
-            "symbol": "BTCDUSDT",                         // Symbol of the orders  
-            "preventedMatchId": 8,                        // Identifies the prevented match of the expired order(s) for the symbol.  
-            "takerOrderId": 12,                           // Order Id of the Taker Order  
-            "makerOrderId": 10,                           // Order Id of the Maker Order  
-            "tradeGroupId": 1,                            // Identifies the Trade Group Id. (If the account is not part of a trade group, this will be -1.)  
-            "selfTradePreventionMode": "EXPIRE_BOTH",     // STP mode that expired the order(s).  
-            "price": "50.00000000",                       // Price at which the match occurred.  
-            "takerPreventedQuantity": "1.00000000",       // Taker's remaining quantity before the STP. Only appears if the STP mode is EXPIRE_TAKER, EXPIRE_BOTH or DECREMENT.  
-            "makerPreventedQuantity": "10.00000000",      // Maker's remaining quantity before the STP. Only appears if the STP mode is EXPIRE_MAKER, EXPIRE_BOTH, or DECREMENT.  
-            "transactTime": 1663190634060                 // Time the order(s) expired due to STP.  
-        }  
-    ]  
-    
-
-### What is "prevented quantity?"[​](/docs/binance-spot-api-docs/faqs/stp_faq#what-is-prevented-quantity "Direct link to What is "prevented quantity?"")
-
-STP events expire quantity from open orders. The STP modes `EXPIRE_TAKER`, `EXPIRE_MAKER`, and `EXPIRE_BOTH` expire all remaining quantity on the affected orders, resulting in the entire open order being expired.
-
-Prevented quantity is the amount of quantity that is expired due to STP events for a particular order. User stream execution reports for orders involved in STP may have these fields:
+**/exchangeInfo format:**
     
     
     {  
-        "A": "3.000000",     // Prevented Quantity  
-        "B": "3.000000"      // Last Prevented Quantity  
+        "filterType": "PRICE_FILTER",  
+        "minPrice": "0.00000100",  
+        "maxPrice": "100000.00000000",  
+        "tickSize": "0.00000100"  
     }  
     
 
-`B` is present for execution type `TRADE_PREVENTION`, and is the quantity expired due to that individual STP event.
+### PERCENT_PRICE[​](/docs/binance-spot-api-docs/filters#percent_price "Direct link to PERCENT_PRICE")
 
-`A` is the cumulative quantity expired due to STP over the lifetime of the order. For `EXPIRE_TAKER`, `EXPIRE_MAKER`, and `EXPIRE_BOTH` modes this will always be the same value as `B`.
+The `PERCENT_PRICE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-API responses for orders which expired due to STP will also have a `preventedQuantity` field, indicating the cumulative quantity expired due to STP over the lifetime of the order.
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
 
-While an order is open, the following equation holds true:
-    
-    
-    original order quantity - executed quantity - prevented quantity = quantity available for further execution  
-    
 
-When an order's available quantity goes to zero, the order will be removed from the order book and the status will be one of `EXPIRED_IN_MATCH`, `FILLED`, or `EXPIRED`.
 
-### How do I know which symbol uses STP?[​](/docs/binance-spot-api-docs/faqs/stp_faq#how-do-i-know-which-symbol-uses-stp "Direct link to How do I know which symbol uses STP?")
+An order will pass this filter evaluation if:
 
-Symbols may be configured to allow different sets of STP modes and take different default STP modes.
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
 
-`defaultSelfTradePreventionMode` \- Orders will use this STP mode if the user does not provide one on order placement.
 
-`allowedSelfTradePreventionModes` \- Defines the allowed set of STP modes for order placement on that symbol.
 
-For example, if a symbol has the following configuration:
+**/exchangeInfo format:**
     
     
     {  
-        "defaultSelfTradePreventionMode": "NONE",  
-        "allowedSelfTradePreventionModes": ["NONE", "EXPIRE_TAKER", "EXPIRE_BOTH"]  
+        "filterType": "PERCENT_PRICE",  
+        "multiplierUp": "1.3000",  
+        "multiplierDown": "0.7000",  
+        "avgPriceMins": 5  
     }  
     
 
-Then that means if a user sends an order with no `selfTradePreventionMode` provided, then the order sent will have the value of `NONE`.
+### PERCENT_PRICE_BY_SIDE[​](/docs/binance-spot-api-docs/filters#percent_price_by_side "Direct link to PERCENT_PRICE_BY_SIDE")
 
-If a user wants to explicitly specify the mode they can pass the enum `NONE`, `EXPIRE_TAKER`, or `EXPIRE_BOTH`.
+The `PERCENT_PRICE_BY_SIDE` filter defines the valid range for an order `price` based on an `average of previous trade prices`.
 
-If a user tries to specify `EXPIRE_MAKER` for orders on this symbol, they will receive an error:
+  * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used in the filter evaluation.
+  * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used in the filter evaluation. 
+    * If `avgPriceMins` is 0, then the last price is used in the filter evaluation.
+
+
+
+There is a different range depending on whether an order is placed on the `BUY` side or the `SELL` side.
+
+A `BUY` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+A `SELL` order will pass this filter evaluation if:
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "code": -1013,  
-        "msg": "This symbol does not allow the specified self-trade prevention mode."  
+        "filterType": "PERCENT_PRICE_BY_SIDE",  
+        "bidMultiplierUp": "1.2",  
+        "bidMultiplierDown": "0.2",  
+        "askMultiplierUp": "5",  
+        "askMultiplierDown": "0.8",  
+        "avgPriceMins": 1  
     }  
     
 
-### How do I know if an order expired due to STP?[​](/docs/binance-spot-api-docs/faqs/stp_faq#how-do-i-know-if-an-order-expired-due-to-stp "Direct link to How do I know if an order expired due to STP?")
+### LOT_SIZE[​](/docs/binance-spot-api-docs/filters#lot_size "Direct link to LOT_SIZE")
 
-The order will have the status `EXPIRED_IN_MATCH`.
+The `LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for a symbol. There are 3 parts:
 
-### STP Examples[​](/docs/binance-spot-api-docs/faqs/stp_faq#stp-examples "Direct link to STP Examples")
+  * `minQty` defines the minimum `quantity`/`icebergQty` allowed.
+  * `maxQty` defines the maximum `quantity`/`icebergQty` allowed.
+  * `stepSize` defines the intervals that a `quantity`/`icebergQty` can be increased/decreased by.
 
-For all these cases, assume that all orders for these examples are made on the same account.
 
-**Scenario A- A user sends a new order with selfTradePreventionMode:`NONE` that will match with another order of theirs that is already on the book.**
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    
 
-**Result** : No STP is triggered and the orders will match.
+In order to pass the `lot size`, the following must be true for `quantity`/`icebergQty`:
 
-Order Status of the Maker Order
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "FaDk4LPRxastaICEFE9YTf",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "1.000000",  
-        "cummulativeQuoteQty": "1.000000",  
-        "status": "FILLED",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217090310,  
-        "updateTime": 1670217090330,  
-        "isWorking": true,  
-        "workingTime": 1670217090310,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-Order Status of the Taker Order
+### MIN_NOTIONAL[​](/docs/binance-spot-api-docs/filters#min_notional "Direct link to MIN_NOTIONAL")
+
+The `MIN_NOTIONAL` filter defines the minimum notional value allowed for an order on a symbol.
+
+  * An order's notional value is the `price` * `quantity`.
+  * `applyToMarket` determines whether or not the `MIN_NOTIONAL` filter will also be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "Ay48Vtpghnsvy6w8RPQEde",  
-        "transactTime": 1670207731263,  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "1.000000",  
-        "cummulativeQuoteQty": "1.000000",  
-        "status": "FILLED",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670207731263,  
-        "fills": [  
-            {  
-                "price": "1.000000",  
-                "qty": "1.000000",  
-                "commission": "0.000000",  
-                "commissionAsset": "USDT",  
-                "tradeId": 1  
-            }  
-        ],  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MIN_NOTIONAL",  
+        "minNotional": "0.00100000",  
+        "applyToMarket": true,  
+        "avgPriceMins": 5  
     }  
     
 
-**Scenario B- A user sends an order with`EXPIRE_MAKER` that would match with their orders that are already on the book.**
-    
-    
-    Maker Order 1: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1.2 price=1.2 selfTradePreventionMode=NONE  
-    Maker Order 2: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1.3 price=1.1 selfTradePreventionMode=NONE  
-    Maker Order 3: symbol=BTCUSDT side=BUY  type=LIMIT quantity=8.1 price=1   selfTradePreventionMode=NONE  
-    Taker Order 1: symbol=BTCUSDT side=SELL type=LIMIT quantity=3   price=1   selfTradePreventionMode=EXPIRE_MAKER  
-    
+### NOTIONAL[​](/docs/binance-spot-api-docs/filters#notional "Direct link to NOTIONAL")
 
-**Result** : The orders that were on the book will expire due to STP, and the taker order will go on the book.
+The `NOTIONAL` filter defines the acceptable notional range allowed for an order on a symbol.
 
-Maker Order 1
+  * `applyMinToMarket` determines whether `minNotional` will be applied to `MARKET` orders.
+  * `applyMaxToMarket` determines whether `maxNotional` will be applied to `MARKET` orders. 
+    * Since `MARKET` orders have no `price`, an `average of previous trade prices` is used instead. 
+      * When a non-null [reference price](/docs/binance-spot-api-docs/faqs/price_range_execution_rules) for the symbol exists, it is used as `price`.
+      * When a non-null reference price for the symbol does not exist, then the volume weighted average price over the preceding `avgPriceMins` minutes is used as `price`. 
+        * If `avgPriceMins` is 0, then the last price is used as `price`.
+
+
+
+An order will pass this filter evaluation if:
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "wpNzhSclc16pV8g5THIOR3",  
-        "price": "1.200000",  
-        "origQty": "1.200000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957437,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957437,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.200000"  
+        "filterType": "NOTIONAL",  
+        "minNotional": "10.00000000",  
+        "applyMinToMarket": false,  
+        "maxNotional": "10000.00000000",  
+        "applyMaxToMarket": false,  
+        "avgPriceMins": 5  
     }  
     
 
-Maker Order 2
+### ICEBERG_PARTS[​](/docs/binance-spot-api-docs/filters#iceberg_parts "Direct link to ICEBERG_PARTS")
+
+The `ICEBERG_PARTS` filter defines the maximum parts an iceberg order can have. The number of `ICEBERG_PARTS` is defined as `CEIL(qty / icebergQty)`.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "ZT9emqia99V7x8B6FW0pFF",  
-        "price": "1.100000",  
-        "origQty": "1.300000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957458,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957458,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 1,  
-        "preventedQuantity": "1.300000"  
+        "filterType": "ICEBERG_PARTS",  
+        "limit": 10  
     }  
     
 
-Maker Order 3
+### MARKET_LOT_SIZE[​](/docs/binance-spot-api-docs/filters#market_lot_size "Direct link to MARKET_LOT_SIZE")
+
+The `MARKET_LOT_SIZE` filter defines the `quantity` (aka "lots" in auction terms) rules for `MARKET` orders on a symbol. There are 3 parts:
+
+  * `minQty` defines the minimum `quantity` allowed.
+  * `maxQty` defines the maximum `quantity` allowed.
+  * `stepSize` defines the intervals that a `quantity` can be increased/decreased by.
+
+
+
+In order to pass the `market lot size`, the following must be true for `quantity`:
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 4,  
-        "orderListId": -1,  
-        "clientOrderId": "8QZ3taGcU4gND59TxHAcR0",  
-        "price": "1.000000",  
-        "origQty": "8.100000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957478,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957478,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 2,  
-        "preventedQuantity": "8.100000"  
+        "filterType": "MARKET_LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-Output of the Taker Order
+### MAX_NUM_ORDERS[​](/docs/binance-spot-api-docs/filters#max_num_orders "Direct link to MAX_NUM_ORDERS")
+
+The `MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on a symbol. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "WRzbhp257NhZsIJW4y2Nri",  
-        "transactTime": 1670217957498,  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670217957498,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.200000",  
-                "makerPreventedQuantity": "1.200000"  
-            },  
-            {  
-                "preventedMatchId": 1,  
-                "makerOrderId": 3,  
-                "price": "1.100000",  
-                "makerPreventedQuantity": "1.300000"  
-            },  
-            {  
-                "preventedMatchId": 2,  
-                "makerOrderId": 4,  
-                "price": "1.000000",  
-                "makerPreventedQuantity": "8.100000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "MAX_NUM_ORDERS",  
+        "maxNumOrders": 25  
     }  
     
 
-**Scenario C - A user sends an order with`EXPIRE_TAKER` that would match with their orders already on the book.**
-    
-    
-    Maker Order 1: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1.2 price=1.2  selfTradePreventionMode=NONE  
-    Maker Order 2: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1.3 price=1.1  selfTradePreventionMode=NONE  
-    Maker Order 3: symbol=BTCUSDT side=BUY  type=LIMIT quantity=8.1 price=1    selfTradePreventionMode=NONE  
-    Taker Order 1: symbol=BTCUSDT side=SELL type=LIMIT quantity=3   price=1    selfTradePreventionMode=EXPIRE_TAKER  
-    
+### MAX_NUM_ALGO_ORDERS[​](/docs/binance-spot-api-docs/filters#max_num_algo_orders "Direct link to MAX_NUM_ALGO_ORDERS")
 
-**Result** : The orders already on the book will remain, while the taker order will expire.
+The `MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on a symbol. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
 
-Maker Order 1
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "NpwW2t0L4AGQnCDeNjHIga",  
-        "price": "1.200000",  
-        "origQty": "1.200000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219811986,  
-        "updateTime": 1670219811986,  
-        "isWorking": true,  
-        "workingTime": 1670219811986,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 5  
     }  
     
 
-Maker Order 2
+### MAX_NUM_ICEBERG_ORDERS[​](/docs/binance-spot-api-docs/filters#max_num_iceberg_orders "Direct link to MAX_NUM_ICEBERG_ORDERS")
+
+The `MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of `ICEBERG` orders an account is allowed to have open on a symbol. An `ICEBERG` order is any order where the `icebergQty` is > 0.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "TSAmJqGWk4YTB2yA9p04UO",  
-        "price": "1.100000",  
-        "origQty": "1.300000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812007,  
-        "updateTime": 1670219812007,  
-        "isWorking": true,  
-        "workingTime": 1670219812007,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 5  
     }  
     
 
-Maker Order 3
+### MAX_POSITION[​](/docs/binance-spot-api-docs/filters#max_position "Direct link to MAX_POSITION")
+
+The `MAX_POSITION` filter defines the allowed maximum position an account can have on the base asset of a symbol. An account's position defined as the sum of the account's:
+
+  1. free balance of the base asset
+  2. locked balance of the base asset
+  3. sum of the qty of all open BUY orders
+
+
+
+`BUY` orders will be rejected if the account's position is greater than the maximum position allowed.
+
+If an order's `quantity` can cause the position to overflow, this will also fail the `MAX_POSITION` filter.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 4,  
-        "orderListId": -1,  
-        "clientOrderId": "L6FmpCJJP6q4hCNv4MuZDG",  
-        "price": "1.000000",  
-        "origQty": "8.100000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812026,  
-        "updateTime": 1670219812026,  
-        "isWorking": true,  
-        "workingTime": 1670219812026,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_POSITION",  
+        "maxPosition": "10.00000000"  
     }  
     
 
-Output of the Taker order
+### TRAILING_DELTA[​](/docs/binance-spot-api-docs/filters#trailing_delta "Direct link to TRAILING_DELTA")
+
+The `TRAILING_DELTA` filter defines the minimum and maximum value for the parameter [`trailingDelta`](/docs/binance-spot-api-docs/faqs/trailing-stop-faq).
+
+In order for a trailing stop order to pass this filter, the following must be true:
+
+For `STOP_LOSS BUY`, `STOP_LOSS_LIMIT_BUY`,`TAKE_PROFIT SELL` and `TAKE_PROFIT_LIMIT SELL` orders:
+
+  * `trailingDelta` >= `minTrailingAboveDelta`
+  * `trailingDelta` <= `maxTrailingAboveDelta`
+
+
+
+For `STOP_LOSS SELL`, `STOP_LOSS_LIMIT SELL`, `TAKE_PROFIT BUY`, and `TAKE_PROFIT_LIMIT BUY` orders:
+
+  * `trailingDelta` >= `minTrailingBelowDelta`
+  * `trailingDelta` <= `maxTrailingBelowDelta`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "kocvDAi4GNN2y1l1Ojg1Ri",  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812046,  
-        "updateTime": 1670219812046,  
-        "isWorking": true,  
-        "workingTime": 1670219812046,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "EXPIRE_TAKER",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "3.000000"  
+        "filterType": "TRAILING_DELTA",  
+        "minTrailingAboveDelta": 10,  
+        "maxTrailingAboveDelta": 2000,  
+        "minTrailingBelowDelta": 10,  
+        "maxTrailingBelowDelta": 2000  
     }  
     
 
-**Scenario D- A user has an order on the book, and then sends an order with`EXPIRE_BOTH` that would match with the existing order.**
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=3 price=1 selfTradePreventionMode=EXPIRE_BOTH  
-    
+### MAX_NUM_ORDER_AMENDS[​](/docs/binance-spot-api-docs/filters#max_num_order_amends "Direct link to MAX_NUM_ORDER_AMENDS")
 
-**Result:** Both orders will expire.
+The `MAX_NUM_ORDER_AMENDS` filter defines the maximum number of times an order can be amended on the given symbol.
 
-Maker Order
+If there are too many order amendments made on a single order, you will receive the `-2038` error code.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "2JPC8xjpLq6Q0665uYWAcs",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1673842412831,  
-        "updateTime": 1673842413170,  
-        "isWorking": true,  
-        "workingTime": 1673842412831,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.000000"  
+        "filterType": "MAX_NUM_ORDER_AMENDS",  
+        "maxNumOrderAmends": 10  
     }  
     
 
-Taker Order
+### MAX_NUM_ORDER_LISTS[​](/docs/binance-spot-api-docs/filters#max_num_order_lists "Direct link to MAX_NUM_ORDER_LISTS")
+
+The `MAX_NUM_ORDER_LISTS` filter defines the maximum number of open order lists an account can have on a symbol. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "qMaz8yrOXk2iUIz74cFkiZ",  
-        "transactTime": 1673842413170,  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1673842413170,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.000000",  
-                "takerPreventedQuantity": "3.000000",  
-                "makerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_BOTH",  
-        "tradeGroupId": 1,  
-        "preventedQuantity": "3.000000"  
+        "filterType": "MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
     }  
     
 
-**Scenario E - A user has an order on the book with`EXPIRE_MAKER`, and then sends a new order with `EXPIRE_TAKER` which would match with the existing order.**
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=1 price=1 selfTradePreventionMode=EXPIRE_MAKER  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=1 price=1 selfTradePreventionMode=EXPIRE_TAKER  
-    
+## Exchange Filters[​](/docs/binance-spot-api-docs/filters#exchange-filters "Direct link to Exchange Filters")
 
-**Result** : The taker order's STP mode will be used, so the taker order will be expired.
+### EXCHANGE_MAX_NUM_ORDERS[​](/docs/binance-spot-api-docs/filters#exchange_max_num_orders "Direct link to EXCHANGE_MAX_NUM_ORDERS")
 
-Maker Order
+The `EXCHANGE_MAX_NUM_ORDERS` filter defines the maximum number of orders an account is allowed to have open on the exchange. Note that both "algo" orders and normal orders are counted for this filter.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 0,  
-        "orderListId": -1,  
-        "clientOrderId": "jFUap8iFwwgqIpOfAL60GS",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670220769261,  
-        "updateTime": 1670220769261,  
-        "isWorking": true,  
-        "workingTime": 1670220769261,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "EXCHANGE_MAX_NUM_ORDERS",  
+        "maxNumOrders": 1000  
     }  
     
 
-Taker Order
+### EXCHANGE_MAX_NUM_ALGO_ORDERS[​](/docs/binance-spot-api-docs/filters#exchange_max_num_algo_orders "Direct link to EXCHANGE_MAX_NUM_ALGO_ORDERS")
+
+The `EXCHANGE_MAX_NUM_ALGO_ORDERS` filter defines the maximum number of "algo" orders an account is allowed to have open on the exchange. "Algo" orders are `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`, and `TAKE_PROFIT_LIMIT` orders.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 1,  
-        "orderListId": -1,  
-        "clientOrderId": "zxrvnNNm1RXC3rkPLUPrc1",  
-        "transactTime": 1670220800315,  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670220800315,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 0,  
-                "price": "1.000000",  
-                "takerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_TAKER",  
-        "preventedQuantity": "1.000000"  
+        "filterType": "EXCHANGE_MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 200  
     }  
     
 
-**Scenario F - A user sends a market order with`EXPIRE_MAKER` which would match with an existing order.**
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT  quantity=1 price=1  selfTradePreventionMode=NONE  
-    Taker Order: symbol=BTCUSDT side=SELL type=MARKET quantity=1          selfTradePreventionMode=EXPIRE_MAKER  
-    
+### EXCHANGE_MAX_NUM_ICEBERG_ORDERS[​](/docs/binance-spot-api-docs/filters#exchange_max_num_iceberg_orders "Direct link to EXCHANGE_MAX_NUM_ICEBERG_ORDERS")
 
-**Result** : The existing order expires with the status `EXPIRED_IN_MATCH`, due to STP. The new order also expires but with status `EXPIRED`, due to low liquidity on the order book.
+The `EXCHANGE_MAX_NUM_ICEBERG_ORDERS` filter defines the maximum number of iceberg orders an account is allowed to have open on the exchange.
 
-Maker Order
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "7sgrQQInL69XDMQpiqMaG2",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670222557456,  
-        "updateTime": 1670222557478,  
-        "isWorking": true,  
-        "workingTime": 1670222557456,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.000000"  
+        "filterType": "EXCHANGE_MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 10000  
     }  
     
 
-Taker Order
+### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/binance-spot-api-docs/filters#exchange_max_num_order_lists "Direct link to EXCHANGE_MAX_NUM_ORDER_LISTS")
+
+The `EXCHANGE_MAX_NUM_ORDER_LISTS` filter defines the maximum number of order lists an account is allowed to have open on the exchange. Note that OTOCOs count as one order list.
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "zqhsgGDEcdhxy2oza2Ljxd",  
-        "transactTime": 1670222557478,  
-        "price": "0.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED",  
-        "timeInForce": "GTC",  
-        "type": "MARKET",  
-        "side": "SELL",  
-        "workingTime": 1670222557478,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.000000",  
-                "makerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "EXCHANGE_MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
     }  
     
 
-**Scenario G- A user sends a limit order with`DECREMENT` which would match with an existing order.**
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=6 price=2  selfTradePreventionMode=NONE  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=2 price=2  selfTradePreventionMode=DECREMENT  
-    
+## Asset Filters[​](/docs/binance-spot-api-docs/filters#asset-filters "Direct link to Asset Filters")
 
-**Result** : Both orders have a preventedQuantity of 2. Since this is the taker order’s full quantity, it expires due to STP.
+### MAX_ASSET[​](/docs/binance-spot-api-docs/filters#max_asset "Direct link to MAX_ASSET")
 
-Maker Order
+The `MAX_ASSET` filter defines the maximum quantity of an asset that an account is allowed to transact in a single order.
+
+  * When the asset is a symbol's base asset, the limit applies to the order's quantity.
+  * When the asset is a symbol's quote asset, the limit applies to the order's notional value.
+  * For example, a MAX_ASSET filter for USDC applies to all symbols that have USDC as either a base or quote asset, such as: 
+    * USDCBNB
+    * BNBUSDC
+
+
+
+**/myFilters format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 23,  
-        "orderListId": -1,  
-        "clientOrderId": "Kxb4RpsBhfQrkK2r2YO2Z9",  
-        "price": "2.00000000",  
-        "origQty": "6.00000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1741682807892,  
-        "updateTime": 1741682816376,  
-        "isWorking": true,  
-        "workingTime": 1741682807892,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "DECREMENT",  
-        "preventedMatchId": 4,  
-        "preventedQuantity": "2.00000000"  
-    }  
-    
-
-Taker Order
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 24,  
-        "orderListId": -1,  
-        "clientOrderId": "dwf3qOzD7GM9ysDn9XG9AS",  
-        "price": "2.00000000",  
-        "origQty": "2.00000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1741682816376,  
-        "updateTime": 1741682816376,  
-        "isWorking": true,  
-        "workingTime": 1741682816376,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "DECREMENT",  
-        "preventedMatchId": 4,  
-        "preventedQuantity": "2.00000000"  
-    }  
-    
-
-**Scenario H- A user sends a limit order with`TRANSFER` which would match with an existing order under the same tradeGroupId.**
-
-Balances before order placement
-
-Maker's Balances
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
-    }  
-    
-
-Taker's Balances
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
-    }  
-    
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=0.6 price=0.2  selfTradePreventionMode=TRANSFER tradeGroupId=1  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=0.2 price=0.2  selfTradePreventionMode=TRANSFER tradeGroupId=1  
-    
-
-**Result:** Both orders have a preventedQuantity of 0.2. Since this is the taker’s full quantity, it expires due to STP.
-
-Maker Order
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 12,  
-        "orderListId": -1,  
-        "clientOrderId": "zEyu9HGqiT5YUaXXhKr1MR",  
-        "price": "0.20000000",  
-        "origQty": "0.60000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1762852466582,  
-        "updateTime": 1762852522145,  
-        "isWorking": true,  
-        "workingTime": 1762852466582,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "TRANSFER",  
-        "preventedMatchId": 3,  
-        "preventedQuantity": "0.20000000"  
-    }  
-    
-
-Taker Order
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 13,  
-        "orderListId": -1,  
-        "clientOrderId": "6T06cph3Et2yFNnGpHdejh",  
-        "transactTime": 1762852522145,  
-        "price": "0.20000000",  
-        "origQty": "0.20000000",  
-        "executedQty": "0.00000000",  
-        "origQuoteOrderQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1762852522145,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 3,  
-                "makerSymbol": "BTCUSDT",  
-                "makerOrderId": 12,  
-                "price": "0.20000000",  
-                "takerPreventedQuantity": "0.20000000",  
-                "makerPreventedQuantity": "0.20000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "TRANSFER",  
-        "tradeGroupId": 1,  
-        "preventedQuantity": "0.20000000"  
-    }  
-    
-
-Balances after self-trade prevention:
-
-Maker Balances
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.20000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "19999.88000000",  
-                "locked": "0.08000000"  
-            }  
-        ]  
-    }  
-    
-
-Taker's Balances
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "19999.80000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.04000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
+        "filterType": "MAX_ASSET",  
+        "asset": "USDC",  
+        "limit": "42.00000000"  
     }
 
 ---
 
-# 自我交易预防 (Self Trade Prevention - STP) 常见问题
+# 过滤器
 
-**免责声明:**
+过滤器，即Filter，定义了一系列交易规则。 共有三类，分别是针对交易对的过滤器 `symbol filters`，针对整个交易所的过滤器 `exchange filters` 和针对资产的过滤器 `asset filters`。
 
-  * 此处使用的佣金和价格是虚构的，并不反映实际交易所的设置。
+## 交易对过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#交易对过滤器 "交易对过滤器的直接链接")
 
+### PRICE_FILTER 价格过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#price_filter-价格过滤器 "PRICE_FILTER 价格过滤器的直接链接")
 
+价格过滤器用于检测order订单中price参数的合法性
 
-### 什么是 Self Trade Prevention - STP?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#什么是-self-trade-prevention---stp "什么是 Self Trade Prevention - STP?的直接链接")
-
-自我交易预防是指阻止订单与来自同一账户或者同一 `tradeGroupId` 账户的订单交易。
-
-### 什么是自我交易（self-trade）?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#什么是自我交易self-trade "什么是自我交易（self-trade）?的直接链接")
-
-在以下任一情况下都可能发生自我交易：
-
-  * 属于同一账户的订单之间交易。
-  * 属于相同 `tradeGroupId` 的账户的订单之间交易。
+  * `minPrice` 定义了 `price`/`stopPrice` 允许的最小值; `minPrice` == 0 的时候则失效。
+  * `maxPrice` 定义了 `price`/`stopPrice` 允许的最大值; `maxPrice` == 0 的时候则失效。
+  * `tickSize` 定义了 `price`/`stopPrice` 的步进间隔; `tickSize` == 0 的时候则失效。
 
 
 
-### STP 触发时会发生什么？[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#stp-触发时会发生什么 "STP 触发时会发生什么？的直接链接")
+以上每一项均可为0，为0时代表这一项不再做限制。
 
-如果订单会触发自我交易，系统将执行五种可能的模式：
+订单需满足以下条件，方可通过该过滤器校验：
 
-`NONE` \- 此模式使订单免于自我交易预防。
+  * `price` >= `minPrice`
+  * `price` <= `maxPrice`
+  * `price` % `tickSize` == 0
 
-`EXPIRE_TAKER` \- 此模式通过立即使吃单者(taker)的剩余数量过期来预防交易。
 
-`EXPIRE_MAKER` \- 此模式通过立即使潜在挂单者(maker)的剩余数量过期来预防交易。
 
-`EXPIRE_BOTH` \- 此模式通过立即同时使吃单和挂单者的剩余数量过期来预防交易。
-
-`DECREMENT` \- 此模式通过阻止匹配的数量来增加 _两种_ 订单的 `prevented quantity`。这将使可用数量较少的订单过期， 如果两个订单的可用数量相等，那么两个订单都将过期。
-
-`TRANSFER` \- 如果订单来自同一账户，则行为与 `DECREMENT` 相同。 如果订单来自不同账户且具有相同的 `tradeGroupId`，则除了 `DECREMENT` 的行为外，`最后被阻止的数量` 及其名义价值将在两个账户之间转移。
-
-STP 行为通常仅由**吃单** 的 STP 模式决定。例外情况是，只有当挂单和吃单都指定 STP 模式为 `TRANSFER` 时，才会发生 STP `TRANSFER`。如果吃单指定 STP 模式为 `TRANSFER`，但挂单指定了不同的 STP 模式，则 STP 行为为 `DECREMENT`。
-
-总结如下：
-
-吃单 STP 模式| 挂单 STP 模式| 实际生效的 STP 模式  
----|---|---  
-`TRANSFER`| `TRANSFER`| `TRANSFER`  
-`TRANSFER`| `EXPIRE_MAKER`、`EXPIRE_TAKER`、`EXPIRE_BOTH`、`NONE`、`DECREMENT`| `DECREMENT`  
-`EXPIRE_MAKER`、`EXPIRE_TAKER`、`EXPIRE_BOTH`、`NONE`、`DECREMENT`| 任意 STP 模式| 吃单的 STP 模式  
-  
-### 什么是交易组 Id（Trade Group Id）?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#什么是交易组-idtrade-group-id "什么是交易组 Id（Trade Group Id）?的直接链接")
-
-属于同一 `tradeGroupId` 的账户被视为同一交易组。相同交易组成员提交的订单有 STP 资格。
-
-每个账户可以从 `GET /api/v3/account`（REST API）或 `account.status`（WebSocket API）确认账户是否属于同一个 `tradeGroupId`。
-
-`tradeGroupId` 也存在 `GET /api/v3/preventedMatches`（REST API）或 `myPreventedMatches`（WebSocket API）的响应中。
-
-如果该值为 `-1`，这表示账户未设置 `tradeGroupId`，因此 STP 只能发生在同一账户的订单之间。
-
-### 什么是 Prevented Match?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#什么是-prevented-match "什么是 Prevented Match?的直接链接")
-
-当一个或多个订单因 STP 而过期时，这会创建一个被阻止的撮合交易事务。
-
-当一个自我交易被阻止时，将会创建一个被阻止的撮合交易事务。隶属于被阻止的撮合交易中的订单会增加其 `prevented quantity` 然后导致一个或多个订单过期。
-
-通过 REST API 的 `GET /api/v3/preventedMatches` 或 WebSocket API 的 `myPreventedMatches` 可以查询到有哪些被阻止的撮合交易。
-
-请求的响应示例：
-    
-    
-    [  
-        {  
-            "symbol": "BTCDUSDT",                         // 交易对  
-            "preventedMatchId": 8,                        // 被阻止撮合交易的Id  
-            "takerOrderId": 12,                           // 吃单者的订单Id  
-            "makerOrderId": 10,                           // 挂单者的订单Id  
-            "tradeGroupId": 1,                            // 交易组的Id。（如果账户不属于交易组，则为 -1）  
-            "selfTradePreventionMode": "EXPIRE_BOTH",     // 订单过期的 STP 模式。  
-            "price": "50.00000000",                       // 撮合交易的价格。  
-            "takerPreventedQuantity": "1.00000000",       // 在STP 前， 吃单者的剩余数量。 仅在 STP 模式为 EXPIRE_TAKER 或 EXPIRE_BOTH 或 DECREMENT 时出现。  
-            "makerPreventedQuantity": "10.00000000",      // 在STP 前， 挂单者的剩余数量。 仅在 STP 模式为 EXPIRE_MAKER 或 EXPIRE_BOTH 或 DECREMENT 时出现。  
-            "transactTime": 1663190634060                 // 订单因 STP 而过期的时间。  
-        }  
-    ]  
-    
-
-### 什么是 "prevented quantity"?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#什么是-prevented-quantity "什么是 "prevented quantity"?的直接链接")
-
-STP事件会导致挂单的数量失效； STP的模式 `EXPIRE_TAKER`， `EXPIRE_MAKER` 以及 `EXPIRE_BOTH` 会使挂单中剩余的数量全部失效，从而使整个订单失效。
-
-`Prevented quantity` 表示订单中因为STP事件失效的数量， 用户WebSocket数据流中可能有如下两个字段：
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "A": "3.000000",     // Prevented Quantity  
-        "B": "3.000000"      // Last Prevented Quantity  
+        "filterType": "PRICE_FILTER",  
+        "minPrice": "0.00000100",  
+        "maxPrice": "100000.00000000",  
+        "tickSize": "0.00000100"  
     }  
     
 
-`B` 代表着 `TRADE_PREVENTION` 交易类型， 其值表示本次STP事件导致失效的订单数量。
+### PERCENT_PRICE 价格振幅过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#percent_price-价格振幅过滤器 "PERCENT_PRICE 价格振幅过滤器的直接链接")
 
-`A` 代表着某订单因为STP事件导致的累计失效订单数量。 对于 `EXPIRE_TAKER`， `EXPIRE_MAKER` 以及 `EXPIRE_BOTH` 模式, 其值总是和 `B` 一样。
+`PERCENT_PRICE` 过滤器会根据`前序交易的平均成交价`来定义订单`价格`的有效范围。
 
-由于 STP 而过期的订单的 API 响应也将有一个 `preventedQuantity` 字段，指示在订单由于 STP 而过期的累计数量。
+  * 当该交易对存在非空的 [参考价格](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules) 时，过滤器校验将使用该参考价格。
+  * 当该交易对不存在非空的参考价格时，过滤器校验将使用 `avgPriceMins` 分钟前的成交量加权平均价。 
+    * 如果 `avgPriceMins` 为 0，那么过滤器校验将使用最新成交价。
 
-如果订单是处于挂单状态, 如下的公式成立:
-    
-    
-    original order quantity - executed quantity - prevented quantity = quantity available for further execution  
-    原始的订单数量 - 执行的订单数量 - 被过期的数量 = 可用于未来执行的数量  
-    
 
-当一个订单的可用数量归 0 时，该订单会被从订单簿中移除。 这个状态会是 `EXPIRED_IN_MATCH`， `FILLED`， 或 `EXPIRED` 模式中的一个。
 
-### 如何知道有那些交易对支持 STP?[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#如何知道有那些交易对支持-stp "如何知道有那些交易对支持 STP?的直接链接")
+订单需满足以下条件，方可通过该过滤器校验：
 
-交易对可以配置为允许不同的 STP 模式集并采用不同的默认 STP 模式。
+  * `price` <= `average of previous trade prices` * `multiplierUp`
+  * `price` >= `average of previous trade prices` * `multiplierDown`
 
-`defaultSelfTradePreventionMode` \- 如果用户在下单时不提供，订单将使用此 STP 模式。
 
-`allowedSelfTradePreventionModes` \- 交易对允许的下单 STP 模式集。
 
-例如，如果交易对有以下配置：
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "defaultSelfTradePreventionMode": "NONE",  
-        "allowedSelfTradePreventionModes": ["NONE", "EXPIRE_TAKER", "EXPIRE_BOTH"]  
+        "filterType": "PERCENT_PRICE",  
+        "multiplierUp": "1.3000",  
+        "multiplierDown": "0.7000",  
+        "avgPriceMins": 5  
     }  
     
 
-这表示如果用户在没有提供 `selfTradePreventionMode` 的情况下发送订单，发送的订单有 `NONE` 的值。
+#### PERCENT_PRICE_BY_SIDE[​](/docs/zh-CN/binance-spot-api-docs/filters#percent_price_by_side "PERCENT_PRICE_BY_SIDE的直接链接")
 
-如果用户想明确指定模式，可以传 `NONE`，`EXPIRE_TAKER`，或 `EXPIRE_BOTH`。
+`PERCENT_PRICE_BY_SIDE` 过滤器会根据`前序交易的平均成交价`来定义订单`价格`的有效范围。
 
-如果用户尝试为此交易对的订单指定 `EXPIRE_MAKER`，将会收到错误消息：
+  * 当该交易对存在非空的 [参考价格](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules) 时，过滤器校验将使用该参考价格。
+  * 当该交易对不存在非空的参考价格时，过滤器校验将使用 `avgPriceMins` 分钟前的成交量加权平均价。 
+    * `avgPriceMins` 为 0，那么过滤器校验将使用最新成交价。
+
+
+
+`买方`订单需满足以下条件，方可通过该过滤器校验：
+
+  * `price` <= `average of previous trade prices` * `bidMultiplierUp`
+  * `price` >= `average of previous trade prices` * `bidMultiplierDown`
+
+
+
+`卖方`订单需满足以下条件，方可通过该过滤器校验：
+
+  * `price` <= `average of previous trade prices` * `askMultiplierUp`
+  * `price` >= `average of previous trade prices` * `askMultiplierDown`
+
+
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "code": -1013,  
-        "msg": "This symbol does not allow the specified self-trade prevention mode."  
+        "filterType": "PERCENT_PRICE_BY_SIDE",  
+        "bidMultiplierUp": "1.2",  
+        "bidMultiplierDown": "0.2",  
+        "askMultiplierUp": "5",  
+        "askMultiplierDown": "0.8",  
+        "avgPriceMins": 1  
     }  
     
 
-### 如何知道订单因为 STP 而过期？[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#如何知道订单因为-stp-而过期 "如何知道订单因为 STP 而过期？的直接链接")
+### LOT_SIZE 订单尺寸[​](/docs/zh-CN/binance-spot-api-docs/filters#lot_size-订单尺寸 "LOT_SIZE 订单尺寸的直接链接")
 
-订单的状态会是 `EXPIRED_IN_MATCH`.
+"lots" 是拍卖术语，这个过滤器对订单中的 `quantity` 也就是数量参数进行合法性检查。包含三个部分：
 
-### STP 的一些示例[​](/docs/zh-CN/binance-spot-api-docs/faqs/stp_faq#stp-的一些示例 "STP 的一些示例的直接链接")
+  * `minQty` 表示 `quantity`/`icebergQty` 允许的最小值.
+  * `maxQty` 表示 `quantity`/`icebergQty` 允许的最大值
+  * `stepSize` 表示 `quantity`/`icebergQty` 允许的步进值。
 
-假设以下示例的所有订单都是在同一个账户下发送。
 
-**情况 A - 用户发送一个带有 selfTradePreventionMode:`NONE` 的新订单，该订单将与订单薄上已有的另一个订单撮合。**
-    
-    
-    Maker 订单: symbol=BTCUSDT side=BUY type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    Taker 订单: symbol=BTCUSDT side=SELL type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    
 
-**结果:** : 没有 STP 被触发，订单会撮合。
+订单需满足以下条件，方可通过该过滤器校验：
 
-Maker 订单的状态
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "FaDk4LPRxastaICEFE9YTf",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "1.000000",  
-        "cummulativeQuoteQty": "1.000000",  
-        "status": "FILLED",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217090310,  
-        "updateTime": 1670217090330,  
-        "isWorking": true,  
-        "workingTime": 1670217090310,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-Taker 订单的状态
+### MIN_NOTIONAL 最小金额[​](/docs/zh-CN/binance-spot-api-docs/filters#min_notional-最小金额 "MIN_NOTIONAL 最小金额的直接链接")
+
+`MIN_NOTIONAL` 过滤器定义了交易对订单所允许的最小名义价值(成交额)。
+
+  * 订单的名义价值是 `价格` * `数量` 。
+  * `applyToMarket` 确定 `MIN_NOTIONAL` 过滤器是否也将应用于 `MARKET` 订单。 
+    * 由于 `MARKET` 订单没有`价格`，因此会使用`前序交易的平均成交价`。 
+      * 当该交易对存在非空的 [参考价格](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules) 时，过滤器校验将使用该参考价格来作为`价格`。
+      * 当该交易对不存在非空的参考价格时，过滤器校验将使用 `avgPriceMins` 分钟前的成交量加权平均价来作为`价格`。 
+        * 如果 `avgPriceMins` 为 0，那么过滤器校验将使用最新成交价来作为`价格`。
+
+
+
+订单需满足以下条件，方可通过该过滤器校验：
+
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "Ay48Vtpghnsvy6w8RPQEde",  
-        "transactTime": 1670207731263,  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "1.000000",  
-        "cummulativeQuoteQty": "1.000000",  
-        "status": "FILLED",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670207731263,  
-        "fills": [  
-            {  
-                "price": "1.000000",  
-                "qty": "1.000000",  
-                "commission": "0.000000",  
-                "commissionAsset": "USDT",  
-                "tradeId": 1  
-            }  
-        ],  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MIN_NOTIONAL",  
+        "minNotional": "0.00100000",  
+        "applyToMarket": true,  
+        "avgPriceMins": 5  
     }  
     
 
-**情况 B - 用户发送带有`EXPIRE_MAKER` 的订单，该订单将与订单薄上已有的订单撮合。**
-    
-    
-    Maker 订单 1: symbol=BTCUSDT side=BUY type=LIMIT quantity=1.2 price=1.2 selfTradePreventionMode=NONE  
-    Maker 订单 2: symbol=BTCUSDT side=BUY type=LIMIT quantity=1.3 price=1.1 selfTradePreventionMode=NONE  
-    Maker 订单 3: symbol=BTCUSDT side=BUY type=LIMIT quantity=8.1 price=1   selfTradePreventionMode=NONE  
-    Taker 订单 1: symbol=BTCUSDT side=SELL type=LIMIT quantity=3 price=1    selfTradePreventionMode=EXPIRE_MAKER  
-    
+### NOTIONAL 名义价值[​](/docs/zh-CN/binance-spot-api-docs/filters#notional-名义价值 "NOTIONAL 名义价值的直接链接")
 
-**结果:** : 由于 STP，订单薄上的订单将会过期，taker 订单将继续在订单薄。
+名义价值过滤器(`NOTIONAL`)定义了订单在一个交易对上可以下单的名义价值区间。
 
-Maker 订单 1
+  * `applyMinToMarket` 定义了 `minNotional` 是否适用于市价单(`MARKET`)。
+  * `applyMaxToMarket` 定义了 `maxNotional` 是否适用于市价单(`MARKET`)。 
+    * 由于 `MARKET` 订单没有`价格`，因此会使用`前序交易的平均成交价`。 
+      * 当该交易对存在非空的 [参考价格](/docs/zh-CN/binance-spot-api-docs/faqs/price_range_execution_rules) 时，过滤器校验将使用该参考价格来作为`价格`。
+      * 当该交易对不存在非空的参考价格时，过滤器校验将使用 `avgPriceMins` 分钟前的成交量加权平均价来作为`价格`。 
+        * 如果 `avgPriceMins` 为 0，那么过滤器校验将使用最新成交价来作为`价格`。
+
+
+
+订单需满足以下条件，方可通过该过滤器校验：
+
+  * `price` * `quantity` <= `maxNotional`
+  * `price` * `quantity` >= `minNotional`
+
+
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "wpNzhSclc16pV8g5THIOR3",  
-        "price": "1.200000",  
-        "origQty": "1.200000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957437,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957437,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.200000"  
+        "filterType": "NOTIONAL",  
+        "minNotional": "10.00000000",  
+        "applyMinToMarket": false,  
+        "maxNotional": "10000.00000000",  
+        "applyMaxToMarket": false,  
+        "avgPriceMins": 5  
     }  
     
 
-Maker 订单 2
+### ICEBERG_PARTS 冰山订单拆分数[​](/docs/zh-CN/binance-spot-api-docs/filters#iceberg_parts-冰山订单拆分数 "ICEBERG_PARTS 冰山订单拆分数的直接链接")
+
+`ICEBERG_PARTS` 代表冰山订单最多可以拆分成多少个小订单。 计算方法为 `向上取整(qty / icebergQty)`.
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "ZT9emqia99V7x8B6FW0pFF",  
-        "price": "1.100000",  
-        "origQty": "1.300000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957458,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957458,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 1,  
-        "preventedQuantity": "1.300000"  
+        "filterType": "ICEBERG_PARTS",  
+        "limit": 10  
     }  
     
 
-Maker 订单 3
+### MARKET_LOT_SIZE 市价订单尺寸[​](/docs/zh-CN/binance-spot-api-docs/filters#market_lot_size-市价订单尺寸 "MARKET_LOT_SIZE 市价订单尺寸的直接链接")
+
+`MARKET_LOT_SIZE`过滤器为交易对上的`MARKET`订单定义了`数量`(即拍卖中的"手数")规则。 共有3部分：
+
+  * `minQty`定义了允许的最小`quantity`。
+  * `maxQty`定义了允许的最大数量。
+  * `stepSize`定义了可以增加/减少数量的间隔。
+
+
+
+为了通过 `market lot size`，`quantity` 必须满足以下条件：
+
+  * `quantity` >= `minQty`
+  * `quantity` <= `maxQty`
+  * `quantity` % `stepSize` == 0
+
+
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 4,  
-        "orderListId": -1,  
-        "clientOrderId": "8QZ3taGcU4gND59TxHAcR0",  
-        "price": "1.000000",  
-        "origQty": "8.100000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670217957478,  
-        "updateTime": 1670217957498,  
-        "isWorking": true,  
-        "workingTime": 1670217957478,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 2,  
-        "preventedQuantity": "8.100000"  
+        "filterType": "MARKET_LOT_SIZE",  
+        "minQty": "0.00100000",  
+        "maxQty": "100000.00000000",  
+        "stepSize": "0.00100000"  
     }  
     
 
-Taker 订单的响应
+### MAX_NUM_ORDERS 最多订单数[​](/docs/zh-CN/binance-spot-api-docs/filters#max_num_orders-最多订单数 "MAX_NUM_ORDERS 最多订单数的直接链接")
+
+定义了某个交易对最多允许的挂单数量（不包括已关闭的订单） 普通订单与条件订单均计算在内
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "WRzbhp257NhZsIJW4y2Nri",  
-        "transactTime": 1670217957498,  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670217957498,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.200000",  
-                "makerPreventedQuantity": "1.200000"  
-            },  
-            {  
-                "preventedMatchId": 1,  
-                "makerOrderId": 3,  
-                "price": "1.100000",  
-                "makerPreventedQuantity": "1.300000"  
-            },  
-            {  
-                "preventedMatchId": 2,  
-                "makerOrderId": 4,  
-                "price": "1.000000",  
-                "makerPreventedQuantity": "8.100000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "MAX_NUM_ORDERS",  
+        "maxNumOrders": 25  
     }  
     
 
-**情况 C - 用户发送带有`EXPIRE_TAKER` 的订单，该订单将与订单薄上已有的订单撮合。**
-    
-    
-    Maker 订单 1: symbol=BTCUSDT side=BUY type=LIMIT quantity=1.2 price=1.2  selfTradePreventionMode=NONE  
-    Maker 订单 2: symbol=BTCUSDT side=BUY type=LIMIT quantity=1.3 price=1.1  selfTradePreventionMode=NONE  
-    Maker 订单 3: symbol=BTCUSDT side=BUY type=LIMIT quantity=8.1 price=1    selfTradePreventionMode=NONE  
-    Taker 订单 1: symbol=BTCUSDT side=SELL type=LIMIT quantity=3 price=1 selfTradePreventionMode=EXPIRE_TAKER  
-    
+### MAX_NUM_ALGO_ORDERS 最多条件单数[​](/docs/zh-CN/binance-spot-api-docs/filters#max_num_algo_orders-最多条件单数 "MAX_NUM_ALGO_ORDERS 最多条件单数的直接链接")
 
-**结果:** : 已经在订单薄上的订单将保留，而taker订单将过期。
+`MAX_NUM_ALGO_ORDERS`过滤器定义允许账户在交易对上开设的"algo"订单的最大数量。 "Algo"订单是`STOP_LOSS`，`STOP_LOSS_LIMIT`，`TAKE_PROFIT`和`TAKE_PROFIT_LIMIT`止盈止损单。
 
-Maker 订单 1
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "NpwW2t0L4AGQnCDeNjHIga",  
-        "price": "1.200000",  
-        "origQty": "1.200000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219811986,  
-        "updateTime": 1670219811986,  
-        "isWorking": true,  
-        "workingTime": 1670219811986,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 5  
     }  
     
 
-Maker 订单 2
+### MAX_NUM_ICEBERG_ORDERS 最多冰山单数[​](/docs/zh-CN/binance-spot-api-docs/filters#max_num_iceberg_orders-最多冰山单数 "MAX_NUM_ICEBERG_ORDERS 最多冰山单数的直接链接")
+
+`MAX_NUM_ICEBERG_ORDERS`过滤器定义了允许在交易对上开设账户的`ICEBERG`订单的最大数量。 `ICEBERG`订单是icebergQty大于0的任何订单。
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "TSAmJqGWk4YTB2yA9p04UO",  
-        "price": "1.100000",  
-        "origQty": "1.300000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812007,  
-        "updateTime": 1670219812007,  
-        "isWorking": true,  
-        "workingTime": 1670219812007,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 5  
     }  
     
 
-Maker 订单 3
+### MAX_POSITION 过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#max_position-过滤器 "MAX_POSITION 过滤器的直接链接")
+
+这个过滤器定义账户允许的基于`base asset`的最大仓位。一个用户的仓位可以定义为如下资产的总和:
+
+  1. `base asset`的可用余额
+  2. `base asset`的锁定余额
+  3. 所有处于open的买单的数量总和
+
+
+
+如果用户的仓位大于最大的允许仓位，买单会被拒绝。
+
+如果一个订单的数量(`quantity`) 可能导致持有仓位溢出, 会触发过滤器 `MAX_POSITION`.
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 4,  
-        "orderListId": -1,  
-        "clientOrderId": "L6FmpCJJP6q4hCNv4MuZDG",  
-        "price": "1.000000",  
-        "origQty": "8.100000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812026,  
-        "updateTime": 1670219812026,  
-        "isWorking": true,  
-        "workingTime": 1670219812026,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE"  
+        "filterType": "MAX_POSITION",  
+        "maxPosition": "10.00000000"  
     }  
     
 
-Taker 订单的状态
+### TRAILING_DELTA 过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#trailing_delta-过滤器 "TRAILING_DELTA 过滤器的直接链接")
+
+此过滤器定义了参数[`trailingDelta`](/docs/zh-CN/binance-spot-api-docs/faqs/trailing-stop-faq)的最大和最小值.
+
+下追踪止损订单, 需要满足条件:
+
+对于 `STOP_LOSS BUY`, `STOP_LOSS_LIMIT_BUY`, `TAKE_PROFIT SELL` 和 `TAKE_PROFIT_LIMIT SELL` 订单:
+
+  * `trailingDelta` >= `minTrailingAboveDelta`
+  * `trailingDelta` <= `maxTrailingAboveDelta`
+
+
+
+对于 `STOP_LOSS SELL`, `STOP_LOSS_LIMIT SELL`, `TAKE_PROFIT BUY`, 和 `TAKE_PROFIT_LIMIT BUY` 订单:
+
+  * `trailingDelta` >= `minTrailingBelowDelta`
+  * `trailingDelta` <= `maxTrailingBelowDelta`
+
+
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "kocvDAi4GNN2y1l1Ojg1Ri",  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670219812046,  
-        "updateTime": 1670219812046,  
-        "isWorking": true,  
-        "workingTime": 1670219812046,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "EXPIRE_TAKER",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "3.000000"  
+        "filterType": "TRAILING_DELTA",  
+        "minTrailingAboveDelta": 10,  
+        "maxTrailingAboveDelta": 2000,  
+        "minTrailingBelowDelta": 10,  
+        "maxTrailingBelowDelta": 2000  
     }  
     
 
-**情况 D - 用户发送带有`EXPIRE_BOTH` 的订单，该订单将与订单薄上已有的订单撮合。**
-    
-    
-    Maker 订单: symbol=BTCUSDT side=BUY type=LIMIT quantity=1 price=1 selfTradePreventionMode=NONE  
-    Taker 订单: symbol=BTCUSDT side=SELL type=LIMIT quantity=3 price=1 selfTradePreventionMode=EXPIRE_BOTH  
-    
+### MAX_NUM_ORDER_AMENDS 过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#max_num_order_amends-过滤器 "MAX_NUM_ORDER_AMENDS 过滤器的直接链接")
 
-**结果:** 两个订单都将过期。
+此过滤器定义了指定交易对的订单修改次数上限。
 
-Maker 订单
+如果单笔订单的修改次数过多，您将会收到 `-2038` 错误代码。
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "2JPC8xjpLq6Q0665uYWAcs",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1673842412831,  
-        "updateTime": 1673842413170,  
-        "isWorking": true,  
-        "workingTime": 1673842412831,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.000000"  
+        "filterType": "MAX_NUM_ORDER_AMENDS",  
+        "maxNumOrderAmends": 10  
     }  
     
 
-Taker 订单
+### MAX_NUM_ORDER_LISTS[​](/docs/zh-CN/binance-spot-api-docs/filters#max_num_order_lists "MAX_NUM_ORDER_LISTS的直接链接")
+
+此过滤器定义了账户在交易对上可持有的最大未平仓订单列表数量。请注意，OTOCO 交易计为一个订单列表。
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 5,  
-        "orderListId": -1,  
-        "clientOrderId": "qMaz8yrOXk2iUIz74cFkiZ",  
-        "transactTime": 1673842413170,  
-        "price": "1.000000",  
-        "origQty": "3.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1673842413170,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.000000",  
-                "takerPreventedQuantity": "3.000000",  
-                "makerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_BOTH",  
-        "tradeGroupId": 1,  
-        "preventedQuantity": "3.000000"  
+        "filterType": "MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
     }  
     
 
-**情况 E - 用户在订单薄上有一个带有`EXPIRE_MAKER` 的订单，然后发送一个带有 `EXPIRE_TAKER` 的新订单，该订单将与订单薄上的订单撮合。**
-    
-    
-    Maker 订单: symbol=BTCUSDT side=BUY type=LIMIT quantity=1 price=1 selfTradePreventionMode=EXPIRE_MAKER  
-    Taker 订单: symbol=BTCUSDT side=SELL type=LIMIT quantity=1 price=1 selfTradePreventionMode=EXPIRE_TAKER  
-    
+## 交易所级别过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#交易所级别过滤器 "交易所级别过滤器的直接链接")
 
-**结果:** 将使用 taker 订单的 STP 模式，因此 taker 订单将过期。
+### EXCHANGE_MAX_NUM_ORDERS 最多订单数[​](/docs/zh-CN/binance-spot-api-docs/filters#exchange_max_num_orders-最多订单数 "EXCHANGE_MAX_NUM_ORDERS 最多订单数的直接链接")
 
-Maker 订单
+`EXCHANGE_MAX_NUM_ORDERS`过滤器定义了允许在交易对上开设账户的最大订单数。 请注意，此过滤器同时计算"algo"订单和常规订单。
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 0,  
-        "orderListId": -1,  
-        "clientOrderId": "jFUap8iFwwgqIpOfAL60GS",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670220769261,  
-        "updateTime": 1670220769261,  
-        "isWorking": true,  
-        "workingTime": 1670220769261,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "EXCHANGE_MAX_NUM_ORDERS",  
+        "maxNumOrders": 1000  
     }  
     
 
-Taker 订单
+### EXCHANGE_MAX_NUM_ALGO_ORDERS 最多条件单数[​](/docs/zh-CN/binance-spot-api-docs/filters#exchange_max_num_algo_orders-最多条件单数 "EXCHANGE_MAX_NUM_ALGO_ORDERS 最多条件单数的直接链接")
+
+`EXCHANGE_MAX_NUM_ALGO_ORDERS` 过滤器定义了允许在交易上开设账户的"algo"订单的最大数量。 "Algo"订单是`STOP_LOSS`，`STOP_LOSS_LIMIT`，`TAKE_PROFIT`和`TAKE_PROFIT_LIMIT`订单。
+
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 1,  
-        "orderListId": -1,  
-        "clientOrderId": "zxrvnNNm1RXC3rkPLUPrc1",  
-        "transactTime": 1670220800315,  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1670220800315,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 0,  
-                "price": "1.000000",  
-                "takerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_TAKER",  
-        "preventedQuantity": "1.000000"  
+        "filterType": "EXCHANGE_MAX_NUM_ALGO_ORDERS",  
+        "maxNumAlgoOrders": 200  
     }  
     
 
-**情况 F - 用户发送带有`EXPIRE_MAKER` 的市价订单，该订单将与订单薄上已有的订单撮合。**
-    
-    
-    Maker 订单: symbol=BTCUSDT side=BUY type=LIMIT quantity=1 price=1  selfTradePreventionMode=NONE  
-    Taker 订单: symbol=BTCUSDT side=SELL type=MARKET quantity=1 selfTradePreventionMode=EXPIRE_MAKER  
-    
+### EXCHANGE_MAX_NUM_ICEBERG_ORDERS 冰山订单的最大订单数[​](/docs/zh-CN/binance-spot-api-docs/filters#exchange_max_num_iceberg_orders-冰山订单的最大订单数 "EXCHANGE_MAX_NUM_ICEBERG_ORDERS 冰山订单的最大订单数的直接链接")
 
-**结果:** 由于 STP，订单薄上的订单会过期，状态为 `EXPIRED_IN_MATCH`。 由于订单薄上的流动性低，新订单也已过期但状态为 `EXPIRED`。
+此过滤器定义了允许账号持有的最大冰山订单数量.
 
-Maker 订单
+**/exchangeInfo 响应中的格式:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 2,  
-        "orderListId": -1,  
-        "clientOrderId": "7sgrQQInL69XDMQpiqMaG2",  
-        "price": "1.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.000000",  
-        "icebergQty": "0.000000",  
-        "time": 1670222557456,  
-        "updateTime": 1670222557478,  
-        "isWorking": true,  
-        "workingTime": 1670222557456,  
-        "origQuoteOrderQty": "0.000000",  
-        "selfTradePreventionMode": "NONE",  
-        "preventedMatchId": 0,  
-        "preventedQuantity": "1.000000"  
+        "filterType": "EXCHANGE_MAX_NUM_ICEBERG_ORDERS",  
+        "maxNumIcebergOrders": 10000  
     }  
     
 
-Taker 订单
+### EXCHANGE_MAX_NUM_ORDER_LISTS[​](/docs/zh-CN/binance-spot-api-docs/filters#exchange_max_num_order_lists "EXCHANGE_MAX_NUM_ORDER_LISTS的直接链接")
+
+此过滤器定义了允许账号持有的最大未平仓订单列表数量。请注意，OTOCO 交易计为一个订单列表。
+
+**/exchangeInfo format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 3,  
-        "orderListId": -1,  
-        "clientOrderId": "zqhsgGDEcdhxy2oza2Ljxd",  
-        "transactTime": 1670222557478,  
-        "price": "0.000000",  
-        "origQty": "1.000000",  
-        "executedQty": "0.000000",  
-        "cummulativeQuoteQty": "0.000000",  
-        "status": "EXPIRED",  
-        "timeInForce": "GTC",  
-        "type": "MARKET",  
-        "side": "SELL",  
-        "workingTime": 1670222557478,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 0,  
-                "makerOrderId": 2,  
-                "price": "1.000000",  
-                "makerPreventedQuantity": "1.000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "EXPIRE_MAKER"  
+        "filterType": "EXCHANGE_MAX_NUM_ORDER_LISTS",  
+        "maxNumOrderLists": 20  
     }  
     
 
-**情况 G - 用户发送带有`DECREMENT` 的限价订单，该订单将与订单薄上已有的订单撮合。**
-    
-    
-    Maker 订单： symbol=BTCUSDT side=BUY  type=LIMIT quantity=6 price=2  selfTradePreventionMode=NONE  
-    Taker 订单： symbol=BTCUSDT side=SELL type=LIMIT quantity=2 price=2  selfTradePreventionMode=DECREMENT  
-    
+## 资产过滤器[​](/docs/zh-CN/binance-spot-api-docs/filters#资产过滤器 "资产过滤器的直接链接")
 
-**结果:** 两个订单的 preventedQuantity 均为 2。 由于这是 Taker 订单的所有可用数量，此订单会因为 STP 而过期。
+### MAX_ASSET[​](/docs/zh-CN/binance-spot-api-docs/filters#max_asset "MAX_ASSET的直接链接")
 
-Maker 订单
+`MAX_ASSET` 过滤器定义了一个账户在单笔订单中可交易的资产最大数量。
+
+  * 当资产是交易对的基础资产时，该限制适用于订单的数量。
+  * 当资产是交易对的报价资产时，该限制适用于订单的名义价值。
+  * 例如，针对 USDC 的 MAX_ASSET 过滤器适用于所有以 USDC 作为基础资产或报价资产的交易对，例如： 
+    * USDCBNB
+    * BNBUSDC
+
+
+
+**/myFilters format:**
     
     
     {  
-        "symbol": "BTCUSDT",  
-        "orderId": 23,  
-        "orderListId": -1,  
-        "clientOrderId": "Kxb4RpsBhfQrkK2r2YO2Z9",  
-        "price": "2.00000000",  
-        "origQty": "6.00000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1741682807892,  
-        "updateTime": 1741682816376,  
-        "isWorking": true,  
-        "workingTime": 1741682807892,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "DECREMENT",  
-        "preventedMatchId": 4,  
-        "preventedQuantity": "2.00000000"  
-    }  
-    
-
-Taker 订单
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 24,  
-        "orderListId": -1,  
-        "clientOrderId": "dwf3qOzD7GM9ysDn9XG9AS",  
-        "price": "2.00000000",  
-        "origQty": "2.00000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1741682816376,  
-        "updateTime": 1741682816376,  
-        "isWorking": true,  
-        "workingTime": 1741682816376,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "DECREMENT",  
-        "preventedMatchId": 4,  
-        "preventedQuantity": "2.00000000"  
-    }  
-    
-
-**场景 H - 用户发送一个带有`TRANSFER` 的限价订单，该订单将与同一 `tradeGroupId` 下的现有订单匹配。**
-
-下单前余额
-
-Maker 余额
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
-    }  
-    
-
-Taker 余额
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.00000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
-    }  
-    
-    
-    
-    Maker Order: symbol=BTCUSDT side=BUY  type=LIMIT quantity=0.6 price=0.2  selfTradePreventionMode=TRANSFER tradeGroupId=1  
-    Taker Order: symbol=BTCUSDT side=SELL type=LIMIT quantity=0.2 price=0.2  selfTradePreventionMode=TRANSFER tradeGroupId=1  
-    
-
-**结果：** 两个订单的 preventedQuantity 都为 0.2。由于这是吃单方的全部数量，该订单因 STP 而过期。
-
-Maker 订单
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 12,  
-        "orderListId": -1,  
-        "clientOrderId": "zEyu9HGqiT5YUaXXhKr1MR",  
-        "price": "0.20000000",  
-        "origQty": "0.60000000",  
-        "executedQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "NEW",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "BUY",  
-        "stopPrice": "0.00000000",  
-        "icebergQty": "0.00000000",  
-        "time": 1762852466582,  
-        "updateTime": 1762852522145,  
-        "isWorking": true,  
-        "workingTime": 1762852466582,  
-        "origQuoteOrderQty": "0.00000000",  
-        "selfTradePreventionMode": "TRANSFER",  
-        "preventedMatchId": 3,  
-        "preventedQuantity": "0.20000000"  
-    }  
-    
-
-Taker 订单
-    
-    
-    {  
-        "symbol": "BTCUSDT",  
-        "orderId": 13,  
-        "orderListId": -1,  
-        "clientOrderId": "6T06cph3Et2yFNnGpHdejh",  
-        "transactTime": 1762852522145,  
-        "price": "0.20000000",  
-        "origQty": "0.20000000",  
-        "executedQty": "0.00000000",  
-        "origQuoteOrderQty": "0.00000000",  
-        "cummulativeQuoteQty": "0.00000000",  
-        "status": "EXPIRED_IN_MATCH",  
-        "timeInForce": "GTC",  
-        "type": "LIMIT",  
-        "side": "SELL",  
-        "workingTime": 1762852522145,  
-        "fills": [],  
-        "preventedMatches": [  
-            {  
-                "preventedMatchId": 3,  
-                "makerSymbol": "BTCUSDT",  
-                "makerOrderId": 12,  
-                "price": "0.20000000",  
-                "takerPreventedQuantity": "0.20000000",  
-                "makerPreventedQuantity": "0.20000000"  
-            }  
-        ],  
-        "selfTradePreventionMode": "TRANSFER",  
-        "tradeGroupId": 1,  
-        "preventedQuantity": "0.20000000"  
-    }  
-    
-
-触发STP后的余额
-
-Maker 余额
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "20000.20000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "19999.88000000",  
-                "locked": "0.08000000"  
-            }  
-        ]  
-    }  
-    
-
-Taker 余额
-    
-    
-    {  
-        "balances": [  
-            {  
-                "asset": "BTC",  
-                "free": "19999.80000000",  
-                "locked": "0.00000000"  
-            },  
-            {  
-                "asset": "USDT",  
-                "free": "20000.04000000",  
-                "locked": "0.00000000"  
-            }  
-        ]  
+        "filterType": "MAX_ASSET",  
+        "asset": "USDC",  
+        "limit": "42.00000000"  
     }

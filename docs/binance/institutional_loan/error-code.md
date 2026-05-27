@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/error-code
 api_type: REST
-updated_at: 2026-01-15T23:50:33.146864
+updated_at: 2026-05-27 19:01:26.756114
 ---
 
 # Error Codes
@@ -829,6 +829,12 @@ Errors consist of two parts: an error code and a message. Codes are universal, b
 ### -4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT[​](/docs/institutional_loan/error-code#-4060-capital_withdraw_user_asset_lock_deposit "Direct link to -4060 CAPITAL_WITHDRAW_USER_ASSET_LOCK_DEPOSIT")
 
   * As your deposit has not reached the required block confirmations, we have temporarily locked {0} asset
+
+
+
+### -4106 TAG_NOT_SUPPORTED_FOR_NETWORK[​](/docs/institutional_loan/error-code#-4106-tag_not_supported_for_network "Direct link to -4106 TAG_NOT_SUPPORTED_FOR_NETWORK")
+
+  * This network does not support memo/tag. Please remove the `addressTag` field and try again.
 
 
 
@@ -2367,6 +2373,12 @@ This code is sent when both the cancellation of the order failed and the new ord
 
 
 
+### -4106 TAG_NOT_SUPPORTED_FOR_NETWORK[​](/docs/zh-CN/institutional_loan/error-code#-4106-tag_not_supported_for_network "-4106 TAG_NOT_SUPPORTED_FOR_NETWORK的直接链接")
+
+  * 该网络不支持 memo/tag。请移除 `addressTag` 字段后重试。
+
+
+
 ### -5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF[​](/docs/zh-CN/institutional_loan/error-code#-5001-asset_dribblet_convert_switch_off "-5001 ASSET_DRIBBLET_CONVERT_SWITCH_OFF的直接链接")
 
   * 不允许转移到微型资产。
@@ -2627,7 +2639,7 @@ This code is sent when both the cancellation of the order failed and the new ord
 
 
 
-### -20204 The notional of USD is less or more than the limit[​](/docs/zh-CN/institutional_loan/error-code#-20204-the-notional-of-usd-is-less-or-more-than-the-limit "-20204 The notional of USD is less or more than the limit的直接链接")
+### -20204 The notional of USD is less or more than the limit[​](/docs/zh-CN/institutional_loan/error-code#-20204-the-notional-of-usd-is-less-or-more-than-the-limit "-20204 The notional of USD is less or more than the limit的直接链��接")
 
   * 订单小于最小USD名义价值
 

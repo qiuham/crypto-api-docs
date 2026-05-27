@@ -2,79 +2,185 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management
 api_type: Account
-updated_at: 2026-01-15T23:50:57.966646
+updated_at: 2026-05-27 19:02:11.949232
 ---
 
-# Futures Transfer for Sub-account (For Master Account) (USER_DATA)
+# Get Detail on Sub-account's Futures Account V2 (For Master Account) (USER_DATA)
 
-## API Description[​](/docs/sub_account/asset-management#api-description "Direct link to API Description")
+## API Description[​](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#api-description "Direct link to API Description")
 
-Futures Transfer for Sub-account
+Get Detail on Sub-account's Futures Account
 
-## HTTP Request[​](/docs/sub_account/asset-management#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/sub-account/futures/transfer`
+GET `/sapi/v2/sub-account/futures/account`
 
-## Request Weight(IP)[​](/docs/sub_account/asset-management#request-weightip "Direct link to Request Weight\(IP\)")
+## Request Weight(IP)[​](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#request-weightip "Direct link to Request Weight\(IP\)")
 
 **1**
 
-## Request Parameters[​](/docs/sub_account/asset-management#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-email| STRING| YES| [Sub-account email](/docs/sub_account/asset-management#email-address)  
-asset| STRING| YES| The asset being transferred, e.g., USDT  
-amount| DECIMAL| YES| The amount to be transferred  
-type| INT| YES| 1: transfer from subaccount's spot account to its USDT-margined futures account 2: transfer from subaccount's USDT-margined futures account to its spot account 3: transfer from subaccount's spot account to its COIN-margined futures account 4:transfer from subaccount's COIN-margined futures account to its spot account  
+email| STRING| YES| [Sub-account email](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#email-address)  
+futuresType| INT| YES| 1:USDT Margined Futures, 2:COIN Margined Futures  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
->   * You need to open Enable Spot & Margin Trading permission for the API Key which requests this endpoint.
-> 
+## Response Example[​](/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#response-example "Direct link to Response Example")
 
-
-## Response Example[​](/docs/sub_account/asset-management#response-example "Direct link to Response Example")
+> USDT Margined Futures：
     
     
     {  
-        "txnId":"2966662589"  
+    	"futureAccountResp": {  
+    	"email": "abc@test.com",  
+    	"assets":[  
+    		{  
+    		  	"asset": "USDT",  
+    		   	"initialMargin": "0.00000000",  
+    		   	"maintenanceMargin": "0.00000000",  
+    		   	"marginBalance": "0.88308000",  
+    		   	"maxWithdrawAmount": "0.88308000",  
+    		   	"openOrderInitialMargin": "0.00000000",  
+    		   	"positionInitialMargin": "0.00000000",  
+    		   	"unrealizedProfit": "0.00000000",  
+    		   	"walletBalance": "0.88308000"  
+    		 }  
+    	],  
+    	"canDeposit": true,  
+    	"canTrade": true,  
+    	"canWithdraw": true,  
+    	"feeTier": 2,  
+    	"maxWithdrawAmount": "0.88308000",  
+    	"totalInitialMargin": "0.00000000",  
+    	"totalMaintenanceMargin": "0.00000000",  
+    	"totalMarginBalance": "0.88308000",  
+    	"totalOpenOrderInitialMargin": "0.00000000",  
+    	"totalPositionInitialMargin": "0.00000000",  
+    	"totalUnrealizedProfit": "0.00000000",  
+    	"totalWalletBalance": "0.88308000",  
+    	"updateTime": 1576756674610  
+     }  
+    }  
+    
+
+> COIN Margined Futures：
+    
+    
+    {  
+    	"deliveryAccountResp": {  
+            "email": "abc@test.com",  
+            "assets":[  
+                {  
+                    "asset": "BTC",  
+                    "initialMargin": "0.00000000",  
+                    "maintenanceMargin": "0.00000000",  
+                    "marginBalance": "0.88308000",  
+                    "maxWithdrawAmount": "0.88308000",  
+                    "openOrderInitialMargin": "0.00000000",  
+                    "positionInitialMargin": "0.00000000",  
+                    "unrealizedProfit": "0.00000000",  
+                    "walletBalance": "0.88308000"  
+                 }  
+            ],  
+            "canDeposit": true,  
+            "canTrade": true,  
+            "canWithdraw": true,  
+            "feeTier": 2,  
+            "updateTime": 1598959682001  
+        }  
     }
 
 ---
 
-# 子账户Futures划转 (仅适用主账户) (USER_DATA)
+# 查询子账户Futures账户详情V2 (适用主账户) (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/sub_account/asset-management#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#接口描述 "接口描述的直接链接")
 
-子账户Futures划转
+查询子账户Futures账户详情
 
-## HTTP请求[​](/docs/zh-CN/sub_account/asset-management#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#http请求 "HTTP请求的直接链接")
 
-`POST /sapi/v1/sub-account/futures/transfer `
+GET `/sapi/v2/sub-account/futures/account`
 
-## 请求权重(IP)[​](/docs/zh-CN/sub_account/asset-management#请求权重ip "请求权重\(IP\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#请求权重ip "请求权重\(IP\)的直接链接")
 
 **1**
 
-## 请求参数[​](/docs/zh-CN/sub_account/asset-management#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-email| STRING| YES| 子账户邮箱 [备注](/docs/zh-CN/sub_account/asset-management#request-email-address)  
-asset| STRING| YES| 划转资产, e.g., USDT  
-amount| DECIMAL| YES| 划转数量  
-type| INT| YES| 1: 由子账户的现货账户划转至其USDT本位合约账户; 2: 由子账户的USDT本位合约账户划转至其现货账户； 3:由子账户现货账户划转至其COIN本位合约账户；4: 由子账户COIN本位合约账户划转至其现货账户  
+email| STRING| YES| 子账户邮箱 [备注](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#request-email-address)  
+futuresType| INT| YES| 1:USDT Margined Futures, 2:COIN Margined Futures  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
   
->   * 您需要打开 API Key 的 Spot & Margin Trading 权限以使用此接口。
-> 
+## 响应示例[​](/docs/zh-CN/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2#响应示例 "响应示例的直接链接")
 
-
-## 响应示例[​](/docs/zh-CN/sub_account/asset-management#响应示例 "响应示例的直接链接")
+> USDT Margined Futures：
     
     
     {  
-        "txnId":"2966662589"  
+    	"futureAccountResp": {  
+    	"email": "abc@test.com",  
+    	"assets":[  
+    		{  
+    		  	"asset": "USDT",  
+    		   	"initialMargin": "0.00000000",  
+    		   	"maintenanceMargin": "0.00000000",  
+    		   	"marginBalance": "0.88308000",  
+    		   	"maxWithdrawAmount": "0.88308000",  
+    		   	"openOrderInitialMargin": "0.00000000",  
+    		   	"positionInitialMargin": "0.00000000",  
+    		   	"unrealizedProfit": "0.00000000",  
+    		   	"walletBalance": "0.88308000"  
+    		 }  
+    	],  
+    	"canDeposit": true,  
+    	"canTrade": true,  
+    	"canWithdraw": true,  
+    	"feeTier": 2,  
+    	"maxWithdrawAmount": "0.88308000",  
+    	"totalInitialMargin": "0.00000000",  
+    	"totalMaintenanceMargin": "0.00000000",  
+    	"totalMarginBalance": "0.88308000",  
+    	"totalOpenOrderInitialMargin": "0.00000000",  
+    	"totalPositionInitialMargin": "0.00000000",  
+    	"totalUnrealizedProfit": "0.00000000",  
+    	"totalWalletBalance": "0.88308000",  
+    	"updateTime": 1576756674610  
+     }  
+    }  
+      
+    
+
+> COIN Margined Futures：
+    
+    
+      
+    {  
+    	"deliveryAccountResp": {  
+            "email": "abc@test.com",  
+            "assets":[  
+                {  
+                    "asset": "BTC",  
+                    "initialMargin": "0.00000000",  
+                    "maintenanceMargin": "0.00000000",  
+                    "marginBalance": "0.88308000",  
+                    "maxWithdrawAmount": "0.88308000",  
+                    "openOrderInitialMargin": "0.00000000",  
+                    "positionInitialMargin": "0.00000000",  
+                    "unrealizedProfit": "0.00000000",  
+                    "walletBalance": "0.88308000"  
+                 }  
+            ],  
+            "canDeposit": true,  
+            "canTrade": true,  
+            "canWithdraw": true,  
+            "feeTier": 2,  
+            "updateTime": 1598959682001  
+        }  
     }

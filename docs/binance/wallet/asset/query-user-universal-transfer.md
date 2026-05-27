@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/query-user-universal-transfer
 api_type: REST
-updated_at: 2026-01-15T23:49:33.464668
+updated_at: 2026-05-27 18:59:15.531293
 ---
 
 # Query User Universal Transfer History(USER_DATA)
@@ -44,23 +44,23 @@ timestamp| LONG| YES|
     
     
     {  
-        "total":2,  
-        "rows":[  
+        "total": 2,  
+        "rows": [  
             {  
-                "asset":"USDT",  
-                "amount":"1",  
-                "type":"MAIN_UMFUTURE",  
+                "asset": "USDT",  
+                "amount": "1",  
+                "type": "MAIN_UMFUTURE",  
                 "status": "CONFIRMED", // status: CONFIRMED / FAILED / PENDING  
                 "tranId": 11415955596,  
-                "timestamp":1544433328000  
+                "timestamp": 1544433328000  
             },  
             {  
-                "asset":"USDT",  
-                "amount":"2",  
-                "type":"MAIN_UMFUTURE",  
+                "asset": "USDT",  
+                "amount": "2",  
+                "type": "MAIN_UMFUTURE",  
                 "status": "CONFIRMED",  
                 "tranId": 11366865406,  
-                "timestamp":1544433328000  
+                "timestamp": 1544433328000  
             }  
         ]  
     }
@@ -106,23 +106,23 @@ timestamp| LONG| YES|
     
     
     {  
-        "total":2,  
-        "rows":[  
+        "total": 2,  
+        "rows": [  
             {  
-                "asset":"USDT",  
-                "amount":"1",  
-                "type":"MAIN_UMFUTURE"  
+                "asset": "USDT",  
+                "amount": "1",  
+                "type": "MAIN_UMFUTURE",  
                 "status": "CONFIRMED", // status: CONFIRMED / FAILED / PENDING  
                 "tranId": 11415955596,  
-                "timestamp":1544433328000  
+                "timestamp": 1544433328000  
             },  
             {  
-                "asset":"USDT",  
-                "amount":"2",  
-                "type":"MAIN_UMFUTURE",  
+                "asset": "USDT",  
+                "amount": "2",  
+                "type": "MAIN_UMFUTURE",  
                 "status": "CONFIRMED",  
                 "tranId": 11366865406,  
-                "timestamp":1544433328000  
+                "timestamp": 1544433328000  
             }  
         ]  
     }

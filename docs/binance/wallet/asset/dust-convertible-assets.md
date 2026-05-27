@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/dust-convertible-assets
 api_type: REST
-updated_at: 2026-01-15T23:49:27.336381
+updated_at: 2026-05-27 18:59:05.570165
 ---
 
 # Dust Convertible Assets (USER_DATA)
@@ -23,6 +23,7 @@ POST `/sapi/v1/asset/dust-convert/query-convertible-assets`
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
+accountType| STRING| NO| `SPOT` or `MARGIN`, default `SPOT`  
 targetAsset| STRING| YES|   
 dustQuotaAssetToTargetAssetPrice| BIGDECIMAL| NO|   
 timestamp| LONG| YES|   
@@ -77,6 +78,7 @@ POST `/sapi/v1/asset/dust-convert/query-convertible-assets`
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
+accountType| STRING| NO| `SPOT` 或 `MARGIN`，默认 `SPOT`  
 targetAsset| STRING| YES|   
 dustQuotaAssetToTargetAssetPrice| BIGDECIMAL| NO|   
 timestamp| LONG| YES|   
