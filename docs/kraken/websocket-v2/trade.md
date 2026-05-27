@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/trade
 api_type: WebSocket
-updated_at: 2026-05-26 15:04:29.569339
+updated_at: 2026-05-27 20:13:06.681244
 ---
 
 # Trades
@@ -17,7 +17,7 @@ Multiple trades may be batched in a single message but that does not mean that t
 
 The feed accepts a list symbols for subscription.
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Subscribe Ack Schema
@@ -141,7 +141,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot and Update Response​
+## Snapshot and Update Response
 
 The snapshot and update responses share the same schema. An update message is streamed on a trade event.
 
@@ -250,7 +250,7 @@ The book order update timestamp.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

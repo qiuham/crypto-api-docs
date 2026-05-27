@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/place-rfq-offer
 api_type: REST
-updated_at: 2026-05-26 14:51:28.459778
+updated_at: 2026-05-27 19:53:03.291819
 ---
 
 # Place new offer on an open RFQ
@@ -13,7 +13,7 @@ Place a new offer on the specified open RFQ. At least one of bid or ask must be 
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -39,7 +39,7 @@ JSON-encoded per-leg bid pricing. Format: `[{"tradeable": "PI_XBTUSD", "price": 
 
 JSON-encoded per-leg ask pricing. Format: `[{"tradeable": "PI_XBTUSD", "price": 101}]`. When provided, bid/ask query params must be omitted.
 
-## Responses​
+## Responses
 
   * 200
   * 404

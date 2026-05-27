@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-user-rfq
 api_type: REST
-updated_at: 2026-05-26 14:50:45.467275
+updated_at: 2026-05-27 19:48:00.986455
 ---
 
 # Cancel an open RFQ
@@ -13,7 +13,7 @@ Cancel a specific open RFQ created by the authenticated account.
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -21,7 +21,7 @@ Note: This is currently available exclusively in the Kraken pre-prod environment
 
 Unique identifier for the RFQ to cancel
 
-## Responses​
+## Responses
 
   * 200
   * 404

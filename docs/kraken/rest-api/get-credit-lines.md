@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-credit-lines
 api_type: REST
-updated_at: 2026-05-26 14:52:55.039186
+updated_at: 2026-05-27 20:02:22.465600
 ---
 
 # Get Credit Lines
@@ -13,7 +13,7 @@ Retrieve all credit line details for VIPs with this functionality.
 
 **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -33,7 +33,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

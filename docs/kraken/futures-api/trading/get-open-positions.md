@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-positions
 api_type: REST
-updated_at: 2026-05-26 14:51:01.806769
+updated_at: 2026-05-27 19:50:03.303847
 ---
 
 # Get open positions
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:01.806769
 
 This endpoint returns the size and average entry price of all open positions in Futures contracts. This includes Futures contracts that have matured but have not yet been settled.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

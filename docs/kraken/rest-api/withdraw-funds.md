@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/withdraw-funds
 api_type: REST
-updated_at: 2026-05-26 14:53:31.410605
+updated_at: 2026-05-27 20:08:41.796357
 ---
 
 # Withdraw Funds
@@ -13,7 +13,7 @@ Make a withdrawal request.
 
 **API Key Permissions Required:** `Funds permissions - Withdraw`
 
-## Request​
+## Request
 
   * application/json
 
@@ -61,7 +61,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

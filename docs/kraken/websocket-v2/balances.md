@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/balances
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:49.372553
+updated_at: 2026-05-27 20:11:12.388897
 ---
 
 # Balances
@@ -14,7 +14,7 @@ The `balances` channel streams client asset balances and transactions from the a
 
 This channel contains account specific data, an authentication token is required in the request.
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Subscribe Ack Schema
@@ -144,7 +144,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot Response​
+## Snapshot Response
 
 The snapshot provides the value of each asset held in this account.
 
@@ -262,7 +262,7 @@ The subscription message sequence number.
     }  
     
 
-## Update Response​
+## Update Response
 
 An update will be streamed on each completed transaction to the client account.
 
@@ -454,7 +454,7 @@ An example of selling 0.005 BTC/USD, two events are streamed with a shared `ref_
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

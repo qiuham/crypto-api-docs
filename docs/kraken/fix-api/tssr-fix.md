@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/tssr-fix
 api_type: REST
-updated_at: 2026-05-26 14:50:20.113077
+updated_at: 2026-05-27 19:44:32.350284
 ---
 
 # Trading Session Status Request (Spot only)

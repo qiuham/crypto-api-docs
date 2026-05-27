@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deposit-addresses
 api_type: REST
-updated_at: 2026-05-26 14:52:55.207572
+updated_at: 2026-05-27 20:02:36.788119
 ---
 
 # Get Deposit Addresses
@@ -13,7 +13,7 @@ Retrieve (or generate a new) deposit addresses for a particular asset and method
 
 **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -60,7 +60,7 @@ oneOf
 
 ****number
 
-## Responses​
+## Responses
 
   * 200
 

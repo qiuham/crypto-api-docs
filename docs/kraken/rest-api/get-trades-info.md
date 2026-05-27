@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trades-info
 api_type: REST
-updated_at: 2026-05-26 14:53:22.516476
+updated_at: 2026-05-27 20:05:52.506169
 ---
 
 # Query Trades Info
@@ -13,7 +13,7 @@ Retrieve information about specific trades/fills.
 
 **API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
-## Request​
+## Request
 
   * application/json
 
@@ -43,7 +43,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

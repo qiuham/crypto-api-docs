@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fills
 api_type: REST
-updated_at: 2026-05-26 14:50:51.858083
+updated_at: 2026-05-27 19:49:19.942980
 ---
 
 # Get your fills
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:51.858083
 
 This endpoint returns information on your filled orders for all futures contracts.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -19,7 +19,7 @@ This endpoint returns information on your filled orders for all futures contract
 
 If not provided, returns the last 100 fills in any futures contract. If provided, returns the 100 entries before lastFillTime.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/account-log
 api_type: REST
-updated_at: 2026-05-26 14:50:29.564045
+updated_at: 2026-05-27 19:45:51.434198
 ---
 
 # Get account log
@@ -13,7 +13,7 @@ Lists account log entries, paged by timestamp or by ID.
 
 To request entries by time range, use the `since` and `before` parameters. To request entries by ID range, use the `from` and `to` parameters. Any combination of `since`, `before`, `from` and `to` can be used to restrict the requested range of entries.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -59,7 +59,7 @@ Include exchange rate and conversion fee for conversions.
 
 **Default value:**`false`
 
-## Responses​
+## Responses
 
   * 200
   * 429

@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-rate-limits
 api_type: Guide
-updated_at: 2026-05-26 14:57:35.958400
+updated_at: 2026-05-27 19:57:39.572999
 ---
 
 # Futures Rate Limits
 
-## REST Request Limits​
+## REST Request Limits
 
 Request limits are determined from cost associated with each API call and rate limiting budgets depend on which path the endpoint uses. Public endpoints do not have a cost and therefore do not count against any rate limiting budget. For `/derivatives` endpoints, clients can spend up to 500 every 10 seconds.
 
@@ -58,7 +58,7 @@ accountlog (count: 51 - 1000)| 3
 accountlog (count: 1001 - 5000)| 6  
 accountlog (count: 5001 - 100000)| 10  
   
-### Example​
+### Example
 
 The following shows the return of call of the `sendorder` endpoint where the API limit has been exceeded.
     
@@ -70,7 +70,7 @@ The following shows the return of call of the `sendorder` endpoint where the API
     }  
     
 
-## Websocket Limits​
+## Websocket Limits
 
 There are limits to both the number of connections a client can have open concurrently and the number of requests an individual connection can make. Limit values are subject to change and additional limits may be added in the future.
 

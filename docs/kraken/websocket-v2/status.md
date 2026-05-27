@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/status
 api_type: WebSocket
-updated_at: 2026-05-26 15:04:12.132458
+updated_at: 2026-05-27 20:12:52.323414
 ---
 
 # Status
@@ -15,7 +15,7 @@ The `status` channel provides a mechanism to verify exchange status and successf
 
 There is no option to directly request a `status` update, a status will be automatically generated on successful websocket connection and when the trading engine status changes.
 
-## Update Response​
+## Update Response
 
   * Update Schema
   * Example

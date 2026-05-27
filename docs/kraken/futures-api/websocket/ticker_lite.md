@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/ticker_lite
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:43.311486
+updated_at: 2026-05-27 19:56:12.617041
 ---
 
 # Ticker Lite
@@ -13,7 +13,7 @@ CHANNEL
 
 The ticker lite feed returns ticker information about listed products. Delta messages are throttled such that they are published every 1s.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -40,7 +40,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -67,7 +67,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Data
@@ -185,7 +185,7 @@ Rho, the option value's sensitivity to the interest ratea.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

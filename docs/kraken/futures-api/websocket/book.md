@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/book
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:43.582201
+updated_at: 2026-05-27 19:55:06.599886
 ---
 
 # Book
@@ -13,7 +13,7 @@ CHANNEL
 
 The book feed returns information about the order book.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -40,7 +40,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -67,7 +67,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -144,7 +144,7 @@ The price of the entry
     }  
     
 
-## Response Delta​
+## Response Delta
 
   * Response Fields
   * Subscription Delta Data
@@ -191,7 +191,7 @@ The quantity of the entry
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

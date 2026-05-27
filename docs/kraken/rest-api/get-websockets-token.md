@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-websockets-token
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:22.608963
+updated_at: 2026-05-27 20:06:00.434535
 ---
 
 # Get Websockets Token
@@ -13,7 +13,7 @@ An authentication token must be requested via this REST API endpoint in order to
 
 **API Key Permissions Required:** `WebSocket interface - On`
 
-## Request​
+## Request
 
   * application/json
 
@@ -23,7 +23,7 @@ An authentication token must be requested via this REST API endpoint in order to
 
 Nonce used in construction of `API-Sign` header
 
-## Responses​
+## Responses
 
   * 200
 

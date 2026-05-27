@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/tick-types
 api_type: REST
-updated_at: 2026-05-26 14:50:26.287555
+updated_at: 2026-05-27 19:45:37.428373
 ---
 
 # Tick Types
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:26.287555
 
 Returns all available tick types to use with the markets endpoint.
 
-## Responses​
+## Responses
 
   * 200
 

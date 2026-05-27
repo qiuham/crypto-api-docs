@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/book
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:31.675918
+updated_at: 2026-05-27 20:09:03.163892
 ---
 
 # Book (Level 2)
@@ -13,7 +13,7 @@ CHANNEL
 
 Order book levels. On subscription, a snapshot will be published at the specified depth, following the snapshot, level updates will be published
 
-## Subscription Request​
+## Subscription Request
 
   * Request Schema
   * Example
@@ -61,7 +61,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Subscription Snapshot and Update Response​
+## Subscription Snapshot and Update Response
 
 Note, there is no checksum on the snapshot.
 
@@ -188,7 +188,7 @@ The name of the channel.
     ]  
     
 
-## Update Response​
+## Update Response
 
   * Response Schema
   * Example: Asks

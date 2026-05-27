@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-rest-auth
 api_type: Guide
-updated_at: 2026-05-26 14:56:51.960908
+updated_at: 2026-05-27 19:57:03.794934
 ---
 
 # Embed REST Authentication
 
-## Authentication Parameters​
+## Authentication Parameters
 
 For the Embed REST API, the following parameters are used for authentication:
 
@@ -19,7 +19,7 @@ Optionally, the following header can be included:
 
   * `Kraken-Version` HTTP header parameter (optional): API version string (e.g., `2025-04-15`). If not specified, the latest version is used.
 
-## Setting the API-Key Parameter​
+## Setting the API-Key Parameter
 
 The value for the `API-Key` HTTP header parameter is your **public** API key.
 
@@ -32,7 +32,7 @@ From your API key-pair, clearly identify which key is public and which key is pr
   * The **public** key is sent in the `API-Key` header parameter.
   * The **private** key is **never** sent, it is only used to encode the signature for `API-Sign` header parameter.
 
-## Setting the API-Sign Parameter​
+## Setting the API-Sign Parameter
 
 The value for the `API-Sign` HTTP header parameter is a signature generated from encoding your **private** API key, nonce, encoded payload, and URI path.
     
@@ -40,7 +40,7 @@ The value for the `API-Sign` HTTP header parameter is a signature generated from
     HMAC-SHA512 of (URI path + SHA256(nonce + JSON body)) and base64 decoded secret API key  
     
 
-### Algorithm Steps​
+### Algorithm Steps
 
   1. **Build the message** : Concatenate the nonce with the request body (JSON stringified)
 * For GET requests: use only the nonce
@@ -50,7 +50,7 @@ The value for the `API-Sign` HTTP header parameter is a signature generated from
   4. **Sign** : Generate HMAC-SHA512 using your base64-decoded secret
   5. **Encode** : Base64 encode the signature
 
-### Examples​
+### Examples
 
 The following code snippets demonstrate how to generate the signature in Python, Go, and JavaScript.
 
@@ -191,7 +191,7 @@ The following code snippets demonstrate how to generate the signature in Python,
     console.log(`API-Sign: ${signature}`);  
     
 
-## Setting the API-Nonce Parameter​
+## Setting the API-Nonce Parameter
 
 The value for the `API-Nonce` HTTP header parameter is an always increasing, unsigned 64-bit integer for each request made with a particular API key.
 
@@ -201,7 +201,7 @@ tip
 
 Problems can arise from requests arriving out of order due to API keys being shared across processes, or from system clock drift/recalibration. If multiple workers share one API key, coordinate nonces through a shared per-key generator (for example an atomic counter in Redis or another centralized store). When configuring Domain Management API keys, use the **Custom number only used once window** setting. Increase this value if you receive `Invalid nonce` (or `EAPI:Invalid nonce`) errors due to networking delays or out-of-order delivery, since this setting adjusts nonce tolerance.
 
-### Examples​
+### Examples
 
   * Python
   * Go
@@ -227,7 +227,7 @@ Problems can arise from requests arriving out of order due to API keys being sha
     const nonce = process.hrtime.bigint().toString();  
     
 
-## Complete Request Example​
+## Complete Request Example
 
 Here's a complete example making an authenticated GET request to list assets:
 
@@ -322,7 +322,7 @@ Here's a complete example making an authenticated GET request to list assets:
     console.log(assets);  
     
 
-## Query Parameters in Signature​
+## Query Parameters in Signature
 
 When your request includes query parameters, they must be included in the URL path used for signature generation:
     
@@ -335,7 +335,7 @@ When your request includes query parameters, they must be included in the URL pa
     const signature = getPaywardSignature(signaturePath, null, API_SECRET, nonce);  
     
 
-## Troubleshooting​
+## Troubleshooting
 
 Error| Cause| Solution  
 ---|---|---  

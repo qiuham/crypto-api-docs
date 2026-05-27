@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/add-order-batch
 api_type: REST
-updated_at: 2026-05-26 15:01:23.350757
+updated_at: 2026-05-27 20:00:18.922958
 ---
 
 # Add Order Batch
@@ -19,7 +19,7 @@ Sends a collection of orders (minimum of 2 and maximum 15):
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` and `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -171,7 +171,7 @@ Validate inputs only. Do not submit order.
 
 Broker IIBAN (Partner's Kraken IIBAN)
 
-## Responses​
+## Responses
 
   * 200
 

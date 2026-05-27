@@ -2,20 +2,20 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-clordid
 api_type: Guide
-updated_at: 2026-05-26 14:58:29.466603
+updated_at: 2026-05-27 19:58:16.302424
 ---
 
 # Spot Client Order Identifiers
 
 The `cl_ord_id` parameter enables clients to tag orders with their own text or UUID identifiers for tracking and managing transactions across all Kraken APIs.
 
-## Overview​
+## Overview
 
-### What is cl_ord_id?​
+### What is cl_ord_id?
 
 The `cl_ord_id` terminology is borrowed from Financial Information eXchange (FIX) protocol. It is a parameter used as a "client order identifier" for tracking and managing transactions.
 
-### Why is cl_ord_id Important?​
+### Why is cl_ord_id Important?
 
 It's essential for clients to communicate about specific orders without confusion, and the `cl_ord_id` provides a unique identifier for each open order. The client assigns a `cl_ord_id` on order placement and Kraken uses this identifier to provide status updates back to the client.
 
@@ -23,7 +23,7 @@ Kraken verifies `cl_ord_id` uniqueness across open orders for each client. FIX p
 
 The `cl_ord_id` is particularly important when it comes to managing flow. If a client wants to cancel or amend an order, they can provide the `cl_ord_id` of that order in the request.
 
-## Comparing Order Identifiers​
+## Comparing Order Identifiers
 
 Kraken has a range of order identifiers with different characteristics. The client can choose the combination of identifiers to best fit their requirements.
 
@@ -40,7 +40,7 @@ note
 
 The `cl_ord_id` and `userref` are mutually exclusive—they cannot both be used on the same order.
 
-## Format and Performance​
+## Format and Performance
 
 `cl_ord_id` supports 3 different formats, depending on the length of the string:
 
@@ -54,7 +54,7 @@ Under the covers, the strings are stored as a 128-bit integer for efficiency and
 
 Operations and indexing on integers is more efficient than strings, meaning checking uniqueness and queries for orders can be much faster.
 
-## Example: Order Management with UUID​
+## Example: Order Management with UUID
 
 **New Order:** Client creates a new passive order with UUID as `cl_ord_id`
     
@@ -85,19 +85,19 @@ Operations and indexing on integers is more efficient than strings, meaning chec
     }  
     
 
-## FIX Protocol Guidelines​
+## FIX Protocol Guidelines
 
 In the FIX protocol, the Tags ClOrdID and OrigClOrdID (Tags `11` and `41`) are mapped to the ClOrdID format as described above. This means that these order parameters are no longer limited to INT32. Instead, FIX ClOrdID now supports UUIDs.
 
 The adoption of UUIDs, specifically timestamp-first version 4 UUIDs, significantly improves the efficiency and uniqueness of order identifiers. Unlike traditional INT32 identifiers, UUIDs offer a virtually limitless address space, greatly reducing the risk of identifier collisions and enhancing the robustness of the trading system.
 
-### Timestamp-First v4 UUIDs​
+### Timestamp-First v4 UUIDs
 
   * **Structure** : Timestamp-first v4 UUIDs start with a timestamp, ensuring that each generated UUID is unique and sequential based on the time of creation.
   * **Uniqueness** : These UUIDs combine the uniqueness of version 4 UUIDs with the time-based ordering, making them ideal for high-frequency trading environments.
   * **Compatibility** : They are fully compatible with existing systems that support UUIDs, ensuring a smooth transition and integration.
 
-### Implementation Guidelines​
+### Implementation Guidelines
 
 To improve the efficiency of the FIX API, clients are required to send a ClOrdID of either:
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/market-analytics
 api_type: Market Data
-updated_at: 2026-05-26 14:50:26.049082
+updated_at: 2026-05-27 19:45:15.755852
 ---
 
 # Market Analytics
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:26.049082
 
 Analytics data divided into time buckets
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -37,7 +37,7 @@ epoch time in seconds
 
 epoch time in seconds, default now
 
-## Responses​
+## Responses
 
   * 200
   * 400

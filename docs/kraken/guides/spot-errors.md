@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-errors
 api_type: Guide
-updated_at: 2026-05-26 14:58:38.259727
+updated_at: 2026-05-27 19:58:23.431750
 ---
 
 # Spot Error Messages
 
 The following error messages may be thrown for private data requests.
 
-### Some Common Examples​
+### Some Common Examples
 
 Error| Additional Info  
 ---|---  

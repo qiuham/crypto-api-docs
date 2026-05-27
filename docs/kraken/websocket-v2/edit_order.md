@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/edit_order
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:54.471902
+updated_at: 2026-05-27 20:12:02.295409
 ---
 
 # Edit Order
@@ -24,7 +24,7 @@ There are a number of caveats for `edit_order`:
   * existing executions will are associated with the original order and not copied to the amended order.
   * queue position will not be maintained.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -191,7 +191,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/account-log-csv
 api_type: REST
-updated_at: 2026-05-26 14:50:29.650095
+updated_at: 2026-05-27 19:45:58.426252
 ---
 
 # Account log (CSV)
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:29.650095
 
 Lists recent account log entries in CSV format.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -21,7 +21,7 @@ Include exchange rate, exchange rate from currency, and conversion fee for conve
 
 **Default value:**`false`
 
-## Responses​
+## Responses
 
   * 200
   * 401

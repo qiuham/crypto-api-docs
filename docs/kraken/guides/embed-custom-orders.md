@@ -2,19 +2,19 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-custom-orders
 api_type: Guide
-updated_at: 2026-05-26 14:56:25.245722
+updated_at: 2026-05-27 19:56:41.390432
 ---
 
 # Embed: Custom Orders
 
 Custom orders are price-triggered trades that execute automatically when an asset reaches a target price. Use them to implement strategies like "Buy the Dip" (buy when price drops to a target), "Join the Rally" (buy when price rises to ride momentum), "Take the Profit" (sell when price rises to a target), and "Stop the Loss" (sell when price drops to limit losses) for your users.
 
-## Prerequisites​
+## Prerequisites
 
   * Payward Embed API credentials (see [Authentication Guide](/api/docs/guides/embed-rest-auth))
   * A verified user with an IIBAN and sufficient balance
 
-## Custom Order Workflow​
+## Custom Order Workflow
     
     
     ┌──────────────────────┐     ┌──────────────────┐     ┌────────────────────┐  
@@ -28,7 +28,7 @@ Custom orders are price-triggered trades that execute automatically when an asse
   2. **Create Order** : Submit the custom order with a price trigger. The system monitors the market and executes the trade automatically when the condition is met.
   3. **Monitor / Cancel** : List or retrieve orders to check their status. Cancel orders that haven't triggered yet.
 
-## Trigger Conditions​
+## Trigger Conditions
 
 Condition| Description  
 ---|---  
@@ -44,7 +44,7 @@ The trigger price is denominated as a `base_asset`/`quote_asset` rate. For examp
   * **Join the Rally** : "Buy BTC when BTC/USD rises to 100,000" -- set `base_asset` to `BTC`, `quote_asset` to `USD`, `target_price` to `"100000.00"`, and `condition` to `gte`. The order triggers when the BTC/USD price is at or above 100,000.
   * **Take the Profit** : "Sell BTC when BTC/USD rises to 100,000" -- same trigger configuration as above, but with a sell action. The order triggers when the BTC/USD price is at or above 100,000.
 
-## Execution Behavior​
+## Execution Behavior
 
 Custom orders are not guaranteed to execute at exactly the target price. The target price is a **trigger threshold** , not a limit price:
 
@@ -55,7 +55,7 @@ note
 
 For orders where the execution price is **higher** than the market price and the user is spending the client's reserve fiat currency, an error will be returned at order creation. Because the execution price may be higher than the target, the final spend amount is unbounded upward -- this prevents a situation where a user creates an order that could spend more fiat than the client has approved.
 
-## Step 1: Request a Prospective Quote (Optional)​
+## Step 1: Request a Prospective Quote (Optional)
 
 Before creating an order, you can request a prospective quote to display **indicative** fees and amounts to the user at the target price. This is useful for showing the user what the trade would cost before they commit to creating the order. If the `trigger` is omitted, the response reflects current market prices instead.
 
@@ -154,7 +154,7 @@ Prospective quote fees are indicative and may not be exact. The final execution 
     }  
     
 
-### Response Example​
+### Response Example
     
     
     {  
@@ -185,7 +185,7 @@ Prospective quote fees are indicative and may not be exact. The final execution 
 
 If you pass `quote_currency` in the request body, the response will also include `quoted_spend`, `quoted_receive`, and `quoted_unit_price` fields denominated in that currency.
 
-## Step 2: Create a Custom Order​
+## Step 2: Create a Custom Order
 
 Submit the order with a `name`, `trigger`, and `action`. The `name` is a display label your user can identify the order by.
 
@@ -292,7 +292,7 @@ Submit the order with a `name`, `trigger`, and `action`. The `name` is a display
     console.log('Status:', order.result.order.status.status);  
     
 
-### Response Example​
+### Response Example
     
     
     {  
@@ -330,9 +330,9 @@ Submit the order with a `name`, `trigger`, and `action`. The `name` is a display
     }  
     
 
-## Step 3: Monitor Orders​
+## Step 3: Monitor Orders
 
-### Get a single order​
+### Get a single order
 
   * Python
   * JavaScript
@@ -382,7 +382,7 @@ Submit the order with a `name`, `trigger`, and `action`. The `name` is a display
     }  
     
 
-### List orders​
+### List orders
 
 You can filter by status using the `statuses` query parameter. Valid values are `active`, `cancelled`, and `completed`. If omitted, all statuses are returned. Use the `cursor` parameter for pagination.
 
@@ -453,7 +453,7 @@ You can filter by status using the `statuses` query parameter. Valid values are 
     }  
     
 
-### Order Statuses​
+### Order Statuses
 
 Status| Description  
 ---|---  
@@ -463,7 +463,7 @@ Status| Description
   
 When an order is `cancelled`, the response includes a `reason` field explaining why.
 
-## Step 4: Cancel an Order​
+## Step 4: Cancel an Order
 
 Cancel an active order that hasn't triggered yet.
 
@@ -523,7 +523,7 @@ Cancel an active order that hasn't triggered yet.
     console.log('Status:', result.result.order.status.status);  
     
 
-## Portfolio Transactions​
+## Portfolio Transactions
 
 Executed custom orders appear in the [List Portfolio Transactions](/api/docs/embed-api/list-embed-portfolio-transactions) endpoint with the following transaction types:
 
@@ -538,7 +538,7 @@ Filter for custom order transactions specifically:
     GET /b2b/portfolio/transactions?user={iiban}&types=custom_order,custom_order_failed  
     
 
-## API Reference​
+## API Reference
 
 Endpoint| Method| Description  
 ---|---|---  
@@ -548,7 +548,7 @@ Endpoint| Method| Description
 `/b2b/custom-orders/{order_id}`| GET| Get a single custom order  
 `/b2b/custom-orders/{id}/cancel`| POST| Cancel an active custom order  
   
-## Further Reading​
+## Further Reading
 
   * [Custom Orders on the Kraken App](https://support.kraken.com/articles/10371946346132-custom-orders-on-the-kraken-app-) \-- Kraken's product FAQ for custom orders. While written for the consumer app, it provides a useful reference for how custom order functionality works in practice.
 * Prerequisites

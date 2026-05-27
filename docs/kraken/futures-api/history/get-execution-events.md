@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-execution-events
 api_type: REST
-updated_at: 2026-05-26 14:50:29.738272
+updated_at: 2026-05-27 19:46:05.724620
 ---
 
 # Get execution events
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:29.738272
 
 Lists executions/trades for authenticated account.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -47,7 +47,7 @@ The maximum number of results to return. The upper bound is determined by a glob
 
 If present events of other tradeables are filtered out.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

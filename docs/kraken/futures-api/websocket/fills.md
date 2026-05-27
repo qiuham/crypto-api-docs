@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/fills
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:43.739445
+updated_at: 2026-05-27 19:55:21.596945
 ---
 
 # Fills
@@ -13,7 +13,7 @@ CHANNEL
 
 This subscription feed publishes fills information.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -54,7 +54,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -96,7 +96,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Snapshot & Delta​
+## Response Snapshot & Delta
 
   * Response Fields
   * Subscription Snapshot Data
@@ -250,7 +250,7 @@ The order type associated with the fill:
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-introduction
 api_type: Guide
-updated_at: 2026-05-26 14:57:27.151892
+updated_at: 2026-05-27 19:57:32.450809
 ---
 
 # Futures Introduction
 
-## Futures Platform​
+## Futures Platform
 
 The Kraken Futures platform provides a number of Application Programming Interfaces (APIs) through HTTP (also known as REST),Websockets (WS) and FIX. For the FIX API please refer to the [FIX](/api/docs/guides/fix-intro) for the authentication specific mechanism and endpoint description.
 
@@ -29,13 +29,13 @@ Some of the endpoints allow performing sensitive tasks, such as initiating a dig
 
 The API can be implemented using any programming language you like (e.g. C, C++, Java or PHP), as long as it is capable of managing HTTP requests. We strongly suggest you look at the code examples listed in sample implementations.
 
-## Conventions and Definitions​
+## Conventions and Definitions
 
-### Server Time​
+### Server Time
 
 The server time is in Coordinated Universal Time (UTC).
 
-### Unique Identifiers​
+### Unique Identifiers
 
 > Unique Identifier Example
     
@@ -45,7 +45,7 @@ The server time is in Coordinated Universal Time (UTC).
 
 The system constructs unique identifiers according to the Universally Unique Identifier standard.
 
-### Dates and Times​
+### Dates and Times
 
 > Dates and Times Examples
     
@@ -59,7 +59,7 @@ The system constructs unique identifiers according to the Universally Unique Ide
 
 The API requires dates and time arguments in the ISO8601 datetime format and returns all dates and times in the same format. The syntax of this format is `<yyyy>-<mm>-<dd>T<HH>:<MM>:<SS>.<sss>Z` where `<yyyy>` is the year, `<mm>` is the month, `<dd>` is the day, `<HH>` is the hour, `<MM>` is the minute, `<SS>` is the second and `<sss>` is the millisecond. When provided as an argument, `<sss>` is optional. `Z` denotes that the datetime is in UTC.
 
-### Symbols​
+### Symbols
 
 The system identifies cash accounts, margin accounts, futures contracts and indices through ticker symbols. Please refer to the platform documentation for details on the ticker symbol syntax. The following shows some sample ticker symbols.
 
@@ -76,7 +76,7 @@ Example Symbols| Description
 `rr_xbtusd`| Bitcoin-Dollar Reference Rate  
 `in_xrpusd`| Ripple-Dollar Real-Time Index  
   
-### Order of Arguments​
+### Order of Arguments
 
 > Example
 > 
@@ -95,7 +95,7 @@ Example Symbols| Description
 
 When calling endpoints with required arguments, all arguments must be provided in the order they are listed (see section HTTP API resources).
 
-## Generate API keys​
+## Generate API keys
 
 > Your `api_key` (Public key) example:
     
@@ -147,11 +147,11 @@ danger
 
 API keys should be kept in a safe location and should never be shared with anyone. If you are not absolutely certain that you can store your API private key in a safe place, **do not generate it.**
 
-### Limits​
+### Limits
 
 Up to 50 keys can be created with distinct nonces.
 
-## API Testing Environment​
+## API Testing Environment
 
 To allow clients to test their API implementation, we have API functionality in our futures demo environment publicly available that is completely separate from the production environment and does not require existing account credentials.
 
@@ -173,7 +173,7 @@ You may also use the [Github repository][github-cryptofacilities] which has libr
 
 The only difference between the demo API behaviour and that of the live production environment is that the base URL is not [futures.kraken.com](https://futures.kraken.com/) but instead [demo-futures.kraken.com](https://demo-futures.kraken.com/).
 
-### Examples​
+### Examples
 
 > Example: subscribe to WebSocket ticker feeds by sending:
     
@@ -196,7 +196,7 @@ For a similar exercise via the REST API you would request: `https://demo-futures
 
 Please note that when you have successfully tested in the demo environment, the base URL in the live production platform environment works with [futures.kraken.com](http://futures.kraken.com/).
 
-## API URLs​
+## API URLs
 
 To access the **REST API** 's endpoints, HTTP calls need to be sent to endpoints under:
 
@@ -210,7 +210,7 @@ To subscribe to a **WebSocket** feed, establish a WebSocket connection to:
 
 Note: The direct access URLs for IP whitelisting are different, see [IP whitelisting][ip-whitelisting] below.
 
-## Sample implementations​
+## Sample implementations
 
 Sample implementations of the API in Java, Python, C# and Visual Basic .NET can be found on our GitHub page:
 

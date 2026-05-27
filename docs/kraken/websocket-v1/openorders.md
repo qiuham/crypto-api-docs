@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/openorders
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:40.827628
+updated_at: 2026-05-27 20:09:53.368371
 ---
 
 # Open Orders
@@ -15,7 +15,7 @@ The `openOrders` channel streams streams the open orders belonging to the authen
 
 For status change updates, such as 'closed', the fields orderid and status will be present in the payload.
 
-## Subscription Request​
+## Subscription Request
 
   * Request Schema
   * Example
@@ -69,7 +69,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Subscription Snapshot and Update Response​
+## Subscription Snapshot and Update Response
 
   * Response Schema
   * Example: Orders

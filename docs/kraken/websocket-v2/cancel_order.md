@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_order
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:54.387151
+updated_at: 2026-05-27 20:11:55.155877
 ---
 
 # Cancel Order
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:54.387151
 **Method:** `cancel_order` (Authentication Required)
 The `cancel_order` request cancels one or more open orders in a single request. The orders to be cancelled can be identified by a range of client or Kraken identifiers. Note, the details of the individual cancelled orders will also be streamed on the `executions` channel.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -58,7 +58,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     },  
     
 
-## Response​
+## Response
 
 When cancelling multiple orders, there will be a stream of individual order responses.
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-trades
 api_type: REST
-updated_at: 2026-05-26 14:53:13.485447
+updated_at: 2026-05-27 20:04:34.571865
 ---
 
 # Get Recent Trades
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:13.485447
 
 Returns the last 1000 trades by default
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -43,7 +43,7 @@ Return specific number of trades, up to 1000
 
 This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
-## Responses​
+## Responses
 
   * 200
 

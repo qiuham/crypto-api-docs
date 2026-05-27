@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/batch_cancel
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:49.545271
+updated_at: 2026-05-27 20:11:26.814314
 ---
 
 # Batch Cancel
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:49.545271
 **Method:** `batch_cancel` (Authentication Required)
 The `batch_cancel` request enables multiple orders to be cancelled in a single request by a range of identifiers (minimum of 2 and maximum 50 in each batch).
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -55,7 +55,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

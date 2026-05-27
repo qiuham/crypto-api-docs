@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/edit-order-spring
 api_type: REST
-updated_at: 2026-05-26 14:50:48.409129
+updated_at: 2026-05-27 19:48:22.754896
 ---
 
 # Edit order
@@ -13,7 +13,7 @@ This endpoint allows editing an existing order for a currently listed Futures co
 
 When editing an order, if the `trailingStopMaxDeviation` and `trailingStopDeviationUnit` parameters are sent unchanged, the system will recalculate a new stop price upon successful order modification.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -67,7 +67,7 @@ Determines how the updated size is interpreted, defaulting to 'RELATIVE'.
 
 'ABSOLUTE' means that the total order size, including past fills, is set to `size`. 'RELATIVE' means that the current open order size is set to `size`.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

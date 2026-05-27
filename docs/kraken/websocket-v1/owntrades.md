@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/owntrades
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:40.912864
+updated_at: 2026-05-27 20:10:00.548128
 ---
 
 # Own Trades
@@ -13,7 +13,7 @@ CHANNEL
 
 The `ownTrades` channel streams executions for this account. A snapshot of the last 50 trades for the user will be sent, followed by real-time updates for any new trades.
 
-## Subscription Request​
+## Subscription Request
 
   * Request Schema
   * Example
@@ -74,7 +74,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Subscription Snapshot and Update Response​
+## Subscription Snapshot and Update Response
 
   * Response Schema
   * Example

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-withdrawal-addresses
 api_type: REST
-updated_at: 2026-05-26 14:53:22.695631
+updated_at: 2026-05-27 20:06:10.975668
 ---
 
 # Get Withdrawal Addresses
@@ -13,7 +13,7 @@ Retrieve a list of withdrawal addresses available for the user.
 
 **API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Withdraw`
 
-## Request​
+## Request
 
   * application/json
 
@@ -47,7 +47,7 @@ Find address for by withdrawal key name, as set up on your account
 
 Filter by verification status of the withdrawal address. Withdrawal addresses successfully completing email confirmation will have a verification status of true.
 
-## Responses​
+## Responses
 
   * 200
 

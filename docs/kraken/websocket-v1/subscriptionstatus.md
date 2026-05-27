@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/subscriptionstatus
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:41.149744
+updated_at: 2026-05-27 20:10:22.052015
 ---
 
 # Subscription Status
@@ -13,7 +13,7 @@ CHANNEL
 
 Subscription status response to subscribe, unsubscribe or exchange initiated unsubscribe.
 
-## Payload​
+## Payload
 
   * Response Schema
   * Example: Ticker

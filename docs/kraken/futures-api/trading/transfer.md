@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/transfer
 api_type: REST
-updated_at: 2026-05-26 14:51:39.479874
+updated_at: 2026-05-27 19:54:23.280479
 ---
 
 # Initiate wallet transfer
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:39.479874
 
 This endpoint allows you to transfer funds between two margin accounts with the same collateral currency, or between a margin account and your cash account.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ The currency unit to transfer
 
 The amount to transfer
 
-## Responses​
+## Responses
 
   * 200
 * application/json

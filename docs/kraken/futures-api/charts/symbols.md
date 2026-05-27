@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/symbols
 api_type: Market Data
-updated_at: 2026-05-26 14:50:26.201506
+updated_at: 2026-05-27 19:45:30.204770
 ---
 
 # Markets
@@ -13,7 +13,7 @@ Markets available for specified tick type.
 
 List of available tick types can be fetched from the tick types endpoint.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -21,7 +21,7 @@ List of available tick types can be fetched from the tick types endpoint.
 
 **Possible values:** [`spot`, `mark`, `trade`]
 
-## Responses​
+## Responses
 
   * 200
 

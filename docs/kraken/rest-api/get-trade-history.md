@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-history
 api_type: REST
-updated_at: 2026-05-26 14:53:17.991732
+updated_at: 2026-05-27 20:05:35.780483
 ---
 
 # Get Trades History
@@ -15,7 +15,7 @@ Retrieve information about trades/fills. 50 results are returned at a time, the 
 
 **API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
-## Request​
+## Request
 
   * application/json
 
@@ -80,7 +80,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

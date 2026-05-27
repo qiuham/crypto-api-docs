@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-rest-auth
 api_type: Guide
-updated_at: 2026-05-26 14:59:13.456385
+updated_at: 2026-05-27 19:58:52.121899
 ---
 
 # Spot REST Authentication
 
-## Authentication Parameters​
+## Authentication Parameters
 
 For the REST API, the following parameters are used for authentication to endpoints which contain private data:
 
@@ -16,7 +16,7 @@ For the REST API, the following parameters are used for authentication to endpoi
   * `nonce` payload parameter: always increasing, unsigned 64-bit integer.
   * `otp` payload parameter: one-time-password and is only required if additional 2FA is configured for API.
 
-## Setting the API-Key Parameter​
+## Setting the API-Key Parameter
 
 The value for the `API-Key` HTTP header parameter is your **public** API key.
 
@@ -29,7 +29,7 @@ From your API key-pair, clearly identify which key is public and which key is pr
   * The **public** key is sent in the `API-Key` header parameter.
   * The **private** key is **never** sent, it is only used to encode the signature for `API-Sign` header parameter.
 
-## Setting the API-Sign Parameter​
+## Setting the API-Sign Parameter
 
 The value for the `API-Sign` HTTP header parameter is a signature generated from encoding your **private** API key, nonce, encoded payload, and URI path.
     
@@ -39,7 +39,7 @@ The value for the `API-Sign` HTTP header parameter is a signature generated from
 
 Note: The URI path used for API-Sign should be the part starting with "/0/private" of the API URL.
 
-### Examples​
+### Examples
 
 The following is a specific example of a signature generated with a particular private key, nonce, and payload corresponding to a new limit order (buy 1.25 XBTUSD at $37,500).If your code is generating a different signature (`API-Sign`) for this example, then there is likely an issue with your application of the above methodology. Code snippets for generating the signature in Python, Golang and Node.js follow below.
 
@@ -198,7 +198,7 @@ URI Path| /0/private/AddOrder
     console.log(`API-Sign: ${signature}`);  
     
 
-## Setting the nonce Parameter​
+## Setting the nonce Parameter
 
 The value for the `nonce` payload body parameter is an always increasing, unsigned 64-bit integer for each request that is made with a particular API key.
 
@@ -210,7 +210,7 @@ Problems can arise from requests arriving out of order due to API keys being sha
 
 Additional info can be found in our [support pages](https://support.kraken.com/hc/en-us/articles/360000906023-What-is-a-nonce-).
 
-### Examples​
+### Examples
 
 The following are some examples of how to generate valid nonce values in different programming languages:
 
@@ -233,7 +233,7 @@ The following are some examples of how to generate valid nonce values in differe
     $api_nonce = (string) hrtime(true);  
     
 
-## Setting the otp Parameter​
+## Setting the otp Parameter
 
 The optional value for the `otp` payload body parameter is your one-time-password.
 

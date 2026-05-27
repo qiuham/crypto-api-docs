@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-order
 api_type: REST
-updated_at: 2026-05-26 14:50:45.300204
+updated_at: 2026-05-27 19:47:46.821013
 ---
 
 # Cancel order
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:45.300204
 
 This endpoint allows cancelling an open order for a Futures contract.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -29,7 +29,7 @@ The unique identifier of the order to be cancelled.
 
 The client unique identifier of the order to be cancelled.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

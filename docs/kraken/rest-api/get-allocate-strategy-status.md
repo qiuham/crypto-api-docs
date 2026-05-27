@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-allocate-strategy-status
 api_type: REST
-updated_at: 2026-05-26 14:52:49.463570
+updated_at: 2026-05-27 20:01:53.335517
 ---
 
 # Get Allocation Status
@@ -24,7 +24,7 @@ Following specific errors within `Earnings` class can be returned by this method
   * Total cap exceeded: `EEarnings:Above max:The allocation exceeds the total strategy limit`
   * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
 
-## Request​
+## Request
 
   * application/json
 
@@ -38,7 +38,7 @@ Nonce used in construction of `API-Sign` header
 
 ID of the earn strategy, call `Earn/Strategies` to list available strategies
 
-## Responses​
+## Responses
 
   * 200
 

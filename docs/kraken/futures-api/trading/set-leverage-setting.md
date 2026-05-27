@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-leverage-setting
 api_type: REST
-updated_at: 2026-05-26 14:51:28.836478
+updated_at: 2026-05-27 19:53:32.682879
 ---
 
 # Set leverage settings
@@ -19,7 +19,7 @@ Calling this endpoint can result in the following error codes:
   * 88: Contract not a multi-collateral futures contract
   * 41: Would cause liquidation
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ Max leverage to set.
 
 When present, the symbol's margin mode will be set to "isolated". When missing, the symbol's margin mode will be set to "cross".
 
-## Responses​
+## Responses
 
   * 200
 

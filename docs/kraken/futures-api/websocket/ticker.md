@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/ticker
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:34.145620
+updated_at: 2026-05-27 19:56:05.251249
 ---
 
 # Ticker
@@ -13,7 +13,7 @@ CHANNEL
 
 The ticker feed returns ticker information about listed products. Only tradeable markets are available via individual WebSocket market data feeds. Delta messages are throttled such that they are published every 1s.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -40,7 +40,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -67,7 +67,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
 The subscription data will return values for all fields even if the value of only a single field has changed since the last payload.
 
@@ -289,7 +289,7 @@ Rho, the option value's sensitivity to the interest ratea.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

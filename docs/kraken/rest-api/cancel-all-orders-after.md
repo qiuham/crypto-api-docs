@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-all-orders-after
 api_type: REST
-updated_at: 2026-05-26 15:01:58.907565
+updated_at: 2026-05-27 20:00:47.952540
 ---
 
 # Cancel All Orders After X
@@ -15,7 +15,7 @@ The recommended use is to make a call every 15 to 30 seconds, providing a timeou
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -29,7 +29,7 @@ Nonce used in construction of `API-Sign` header
 
 Duration (in seconds) to set/extend the timer, it should be less than 86400 seconds.
 
-## Responses​
+## Responses
 
   * 200
 

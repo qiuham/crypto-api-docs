@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/trading-settings
 api_type: REST
-updated_at: 2026-05-26 14:51:39.391433
+updated_at: 2026-05-27 19:54:16.057412
 ---
 
 # Trading Settings

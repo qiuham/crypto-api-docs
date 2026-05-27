@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-auth
 api_type: WebSocket
-updated_at: 2026-05-26 14:59:48.595155
+updated_at: 2026-05-27 19:59:20.489834
 ---
 
 # Spot Websockets Authentication
 
-## Retrieving Authentication Token from REST​
+## Retrieving Authentication Token from REST
 
 For the websockets API, the client must retrieve an authentication token via the REST endpoint [GetWebSocketsToken](/api/docs/rest-api/get-websockets-token).
 

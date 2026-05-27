@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs
 api_type: REST
-updated_at: 2026-05-26 14:53:17.832267
+updated_at: 2026-05-27 20:05:21.846022
 ---
 
 # Get Tradable Asset Pairs
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:17.832267
 
 Get tradable asset pairs
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -76,7 +76,7 @@ Fetch pairs listed on both International and Bitnomial Exchange execution venues
 
 **Example:**`international,bitnomial_exchange`
 
-## Responses​
+## Responses
 
   * 200
 

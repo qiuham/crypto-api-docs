@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-pnl-currency-preference
 api_type: REST
-updated_at: 2026-05-26 14:51:07.519140
+updated_at: 2026-05-27 19:50:46.635658
 ---
 
 # Get PNL currency preferences
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:07.519140
 
 The PNL currency preference is used to determine which currency to pay out when realizing PNL gains.
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/instrument
 api_type: WebSocket
-updated_at: 2026-05-26 15:03:37.493101
+updated_at: 2026-05-27 20:12:23.873767
 ---
 
 # Instruments
@@ -15,7 +15,7 @@ The `instrument` channel provides a stream of reference data of all active asset
 
 It provides the symbol identifiers, precisions, trading parameters and rules.
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Example: Subscribe
@@ -143,7 +143,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot / Update Responses​
+## Snapshot / Update Responses
 
 The snapshot and update responses share the same schema.
 
@@ -393,7 +393,7 @@ Minimum price increment for new orders.
      }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Example: Unsubscribe

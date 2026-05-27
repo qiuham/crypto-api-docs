@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-history
 api_type: REST
-updated_at: 2026-05-26 14:50:55.691262
+updated_at: 2026-05-27 19:49:27.173723
 ---
 
 # Get trade history
@@ -13,7 +13,7 @@ This endpoint returns the most recent 100 trades prior to the specified `lastTim
 
 If no `lastTime` specified, it will return 100 most recent trades.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -25,7 +25,7 @@ The symbol of the Futures.
 
 Returns the last 100 trades from the specified lastTime value.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

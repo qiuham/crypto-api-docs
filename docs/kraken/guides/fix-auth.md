@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/fix-auth
 api_type: Guide
-updated_at: 2026-05-26 14:57:00.721209
+updated_at: 2026-05-27 19:57:10.966748
 ---
 
 # FIX Authentication

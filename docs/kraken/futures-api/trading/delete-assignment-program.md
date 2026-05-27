@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/delete-assignment-program
 api_type: REST
-updated_at: 2026-05-26 14:50:48.299891
+updated_at: 2026-05-27 19:48:15.390291
 ---
 
 # Deletes assignment preference
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:48.299891
 
 This endpoint deletes an assignment program preference
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -19,7 +19,7 @@ This endpoint deletes an assignment program preference
 
 Id of program to delete
 
-## Responses​
+## Responses
 
   * 200
 * application/json

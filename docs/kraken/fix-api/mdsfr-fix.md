@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/mdsfr-fix
 api_type: Market Data
-updated_at: 2026-05-26 14:50:13.239027
+updated_at: 2026-05-27 19:42:59.344614
 ---
 
 # Market Data Snapshot Full Refresh

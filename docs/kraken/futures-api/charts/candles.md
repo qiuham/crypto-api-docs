@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/candles
 api_type: Market Data
-updated_at: 2026-05-26 14:50:23.264302
+updated_at: 2026-05-27 19:45:00.969748
 ---
 
 # Market Candles
@@ -13,7 +13,7 @@ Candles for specified tick type, market, and resolution.
 
 List of available tick types can be fetched from the tick types endpoint. List of available markets can be fetched from the markets endpoint. List of available resolutions can be fetched from the resolutions endpoint.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -45,7 +45,7 @@ To date in epoch seconds
 
 Number of candles to return.
 
-## Responses​
+## Responses
 
   * 200
 

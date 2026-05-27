@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-rest-intro
 api_type: Guide
-updated_at: 2026-05-26 14:59:31.013659
+updated_at: 2026-05-27 19:59:06.438341
 ---
 
 # Spot REST Introduction
 
-## API Organisation​
+## API Organisation
 
 The Spot REST API is organised by function, covering a wide range of services:
 
@@ -19,17 +19,17 @@ The Spot REST API is organised by function, covering a wide range of services:
   * [Earn](/api/docs/rest-api/allocate-strategy)
   * [Websocket Authentication](/api/docs/rest-api/get-websockets-token)
 
-## Requests, Responses and Errors​
+## Requests, Responses and Errors
 
-### Requests​
+### Requests
 
 Request payloads supports Json encoding (`Content-Type: application/json`) as well as form-encoded (`Content-Type: application/x-www-form-urlencoded`). We recommend clients to specify `User-Agent` in the headers of all their requests. This will help us optimize interactions and improve the overall efficiency and security of the API.
 
-### Responses​
+### Responses
 
 Responses are JSON encoded and contain one or two top-level keys (`result` and `error` for successful requests or those with warnings, or only `error` for failed or rejected requests)
 
-### Example​
+### Example
 
 Request:
     
@@ -59,7 +59,7 @@ Error response:
     }  
     
 
-### Error Details​
+### Error Details
 
 HTTP status codes are generally not used by our API to convey information about the state of requests and any errors or warnings are denoted in the `error` field of the response as described above. Status codes **other** than 200 indicate that there was an issue with the request reaching our servers.
 

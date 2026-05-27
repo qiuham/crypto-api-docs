@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_orders
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:06.076077
+updated_at: 2026-05-27 19:55:43.178826
 ---
 
 # Open Orders
@@ -13,7 +13,7 @@ CHANNEL
 
 This subscription feed publishes information about user open orders.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -50,7 +50,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -87,7 +87,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -224,7 +224,7 @@ The unit of the deviation, one of:
     }  
     
 
-## Response Delta​
+## Response Delta
 
   * Response Fields
   * Subscription Delta Data
@@ -361,7 +361,7 @@ Reason behind the received delta.
       
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

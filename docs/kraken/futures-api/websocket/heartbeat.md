@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/heartbeat
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:53.026798
+updated_at: 2026-05-27 19:55:28.769792
 ---
 
 # Heartbeat
@@ -13,7 +13,7 @@ CHANNEL
 
 The heartbeat feed publishes a heartbeat message at timed intervals.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -35,7 +35,7 @@ The requested subscription feed `heartbeat`
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -57,7 +57,7 @@ The requested subscription feed `heartbeat`
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Data
@@ -79,7 +79,7 @@ The UTC time of the server in milliseconds
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

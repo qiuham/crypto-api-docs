@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy
 api_type: REST
-updated_at: 2026-05-26 14:51:34.283162
+updated_at: 2026-05-27 19:53:47.256088
 ---
 
 # Update self trade strategy
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:34.283162
 
 Updates account-wide self-trade matching behavior to given strategy.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -21,7 +21,7 @@ Updates account-wide self-trade matching behavior to given strategy.
 
 Defines self trade behaviour
 
-## Responses​
+## Responses
 
   * 200
 

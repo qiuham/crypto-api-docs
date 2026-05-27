@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/executions
 api_type: WebSocket
-updated_at: 2026-05-26 15:03:19.792841
+updated_at: 2026-05-27 20:12:09.558675
 ---
 
 # Executions
@@ -16,7 +16,7 @@ It corresponds to a combination of the following Websockets v1 channels: `openOr
 
 This channel contains account specific data, an authentication token is required in the request.
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Subscribe Ack Schema
@@ -206,7 +206,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot / Update Responses​
+## Snapshot / Update Responses
 
 The snapshot and update stream share the same data schema, the fields included in the message is dependant on the `exec_type`.
 
@@ -705,7 +705,7 @@ The subscription message sequence number.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

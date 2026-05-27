@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-all-orders
 api_type: REST
-updated_at: 2026-05-26 15:02:08.151212
+updated_at: 2026-05-27 20:00:40.626904
 ---
 
 # Cancel All Orders
@@ -13,7 +13,7 @@ Cancel all open orders
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -23,7 +23,7 @@ Cancel all open orders
 
 Nonce used in construction of `API-Sign` header
 
-## Responses​
+## Responses
 
   * 200
 

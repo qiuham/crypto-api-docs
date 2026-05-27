@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/add_order
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:45.378923
+updated_at: 2026-05-27 20:10:57.986985
 ---
 
 # Add Order
@@ -15,7 +15,7 @@ For triggered order types (`stop-loss`, `take-profit`, `trailing-stop`), the `tr
 
 For One-Triggers-Other (OTO) orders, the `conditional` section contains the parameters to add a secondary close order to the primary order.
 
-## Request​
+## Request
 
   * Request Schema
   * Example: Limit
@@ -408,7 +408,7 @@ A more detailed example, create a limit price order to buy 1.2 BTC at 28440 USD 
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

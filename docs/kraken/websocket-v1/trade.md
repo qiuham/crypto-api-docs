@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/trade
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:45.203824
+updated_at: 2026-05-27 20:10:43.678188
 ---
 
 # Trade
@@ -13,7 +13,7 @@ CHANNEL
 
 Trade feed for a currency pair.
 
-## Subscription Request​
+## Subscription Request
 
   * Request Schema
   * Example
@@ -52,7 +52,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Subscription Snapshot and Update Response​
+## Subscription Snapshot and Update Response
 
   * Response Schema
   * Example

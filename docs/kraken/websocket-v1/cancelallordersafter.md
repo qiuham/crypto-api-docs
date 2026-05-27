@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/cancelallordersafter
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:36.160329
+updated_at: 2026-05-27 20:09:17.453790
 ---
 
 # Cancel on Disconnect
@@ -15,7 +15,7 @@ updated_at: 2026-05-26 14:53:36.160329
 
 The recommended use is to make a call every 15 to 30 seconds, providing a timeout of 60 seconds. This allows the client to keep the orders in place in case of a brief disconnection or transient delay, while keeping them safe in case of a network breakdown. It is also recommended to disable the timer ahead of regularly scheduled trading engine maintenance (if the timer is enabled, all orders will be cancelled when the trading engine comes back from downtime - planned or otherwise).
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -47,7 +47,7 @@ This is a authenticated request, a session token is required.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example: Enabled

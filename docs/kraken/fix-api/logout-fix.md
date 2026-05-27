@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/logout-fix
 api_type: REST
-updated_at: 2026-05-26 14:50:10.139576
+updated_at: 2026-05-27 19:42:30.800068
 ---
 
 # Logout

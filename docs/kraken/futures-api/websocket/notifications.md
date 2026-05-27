@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/notifications
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:53.120624
+updated_at: 2026-05-27 19:55:35.948220
 ---
 
 # Notification
@@ -15,7 +15,7 @@ This subscription feed publishes notifications to the client.
 
 Authentication is required.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -52,7 +52,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -87,7 +87,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -139,7 +139,7 @@ The expected downtime in minutes or absent if no downtime is expected.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-pre-trade
 api_type: REST
-updated_at: 2026-05-26 14:53:09.703275
+updated_at: 2026-05-27 20:04:20.102487
 ---
 
 # Pre-Trade Data
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:09.703275
 
 Returns the price levels in the order book with aggregated order quantities at each price level. The top 10 levels are returned for each trading pair.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -23,7 +23,7 @@ A list of symbols for the currency pairs.
 
 **Example:** BTC/USD
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/session-fix
 api_type: REST
-updated_at: 2026-05-26 14:50:19.807738
+updated_at: 2026-05-27 19:44:03.758794
 ---
 
 # Header & Trailer
 
 The baseline specification for this API is FIX 4.4. A standard header must be present at the start of every message in both directions. All messages sent in either direction should contain both _**SenderCompID**_ and _**TargetCompID**_. These values will be communicated by kraken during the onboarding process.
 
-## Standard Header ​
+## Standard Header 
 
 ### MESSAGE BODY
 
@@ -57,7 +57,7 @@ If no data is available, this value is set to the SendingTime value.
 
 Indicates possible retransmission of message with this sequence number
 
-## Standard Trailer​
+## Standard Trailer
 
 **10 - Checksum** string required
 

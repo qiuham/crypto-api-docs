@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/global-intro
 api_type: Guide
-updated_at: 2026-05-26 14:58:11.853994
+updated_at: 2026-05-27 19:58:01.998670
 ---
 
 # Kraken APIs
 
-## Introduction​
+## Introduction
 
 We offer a range of Application Programming Interfaces (APIs) to send order transactions, stream market data, manage accounts, and integrate crypto services into your applications.
 
-### Direct Trading APIs​
+### Direct Trading APIs
 
 For direct access to Kraken's spot and futures trading platforms:
 
@@ -21,7 +21,7 @@ For direct access to Kraken's spot and futures trading platforms:
 
   * [**FIX API**](/api/docs/guides/fix-intro): FIX (Financial Information eXchange) is used extensively by institutional firms (buy and sell-side) for sending key-value pair trading data over a session based protocol.
 
-### Embed API (B2B / B2B2C)​
+### Embed API (B2B / B2B2C)
 
 For businesses looking to integrate crypto services into their own products:
 
@@ -36,13 +36,13 @@ With the Embed API, partners can:
 
 See the [Embed Authentication Guide](/api/docs/guides/embed-rest-auth) and [Your First Trade](/api/docs/guides/embed-first-trade) to get started.
 
-### Choosing an API​
+### Choosing an API
 
 Our APIs offer a versatile ecosystem. Each API has distinct characteristics - clients can choose a single protocol or combination of protocols that best fit their requirements.
 
 Please see the Kraken [support article](https://support.kraken.com/hc/en-us/articles/4404197772052-Which-API-should-I-use-REST-versus-WebSocket) for further information to help choose an API.
 
-### Summary of product versus exchange / API​
+### Summary of product versus exchange / API
 
 | **Spot REST**| **Spot Websocket**| **Spot FIX**| **Futures REST**| **Futures Websocket**| **Futures FIX**  
 ---|---|---|---|---|---|---  
@@ -54,7 +54,7 @@ Please see the Kraken [support article](https://support.kraken.com/hc/en-us/arti
 **Subaccounts**| [Yes](/api/docs/rest-api/create-subaccount)| -| -| [Yes](/api/docs/futures-api/trading/subaccounts)| -| -  
 **Charts**|  -| -| -| [Yes](/api/docs/futures-api/charts/analytics)| -| -  
   
-## Futures and Spot Trading​
+## Futures and Spot Trading
 
 Kraken currently has 2 distinct trading engines, for **spot** and **futures**. There are many similarities in the behaviours between the engines, however the spot and futures engines have important differences in terms of:
 
@@ -64,17 +64,17 @@ Kraken currently has 2 distinct trading engines, for **spot** and **futures**. T
   * Rate limits.
   * Error messages.
 
-## IP Whitelisting​
+## IP Whitelisting
 
 API/programmatic traders can connect directly to Kraken AWS point of presence to improve latency and performance by whitelisting IPs. Detailed instructions on connecting to the UAT environment will be provided by Kraken’s support team.
 
-## Colocation Access​
+## Colocation Access
 
 We offer colocation services through our partnership with [Beeks Group](https://kraken.exchange-cloud.beeksgroup.com/), enabling you to host your trading infrastructure in close proximity to Kraken's API endpoints for enhanced performance and reduced latency.
 
 > **Note:** Dedicated URLs are required to access colocation services.
 
-### Endpoint URLs​
+### Endpoint URLs
 
   * **Spot WebSocket (WS):**
 * `colo-london.vip-ws.kraken.com`
@@ -86,12 +86,12 @@ We offer colocation services through our partnership with [Beeks Group](https://
   * **Futures WS API:**
 * `wss://colo-london.vip.futures.kraken.com/ws/v1`
 
-## FAQ and Support​
+## FAQ and Support
 
 Further information can be found on the [API section](https://support.kraken.com/hc/en-us/sections/4402371110548-API) of our support pages.
 
 If you have problems making API requests, please [send us](https://support.kraken.com/hc/en-us/requests/new?ticket_form_id=360000104043) a full 
-## Notices​
+## Notices
 
 Use of the Kraken APIs is subject to the [Kraken Terms & Conditions](https://www.kraken.com/legal) and [Privacy Notice](https://www.kraken.com/legal/privacy), as well as all other applicable terms and disclosures made available on [www.kraken.com](https://www.kraken.com/).
 

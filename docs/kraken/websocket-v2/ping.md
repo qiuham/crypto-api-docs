@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ping
 api_type: WebSocket
-updated_at: 2026-05-26 15:04:03.512526
+updated_at: 2026-05-27 20:12:45.193982
 ---
 
 # Ping
@@ -15,7 +15,7 @@ Clients can ping the server to verify connection is alive and the server will re
 
 This is an application level ping, distinct from the protocol-level ping in the WebSockets standard.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -37,7 +37,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Response Schema

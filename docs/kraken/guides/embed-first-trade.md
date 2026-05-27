@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-first-trade
 api_type: Guide
-updated_at: 2026-05-26 14:56:43.067715
+updated_at: 2026-05-27 19:56:56.487814
 ---
 
 # Embed: Your First Trade
 
 This guide walks you through executing your first trade using the Payward Embed API.
 
-## Prerequisites​
+## Prerequisites
 
 Before you begin, make sure you have:
 
@@ -17,7 +17,7 @@ Before you begin, make sure you have:
   * A verified user with an IIBAN (Internet International Bank Account Number)
   * Sufficient balance in the user's account
 
-## Trading Workflow​
+## Trading Workflow
 
 The Embed API uses a quote-based trading model:
     
@@ -30,18 +30,18 @@ The Embed API uses a quote-based trading model:
   2. **Execute Quote** : Confirm and execute the quoted trade
   3. **Monitor Status** : Poll until the trade completes or listen for the quote.executed webhook
 
-## Step 1: Request a Quote​
+## Step 1: Request a Quote
 
 Request a quote to buy cryptocurrency with fiat currency. The quote locks in a price for a short period.
 
-### Quote Types​
+### Quote Types
 
 Type| Description| Use Case  
 ---|---|---  
 `spend`| Specify amount to spend| "I want to spend €50 on BTC"  
 `receive`| Specify amount to receive| "I want to receive 0.001 BTC"  
   
-### Examples​
+### Examples
 
   * Python
   * JavaScript
@@ -183,7 +183,7 @@ Type| Description| Use Case
     console.log('Quote ID:', quote.result.quote_id);  
     
 
-### Response Example​
+### Response Example
     
     
     {  
@@ -217,7 +217,7 @@ caution
 
 Quotes expire after **120 seconds** (2 minutes). Execute the quote promptly or request a new one if it expires. The exact expiration time is returned in the `expires` field of the quote response.
 
-## Step 2: Execute the Quote​
+## Step 2: Execute the Quote
 
 Once you have a quote, execute it by making a PUT request with the quote ID.
 
@@ -276,11 +276,11 @@ Once you have a quote, execute it by making a PUT request with the quote ID.
     console.log('Status:', result.result.status);  
     
 
-## Step 3: Monitor Trade Status​
+## Step 3: Monitor Trade Status
 
 After execution, poll the quote status until the trade completes.
 
-### Status Values​
+### Status Values
 
 Status| Description  
 ---|---  
@@ -291,7 +291,7 @@ Status| Description
 `quote_cancelled`| Quote was cancelled or expired  
 `quote_execution_failed`| Trade execution failed  
   
-### Examples​
+### Examples
 
   * Python
   * JavaScript
@@ -391,9 +391,9 @@ Status| Description
     const final = await waitForCompletion(userId, quote.result.quote_id);  
     
 
-## Error Handling​
+## Error Handling
 
-### Common Errors​
+### Common Errors
 
 Error| Cause| Solution  
 ---|---|---  
@@ -402,7 +402,7 @@ Error| Cause| Solution
 `invalid_amount`| Amount too small/large| Check min/max limits for the asset  
 `asset_disabled`| Asset not tradable| Use List Assets to check availability  
   
-### Best Practices​
+### Best Practices
 
   1. **Handle quote expiration** : Always be prepared to request a new quote
   2. **Check asset availability** : Call List Assets before trading

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-trading-instruments
 api_type: REST
-updated_at: 2026-05-26 14:51:13.148696
+updated_at: 2026-05-27 19:51:37.366344
 ---
 
 # Get trading instruments
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:13.148696
 
 Returns specifications for all currently accessible markets and indices.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -25,7 +25,7 @@ By default, includes all futures instrument types.
 
 Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
 
-## Responses​
+## Responses
 
   * 200
 * application/json

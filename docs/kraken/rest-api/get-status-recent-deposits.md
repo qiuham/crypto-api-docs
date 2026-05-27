@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-deposits
 api_type: REST
-updated_at: 2026-05-26 14:53:13.647841
+updated_at: 2026-05-27 20:04:49.075774
 ---
 
 # Get Status of Recent Deposits
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:13.647841
 
 Retrieve information about recent deposits. Results are sorted by recency, use the `cursor` parameter to iterate through list of deposits (page size equal to value of `limit`) from newest to oldest. **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -77,7 +77,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

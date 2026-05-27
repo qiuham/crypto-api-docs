@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-order-book
 api_type: REST
-updated_at: 2026-05-26 14:53:09.452619
+updated_at: 2026-05-27 20:03:57.837106
 ---
 
 # Get Order Book
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:09.452619
 
 Returns level 2 (L2) order book, which describes the individual price levels in the book with aggregated order quantities at each level.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -37,7 +37,7 @@ Maximum number of asks/bids
 
 This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ticker-information
 api_type: REST
-updated_at: 2026-05-26 14:53:17.741376
+updated_at: 2026-05-27 20:05:11.490823
 ---
 
 # Get Ticker Information
@@ -14,7 +14,7 @@ Get ticker information for all or requested markets. To clarify usage, note that
   * Today's prices start at midnight UTC
   * Leaving the pair parameter blank will return tickers for all tradeable assets on Kraken
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -32,7 +32,7 @@ This parameter is required on requests for tokenized pairs, i.e. xstocks. If `as
 
 **Default value:**`forex`
 
-## Responses​
+## Responses
 
   * 200
 

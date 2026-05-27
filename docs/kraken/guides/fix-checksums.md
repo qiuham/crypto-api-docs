@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/fix-checksums
 api_type: Guide
-updated_at: 2026-05-26 14:57:09.506863
+updated_at: 2026-05-27 19:57:18.098303
 ---
 
 # FIX Checksums
 
-## Book Maintenance​
+## Book Maintenance
 
 All book updates are sent using [Market Data Incremental Refresh](/api/docs/fix-api/mdir-fix). All updates in a message should be processed before the book is considered updated and the checksum confirmed. Update messages may contain updates to either the bids and/or asks. Additionally, each market data update entry is set with an update action, that could be New, Update and Delete to easily understand what changed in the book:
 
@@ -19,11 +19,11 @@ Each book update message will have a checksum value appended. The checksum is a 
 
 Prices and volumes are sent as floats and so their precision needs to be determined from a [InstrumentListRequest](/api/docs/fix-api/slr-fix) call in order to compute the checksum. Detailed instructions can be found in the Calculate Book Checksum section.
 
-## Calculate Book Checksum​​
+## Calculate Book Checksum
 
 The following example was made for BTC/USD book. The following steps should be done before doing any checksum calculations:
 
-### Get the precision needed for the calculation.​
+### Get the precision needed for the calculation.
 
   1. Request the InstrumentListRequest for BTC/USD book:
 
@@ -42,7 +42,7 @@ The important fields for the book checksum calculation are:
 
 Price precision is 1 and quantity precision is 8; store these values somewhere because it will be needed to assist the checksum calculation on all future [Market Data Incremental Refresh](/api/docs/fix-api/mdir-fix) messages. It’s not necessary to do any additional InstrumentListRequest to calculate the book checksum of this MarketData BTC/USD subscription.
 
-### Calculate the first Checksum​
+### Calculate the first Checksum
 
   1. Subscribe to Market Data of BTC/USD book:
 
@@ -118,6 +118,6 @@ note
 If needed, cast the result (comprising 32 bits) as an unsigned 32-bit integer.
 
   * Book Maintenance
-  * Calculate Book Checksum​
+  * Calculate Book Checksum
 * Get the precision needed for the calculation.
 * Calculate the first Checksum

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-closed-orders
 api_type: REST
-updated_at: 2026-05-26 14:52:54.955109
+updated_at: 2026-05-27 20:02:15.240690
 ---
 
 # Get Closed Orders
@@ -15,7 +15,7 @@ Retrieve information about orders that have been closed (filled or cancelled). 5
 
 **API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
-## Request​
+## Request
 
   * application/json
 
@@ -81,7 +81,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

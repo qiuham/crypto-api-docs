@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/wallet-transfer
 api_type: REST
-updated_at: 2026-05-26 14:53:27.578431
+updated_at: 2026-05-27 20:08:34.590377
 ---
 
 # Request Wallet Transfer
@@ -13,7 +13,7 @@ Transfer from a Kraken spot wallet to a Kraken Futures wallet. Note that a trans
 
 **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -45,7 +45,7 @@ Destination wallet
 
 Amount to transfer
 
-## Responses​
+## Responses
 
   * 200
 

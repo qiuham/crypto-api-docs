@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-order-events
 api_type: REST
-updated_at: 2026-05-26 14:50:29.838384
+updated_at: 2026-05-27 19:46:12.717362
 ---
 
 # Get order events
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:29.838384
 
 Lists order events for authenticated account.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -59,7 +59,7 @@ Determines status of the order that should be included in response(s).
 * `true` = return orders that have been closed/cancelled/rejected within given time range.
 * `false` = don't return orders that have been closed/cancelled/rejected within given time range.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

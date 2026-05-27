@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-account-balance
 api_type: REST
-updated_at: 2026-05-26 14:52:49.380712
+updated_at: 2026-05-27 20:01:46.018130
 ---
 
 # Get Account Balance
@@ -21,7 +21,7 @@ Retrieve all cash balances, net of pending withdrawals.
 
 **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -41,7 +41,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

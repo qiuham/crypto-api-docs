@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/add-assignment-program
 api_type: REST
-updated_at: 2026-05-26 14:50:36.263544
+updated_at: 2026-05-27 19:47:17.664176
 ---
 
 # Add assignment preference
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:36.263544
 
 This endpoint adds an assignment program preference
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -49,7 +49,7 @@ When is the program preference valid
 
 enabled assignment
 
-## Responses​
+## Responses
 
   * 200
 * application/json

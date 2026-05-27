@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/remove-export
 api_type: REST
-updated_at: 2026-05-26 14:53:27.417575
+updated_at: 2026-05-27 20:08:20.240201
 ---
 
 # Delete Export Report
@@ -13,7 +13,7 @@ Delete exported trades/ledgers report
 
 **API Key Permissions Required:** `Data - Export data`
 
-## Request​
+## Request
 
   * application/json
 
@@ -33,7 +33,7 @@ ID of report to delete or cancel
 
 **Possible values:** [`cancel`, `delete`]
 
-## Responses​
+## Responses
 
   * 200
 

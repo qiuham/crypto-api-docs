@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/retrieve-export
 api_type: REST
-updated_at: 2026-05-26 14:53:27.493550
+updated_at: 2026-05-27 20:08:27.434097
 ---
 
 # Retrieve Data Export
@@ -13,7 +13,7 @@ Retrieve a processed data export
 
 **API Key Permissions Required:** `Data - Export data`
 
-## Request​
+## Request
 
   * application/json
 
@@ -27,7 +27,7 @@ Nonce used in construction of `API-Sign` header
 
 Report ID to retrieve
 
-## Responses​
+## Responses
 
   * 200
 

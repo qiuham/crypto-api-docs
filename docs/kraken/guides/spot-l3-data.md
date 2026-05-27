@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-l3-data
 api_type: Market Data
-updated_at: 2026-05-26 14:58:55.901451
+updated_at: 2026-05-27 19:58:37.710865
 ---
 
 # Spot Level 3 Market Data
 
 Level 3 (L3) market data provides visibility of individual orders in the order book. This insight enables determination of queue priorities, resting times, fill probabilities, and many other analytics to help make better informed trading decisions.
 
-## Market Data Levels Overview​
+## Market Data Levels Overview
 
 Using the Kraken API channels as a reference:
 
@@ -19,7 +19,7 @@ Level| Description| Channel
 **L2**|  Individual price levels with aggregated order quantities at each level| `book`  
 **L3**|  Individual orders in the book with order IDs and timestamps| `level3`  
   
-## Order Visibility​
+## Order Visibility
 
 The Level 3 feed shows orders **resting** in the visible order book. The book will never be crossed (i.e. no overlapping buy and sell orders). Therefore, this feed excludes:
 
@@ -28,7 +28,7 @@ The Level 3 feed shows orders **resting** in the visible order book. The book wi
   * Untriggered stop-loss and take-profit orders
   * Hidden quantity of `iceberg` orders
 
-## Use Cases​
+## Use Cases
 
 Level 3 data enables advanced trading analytics:
 
@@ -38,11 +38,11 @@ Level 3 data enables advanced trading analytics:
   * **Market Microstructure Analysis** : Study order flow patterns and participant behavior
   * **Liquidity Analysis** : Assess true market depth beyond aggregated views
 
-## REST API​
+## REST API
 
 The `/private/Level3` endpoint provides a snapshot of the Level 3 order book.
 
-### Example Request​
+### Example Request
     
     
     {  
@@ -52,7 +52,7 @@ The `/private/Level3` endpoint provides a snapshot of the Level 3 order book.
     }  
     
 
-### Example Response​
+### Example Response
     
     
     {  
@@ -115,7 +115,7 @@ The `/private/Level3` endpoint provides a snapshot of the Level 3 order book.
     }  
     
 
-## Websockets​
+## Websockets
 
 For real-time Level 3 data, use the `level3` channel on the authenticated websockets connection. The channel provides:
 
@@ -123,11 +123,11 @@ For real-time Level 3 data, use the `level3` channel on the authenticated websoc
   * Real-time updates as orders are added, modified, or removed
   * Sequence numbers for synchronization
 
-### Building the Book​
+### Building the Book
 
 The `level3` channel synchronizes the initial snapshot and subsequent stream of updates in a similar mechanism to the `book` feed. Only a single subscription request is required to build the book—the channel handles snapshot and update synchronization automatically.
 
-### Checksum Verification​
+### Checksum Verification
 
 Optional checksum verification provides an additional check that the client version of the book has been constructed correctly and is synchronized to the exchange.
 
@@ -135,7 +135,7 @@ The checksum can be verified in production on every update or periodically depen
 
 See the [Level3 Checksum Guide](/api/docs/guides/spot-ws-l3-v2) for detailed checksum calculation instructions.
 
-## Performance Considerations​
+## Performance Considerations
 
 The latency differences between the `level3` and `book` feeds will be negligible compared to the transport time. However, here are some performance considerations:
 

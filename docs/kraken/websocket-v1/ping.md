@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/ping
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:40.993357
+updated_at: 2026-05-27 20:10:07.759935
 ---
 
 # Ping
@@ -13,7 +13,7 @@ updated_at: 2026-05-26 14:53:40.993357
 
 Client can ping server to determine whether connection is alive, server responds with pong. This is an application level ping as opposed to default ping in websockets standard which is server initiated
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -35,7 +35,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Pong Response​
+## Pong Response
 
   * Response Schema
   * Example

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-rfq
 api_type: REST
-updated_at: 2026-05-26 14:51:07.686235
+updated_at: 2026-05-27 19:51:01.043217
 ---
 
 # Retrieve a single RFQ (open or recently closed)
@@ -15,7 +15,7 @@ Closed RFQs are kept in memory only and are not persisted; entries may be evicte
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -23,7 +23,7 @@ Note: This is currently available exclusively in the Kraken pre-prod environment
 
 Unique identifier for the RFQ
 
-## Responses​
+## Responses
 
   * 200
   * 404

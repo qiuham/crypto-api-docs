@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book
 api_type: REST
-updated_at: 2026-05-26 14:53:04.602425
+updated_at: 2026-05-27 20:03:21.335461
 ---
 
 # Query L3 Order Book
@@ -15,7 +15,7 @@ The Level3 endpoint requires authentication.
 
 **API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
-## Request​
+## Request
 
   * application/json
 
@@ -41,7 +41,7 @@ Number of price levels to return per side (bids/asks). Use 0 to return the full 
 
 **Example:**`10`
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_after
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:54.219388
+updated_at: 2026-05-27 20:11:40.896085
 ---
 
 # Cancel on Disconnect
@@ -20,7 +20,7 @@ info
 
 It is recommended to disable the timer ahead of scheduled trading engine maintenance (if the timer is enabled, all orders will be cancelled when the trading engine comes back from downtime).
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -56,7 +56,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

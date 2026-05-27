@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-rest
 api_type: Guide
-updated_at: 2026-05-26 14:57:54.520536
+updated_at: 2026-05-27 19:57:46.731703
 ---
 
 # Futures REST
 
-## Authentication​
+## Authentication
 
 warning
 
@@ -23,13 +23,13 @@ Nonce| A unique incrementing nonce| optional
   
 Some HTTP endpoints allow performing sensitive operations such as placing orders or requesting a digital asset withdrawal. These private endpoints can therefore be called only through encrypted requests, and an authentication string (`Authent`) must be included in each such request. `Authent` is computed from the following inputs:
 
-### PostData​
+### PostData
 
 `postData` represents the parameters sent to an HTTP endpoint, formatted as a `&` concatenated string in the form `<argument>=<value>`. The specific parameters required vary by endpoint.
 
 _Example:_ `symbol=fi_xbtusd_180615`
 
-### Nonce​
+### Nonce
 
 `Nonce` is a continuously incrementing integer parameter. A good nonce is your system time in milliseconds (in string format). Our system tolerates nonces that are out of order for a brief period of time. Nonce is **not** required.
 
@@ -37,19 +37,19 @@ _Example:_ `1415957147987`
 
 Many authentication issues are related with incorrect `Nonce`. A new pair of api keys will automatically reset the nonce and resolve these issues.
 
-### Endpoint Path​
+### Endpoint Path
 
 `endpointPath` This is the URL extension of the endpoint.
 
 _Example:_ `/api/v3/orderbook`
 
-### API Secret​
+### API Secret
 
 The `api_secret` is obtained as described under [generate-api-keys].
 
 _Example:_ `rttp4AzwRfYEdQ7R7X8Z/04Y4TZPa97pqCypi3xXxAqftygftnI6H9yGV+OcUOOJeFtZkr8mVwbAndU3Kz4Q+eG`
 
-### Authent​
+### Authent
 
 Based on these inputs, `Authent` needs to be computed as follows:
 
@@ -59,7 +59,7 @@ Based on these inputs, `Authent` needs to be computed as follows:
   4. Use the result of step 3 to hash the result of the step 2 with the [HMAC-SHA-512 algorithm](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code)
   5. [Base64-encode](https://en.wikipedia.org/wiki/Base64) the result of step 4
 
-### Upcoming Changes​
+### Upcoming Changes
 
 Before| After  
 ---|---  
@@ -71,7 +71,7 @@ tip
 
 For the time being, this change is backward compatible. The API will accept both Authent generation methods described above. However, we aim to phase out the old method (hashing decoded query string parameters) on October 1st, 2025 to maintain the highest security standards. We strongly encourage all users to transition to the new method as soon as possible to ensure seamless service continuity.
 
-### Authentication example​
+### Authentication example
 
 Inclusion of HTTP headers in Java where `apiKey`, `nonce`, and `authent` are determined as described in this section. For full working examples in different programming languages, see [Sample Implementations](https://github.com/cryptofacilities).
     
@@ -87,13 +87,13 @@ Inclusion of HTTP headers in Java where `apiKey`, `nonce`, and `authent` are det
     con.setRequestProperty("Authent", authent);  
     
 
-## Calls and Returns​
+## Calls and Returns
 
-### Calls​
+### Calls
 
 Calls to endpoints that do not change the state of the server should be submitted with request type `GET` and with request parameters submitted in the URL. Calls to endpoints that do change the state of the server should be submitted with request type `POST` or `PUT` and with request parameters submitted in the request body.
 
-### Returns​
+### Returns
 
 > Example response of a successful call to the `sendorder` endpoint.
     

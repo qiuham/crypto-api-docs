@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-leverage-setting
 api_type: REST
-updated_at: 2026-05-26 14:50:55.874328
+updated_at: 2026-05-27 19:49:41.855950
 ---
 
 # Get leverage settings
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:55.874328
 
 Returns list of configured leverage preferences.
 
-## Responses​
+## Responses
 
   * 200
 

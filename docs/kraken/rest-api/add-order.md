@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/add-order
 api_type: REST
-updated_at: 2026-05-26 15:01:31.922753
+updated_at: 2026-05-27 20:00:11.557011
 ---
 
 # Add Order
@@ -15,7 +15,7 @@ Place a new order.
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -202,7 +202,7 @@ If set to `true` the order will be validated only, it will not trade in the matc
 
 Broker IIBAN (Partner's Kraken IIBAN)
 
-## Responses​
+## Responses
 
   * 200
 

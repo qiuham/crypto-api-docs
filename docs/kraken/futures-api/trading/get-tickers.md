@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-tickers
 api_type: REST
-updated_at: 2026-05-26 14:51:13.061106
+updated_at: 2026-05-27 19:51:30.103701
 ---
 
 # Get tickers
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:13.061106
 
 This endpoint returns current market data for all currently listed Futures contracts and indices.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ Market symbol(s) to filter tickers by.
 
 Symbols are case-insensitive. Multi-value example: `?symbol=PF_BTCUSD&symbol=pf_ethusd`
 
-## Responses​
+## Responses
 
   * 200
 * application/json

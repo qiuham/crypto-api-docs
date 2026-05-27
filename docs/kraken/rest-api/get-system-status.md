@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-system-status
 api_type: REST
-updated_at: 2026-05-26 14:53:13.804640
+updated_at: 2026-05-27 20:05:04.239037
 ---
 
 # Get System Status
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:13.804640
 
 Get the current system status or trading mode.
 
-## Responses​
+## Responses
 
   * 200
 

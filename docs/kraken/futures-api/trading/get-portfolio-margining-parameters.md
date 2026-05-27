@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-portfolio-margining-parameters
 api_type: REST
-updated_at: 2026-05-26 14:51:07.606224
+updated_at: 2026-05-27 19:50:53.874875
 ---
 
 # Get portfolio margin parameters
@@ -15,7 +15,7 @@ Also includes user specific limits related to options trading.
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Responses​
+## Responses
 
   * 200
 

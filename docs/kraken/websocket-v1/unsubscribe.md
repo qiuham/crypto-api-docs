@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/unsubscribe
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:45.286215
+updated_at: 2026-05-27 20:10:50.801514
 ---
 
 # Unsubscribe
@@ -13,7 +13,7 @@ updated_at: 2026-05-26 14:53:45.286215
 
 Unsubscribe, can specify a channelID or multiple currency pairs.
 
-## Request​
+## Request
 
   * Request Schema
   * Example

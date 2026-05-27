@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/account-transfer
 api_type: REST
-updated_at: 2026-05-26 15:01:05.134794
+updated_at: 2026-05-27 19:59:56.099574
 ---
 
 # Account Transfer
@@ -13,7 +13,7 @@ Transfer funds to and from master and subaccounts. **Note:** `AccountTransfer` m
 
 **API Key Permissions Required:** `Funds permissions - Withdraw`
 
-## Request​
+## Request
 
   * application/json
 
@@ -47,7 +47,7 @@ Public account ID of the source account (Example ABCD 1234 EFGH 5678)
 
 Public account ID of the destination account (Example ABCD 1234 EFGH 5678)
 
-## Responses​
+## Responses
 
   * 200
 

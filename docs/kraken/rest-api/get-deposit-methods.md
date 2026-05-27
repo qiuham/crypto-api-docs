@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deposit-methods
 api_type: REST
-updated_at: 2026-05-26 14:52:59.692312
+updated_at: 2026-05-27 20:02:44.020639
 ---
 
 # Get Deposit Methods
@@ -13,7 +13,7 @@ Retrieve methods available for depositing a particular asset.
 
 **API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Deposit`
 
-## Request​
+## Request
 
   * application/json
 
@@ -45,7 +45,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

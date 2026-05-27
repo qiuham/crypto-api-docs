@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-spreads
 api_type: REST
-updated_at: 2026-05-26 14:53:09.778506
+updated_at: 2026-05-27 20:04:27.326420
 ---
 
 # Get Recent Spreads
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:09.778506
 
 Returns the last ~200 top-of-book spreads for a given pair
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ Returns spread data since given timestamp. Optional, intended for incremental up
 
 This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
-## Responses​
+## Responses
 
   * 200
 

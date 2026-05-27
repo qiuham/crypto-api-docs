@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/balances
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:43.498224
+updated_at: 2026-05-27 19:54:59.452389
 ---
 
 # Balances
@@ -13,7 +13,7 @@ CHANNEL
 
 This feed returns balance information for holding wallets, single collateral wallets and multi-collateral wallets.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -50,7 +50,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -84,7 +84,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Balances Snapshot​
+## Balances Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -556,7 +556,7 @@ Cash value sum total with unrealized pnl of the single collateral wallets in USD
     }  
     
 
-## Balances Delta​
+## Balances Delta
 
   * Response Fields
   * Holding Wallet Balance Delta
@@ -944,7 +944,7 @@ Sum of all cross position sizes in USD.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

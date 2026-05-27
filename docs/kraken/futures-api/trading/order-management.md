@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/order-management
 api_type: REST
-updated_at: 2026-05-26 14:51:23.603114
+updated_at: 2026-05-27 19:52:56.207476
 ---
 
 # Order Management

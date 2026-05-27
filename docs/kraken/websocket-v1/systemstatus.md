@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/systemstatus
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:45.009885
+updated_at: 2026-05-27 20:10:29.167580
 ---
 
 # System Status
@@ -13,7 +13,7 @@ CHANNEL
 
 Status sent on connection or system status changes.
 
-## Response​
+## Response
 
   * Response Schema
   * Example

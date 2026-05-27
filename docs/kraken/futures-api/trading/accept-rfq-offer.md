@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/accept-rfq-offer
 api_type: REST
-updated_at: 2026-05-26 14:50:36.073449
+updated_at: 2026-05-27 19:47:03.182718
 ---
 
 # Accept an offer on an open RFQ
@@ -13,7 +13,7 @@ Accept an offer on a specific open RFQ created by the authenticated account. Exa
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -31,7 +31,7 @@ The bid price to accept in USD
 
 The ask price to accept in USD
 
-## Responses​
+## Responses
 
   * 200
   * 404

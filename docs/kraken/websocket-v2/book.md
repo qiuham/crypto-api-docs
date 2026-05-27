@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/book
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:49.637654
+updated_at: 2026-05-27 20:11:33.771272
 ---
 
 # Book (Level 2)
@@ -17,7 +17,7 @@ Subscriptions to this channel can be made for multiple symbols at once by specif
 
 For more detail on maintaining the order book and generating a checksum, see [guide](/api/docs/guides/spot-ws-book-v2).
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Subscribe Ack Schema
@@ -171,7 +171,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot Response​
+## Snapshot Response
 
   * Snapshot Schema
   * Example
@@ -340,7 +340,7 @@ The timestamp of the order book snapshot.
     }  
     
 
-## Update Response​
+## Update Response
 
 The data contains the updates of the bids and asks for the relevant symbol including a CRC32 checksum of the top 10 bids and asks.
 
@@ -434,7 +434,7 @@ The book order update timestamp.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

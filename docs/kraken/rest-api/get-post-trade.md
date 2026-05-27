@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-post-trade
 api_type: REST
-updated_at: 2026-05-26 14:53:09.625603
+updated_at: 2026-05-27 20:04:12.469683
 ---
 
 # Post-Trade Data
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:53:09.625603
 
 Returns a list of trades on the spot exchange. If no filter parameters are specified, the last 1000 trades for all pairs are received.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -41,7 +41,7 @@ The maximum number of trades to return.
 
 **Default value:**`1000`
 
-## Responses​
+## Responses
 
   * 200
 * application/json

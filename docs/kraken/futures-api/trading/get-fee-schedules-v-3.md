@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fee-schedules-v-3
 api_type: REST
-updated_at: 2026-05-26 14:50:51.775878
+updated_at: 2026-05-27 19:49:12.712607
 ---
 
 # Get fee schedules
@@ -21,7 +21,7 @@ To determine the fee rate applied to your trades, use the Spot [`GetTradeVolume`
 
 This endpoint lists all fee schedules.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

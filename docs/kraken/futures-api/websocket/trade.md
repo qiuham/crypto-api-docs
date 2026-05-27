@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/trade
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:57.768328
+updated_at: 2026-05-27 19:56:19.557463
 ---
 
 # Trade
@@ -13,7 +13,7 @@ CHANNEL
 
 The trade feed returns information about executed trades
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -40,7 +40,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -67,7 +67,7 @@ A list of strings which represent the products that user will receive informatio
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -143,7 +143,7 @@ The price that the product got traded.
     }  
     
 
-## Response Delta​
+## Response Delta
 
   * Response Fields
   * Subscription Delta Data
@@ -200,7 +200,7 @@ The price that the product got traded.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

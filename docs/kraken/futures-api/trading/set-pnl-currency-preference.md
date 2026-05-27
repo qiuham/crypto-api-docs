@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference
 api_type: REST
-updated_at: 2026-05-26 14:51:34.193932
+updated_at: 2026-05-27 19:53:39.931746
 ---
 
 # Set PNL currency preference
@@ -21,7 +21,7 @@ The PNL currency preference is used to determine which currency to pay out when 
 
 41: Would cause liquidation
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ The symbol for the PnL preference.
 
 The asset in which profit will be realised for the specific symbol.
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/deallocate-strategy
 api_type: REST
-updated_at: 2026-05-26 15:02:52.801254
+updated_at: 2026-05-27 20:01:24.137998
 ---
 
 # Deallocate Earn Funds
@@ -26,7 +26,7 @@ Following specific errors within `Earnings` class can be returned by this method
   * Allocation in progress: `EEarnings:Busy:Another (de)allocation for the same strategy is in progress`
   * Strategy not found: `EGeneral:Invalid arguments:Invalid strategy ID`
 
-## Request​
+## Request
 
   * application/json
 
@@ -44,7 +44,7 @@ The amount to deallocate. This field is required.
 
 A unique identifier per earn strategy.
 
-## Responses​
+## Responses
 
   * 200
 

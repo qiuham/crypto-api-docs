@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/editorder
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:36.347266
+updated_at: 2026-05-27 20:09:31.648173
 ---
 
 # Edit Order
@@ -26,7 +26,7 @@ There are a number of caveats for `editOrder`:
   * existing executions will are associated with the original order and not copied to the amended order.
   * queue position will not be maintained.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -90,7 +90,7 @@ This is a authenticated request, a session token is required.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

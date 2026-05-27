@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_orders_verbose
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:15.193524
+updated_at: 2026-05-27 19:55:50.677388
 ---
 
 # Open Orders (verbose)
@@ -13,7 +13,7 @@ CHANNEL
 
 This subscription feed publishes information about user open orders. This feed adds extra information about all the post-only orders that failed to cross the book.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -50,7 +50,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -87,7 +87,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Snapshot Data
@@ -205,7 +205,7 @@ Trigger signal selected for take profit or stop loss order. Options are `last`, 
     }  
     
 
-## Response Delta​
+## Response Delta
 
   * Response Fields
   * Subscription Delta Data
@@ -330,7 +330,7 @@ Reason behind the received delta.
       
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

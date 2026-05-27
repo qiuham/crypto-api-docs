@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status
 api_type: REST
-updated_at: 2026-05-26 14:52:55.124039
+updated_at: 2026-05-27 20:02:29.448525
 ---
 
 # Get Deallocation Status
@@ -22,7 +22,7 @@ Following specific errors within `Earnings` class can be returned by this method
   * Insufficient funds: `EEarnings:Insufficient funds:Insufficient funds to complete the (de)allocation request`
   * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
 
-## Request​
+## Request
 
   * application/json
 
@@ -36,7 +36,7 @@ Nonce used in construction of `API-Sign` header
 
 ID of the earn strategy, call `Earn/Strategies` to list available strategies
 
-## Responses​
+## Responses
 
   * 200
 

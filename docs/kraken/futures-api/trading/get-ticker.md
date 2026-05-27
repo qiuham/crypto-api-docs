@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-ticker
 api_type: REST
-updated_at: 2026-05-26 14:51:12.958380
+updated_at: 2026-05-27 19:51:22.835037
 ---
 
 # Get ticker by symbol
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:12.958380
 
 Get market data for contract or index by symbol
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -21,7 +21,7 @@ Get market data for contract or index by symbol
 
 Market symbol.
 
-## Responses​
+## Responses
 
   * 200
   * 404

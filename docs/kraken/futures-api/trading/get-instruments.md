@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-instruments
 api_type: REST
-updated_at: 2026-05-26 14:50:55.794668
+updated_at: 2026-05-27 19:49:34.571992
 ---
 
 # Get instruments
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:55.794668
 
 Returns specifications for all currently listed markets and indices.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -33,7 +33,7 @@ Defaults to `false`, in which case only non-expired instruments are returned
 
 **Default value:**`false`
 
-## Responses​
+## Responses
 
   * 200
 * application/json

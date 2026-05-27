@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/list-allocations
 api_type: REST
-updated_at: 2026-05-26 14:53:27.255300
+updated_at: 2026-05-27 20:08:05.773386
 ---
 
 # List Earn Allocations
@@ -32,7 +32,7 @@ Note that for `ETH`, when the funds are in the `exit_queue` state, the `expires`
 
 (Un)bonding time estimate can be inaccurate right after having (de)allocated the funds. Wait 1-2 minutes after (de)allocating to get an accurate result.
 
-## Request​
+## Request
 
   * application/json
 
@@ -54,7 +54,7 @@ A secondary currency to express the value of your allocations (the default is US
 
 Omit entries for strategies that were used in the past but now they don't hold any allocation (the default is `false`)
 
-## Responses​
+## Responses
 
   * 200
 

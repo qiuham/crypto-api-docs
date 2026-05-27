@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/add-export
 api_type: REST
-updated_at: 2026-05-26 15:01:14.134277
+updated_at: 2026-05-27 20:00:04.620249
 ---
 
 # Request Export Report
@@ -13,7 +13,7 @@ Request export of trades or ledgers.
 
 **API Key Permissions Required:** `Data - Export data`
 
-## Request​
+## Request
 
   * application/json
 
@@ -57,7 +57,7 @@ UNIX timestamp for report start time (default 1st of the current month)
 
 UNIX timestamp for report end time (default now)
 
-## Responses​
+## Responses
 
   * 200
 

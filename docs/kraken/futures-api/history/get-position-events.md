@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-position-events
 api_type: REST
-updated_at: 2026-05-26 14:50:29.919053
+updated_at: 2026-05-27 19:46:19.885068
 ---
 
 # Get position update events
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:29.919053
 
 Lists position events for authenticated account.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -137,7 +137,7 @@ If no filters are provided for the request, all position events will be included
 
 If present events of other tradeables are filtered out.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

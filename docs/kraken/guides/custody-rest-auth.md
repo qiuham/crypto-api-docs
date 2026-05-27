@@ -2,20 +2,20 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/custody-rest-auth
 api_type: Guide
-updated_at: 2026-05-26 14:56:06.989468
+updated_at: 2026-05-27 19:56:26.793409
 ---
 
 # Custody REST Authentication
 
 The Custody REST API uses API keys to authenticate and authorize API requests. A secure authentication process is enforced to ensure high security both when creating API keys and when making API calls. To authenticate API requests, you must first create an API user and obtain API key credentials.
 
-## API Users and Access Control​
+## API Users and Access Control
 
 API users function similarly to human users in that they are assigned roles, permissions, and vault access at the time of creation. When an API user interacts with the system, these settings are enforced to control which data they can access and which actions they can perform.
 
 However, unlike regular users, API users cannot log in to the Custody application. Their interaction with the system is limited strictly to API calls, making them an essential component for programmatic access while maintaining strict security boundaries.
 
-## Creating a new API Key​
+## Creating a new API Key
 
 A system administrator must initiate the creation of a new API user before generating an API key:
 
@@ -30,7 +30,7 @@ caution
 
 Only the admin user who created the API user request can view the API key and secret. Store these credentials securely. For security reasons, the API key and secret will not be viewable again after they are generated. API key credentials are a prime target for malicious actors. Ensure you follow security best practices to protect them.
 
-## Authentication Parameters​
+## Authentication Parameters
 
 For the REST API, the following parameters are used for authentication to endpoints which contain private data:
 
@@ -38,7 +38,7 @@ For the REST API, the following parameters are used for authentication to endpoi
   * `API-Sign` HTTP header parameter: encrypted signature of message.
   * `nonce` payload parameter: always increasing, unsigned 64-bit integer.
 
-## Setting the API-Key Parameter​
+## Setting the API-Key Parameter
 
 The value for the `API-Key` HTTP header parameter is your **public** API key.
 
@@ -51,7 +51,7 @@ From your API key-pair, clearly identify which key is public and which key is pr
   * The **public** key is sent in the `API-Key` header parameter.
   * The **private** key is **never** sent, it is only used to encode the signature for `API-Sign` header parameter.
 
-## Setting the API-Sign Parameter​
+## Setting the API-Sign Parameter
 
 The value for the `API-Sign` HTTP header parameter is a signature generated from encoding your **private** API key, nonce, encoded payload, and URI path.
     
@@ -61,7 +61,7 @@ The value for the `API-Sign` HTTP header parameter is a signature generated from
 
 Note: The URI path used for API-Sign should be the part starting with "/0/private" of the API URL.
 
-### Examples​
+### Examples
 
 The following is a specific example of a signature generated with a particular private key, nonce, and payload corresponding to a new limit order (buy 1.25 XBTUSD at $37,500). If your code is generating a different signature (`API-Sign`) for this example, then there is likely an issue with your application of the above methodology. Code snippets for generating the signature in Python, Golang and Node.js follow below.
 
@@ -205,7 +205,7 @@ URI Path| /0/private/GetCustodyTask?id=TGWOJ4JQPOTZT2
     console.log(`API-Sign: ${signature}`);  
     
 
-## Setting the nonce Parameter​
+## Setting the nonce Parameter
 
 The value for the `nonce` payload body parameter is an always increasing, unsigned 64-bit integer for each request that is made with a particular API key.
 
@@ -215,7 +215,7 @@ Too many requests with invalid nonces (EAPI:Invalid nonce) can result in tempora
 
 Problems can arise from requests arriving out of order due to API keys being shared across processes, or from system clock drift/recalibration. An optional "nonce window" can be configured to specify a tolerance between nonce values.
 
-### Examples​
+### Examples
 
 The following are some examples of how to generate valid millisecond resolution nonce values in different programming languages:
 

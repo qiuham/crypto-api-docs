@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders
 api_type: REST
-updated_at: 2026-05-26 14:50:36.424324
+updated_at: 2026-05-27 19:47:32.139368
 ---
 
 # Cancel all orders
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:36.424324
 
 This endpoint allows cancelling orders which are associated with a future's contract or a margin account. If no arguments are specified all open orders will be cancelled.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -19,7 +19,7 @@ This endpoint allows cancelling orders which are associated with a future's cont
 
 A futures product to cancel all open orders.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

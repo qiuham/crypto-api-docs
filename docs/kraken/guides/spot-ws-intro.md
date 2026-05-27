@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-intro
 api_type: WebSocket
-updated_at: 2026-05-26 16:15:27.198850
+updated_at: 2026-05-27 19:59:41.869856
 ---
 
 # Spot Websockets Introduction
@@ -128,3 +128,16 @@ Please use the [instrument](/api/docs/websocket-v2/instrument) channel to fetch 
 
   * Normal operation: Attempt reconnection instantly up to a handful of times if the websocket is dropped randomly.
   * After maintenance or extended downtime: Attempt to reconnect no more quickly than once every five (5) seconds. There is no advantage to reconnecting more rapidly after maintenance during `cancel_only` mode.
+* Connection Details
+  * Websockets Versions
+  * Websockets v2
+* Cleaner Document Structure
+* Order Transactions and Requests
+* Channels
+  * FAQs
+* Connection times out
+* EOrder only
+* XBT/USD pair is missing
+  * General Considerations (v1 and v2 connections)
+* Instrument supported
+* Recommended Reconnection Behaviour

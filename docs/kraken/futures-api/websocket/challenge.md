@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/challenge
 api_type: WebSocket
-updated_at: 2026-05-26 14:51:43.658570
+updated_at: 2026-05-27 19:55:13.754749
 ---
 
 # Challenge
@@ -13,7 +13,7 @@ updated_at: 2026-05-26 14:51:43.658570
 
 This request returns a challenge to be used in handshake for user authentication.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -35,7 +35,7 @@ The user API key.
     }  
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -57,7 +57,7 @@ The message that user will have to sign for authentication reasons
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

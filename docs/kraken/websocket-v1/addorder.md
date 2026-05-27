@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/addorder
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:31.500289
+updated_at: 2026-05-27 20:08:48.990284
 ---
 
 # Add Order
@@ -13,7 +13,7 @@ updated_at: 2026-05-26 14:53:31.500289
 
 Sends a single, new order into the exchange. A range of order types, Time-In-Force (TIF) and order flags can be specified by the parameters below.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -218,7 +218,7 @@ This is a authenticated request, a session token is required.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

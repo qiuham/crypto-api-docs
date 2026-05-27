@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-withdrawal
 api_type: REST
-updated_at: 2026-05-26 15:02:35.211647
+updated_at: 2026-05-27 20:01:09.676748
 ---
 
 # Request Withdrawal Cancellation
@@ -13,7 +13,7 @@ Cancel a recently requested withdrawal, if it has not already been successfully 
 
 **API Key Permissions Required:** `Funds permissions - Withdraw`, unless withdrawal is a `WalletTransfer`, then no permissions are required.
 
-## Request​
+## Request
 
   * application/json
 
@@ -31,7 +31,7 @@ Asset being withdrawn
 
 Withdrawal reference ID
 
-## Responses​
+## Responses
 
   * 200
 

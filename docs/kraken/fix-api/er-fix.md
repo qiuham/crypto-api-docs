@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/er-fix
 api_type: REST
-updated_at: 2026-05-26 14:50:09.970052
+updated_at: 2026-05-27 19:42:16.528738
 ---
 
 # Execution Report

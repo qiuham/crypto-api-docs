@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/liquidity-pool-stats
 api_type: REST
-updated_at: 2026-05-26 14:50:23.384795
+updated_at: 2026-05-27 19:45:08.387497
 ---
 
 # Get liquidity pool statistic
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:23.384795
 
 Get liquidity pool statistic including usd value
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -27,7 +27,7 @@ epoch time in seconds
 
 epoch time in seconds, default now
 
-## Responses​
+## Responses
 
   * 200
   * 400

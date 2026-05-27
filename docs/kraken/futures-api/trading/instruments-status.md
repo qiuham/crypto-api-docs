@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/instruments-status
 api_type: REST
-updated_at: 2026-05-26 14:51:23.234466
+updated_at: 2026-05-27 19:52:27.515811
 ---
 
 # Get instrument status list
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:23.234466
 
 Returns price dislocation and volatility details for all markets.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -25,7 +25,7 @@ By default, includes all futures instrument types.
 
 Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
 
-## Responses​
+## Responses
 
   * 200
 * application/json

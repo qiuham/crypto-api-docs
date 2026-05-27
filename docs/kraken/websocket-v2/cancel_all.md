@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_all
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:54.304530
+updated_at: 2026-05-27 20:11:48.040718
 ---
 
 # Cancel All
@@ -13,7 +13,7 @@ Cancels all open orders, including untriggered orders and orders resting in the 
 
 Note, the details of the individual cancelled orders will also be streamed on the `executions` channel.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -44,7 +44,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

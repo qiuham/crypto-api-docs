@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ticker
 api_type: WebSocket
-updated_at: 2026-05-26 15:04:20.752309
+updated_at: 2026-05-27 20:12:59.524154
 ---
 
 # Ticker (Level 1)
@@ -15,7 +15,7 @@ The `ticker` channel streams level 1 market data, i.e. top of the book (best bid
 
 The feed accepts a list symbols for subscription and the updates are generated on trade events.
 
-## Subscribe Request​
+## Subscribe Request
 
   * Subscribe Schema
   * Subscribe Ack Schema
@@ -149,7 +149,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot / Update Response​
+## Snapshot / Update Response
 
 The snapshot and update responses share the same schema. An update message is streamed on a trade event.
 
@@ -281,7 +281,7 @@ The ticker data timestamp.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

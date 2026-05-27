@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-public-execution-events
 api_type: REST
-updated_at: 2026-05-26 14:50:32.996045
+updated_at: 2026-05-27 19:46:27.127057
 ---
 
 # Get public execution events
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:32.996045
 
 Lists trades for a market.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -47,7 +47,7 @@ Opaque token from the `Next-Continuation-Token` header used to continue listing 
 
 The maximum number of results to return. The upper bound is determined by a global limit.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

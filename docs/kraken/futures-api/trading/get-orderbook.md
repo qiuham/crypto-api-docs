@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-orderbook
 api_type: REST
-updated_at: 2026-05-26 14:51:07.422276
+updated_at: 2026-05-27 19:50:39.352671
 ---
 
 # Get orderbook
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:07.422276
 
 This endpoint returns the entire non-cumulative order book of currently listed Futures contracts.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -19,7 +19,7 @@ This endpoint returns the entire non-cumulative order book of currently listed F
 
 The symbol of the Futures.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

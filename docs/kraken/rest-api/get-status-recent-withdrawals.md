@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-withdrawals
 api_type: REST
-updated_at: 2026-05-26 14:53:13.727383
+updated_at: 2026-05-27 20:04:56.966676
 ---
 
 # Get Status of Recent Withdrawals
@@ -13,7 +13,7 @@ Retrieve information about recent withdrawals. Results are sorted by recency, us
 
 **API Key Permissions Required:** `Funds permissions - Withdraw` or `Data - Query ledger entries`
 
-## Request​
+## Request
 
   * application/json
 
@@ -79,7 +79,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

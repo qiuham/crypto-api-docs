@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-websockets
 api_type: WebSocket
-updated_at: 2026-05-26 14:58:03.275711
+updated_at: 2026-05-27 19:57:54.812807
 ---
 
 # Futures Websockets
 
-## Sign challenge​
+## Sign challenge
 
 The subscribe and unsubscribe requests to WebSocket private feeds require a signed challenge message with the user `api_secret`.
 
@@ -15,7 +15,7 @@ The challenge is obtained as is shown in Section WebSocket API Public (using the
 
 Authenticated requests must include both the original challenge message (`original_challenge`) and the signed (`signed_challenge`) in JSON format.
 
-### Challenge​
+### Challenge
 
 > Challenge example
     
@@ -42,7 +42,7 @@ Name| Value
 `api_secret`| `7zxMEF5p/Z8l2p2U7Ghv6x14Af+Fx+92tPgUdVQ748FOIrEoT9bgT+bTRfXc5pz8na+hL/QdrCVG7bh9KpT0eMTm`  
 signed output| `4JEpF3ix66GA2B+ooK128Ift4XQVtc137N9yeg4Kqsn9PI0Kpzbysl9M1IeCEdjg0zl00wkVqcsnG4bmnlMb3A==`  
   
-## Subscriptions​
+## Subscriptions
 
 Subscriptions requests are sent through a web socket connection.
 
@@ -50,15 +50,15 @@ To subscribe to a feed, a web socket connection is required to establish a conne
 
 `wss://futures.kraken.com/ws/v1`
 
-### Keeping the connection alive​
+### Keeping the connection alive
 
 In order to keep the websocket connection alive, you will need to make a ping request at least every 60 seconds. You can see this in our [sample implementation](https://github.com/CryptoFacilities/WebSocket-v1-Python/blob/master/cfWebSocketApiV1.py#L138).
 
-## Snapshots and updates​
+## Snapshots and updates
 
 For ease of use, most web socket feeds first send a snapshot of the history or current state and subsequently send real-time updates.
 
-### Authentication​
+### Authentication
 
 In order to subscription to a private feed, clients must pass a challenge which involves signing a message (see Section Sign Challenge) with the private API key. First, a message must be sent to request the challenge. Second, the solved challenge has to be passed in every subscribe and unsubscribe message that is sent.
 

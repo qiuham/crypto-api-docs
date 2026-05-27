@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/spread
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:41.072076
+updated_at: 2026-05-27 20:10:14.893675
 ---
 
 # Spreads
@@ -13,7 +13,7 @@ CHANNEL
 
 Spread feed for a currency pair.
 
-## Subscription Request​
+## Subscription Request
 
   * Request Schema
   * Example
@@ -52,7 +52,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Subscription Snapshot and Update Response​
+## Subscription Snapshot and Update Response
 
   * Response Schema
   * Example

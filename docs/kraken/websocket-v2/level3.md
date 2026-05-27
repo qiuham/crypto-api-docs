@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/level3
 api_type: WebSocket
-updated_at: 2026-05-26 15:03:46.308545
+updated_at: 2026-05-27 20:12:31.135985
 ---
 
 # Orders (Level 3)
@@ -11,7 +11,7 @@ CHANNEL
 **Endpoint:** `wss://ws-l3.kraken.com/v2`
     level3Authentication Required
 
-## Summary​
+## Summary
 
 The `level3` channel has an additional level of granularity over the `book` channel, it provides visibility of individual orders in the book.
 
@@ -24,7 +24,7 @@ L3 shows orders resting in the visible order book and it will never be crossed (
 
 For more detail on maintaining the order book and generating a checksum, see [guide](/api/docs/guides/spot-ws-l3-v2).
 
-## Subscription limits​
+## Subscription limits
 
 The `level3` channel is authenticated (i.e. it requires an API token to subscribe) and there are restrictions of the number of symbols and the subscription rate.
 
@@ -40,7 +40,7 @@ Order Book Depth| Rate Counter Increase per Symbol
   
 **Example: ** Pro client can subscribe to 100 symbols of 10 depth every second.
 
-## Subscribe Request​
+## Subscribe Request
 
 Only one subscription to one depth level per symbol is supported, i.e. cannot subscribe to 10 levels and 1000 levels of "BTC/USD".
 
@@ -200,7 +200,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot Response​
+## Snapshot Response
 
   * Snapshot Response
   * Example: Snapshot
@@ -350,13 +350,13 @@ The time this market data message was generated in the matching engine.
     }  
     
 
-## Update Response​
+## Update Response
 
   * The updates will be streamed following the initial snapshot, no sequencing is required.
   * The L3 channel is not throttled, updates will be provided in the real-time.
   * If a price level is removed from the subscribed levels (i.e. result of trades/cancels) then all orders in the next available level will generate an add event.
 
-### Maintaining the book​
+### Maintaining the book
 
 After each update, the book should be truncated to your subscribed depth, there will be no `delete` event for price levels that fall out of scope. In other words, if you are subscribed with `depth` of 10 and an insert into the book results in 11 bids, you must remove the 11th worst bid.
 
@@ -517,7 +517,7 @@ The time the order was inserted or amended.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
   * Unsubscribe Schema
   * Unsubscribe Ack Schema

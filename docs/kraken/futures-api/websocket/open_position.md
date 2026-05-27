@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_position
 api_type: WebSocket
-updated_at: 2026-05-26 14:55:24.647365
+updated_at: 2026-05-27 19:55:57.883531
 ---
 
 # Open Position
@@ -13,7 +13,7 @@ CHANNEL
 
 This subscription feed publishes the open positions of the user account.
 
-## Request​
+## Request
 
   * Request Fields
   * Example
@@ -52,7 +52,7 @@ The signed challenge message with user api secret
       
     
 
-## Response Success​
+## Response Success
 
   * Response Fields
   * Successful
@@ -89,7 +89,7 @@ The signed challenge message with user api secret
     }  
     
 
-## Response Snapshot​
+## Response Snapshot
 
   * Response Fields
   * Subscription Data
@@ -248,7 +248,7 @@ Rho, the option value's sensitivity to the interest ratea.
     }  
     
 
-## Response Error​
+## Response Error
 
   * Response Fields
   * Example Error

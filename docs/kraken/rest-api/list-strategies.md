@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/list-strategies
 api_type: REST
-updated_at: 2026-05-26 14:53:27.343368
+updated_at: 2026-05-27 20:08:13.026244
 ---
 
 # List Earn Strategies
@@ -25,7 +25,7 @@ A note about `lock_type`:
 
 Paging isn't yet implemented, so the endpoint always returns all data in the first page.
 
-## Request​
+## Request
 
   * application/json
 
@@ -57,7 +57,7 @@ Filter strategies by lock type
 
 **Possible values:** [`flex`, `bonded`, `timed`, `instant`]
 
-## Responses​
+## Responses
 
   * 200
 

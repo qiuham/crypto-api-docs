@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-order-status
 api_type: REST
-updated_at: 2026-05-26 14:51:02.140615
+updated_at: 2026-05-27 19:50:32.156321
 ---
 
 # Get Specific Orders' Status
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:02.140615
 
 Returns information on specified orders which are open or were filled/cancelled in the last 5 seconds.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -25,7 +25,7 @@ Client Order IDs associated with orders or triggers.
 
 **Example:**[testOrder1, testOrder2]
 
-## Responses​
+## Responses
 
   * 200
 * application/json

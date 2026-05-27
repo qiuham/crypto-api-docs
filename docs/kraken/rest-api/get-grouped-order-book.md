@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book
 api_type: REST
-updated_at: 2026-05-26 14:52:59.870562
+updated_at: 2026-05-27 20:02:58.609657
 ---
 
 # Get Grouped Order Book
@@ -13,7 +13,7 @@ The GroupedBook endpoint aggregates the volume in the order book over a specifie
 
 Bids and asks between grouped price levels are accumulated to the nearest passive level (asks rounded up, bids down).
 
-## Request​
+## Request
 
   * application/json
 
@@ -45,7 +45,7 @@ Specifies how many tick levels should be within each price level. Bids and asks 
 
 **Example:**`1000`
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/send-batch-order
 api_type: REST
-updated_at: 2026-05-26 14:51:28.651522
+updated_at: 2026-05-27 19:53:17.998588
 ---
 
 # Batch order management
@@ -13,7 +13,7 @@ This endpoint allows sending limit or stop order(s) and/or cancelling open order
 
 When editing an order, if the `trailingStopMaxDeviation` and `trailingStopDeviationUnit` parameters are sent unchanged, the system will recalculate a new stop price upon successful order modification.
 
-## Request​
+## Request
 
   * application/x-www-form-urlencoded
 
@@ -190,7 +190,7 @@ Unique client order identifier.
 
   * ]
 
-## Responses​
+## Responses
 
   * 200
 * application/json

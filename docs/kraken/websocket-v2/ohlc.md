@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ohlc
 api_type: WebSocket
-updated_at: 2026-05-26 15:03:54.899197
+updated_at: 2026-05-27 20:12:38.061852
 ---
 
 # Candles (OHLC)
@@ -15,7 +15,7 @@ The `ohlc` channel streams the Open, High, Low and Close (OHLC) data for the spe
 
 The feed accepts a list symbols for subscription and the updates are generated on trade events.
 
-## Subscribe Request​
+## Subscribe Request
 
 There is an acknowledgement response for each symbol in the subscription list.
 
@@ -168,7 +168,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Snapshot and Update Response​
+## Snapshot and Update Response
 
 The snapshot and update responses share the same schema. An update message is streamed on a trade event.
 
@@ -309,7 +309,7 @@ The timestamp of start of the interval.
     }  
     
 
-## Unsubscribe Request​
+## Unsubscribe Request
 
 There is an acknowledgement response for each symbol in the unsubscribe list.
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/amend-order
 api_type: REST
-updated_at: 2026-05-26 15:01:49.949113
+updated_at: 2026-05-27 20:00:33.385415
 ---
 
 # Amend Order
@@ -19,7 +19,7 @@ For more detail, see [amend transaction guide](/api/docs/guides/spot-amends).
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -75,7 +75,7 @@ RFC3339 timestamp (e.g. 2021-04-01T00:18:45Z) after which the matching engine sh
 
 Nonce used in construction of `API-Sign` header
 
-## Responses​
+## Responses
 
   * 200
 

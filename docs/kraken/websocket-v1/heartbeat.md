@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/heartbeat
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:36.425555
+updated_at: 2026-05-27 20:09:38.952466
 ---
 
 # Heartbeat
@@ -13,7 +13,7 @@ CHANNEL
 
 Server heartbeat sent if no subscription traffic within approximately 1 second.
 
-## Payload​
+## Payload
 
   * Response Schema
   * Example

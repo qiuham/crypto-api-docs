@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/market-history
 api_type: Market Data
-updated_at: 2026-05-26 14:50:33.333573
+updated_at: 2026-05-27 19:46:56.029100
 ---
 
 # Market History

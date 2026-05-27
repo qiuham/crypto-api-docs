@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers
 api_type: REST
-updated_at: 2026-05-26 14:50:51.680246
+updated_at: 2026-05-27 19:49:05.462994
 ---
 
 # List offers placed by the account on closed RFQs
@@ -15,7 +15,7 @@ Closed RFQs are tracked in an in-memory cache only and are not persisted; offers
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Responses​
+## Responses
 
   * 200
   * 404

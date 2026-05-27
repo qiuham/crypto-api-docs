@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/cancelall
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:31.753697
+updated_at: 2026-05-27 20:09:10.300807
 ---
 
 # Cancel All
@@ -13,7 +13,7 @@ updated_at: 2026-05-26 14:53:31.753697
 
 Cancel all open orders. Includes partially-filled orders.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -39,7 +39,7 @@ This is a authenticated request, a session token is required.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

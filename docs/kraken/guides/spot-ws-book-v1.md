@@ -2,20 +2,20 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-book-v1
 api_type: WebSocket
-updated_at: 2026-05-26 14:59:57.751296
+updated_at: 2026-05-27 19:59:27.689480
 ---
 
 # Spot Websockets (v1) Book Checksum
 
 This page describes how to maintain the book using the websockets v1 [book](/api/docs/websocket-v1/book) channel.
 
-## Book Updates​
+## Book Updates
 
 Each book update message will have a checksum value appended. The checksum is a CRC32 value based on the top 10 bids and 10 asks, and you can use it to verify that your data is correct and up to date by calculating the checksum independently and comparing it against the value provided.
 
 Checksums will not be sent in book snapshot messages, but rather only in book update messages. In the following sample book update messages, note the checksum field appears in the last bid or ask map structure in the message.
 
-### Example `book` update with asks, bids and checksum​
+### Example `book` update with asks, bids and checksum
     
     
     [  
@@ -38,7 +38,7 @@ Checksums will not be sent in book snapshot messages, but rather only in book up
     ]  
     
 
-## Book Checksum Calculation​
+## Book Checksum Calculation
 
 The checksum is computed by concatenating the top 10 bids and asks in the current book and then taking the CRC32 checksum of that string. The price and volume values should be treated as a string and formatted and concatenated as follows.
 
@@ -46,7 +46,7 @@ caution
 
 Processing order is important, the price levels will be received in the correct sequence from the exchange. The last entries in array are the most recent. Do not sort by timestamp, as there can be multiple of price level updates in a microsecond period.
 
-### Example​
+### Example
 
 Consider you are subscribed at depth = 100 on the `book` channel and you receive the following book update message:
     

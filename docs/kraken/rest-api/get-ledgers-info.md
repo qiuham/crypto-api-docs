@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ledgers-info
 api_type: REST
-updated_at: 2026-05-26 14:53:00.028220
+updated_at: 2026-05-27 20:03:14.106704
 ---
 
 # Query Ledgers
@@ -19,7 +19,7 @@ Retrieve information about specific ledger entries.
 
 **API Key Permissions Required:** `Data - Query ledger entries`
 
-## Request​
+## Request
 
   * application/json
 
@@ -49,7 +49,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

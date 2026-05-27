@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-orders
 api_type: REST
-updated_at: 2026-05-26 14:50:56.041548
+updated_at: 2026-05-27 19:49:56.077181
 ---
 
 # Get open orders
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:56.041548
 
 This endpoint returns information on all open orders for all Futures contracts.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-api-key-info
 api_type: REST
-updated_at: 2026-05-26 14:52:49.550064
+updated_at: 2026-05-27 20:02:00.721908
 ---
 
 # Get API Key Info
@@ -13,7 +13,7 @@ Retrieve information about the API key that is used to make the request, includi
 
 **API Key Permissions Required:** `None`
 
-## Request​
+## Request
 
   * application/json
 
@@ -27,7 +27,7 @@ Nonce used in construction of `API-Sign` header
 
 Two-factor authentication password (required only if 2FA is configured for the API key)
 
-## Responses​
+## Responses
 
   * 200
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/export-status
 api_type: REST
-updated_at: 2026-05-26 15:03:10.962122
+updated_at: 2026-05-27 20:01:38.787240
 ---
 
 # Get Export Report Status
@@ -13,7 +13,7 @@ Get status of requested data exports.
 
 **API Key Permissions Required:** `Data - Export data`
 
-## Request​
+## Request
 
   * application/json
 
@@ -29,7 +29,7 @@ Type of reports to inquire about
 
 **Possible values:** [`trades`, `ledgers`]
 
-## Responses​
+## Responses
 
   * 200
 

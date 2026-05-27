@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-order-amends
 api_type: REST
-updated_at: 2026-05-26 14:53:04.956774
+updated_at: 2026-05-27 20:03:50.618249
 ---
 
 # Get Order Amends
@@ -13,7 +13,7 @@ Retrieves an audit trail of amend transactions on the specified order. The list 
 
 **API Key Permissions Required:** `Orders and trades - Query open orders & trades` or `Orders and trades - Query closed orders & trades`, depending on status of order.
 
-## Request​
+## Request
 
   * application/json
 
@@ -37,7 +37,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

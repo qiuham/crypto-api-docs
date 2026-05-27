@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-deposits-and-withdrawals
 api_type: Guide
-updated_at: 2026-05-26 14:56:34.246803
+updated_at: 2026-05-27 19:56:49.082689
 ---
 
 # Embed: Deposits & Withdrawals
 
 This guide walks you through enabling crypto deposits and withdrawals for your users via the Payward Embed API.
 
-## Prerequisites​
+## Prerequisites
 
   * Payward Embed API credentials (see [Authentication Guide](/api/docs/guides/embed-rest-auth))
   * A verified user with an IIBAN
@@ -18,9 +18,9 @@ note
 
 Only **cryptocurrency** deposits are supported. Fiat deposits are not available through the Embed API.
 
-## Crypto Deposits​
+## Crypto Deposits
 
-### Deposit Workflow​
+### Deposit Workflow
     
     
     ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐  
@@ -39,7 +39,7 @@ note
 
 Completed deposits will appear in `GET /b2b/portfolio/transactions?user={iiban}&types=deposit`.
 
-### Step 1: List Deposit Methods​
+### Step 1: List Deposit Methods
 
 Query available deposit methods for a crypto asset. Use the `method_id` from the response when creating an address in Step 2.
 
@@ -105,7 +105,7 @@ Most cryptocurrency deposits are free, with minimum deposit amounts varying by a
     }  
     
 
-#### Response Example​
+#### Response Example
     
     
     {  
@@ -132,7 +132,7 @@ Most cryptocurrency deposits are free, with minimum deposit amounts varying by a
 
 Key fields to display to users: `network`, `fee`, `minimum`, and `est_confirmation_time`.
 
-### Step 2: Create a Deposit Address​
+### Step 2: Create a Deposit Address
 
 Generate a deposit address using the `method_id` from Step 1. Display the address to the user so they can send crypto from an external wallet.
 
@@ -209,7 +209,7 @@ Generate a deposit address using the `method_id` from Step 1. Display the addres
     console.log('Deposit address:', address.result.address);  
     
 
-#### Response Example​
+#### Response Example
     
     
     {  
@@ -228,7 +228,7 @@ note
 
 Some networks (e.g., XRP, XLM) require a **tag** or **memo** in addition to the address. If `tag` or `memo` is present in the response, your UI must display it and instruct the user to include it when sending funds. Deposits sent without the required tag/memo may be lost.
 
-### Step 3: List Deposit Addresses​
+### Step 3: List Deposit Addresses
 
 Retrieve existing deposit addresses for a given asset and method. Use this to display previously generated addresses to users without creating new ones each time.
 
@@ -304,7 +304,7 @@ Retrieve existing deposit addresses for a given asset and method. Use this to di
     }  
     
 
-#### Response Example​
+#### Response Example
     
     
     {  
@@ -328,19 +328,19 @@ Retrieve existing deposit addresses for a given asset and method. Use this to di
     }  
     
 
-### Recommended UI Flow​
+### Recommended UI Flow
 
-### Best Practices​
+### Best Practices
 
   1. **Always display tag/memo** : For networks that require a tag or memo (XRP, XLM, etc.), prominently display it alongside the address. Missing tags/memos can result in lost funds.
   2. **Set expectations** : Show `minimum` amounts and `est_confirmation_time` from the methods response so users know what to expect before sending funds.
   3. **Use fresh responses** : Available methods, addresses and limits are user-specific and may change based on account standing, remaining limits, or regional regulations. Fetch fresh data before displaying options rather than relying on cached results.
 
-## Crypto Withdrawals​
+## Crypto Withdrawals
 
 Withdrawals are key-based: you save an address once, then use its `key` in each withdrawal request.
 
-### Withdrawal Workflow​
+### Withdrawal Workflow
     
     
     ┌────────────────────┐    ┌────────────────────┐    ┌────────────────────┐    ┌────────────────────┐    ┌──────────────────────┐  
@@ -355,7 +355,7 @@ Withdrawals are key-based: you save an address once, then use its `key` in each 
   4. **Preview / Submit Withdrawal** : Use `preview=true` to quote fees, then submit with `preview=false`.
   5. **Monitor Status** : Track updates via webhooks or transaction polling.
 
-### Step 1: List Withdrawal Methods​
+### Step 1: List Withdrawal Methods
 
 Call this first to determine valid `method_id`, fee estimates, limits, and optional `fee_token`.
 
@@ -407,7 +407,7 @@ Call this first to determine valid `method_id`, fee estimates, limits, and optio
     }  
     
 
-#### Response Example​
+#### Response Example
     
     
     {  
@@ -426,7 +426,7 @@ Call this first to determine valid `method_id`, fee estimates, limits, and optio
     }  
     
 
-### Step 2: Validate Withdrawal Address (Recommended)​
+### Step 2: Validate Withdrawal Address (Recommended)
 
 This endpoint validates the destination before you save it.
 
@@ -485,7 +485,7 @@ This endpoint validates the destination before you save it.
     }  
     
 
-### Step 3: Save Withdrawal Address​
+### Step 3: Save Withdrawal Address
 
 Save the address once and keep the returned `key` for future withdrawals.
 
@@ -550,7 +550,7 @@ Save the address once and keep the returned `key` for future withdrawals.
     }  
     
 
-### Step 4: Preview and Submit a Withdrawal​
+### Step 4: Preview and Submit a Withdrawal
 
 Use `preview=true` to quote fees and totals without creating a withdrawal, then submit with `preview=false`.
 
@@ -622,7 +622,7 @@ Use `preview=true` to quote fees and totals without creating a withdrawal, then 
     }  
     
 
-#### Statuses​
+#### Statuses
 
 Status| Description  
 ---|---  
@@ -631,7 +631,7 @@ Status| Description
 `success`| Completed successfully  
 `failure`| Failed (terminal)  
   
-### Withdrawal Best Practices​
+### Withdrawal Best Practices
 
   1. **Use idempotency tokens** : Always generate a unique `idempotency_token` per intended withdrawal to avoid duplicate sends on retries.
   2. **Preview first** : Run a preview request immediately before submit so users can confirm `amount`, `fee`, and `total`.
@@ -640,7 +640,7 @@ Status| Description
   5. **Handle memo/tag networks** : For XRP/XLM-like networks, capture and persist memo/tag fields when addresses are saved.
   6. **Monitor with webhooks** : Subscribe to `withdrawal.status_updated` and reconcile events against your internal withdrawal records.
 
-### Common Errors​
+### Common Errors
 
 Error| Cause| Solution  
 ---|---|---  
@@ -649,7 +649,7 @@ Error| Cause| Solution
 `EFunding:Unknown withdraw key`| Saved key not found| Re-list addresses and use an existing key  
 `EFunding:Duplicate withdraw key`| Key already exists when saving/updating| Choose a unique key per saved address  
   
-## API Reference​
+## API Reference
 
 Endpoint| Method| Description  
 ---|---|---  

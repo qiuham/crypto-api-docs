@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/withdrawal
 api_type: REST
-updated_at: 2026-05-26 14:51:39.721218
+updated_at: 2026-05-27 19:54:44.560880
 ---
 
 # Initiate withdrawal to Spot wallet
@@ -13,7 +13,7 @@ This endpoint allows you to request to withdraw digital assets to your Kraken Sp
 
 Wallet names can be found in the 'accounts' structure in the Get Wallets /accounts response.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -31,7 +31,7 @@ The amount of currency that shall be withdrawn back to spot wallet.
 
 The wallet from which the funds shall be withdrawn back to spot wallet. Default is "cash" wallet.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

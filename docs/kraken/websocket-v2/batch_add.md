@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/batch_add
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:49.459892
+updated_at: 2026-05-27 20:11:19.619999
 ---
 
 # Batch Add
@@ -15,7 +15,7 @@ Sends a collection of orders (minimum of 2 and maximum 15):
   * On submission to the engine, if an order fails pre-match checks (i.e. funding), then the individual order will be rejected and remainder of the batch will be processed.
   * All orders in batch are limited to a single pair.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -373,7 +373,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

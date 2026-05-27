@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-order
 api_type: REST
-updated_at: 2026-05-26 15:02:26.404151
+updated_at: 2026-05-27 20:00:55.187002
 ---
 
 # Cancel Order
@@ -13,7 +13,7 @@ Cancel a particular open order (or set of open orders) by `txid`, `userref` or `
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -39,7 +39,7 @@ oneOf
 
 An alphanumeric client order identifier which uniquely identifies an open order for each client.
 
-## Responses​
+## Responses
 
   * 200
 

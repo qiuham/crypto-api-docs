@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-balance
 api_type: REST
-updated_at: 2026-05-26 14:53:17.913232
+updated_at: 2026-05-27 20:05:28.829759
 ---
 
 # Get Trade Balance
@@ -13,7 +13,7 @@ Retrieve a summary of collateral balances, margin position valuations, equity an
 
 **API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
-## Request​
+## Request
 
   * application/json
 
@@ -39,7 +39,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 

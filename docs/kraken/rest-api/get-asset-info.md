@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-asset-info
 api_type: REST
-updated_at: 2026-05-26 14:52:54.853943
+updated_at: 2026-05-27 20:02:07.948015
 ---
 
 # Get Asset Info
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:52:54.853943
 
 Get information about the assets that are available for deposit, withdrawal, trading and earn.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -31,7 +31,7 @@ Filters the asset class to retrieve (optional)
 
 **Default value:**`currency`
 
-## Responses​
+## Responses
 
   * 200
 

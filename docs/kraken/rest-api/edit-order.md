@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/edit-order
 api_type: REST
-updated_at: 2026-05-26 15:03:01.963565
+updated_at: 2026-05-27 20:01:31.501010
 ---
 
 # Edit Order
@@ -26,7 +26,7 @@ There are a number of caveats for `EditOrder`:
 
 **API Key Permissions Required:** `Orders and trades - Create & modify orders` and `Orders and trades - Cancel & close orders`
 
-## Request​
+## Request
 
   * application/json
 
@@ -108,7 +108,7 @@ Validate inputs only. Do not submit order.
 
 **Default value:**`false`
 
-## Responses​
+## Responses
 
   * 200
 

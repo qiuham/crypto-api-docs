@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq
 api_type: REST
-updated_at: 2026-05-26 14:50:45.548063
+updated_at: 2026-05-27 19:48:08.058194
 ---
 
 # Create a new RFQ
@@ -13,7 +13,7 @@ Create a new RFQ for the authenticated account.
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -21,7 +21,7 @@ Note: This is currently available exclusively in the Kraken pre-prod environment
 
 JSON-encoded RFQ creation request.
 
-## Responses​
+## Responses
 
   * 200
   * 404

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders-after
 api_type: REST
-updated_at: 2026-05-26 14:50:45.201740
+updated_at: 2026-05-27 19:47:39.389434
 ---
 
 # Dead man's switch
@@ -13,7 +13,7 @@ This endpoint provides a Dead Man's Switch mechanism to protect the user from ne
 
 The recommended mechanism usage is making a call every 15 to 20 seconds and provide a timeout of 60 seconds. This allows the user to keep the orders in place on a brief network failure, while keeping them safe in case of a network breakdown.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -21,7 +21,7 @@ The recommended mechanism usage is making a call every 15 to 20 seconds and prov
 
 The timeout specified in seconds.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/allocate-strategy
 api_type: REST
-updated_at: 2026-05-26 15:01:40.796215
+updated_at: 2026-05-27 20:00:26.141350
 ---
 
 # Allocate Earn Funds
@@ -28,7 +28,7 @@ Following specific errors within `Earnings` class can be returned by this method
   * User tier verification: `EEarnings:Permission denied:The user's tier is not high enough`
   * Strategy not found: `EGeneral:Invalid arguments:Invalid strategy ID`
 
-## Request​
+## Request
 
   * application/json
 
@@ -46,7 +46,7 @@ The amount to allocate.
 
 A unique identifier of the chosen earn strategy, as returned from `/0/private/Earn/Strategies`.
 
-## Responses​
+## Responses
 
   * 200
 

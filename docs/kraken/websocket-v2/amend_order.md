@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/amend_order
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:49.278778
+updated_at: 2026-05-27 20:11:05.145084
 ---
 
 # Amend Order
@@ -17,7 +17,7 @@ The amend request enables clients to modify the order parameters in-place withou
 
 For more detail, see [amend transaction guide](/api/docs/guides/spot-amends).
 
-## Request​
+## Request
 
   * Request Schema
   * Example: Basic
@@ -158,7 +158,7 @@ Amends the price on an order using the Kraken order identifier.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

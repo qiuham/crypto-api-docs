@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-accounts
 api_type: REST
-updated_at: 2026-05-26 14:50:48.649831
+updated_at: 2026-05-27 19:48:44.375876
 ---
 
 # Get wallets
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:50:48.649831
 
 This endpoint returns key information relating to all your accounts which may either be cash accounts or margin accounts. This includes digital asset balances, instrument balances, margin requirements, margin trigger estimates and auxiliary information such as available funds, PnL of open positions and portfolio value.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

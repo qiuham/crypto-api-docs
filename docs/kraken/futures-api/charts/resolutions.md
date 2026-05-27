@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/resolutions
 api_type: REST
-updated_at: 2026-05-26 14:50:26.127227
+updated_at: 2026-05-27 19:45:22.960688
 ---
 
 # Resolutions
@@ -13,7 +13,7 @@ Candle resolutions available for specified tick type and market.
 
 List of available tick types can be fetched from the tick types endpoint. List of available markets can be fetched from the markets endpoint.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -25,7 +25,7 @@ List of available tick types can be fetched from the tick types endpoint. List o
 
 Market symbol
 
-## Responses​
+## Responses
 
   * 200
 

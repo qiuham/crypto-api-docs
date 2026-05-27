@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/instrument-status
 api_type: REST
-updated_at: 2026-05-26 14:51:18.122454
+updated_at: 2026-05-27 19:52:20.587513
 ---
 
 # Get instrument status
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:18.122454
 
 Returns price dislocation and volatility details for given market.
 
-## Request​
+## Request
 
 ### Path Parameters
 
@@ -21,7 +21,7 @@ Returns price dislocation and volatility details for given market.
 
 Market symbol.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

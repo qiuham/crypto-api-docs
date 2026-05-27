@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/cancelorder
 api_type: WebSocket
-updated_at: 2026-05-26 14:53:36.260858
+updated_at: 2026-05-27 20:09:24.390062
 ---
 
 # Cancel Order
@@ -16,7 +16,7 @@ The `cancelOrder` request cancels one or more open orders in a single request. T
   * For every cancelled order, a `cancelOrderStatus` message is sent.
   * For example, if a cancelOrder request is sent for cancelling three orders [A, B, C], then if two update messages for 'cancelOrderStatus' are received along with an error such as 'EOrder: Unknown order', then it would imply that the third order is not cancelled. The error message could be different based on the condition which was not met by the 'cancelOrder' request.
 
-## Request​
+## Request
 
   * Request Schema
   * Example
@@ -54,7 +54,7 @@ This is a authenticated request, a session token is required.
     }  
     
 
-## Response​
+## Response
 
   * Response Schema
   * Example

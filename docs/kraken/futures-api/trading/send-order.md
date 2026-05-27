@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/send-order
 api_type: REST
-updated_at: 2026-05-26 14:51:28.752763
+updated_at: 2026-05-27 19:53:25.444233
 ---
 
 # Send order
@@ -11,7 +11,7 @@ updated_at: 2026-05-26 14:51:28.752763
 
 This endpoint allows sending a limit, stop, take profit or immediate-or-cancel order for a currently listed Futures contract.
 
-## Request​
+## Request
 
 ### Query Parameters
 
@@ -112,7 +112,7 @@ Valid Broker IIBAN on whose behalf the order is sent. The format must follow the
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
-## Responses​
+## Responses
 
   * 200
 * application/json

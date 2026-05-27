@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-volume
 api_type: REST
-updated_at: 2026-05-26 14:53:18.075382
+updated_at: 2026-05-27 20:05:44.333017
 ---
 
 # Get Trade Volume
@@ -13,7 +13,7 @@ Returns 30 day USD trading volume and resulting fee schedule for any asset pair(
 
 **API Key Permissions Required:** `Funds permissions - Query`
 
-## Request​
+## Request
 
   * application/json
 
@@ -37,7 +37,7 @@ Optional parameter for viewing xstocks data.
 
 **Default value:**`rebased`
 
-## Responses​
+## Responses
 
   * 200
 
