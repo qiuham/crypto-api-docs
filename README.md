@@ -38,9 +38,9 @@ PYTHONPATH=. python src/main.py readme
 1. 打开仓库的 `Actions` 页面。
 2. 选择 `Crawl Docs` workflow。
 3. 点击 `Run workflow`。
-4. 选择 `exchange`，按需设置 `concurrency`、`limit` 和 `lang`。
+4. 选择 `exchange`，按需设置 `concurrency`、`limit`、`lang` 和 `commit_changes`。
 
-建议先用 `limit=3` 小范围测试；Kraken 和 Gate.io 这类动态/保护较强站点优先使用 `concurrency=1`。
+建议先用 `limit=3`、`commit_changes=false` 小范围测试；确认成功后再用 `commit_changes=true` 更新仓库。Kraken 和 Gate.io 这类动态/保护较强站点优先使用 `concurrency=1`。
 
 ## 项目结构
 

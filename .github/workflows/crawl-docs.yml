@@ -35,6 +35,11 @@ name: Crawl Docs
         required: false
         default: ""
         type: string
+      commit_changes:
+        description: Commit and push docs changes
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -120,6 +125,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Commit updated docs
+        if: ${{ inputs.commit_changes }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
