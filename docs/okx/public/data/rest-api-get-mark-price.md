@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-mark-price
 anchor_id: public-data-rest-api-get-mark-price
 api_type: REST
-updated_at: 2026-01-15T23:28:00.866035
+updated_at: 2026-05-27 19:36:11.611878
 ---
 
 # Get mark price
@@ -49,6 +49,7 @@ instType | String | Yes | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
 instId | String | No | Instrument ID, e.g. `BTC-USD-SWAP`  
@@ -79,6 +80,7 @@ instType | String | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instId | String | Instrument ID, e.g. `BTC-USD-200214`  
 markPx | String | Mark price  
 ts | String | Data return time, Unix timestamp format in milliseconds, e.g. `1597026383085`
@@ -126,6 +128,7 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
 instId | String | 否 | 产品ID，如 `BTC-USD-SWAP`  
@@ -156,6 +159,7 @@ instType | String | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 产品ID，如 `BTC-USD-200214`  
 markPx | String | 标记价格  
 ts | String | 接口数据返回时间，Unix时间戳的毫秒数格式，如`1597026383085`

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-ws-cancel-multiple-orders
 anchor_id: order-book-trading-trade-ws-cancel-multiple-orders
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:53.219574
+updated_at: 2026-05-27 19:34:54.937446
 ---
 
 # WS / Cancel multiple orders
@@ -30,11 +30,11 @@ Unlike other endpoints, the rate limit of this endpoint is determined by the num
       "op": "batch-cancel-orders",
       "args": [
         {
-          "instId": "BTC-USDT",
+          "instIdCode": 123456,
           "ordId": "2517748157541376"
         },
         {
-          "instId": "LTC-USDT",
+          "instIdCode": 654321,
           "ordId": "2517748155771904"
         }
       ]
@@ -51,10 +51,7 @@ A combination of case-sensitive alphanumerics, all numbers, or all letters of up
 op | String | Yes | Operation  
 `batch-cancel-orders`  
 args | Array of objects | Yes | Request Parameters  
-> instIdCode | Integer | Conditional | Instrument ID code.   
-If both `instId` and `instIdCode` are provided, `instIdCode` takes precedence.  
-> instId | String | Conditional | Instrument ID   
-Will be deprecated on February 2026.  
+> instIdCode | Integer | Yes | Instrument ID code  
 > ordId | String | Conditional | Order ID   
 Either `ordId` or `clOrdId` is required, if both are passed, ordId will be used  
 > clOrdId | String | Conditional | Client Order ID as assigned by the client   
@@ -203,10 +200,10 @@ outTime | String | Timestamp at Websocket gateway when the response is sent, Uni
         "id": "1515",
         "op": "batch-cancel-orders",
         "args": [{
-            "instId": "BTC-USDT",
+            "instIdCode": 123456,
             "ordId": "2517748157541376"
         }, {
-            "instId": "LTC-USDT",
+            "instIdCode": 654321,
             "ordId": "2517748155771904"
         }]
     }
@@ -221,10 +218,7 @@ id | String | 是 | 消息的唯一标识
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度必须要在1-32位之间。  
 op | String | 是 | 支持的业务操作，如 `batch-cancel-orders`  
 args | Array of objects | 是 | 请求参数  
-> instIdCode | Integer | 可选 | 产品唯一标识代码。  
-instId 和 instIdCode 两个都传时，instIdCode 优先级更高  
-> instId | String | 可选 | 产品ID   
-将于 2026 年 2 月 上旬下线  
+> instIdCode | Integer | 是 | 产品唯一标识代码  
 > ordId | String | 可选 | 订单ID  
 ordId和clOrdId必须传一个，若传两个，以ordId 为主  
 > clOrdId | String | 可选 | 用户提供的订单ID  

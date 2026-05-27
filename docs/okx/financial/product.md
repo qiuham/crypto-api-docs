@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product
 anchor_id: financial-product
 api_type: API
-updated_at: 2026-01-15T23:28:04.521360
+updated_at: 2026-05-27 19:36:45.560459
 ---
 
 # Financial Product
@@ -729,7 +729,10 @@ Stake to receive BETH for liquidity at 1:1 ratio and earn daily BETH rewards
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -742,6 +745,9 @@ Parameter | Type | Description
 ---|---|---  
 fastRedemptionDailyLimit | String | Fast redemption daily limit  
 The master account and sub-accounts share the same limit  
+rate | String | Latest BETH APY  
+redemptDays | String | Redemption days of BETH  
+minAmt | String | Minimum subscription amount of BETH  
   
 ### POST / Purchase
 
@@ -916,7 +922,7 @@ ordId | String | Order ID
   
 ### GET / Balance
 
-The balance is a snapshot summarized all BETH assets (including assets in redeeming) in account.
+The balance represents the real-time total BETH holdings across the entire account, including assets in the trading account, funding account, and those currently in the redeeming process.
 
 #### Rate Limit: 6 requests per second
 
@@ -1169,7 +1175,10 @@ Stake SOL on Solana to receive OKSOL at a 1:1 ratio for liquidity
         "code": "0",
         "data": {
             "fastRedemptionAvail": "240",
-            "fastRedemptionDailyLimit": "240"
+            "fastRedemptionDailyLimit": "240",
+            "rate": "5.57",
+            "redemptDays": "2",
+            "minAmt": "0.01"
         },
         "msg": ""
     }
@@ -1182,6 +1191,9 @@ Parameter | Type | Description
 fastRedemptionDailyLimit | String | Fast redemption daily limit  
 The master account and sub-accounts share the same limit  
 fastRedemptionAvail | String | Currently fast redemption max available amount  
+rate | String | Latest OKSOL APY  
+redemptDays | String | Redemption days of OKSOL  
+minAmt | String | Minimum subscription amount of OKSOL  
   
 ### POST / Purchase
 
@@ -1310,7 +1322,7 @@ code = `0` means your request has been successfully handled.
 
 ### GET / Balance
 
-The balance is summarized all OKSOL assets (including assets in redeeming) in account.
+The balance represents the real-time total OKSOL holdings across the entire account, including assets in the trading account, funding account, and those currently in the redeeming process.
 
 #### Rate Limit: 6 requests per second
 
@@ -1524,6 +1536,420 @@ Parameter | Type | Description
 ---|---|---  
 rate | String | APY(Annual percentage yield), e.g. `0.01` represents `1%`  
 ts | String | Data time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+## Stable Rewards
+
+OKX Stable Rewards automatically distributes daily rewards to holders of eligible stablecoins (e.g. `USDG`) without any action required once enrolled.  
+Subscribe from the funding account; rewards and redemptions settle to the trading account by default.
+
+### GET / Product info
+
+Retrieve product-level information for the specified stablecoin, including all currencies eligible for subscription and redemption, applicable fee rates, amount limits, daily quotas, and current redemption availability.
+
+#### Rate Limit: 5 requests per 2 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/stable-rewards/product-info`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/stable-rewards/product-info?ccy=USDG
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ccy | String | Yes | Stablecoin, e.g. `USDG`  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "details": [
+                    {
+                        "ccy": "USDG",
+                        "settleCcy": "USDC",
+                        "subFeeRate": "0.0003",
+                        "redemptFeeRate": "0",
+                        "minSubAmt": "1",
+                        "minRedeemAmt": "0.0000001",
+                        "remainingSubQuota": "1000000",
+                        "remainingRedemptQuota": "500000",
+                        "canRedeem": true
+                    },
+                    {
+                        "ccy": "USDG",
+                        "settleCcy": "USDT",
+                        "subFeeRate": "0.0003",
+                        "redemptFeeRate": "",
+                        "minSubAmt": "1",
+                        "minRedeemAmt": "",
+                        "remainingSubQuota": "1000000",
+                        "remainingRedemptQuota": "",
+                        "canRedeem": false
+                    }
+                ],
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+details | Array of objects | List of supported settlement currencies and their subscription/redemption details  
+> ccy | String | Subscribable stablecoin, e.g. `USDG`  
+> settleCcy | String | Settlement currency that can be used to subscribe to `ccy`, e.g. `USDC`, `USDT`  
+> subFeeRate | String | Subscription fee rate, e.g. `0.01` represents `1%`  
+> redemptFeeRate | String | Redemption fee rate, e.g. `0.01` represents `1%`  
+Returns `""` if redemption to the given `settleCcy` is not available  
+> minSubAmt | String | Minimum subscription amount, denominated in `settleCcy`  
+> minRedeemAmt | String | Minimum redemption amount, denominated in `ccy`  
+Returns `""` if redemption to the given `settleCcy` is not available  
+> remainingSubQuota | String | Remaining daily subscription quota per master user ID  
+Returns `-1` if unlimited  
+> remainingRedemptQuota | String | Remaining daily redemption quota per master user ID  
+Returns `-1` if unlimited  
+Returns `""` if redemption to the given `settleCcy` is not available  
+> canRedeem | Boolean | Whether redemption to the given `settleCcy` is currently available  
+`true`: Available  
+`false`: Unavailable  
+ts | String | Data query time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+### POST / Quote
+
+Request a quote before subscribing or redeeming. Only the assets in the funding account can be used. The returned `quoteId` must be submitted via `POST /trade` before `ttlMs` expires.
+
+#### Rate Limit: 2 requests per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/stable-rewards/quote`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/stable-rewards/quote
+    body
+    {
+        "ccy": "USDG",
+        "settleCcy": "USDT",
+        "action": "subscribe",
+        "amt": "1000"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ccy | String | Yes | Stablecoin to subscribe or redeem, e.g. `USDG`  
+settleCcy | String | Yes | Settlement currency, e.g. `USDC`, `USDT`  
+action | String | Yes | Action type  
+`subscribe`  
+`redeem`  
+amt | String | Yes | Transaction amount  
+For `subscribe`: denominated in `settleCcy`  
+For `redeem`: denominated in `ccy`  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "1234567890",
+                "quoteAmt": "998.88",
+                "quoteCcy": "USDG",
+                "exchRate": "0.99888110",
+                "feeRate": "0.0003",
+                "quoteTime": "1620282889345",
+                "ttlMs": "10000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+quoteId | String | Quote ID. Submit this value via `POST /trade` before `ttlMs` expires to execute the transaction  
+quoteAmt | String | Target amount denominated in `quoteCcy`  
+quoteCcy | String | Currency of `quoteAmt`  
+For `subscribe`: returns `ccy` (the stablecoin received)  
+For `redeem`: returns `settleCcy` (the settlement currency received)  
+exchRate | String | Exchange rate, 8 decimals  
+For `subscribe`: units of `ccy` received per unit of `settleCcy`  
+For `redeem`: units of `settleCcy` received per unit of `ccy`  
+feeRate | String | Fee rate applied to this quote, e.g. `0.0003` represents `0.03%`  
+quoteTime | String | Quotation generation time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+ttlMs | String | Quotation validity period in milliseconds, e.g. `10000` means the quote is valid for 10 seconds  
+  
+### POST / Trade
+
+Execute a subscription or redemption using a valid `quoteId` obtained from `POST /quote`.  
+Subscription: assets are deducted from the funding account; on success, the stablecoin is credited to the trading account by default.  
+Redemption: the stablecoin is deducted from the funding account by default; the settlement currency is credited to the trading account by default.
+
+#### Rate Limit: 2 requests per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/stable-rewards/trade`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/stable-rewards/trade
+    body
+    {
+        "quoteId": "1234567890"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+quoteId | String | Yes | Quote ID returned by `POST /quote`. The quote must not have expired  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "1234567890",
+                "ordId": "987654321"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+quoteId | String | Quote ID  
+ordId | String | Order ID  
+  
+### GET / Balance
+
+Retrieve the real-time Stable Rewards balance across the account (trading account, funding account, and in-progress redemptions combined), along with lifetime earnings and the current earning state for each stablecoin.
+
+#### Rate Limit: 5 requests per 2 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/stable-rewards/balance`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/stable-rewards/balance?ccy=USDG
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ccy | String | No | Stablecoin, e.g. `USDG`  
+Returns all supported stablecoins if not specified  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "details": [
+                    {
+                        "ccy": "USDG",
+                        "amt": "100",
+                        "totalEarnAccrual": "0.0003",
+                        "state": "earning"
+                    }
+                ],
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+details | Array of objects | Real-time balance details per stablecoin  
+> ccy | String | Stablecoin, e.g. `USDG`  
+> amt | String | Currency amount held across the entire account  
+> totalEarnAccrual | String | Total interest accrued over the lifetime of the holding  
+> state | String | Earning state  
+`earning`: The balance is currently accruing rewards  
+`pending`: The balance is not currently accruing (e.g. auto-earn is off, or the balance is below the activation threshold)  
+ts | String | Query data time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+### GET / APY history
+
+Retrieve the historical daily APY of the specified stablecoin. The returned rate reflects the user's current VIP level.
+
+#### Rate Limit: 6 requests per second
+
+#### Rate limit rule: IP
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/stable-rewards/apy-history`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/stable-rewards/apy-history?ccy=USDG
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ccy | String | Yes | Stablecoin, e.g. `USDG`  
+days | String | No | Number of historical days to return. The default is `100`. The maximum is `100`  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "rate": "0.004",
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+rate | String | Daily APY for the user's current VIP level, e.g. `0.041` represents `4.1%`  
+ts | String | Snapshot time (UTC+0), Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+### GET / Subscribe redeem history
+
+Retrieve subscription and redemption records. Results are returned in reverse chronological order.
+
+#### Rate Limit: 5 requests per 2 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/stable-rewards/subscribe-redeem-history`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/stable-rewards/subscribe-redeem-history?ccy=USDG
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ccy | String | Yes | Stablecoin, e.g. `USDG`  
+type | String | No | Record type  
+`subscribe`  
+`redeem`  
+Returns both types if not specified  
+status | String | No | Order status  
+`pending`  
+`success`  
+`failed`  
+Returns all statuses if not specified  
+after | String | No | Pagination of data to return records earlier than the requested `ordId`  
+before | String | No | Pagination of data to return records newer than the requested `ordId`  
+limit | String | No | Number of results per request. The default is `100`. The maximum is `100`  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "type": "subscribe",
+                "status": "success",
+                "ccy": "USDG",
+                "settleCcy": "USDT",
+                "ccyAmt": "998.88",
+                "settleCcyAmt": "1000",
+                "fee": "0.3",
+                "quoteId": "1234567890",
+                "ordId": "987654321",
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+type | String | Record type  
+`subscribe`  
+`redeem`  
+status | String | Order status  
+`pending`  
+`success`  
+`failed`  
+ccy | String | Stablecoin subscribed or redeemed, e.g. `USDG`  
+settleCcy | String | Settlement currency, e.g. `USDC`, `USDT`  
+ccyAmt | String | Amount denominated in `ccy`  
+settleCcyAmt | String | Amount denominated in `settleCcy`  
+fee | String | Fee charged, denominated in `settleCcy`  
+quoteId | String | Quote ID  
+ordId | String | Order ID  
+ts | String | Order creation time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
   
 ## Simple earn flexible
 
@@ -1949,6 +2375,7 @@ If `ccy` is not specified, all data under the same `ts` will be returned, not li
             "ccy": "BTC",
             "amt": "0.01",
             "rate": "0.001",
+            "lendingRate": "0.001",
             "ts": "1597026383085"
         }]
     }
@@ -1961,6 +2388,7 @@ Parameter | Type | Description
 ccy | String | Currency, e.g. `BTC`  
 amt | String | ~~Lending amount~~(deprecated)  
 rate | String | Annual borrowing interest rate  
+lendingRate | String | Annual lending interest rate  
 ts | String | Time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
   
 ## Flexible loan
@@ -2042,7 +2470,7 @@ Get collateral assets in funding account.
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -2056,7 +2484,7 @@ Get collateral assets in funding account.
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -2065,6 +2493,9 @@ Get collateral assets in funding account.
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | No | Collateral currency, e.g. `BTC`  
+ordId | String. | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -2123,6 +2554,7 @@ assets | Array of objects | Collateral assets data
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -2139,7 +2571,7 @@ assets | Array of objects | Collateral assets data
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -2148,6 +2580,9 @@ assets | Array of objects | Collateral assets data
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 borrowCcy | String | Yes | Currency to borrow, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
 supCollateral | Array of objects | No | Supplementary collateral assets  
 > ccy | String | Yes | Currency, e.g. `BTC`  
 > amt | String | Yes | Amount  
@@ -2193,7 +2628,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -2208,7 +2643,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -2217,6 +2652,9 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | Yes | Collateral currency, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -2259,6 +2697,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -2276,7 +2715,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -2289,6 +2728,9 @@ type | String | Yes | Operation type
 `reduce`: Reduce collateral  
 collateralCcy | String | Yes | Collateral currency, e.g. `BTC`  
 collateralAmt | String | Yes | Collateral amount  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return error `51063`  
   
 > Response Example
     
@@ -2338,6 +2780,13 @@ code = `0` means your request has been accepted (It doesn't mean the request has
     print(result)
     
 
+#### Request Parameters
+
+**Parameters** | **Types** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all existing orders  
+  
 > Response Example
     
     
@@ -2345,6 +2794,7 @@ code = `0` means your request has been accepted (It doesn't mean the request has
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -2388,11 +2838,12 @@ code = `0` means your request has been accepted (It doesn't mean the request has
 
 **Parameter** | **Type** | **Description**  
 ---|---|---  
+ordId | String | Order ID  
 loanNotionalUsd | String | Loan value in `USD`  
 loanData | Array of objects | Loan data  
 > ccy | String | Loan currency, e.g. `USDT`  
 > amt | String | Loan amount  
-collateralNotionalUsd | String | Collateral value in `USD`  
+collateralNotionalUsd | String | Adjusted collateral value in `USD`  
 collateralData | Array of objects | Collateral data  
 > ccy | String | Collateral currency, e.g. `BTC`  
 > amt | String | Collateral amount  
@@ -2462,6 +2913,8 @@ type | String | No | Action type
 after | String | No | Pagination of data to return records earlier than the requested `refId`(not include)  
 before | String | No | Pagination of data to return records newer than the requested `refId`(not include)  
 limit | String | No | Number of results per request. The maximum is `100`. The default is `100`.  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all orders  
   
 > Response Example
     
@@ -2534,6 +2987,8 @@ ccy | String | No | Loan currency, e.g. `BTC`
 after | String | No | Pagination of data to return records earlier than the requested `refId`(not include)  
 before | String | No | Pagination of data to return records newer than the requested `refId`(not include)  
 limit | String | No | Number of results per request. The maximum is `100`. The default is `100`.  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all orders  
   
 > 返回结果
     
@@ -2563,7 +3018,562 @@ ccy | String | Loan currency, e.g. `BTC`
 loan | String | Loan when calculated interest  
 interest | String | Interest  
 interestRate | String | APY, e.g. `0.01` represents `1%`  
-ts | String | Timestamp to calculated interest, Unix timestamp format in milliseconds, e.g. `1597026383085`
+ts | String | Timestamp to calculated interest, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+## Dual investment
+
+### GET / Currency pairs
+
+Returns available dual investment currency pairs.
+
+#### Rate Limit: 1 request per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/sfp/dcd/currency-pair`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/sfp/dcd/currency-pair
+    
+
+#### Request Parameters
+
+None
+
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "optType": "C",
+                "uly": "BTC-USD"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+baseCcy | String | Base currency  
+quoteCcy | String | Quote currency  
+optType | String | Option type  
+`C`: Call  
+`P`: Put  
+uly | String | Underlying  
+  
+### GET / Product info
+
+Return dual investment product list.
+
+#### Rate Limit: 1 request per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/sfp/dcd/products`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/sfp/dcd/products?baseCcy=BTC&quoteCcy=USDT&optType=C
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+baseCcy | String | Yes | Base currency  
+quoteCcy | String | Yes | Quote currency  
+optType | String | Yes | Option type  
+`C`: Call  
+`P`: Put  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "absYield": "0.00232413",
+                "annualizedYield": "0.0541",
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "expTime": "1774598400000",
+                "interestAccrualTime": "1773244800000",
+                "listTime": "1743150759000",
+                "maxSize": "6000000",
+                "minSize": "10",
+                "notionalCcy": "USDT",
+                "optType": "P",
+                "productId": "BTC-USDT-260327-54500-P",
+                "quoteTime": "1773243808703",
+                "redeemEndTime": "1774594800000",
+                "redeemStartTime": "1773244800000",
+                "stepSz": "1",
+                "tradeEndTime": "1774584000000",
+                "strike": "54500",
+                "uly": "BTC-USD"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+absYield | String | Absolute yield  
+annualizedYield | String | Annualized yield  
+baseCcy | String | Base currency  
+quoteCcy | String | Quote currency  
+notionalCcy | String | Investment currency. If `C`, then baseCcy; if `P`, then quoteCcy.  
+expTime | String | Expiry time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+interestAccrualTime | String | Interest accrual start time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+listTime | String | Product launch time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+minSize | String | Minimum trade size in notional currency  
+maxSize | String | Maximum trade size in notional currency  
+optType | String | Option type  
+`C`: Call  
+`P`: Put  
+productId | String | Product ID  
+quoteTime | String | When product was quoted, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+redeemStartTime | String | Earliest time to request early redemption, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+redeemEndTime | String | Latest time to request early redemption, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+stepSz | String | Trade step size in notional currency  
+tradeEndTime | String | Trade end time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+uly | String | Underlying  
+strike | String | Strike price  
+  
+### POST / Request for quote
+
+Requests a real-time quote for a dual investment product. The quote has a TTL and must be used before expiry.
+
+#### Rate Limit: 10 requests per 60 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/sfp/dcd/quote`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/sfp/dcd/quote
+    body
+    {
+        "productId": "BTC-USDT-260327-77000-C",
+        "notionalSz": "1.5",
+        "notionalCcy": "BTC"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+productId | String | Yes | Product ID  
+notionalSz | String | Yes | Investment size  
+notionalCcy | String | Yes | Investment currency  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "absYield": "0.00135182",
+                "annualizedYield": "69.65",
+                "interestAccrualTime": "1773241200000",
+                "notionalSz": "0.001",
+                "notionalCcy": "BTC",
+                "productId": "BTC-USDT-260312-72000-C",
+                "quoteId": "qtbcDCD-QUOTE17732395560537636",
+                "validUntil": "1774584000000",
+                "idxPx": "69000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+absYield | String | Absolute yield  
+annualizedYield | String | Annualized yield  
+interestAccrualTime | String | Interest accrual start time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+notionalSz | String | Investment size  
+notionalCcy | String | Investment currency  
+productId | String | Product ID  
+quoteId | String | Quote ID  
+validUntil | String | Quote valid until, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+idxPx | String | Index price  
+  
+### POST / Trade
+
+Places a dual investment order using a valid quote.
+
+#### Rate Limit: 2 requests per 60 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/sfp/dcd/trade`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/sfp/dcd/trade
+    body
+    {
+        "quoteId": "quoterbpDCD-QUOTE17732116652401234"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+quoteId | String | Yes | Quote ID  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "quoterbpDCD-QUOTE17732116652401234",
+                "ordId": "987654321",
+                "state": "live"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+quoteId | String | Quote ID  
+ordId | String | Order ID  
+state | String | Order state  
+`initial`: request has been received by system, will further process  
+`pending_book`: trade received by liquidity provider, pending further processing  
+`live`: trade is live  
+`rejected`: trade has been rejected  
+  
+### POST / Request for redeem quote
+
+Requests an early redemption quote for a live dual investment order. This is step 1 of the two-step early redemption flow; call POST / Redeem to confirm.
+
+#### Rate Limit: 10 requests per 60 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/sfp/dcd/redeem-quote`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/sfp/dcd/redeem-quote
+    body
+    {
+        "ordId": "987654321"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | Yes | Order ID  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "quoteId": "quoterbcDCD-REDEEM17732116652401234",
+                "redeemCcy": "BTC",
+                "redeemSz": "1.4856",
+                "termRate": "-0.50",
+                "validUntil": "1774598400000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+ordId | String | Order ID  
+quoteId | String | Quote ID  
+redeemSz | String | Redeem size  
+redeemCcy | String | Redeem currency  
+termRate | String | Term rate  
+validUntil | String | Redeem quote valid until, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+  
+### POST / Redeem
+
+Confirms early redemption using a valid redeem quote. This is step 2 of the two-step early redemption flow.
+
+#### Rate Limit: 2 requests per 60 seconds
+
+#### Rate limit rule: User ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/finance/sfp/dcd/redeem`
+
+> Request Example
+    
+    
+    POST /api/v5/finance/sfp/dcd/redeem
+    body
+    {
+        "ordId": "987654321",
+        "quoteId": "quoterbcDCD-REDEEM17732116652401234"
+    }
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | Yes | Order ID  
+quoteId | String | Yes | Quote ID  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "state": "pending_redeem_booking"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+ordId | String | Order ID  
+state | String | order state  
+`pending_redeem_booking`: redeem received, waiting for liquidity provider further processing  
+`pending_redeem`: liquidity provider booked, waiting for transfer  
+`redeeming`: redemption in progress  
+`redeemed`: redemption completed  
+  
+### GET / Order state
+
+Returns the current state of a dual investment order.
+
+#### Rate Limit: 3 requests per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/sfp/dcd/order-status`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/sfp/dcd/order-status?ordId=987654321
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | Yes | Order ID  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "state": "live"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+ordId | String | Order ID  
+state | String | Order state  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+  
+### GET / Order history
+
+Return dual investment history orders
+
+#### Rate Limit: 1 request per second
+
+#### Rate limit rule: User ID
+
+#### Permission: Read
+
+#### HTTP Request
+
+`GET /api/v5/finance/sfp/dcd/order-history`
+
+> Request Example
+    
+    
+    GET /api/v5/finance/sfp/dcd/order-history
+    
+
+#### Request Parameters
+
+**Parameter** | **Type** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | No | Order ID. When provided, returns that specific order directly (ignores other filters)  
+productId | String | No | Product ID, e.g. `BTC-USDT-260327-77000-C`  
+uly | String | No | Underlying index, e.g. `BTC-USD`  
+state | String | No | Order state filter  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+beginId | String | No | Return records newer than this order ID  
+endId | String | No | Return records earlier than this order ID  
+begin | String | No | Begin timestamp filter, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+end | String | No | End timestamp filter, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+limit | String | No | Number of results per request, max 100  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "quoteId": "quoterbpDCD-QUOTE17732116652401234",
+                "state": "settled",
+                "productId": "BTC-USDT-260327-77000-C",
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "uly": "BTC-USD",
+                "strike": "77000",
+                "notionalSz": "1.5",
+                "notionalCcy": "BTC",
+                "absYield": "0.00806038",
+                "annualizedYield": "0.1834",
+                "yieldSz": "0.01209057",
+                "yieldCcy": "BTC",
+                "settleSz": "1.51209057",
+                "settleCcy": "BTC",
+                "settlePx": "76500",
+                "settleTime": "1774598400000",
+                "expTime": "1774598400000",
+                "redeemStartTime" : "1774598400000",
+                "redeemEndime": "1774598400000",
+                "cTime": "1773212400000",
+                "uTime": "1773212400000"
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+**Parameter** | **Type** | **Description**  
+---|---|---  
+ordId | String | Order ID  
+quoteId | String | Quote ID  
+state | String | Order state  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+productId | String | Product ID, e.g. `BTC-USDT-260327-77000-C`  
+baseCcy | String | Base currency, e.g. `BTC`  
+quoteCcy | String | Quote currency, e.g. `USDT`  
+uly | String | Underlying index, e.g. `BTC-USD`  
+strike | String | Strike price  
+notionalSz | String | Notional size  
+notionalCcy | String | Notional currency  
+absYield | String | Absolute yield rate  
+annualizedYield | String | Annual yield rate  
+yieldSz | String | Yield size  
+yieldCcy | String | Yield currency  
+settleSz | String | Settlement size ("" if not yet settled)  
+settleCcy | String | Settlement currency ("" if not yet settled)  
+settlePx | String | Settlement price ("" if not yet settled)  
+expTime | String | Product expiration time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+settleTime | String | Actual settled time, Unix timestamp format in milliseconds, e.g. `1597026383085` ("" if not yet settled)  
+redeemStartTime | String | Earliest time to request early redemption, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+redeemEndTime | String | Latest time to request early redemption, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+cTime | String | Order creation time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+uTime | String | Last update time, Unix timestamp format in milliseconds, e.g. `1597026383085`
 
 ---
 
@@ -3291,7 +4301,10 @@ ETH 质押，也称为以太坊质押，是参与以太坊区块链权益证明 
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -3304,6 +4317,9 @@ ETH 质押，也称为以太坊质押，是参与以太坊区块链权益证明 
 ---|---|---  
 fastRedemptionDailyLimit | String | 快速赎回每日最高份额  
 母账户和子账户共享同一个限额  
+rate | String | 最新 BETH 年化收益率  
+redemptDays | String | BETH 赎回天数  
+minAmt | String | BETH 最低申购数量  
   
 ### POST / 申购 
 
@@ -3478,7 +4494,7 @@ ordId | String | 订单ID
   
 ### GET / 获取余额 
 
-该余额是一个汇总账户BETH资产（含赎回中）的快照数据。
+该余额表示账户内 BETH 的实时总持仓，包括交易账户、资金账户以及处于赎回过程中的资产。
 
 #### 限速：6 次/s
 
@@ -3732,7 +4748,10 @@ ts | String | 时间，值为时间戳，Unix时间戳为毫秒数格式，如 `
         "code": "0",
         "data": {
             "fastRedemptionAvail": "240",
-            "fastRedemptionDailyLimit": "240"
+            "fastRedemptionDailyLimit": "240",
+            "rate": "5.57",
+            "redemptDays": "2",
+            "minAmt": "0.01"
         },
         "msg": ""
     }
@@ -3745,6 +4764,9 @@ ts | String | 时间，值为时间戳，Unix时间戳为毫秒数格式，如 `
 fastRedemptionDailyLimit | String | 快速赎回每日最高份额  
 母账户和子账户共享同一个限额  
 fastRedemptionAvail | String | 当前剩余最大可赎回数量  
+rate | String | 最新 OKSOL 年化收益率  
+redemptDays | String | OKSOL 赎回天数  
+minAmt | String | OKSOL 最低申购数量  
   
 ### POST / 申购 
 
@@ -3873,7 +4895,7 @@ code = `0`代表请求已被成功处理
 
 ### GET / 获取余额 
 
-该余额是一个汇总账户OKSOL资产（含赎回中）的实时数据。
+该余额表示账户内 OKSOL 的实时总持仓，包括交易账户、资金账户以及处于赎回过程中的资产。
 
 #### 限速：6 次/s
 
@@ -4088,6 +5110,420 @@ days | String | 是 | 查询最近多少天内的数据，不超过365天
 ---|---|---  
 rate | String | 年化收益率，如 `0.01`代表`1%`  
 ts | String | 时间，值为时间戳，Unix时间戳为毫秒数格式，如 `1597026383085`  
+  
+## Stable Rewards 
+
+OKX Stable Rewards 自动为持有合格稳定币（如 `USDG`）的用户每日发放奖励，启用后无需任何操作即可持续赚取收益。  
+订阅时从资金账户扣款；收益及赎回默认结算至交易账户。
+
+### GET / 获取产品信息 
+
+获取指定稳定币的产品信息，包括支持订阅/赎回的结算币种、适用手续费率、申购/赎回金额限制、每日配额以及当前赎回可用状态。
+
+#### 限速：5次/2s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP 请求
+
+`GET /api/v5/finance/stable-rewards/product-info`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/stable-rewards/product-info?ccy=USDG
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+ccy | String | 是 | 稳定币，如 `USDG`  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "details": [
+                    {
+                        "ccy": "USDG",
+                        "settleCcy": "USDC",
+                        "subFeeRate": "0.0003",
+                        "redemptFeeRate": "0",
+                        "minSubAmt": "1",
+                        "minRedeemAmt": "0.0000001",
+                        "remainingSubQuota": "1000000",
+                        "remainingRedemptQuota": "500000",
+                        "canRedeem": true
+                    },
+                    {
+                        "ccy": "USDG",
+                        "settleCcy": "USDT",
+                        "subFeeRate": "0.0003",
+                        "redemptFeeRate": "",
+                        "minSubAmt": "1",
+                        "minRedeemAmt": "",
+                        "remainingSubQuota": "1000000",
+                        "remainingRedemptQuota": "",
+                        "canRedeem": false
+                    }
+                ],
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+details | Array of objects | 当前稳定币支持的结算币种及其订阅/赎回信息列表  
+> ccy | String | 可订阅的稳定币，如 `USDG`  
+> settleCcy | String | 可用于订阅 `ccy` 的结算币种，如 `USDC`、`USDT`  
+> subFeeRate | String | 订阅手续费率，如 `0.01` 代表 `1%`  
+> redemptFeeRate | String | 赎回手续费率，如 `0.01` 代表 `1%`  
+当前 `settleCcy` 不支持赎回时返回 `""`  
+> minSubAmt | String | 最小订阅数量，以 `settleCcy` 计价  
+> minRedeemAmt | String | 最小赎回数量，以 `ccy` 计价  
+当前 `settleCcy` 不支持赎回时返回 `""`  
+> remainingSubQuota | String | 每日剩余订阅额度，按母账户 ID 统计  
+`-1` 代表无上限  
+> remainingRedemptQuota | String | 每日剩余赎回额度，按母账户 ID 统计  
+`-1` 代表无上限  
+当前 `settleCcy` 不支持赎回时返回 `""`  
+> canRedeem | Boolean | 当前 `settleCcy` 是否支持赎回  
+`true`：可赎回  
+`false`：不可赎回  
+ts | String | 数据查询时间，Unix 时间戳，单位为毫秒，如 `1597026383085`  
+  
+### POST / 询价 
+
+在订阅或赎回前发起询价。仅资金账户中的资产可用于订阅。返回的 `quoteId` 须在 `ttlMs` 过期前通过 `POST /trade` 接口提交以完成交易。
+
+#### 限速：2次/s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP 请求
+
+`POST /api/v5/finance/stable-rewards/quote`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/stable-rewards/quote
+    body
+    {
+        "ccy": "USDG",
+        "settleCcy": "USDT",
+        "action": "subscribe",
+        "amt": "1000"
+    }
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+ccy | String | 是 | 订阅或赎回的稳定币，如 `USDG`  
+settleCcy | String | 是 | 结算币种，如 `USDC`、`USDT`  
+action | String | 是 | 操作类型  
+`subscribe`：订阅  
+`redeem`：赎回  
+amt | String | 是 | 交易数量  
+`subscribe` 时以 `settleCcy` 计价  
+`redeem` 时以 `ccy` 计价  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "1234567890",
+                "quoteAmt": "998.88",
+                "quoteCcy": "USDG",
+                "exchRate": "0.99888110",
+                "feeRate": "0.0003",
+                "quoteTime": "1620282889345",
+                "ttlMs": "10000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+quoteId | String | 报价 ID。须在 `ttlMs` 过期前通过 `POST /trade` 提交以完成交易  
+quoteAmt | String | 报价数量，以 `quoteCcy` 计价  
+quoteCcy | String | `quoteAmt` 对应的币种  
+`subscribe` 时返回 `ccy`（用户获得的稳定币）  
+`redeem` 时返回 `settleCcy`（用户获得的结算币种）  
+exchRate | String | 兑换汇率，精度为 8 位小数  
+`subscribe` 时：1 单位 `settleCcy` 可兑换的 `ccy` 数量  
+`redeem` 时：1 单位 `ccy` 可兑换的 `settleCcy` 数量  
+feeRate | String | 本次报价的手续费率，如 `0.0003` 代表 `0.03%`  
+quoteTime | String | 报价生成时间，Unix 时间戳，单位为毫秒，如 `1597026383085`  
+ttlMs | String | 报价有效期，单位为毫秒，如 `10000` 代表报价 10 秒内有效  
+  
+### POST / 下单 
+
+使用 `POST /quote` 返回的有效 `quoteId` 执行订阅或赎回。  
+订阅：从资金账户扣款，成功后稳定币默认入账至交易账户。  
+赎回：默认从资金账户扣除稳定币，结算币种默认入账至交易账户。
+
+#### 限速：2次/s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP 请求
+
+`POST /api/v5/finance/stable-rewards/trade`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/stable-rewards/trade
+    body
+    {
+        "quoteId": "1234567890"
+    }
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+quoteId | String | 是 | 由 `POST /quote` 返回的报价 ID，须在报价未过期前提交  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "1234567890",
+                "ordId": "987654321"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+quoteId | String | 报价 ID  
+ordId | String | 订单 ID  
+  
+### GET / 获取余额 
+
+查询 Stable Rewards 的实时余额，余额涵盖交易账户、资金账户以及正在赎回中的资产合计，同时返回累计收益与当前收益状态。
+
+#### 限速：5次/2s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP 请求
+
+`GET /api/v5/finance/stable-rewards/balance`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/stable-rewards/balance?ccy=USDG
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+ccy | String | 否 | 稳定币，如 `USDG`  
+不传则返回全部支持的稳定币  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "details": [
+                    {
+                        "ccy": "USDG",
+                        "amt": "100",
+                        "totalEarnAccrual": "0.0003",
+                        "state": "earning"
+                    }
+                ],
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+details | Array of objects | 按稳定币返回的实时余额明细  
+> ccy | String | 稳定币，如 `USDG`  
+> amt | String | 整个账户范围内的持有数量  
+> totalEarnAccrual | String | 持有期间的累计收益  
+> state | String | 收益状态  
+`earning`：正在产生收益  
+`pending`：未在产生收益（如自动赚币已关闭，或余额低于起息门槛）  
+ts | String | 数据查询时间，Unix 时间戳，单位为毫秒，如 `1597026383085`  
+  
+### GET / 获取历史收益率 
+
+查询指定稳定币的历史每日年化收益率。返回值为用户当前 VIP 等级对应的收益率。
+
+#### 限速：6次/s
+
+#### 限速规则：IP
+
+#### 权限：读取
+
+#### HTTP 请求
+
+`GET /api/v5/finance/stable-rewards/apy-history`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/stable-rewards/apy-history?ccy=USDG
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+ccy | String | 是 | 稳定币，如 `USDG`  
+days | String | 否 | 查询最近多少天的历史数据。默认 `100`，最大 `100`  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "rate": "0.004",
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+rate | String | 用户当前 VIP 等级对应的日度年化收益率，如 `0.041` 代表 `4.1%`  
+ts | String | 数据快照时间（UTC+0），Unix 时间戳，单位为毫秒，如 `1597026383085`  
+  
+### GET / 获取订阅赎回历史 
+
+查询订阅与赎回记录，按时间倒序返回。
+
+#### 限速：5次/2s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP 请求
+
+`GET /api/v5/finance/stable-rewards/subscribe-redeem-history`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/stable-rewards/subscribe-redeem-history?ccy=USDG
+    
+
+#### 请求参数
+
+**参数名** | **类型** | **是否必须** | **描述**  
+---|---|---|---  
+ccy | String | 是 | 稳定币，如 `USDG`  
+type | String | 否 | 记录类型  
+`subscribe`：订阅  
+`redeem`：赎回  
+不传则返回全部类型  
+status | String | 否 | 订单状态  
+`pending`：处理中  
+`success`：成功  
+`failed`：失败  
+不传则返回全部状态  
+after | String | 否 | 请求此 `ordId` 之前（更早时间）的分页内容  
+before | String | 否 | 请求此 `ordId` 之后（更新时间）的分页内容  
+limit | String | 否 | 分页返回的结果数量。默认 `100`，最大 `100`  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "type": "subscribe",
+                "status": "success",
+                "ccy": "USDG",
+                "settleCcy": "USDT",
+                "ccyAmt": "998.88",
+                "settleCcyAmt": "1000",
+                "fee": "0.3",
+                "quoteId": "1234567890",
+                "ordId": "987654321",
+                "ts": "1718035200000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+type | String | 记录类型  
+`subscribe`：订阅  
+`redeem`：赎回  
+status | String | 订单状态  
+`pending`：处理中  
+`success`：成功  
+`failed`：失败  
+ccy | String | 订阅/赎回的稳定币，如 `USDG`  
+settleCcy | String | 结算币种，如 `USDC`、`USDT`  
+ccyAmt | String | 以 `ccy` 计价的数量  
+settleCcyAmt | String | 以 `settleCcy` 计价的数量  
+fee | String | 订阅/赎回手续费，以 `settleCcy` 计价  
+quoteId | String | 报价 ID  
+ordId | String | 订单 ID  
+ts | String | 订单创建时间，Unix 时间戳，单位为毫秒，如 `1597026383085`  
   
 ## 活期简单赚币 
 
@@ -4511,6 +5947,7 @@ limit | String | 否 | 分页返回的结果集数量，最大为100，不填默
             "ccy": "BTC",
             "amt": "0.01",
             "rate": "0.001",
+            "lendingRate": "0.001",
             "ts": "1597026383085"
         }]
     }
@@ -4523,6 +5960,7 @@ limit | String | 否 | 分页返回的结果集数量，最大为100，不填默
 ccy | String | 币种，如 `BTC`  
 amt | String | ~~市场总出借数量~~ （已弃用）  
 rate | String | 出借年利率  
+lendingRate | String | 年化出借利率  
 ts | String | 时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
   
 ## 活期借币 
@@ -4604,7 +6042,7 @@ borrowCcy | String | 可借币种，如 `BTC`
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -4618,7 +6056,7 @@ borrowCcy | String | 可借币种，如 `BTC`
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -4627,6 +6065,9 @@ borrowCcy | String | 可借币种，如 `BTC`
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 否 | 币种，如 `BTC`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     
@@ -4685,6 +6126,7 @@ assets | Array of objects | 可抵押资产信息
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -4701,7 +6143,7 @@ assets | Array of objects | 可抵押资产信息
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -4710,6 +6152,9 @@ assets | Array of objects | 可抵押资产信息
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 borrowCcy | String | 是 | 借币币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
 supCollateral | Array of objects | 否 | 补充抵押资产信息  
 > ccy | String | 是 | 币种，如 `BTC`  
 > amt | String | 是 | 数量  
@@ -4755,7 +6200,7 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -4770,7 +6215,7 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -4779,6 +6224,9 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 是 | 抵押物币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     
@@ -4821,6 +6269,7 @@ maxRedeemAmt | String | 抵押物最大可赎回数量
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -4838,7 +6287,7 @@ maxRedeemAmt | String | 抵押物最大可赎回数量
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -4851,6 +6300,9 @@ type | String | 是 | 操作类型
 `reduce`：减少抵押物  
 collateralCcy | String | 是 | 抵押物币种，如 `BTC`  
 collateralAmt | String | 是 | 抵押物数量  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回错误 `51063`  
   
 > 返回结果
     
@@ -4900,6 +6352,13 @@ code = `0` 代表请求已被接受(不代表处理成功)
     print(result)
     
 
+#### 请求参数
+
+参数 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有现存订单数据  
+  
 > 返回结果
     
     
@@ -4907,6 +6366,7 @@ code = `0` 代表请求已被接受(不代表处理成功)
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -4950,11 +6410,12 @@ code = `0` 代表请求已被接受(不代表处理成功)
 
 **参数名** | **类型** | **描述**  
 ---|---|---  
+ordId | String | 订单 ID  
 loanNotionalUsd | String | 借币资产美金价值  
 loanData | Array of objects | 借币数据  
 > ccy | String | 借贷币种  
 > amt | String | 借贷数量  
-collateralNotionalUsd | String | 抵押物美金价值  
+collateralNotionalUsd | String | 调整后的抵押物美金价值  
 collateralData | Array of objects | 抵押资产数据  
 > ccy | String | 抵押币种  
 > amt | String | 抵押数量  
@@ -5024,6 +6485,8 @@ type | String | 否 | 操作类型
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 limit | String | 否 | 返回结果的数量，最大为`100`，默认`100`条  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有订单数据  
   
 > 返回结果
     
@@ -5096,6 +6559,8 @@ ccy | String | 否 | 借贷币种，如 `BTC`
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 limit | String | 否 | 返回结果的数量，最大为`100`，默认`100`条  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有订单数据  
   
 > 返回结果
     
@@ -5125,4 +6590,559 @@ ccy | String | 币种，如 `BTC`
 loan | String | 计息时负债  
 interest | String | 利息  
 interestRate | String | 年化利率，如 `0.01`代表`1%`  
-ts | String | 计息时间，Unix 时间戳为毫秒数格式，如 `1597026383085`
+ts | String | 计息时间，Unix 时间戳为毫秒数格式，如 `1597026383085`  
+  
+## 双币赢 
+
+### GET / 获取币对 
+
+获取双币赢币对
+
+#### 限速：1次/s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP请求
+
+`GET /api/v5/finance/sfp/dcd/currency-pair`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/sfp/dcd/currency-pair
+    
+
+#### 请求参数
+
+无
+
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "optType": "C",
+                "uly": "BTC-USD"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+baseCcy | String | 基础币种  
+quoteCcy | String | 报价币种  
+optType | String | 期权类型  
+`C`：看涨  
+`P`：看跌  
+uly | String | 标的  
+  
+### GET / 获取产品信息 
+
+获取双币赢产品列表
+
+#### 限速：1次/s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP请求
+
+`GET /api/v5/finance/sfp/dcd/products`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/sfp/dcd/products?baseCcy=BTC&quoteCcy=USDT&optType=C
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+baseCcy | String | 是 | 基础币种  
+quoteCcy | String | 是 | 报价币种  
+optType | String | 是 | 期权类型  
+`C`：看涨  
+`P`：看跌  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "absYield": "0.00232413",
+                "annualizedYield": "0.0541",
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "expTime": "1774598400000",
+                "interestAccrualTime": "1773244800000",
+                "listTime": "1743150759000",
+                "maxSize": "6000000",
+                "minSize": "10",
+                "notionalCcy": "USDT",
+                "optType": "P",
+                "productId": "BTC-USDT-260327-54500-P",
+                "quoteTime": "1773243808703",
+                "redeemEndTime": "1774594800000",
+                "redeemStartTime": "1773244800000",
+                "stepSz": "1",
+                "tradeEndTime": "1774584000000",
+                "strike": "54500",
+                "uly": "BTC-USD"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+absYield | String | 绝对收益率  
+annualizedYield | String | 年化收益率  
+baseCcy | String | 基础币种  
+quoteCcy | String | 报价币种  
+notionalCcy | String | 投资币种。若 `C`，则为 baseCcy；若 `P`，则为 quoteCcy。  
+expTime | String | 到期时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+interestAccrualTime | String | 利息开始计算时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+listTime | String | 产品上架时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+minSize | String | 最小交易规模（以投资币种计）  
+maxSize | String | 最大交易规模（以投资币种计）  
+optType | String | 期权类型  
+`C`：看涨  
+`P`：看跌  
+productId | String | 产品ID  
+quoteTime | String | 产品报价时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+redeemStartTime | String | 最早可申请提前赎回的时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+redeemEndTime | String | 最晚可申请提前赎回的时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+stepSz | String | 交易步长（以投资币种计）  
+tradeEndTime | String | 交易截止时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+uly | String | 标的  
+strike | String | 行权价  
+  
+### POST / 获取报价 
+
+为双币赢产品请求实时报价。报价有有效期，须在到期前使用。
+
+#### 限速：10次/60s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP请求
+
+`POST /api/v5/finance/sfp/dcd/quote`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/sfp/dcd/quote
+    body
+    {
+        "productId": "BTC-USDT-260327-77000-C",
+        "notionalSz": "1.5",
+        "notionalCcy": "BTC"
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+productId | String | 是 | 产品ID  
+notionalSz | String | 是 | 投资数量  
+notionalCcy | String | 是 | 投资币种  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "absYield": "0.00135182",
+                "annualizedYield": "69.65",
+                "interestAccrualTime": "1773241200000",
+                "notionalSz": "0.001",
+                "notionalCcy": "BTC",
+                "productId": "BTC-USDT-260312-72000-C",
+                "quoteId": "qtbcDCD-QUOTE17732395560537636",
+                "validUntil": "1774584000000",
+                "idxPx": "69000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+absYield | String | 绝对收益率  
+annualizedYield | String | 年化收益率  
+interestAccrualTime | String | 利息开始计算时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+notionalSz | String | 投资数量  
+notionalCcy | String | 投资币种  
+productId | String | 产品ID  
+quoteId | String | 报价ID  
+validUntil | String | 报价有效期，Unix时间戳的毫秒数格式，如 `1597026383085`  
+idxPx | String | 指数价格  
+  
+### POST / 下单 
+
+使用有效报价下单双币赢。
+
+#### 限速：2次/60s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP请求
+
+`POST /api/v5/finance/sfp/dcd/trade`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/sfp/dcd/trade
+    body
+    {
+        "quoteId": "quoterbpDCD-QUOTE17732116652401234"
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+quoteId | String | 是 | 报价ID  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "quoteId": "quoterbpDCD-QUOTE17732116652401234",
+                "ordId": "987654321",
+                "state": "live"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+quoteId | String | 报价ID  
+ordId | String | 订单ID  
+state | String | 订单状态  
+`initial`：系统已接收请求，待处理  
+`pending_book`：流动性提供商已接收请求，待处理  
+`live`：交易已生效  
+`rejected`：交易已拒绝  
+  
+### POST / 获取赎回报价 
+
+为生效中的双币赢订单申请提前赎回报价。这是两步赎回流程的第一步，之后需调用 POST / 赎回 确认。
+
+#### 限速：10次/60s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP请求
+
+`POST /api/v5/finance/sfp/dcd/redeem-quote`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/sfp/dcd/redeem-quote
+    body
+    {
+        "ordId": "987654321"
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 是 | 订单ID  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "quoteId": "quoterbcDCD-REDEEM17732116652401234",
+                "redeemCcy": "BTC",
+                "redeemSz": "1.4856",
+                "termRate": "-0.50",
+                "validUntil": "1774598400000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+ordId | String | 订单ID  
+quoteId | String | 报价ID  
+redeemSz | String | 赎回数量  
+redeemCcy | String | 赎回币种  
+termRate | String | 期限利率  
+validUntil | String | 赎回报价有效期，Unix时间戳的毫秒数格式，如 `1597026383085`  
+  
+### POST / 赎回 
+
+使用有效的赎回报价确认提前赎回。这是两步赎回流程的第二步。
+
+#### 限速：2次/60s
+
+#### 限速规则：User ID
+
+#### 权限：交易
+
+#### HTTP请求
+
+`POST /api/v5/finance/sfp/dcd/redeem`
+
+> 请求示例
+    
+    
+    POST /api/v5/finance/sfp/dcd/redeem
+    body
+    {
+        "ordId": "987654321",
+        "quoteId": "quoterbcDCD-REDEEM17732116652401234"
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 是 | 订单ID  
+quoteId | String | 是 | 报价ID  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "state": "pending_redeem_booking"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+ordId | String | 订单ID  
+state | String | 订单状态  
+`pending_redeem_booking`：赎回请求已接收，等待流动性提供商确认  
+`pending_redeem`：流动性提供商已确认，等待资金划转  
+`redeeming`：赎回处理中  
+`redeemed`：赎回完成  
+  
+### GET / 获取订单状态 
+
+返回双币赢订单的当前状态。
+
+#### 限速：3次/s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP请求
+
+`GET /api/v5/finance/sfp/dcd/order-status`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/sfp/dcd/order-status?ordId=987654321
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 是 | 订单ID  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "state": "live"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+ordId | String | 订单ID  
+state | String | 订单状态  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+  
+### GET / 获取历史订单 
+
+返回双币赢历史订单列表
+
+#### 限速：1次/s
+
+#### 限速规则：User ID
+
+#### 权限：读取
+
+#### HTTP请求
+
+`GET /api/v5/finance/sfp/dcd/order-history`
+
+> 请求示例
+    
+    
+    GET /api/v5/finance/sfp/dcd/order-history
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 否 | 订单ID。传入时直接返回该订单（忽略其他筛选条件）  
+productId | String | 否 | 产品ID，如 `BTC-USDT-260327-77000-C`  
+uly | String | 否 | 标的指数，如 `BTC-USD`  
+state | String | 否 | 订单状态筛选  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+beginId | String | 否 | 返回比该订单ID更新的记录  
+endId | String | 否 | 返回比该订单ID更早的记录  
+begin | String | 否 | 开始时间戳筛选，Unix时间戳的毫秒数格式，如 `1597026383085`  
+end | String | 否 | 结束时间戳筛选，Unix时间戳的毫秒数格式，如 `1597026383085`  
+limit | String | 否 | 每次请求返回的结果数量，最大100  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "ordId": "987654321",
+                "quoteId": "quoterbpDCD-QUOTE17732116652401234",
+                "state": "settled",
+                "productId": "BTC-USDT-260327-77000-C",
+                "baseCcy": "BTC",
+                "quoteCcy": "USDT",
+                "uly": "BTC-USD",
+                "strike": "77000",
+                "notionalSz": "1.5",
+                "notionalCcy": "BTC",
+                "absYield": "0.00806038",
+                "annualizedYield": "0.1834",
+                "yieldSz": "0.01209057",
+                "yieldCcy": "BTC",
+                "settleSz": "1.51209057",
+                "settleCcy": "BTC",
+                "settlePx": "76500",
+                "settleTime": "1774598400000",
+                "expTime": "1774598400000",
+                "redeemStartTime" : "1774598400000",
+                "redeemEndime": "1774598400000",
+                "cTime": "1773212400000",
+                "uTime": "1773212400000"
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+**参数名** | **类型** | **描述**  
+---|---|---  
+ordId | String | 订单ID  
+quoteId | String | 报价ID  
+state | String | 订单状态  
+`initial`  
+`live`  
+`pending_settle`  
+`settled`  
+`pending_redeem`  
+`redeemed`  
+`rejected`  
+productId | String | 产品ID，如 `BTC-USDT-260327-77000-C`  
+baseCcy | String | 基础币种，如 `BTC`  
+quoteCcy | String | 计价币种，如 `USDT`  
+uly | String | 标的指数，如 `BTC-USD`  
+strike | String | 行权价  
+notionalSz | String | 投资数量  
+notionalCcy | String | 投资币种  
+absYield | String | 绝对收益率  
+annualizedYield | String | 年化收益率  
+yieldSz | String | 收益金额  
+yieldCcy | String | 收益币种  
+settleSz | String | 结算金额（未结算时为""）  
+settleCcy | String | 结算币种（未结算时为""）  
+settlePx | String | 结算价格（未结算时为""）  
+expTime | String | 产品到期时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+settleTime | String | 实际结算时间，Unix时间戳的毫秒数格式，如 `1597026383085`（未结算时为""）  
+redeemStartTime | String | 最早可申请提前赎回的时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+redeemEndTime | String | 最晚可申请提前赎回的时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+cTime | String | 订单创建时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+uTime | String | 最后更新时间，Unix时间戳的毫秒数格式，如 `1597026383085`

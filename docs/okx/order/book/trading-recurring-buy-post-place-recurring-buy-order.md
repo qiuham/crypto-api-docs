@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-post-place-recurring-buy-order
 anchor_id: order-book-trading-recurring-buy-post-place-recurring-buy-order
 api_type: API
-updated_at: 2026-01-15T23:27:55.247711
+updated_at: 2026-05-27 19:35:18.187324
 ---
 
 # POST / Place recurring buy order
@@ -53,6 +53,8 @@ stgyName | String | Yes | Custom name for trading bot, no more than 40 character
 recurringList | Array of objects | Yes | Recurring buy info  
 > ccy | String | Yes | Recurring currency, e.g. `BTC`  
 > ratio | String | Yes | Proportion of recurring currency assets, e.g. "0.2" representing 20%  
+> minPx | String | No | Minimum price of recurring currency. `""` means no limit  
+> maxPx | String | No | Maximum price of recurring currency. `""` means no limit  
 period | String | Yes | Period  
 `monthly`  
 `weekly`  
@@ -80,6 +82,15 @@ A combination of case-sensitive alphanumerics, all numbers, or all letters of up
 tag | String | No | Order tag  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 16 characters.  
 tradeQuoteCcy | String | No | The quote currency for trading.  
+source | Array | No | Funding source  
+`1`: Trading account  
+`2`: Funding account  
+`3`: Simple earn account  
+Default is `1`  
+recurringTimeType | String | No | Recurring buy time type  
+`1`: Custom time  
+`2`: Immediate trigger  
+Default is `1`  
   
 > Response Example
     
@@ -158,6 +169,8 @@ stgyName | String | 是 | 策略自定义名称，不超过40个字符
 recurringList | Array of objects | 是 | 定投信息  
 > ccy | String | 是 | 定投币种，如 `BTC`  
 > ratio | String | 是 | 定投币种资产占比，如 "0.2"代表占比20%  
+> minPx | String | 否 | 定投币种价格下限，`""`代表没有限制  
+> maxPx | String | 否 | 定投币种价格上限，`""`代表没有限制  
 period | String | 是 | 周期类型  
 `monthly`：月  
 `weekly`：周  
@@ -184,7 +197,16 @@ algoClOrdId | String | 否 | 客户自定义订单ID
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
 tag | String | 否 | 订单标签  
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字，且长度在1-16位之间。  
-tradeQuoteCcy | String | No | 用于交易的计价币种。  
+tradeQuoteCcy | String | 否 | 用于交易的计价币种。  
+source | Array | 否 | 资金来源  
+`1`：交易账户  
+`2`：资金账户  
+`3`：简单赚币账户  
+默认为`1`  
+recurringTimeType | String | 否 | 定投周期类型  
+`1`：自定义时间  
+`2`：立即触发  
+默认为`1`  
   
 > 返回结果
     

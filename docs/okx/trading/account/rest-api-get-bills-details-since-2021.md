@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-bills-details-since-2021
 anchor_id: trading-account-rest-api-get-bills-details-since-2021
 api_type: REST
-updated_at: 2026-01-15T23:27:49.980457
+updated_at: 2026-05-27 19:34:26.727757
 ---
 
 # Get bills details (since 2021)
@@ -33,6 +33,8 @@ Parameter | Type | Required | Description
 ---|---|---|---  
 year | String | Yes | 4 digits year  
 quarter | String | Yes | Quarter, valid value is `Q1`, `Q2`, `Q3`, `Q4`  
+type | String | No | Bill type. Multiple values are supported, separated by commas, e.g. `1,2,3`. If not specified, all types are returned.  
+Please refer to [Get bill types](/docs-v5/en/#trading-account-rest-api-get-bill-types) for the list of available types.  
   
 > Response Example
     
@@ -153,6 +155,8 @@ Only applicable to options; return "" for other instrument types
 ---|---|---|---  
 year | String | 是 | 4位数字的年份，如 `2023`  
 quarter | String | 是 | 季度，有效值 `Q1` `Q2` `Q3` `Q4`  
+type | String | 否 | 账单类型，支持多个，用英文逗号分隔，如 `1,2,3`；不填则返回所有类型。  
+枚举值请通过 [获取账单类型](/docs-v5/zh/#trading-account-rest-api-get-bill-types) 接口查询。  
   
 > 返回结果
     

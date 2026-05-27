@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-eth-staking
 anchor_id: financial-product-eth-staking
 api_type: API
-updated_at: 2026-01-15T23:28:04.783705
+updated_at: 2026-05-27 19:36:48.105816
 ---
 
 # ETH staking
@@ -54,7 +54,10 @@ Stake to receive BETH for liquidity at 1:1 ratio and earn daily BETH rewards
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -67,6 +70,9 @@ Parameter | Type | Description
 ---|---|---  
 fastRedemptionDailyLimit | String | Fast redemption daily limit  
 The master account and sub-accounts share the same limit  
+rate | String | Latest BETH APY  
+redemptDays | String | Redemption days of BETH  
+minAmt | String | Minimum subscription amount of BETH  
   
 ### POST / Purchase
 
@@ -241,7 +247,7 @@ ordId | String | Order ID
   
 ### GET / Balance
 
-The balance is a snapshot summarized all BETH assets (including assets in redeeming) in account.
+The balance represents the real-time total BETH holdings across the entire account, including assets in the trading account, funding account, and those currently in the redeeming process.
 
 #### Rate Limit: 6 requests per second
 
@@ -509,7 +515,10 @@ ETH 质押，也称为以太坊质押，是参与以太坊区块链权益证明 
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -522,6 +531,9 @@ ETH 质押，也称为以太坊质押，是参与以太坊区块链权益证明 
 ---|---|---  
 fastRedemptionDailyLimit | String | 快速赎回每日最高份额  
 母账户和子账户共享同一个限额  
+rate | String | 最新 BETH 年化收益率  
+redemptDays | String | BETH 赎回天数  
+minAmt | String | BETH 最低申购数量  
   
 ### POST / 申购 
 
@@ -696,7 +708,7 @@ ordId | String | 订单ID
   
 ### GET / 获取余额 
 
-该余额是一个汇总账户BETH资产（含赎回中）的快照数据。
+该余额表示账户内 BETH 的实时总持仓，包括交易账户、资金账户以及处于赎回过程中的资产。
 
 #### 限速：6 次/s
 

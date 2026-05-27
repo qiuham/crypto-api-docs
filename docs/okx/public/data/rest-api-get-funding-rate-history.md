@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-funding-rate-history
 anchor_id: public-data-rest-api-get-funding-rate-history
 api_type: REST
-updated_at: 2026-01-15T23:28:00.684614
+updated_at: 2026-05-27 19:36:09.739514
 ---
 
 # Get funding rate history
@@ -42,8 +42,8 @@ Retrieve funding rate history. This endpoint can return data up to three months.
 
 Parameter | Type | Required | Description  
 ---|---|---|---  
-instId | String | Yes | Instrument ID, e.g. `BTC-USD-SWAP`   
-only applicable to `SWAP`  
+instId | String | Yes | Instrument ID, e.g. `BTC-USD-SWAP` or X-Perps futures instId  
+Applicable to `SWAP` and X-Perps `FUTURES`  
 before | String | No | Pagination of data to return records newer than the requested `fundingTime`  
 after | String | No | Pagination of data to return records earlier than the requested `fundingTime`  
 limit | String | No | Number of results per request. The maximum is `400`; The default is `400`  
@@ -82,7 +82,8 @@ limit | String | No | Number of results per request. The maximum is `400`; The d
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 instType | String | Instrument type  
-`SWAP`  
+`SWAP`: Perpetual futures  
+`FUTURES`: X-Perps futures  
 instId | String | Instrument ID, e.g. `BTC-USD-SWAP`  
 formulaType | String | Formula type  
 `noRate`: old funding rate formula  
@@ -97,9 +98,9 @@ For some altcoins perpetual swaps with significant fluctuations in funding rates
 
 ---
 
-# 获取永续合约历史资金费率
+# 获取合约历史资金费率
 
-获取历史资金费率，最多返回近三个月数据
+获取合约历史资金费率，最多返回近三个月数据
 
 #### 限速：10次/2s
 
@@ -122,7 +123,7 @@ For some altcoins perpetual swaps with significant fluctuations in funding rates
     
     publicDataAPI = PublicData.PublicAPI(flag=flag)
     
-    # 获取永续合约历史资金费率
+    # 获取合约历史资金费率
     result = publicDataAPI.funding_rate_history(
         instId="BTC-USD-SWAP",
     )
@@ -133,8 +134,8 @@ For some altcoins perpetual swaps with significant fluctuations in funding rates
 
 参数名 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
-instId | String | 是 | 产品ID ，如 `BTC-USD-SWAP`   
-仅适用于`永续`  
+instId | String | 是 | 产品ID，如 `BTC-USD-SWAP` 或 X-Perps 交割合约 instId  
+适用于`永续`及 X-Perps `交割`  
 before | String | 否 | 请求此时间戳之后（更新的数据）的分页内容，传的值为对应接口的`fundingTime`  
 after | String | 否 | 请求此时间戳之前（更旧的数据）的分页内容，传的值为对应接口的`fundingTime`  
 limit | String | 否 | 分页返回的结果集数量，最大为400，不填默认返回400条  
@@ -174,6 +175,7 @@ limit | String | 否 | 分页返回的结果集数量，最大为400，不填默
 ---|---|---  
 instType | String | 产品类型  
 `SWAP`：永续合约  
+`FUTURES`：X-Perps 交割合约  
 instId | String | 产品ID，如 `BTC-USD-SWAP`  
 formulaType | String | 公式类型  
 `noRate`：旧资金费率计算公式  

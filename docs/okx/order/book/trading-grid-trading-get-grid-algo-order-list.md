@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-get-grid-algo-order-list
 anchor_id: order-book-trading-grid-trading-get-grid-algo-order-list
 api_type: API
-updated_at: 2026-01-15T23:27:54.033080
+updated_at: 2026-05-27 19:35:01.971919
 ---
 
 # GET / Grid algo order list
@@ -115,6 +115,7 @@ limit | String | No | Number of results per request. The maximum is 100. The def
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -243,6 +244,7 @@ copyType | String | Profit sharing order type
 `2`: Copy order with profit sharing  
 `3`: Lead order  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 tradeQuoteCcy | String | The quote currency for trading.
 
@@ -357,6 +359,7 @@ limit | String | 否 | 返回结果的数量，最大为100，默认100条
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -450,7 +453,7 @@ stopType | String | 网格策略实际停止类型
 现货网格 `1`：卖出交易币，`2`：不卖出交易币  
 合约网格 `1`：停止平仓，`2`：停止不平仓  
 quoteSz | String | 计价币投入数量  
-适用于`现货网格  
+适用于`现货网格`  
 baseSz | String | 交易币投入数量  
 适用于`现货网格`  
 direction | String | 合约网格类型  
@@ -485,5 +488,6 @@ copyType | String | 分润订单类型
 `2`：分润跟单  
 `3`：带单  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 tradeQuoteCcy | String | 用于交易的计价币种。

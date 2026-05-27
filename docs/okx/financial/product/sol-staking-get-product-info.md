@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-sol-staking-get-product-info
 anchor_id: financial-product-sol-staking-get-product-info
 api_type: API
-updated_at: 2026-01-15T23:28:05.057883
+updated_at: 2026-05-27 19:36:50.912409
 ---
 
 # GET / Product info
@@ -35,7 +35,10 @@ updated_at: 2026-01-15T23:28:05.057883
         "code": "0",
         "data": {
             "fastRedemptionAvail": "240",
-            "fastRedemptionDailyLimit": "240"
+            "fastRedemptionDailyLimit": "240",
+            "rate": "5.57",
+            "redemptDays": "2",
+            "minAmt": "0.01"
         },
         "msg": ""
     }
@@ -47,7 +50,10 @@ Parameter | Type | Description
 ---|---|---  
 fastRedemptionDailyLimit | String | Fast redemption daily limit  
 The master account and sub-accounts share the same limit  
-fastRedemptionAvail | String | Currently fast redemption max available amount
+fastRedemptionAvail | String | Currently fast redemption max available amount  
+rate | String | Latest OKSOL APY  
+redemptDays | String | Redemption days of OKSOL  
+minAmt | String | Minimum subscription amount of OKSOL
 
 ---
 
@@ -80,7 +86,10 @@ fastRedemptionAvail | String | Currently fast redemption max available amount
         "code": "0",
         "data": {
             "fastRedemptionAvail": "240",
-            "fastRedemptionDailyLimit": "240"
+            "fastRedemptionDailyLimit": "240",
+            "rate": "5.57",
+            "redemptDays": "2",
+            "minAmt": "0.01"
         },
         "msg": ""
     }
@@ -92,4 +101,7 @@ fastRedemptionAvail | String | Currently fast redemption max available amount
 ---|---|---  
 fastRedemptionDailyLimit | String | 快速赎回每日最高份额  
 母账户和子账户共享同一个限额  
-fastRedemptionAvail | String | 当前剩余最大可赎回数量
+fastRedemptionAvail | String | 当前剩余最大可赎回数量  
+rate | String | 最新 OKSOL 年化收益率  
+redemptDays | String | OKSOL 赎回天数  
+minAmt | String | OKSOL 最低申购数量

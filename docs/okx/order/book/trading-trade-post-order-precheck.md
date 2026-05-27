@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-order-precheck
 anchor_id: order-book-trading-trade-post-order-precheck
 api_type: API
-updated_at: 2026-01-15T23:27:53.002834
+updated_at: 2026-05-27 19:34:52.999194
 ---
 
 # POST / Order precheck
@@ -62,6 +62,10 @@ ordType | String | Yes | Order type
 `elp`: Enhanced Liquidity Program order  
 sz | String | Yes | Quantity to buy or sell  
 px | String | Conditional | Order price. Only applicable to `limit`,`post_only`,`fok`,`ioc`,`mmp`,`mmp_and_post_only` order.  
+outcome | String | Conditional | The market outcome users trade on.  
+`yes`  
+`no`  
+Only applicable and required for `EVENTS`  
 reduceOnly | Boolean | No | Whether orders can only reduce in position size.   
 Valid options: `true` or `false`. The default value is `false`.  
 Only applicable to `MARGIN` orders, and `FUTURES`/`SWAP` orders in `net` mode   
@@ -70,10 +74,10 @@ tgtCcy | String | No | Whether the target currency uses the quote or base curren
 `base_ccy`: Base currency ,`quote_ccy`: Quote currency   
 Only applicable to `SPOT` Market Orders  
 Default is `quote_ccy` for buy, `base_ccy` for sell  
-attachAlgoOrds | Array of objects | No | TP/SL information attached when placing order  
-> attachAlgoClOrdId | String | No | Client-supplied Algo ID when placing order attaching TP/SL  
+attachAlgoOrds | Array of objects | No | Attached TP/SL or trailing stop order information  
+> attachAlgoClOrdId | String | No | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to `algoClOrdId` when placing TP/SL order once the general order is filled completely.  
+It will be posted to `algoClOrdId` when placing the attached algo order once the general order is filled completely.  
 > tpTriggerPx | String | Conditional | Take-profit trigger price  
 For condition TP order, if you fill in this parameter, you should fill in the take-profit order price as well.  
 > tpOrdPx | String | Conditional | Take-profit order price   
@@ -101,6 +105,15 @@ The default is last
 `mark`: mark price   
 The default is last  
 > sz | String | Conditional | Size. Only applicable to TP order of split TPs, and it is required for TP order of split TPs  
+> callbackRatio | String | Conditional | Callback ratio, e.g. `0.05` represents 5%.  
+Either `callbackRatio` or `callbackSpread` is required. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> callbackSpread | String | Conditional | Callback spread (price distance).  
+Either `callbackRatio` or `callbackSpread` is required. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> activePx | String | No | Activation price.  
+The trailing stop is activated when the market price reaches the activation price. After activation, the system starts calculating the actual trigger price. If not provided, the trailing stop is activated immediately upon order placement.  
+Only applicable when `ordType` = `move_order_stop`  
   
 > Response Example
     
@@ -223,16 +236,20 @@ ordType | String | 是 | 订单类型
 `elp`：流动性增强计划订单  
 sz | String | 是 | 委托数量  
 px | String | 可选 | 委托价格，仅适用于`limit`、`post_only`、`fok`、`ioc`类型的订单  
+outcome | String | 可选 | 用户交易的市场结果方向。  
+`yes`  
+`no`  
+仅适用于 `EVENTS`，且为必填  
 reduceOnly | Boolean | 否 | 是否只减仓，`true` 或 `false`，默认`false`  
 仅适用于`币币杠杆`，以及买卖模式下的`交割/永续`  
 仅适用于`合约模式`和`跨币种保证金模式`  
 tgtCcy | String | 否 | 市价单委托数量`sz`的单位，仅适用于`币币`市价订单  
 `base_ccy`: 交易货币 ；`quote_ccy`：计价货币  
 买单默认`quote_ccy`， 卖单默认`base_ccy`  
-attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息  
-> attachAlgoClOrdId | String | 否 | 下单附带止盈止损时，客户自定义的策略订单ID   
+attachAlgoOrds | Array of objects | 否 | 附带止盈止损或移动止盈止损订单信息  
+> attachAlgoClOrdId | String | 否 | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID   
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
-订单完全成交，下止盈止损委托单时，该值会传给`algoClOrdId`  
+订单完全成交，下附带策略委托单时，该值会传给`algoClOrdId`  
 > tpTriggerPx | String | 可选 | 止盈触发价  
 对于条件止盈单，如果填写此参数，必须填写 止盈委托价  
 > tpOrdPx | String | 可选 | 止盈委托价  
@@ -256,7 +273,16 @@ attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息
 `index`：指数价格  
 `mark`：标记价格  
 默认为`last`  
-> sz | String | 可选 | 数量。仅适用于“多笔止盈”的止盈订单，且对于“多笔止盈”的止盈订单必填  
+> sz | String | 可选 | 数量。仅适用于”多笔止盈”的止盈订单，且对于”多笔止盈”的止盈订单必填  
+> callbackRatio | String | 可选 | 回调幅度的比例，如 `0.05` 代表 5%。  
+`callbackRatio` 和 `callbackSpread` 必须传入其中一个，且只能传入一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> callbackSpread | String | 可选 | 回调幅度的价距。  
+`callbackRatio` 和 `callbackSpread` 必须传入其中一个，且只能传入一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> activePx | String | 否 | 激活价格。  
+激活价格是移动止盈止损的激活条件，当市场最新成交价达到或超过激活价格，委托被激活。激活后系统开始计算止盈止损的实际触发价格。如果不填写激活价格，即下单后就被激活。  
+仅适用于 `ordType` = `move_order_stop`  
   
 > 返回结果
     

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-ws-recurring-buy-orders-channel
 anchor_id: order-book-trading-recurring-buy-ws-recurring-buy-orders-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:55.559873
+updated_at: 2026-05-27 19:35:20.398869
 ---
 
 # WS / Recurring buy orders channel
@@ -156,6 +156,8 @@ connId | String | Yes | WebSocket connection ID
                 "profit": "0",
                 "px": "36482",
                 "ratio": "0.2",
+                "minPx": "30000",
+                "maxPx": "50000"
                 "totalAmt": "0"
             }, {
                 "avgPx": "0",
@@ -163,6 +165,8 @@ connId | String | Yes | WebSocket connection ID
                 "profit": "0",
                 "px": "2057.54",
                 "ratio": "0.8",
+                "minPx": "",
+                "maxPx": "",
                 "totalAmt": "0"
             }],
             "recurringTime": "12",
@@ -204,6 +208,8 @@ data | Array of objects | Subscribed data
 > recurringList | Array of objects | Recurring buy info  
 >> ccy | String | Recurring buy currency, e.g. `BTC`  
 >> ratio | String | Proportion of recurring currency assets, e.g. "0.2" representing 20%  
+>> minPx | String | Minimum price of price range. `""` means no limit  
+>> maxPx | String | Maximum price of price range. `""` means no limit  
 >> totalAmt | String | Accumulated quantity in unit of recurring buy currency  
 >> profit | String | Profit in unit of `investmentCcy`  
 >> avgPx | String | Average price of recurring buy, quote currency is `investmentCcy`  
@@ -232,7 +238,10 @@ e.g. "8" representing UTC+8 (East 8 District), Beijing Time
 > cycles | String | Accumulate recurring buy cycles  
 > tag | String | Order tag  
 > pTime | String | Push time of algo order information, Unix timestamp format in milliseconds, e.g. `1597026383085`  
-> tradeQuoteCcy | String | The quote currency for trading.
+> tradeQuoteCcy | String | The quote currency for trading.  
+> recurringTimeType | String | Recurring buy time type  
+> recurringTimeMinutes | String | Custom recurring buy minutes  
+> source | Array | Source of recurring buy
 
 ---
 
@@ -385,6 +394,8 @@ connId | String | 是 | WebSocket连接ID
                 "profit": "0",
                 "px": "36482",
                 "ratio": "0.2",
+                "minPx": "30000",
+                "maxPx": "50000",
                 "totalAmt": "0"
             }, {
                 "avgPx": "0",
@@ -392,9 +403,14 @@ connId | String | 是 | WebSocket连接ID
                 "profit": "0",
                 "px": "2057.54",
                 "ratio": "0.8",
+                "minPx": "",
+                "maxPx": "",
                 "totalAmt": "0"
             }],
             "recurringTime": "12",
+            "recurringTimeType": "1",
+            "recurringTimeMinutes": "",
+            "source": ["1"],
             "state": "running",
             "stgyName": "stg1",
             "tag": "",
@@ -434,6 +450,8 @@ data | Array of objects | 订阅的数据
 > recurringList | Array of objects | 定投信息  
 >> ccy | String | 定投币种，如 `BTC`  
 >> ratio | String | 定投币种资产占比，如 "0.2"代表占比20%  
+>> minPx | String | 价格区间最低价，`""` 代表没有限制  
+>> maxPx | String | 价格区间最高价，`""` 代表没有限制  
 >> totalAmt | String | 累计购入定投币种的数量  
 >> profit | String | 定投收益，单位为`investmentCcy`  
 >> avgPx | String | 定投均价，计价单位为`investmentCcy`  
@@ -464,4 +482,7 @@ data | Array of objects | 订阅的数据
 > cycles | String | 定投累计轮数  
 > tag | String | 订单标签  
 > pTime | String | 策略订单的推送时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
-> tradeQuoteCcy | String | 用于交易的计价币种。
+> tradeQuoteCcy | String | 用于交易的计价币种。  
+> recurringTimeType | String | 定投时间类型  
+> recurringTimeMinutes | String | 自定义定投分钟数  
+> source | Array | 定投来源

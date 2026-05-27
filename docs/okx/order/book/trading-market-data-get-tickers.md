@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-market-data-get-tickers
 anchor_id: order-book-trading-market-data-get-tickers
 api_type: API
-updated_at: 2026-01-15T23:27:56.594028
+updated_at: 2026-05-27 19:35:32.143188
 ---
 
 # GET / Tickers
@@ -48,6 +48,7 @@ instType | String | Yes | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
   
@@ -167,6 +168,7 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`，如 `BTC-USD`  
   

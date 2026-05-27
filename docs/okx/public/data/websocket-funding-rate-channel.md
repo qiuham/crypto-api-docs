@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-funding-rate-channel
 anchor_id: public-data-websocket-funding-rate-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:01.599372
+updated_at: 2026-05-27 19:36:18.404672
 ---
 
 # Funding rate channel
@@ -153,7 +153,9 @@ arg | Object | Successfully subscribed channel
 > channel | String | Channel name  
 > instId | String | Instrument ID  
 data | Array of objects | Subscribed data  
-> instType | String | Instrument type, `SWAP`  
+> instType | String | Instrument type  
+`SWAP`: Perpetual futures  
+`FUTURES`: X-Perps futures  
 > instId | String | Instrument ID, e.g. `BTC-USD-SWAP`  
 > method | String | Funding rate mechanism   
 `current_period` ~~  
@@ -184,7 +186,7 @@ For some altcoins perpetual swaps with significant fluctuations in funding rates
 
 # 资金费率频道
 
-获取永续合约资金费率，30秒到90秒内推送一次数据  
+获取合约资金费率，30秒到90秒内推送一次数据  
   
 #### URL Path
 
@@ -323,7 +325,9 @@ arg | Object | 订阅成功的频道
 > channel | String | 频道名  
 > instId | String | 产品ID  
 data | Array of objects | 订阅的数据  
-> instType | String | 产品类型，`SWAP`  
+> instType | String | 产品类型  
+`SWAP`：永续合约  
+`FUTURES`：X-Perps 交割合约  
 > instId | String | 产品ID，如 `BTC-USD-SWAP`  
 > method | String | 资金费收取逻辑   
 `current_period`：当期收 ~~  

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-ws-order-channel
 anchor_id: order-book-trading-trade-ws-order-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:53.045529
+updated_at: 2026-05-27 19:34:53.341257
 ---
 
 # WS / Order channel
@@ -141,6 +141,7 @@ args | Array of objects | Yes | List of subscribed channels
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 `ANY`  
 > instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
@@ -205,6 +206,7 @@ arg | Object | No | Subscribed channel
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 `ANY`  
 > instFamily | String | No | Instrument family  
 > instId | String | No | Instrument ID  
@@ -308,10 +310,22 @@ arg | Object | Successfully subscribed channel
 > channel | String | Channel name  
 > uid | String | User Identifier  
 > instType | String | Instrument type  
+`SPOT`  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 > instFamily | String | Instrument family  
 > instId | String | Instrument ID  
 data | Array of objects | Subscribed data  
 > instType | String | Instrument type  
+`SPOT`  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 > instId | String | Instrument ID  
 > tgtCcy | String | Order quantity unit setting for `sz`  
 `base_ccy`: Base currency ,`quote_ccy`: Quote currency   
@@ -330,7 +344,7 @@ For options, use coin as unit (e.g. BTC, ETH)
 `px`: Place an order based on price, in the unit of coin (the unit for the request parameter px is BTC or ETH)   
 `pxVol`: Place an order based on pxVol   
 `pxUsd`: Place an order based on pxUsd, in the unit of USD (the unit for the request parameter px is USD)  
-> sz | String | The original order quantity, `SPOT`/`MARGIN`, in the unit of currency; `FUTURES`/`SWAP`/`OPTION`, in the unit of contract  
+> sz | String | Quantity to buy or sell  
 > notionalUsd | String | Estimated national value in `USD` of order  
 > ordType | String | Order type   
 `market`: market order   
@@ -386,7 +400,7 @@ The unit is contract for `FUTURES`/`SWAP`/`OPTION`
 `mmp_canceled`  
 > lever | String | Leverage, from `0.01` to `125`.   
 Only applicable to `MARGIN/FUTURES/SWAP`  
-> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order attaching TP/SL.  
+> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop.  
 > tpTriggerPx | String | Take-profit trigger price, it  
 > tpTriggerPxType | String | Take-profit trigger price type.   
 `last`: last price  
@@ -399,11 +413,11 @@ Only applicable to `MARGIN/FUTURES/SWAP`
 `index`: index price  
 `mark`: mark price  
 > slOrdPx | String | Stop-loss order price, it  
-> attachAlgoOrds | Array of objects | TP/SL information attached when placing order  
->> attachAlgoId | String | The order ID of attached TP/SL order. It can be used to identity the TP/SL order when amending. It will not be posted to algoId when placing TP/SL order after the general order is filled completely.  
->> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order attaching TP/SL  
+> attachAlgoOrds | Array of objects | Attached TP/SL or trailing stop order information  
+>> attachAlgoId | String | The order ID of the attached TP/SL or trailing stop order. It can be used to identify the attached order when amending. It will not be posted to algoId when placing the attached algo order after the general order is filled completely.  
+>> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to `algoClOrdId` when placing TP/SL order once the general order is filled completely.  
+It will be posted to `algoClOrdId` when placing the attached algo order once the general order is filled completely.  
 >> tpOrdKind | String | TP order kind  
 `condition`  
 `limit`  
@@ -425,10 +439,13 @@ It will be posted to `algoClOrdId` when placing TP/SL order once the general ord
 >> amendPxOnTriggerType | String | Whether to enable Cost-price SL. Only applicable to SL order of split TPs.   
 `0`: disable, the default value   
 `1`: Enable  
+>> callbackRatio | String | Callback ratio, e.g. `0.05` represents 5%  
+>> callbackSpread | String | Callback spread (price distance)  
+>> activePx | String | Activation price  
 > linkedAlgoOrd | Object | Linked SL order detail, only applicable to TP limit order of one-cancels-the-other order(oco)  
 >> algoId | Object | Algo ID  
 > stpId | String | ~~Self trade prevention ID  
-Return "" if self trade prevention is not applicable~~ (deprecated)  
+Return "" if self trade prevention is not applicable~~ (Deprecated)  
 > stpMode | String | Self trade prevention mode  
 > feeCcy | String | Fee currency  
 For maker sell orders of Spot and Margin, this represents the quote currency. For all other cases, it represents the currency in which fees are charged.  
@@ -437,7 +454,7 @@ For Spot and Margin (excluding maker sell orders): accumulated fee charged by th
 For maker sell orders in Spot and Margin, Expiry Futures, Perpetual Futures and Options: accumulated fee and rebate (always in quote currency for maker sell orders in Spot and Margin)  
 > rebateCcy | String | Rebate currency  
 For maker sell orders of Spot and Margin, this represents the base currency. For all other cases, it represents the currency in which rebates are paid.  
-rebate | String | Rebate amount, only applicable to Spot and Margin  
+> rebate | String | Rebate amount, only applicable to Spot and Margin  
 For maker sell orders: ~~Accumulated fee and~~ rebate amount in the unit of base currency.  
 For all other cases, it represents the maker rebate amount, always positive, return "" if no rebate.  
 > pnl | String | Profit and loss (excluding the fee).  
@@ -509,14 +526,18 @@ When amending the order through API and `cxlOnFail` is set to `true` in the orde
 When amending the order through API, the order amendment acknowledgement returns success and the amendment subsequently failed, `-1` will be returned if `cxlOnFail` is set to `false`, `1` will be returned if `cxlOnFail` is set to `true`.   
 When amending the order through Web/APP and the amendment failed, `-1` will be returned.  
 > reduceOnly | String | Whether the order can only reduce the position size. Valid options: `true` or `false`.  
-> quickMgnType | String | Quick Margin type, Only applicable to Quick Margin Mode of isolated margin  
-`manual`, `auto_borrow`, `auto_repay`  
+> quickMgnType | String | ~~Quick Margin type, Only applicable to Quick Margin Mode of isolated margin  
+`manual`, `auto_borrow`, `auto_repay`~~ (Deprecated)  
 > algoClOrdId | String | Client-supplied Algo ID. There will be a value when algo order attaching `algoClOrdId` is triggered, or it will be "".  
 > algoId | String | Algo ID. There will be a value when algo order is triggered, or it will be "".  
 > lastPx | String | Last price  
 > code | String | Error Code, the default is 0  
 > msg | String | Error Message, The default is ""  
 > tradeQuoteCcy | String | The quote currency used for trading.  
+> outcome | String | The market outcome the user traded on.  
+`yes`  
+`no`  
+Only applicable to `EVENTS`  
 For market orders, it's likely the orders channel will show order state as "filled" while showing the "last filled quantity (fillSz)" as 0.  In exceptional cases, the same message may be sent multiple times (perhaps with the different uTime) . The following guidelines are advised:  
   
 1\. If a `tradeId` is present, it means a fill. Each `tradeId` should only be returned once per instrument ID, and the later messages that have the same `tradeId` should be discarded.  
@@ -652,6 +673,7 @@ args | Array of objects | 是 | 请求订阅的频道列表
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 `ANY`：全部  
 > instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
@@ -716,6 +738,7 @@ arg | Object | 否 | 订阅的频道
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 `ANY`：全部  
 > instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
@@ -820,10 +843,22 @@ arg | Object | 订阅成功的频道
 > channel | String | 频道名  
 > uid | String | 用户标识  
 > instType | String | 产品类型  
+`SPOT`：币币  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 > instFamily | String | 交易品种  
 > instId | String | 产品ID  
 data | Array of objects | 订阅的数据  
 > instType | String | 产品类型  
+`SPOT`：币币  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 > instId | String | 产品ID  
 > ccy | String | 保证金币种，适用于`逐仓杠杆`及`合约模式`下的`全仓杠杆`订单以及交割、永续和期权合约订单。  
 > ordId | String | 订单ID  
@@ -838,7 +873,7 @@ data | Array of objects | 订阅的数据
 `px`：代表按价格下单，单位为币 (请求参数 px 的数值单位是BTC或ETH)   
 `pxVol`：代表按pxVol下单   
 `pxUsd`：代表按照pxUsd下单，单位为USD (请求参数px 的数值单位是USD)  
-> sz | String | 原始委托数量，`币币/币币杠杆`，以币为单位；`交割`/`永续`/`期权` ，以张为单位  
+> sz | String | 委托数量  
 > notionalUsd | String | 委托单预估美元价值  
 > fillNotionalUsd | String | 委托单已成交的美元价值  
 > ordType | String | 订单类型   
@@ -893,7 +928,7 @@ data | Array of objects | 订阅的数据
 `filled`：完全成交  
 `mmp_canceled`：做市商保护机制导致的自动撤单  
 > lever | String | 杠杆倍数，0.01到125之间的数值，仅适用于 `币币杠杆/交割/永续`  
-> attachAlgoClOrdId | String | 下单附带止盈止损时，客户自定义的策略订单ID  
+> attachAlgoClOrdId | String | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID  
 > tpTriggerPx | String | 止盈触发价  
 > tpTriggerPxType | String | 止盈触发价类型  
 `last`：最新价格  
@@ -906,9 +941,9 @@ data | Array of objects | 订阅的数据
 `index`：指数价格  
 `mark`：标记价格  
 > slOrdPx | String | 止损委托价，止损委托价格为`-1`时，执行市价止损  
-> attachAlgoOrds | Array of objects | 下单附带止盈止损信息  
->> attachAlgoId | String | 附带止盈止损的订单ID，改单时，可用来标识该笔附带止盈止损订单。下止盈止损委托单时，该值不会传给 algoId  
->> attachAlgoClOrdId | String | 下单附带止盈止损时，客户自定义的策略订单ID  
+> attachAlgoOrds | Array of objects | 附带止盈止损或移动止盈止损订单信息  
+>> attachAlgoId | String | 附带止盈止损或移动止盈止损的订单ID，改单时，可用来标识该笔附带止盈止损订单。下附带策略委托单时，该值不会传给 algoId  
+>> attachAlgoClOrdId | String | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID  
 >> tpOrdKind | String | 止盈订单类型  
 `condition`: 条件单  
 `limit`: 限价单  
@@ -932,6 +967,9 @@ data | Array of objects | 订阅的数据
 >> amendPxOnTriggerType | String | 是否启用开仓价止损，仅适用于分批止盈的止损订单  
 `0`：不开启，默认值   
 `1`：开启  
+>> callbackRatio | String | 回调幅度的比例，如 `0.05` 代表 5%  
+>> callbackSpread | String | 回调幅度的价距  
+>> activePx | String | 激活价格  
 > linkedAlgoOrd | Object | 止损订单信息，仅适用于包含限价止盈单的双向止盈止损订单，触发后生成的普通订单  
 >> algoId | Object | 策略订单唯一标识  
 > stpId | String | ~~自成交保护ID  
@@ -1016,14 +1054,18 @@ data | Array of objects | 订阅的数据
 通过API修改订单时，如果修改返回结果为成功但修改最终失败后，当`cxlOnFail`设置为`false`时返回 `-1`;当`cxlOnFail`设置为`true`时则返回`1`  
 通过Web/APP修改订单时，如果修改失败后，则返回`-1`  
 > reduceOnly | String | 是否只减仓，`true` 或 `false`  
-> quickMgnType | String | 一键借币类型，仅适用于杠杆逐仓的一键借币模式  
-`manual`：手动，`auto_borrow`：自动借币，`auto_repay`：自动还币  
+> quickMgnType | String | ~~一键借币类型，仅适用于杠杆逐仓的一键借币模式  
+`manual`：手动，`auto_borrow`：自动借币，`auto_repay`：自动还币~~（已弃用）  
 > algoClOrdId | String | 客户自定义策略订单ID。策略订单触发，且策略单有`algoClOrdId`时有值，否则为"",  
 > algoId | String | 策略委托单ID，策略订单触发时有值，否则为""  
 > lastPx | String | 最新成交价  
 > code | String | 错误码，默认为0  
 > msg | String | 错误消息，默认为""  
 > tradeQuoteCcy | String | 用于交易的计价币种。  
+> outcome | String | 用户交易的市场结果方向。  
+`yes`  
+`no`  
+仅适用于 `EVENTS`  
 对于市价委托，订单频道推送消息会出现状态为“完全成交”，但最新成交数量 (fillSz) 为 0 的情况。  极端情况下，会出现同一条消息重复推送的情况（`uTime` 可能会不一样），建议做如下处理：  
   
 * 当`tradeId`有值时，代表成交，对于同一`tradeId`，请以第一条推送消息为准，忽略后续的推送消息；  

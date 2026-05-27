@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code-rest-api
 anchor_id: error-code-rest-api
 api_type: REST
-updated_at: 2026-01-15T23:28:06.147518
+updated_at: 2026-05-27 19:37:07.796086
 ---
 
 # REST API
@@ -129,20 +129,20 @@ Error Code | HTTP Status code | Error Message
 51001 | 200 | Instrument ID, Instrument ID code or Spread ID doesn't exist.  
 51002 | 200 | Instrument ID doesn't match underlying index.  
 51003 | 200 | Either client order ID or order ID is required.  
-51004 | 200 | Order failed. For isolated long/short mode of {param0}, the sum of current order size, position quantity in the same direction, and pending orders in the same direction can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current order size: {param3} contracts, position quantity in the same direction: {param4} contracts, pending orders in the same direction: {param5} contracts).  
-51004 | 200 | Order failed. For cross long/short mode of {param0}, the sum of current order size, position quantity in the long and short directions, and pending orders in the long and short directions can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current order size: {param3} contracts, position quantity in the long and short directions: {param4} contracts, pending orders in the long and short directions: {param5} contracts).  
-51004 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current order size, current instId position quantity in the long and short directions, current instId pending orders in the long and short directions, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current order size: {param4} contracts, current instId position quantity in the long and short directions: {param5} contracts, current instId pending orders in the long and short directions: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
-51004 | 200 | Order failed. For buy/sell mode of {param0}, the sum of current buy order size, position quantity, and pending buy orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current buy order size: {param3} contracts, position quantity: {param4} contracts, pending buy orders: {param5} contracts).  
-51004 | 200 | Order failed. For buy/sell mode of {param0}, the sum of current sell order size, position quantity, and pending sell orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current sell order size: {param3} contracts, position quantity: {param4} contracts, pending sell orders: {param5} contracts).  
-51004 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current buy order size, current instId position quantity, current instId pending buy orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current buy order size: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending buy orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
-51004 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current sell order size, current instId position quantity, current instId pending sell orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current sell order size: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending sell orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
-51004 | 200 | Order amendment failed. For isolated long/short mode of {param0}, the sum of increment order size by amendment, position quantity in the same direction, and pending orders in the same direction can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amendment: {param3} contracts, position quantity in the same direction: {param4} contracts, pending orders in the same direction: {param5} contracts).  
-51004 | 200 | Order amendment failed. For cross long/short mode of {param0}, the sum of increment order size by amendment, position quantity in the long and short directions, and pending orders in the long and short directions can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amendment: {param3} contracts, position quantity in the long and short directions: {param4} contracts, pending orders in the same direction: {param5} contracts).  
-51004 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amendment, current instId position quantity in the long and short directions, current instId pending orders in the long and short directions, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amendment: {param4} contracts, current instId position quantity in the long and short directions: {param5} contracts, current instId pending orders in the long and short directions: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
-51004 | 200 | Order amendment failed. For buy/sell mode of {param0}, the sum of increment order size by amending current buy order, position quantity, and pending buy orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amending current buy order: {param3} contracts, position quantity: {param4} contracts, pending buy orders: {param5} contracts).  
-51004 | 200 | Order amendment failed. For buy/sell mode of {param0}, the sum of increment order size by amending current sell order, position quantity, and pending sell orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amending current sell order: {param3} contracts, position quantity: {param4} contracts, pending sell orders: {param5} contracts).  
-51004 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amending current buy order, current instId position quantity, current instId pending buy orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amending current buy order: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending buy orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
-51004 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amending current sell order, current instId position quantity, current instId pending sell orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amending current sell order: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending sell orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1101 | 200 | Order failed. For isolated long/short mode of {param0}, the sum of current order size, position quantity in the same direction, and pending orders in the same direction can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current order size: {param3} contracts, position quantity in the same direction: {param4} contracts, pending orders in the same direction: {param5} contracts).  
+51004_1102 | 200 | Order failed. For cross long/short mode of {param0}, the sum of current order size, position quantity in the long and short directions, and pending orders in the long and short directions can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current order size: {param3} contracts, position quantity in the long and short directions: {param4} contracts, pending orders in the long and short directions: {param5} contracts).  
+51004_1103 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current order size, current instId position quantity in the long and short directions, current instId pending orders in the long and short directions, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current order size: {param4} contracts, current instId position quantity in the long and short directions: {param5} contracts, current instId pending orders in the long and short directions: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1104 | 200 | Order failed. For buy/sell mode of {param0}, the sum of current buy order size, position quantity, and pending buy orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current buy order size: {param3} contracts, position quantity: {param4} contracts, pending buy orders: {param5} contracts).  
+51004_1105 | 200 | Order failed. For buy/sell mode of {param0}, the sum of current sell order size, position quantity, and pending sell orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, current sell order size: {param3} contracts, position quantity: {param4} contracts, pending sell orders: {param5} contracts).  
+51004_1106 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current buy order size, current instId position quantity, current instId pending buy orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current buy order size: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending buy orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1107 | 200 | Order failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of current sell order size, current instId position quantity, current instId pending sell orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, current sell order size: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending sell orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1111 | 200 | Order amendment failed. For isolated long/short mode of {param0}, the sum of increment order size by amendment, position quantity in the same direction, and pending orders in the same direction can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amendment: {param3} contracts, position quantity in the same direction: {param4} contracts, pending orders in the same direction: {param5} contracts).  
+51004_1112 | 200 | Order amendment failed. For cross long/short mode of {param0}, the sum of increment order size by amendment, position quantity in the long and short directions, and pending orders in the long and short directions can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amendment: {param3} contracts, position quantity in the long and short directions: {param4} contracts, pending orders in the same direction: {param5} contracts).  
+51004_1113 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amendment, current instId position quantity in the long and short directions, current instId pending orders in the long and short directions, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amendment: {param4} contracts, current instId position quantity in the long and short directions: {param5} contracts, current instId pending orders in the long and short directions: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1114 | 200 | Order amendment failed. For buy/sell mode of {param0}, the sum of increment order size by amending current buy order, position quantity, and pending buy orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amending current buy order: {param3} contracts, position quantity: {param4} contracts, pending buy orders: {param5} contracts).  
+51004_1115 | 200 | Order amendment failed. For buy/sell mode of {param0}, the sum of increment order size by amending current sell order, position quantity, and pending sell orders can’t be more than {param1}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param2}×, increment order size by amending current sell order: {param3} contracts, position quantity: {param4} contracts, pending sell orders: {param5} contracts).  
+51004_1116 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amending current buy order, current instId position quantity, current instId pending buy orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amending current buy order: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending buy orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
+51004_1117 | 200 | Order amendment failed. For cross buy/sell mode of {param0} and instFamily {param1}, the sum of increment order size by amending current sell order, current instId position quantity, current instId pending sell orders, and other contracts of the same instFamily can’t be more than {param2}(contracts) which is the maximum position amount under current leverage. Please lower the leverage or use a new sub-account to place the order again (current leverage: {param3}×, increment order size by amending current sell order: {param4} contracts, current instId position quantity: {param5} contracts, current instId pending sell orders: {param6} contracts, other contracts of the same instFamily: {param7} contracts).  
 51005 | 200 | Your order amount exceeds the max order amount.  
 51006 | 200 | Order price is not within the price limit (max buy price: {param0} , min sell price: {param1} )  
 51007 | 200 | Order failed. Please place orders of at least 1 contract or more.  
@@ -156,10 +156,12 @@ Error Code | HTTP Status code | Error Message
 51008_1007 | 200 | Your order failed because it requires borrowing {param0}, and the platform’s loan quota is insufficient.  
 51008_1009 | 200 | Order failed. Insufficient account balance, and the adjusted equity in `USD` is less than IMR (Portfolio margin mode can try IOC orders to lower the risks)  
 51008_1010 | 200 | Order failed. The order didn't pass delta verification because if the order were to succeed, the change in adjEq would be smaller than the change in IMR. Increase adjEq or reduce IMR (Portfolio margin mode can try IOC orders to lower the risks)  
-51008_1014 | 200 | Order failed. Your available margin (in USD) is too low. It excludes crypto ({param0}) exceeding the platform's collateral limit.  
 51008_1015 | 200 | Order failed. Your available balance is insufficient. It excludes crypto ({param0}) exceeding the platform's collateral limit.  
 51008_1016 | 200 | Order failed. Your available {param0} balance is insufficient, and your available margin (in USD) is too low for borrowing. This margin excludes crypto ({param1}) exceeding the platform's collateral limit.  
+51008_1017 | 200 | Your order failed because it requires a borrowing amount that exceeds your tier limit. The total borrowing required after placing your order is {param1} {param0}, and the limit for {param2}x borrowing leverage is {param3} {param0}. Try lowering your leverage before placing your order again.  
+51008_1018 | 200 | Your order failed because it requires a borrowing amount that exceeds your tier limit. The total potential borrowing required after placing your order is {param1} {param0}, and the limit for {param2}x borrowing leverage is {param3} {param0}. Try lowering your leverage before placing your order again.  
 51008_1019 | 200 | Order failed. Your main account's {param0} borrowing quota is insufficient.  
+51008_1020 | 200 | Order failed. After the spot fee in quote currency is deducted, your {param0} balance is insufficient to complete the order. Please disable the spot fees in quote currency toggle and try again.  
 51009 | 200 | Order blocked. Please contact customer support for assistance.  
 51010 | 200 | Request unsupported under current account mode  
 51011 | 200 | Order ID already exists.  
@@ -551,6 +553,7 @@ Error Code | HTTP Status code | Error Message
 51611 | 200 | You can't download billing statements for the current quarter.  
 51620 | 200 | Only affiliates can perform this action  
 51621 | 200 | The user isn’t your invitee  
+51625 | 200 | One-click repay requires auto-borrow to be enabled. Please enable auto-borrow, or repay the debt currency via Easy Convert or spot trading.  
 51156 | 200 | You're leading trades in long/short mode and can't use this API endpoint to close positions  
 51159 | 200 | You're leading trades in buy/sell mode. If you want to place orders using this API endpoint, the orders must be in the same direction as your existing positions and open orders.  
 51162 | 200 | You have {instrument} open orders. Cancel these orders and try again  
@@ -591,7 +594,7 @@ Error Code | HTTP Status code | Error Message
 54028 | 200 | Your order failed because you must enable {ccy} as collateral to trade spot in isolated margin mode.  
 54029 | 200 | {param0} doesn’t exist within {param1}.  
 54030 | 200 | Order failed. Your total value of same-direction {param0} open positions and orders can't exceed {param1} USD or {param2} of the platform's open interest.  
-54031 | 200 | Order failed. The {param1} USD open position limit for {param0} has been reached.  
+54031 | 200 | Order failed. The open interest of {param0} has reached the platform open interest limit. Positions opening orders cannot be placed. Please try again later.  
 54035 | 200 | Order failed. The platform has reached the collateral limit for this crypto, so you can only place reduce-only orders.  
 54036 | 200 | You can't place fill or kill orders when self-trade prevention is set to both maker and taker orders.  
 54036 | 200 | You can't place fill or kill orders when self-trade prevention is set to both maker and taker orders.  
@@ -614,6 +617,7 @@ Error Code | HTTP Status code | Error Message
 54075 | 200 | Cross-crypto contracts are currently not supported in this account mode.  
 54078 | 200 | If the main order is a buy order, the TP ratio must be greater than 0, while the SL ratio must be between -1 and 0. If the main order is a sell order, the TP ratio must be between -1 and 0, and the SL ratio must be greater than 0. Additionally, the ratio must be multiples of 0.0001.  
 54079 | 200 | Dynamic change is available only for futures trading in futures mode or multi-currency mode. Note that when selecting dynamic change, the trigger price can only be calculated using the last price.  
+54092 | 200 | Action Required: Please accept the TradFi Perps disclaimer on Web or App by attempting to place a TradFi Perp trade via the frontend. Each account, including sub-accounts, must separately accept the disclaimer before API trading is enabled  
   
 #### Data class
 
@@ -838,6 +842,10 @@ identity verification.
 58356 | 200 | The accounts of the same node do not support the Lightning network deposit or withdrawal.  
 58358 | 200 | The fromCcy parameter cannot be the same as the toCcy parameter.  
 58373 | 200 | The minimum {ccy} conversion amount is {amount}  
+58381 | 200 | This feature is not currently supported.  
+58382 | 200 | Unable to process unlock request. Please retry via the user interface.  
+58383 | 200 | Deposit record not found. Unable to process unlock request.  
+58384 | 200 | Per local regulations, please provide accurate sender information. For exchange addresses, please also provide the exchange information and sender identity details.  
 58400 | 200 | Request Failed  
 58401 | 200 | Payment method is not supported  
 58402 | 200 | Invalid payment account  
@@ -951,6 +959,8 @@ Error Code | HTTP Status Code | Error Message
 59526 | 200 | Failed to switch strategy because your delta-to-equity ratio will exceed the threshold and trigger the transfer-out restriction after the switch. Lower your delta and try again.  
 59527 | 200 | You must set all currencies as collateral when using delta neutral strategy.  
 59528 | 200 | Failed to switch strategy because your account’s {param0} borrowing in the targeted strategy will exceed the main account borrowing limit after the switch. Repay your liabilities and try again.  
+59529 | 200 | Failed to switch strategy. This account is part of a delta neutral risk unit. Remove it from the risk unit before switching strategies.  
+59550 | 200 | Complete identity verification (Lv2) to access this feature.  
 59601 | 200 | Subaccount name already exists.  
 59603 | 200 | Maximum number of subaccounts reached.  
 59604 | 200 | Only the API key of the main account can access this API.  
@@ -1006,6 +1016,9 @@ Error Code | HTTP Status Code | Error Message
 59684 | 200 | Borrowing isn’t supported for this currency.  
 59686 | 200 | This crypto can’t be set as a settlement currency.  
 59689 | 200 | Convert failed. The {param0} converted to {param1} is too small to process.  
+59691 | 200 | Daily increase limit reached {param0}. Please retry after UTC 0:00 or reset your demo account.  
+59692 | 200 | Insufficient {param0} balance. Balance cannot go below zero after operation.  
+59693 | 200 | {param0} transferable balance insufficient. Some funds are occupied by open orders or positions. Please cancel orders or close positions and try again.  
   
 ### Block Trading and Spread Orderbook
 
@@ -1280,20 +1293,20 @@ e.g. clOrdId 已存在
 51001 | 200 | Instrument ID、Instrument ID code 或 Spread ID 不存在  
 51002 | 200 | 交易产品ID不匹配指数  
 51003 | 200 | ordId或clOrdId至少填一个  
-51004 | 200 | 下单失败，您在{instId} 逐仓的开平仓模式下，当前下单张数、同方向持有仓位以及同方向挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，同方向持有仓位：{posNumber}张，同方向挂单张数：{pendingNumber}张)。  
-51004 | 200 | 下单失败，您在{instId}全仓的开平仓模式下，当前下单张数、多空持有仓位以及多空挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，多空持有仓位{posLongShortNumber}张，多空挂单张数：{pendingLongShortNumber}张)。  
-51004 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓开平仓模式下，当前下单张数、当前合约多空持有仓位、当前合约多空挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，当前合约多空持有仓位：{posLongShortNumber}张，当前合约多空挂单张数：{pendingLongShortNumber}张，其他合约占用额度：{otherQuote}张)。  
-51004 | 200 | 下单失败，您在{instId}的买卖模式下，当前买入张数、持有仓位、以及买入挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前买入张数：{size}张，持有仓位：{posNumber}张，买入挂单张数：{pendingNumber}张)。  
-51004 | 200 | 下单失败，您在{instId}的买卖模式下，当前卖出张数、持有仓位以及卖出挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前卖出张数：{size}张，持有仓位：{posNumber}张，卖出挂单张数：{pendingNumber}张)。  
-51004 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，当前买入张数、当前合约持有仓位、当前合约买入挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前买入张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约买入挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
-51004 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，当前卖出张数、当前合约持有仓位、当前合约卖出挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前卖出张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约卖出挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
-51004 | 200 | 修改订单失败，您在{instId} 逐仓的开平仓模式下，当前改单新增张数、同方向持有仓位以及同方向挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，同方向持有仓位：{posNumber}张，同方向挂单张数：{pendingNumber}张)。  
-51004 | 200 | 修改订单失败，您在{instId}全仓的开平仓模式下，当前改单新增张数、多空持有仓位以及多空挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，多空持有仓位{posLongShortNumber}张，多空挂单张数：{pendingLongShortNumber}张)。  
-51004 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓开平仓模式下，当前改单新增张数、当前合约多空持有仓位、当前合约多空挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，当前合约多空持有仓位：{posLongShortNumber}张，当前合约多空挂单张数：{pendingLongShortNumber}张，其他合约占用额度：{otherQuote}张)。  
-51004 | 200 | 修改订单失败，您在{instId}的买卖模式下，修改当前买单新增张数、持有仓位、以及买入挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前买单新增张数：{size}张，持有仓位：{posNumber}张，买入挂单张数：{pendingNumber}张)。  
-51004 | 200 | 修改订单失败，您在{instId}的买卖模式下，修改当前卖单新增张数、持有仓位以及卖出挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前卖单新增张数：{size}张，持有仓位：{posNumber}张，卖出挂单张数：{pendingNumber}张)。  
-51004 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，修改当前买单新增张数、当前合约持有仓位、当前合约买入挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前买单新增张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约买入挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
-51004 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，修改当前卖单新增张数、当前合约持有仓位、当前合约卖出挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前卖单新增张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约卖出挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
+51004_1101 | 200 | 下单失败，您在{instId} 逐仓的开平仓模式下，当前下单张数、同方向持有仓位以及同方向挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，同方向持有仓位：{posNumber}张，同方向挂单张数：{pendingNumber}张)。  
+51004_1102 | 200 | 下单失败，您在{instId}全仓的开平仓模式下，当前下单张数、多空持有仓位以及多空挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，多空持有仓位{posLongShortNumber}张，多空挂单张数：{pendingLongShortNumber}张)。  
+51004_1103 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓开平仓模式下，当前下单张数、当前合约多空持有仓位、当前合约多空挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前下单张数：{size}张，当前合约多空持有仓位：{posLongShortNumber}张，当前合约多空挂单张数：{pendingLongShortNumber}张，其他合约占用额度：{otherQuote}张)。  
+51004_1104 | 200 | 下单失败，您在{instId}的买卖模式下，当前买入张数、持有仓位、以及买入挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前买入张数：{size}张，持有仓位：{posNumber}张，买入挂单张数：{pendingNumber}张)。  
+51004_1105 | 200 | 下单失败，您在{instId}的买卖模式下，当前卖出张数、持有仓位以及卖出挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前卖出张数：{size}张，持有仓位：{posNumber}张，卖出挂单张数：{pendingNumber}张)。  
+51004_1106 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，当前买入张数、当前合约持有仓位、当前合约买入挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前买入张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约买入挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
+51004_1107 | 200 | 下单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，当前卖出张数、当前合约持有仓位、当前合约卖出挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前卖出张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约卖出挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
+51004_1111 | 200 | 修改订单失败，您在{instId} 逐仓的开平仓模式下，当前改单新增张数、同方向持有仓位以及同方向挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，同方向持有仓位：{posNumber}张，同方向挂单张数：{pendingNumber}张)。  
+51004_1112 | 200 | 修改订单失败，您在{instId}全仓的开平仓模式下，当前改单新增张数、多空持有仓位以及多空挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，多空持有仓位{posLongShortNumber}张，多空挂单张数：{pendingLongShortNumber}张)。  
+51004_1113 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓开平仓模式下，当前改单新增张数、当前合约多空持有仓位、当前合约多空挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，当前改单新增张数：{size}张，当前合约多空持有仓位：{posLongShortNumber}张，当前合约多空挂单张数：{pendingLongShortNumber}张，其他合约占用额度：{otherQuote}张)。  
+51004_1114 | 200 | 修改订单失败，您在{instId}的买卖模式下，修改当前买单新增张数、持有仓位、以及买入挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前买单新增张数：{size}张，持有仓位：{posNumber}张，买入挂单张数：{pendingNumber}张)。  
+51004_1115 | 200 | 修改订单失败，您在{instId}的买卖模式下，修改当前卖单新增张数、持有仓位以及卖出挂单张数之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前卖单新增张数：{size}张，持有仓位：{posNumber}张，卖出挂单张数：{pendingNumber}张)。  
+51004_1116 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，修改当前买单新增张数、当前合约持有仓位、当前合约买入挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前买单新增张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约买入挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
+51004_1117 | 200 | 修改订单失败，您在{businessType}和交易品种{instFamily}的全仓买卖模式下，修改当前卖单新增张数、当前合约持有仓位、当前合约卖出挂单张数以及其他合约占用额度之和，不能超过当前杠杆倍数允许的持仓上限{tierLimitQuantity}(张)，请调低杠杆或者使用新的子账户重新下单(当前杠杆：{leverage}×，修改当前卖单新增张数：{size}张，当前合约持有仓位：{posNumber}张，当前合约卖出挂单张数：{pendingNumber}张，其他合约占用额度：{otherQuota}张)。  
 51005 | 200 | 委托数量大于单笔上限  
 51006 | 200 | 委托价格不在限价范围内（最高买入价：{param0}，最低卖出价：{param1}）  
 51007 | 200 | 委托失败，委托数量不可小于 1 张  
@@ -1307,10 +1320,12 @@ e.g. clOrdId 已存在
 51008_1007 | 200 | 委托失败，该委托需要借币 {param0}，但该币种的平台剩余借币额度已不足  
 51008_1009 | 200 | 委托失败，账户可用保证金过低（PM模式也可以尝试IOC订单降低风险）  
 51008_1010 | 200 | 委托失败，Delta 校验未通过，因为若成功下单，有效保证金 (adjEq) 的变化值将小于初始保证金 (IMR) 的变化值。建议增加 adjEq 或减少 IMR 占用。（PM模式也可以尝试IOC订单降低风险）  
-51008_1014 | 200 | 委托失败，账户可用保证金过低，其中不包含已触发平台质押限制的币种资产 {param0}  
 51008_1015 | 200 | 委托失败，账户可用余额不足，其中不包含已触发平台质押限制的币种资产 {param0}  
 51008_1016 | 200 | 委托失败，{param0} 可用余额不足，该委托会产生借币，当前账户可用保证金过低无法借币。账户可用保证金不包含已触发平台质押限制的币种资产 {param1}  
+51008_1017 | 200 | 委托失败，该委托所需的借币数量已超过您的档位限制。下单后产生的总借币量为 {param1} {param0}，{param2}x 杠杆的借币上限为 {param3} {param0}。请降低杠杆倍数后再重新下单。  
+51008_1018 | 200 | 委托失败，该委托所需的借币数量已超过您的档位限制。下单后产生的总潜在借币量为 {param1} {param0}，{param2}x 杠杆的借币上限为 {param3} {param0}。请降低杠杆倍数后再重新下单。  
 51008_1019 | 200 | 委托失败，您主账户的 {param0} 借币额度不足  
+51008_1020 | 200 | 委托失败，扣除计价货币手续费后，您的 {param0} 余额不足以完成该委托。请关闭使用计价货币支付现货手续费开关后重试。  
 51009 | 200 | 下单功能被冻结，请联系客服进行处理  
 51010 | 200 | 当前账户模式不支持此操作  
 51011 | 200 | ordId重复  
@@ -1699,6 +1714,7 @@ e.g. clOrdId 已存在
 51611 | 200 | 无法下载当前季度的账单流水  
 51620 | 200 | 您不是节点用户，没有相关权限  
 51621 | 200 | 该用户不是您的直客  
+51625 | 200 | 一键还债失败，请先开启自动借币，或通过闪兑、现货交易进行还债。  
 51820 | 200 | 请求失败  
 51821 | 200 | 该支付方式不支持  
 51822 | 200 | 超过询价有效期  
@@ -1737,7 +1753,7 @@ e.g. clOrdId 已存在
 54028 | 200 | 下单失败，在逐仓模式下交易现货需开启 {ccy} 质押  
 54029 | 200 | {param0} 不存在于 {param1}  
 54030 | 200 | 下单失败，您的 {param0} 相同交易方向的持仓和挂单总价值不可超过 {param1} 美元，或超过全平台总持仓量的 {param2}  
-54031 | 200 | 下单失败，{param0} 合约已达到 {param1} 美元的持仓限额  
+54031 | 200 | 下单失败，{param0}的平台持仓量已达到平台持仓限额，无法开仓，只能平仓。开仓请稍后再试。  
 54035 | 200 | 下单失败，当前已达到该币种的全平台质押上限，仅支持只减仓订单  
 54036 | 200 | STP mode 为 cancel both，不支持 FOK 订单  
 54039 | 200 | ELP 订单不支持仅减仓设置  
@@ -1759,6 +1775,7 @@ e.g. clOrdId 已存在
 54075 | 200 | 当前账户模式暂不支持币币合约交易。  
 54078 | 200 | 当主单为买入订单时，止盈涨跌幅应高于 0，止损涨跌幅应处于 -1 ~ 0 之间；当主单为卖出订单时，止盈涨跌幅应处于 -1 ~ 0 之间，止损涨跌幅应高于 0。请注意，涨跌幅应为 0.0001 的整倍数。  
 54079 | 200 | 仅支持合约模式和跨币种保证金模式下的合约交易设置动态涨跌幅。请注意，若设置为动态涨跌幅，触发价将以最新价为参考。  
+54092 | 200 | 操作要求：请通过网页端或 App 前端尝试下单 TradFi 永续合约（TradFi Perps）交易，并完成免责声明确认。每个主账户及子账户都必须单独接受免责声明后，方可启用 API 交易功能。  
   
 #### 数据类
 
@@ -1980,6 +1997,10 @@ e.g. clOrdId 已存在
 58356 | 200 | 同节点账户不支持闪电网络充币或提币  
 58358 | 200 | 参数fromCcy与参数toCcy不可相同  
 58373 | 200 | {ccy} 最小兑换数量为 {amount}  
+58381 | 200 | 该功能暂不支持  
+58382 | 200 | 无法处理解锁请求，请通过用户界面重试  
+58383 | 200 | 未找到充值记录，无法处理解锁请求  
+58384 | 200 | 根据当地法规，请提供准确的发送方信息。对于交易所地址，请同时提供交易所信息和发送方身份详情  
   
 ### 账户类 
 
@@ -2087,6 +2108,8 @@ e.g. clOrdId 已存在
 59526 | 200 | 策略模式设置失败。设置后，您账户的 Delta 权益比率将超过限制，触发“账户限制转出”状态，请降低 Delta 值后重试  
 59527 | 200 | 使用 delta 中性策略模式，需开启全部币种的质押  
 59528 | 200 | 策略模式设置失败。设置后，您账户在对应策略模式下的 {param0} 借币将超过主账户借币限额，请偿还借币后重试  
+59529 | 200 | 策略模式设置失败。该账户属于 Delta 中性策略风险单元，设置策略模式前，请先将该账户移出风险单元  
+59550 | 200 | 完成2级身份认证方可使用此功能。  
 59601 | 200 | 子账户名称已存在  
 59603 | 200 | 创建的子账户数量已达到上限  
 59604 | 200 | 仅母账APIkey有操作此接口的权限  
@@ -2143,6 +2166,9 @@ e.g. clOrdId 已存在
 59684 | 200 | 该币种不支持进行借币交易  
 59686 | 200 | 不支持该币种作为结算币种  
 59689 | 200 | 兑换失败。{param0} 兑换至 {param1} 的金额过低，无法执行  
+59691 | 200 | 每日增加余额次数已达上限{param0}，请于 UTC 0:00 后重试或重置模拟盘  
+59692 | 200 | {param0} 余额不足，操作后余额不可小于零  
+59693 | 200 | {param0} 可转余额不足，部分资金被挂单或持仓占用，请取消订单或平仓后重试  
   
 ### 大宗交易 
 

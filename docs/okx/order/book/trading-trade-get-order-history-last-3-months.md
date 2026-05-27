@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-get-order-history-last-3-months
 anchor_id: order-book-trading-trade-get-order-history-last-3-months
 api_type: API
-updated_at: 2026-01-15T23:27:52.521436
+updated_at: 2026-05-27 19:34:48.303086
 ---
 
 # GET / Order history (last 3 months)
@@ -58,6 +58,7 @@ instType | String | yes | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
 instId | String | No | Instrument ID, e.g. `BTC-USD-200927`  
@@ -161,6 +162,12 @@ limit | String | No | Number of results per request. The maximum is `100`; The d
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 instType | String | Instrument type  
+`SPOT`  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 instId | String | Instrument ID  
 tgtCcy | String | Order quantity unit setting for `sz`  
 `base_ccy`: Base currency ,`quote_ccy`: Quote currency   
@@ -206,7 +213,7 @@ state | String | State
 `mmp_canceled`  
 lever | String | Leverage, from `0.01` to `125`.   
 Only applicable to `MARGIN/FUTURES/SWAP`  
-attachAlgoClOrdId | String | Client-supplied Algo ID when placing order attaching TP/SL.  
+attachAlgoClOrdId | String | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop.  
 tpTriggerPx | String | Take-profit trigger price.  
 tpTriggerPxType | String | Take-profit trigger price type.   
 `last`: last price  
@@ -219,11 +226,11 @@ slTriggerPxType | String | Stop-loss trigger price type.
 `index`: index price  
 `mark`: mark price  
 slOrdPx | String | Stop-loss order price.  
-attachAlgoOrds | Array of objects | TP/SL information attached when placing order  
-> attachAlgoId | String | The order ID of attached TP/SL order. It can be used to identity the TP/SL order when amending. It will not be posted to algoId when placing TP/SL order after the general order is filled completely.  
-> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order attaching TP/SL  
+attachAlgoOrds | Array of objects | Attached TP/SL or trailing stop order information  
+> attachAlgoId | String | The order ID of the attached TP/SL or trailing stop order. It can be used to identify the attached order when amending. It will not be posted to algoId when placing the attached algo order after the general order is filled completely.  
+> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to `algoClOrdId` when placing TP/SL order once the general order is filled completely.  
+It will be posted to `algoClOrdId` when placing the attached algo order once the general order is filled completely.  
 > tpOrdKind | String | TP order kind  
 `condition`  
 `limit`  
@@ -236,7 +243,7 @@ Only applicable to FUTURES and SWAP.
 `mark`: mark price  
 > tpOrdPx | String | Take-profit order price.  
 > slTriggerPx | String | Stop-loss trigger price.  
-> slTriggerRatio | String | Stop profit trigger ratio, 0.3 represents 30%   
+> slTriggerRatio | String | Stop-loss trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.  
 > slTriggerPxType | String | Stop-loss trigger price type.   
 `last`: last price  
@@ -247,6 +254,9 @@ Only applicable to FUTURES and SWAP.
 > amendPxOnTriggerType | String | Whether to enable Cost-price SL. Only applicable to SL order of split TPs.   
 `0`: disable, the default value   
 `1`: Enable  
+> callbackRatio | String | Callback ratio, e.g. `0.05` represents 5%  
+> callbackSpread | String | Callback spread (price distance)  
+> activePx | String | Activation price  
 > failCode | String | The error code when failing to place TP/SL order, e.g. 51020   
 The default is ""  
 > failReason | String | The error reason when failing to place TP/SL order.   
@@ -254,7 +264,7 @@ The default is ""
 linkedAlgoOrd | Object | Linked SL order detail, only applicable to the order that is placed by one-cancels-the-other (OCO) order that contains the TP limit order.  
 > algoId | String | Algo ID  
 stpId | String | ~~Self trade prevention ID  
-Return "" if self trade prevention is not applicable~~ (deprecated)  
+Return "" if self trade prevention is not applicable~~ (Deprecated)  
 stpMode | String | Self trade prevention mode  
 feeCcy | String | Fee currency  
 For maker sell orders of Spot and Margin, this represents the quote currency. For all other cases, it represents the currency in which fees are charged.  
@@ -294,6 +304,10 @@ cTime | String | Creation time, Unix timestamp format in milliseconds, e.g. `159
 quickMgnType | String | ~~Quick Margin type, Only applicable to Quick Margin Mode of isolated margin  
 `manual`, `auto_borrow`, `auto_repay`~~ (Deprecated)  
 tradeQuoteCcy | String | The quote currency used for trading.  
+outcome | String | The market outcome the user traded on.  
+`yes`  
+`no`  
+Only applicable to `EVENTS`  
 This interface does not contain the order data of the `Canceled orders without any fills` type, which can be obtained through the `Get Order History (last 7 days)` interface.   
 As far as OPTION orders that are complete, pxVol and pxUsd will update in time for px order, pxVol will update in time for pxUsd order, pxUsd will update in time for pxVol order.
 
@@ -350,6 +364,7 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
 instId | String | 否 | 产品ID，如 `BTC-USDT`  
@@ -453,6 +468,12 @@ limit | String | 否 | 返回结果的数量，最大为100，默认100条
 **参数名** | **类型** | **描述**  
 ---|---|---  
 instType | String | 产品类型  
+`SPOT`：币币  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 产品ID  
 tgtCcy | String | 币币市价单委托数量`sz`的单位  
 `base_ccy`: 交易货币 ；`quote_ccy`：计价货币  
@@ -497,7 +518,7 @@ state | String | 订单状态
 `filled`：完全成交  
 `mmp_canceled`：做市商保护机制导致的自动撤单  
 lever | String | 杠杆倍数，0.01到125之间的数值，仅适用于 `币币杠杆/交割/永续`  
-attachAlgoClOrdId | String | 下单附带止盈止损时，客户自定义的策略订单ID  
+attachAlgoClOrdId | String | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID  
 tpTriggerPx | String | 止盈触发价  
 tpTriggerPxType | String | 止盈触发价类型  
 `last`：最新价格  
@@ -512,9 +533,9 @@ slTriggerPxType | String | 止损触发价类型
 slOrdPx | String | 止损委托价  
 stpId | String | ~~自成交保护ID  
 如果自成交保护不适用则返回""~~（已弃用）  
-attachAlgoOrds | Array of objects | 下单附带止盈止损信息  
-> attachAlgoId | String | 附带止盈止损的订单ID，改单时，可用来标识该笔附带止盈止损订单。下止盈止损委托单时，该值不会传给 algoId  
-> attachAlgoClOrdId | String | 下单附带止盈止损时，客户自定义的策略订单ID  
+attachAlgoOrds | Array of objects | 附带止盈止损或移动止盈止损订单信息  
+> attachAlgoId | String | 附带止盈止损或移动止盈止损的订单ID，改单时，可用来标识该笔附带止盈止损订单。下附带策略委托单时，该值不会传给 algoId  
+> attachAlgoClOrdId | String | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID  
 > tpOrdKind | String | 止盈订单类型  
 `condition`: 条件单  
 `limit`: 限价单  
@@ -538,6 +559,9 @@ attachAlgoOrds | Array of objects | 下单附带止盈止损信息
 > amendPxOnTriggerType | String | 是否启用开仓价止损，仅适用于分批止盈的止损订单  
 `0`：不开启，默认值   
 `1`：开启  
+> callbackRatio | String | 回调幅度的比例，如 `0.05` 代表 5%  
+> callbackSpread | String | 回调幅度的价距  
+> activePx | String | 激活价格  
 > failCode | String | 委托失败的错误码，默认为"",  
 委托失败时有值，如 51020  
 > failReason | String | 委托失败的原因，默认为""  
@@ -583,5 +607,9 @@ cTime | String | 订单创建时间，Unix时间戳的毫秒数格式，如 `159
 quickMgnType | String | ~~一键借币类型，仅适用于杠杆逐仓的一键借币模式  
 `manual`：手动，`auto_borrow`：自动借币，`auto_repay`：自动还币~~（已弃用）  
 tradeQuoteCcy | String | 用于交易的计价币种。  
+outcome | String | 用户交易的市场结果方向。  
+`yes`  
+`no`  
+仅适用于 `EVENTS`  
 该接口不包含`已撤销的完全无成交`类型订单数据，可通过`获取历史订单记录（近七天)`接口获取。  
 对于已完成的期权订单，如果是px订单，pxVol 和 pxUsd 会实时更新，如果是 pxUsd 订单，pxVol 会实时更新，如果是pxVol 订单，pxUsd 会实时更新。

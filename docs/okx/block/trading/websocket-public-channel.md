@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-websocket-public-channel
 anchor_id: block-trading-websocket-public-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:58.616018
+updated_at: 2026-05-27 19:35:50.451976
 ---
 
 # WebSocket Public Channel
@@ -167,7 +167,11 @@ For `FUTURES`/`SWAP`/`OPTION`, the unit is contract.
 Group RFQ introduction  
   
 1\. Add new response parameter groupId, facilitating clients to map subaccount execution to group RFQ. Only applicable to group RFQ, return "" for normal RFQ.  
-2\. Data return by this endpoint should be at **parent RFQ level** regardless of the subaccounts allocation. blockTdId and tradeId will be empty. 
+2\. Data return by this endpoint should be at **parent RFQ level** regardless of the subaccounts allocation. blockTdId and tradeId will be empty.  Mapping blockTdId to rfqId  
+  
+For normal RFQs, each `blockTdId` has a 1:1 relationship with an `rfqId`. For Group RFQs, one `rfqId` may correspond to multiple `blockTdId`s.  
+  
+This channel does not include `rfqId` directly. Users who are counterparties to the trade (taker and executing maker) can subscribe to the private [Structure block trades channel](/docs-v5/en/#block-trading-websocket-private-channel-structure-block-trades-channel), which provides both `rfqId` and `blockTdId`, enabling cross-referencing between the two channels. 
 
 ### Public block trades channel
 
@@ -640,7 +644,11 @@ data | Array of objects | 订阅的数据
 组合询价单介绍  
   
 1\. 新增返回参数 groupId，协助用户将子账户执行映射到组合询价单。仅适用于组合询价单，对普通询价单返回 ""。  
-2\. 该接口返回的交易数据应为父级询价单，而不是子级询价单，与子账户分配无关，blockTdId 及 tradeId 为空 
+2\. 该接口返回的交易数据应为父级询价单，而不是子级询价单，与子账户分配无关，blockTdId 及 tradeId 为空  blockTdId 与 rfqId 的对应关系  
+  
+对于普通询价单，每个 `blockTdId` 与一个 `rfqId` 一一对应。对于组合询价单，一个 `rfqId` 可能对应多个 `blockTdId`。  
+  
+本频道不直接返回 `rfqId`。作为交易对手方（询价方或成交的报价方）的用户，可订阅私有[大宗交易频道](/docs-v5/zh/#block-trading-websocket-private-channel-structure-block-trades-channel)，该频道同时包含 `rfqId` 和 `blockTdId`，可用于两个频道之间的关联查询。 
 
 ### 公共大宗交易单腿交易频道 
 

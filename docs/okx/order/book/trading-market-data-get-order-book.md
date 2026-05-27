@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-market-data-get-order-book
 anchor_id: order-book-trading-market-data-get-order-book
 api_type: API
-updated_at: 2026-01-15T23:27:56.657779
+updated_at: 2026-05-27 19:35:32.767635
 ---
 
 # GET / Order book
@@ -72,7 +72,8 @@ Default returns to `1` depth data
                         "2"
                     ]
                 ],
-                "ts": "1629966436396"
+                "ts": "1629966436396",
+                "seqId": 3235851742
             }
         ]
     }
@@ -85,6 +86,7 @@ Default returns to `1` depth data
 asks | Array of Arrays | Order book on sell side  
 bids | Array of Arrays | Order book on buy side  
 ts | String | Order book generation time  
+seqId | Integer | Sequence ID of the current message  
 An example of the array of asks and bids values: ["411.8", "10", "0", "4"]  
 \- "411.8" is the depth price  
 \- "10" is the quantity at the price (number of contracts for derivatives, quantity in base currency for Spot and Spot Margin)  
@@ -159,7 +161,8 @@ sz | String | 否 | 深度档位数量，最大值可传400，即买卖深度共
                         "2"
                     ]
                 ],
-                "ts": "1629966436396"
+                "ts": "1629966436396",
+                "seqId": 3235851742
             }
         ]
     }
@@ -172,6 +175,7 @@ sz | String | 否 | 深度档位数量，最大值可传400，即买卖深度共
 asks | Array of Arrays | 卖方深度  
 bids | Array of Arrays | 买方深度  
 ts | String | 深度产生的时间  
+seqId | Integer | 当前消息的序列号  
 合约的asks和bids值数组举例说明： ["411.8","10", "0","4"] 411.8为深度价格，10为此价格的合约张数，0该字段已弃用(始终为0)，4为此价格的订单数量  
 现货/币币杠杆的asks和bids值数组举例说明： ["411.8","10", "0","4"] 411.8为深度价格，10为此价格的交易币的数量，0该字段已弃用(始终为0)，4为此价格的订单数量 asks和bids值数组举例说明： ["411.8", "10", "0", "4"]  
 \- 411.8为深度价格  

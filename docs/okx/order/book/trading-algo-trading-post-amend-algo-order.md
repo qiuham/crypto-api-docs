@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-algo-trading-post-amend-algo-order
 anchor_id: order-book-trading-algo-trading-post-amend-algo-order
 api_type: API
-updated_at: 2026-01-15T23:27:53.502443
+updated_at: 2026-05-27 19:34:57.292073
 ---
 
 # POST / Amend algo order
@@ -82,14 +82,14 @@ newTriggerPxType | String | No | New trigger price type after amendment
 `index`: index price  
 `mark`: mark price   
 The default is `last`  
-attachAlgoOrds | Array of objects | No | Attached SL/TP orders info  
+attachAlgoOrds | Array of objects | No | Attached TP/SL or trailing stop order info  
 Applicable to `Futures mode/Multi-currency margin/Portfolio margin`  
 > newTpTriggerPx | String | No | Take-profit trigger price  
 If you fill in this parameter, you should fill in the take-profit order price as well.  
 > newTpTriggerRatio | String | No | Take profit trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.   
 Only one of `newTpTriggerPx` and `newTpTriggerRatio` can be passed   
-If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be bewteen -1 and 0.   
+If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be between -1 and 0.   
 0 means to delete the take-profit.  
 > newTpTriggerPxType | String | No | Take-profit trigger price type  
 `last`: last price  
@@ -101,10 +101,10 @@ If you fill in this parameter, you should fill in the take-profit trigger price 
 If the price is `-1`, take-profit will be executed at the market price.  
 > newSlTriggerPx | String | No | Stop-loss trigger price  
 If you fill in this parameter, you should fill in the stop-loss order price.  
-> newSlTriggerRatio | String | No | Stop profit trigger ratio, 0.3 represents 30%   
+> newSlTriggerRatio | String | No | Stop-loss trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.   
 Only one of `newSlTriggerPx` and `newSlTriggerRatio` can be passed   
-If the main order is a buy order, it must be bewteen 0 and 1, and if the main order is a sell order, it must be greater than 0.   
+If the main order is a buy order, it must be between 0 and 1, and if the main order is a sell order, it must be greater than 0.   
 0 means to delete the stop-loss.  
 > newSlTriggerPxType | String | No | Stop-loss trigger price type  
 `last`: last price  
@@ -114,6 +114,14 @@ The default is `last`
 > newSlOrdPx | String | No | Stop-loss order price   
 If you fill in this parameter, you should fill in the stop-loss trigger price.   
 If the price is `-1`, stop-loss will be executed at the market price.  
+> newCallbackRatio | String | Conditional | New callback ratio, e.g. `0.05` represents 5%.  
+Either `newCallbackRatio` or `newCallbackSpread` can be passed. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> newCallbackSpread | String | Conditional | New callback spread (price distance).  
+Either `newCallbackRatio` or `newCallbackSpread` can be passed. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> newActivePx | String | No | New activation price.  
+Only applicable when `ordType` = `move_order_stop`  
   
 > Response Example
     
@@ -221,7 +229,7 @@ newTriggerPxType | String | 否 | 修改后的计划委托触发价格类型
 `index`：指数价格  
 `mark`：标记价格  
 默认为`last`  
-attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损信息  
+attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损或移动止盈止损订单信息  
 适用于`合约模式/跨币种保证金模式/组合保证金模式`  
 > newTpTriggerPx | String | 否 | 止盈触发价，如果填写此参数，必须填写`止盈委托价`  
 > newTpTriggerRatio | String | 否 | 止盈触发比例，0.3 代表 30%   
@@ -247,6 +255,14 @@ attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损信息
 默认为`last`  
 > newSlOrdPx | String | 否 | 止损委托价，如果填写此参数，必须填写`止损触发价`  
 委托价格为`-1`时，执行市价止损  
+> newCallbackRatio | String | 可选 | 新的回调幅度比例，如 `0.05` 代表 5%。  
+`newCallbackRatio` 和 `newCallbackSpread` 只能传入其中一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> newCallbackSpread | String | 可选 | 新的回调幅度价距。  
+`newCallbackRatio` 和 `newCallbackSpread` 只能传入其中一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> newActivePx | String | 否 | 新的激活价格。  
+仅适用于 `ordType` = `move_order_stop`  
   
 > 返回结果
     

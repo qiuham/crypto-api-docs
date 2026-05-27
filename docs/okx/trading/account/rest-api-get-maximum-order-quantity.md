@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-maximum-order-quantity
 anchor_id: trading-account-rest-api-get-maximum-order-quantity
 api_type: REST
-updated_at: 2026-01-15T23:27:50.112027
+updated_at: 2026-05-27 19:34:28.294861
 ---
 
 # Get maximum order quantity
@@ -69,6 +69,10 @@ The default is current leverage
 Only applicable to `MARGIN/FUTURES/SWAP`  
 tradeQuoteCcy | String | No | The quote currency used for trading. Only applicable to `SPOT`.   
 The default value is the quote currency of the `instId`, for example: for `BTC-USD`, the default is `USD`.  
+outcome | String | No | Market outcome to trade on.  
+`yes`  
+`no`  
+Only applicable and optional for `EVENTS`, the default value is `yes`  
   
 > Response Example
     
@@ -163,6 +167,10 @@ leverage | String | 否 | 开仓杠杆倍数
 仅适用于`币币杠杆/交割/永续`  
 tradeQuoteCcy | String | 否 | 用于交易的计价币种。仅适用于`币币`。  
 默认值为 `instId` 的计价币种，比如：对于 `BTC-USD`，默认取 `USD`。  
+outcome | String | 可选 | 交易的市场结果方向。  
+`yes`  
+`no`  
+仅适用于 `EVENTS`，选填，默认值为`yes`  
   
 > 返回结果
     

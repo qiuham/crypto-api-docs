@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading
 anchor_id: order-book-trading-grid-trading
 api_type: API
-updated_at: 2026-01-15T23:27:53.782066
+updated_at: 2026-05-27 19:34:59.463767
 ---
 
 # Grid Trading
@@ -214,6 +214,7 @@ tag | String | Order tag
           "maxPx": "100",
           "minPx": "10",
           "gridNum": "5"
+          "topupAmount": "123.45"
         }
     
 
@@ -224,19 +225,23 @@ Parameter | Type | Required | Description
 algoId | String | Yes | Algo ID  
 minPx | String | Yes | Minimum price range  
 maxPx | String | Yes | Maximum price range  
-gridNum | int | Yes | Grid quantity  
+gridNum | String | Yes | Grid quantity  
+topupAmount | String | No | Contract grid only. Optional client-supplied top up investment amount. If this is not supplied or explicitly supplied as "0", the required top up investment amount to edit grid parameters is topped up by default  
   
 > Response Example
     
     
     {
-      "code": 55123,
-      "msg": "100",
-      "data": {
-        "algoId": "448965992920907776",
-        "requiredTopupAmount": "1.235"
-      }
-    
+        "code": "55186",
+        "msg": "Due to market fluctuations, your investment amount is too large to apply these modifications.",
+        "data": [
+            {
+                "algoId": "4283223775520665600",
+                "maxTopupAmount": "12456.78",
+                "requiredTopupAmount": "12.34"
+            }
+        ]
+    }
     
 
 #### Response Parameters
@@ -245,6 +250,17 @@ gridNum | int | Yes | Grid quantity
 ---|---|---  
 algoId | String | Algo ID  
 requiredTopupAmount | String | Required top up investment amount to edit grid parameters.  
+maxTopupAmount | String | Contract grid only. Max top up investment amount to edit grid parameters  
+  
+#### Error Code
+
+**Error Code** | **HTTP Status code** | **Error Message**  
+---|---|---  
+51000 | 400 | Parameter {param} error. This would also be returned when a grid bot does not support the parameter  
+51346 | 400 | Upper limit must be greater than the lower limit price.  
+55123 | 400 | There is insufficient balance for transfer.  
+55124 | 200 | Due to market fluctuations, your investment amount is insufficient to apply these modifications.  
+55186 | 200 | Due to market fluctuations, your investment amount is too large to apply these modifications.  
   
 ### POST / Amend grid algo order
 
@@ -709,6 +725,7 @@ limit | String | No | Number of results per request. The maximum is 100. The def
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -837,6 +854,7 @@ copyType | String | Profit sharing order type
 `2`: Copy order with profit sharing  
 `3`: Lead order  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 tradeQuoteCcy | String | The quote currency for trading.  
   
@@ -950,6 +968,7 @@ limit | String | No | Number of results per request. The maximum is 100. The def
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -1074,6 +1093,7 @@ copyType | String | Profit sharing order type
 `2`: Copy order with profit sharing  
 `3`: Lead order  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 stopResult | String | Stop result  
 `0`: default, `1`: Successful selling of currency at market price, `-1`: Failed to sell currency at market price  
@@ -1194,6 +1214,7 @@ algoId | String | Yes | Algo ID
                 "tpRatio": "",
                 "slRatio": "",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -1343,6 +1364,7 @@ copyType | String | Profit sharing order type
 tpRatio | String | Take profit ratio, 0.1 represents 10%  
 slRatio | String | Stop loss ratio, 0.1 represents 10%  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 tradeQuoteCcy | String | The quote currency for trading.  
   
@@ -1808,10 +1830,9 @@ instId | String | Yes | Instrument ID, e.g. `BTC-USDT`
 direction | String | Conditional | Contract grid type  
 `long`,`short`,`neutral`  
 Required in the case of `contract_grid`  
-duration | String | No | Back testing duration  
-`7D`: 7 Days, `30D`: 30 Days, `180D`: 180 Days  
-The default is `7D` for `Spot grid`  
-Only `7D` is available for `Contract grid`  
+duration | String | No | Back testing duration in number of days  
+Spot grid default is `7D` with available durations of `7D`, `30D` and `180D`  
+Contract grid default is `14D` with available durations of `7D`, `14D` and `30D`  
   
 > Response Example
     
@@ -2100,6 +2121,99 @@ lever | String | Conditional | Leverage, it is required for contract grid
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 maxGridQty | String | Maximum grid quantity  
+  
+### POST / Copy grid algo order
+
+#### Rate Limit: 20 requests per 2 seconds
+
+#### Rate Limit Rule: User ID + Instrument ID
+
+#### Permission: Trade
+
+#### HTTP Request
+
+`POST /api/v5/tradingBot/grid/copy-order-algo`
+
+> Request Example
+    
+    
+    # Spot grid copy
+    POST /api/v5/tradingBot/grid/copy-order-algo
+    body
+    {
+        "instId": "BTC-USDT",
+        "algoOrdType": "grid",
+        "sourceAlgoId": "580007082221121536",
+        "quoteSz": "1000"
+    }
+    
+    
+    
+    # Contract grid copy
+    POST /api/v5/tradingBot/grid/copy-order-algo
+    body
+    {
+        "instId": "BTC-USDT-SWAP",
+        "algoOrdType": "contract_grid",
+        "sourceAlgoId": "580007082221121536",
+        "lever": "3",
+        "autoReserve": true,
+        "sz": "5000"
+    }
+    
+
+#### Request Parameters
+
+Parameter | Type | Required | Description  
+---|---|---|---  
+instId | String | Yes | Instrument ID, e.g. `BTC-USDT`  
+algoOrdType | String | Yes | Algo order type  
+`grid`: Spot grid  
+`contract_grid`: Contract grid  
+sourceAlgoId | String | Yes | Lead algo order ID to follow and copy from  
+quoteSz | String | No | Quote currency investment amount  
+Only applicable to `grid`  
+lever | String | No | Leverage  
+Only applicable to `contract_grid`  
+autoReserve | Boolean | No | Whether to auto-reserve margin. Only applicable to `contract_grid`  
+`true`: Actual margin and extra margin are automatically calculated based on `sz`  
+`false`: Manually specify `actualMarginSz` and `extraMarginSz`  
+sz | String | No | Total investment amount in USDT. Required when `autoReserve` is `true`  
+Only applicable to `contract_grid`  
+actualMarginSz | String | No | Actual margin. Required when `autoReserve` is `false`  
+Only applicable to `contract_grid`  
+extraMarginSz | String | No | Extra margin reserved. Defaults to `0` when unspecified  
+Only applicable to `contract_grid`  
+algoClOrdId | String | No | Client-supplied Algo ID  
+tag | String | No | Order tag  
+  
+> Response Example
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "algoId": "581234567890123456",
+                "algoClOrdId": "",
+                "sCode": "0",
+                "sMsg": "",
+                "tag": ""
+            }
+        ]
+    }
+    
+
+#### Response Parameters
+
+Parameter | Type | Description  
+---|---|---  
+algoId | String | Algo order ID  
+algoClOrdId | String | Client-supplied Algo ID  
+sCode | String | Event execution status code, `0` indicates success  
+sMsg | String | Error message if the event execution failed  
+tag | String | Order tag  
   
 ### WS / Spot grid algo orders channel
 
@@ -3353,6 +3467,7 @@ tag | String | 订单标签
             "maxPx": "100",
             "minPx": "10",
             "gridNum": "5"
+            "topupAmount": "123.45"
         }
     
 
@@ -3363,18 +3478,23 @@ tag | String | 订单标签
 algoId | String | 是 | 策略订单ID  
 minPx | String | 是 | 最小价格  
 maxPx | String | 是 | 最大价格  
-gridNum | Int | 是 | 网格数  
+gridNum | String | 是 | 网格数  
+topupAmount | String | 不是 | 仅限合约网格。可选填写用户自行提供的追加投资金额。若未填写，或明确填写为“0”，在编辑网格参数时，所需的追加投资金额将默认自动追加。  
   
 > 返回结果
     
     
     {
-      "code": 55123,
-      "msg": "100",
-      "data": {
-        "algoId": "448965992920907776",
-        "requiredTopupAmount": "1.235"
-      }
+        "code": "55186",
+        "msg": "Due to market fluctuations, your investment amount is too large to apply these modifications.",
+        "data": [
+            {
+                "algoId": "4283223775520665600",
+                "maxTopupAmount": "12456.78",
+                "requiredTopupAmount": "12.34"
+            }
+        ]
+    }
     
 
 #### 返回参数
@@ -3383,6 +3503,17 @@ gridNum | Int | 是 | 网格数
 ---|---|---  
 algoId | String | 策略订单ID  
 requiredTopupAmount | String | 修改网格参数所需补充金额  
+maxTopupAmount | String | 仅限合约网格。编辑网格参数时的最大追加投资金额。  
+  
+#### 报错码
+
+**报错码** | **HTTP Status 代码** | **报错文案**  
+---|---|---  
+51000 | 400 | {param} 参数错误。  
+51346 | 400 | 最高价格应高于最低价格。  
+55123 | 400 | 您的交易账户余额不足，无法使此修改生效。请您向交易账户转入资金后再试。  
+55124 | 200 | 由于行情波动，您的投入金额不足，修改后的参数无法生效。  
+55186 | 200 | 由于行情波动，您的投入金额过大，修改后的参数无法生效。  
   
 ### POST / 修改网格策略订单 
 
@@ -3846,6 +3977,7 @@ limit | String | 否 | 返回结果的数量，最大为100，默认100条
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -3939,7 +4071,7 @@ stopType | String | 网格策略实际停止类型
 现货网格 `1`：卖出交易币，`2`：不卖出交易币  
 合约网格 `1`：停止平仓，`2`：停止不平仓  
 quoteSz | String | 计价币投入数量  
-适用于`现货网格  
+适用于`现货网格`  
 baseSz | String | 交易币投入数量  
 适用于`现货网格`  
 direction | String | 合约网格类型  
@@ -3974,6 +4106,7 @@ copyType | String | 分润订单类型
 `2`：分润跟单  
 `3`：带单  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 tradeQuoteCcy | String | 用于交易的计价币种。  
   
@@ -4087,6 +4220,7 @@ limit | String | 否 | 返回结果的数量，最大为100，默认100条
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -4211,6 +4345,7 @@ copyType | String | 分润订单类型
 `2`：分润跟单  
 `3`：带单  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 stopResult | String | 策略停止结果  
 `0`：默认，`1`：市价卖币成功 `-1`：市价卖币失败  
@@ -4331,6 +4466,7 @@ algoId | String | 是 | 策略订单ID
                 "tpRatio": "",
                 "slRatio": "",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -4480,6 +4616,7 @@ copyType | String | 分润订单类型
 tpRatio | String | 止盈比率，0.1 代表 10%  
 slRatio | String | 止损比率，0.1 代表 10%  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 tradeQuoteCcy | String | 用于交易的计价币种。  
   
@@ -4947,10 +5084,9 @@ instId | String | 是 | 产品ID，如`BTC-USDT`
 direction | String | 可选 | 合约网格类型  
 `long`：做多，`short`：做空，`neutral`：中性  
 合约网格必填  
-duration | String | 否 | 回测周期  
-`7D`：7天，`30D`：30天，`180D`：180天  
-默认`现货网格`为`7D`  
-合约网格只支持`7D`  
+duration | String | 否 | 回测时长，单位为天  
+现货网格默认 `7D`，可选：`7D`、`30D`、`180D`  
+合约网格默认 `14D`，可选：`7D`、`14D`、`30D`  
   
 > 返回结果
     
@@ -5236,6 +5372,99 @@ lever | String | 可选 | 杠杆倍数, 合约网格时必填
 **参数名** | **类型** | **描述**  
 ---|---|---  
 maxGridQty | String | 最大网格数量  
+  
+### POST / 网格跟单下单 
+
+#### 限速：20次/2s
+
+#### 限速规则：User ID + Instrument ID
+
+#### 权限：交易
+
+#### HTTP请求
+
+`POST /api/v5/tradingBot/grid/copy-order-algo`
+
+> 请求示例
+    
+    
+    # 现货网格跟单
+    POST /api/v5/tradingBot/grid/copy-order-algo
+    body
+    {
+        "instId": "BTC-USDT",
+        "algoOrdType": "grid",
+        "sourceAlgoId": "580007082221121536",
+        "quoteSz": "1000"
+    }
+    
+    
+    
+    # 合约网格跟单
+    POST /api/v5/tradingBot/grid/copy-order-algo
+    body
+    {
+        "instId": "BTC-USDT-SWAP",
+        "algoOrdType": "contract_grid",
+        "sourceAlgoId": "580007082221121536",
+        "lever": "3",
+        "autoReserve": true,
+        "sz": "5000"
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+instId | String | 是 | 产品ID，如 `BTC-USDT`  
+algoOrdType | String | 是 | 策略订单类型  
+`grid`：现货网格  
+`contract_grid`：合约网格  
+sourceAlgoId | String | 是 | 被跟单的策略订单ID  
+quoteSz | String | 否 | 计价币投入金额  
+仅适用于 `grid`  
+lever | String | 否 | 杠杆倍数  
+仅适用于 `contract_grid`  
+autoReserve | Boolean | 否 | 是否自动预留保证金，仅适用于 `contract_grid`  
+`true`：自动计算实际保证金和额外保证金  
+`false`：手动指定 `actualMarginSz` 和 `extraMarginSz`  
+sz | String | 否 | 合约网格总投入金额（USDT），当 `autoReserve` 为 `true` 时必填  
+仅适用于 `contract_grid`  
+actualMarginSz | String | 否 | 实际保证金，当 `autoReserve` 为 `false` 时必填  
+仅适用于 `contract_grid`  
+extraMarginSz | String | 否 | 额外保证金，当 `autoReserve` 为 `false` 时选填，默认为 `0`  
+仅适用于 `contract_grid`  
+algoClOrdId | String | 否 | 客户自定义策略单ID  
+tag | String | 否 | 订单标签  
+  
+> 返回结果
+    
+    
+    {
+        "code": "0",
+        "msg": "",
+        "data": [
+            {
+                "algoId": "581234567890123456",
+                "algoClOrdId": "",
+                "sCode": "0",
+                "sMsg": "",
+                "tag": ""
+            }
+        ]
+    }
+    
+
+#### 返回参数
+
+参数名 | 类型 | 描述  
+---|---|---  
+algoId | String | 策略订单ID  
+algoClOrdId | String | 客户自定义策略单ID  
+sCode | String | 事件执行结果的 code，0 代表成功  
+sMsg | String | 事件执行失败时的 msg  
+tag | String | 订单标签  
   
 ### WS / 现货网格策略委托订单频道 
 

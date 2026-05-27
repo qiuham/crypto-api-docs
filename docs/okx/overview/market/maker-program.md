@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-market-maker-program
 anchor_id: overview-market-maker-program
 api_type: API
-updated_at: 2026-01-15T23:27:49.250201
+updated_at: 2026-05-27 19:34:22.088474
 ---
 
 # Market Maker Program
@@ -16,7 +16,7 @@ Prerequisites (Satisfy any condition):
 
   * Qualified Market Maker on other exchange  
 
-Interested parties can reach out to us using this form: <https://okx.typeform.com/contact-sales>  
+Interested parties can reach out to us at `Institutional@okx.com`  
 
 Remarks:
 
@@ -34,7 +34,7 @@ OKX reserves the right of final decision and interpretation for the content here
 
   * 其他交易所达标做市商（需审核）  
 
-感兴趣的各方可以使用此表格联系我们：<https://okx.typeform.com/contact-sales>  
+感兴趣的各方可以通过邮箱联系我们：`Institutional@okx.com`  
 
 为鼓励做市商为平台提供更好的流动性，可以享受更优的交易手续费，同时也承担相应的做市责任。具体做市责任及手续费申请成功后提供相关资料。
 

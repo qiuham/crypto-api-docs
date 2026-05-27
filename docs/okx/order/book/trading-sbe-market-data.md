@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-sbe-market-data
 anchor_id: order-book-trading-sbe-market-data
 api_type: API
-updated_at: 2026-01-15T23:27:57.227680
+updated_at: 2026-05-27 19:35:38.126724
 ---
 
 # SBE Market Data
@@ -23,7 +23,7 @@ The SBE XML schema is now available for download:
 
 ### General Information
 
-  * Access is restricted to API users with **VIP6** trading fee tier or higher for production, and **VIP1** or higher for demo trading.  
+  * The `bbo-tbt` channel is **available to users of any trading fee tier** but requires login. The `trades` and `books-l2-tbt` channels are restricted to users with a trading fee tier of **VIP4** or above in the live trading environment. Other users will receive error code 64003. In the demo trading environment, these channels require **VIP1** or above.  
 
   * SBE channels will use a new WebSocket URL.  
 Live trading: `wss://ws.okx.com:8443/ws/v5/public-sbe`  
@@ -164,7 +164,7 @@ trades | 1005: TradesChannelEvent
     1. Open a SBE WebSocket connection and subscribe to `books-l2-tbt`.
     2. Buffer the events received from the stream. Record the prevSeqId of the first event you received.   
 Note: For template ID 1002, the event is an exponent update, containing only exponent update information without ask or bid data. For template ID 1001, the data includes both asks and bids.
-    3. Get a depth snapshot from `/books-sbe`, e.g. `https://www.okx.com/api/v5/market/books-sbe?instIdCode=12345&source=0`
+    3. Get a depth snapshot from `/books-sbe`, e.g. `https://openapi.okx.com/api/v5/market/books-sbe?instIdCode=12345&source=0`
     4. If the `seqId` from the snapshot is strictly less than the `prevSeqId` from step 2, go back to step 3.
     5. In the buffered events, discard any event where stream `seqId` is <= snapshot `seqId` of the snapshot. 
     6. The first buffered event should satisfy the condition: stream `prevSeqId` <= snapshot `seqId` < stream `seqId`.
@@ -274,7 +274,7 @@ SBE XML schema 已经发布：
 
 ### 基本信息
 
-  * 实盘中仅限 **VIP6** 及以上交易费用等级的用户使用，模拟盘中为 **VIP1** 及以上用户。  
+  * `bbo-tbt` 频道**无用户等级限制** ，但需登录后方可订阅；`trades` 与 `books-l2-tbt` 频道在实盘环境仅对交易费等级 **VIP4 及以上** 用户开放，其他用户接入将收到错误码64003。在模拟盘环境仅对交易费等级 **VIP1** 及以上 用户开放。  
 
   * SBE 频道将使用新的 WebSocket URL。  
 实盘交易：`wss://ws.okx.com:8443/ws/v5/public-sbe`  
@@ -415,7 +415,7 @@ trades | 1005: TradesChannelEvent
     1. 打开 SBE WebSocket 连接并订阅 `books-l2-tbt` 频道。
     2. 缓存从频道中接收的事件。记录您接收到的第一个事件的 `prevSeqId`。  
 注意：对于 template ID 1002 是指数更新事件，仅包含指数更新信息，不包含买入和卖出数据。对于模板ID 1001，会包含买入和卖出数据。
-    3. 从 `/books-sbe` 获取深度快照，例如 `https://www.okx.com/api/v5/market/books-sbe?instIdCode=12345&source=0`
+    3. 从 `/books-sbe` 获取深度快照，例如 `https://openapi.okx.com/api/v5/market/books-sbe?instIdCode=12345&source=0`
     4. 如果快照的 `seqId` 小于步骤 2 中的 `prevSeqId`，请返回步骤 3。
     5. 在缓存的事件中，丢弃事件 `seqId` <= 快照 `seqId` 的任何事件。
     6. 对于缓存中的第一个事件，满足该条件： `seqId`： 事件`prevSeqId` <= 快照 `seqId` < 事件 `seqId`。

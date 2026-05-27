@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-websocket-positions-channel
 anchor_id: trading-account-websocket-positions-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:51.462174
+updated_at: 2026-05-27 19:34:41.610602
 ---
 
 # Positions channel
@@ -145,6 +145,7 @@ args | Array of objects | Yes | List of subscribed channels
 `SWAP`  
 `FUTURES`  
 `OPTION`   
+`EVENTS`  
 `ANY`  
 > instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
@@ -220,6 +221,7 @@ arg | Object | No | Subscribed channel
 `FUTURES`  
 `SWAP`  
 `OPTION`  
+`EVENTS`  
 `ANY`  
 > instFamily | String | No | Instrument family  
 > instId | String | No | Instrument ID  
@@ -512,6 +514,11 @@ arg | Object | Successfully subscribed channel
 > channel | String | Channel name  
 > uid | String | User Identifier  
 > instType | String | Instrument type  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 > instFamily | String | Instrument family  
 > instId | String | Instrument ID  
 eventType | String | Event type:   
@@ -525,6 +532,11 @@ lastPage | Boolean | Whether this is the last page of pagination:
 Only applicable for `snapshot` events. Not included in `event_update` events.  
 data | Array of objects | Subscribed data  
 > instType | String | Instrument type  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 > mgnMode | String | Margin mode, `cross` `isolated`  
 > posId | String | Position ID  
 > posSide | String | Position side  
@@ -765,6 +777,7 @@ args | Array of objects | 是 | 请求订阅的频道列表
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 `ANY`：全部  
 > instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
@@ -840,6 +853,7 @@ arg | Object | 否 | 订阅的频道
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 `ANY`：全部  
 > instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
@@ -1129,6 +1143,11 @@ arg | Object | 订阅成功的频道
 > channel | String | 频道名  
 > uid | String | 用户标识  
 > instType | String | 产品类型  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 > instFamily | String | 交易品种  
 > instId | String | 产品ID  
 eventType | String | 事件类型：  
@@ -1142,6 +1161,11 @@ lastPage | Boolean | 当前消息是否为最后一页：
 仅适用于`snapshot`事件类型，`event_update`时不返回.  
 data | Array of objects | 订阅的数据  
 > instType | String | 产品类型  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 > mgnMode | String | 保证金模式， `cross`：全仓 `isolated`：逐仓  
 > posId | String | 持仓ID  
 > posSide | String | 持仓方向  

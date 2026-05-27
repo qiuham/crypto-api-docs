@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-precheck-set-delta-neutral
 anchor_id: trading-account-rest-api-precheck-set-delta-neutral
 api_type: REST
-updated_at: 2026-01-15T23:27:51.300284
+updated_at: 2026-05-27 19:34:40.192385
 ---
 
 # Precheck set delta neutral
@@ -77,6 +77,7 @@ unmatchedInfoCheck | Array of objects | Unmatched information list
 `loan`: Flexible loan and DNA cannot be used at the same time   
 `delta_risk`: delta risk check failed, lower delta and try again  
 `collateral_all`: all coins must be set as collateral in DNA  
+`risk_unit_type`: The account is part of a delta neutral risk unit and cannot be switched to general mode. Remove it from the risk unit before switching strategies.  
 > deltaLever | String | Delta leverage  
 Applicable when type is `delta_risk`  
 > ordList | Array of strings | Unmatched order list, order ID  
@@ -157,6 +158,7 @@ unmatchedInfoCheck | Array of objects | 包含不匹配信息对象的列表
 `loan`：不支持delta 中性策略模式使用活期借币  
 `delta_risk`：Delta风险检查失败，降低delta后重试  
 `collateral_all`：delta 中性策略模式下，所有币种必要被设置为质押币  
+`risk_unit_type`：该账户在Delta中性风险单元内，无法切换至通用模式。请在切换策略前将其从风险单元中移除。  
 > deltaLever | String | Delta权益比率  
 仅适用于type为`delta_risk`  
 > ordList | Array of strings | 不匹配订单列表，返回订单ID  

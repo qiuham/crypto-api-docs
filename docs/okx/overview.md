@@ -3,15 +3,23 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview
 anchor_id: overview
 api_type: API
-updated_at: 2026-01-15T23:27:48.276559
+updated_at: 2026-05-27 19:34:11.872960
 ---
 
 # Overview
 
 Welcome to our API documentation. OKX provides REST and WebSocket APIs to suit your trading needs.  
 
-  * For users who complete registration on my.okx.com, please visit <https://my.okx.com/docs-v5/en/> for the API documentation.
-  * For users who complete registration on app.okx.com, please visit <https://app.okx.com/docs-v5/en/> for the API documentation.
+**Important - OKX API Agreement: continued use constitutes acceptance**  
+  
+We encourage you to review the [OKX API Agreement](https://www.okx.com/help/okx-api-agreement) in full before continuing to use the API Services. Your continued use of any OKX API Services following the date of this notice constitutes your acceptance of the Agreement in full.   
+If you do not agree to the Agreement, you must immediately cease all use of the OKX API Services, including disconnecting any active API integrations, Agent Trade Kit connections, and automated systems that access OKX via APIs.  **Important - Regional API Domain Requirement**  
+  
+Depending on where you registered, you **must** use the correct domain for both API calls and documentation.   
+Using `openapi.okx.com` will not work for the regions below.  
+  
+**US & AU users** (registered on [app.okx.com](https://app.okx.com)): Use `us.okx.com` as your API domain. See the [US & AU API documentation](https://app.okx.com/docs-v5/en/).  
+**EU users** (registered on [my.okx.com](https://my.okx.com)): Use `eea.okx.com` as your API domain. See the [EU API documentation](https://my.okx.com/docs-v5/en/).  
 
 ## API Resources and Support
 
@@ -84,7 +92,7 @@ All private REST requests must contain the following headers:
 
   * `OK-ACCESS-SIGN` The Base64-encoded signature (see Signing Messages subsection for details).
 
-  * `OK-ACCESS-TIMESTAMP` The UTC timestamp of your request .e.g : 2020-12-08T09:08:57.715Z
+  * `OK-ACCESS-TIMESTAMP` Request timestamp in ISO 8601 UTC format with millisecond precision, e.g. `2020-12-08T09:08:57.715Z`. The server rejects requests where this differs from server time by more than 30 seconds (error 50102). Always use UTC — local timezone offset is the most common cause of error 50102. Synchronise with GET /api/v5/public/time before placing orders.
 
   * `OK-ACCESS-PASSPHRASE` The passphrase you specified when creating the API key.
 
@@ -510,7 +518,7 @@ You need to set on the Web/App for the first set of every account mode.
 
 The Production Trading URL: 
 
-  * REST: `https://www.okx.com`  
+  * REST: `https://openapi.okx.com`  
 
   * Public WebSocket: `wss://ws.okx.com:8443/ws/v5/public`  
 
@@ -523,7 +531,7 @@ Currently, the API works for Demo Trading, but some functions are not supported,
 
 The Demo Trading URL: 
 
-  * REST: `https://www.okx.com`  
+  * REST: `https://openapi.okx.com`  
 
   * Public WebSocket: `wss://wspap.okx.com:8443/ws/v5/public`  
 
@@ -662,7 +670,7 @@ The following endpoints are supported:
     
     
     curl -X 'POST' \
-      'https://www.okx.com/api/v5/trade/order' \
+      'https://openapi.okx.com/api/v5/trade/order' \
       -H 'accept: application/json' \
       -H 'Content-Type: application/json' \
       -H 'OK-ACCESS-KEY: *****' \
@@ -861,7 +869,7 @@ Prerequisites (Satisfy any condition):
 
   * Qualified Market Maker on other exchange  
 
-Interested parties can reach out to us using this form: <https://okx.typeform.com/contact-sales>  
+Interested parties can reach out to us at `Institutional@okx.com`  
 
 Remarks:
 
@@ -886,8 +894,16 @@ Relevant information for specific Broker Program documentation and product servi
 
 欢迎查看 API 文档。我们提供完整的REST和WebSocket API以满足您的交易需求。  
 
-  * 在 my.okx.com 完成注册的用户，请访问 <https://my.okx.com/docs-v5/en/> 获取 API 文档。
-  * 在 app.okx.com 完成注册的用户，请访问 <https://app.okx.com/docs-v5/en/> 获取 API 文档。
+**【重要】欧易 API 协议：继续使用即视为接受**  
+  
+我们建议您在使用 API 服务前完整阅读[《欧易 API 协议》](https://www.okx.com/help/okx-api-agreement)，继续使用任何欧易 API 服务即视为您完全接受本协议。  
+若您不同意本协议，您必须立即停止使用所有欧易 API 服务，包括：断开所有活跃的 API 集成；断开 Agent Trade Kit 连接；关闭通过 API 访问欧易的自动化系统。  **【重要】区域 API 域名要求**  
+  
+根据您的注册地区，进行 API 调用和查阅文档时**必须** 使用对应的域名。  
+以下地区用户使用 `openapi.okx.com` 将无法正常访问。  
+  
+**美国及澳大利亚用户** （在 [app.okx.com](https://app.okx.com) 完成注册）：请使用 `us.okx.com` 作为 API 域名。请参阅 [美国及澳大利亚 API 文档](https://app.okx.com/docs-v5/en/)。  
+**欧盟用户** （在 [my.okx.com](https://my.okx.com) 完成注册）：请使用 `eea.okx.com` 作为 API 域名。请参阅 [欧盟 API 文档](https://my.okx.com/docs-v5/en/)。  
 
 ## API学习资源与技术支持 
 
@@ -958,7 +974,7 @@ APIKey 有如下3种权限，一个 APIKey 可以有一个或多个权限。
 
   * `OK-ACCESS-SIGN`使用HMAC SHA256哈希函数获得哈希值，再使用Base-64编码（请参阅签名）。
 
-  * `OK-ACCESS-TIMESTAMP`发起请求的时间（UTC），如：2020-12-08T09:08:57.715Z
+  * `OK-ACCESS-TIMESTAMP` 请求时间戳，ISO 8601 UTC格式，精确到毫秒，如：`2020-12-08T09:08:57.715Z`。服务器将拒绝与服务器时间相差超过30秒的请求（错误码50102）。请务必使用UTC时间——时区偏差是导致50102错误最常见的原因。建议在下单前通过 GET /api/v5/public/time 与服务器时间同步。
 
   * `OK-ACCESS-PASSPHRASE`您在创建API密钥时指定的Passphrase。
 
@@ -1355,7 +1371,7 @@ WebSocket有一种消息类型(event=`notice`)。
 
 实盘API交易地址如下： 
 
-  * REST：`https://www.okx.com`  
+  * REST：`https://openapi.okx.com`  
 
   * WebSocket公共频道：`wss://ws.okx.com:8443/ws/v5/public`  
 
@@ -1368,7 +1384,7 @@ WebSocket有一种消息类型(event=`notice`)。
 
 模拟盘API交易地址如下： 
 
-  * REST：`https://www.okx.com`
+  * REST：`https://openapi.okx.com`
   * WebSocket公共频道：`wss://wspap.okx.com:8443/ws/v5/public`  
 
   * WebSocket私有频道：`wss://wspap.okx.com:8443/ws/v5/private`
@@ -1505,7 +1521,7 @@ expTime | String | 否 | 请求有效截止时间。Unix时间戳的毫秒数格
     
     
     curl -X 'POST' \
-      'https://www.okx.com/api/v5/trade/order' \
+      'https://openapi.okx.com/api/v5/trade/order' \
       -H 'accept: application/json' \
       -H 'Content-Type: application/json' \
       -H 'OK-ACCESS-KEY: *****' \
@@ -1699,7 +1715,7 @@ Tier 8 | >= 50 | 10,000
 
   * 其他交易所达标做市商（需审核）  
 
-感兴趣的各方可以使用此表格联系我们：<https://okx.typeform.com/contact-sales>  
+感兴趣的各方可以通过邮箱联系我们：`Institutional@okx.com`  
 
 为鼓励做市商为平台提供更好的流动性，可以享受更优的交易手续费，同时也承担相应的做市责任。具体做市责任及手续费申请成功后提供相关资料。
 

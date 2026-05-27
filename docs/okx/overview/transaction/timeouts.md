@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-transaction-timeouts
 anchor_id: overview-transaction-timeouts
 api_type: API
-updated_at: 2026-01-15T23:27:49.015745
+updated_at: 2026-05-27 19:34:19.614087
 ---
 
 # Transaction Timeouts
@@ -32,7 +32,7 @@ The following endpoints are supported:
     
     
     curl -X 'POST' \
-      'https://www.okx.com/api/v5/trade/order' \
+      'https://openapi.okx.com/api/v5/trade/order' \
       -H 'accept: application/json' \
       -H 'Content-Type: application/json' \
       -H 'OK-ACCESS-KEY: *****' \
@@ -109,7 +109,7 @@ expTime | String | 否 | 请求有效截止时间。Unix时间戳的毫秒数格
     
     
     curl -X 'POST' \
-      'https://www.okx.com/api/v5/trade/order' \
+      'https://openapi.okx.com/api/v5/trade/order' \
       -H 'accept: application/json' \
       -H 'Content-Type: application/json' \
       -H 'OK-ACCESS-KEY: *****' \

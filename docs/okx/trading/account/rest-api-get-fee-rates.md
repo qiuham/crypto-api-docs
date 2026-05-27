@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-fee-rates
 anchor_id: trading-account-rest-api-get-fee-rates
 api_type: REST
-updated_at: 2026-01-15T23:27:50.303605
+updated_at: 2026-05-27 19:34:30.189019
 ---
 
 # Get fee rates
@@ -55,6 +55,7 @@ instType | String | Yes | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instId | String | No | Instrument ID, e.g. `BTC-USDT`  
 Applicable to `SPOT`/`MARGIN`  
 instFamily | String | No | Instrument family, e.g. `BTC-USD`  
@@ -76,6 +77,7 @@ Users can use instruments endpoint to fetch the mapping of an instrument ID and 
                 "exercise": "",
                 "feeGroup": [
                     {
+                        "elpMaker": "-0.0008",
                         "groupId": "1",
                         "maker": "-0.0008",
                         "taker": "-0.001"
@@ -104,12 +106,15 @@ Users can use instruments endpoint to fetch the mapping of an instrument ID and 
 ---|---|---  
 level | String | Fee rate Level  
 feeGroup | Array of objects | Fee groups.   
-Applicable to `SPOT/MARGIN/SWAP/FUTURES/OPTION`  
+Applicable to `SPOT/MARGIN/SWAP/FUTURES/OPTION/EVENTS`  
 > taker | String | Taker fee  
+K1 parameter for `EVENTS` taker fee formula: `K1 × C × (P × (1-P))` (C = number of contracts, P = price)  
 > maker | String | Maker fee  
+K2 parameter for `EVENTS` maker fee formula: `K2 × C × (P × (1-P))` (C = number of contracts, P = price)  
 > groupId | String | Instrument trading fee group ID  
   
 **instType and groupId should be used together to determine a trading fee group. Users should use this endpoint together with[instruments endpoint](/docs-v5/en/#trading-account-rest-api-get-instruments) to get the trading fee of a specific symbol.**  
+> elpMaker | String | ELP Maker effective fee rate. Returns `""` if ELP is not applicable to the instrument.  
 delivery | String | Delivery fee rate  
 exercise | String | Fee rate for exercising the option  
 instType | String | Instrument type  
@@ -132,6 +137,7 @@ fiat | Array of objects | ~~Details of fiat fee rate~~(deprecated)
 > ccy | String | Fiat currency.  
 > taker | String | Taker fee rate  
 > maker | String | Maker fee rate  
+settle | String | Settlement fee rate for users whose positions match the event contract settlement result. Users holding the opposite positions will not be charged during settlement. Only applicable to `EVENTS`  
 Remarks:   
 The fee rate like maker and taker: positive number, which means the rate of rebate; negative number, which means the rate of commission.  
 Exception: The values for delivery and exercise are positive numbers, representing the commission rate.  USDⓈ represent the stablecoin besides USDT  The Open API will not reflect zero-fee trading. For zero-fee pairs, please refer to [https://www.okx.com/fees ](https://www.okx.com/fees).
@@ -187,6 +193,7 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 否 | 产品ID，如 `BTC-USDT`  
 仅适用于instType为`币币/币币杠杆`  
 instFamily | String | 否 | 交易品种  
@@ -208,6 +215,7 @@ groupId 和 instId/instFamily 只能传入其一
                 "exercise": "",
                 "feeGroup": [
                     {
+                        "elpMaker": "-0.0008",
                         "groupId": "1",
                         "maker": "-0.0008",
                         "taker": "-0.001"
@@ -236,12 +244,15 @@ groupId 和 instId/instFamily 只能传入其一
 ---|---|---  
 level | String | 手续费等级  
 feeGroup | Array of objects | 手续费分组   
-适用于`SPOT/MARGIN/SWAP/FUTURES/OPTION`  
+适用于`SPOT/MARGIN/SWAP/FUTURES/OPTION/EVENTS`  
 > taker | String | 吃单手续费  
+`EVENTS` 吃单手续费公式的 K1 参数：`K1 × C × (P × (1-P))`（C = 合约张数，P = 价格）  
 > maker | String | 挂单手续费  
+`EVENTS` 挂单手续费公式的 K2 参数：`K2 × C × (P × (1-P))`（C = 合约张数，P = 价格）  
 > groupId | String | 交易产品手续费分组ID  
   
 **用户需要同时使用instType和groupId来确定一个交易产品的交易手续费分组；用户应该将此接口和[获取交易产品基础信息](/docs-v5/zh/#trading-account-rest-api-get-instruments)一起使用，以获取特定交易产品的手续费率**  
+> elpMaker | String | ELP Maker 有效费率。若 ELP 不适用于该交易产品，则返回 `""`。  
 delivery | String | 交割手续费率  
 exercise | String | 行权手续费率  
 instType | String | 产品类型  
@@ -264,6 +275,7 @@ fiat | Array of objects | ~~法币费率~~ （已废弃）
 > ccy | String | 法币币种  
 > taker | String | 吃单手续费率  
 > maker | String | 挂单手续费率  
+settle | String | 结算手续费率，适用于持仓方向与事件合约结算结果一致的用户。持反向仓位的用户结算时不收取手续费。仅适用于 `EVENTS`  
 备注：  
 手续费率的值（如 maker/taker）：正数，代表是返佣的费率；负数，代表平台扣除的费率。  
 例外：delivery 和 exercise 为正数，代表平台扣除的费率。  USDⓈ 代表除 USDT 之外的稳定币。  接口不会体现零手续费，零手续费交易对请参考<https://www.okx.com/zh-hans/fees>

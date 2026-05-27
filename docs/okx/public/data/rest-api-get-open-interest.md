@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-open-interest
 anchor_id: public-data-rest-api-get-open-interest
 api_type: REST
-updated_at: 2026-01-15T23:28:00.715187
+updated_at: 2026-05-27 19:36:10.050961
 ---
 
 # Get open interest
@@ -46,11 +46,12 @@ instType | String | Yes | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instFamily | String | Conditional | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
 If instType is `OPTION`, instFamily is required.  
 instId | String | No | Instrument ID, e.g. `BTC-USDT-SWAP`  
-Applicable to `FUTURES`/`SWAP`/`OPTION`  
+Applicable to `FUTURES`/`SWAP`/`OPTION`/`EVENTS`  
   
 > Response Example
     
@@ -124,11 +125,12 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instFamily | String | 可选 | 交易品种  
 适用于`交割`/`永续`/`期权`  
 `期权`下必传  
 instId | String | 否 | 产品ID，如 `BTC-USDT-SWAP`   
-仅适用于`交割`/`永续`/`期权`  
+仅适用于`交割`/`永续`/`期权`/`事件合约`  
   
 > 返回结果
     

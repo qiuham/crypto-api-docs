@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-get-lead-trader-weekly-pnl
 anchor_id: order-book-trading-copy-trading-get-lead-trader-weekly-pnl
 api_type: API
-updated_at: 2026-01-15T23:27:56.256222
+updated_at: 2026-05-27 19:35:28.921082
 ---
 
 # GET / Lead trader weekly pnl
@@ -34,7 +34,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
   
 > Response example
     
@@ -95,7 +95,7 @@ pnlRatio | String | Pnl ratio on that week
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
   
 > 返回结果
     

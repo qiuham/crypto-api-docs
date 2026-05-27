@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-get-transaction-details-last-3-months
 anchor_id: order-book-trading-trade-get-transaction-details-last-3-months
 api_type: API
-updated_at: 2026-01-15T23:27:52.589119
+updated_at: 2026-05-27 19:34:48.940424
 ---
 
 # GET / Transaction details (last 3 months)
@@ -56,6 +56,7 @@ instType | String | YES | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instFamily | String | No | Instrument family  
 Applicable to `FUTURES`/`SWAP`/`OPTION`  
 instId | String | No | Instrument ID, e.g. `BTC-USDT`  
@@ -109,6 +110,12 @@ subType | String | No | Transaction type
 `329`: Move position close short   
 `376`: Collateralized borrowing auto conversion buy  
 `377`: Collateralized borrowing auto conversion sell  
+`410`: Buy yes  
+`411`: Buy no  
+`412`: Sell yes  
+`413`: Sell no  
+`414`: Yes expiry  
+`415`: No expiry  
 after | String | No | Pagination of data to return records earlier than the requested `billId`  
 before | String | No | Pagination of data to return records newer than the requested `billId`  
 begin | String | No | Filter with a begin timestamp `ts`. Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -257,6 +264,7 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instFamily | String | 否 | 交易品种  
 适用于`交割`/`永续`/`期权`  
 instId | String | 否 | 产品 ID，如`BTC-USD-190927`  
@@ -310,6 +318,12 @@ subType | String | 否 | 成交类型
 `329`：移仓平空  
 `376`：质押借币超限买入  
 `377`： 质押借币超限卖出  
+`410`：买入yes  
+`411`：买入no  
+`412`：卖出yes  
+`413`：卖出no  
+`414`：yes结算  
+`415`：no结算  
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的 `billId`  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的 `billId`  
 begin | String | 否 | 筛选的开始时间戳 `ts`，Unix 时间戳为毫秒数格式，如 `1597026383085`  

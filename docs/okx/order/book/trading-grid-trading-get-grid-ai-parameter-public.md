@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-get-grid-ai-parameter-public
 anchor_id: order-book-trading-grid-trading-get-grid-ai-parameter-public
 api_type: API
-updated_at: 2026-01-15T23:27:54.318726
+updated_at: 2026-05-27 19:35:04.800871
 ---
 
 # GET / Grid AI parameter (public)
@@ -37,10 +37,9 @@ instId | String | Yes | Instrument ID, e.g. `BTC-USDT`
 direction | String | Conditional | Contract grid type  
 `long`,`short`,`neutral`  
 Required in the case of `contract_grid`  
-duration | String | No | Back testing duration  
-`7D`: 7 Days, `30D`: 30 Days, `180D`: 180 Days  
-The default is `7D` for `Spot grid`  
-Only `7D` is available for `Contract grid`  
+duration | String | No | Back testing duration in number of days  
+Spot grid default is `7D` with available durations of `7D`, `30D` and `180D`  
+Contract grid default is `14D` with available durations of `7D`, `14D` and `30D`  
   
 > Response Example
     
@@ -132,10 +131,9 @@ instId | String | 是 | 产品ID，如`BTC-USDT`
 direction | String | 可选 | 合约网格类型  
 `long`：做多，`short`：做空，`neutral`：中性  
 合约网格必填  
-duration | String | 否 | 回测周期  
-`7D`：7天，`30D`：30天，`180D`：180天  
-默认`现货网格`为`7D`  
-合约网格只支持`7D`  
+duration | String | 否 | 回测时长，单位为天  
+现货网格默认 `7D`，可选：`7D`、`30D`、`180D`  
+合约网格默认 `14D`，可选：`7D`、`14D`、`30D`  
   
 > 返回结果
     

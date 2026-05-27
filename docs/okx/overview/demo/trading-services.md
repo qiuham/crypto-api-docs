@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-demo-trading-services
 anchor_id: overview-demo-trading-services
 api_type: API
-updated_at: 2026-01-15T23:27:48.927728
+updated_at: 2026-05-27 19:34:18.685237
 ---
 
 # Demo Trading Services
@@ -12,7 +12,7 @@ Currently, the API works for Demo Trading, but some functions are not supported,
 
 The Demo Trading URL: 
 
-  * REST: `https://www.okx.com`  
+  * REST: `https://openapi.okx.com`  
 
   * Public WebSocket: `wss://wspap.okx.com:8443/ws/v5/public`  
 
@@ -61,7 +61,7 @@ Try [demo trading explorer](/demo-trading-explorer/v5/en)
 
 模拟盘API交易地址如下： 
 
-  * REST：`https://www.okx.com`
+  * REST：`https://openapi.okx.com`
   * WebSocket公共频道：`wss://wspap.okx.com:8443/ws/v5/public`  
 
   * WebSocket私有频道：`wss://wspap.okx.com:8443/ws/v5/private`

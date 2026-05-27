@@ -3,12 +3,12 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-get-one-click-repay-currency-list-new
 anchor_id: order-book-trading-trade-get-one-click-repay-currency-list-new
 api_type: API
-updated_at: 2026-01-15T23:27:52.810451
+updated_at: 2026-05-27 19:34:51.123929
 ---
 
 # GET / One-click repay currency list (New)
 
-Get list of debt currency data and repay currencies. Only applicable to `SPOT mode`.  
+Get list of debt currency data and repay currencies. Only applicable to `SPOT mode`/`Multi-currency margin mode`/`Portfolio margin mode`.  
   
 #### Rate Limit: 1 request per 2 seconds
 
@@ -97,7 +97,7 @@ repayData | Array of objects | Repay currency data list
 
 # GET / 获取一键还债币种列表(新)
 
-查询一键还债币种列表。仅适用于`现货模式`。  
+查询一键还债币种列表。仅适用于`现货模式`/`跨币种保证金模式`/`组合保证金模式`。  
   
 #### 限速：1次/2s
 

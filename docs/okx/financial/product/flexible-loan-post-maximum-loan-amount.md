@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-post-maximum-loan-amount
 anchor_id: financial-product-flexible-loan-post-maximum-loan-amount
 api_type: API
-updated_at: 2026-01-15T23:28:05.568932
+updated_at: 2026-05-27 19:36:58.128095
 ---
 
 # POST / Maximum loan amount
@@ -24,6 +24,7 @@ updated_at: 2026-01-15T23:28:05.568932
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -40,7 +41,7 @@ updated_at: 2026-01-15T23:28:05.568932
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -49,6 +50,9 @@ updated_at: 2026-01-15T23:28:05.568932
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 borrowCcy | String | Yes | Currency to borrow, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
 supCollateral | Array of objects | No | Supplementary collateral assets  
 > ccy | String | Yes | Currency, e.g. `BTC`  
 > amt | String | Yes | Amount  
@@ -99,6 +103,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -115,7 +120,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -124,6 +129,9 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 borrowCcy | String | 是 | 借币币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
 supCollateral | Array of objects | 否 | 补充抵押资产信息  
 > ccy | String | 是 | 币种，如 `BTC`  
 > amt | String | 是 | 数量  

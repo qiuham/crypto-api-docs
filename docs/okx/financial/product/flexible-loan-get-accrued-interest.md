@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-get-accrued-interest
 anchor_id: financial-product-flexible-loan-get-accrued-interest
 api_type: REST
-updated_at: 2026-01-15T23:28:05.720675
+updated_at: 2026-05-27 19:36:59.688265
 ---
 
 # GET / Accrued interest
@@ -49,6 +49,8 @@ ccy | String | No | Loan currency, e.g. `BTC`
 after | String | No | Pagination of data to return records earlier than the requested `refId`(not include)  
 before | String | No | Pagination of data to return records newer than the requested `refId`(not include)  
 limit | String | No | Number of results per request. The maximum is `100`. The default is `100`.  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all orders  
   
 > 返回结果
     
@@ -125,6 +127,8 @@ ccy | String | 否 | 借贷币种，如 `BTC`
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 limit | String | 否 | 返回结果的数量，最大为`100`，默认`100`条  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有订单数据  
   
 > 返回结果
     

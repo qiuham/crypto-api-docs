@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-algo-trading-ws-advance-algo-orders-channel
 anchor_id: order-book-trading-algo-trading-ws-advance-algo-orders-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:53.687117
+updated_at: 2026-05-27 19:34:58.922020
 ---
 
 # WS / Advance algo orders channel
@@ -284,10 +284,6 @@ Applicable to all `isolated` `MARGIN` orders and `cross` `MARGIN` orders in `Fut
 > algoId | String | Algo ID  
 > clOrdId | String | Client Order ID as assigned by the client  
 > sz | String | Quantity to buy or sell. `SPOT`/`MARGIN`: in the unit of currency. `FUTURES`/`SWAP`/`OPTION`: in the unit of contract.  
-> ordType | String | Order type   
-`iceberg`: Iceberg order   
-`twap`: TWAP order   
-`move_order_stop`: Trailing order  
 > side | String | Order side, `buy` `sell`  
 > posSide | String | Position side   
 `net`   
@@ -620,10 +616,6 @@ data | Array of objects | 订阅的数据
 > algoId | String | 策略委托单ID  
 > clOrdId | String | 客户自定义订单ID  
 > sz | String | 委托数量，`币币/币币杠杆` 以币为单位；`交割`/`永续`/`期权` 以张为单位  
-> ordType | String | 订单类型  
-`iceberg`：冰山委托  
-`twap`：时间加权委托  
-`move_order_stop`：移动止盈止损  
 > side | String | 订单方向，`buy` `sell`  
 > posSide | String | 持仓方向   
 `long`：开平仓模式开多  

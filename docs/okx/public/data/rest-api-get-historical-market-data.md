@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-historical-market-data
 anchor_id: public-data-rest-api-get-historical-market-data
 api_type: REST
-updated_at: 2026-01-15T23:28:01.365486
+updated_at: 2026-05-27 19:36:16.617396
 ---
 
 # Get historical market data
@@ -11,7 +11,7 @@ updated_at: 2026-01-15T23:28:01.365486
 **Data availability**  
 Historical data backfill is currently in progress. Data availability may vary by module, instrument, and time period. The dataset will be continuously expanded to provide more comprehensive historical coverage.  **Legacy data format notice**  
 For module 1 (trade history), some old historical files may contain column headers with both Chinese characters along with English column names. All the Chinese characters will be removed once the data backfill is done. Please account for this when parsing the data.  **Data release schedule**  
-Most data for modules 1, 2, 3 is typically available on T+2; order book data is typically available on T+3.   
+Most data for modules 1, 2, 3, 11 is typically available on T+2; order book data is typically available on T+3.   
   
 Retrieve historical market data for OKX.
 
@@ -40,16 +40,17 @@ module | String | Yes | Data module type
 `4`: 400-level orderbook  
 `5`: 5000-level orderbook (from Nov 1, 2025)  
 `6`: 50-level orderbook (will gradually be deprecated, please use module = `4`,`5` instead)  
+`11`: Borrowing rate  
 instType | String | Yes | Instrument type  
 `SPOT`  
 `FUTURES`  
 `SWAP`  
 `OPTION`  
-instIdList | String | Conditional | List of instrument IDs, e.g. `BTC-USDT`, or `ANY` for all instruments (`ANY` is only supported for module = `1`, `2`, `3` & dateAggrType = `daily`)  
+instIdList | String | Conditional | List of instrument IDs, e.g. `BTC-USDT`, or `ANY` for all instruments (`ANY` is only supported for module = `1`, `2`, `3`, `11` & dateAggrType = `daily`)  
 Multiple instrument IDs should be separated by commas, e.g. `BTC-USDT,ETH-USDT`  
 Maximum length = 10  
 Only applicable when instType = `SPOT`  
-instFamilyList | String | Conditional | List of instrument families, e.g. `BTC-USDT`, or `ANY` for all instruments (`ANY` is only supported for module = `1`, `2`, `3` & dateAggrType = `daily`)  
+instFamilyList | String | Conditional | List of instrument families, e.g. `BTC-USDT`, or `ANY` for all instruments (`ANY` is only supported for module = `1`, `2`, `3`, `11` & dateAggrType = `daily`)  
 Multiple instrument families should be separated by commas, e.g. `BTC-USDT,ETH-USDT`  
 Maximum length = 10 (= 1when module = `6` & instType = `OPTION`)  
 Only applicable when instType ≠ `SPOT`  
@@ -140,7 +141,7 @@ details | Array |
 • **Exception:** When module = 6 & instType = OPTION, only data for the day specified by the end is returned  **Timezone specifications for timestamp parsing**  
 When converting Unix timestamps to dates, the following timezone conventions are applied to all timestamp fields (begin, end, dateRangeStart, dateRangeEnd, dataTs):  
 • **Orderbook data** (modules 4, 5, 6): UTC+0  
-• **All other data modules** (modules 1, 2, 3): UTC+8
+• **All other data modules** (modules 1, 2, 3, 11): UTC+8
 
 ---
 
@@ -149,11 +150,11 @@ When converting Unix timestamps to dates, the following timezone conventions are
 **数据覆盖范围**  
 历史数据回填正在进行中，不同模块、产品和时间段的数据覆盖范围可能有所差异。数据集将持续扩展，以提供更全面的历史数据覆盖。  **旧数据格式注意**  
 对于模块1（交易历史），一些旧的历史文件可能包含同时带有中文字符和英文列名的列标题。数据回填完成后，所有中文字符将被移除。请在解析数据时考虑到这一点。  **数据发布安排**  
-模块 1、2、3 的数据通常在 T+2 可用；订单簿数据通常在 T+3 可用。   
+模块 1、2、3、11 的数据通常在 T+2 可用；订单簿数据通常在 T+3 可用。   
   
 获取OKX历史市场数据。
 
-#### 限速：每2秒5次请求
+#### 限速：2次/5s
 
 #### 限速规则：IP
 
@@ -178,16 +179,17 @@ module | String | 是 | 数据模块类型
 `4`: 400档位深度   
 `5`: 5000档位深度（自2025年11月1日起支持）  
 `6`: 50档位深度 (将逐步弃用，请使用 module = `4`,`5` 代替)  
+`11`: 借币利率  
 instType | String | 是 | 产品类型  
 `SPOT`  
 `FUTURES`  
 `SWAP`  
 `OPTION`  
-instIdList | String | 可选 | 产品ID列表，例如 `BTC-USDT` 或 `ANY` 表示所有产品（`ANY` 仅支持 module = `1`, `2`, `3` & dateAggrType = `daily`）  
+instIdList | String | 可选 | 产品ID列表，例如 `BTC-USDT` 或 `ANY` 表示所有产品（`ANY` 仅支持 module = `1`, `2`, `3`, `11` & dateAggrType = `daily`）  
 多个产品请用英文逗号分隔，如 `BTC-USDT,ETH-USDT`  
 最大长度 = 10   
 仅适用于instType = `SPOT`  
-instFamilyList | String | 可选 | 交易品种列表，例如 `BTC-USDT` 或 `ANY` 表示所有产品（`ANY` 仅支持 module = `1`, `2`, `3` & dateAggrType = `daily`）  
+instFamilyList | String | 可选 | 交易品种列表，例如 `BTC-USDT` 或 `ANY` 表示所有产品（`ANY` 仅支持 module = `1`, `2`, `3`, `11` & dateAggrType = `daily`）  
 多个品种请用英文逗号分隔，如 `BTC-USDT,ETH-USDT`  
 最大长度 = 10 (当module = `6` & instType = `OPTION`时为1)   
 仅适用于instType ≠ `SPOT`  
@@ -278,4 +280,4 @@ details | Array |
 • **例外：** 当 module = 6 且 instType = OPTION 时，仅返回 end 指定日期的数据  **时间戳解析的时区规范**  
 将Unix时间戳转换为日期时，以下时区约定适用于所有时间戳字段（begin, end, dateRangeStart, dateRangeEnd, dataTs）：  
 • **深度数据** （模块4、5、6）：UTC+0  
-• **其他数据模块** （模块1、2、3）：UTC+8
+• **其他数据模块** （模块1、2、3、11）：UTC+8

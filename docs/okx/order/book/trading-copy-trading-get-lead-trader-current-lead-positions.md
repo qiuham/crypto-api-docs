@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-get-lead-trader-current-lead-positions
 anchor_id: order-book-trading-copy-trading-get-lead-trader-current-lead-positions
 api_type: API
-updated_at: 2026-01-15T23:27:56.377949
+updated_at: 2026-05-27 19:35:30.436688
 ---
 
 # GET / Lead trader current lead positions
@@ -34,7 +34,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value.  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 after | String | No | Pagination of data to return records earlier than the requested `subPosId`.  
 before | String | No | Pagination of data to return records newer than the requested `subPosId`.  
 limit | String | No | Number of results per request. Maximum is 100. Default is 100.  

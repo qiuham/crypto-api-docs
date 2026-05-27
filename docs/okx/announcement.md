@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#announcement
 anchor_id: announcement
 api_type: API
-updated_at: 2026-01-15T23:28:05.940613
+updated_at: 2026-05-27 19:37:06.349569
 ---
 
 # Announcement
@@ -11,6 +11,9 @@ updated_at: 2026-01-15T23:28:05.940613
 ## GET / Announcements  
   
 Get announcements, the response is sorted by `pTime` and `businessPTime` with the most recent first. The sort will not be affected if the announcement is updated. Every page has 20 records  
+  
+
+When Accept-Language in HTTP header is set to en-US, the response will be in English. When set to zh-CN, the response will be in Chinese.  
   
 
 Authentication is optional for this endpoint.  
@@ -88,7 +91,7 @@ details | Array of objects | List of announcements
 > title | String | Announcement title  
 > annType | String | Announcement type  
 > businessPTime | String | The time displayed on the announcement page for user reference. Unix timestamp format in milliseconds, e.g. `1597026383085`  
-> pTime | String | The actual time the announcement was first published. Unix timestamp format in milliseconds, e.g. `1597026383085`  
+> pTime | String | The actual time the announcement was first published. Unix timestamp format in milliseconds, e.g. `1597026383085`. Response may be delayed around 5 minutes.  
 > url | String | Announcement url  
   
 ## GET / Announcement types
@@ -232,7 +235,7 @@ details | Array of objects | 公告列表
 > title | String | 公告标题  
 > annType | String | 公告类型  
 > businessPTime | String | 公告页面展示时间，供用户参考。Unix 毫秒时间戳，例如 `1597026383085`  
-> pTime | String | 公告首次实际发布时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
+> pTime | String | 公告首次实际发布时间，Unix时间戳的毫秒数格式，如 `1597026383085`。响应可能延迟约 5 分钟。  
 > url | String | 公告链接  
   
 ## GET / 公告类型 

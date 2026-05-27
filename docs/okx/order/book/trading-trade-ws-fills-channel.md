@@ -3,14 +3,16 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-ws-fills-channel
 anchor_id: order-book-trading-trade-ws-fills-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:53.080814
+updated_at: 2026-05-27 19:34:53.659645
 ---
 
 # WS / Fills channel
 
 Retrieve transaction information. Data will not be pushed when first subscribed. Data will only be pushed when there are order book fill events, where tradeId > 0.  
 
-The channel is exclusively available to users with trading fee tier VIP6 or above. For other users, please use [WS / Order channel](/docs-v5/en/#order-book-trading-trade-ws-order-channel).
+The channel is exclusively available to users with trading fee tier VIP4 or above. Other users will receive error code 64003. For other users, please use [WS / Order channel](/docs-v5/en/#order-book-trading-trade-ws-order-channel). 
+
+For `EVENTS`, only data for the YES side is returned regardless of whether the actual order was placed on YES or NO.
 
 #### URL Path
 
@@ -219,7 +221,7 @@ data | Array of objects | Subscribed data
 > tradeId | String | The last trade ID in the trades aggregation  
 > execType | String | Liquidity taker or maker, `T`: taker `M`: maker  
 > count | String | The count of trades aggregated  
-\- The channel is exclusively available to users with trading fee tier VIP6 or above. Others will receive error code 60029 when subscribing to it.   
+\- The channel is exclusively available to users with trading fee tier VIP4 or above. Others will receive error code 64003 when subscribing to it.   
 \- The channel only pushes partial information of the orders channel. Fill events of block trading, nitro spread, liquidation, ADL, and some other non order book events will not be pushed through this channel. Users should also subscribe to the orders channel for order confirmation.   
 \- When a fill event is received by this channel, the account balance, margin, and position information might not have changed yet.   
 \- Taker orders will be aggregated based on different fill prices. When aggregation occurs, the count field indicates the number of orders matched, and the tradeId represents the tradeId of the last trade in the aggregation. Maker orders will not be aggregated.   
@@ -232,7 +234,9 @@ data | Array of objects | Subscribed data
 
 获取成交信息。该频道无首推，仅在订单簿成交相关事件触发时推送数据，tradeId > 0。
 
-该频道仅适用于交易等级VIP6及以上的用户。其他用户请使用[WS / 订单频道](/docs-v5/zh/#order-book-trading-trade-ws-order-channel)。
+该频道仅适用于交易等级VIP4及以上的用户，其他用户接入将收到错误码64003。其他用户请使用[WS / 订单频道](/docs-v5/zh/#order-book-trading-trade-ws-order-channel)。
+
+对于 `EVENTS`，无论实际订单是否为 YES 或 NO 方向，仅推送 YES 侧成交数据。
 
 #### 服务地址
 
@@ -450,7 +454,7 @@ data | Array of objects | 订阅的数据
 `T`：taker  
 `M`：maker  
 > count | String | 聚合的订单匹配数量  
-\- 该频道仅适用于交易等级VIP6及以上的用户，其他用户接入将收到错误码60029  
+\- 该频道仅适用于交易等级VIP4及以上的用户，其他用户接入将收到错误码64003  
 \- 该频道只推送部分订单频道的信息，与大宗交易、价差速递相关的成交，强平、自动减仓等非订单簿事件不会通过该频道推送。用户应同时关注订单频道，对订单做最终确认  
 \- 该频道接收到成交推送时，账户余额、保证金、持仓等信息可能仍未发生变化  
 \- taker订单将根据不同成交价格进行聚合，有聚合时，count字段表示聚合的订单匹配数量，tradeId代表聚合的多笔交易中最新一笔交易的ID；maker订单不会聚合  

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code-websocket-public
 anchor_id: error-code-websocket-public
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:06.569241
+updated_at: 2026-05-27 19:37:11.917562
 ---
 
 # Public
@@ -31,8 +31,6 @@ Error Code | Error Message
 60026 | Batch login by APIKey and token simultaneously is not supported.  
 60027 | Parameter {0} can not be empty.  
 60028 | The current operation is not supported by this URL. Please use the correct WebSocket URL for the operation.  
-60029 | Only users who are VIP6 and above in trading fee tier are allowed to subscribe to this channel.  
-60030 | Only users who are VIP5 and above in trading fee tier are allowed to subscribe to books50-l2-tbt channel.  
 60031 | The WebSocket endpoint does not allow multiple or repeated logins.  
 60032 | API key doesn't exist.  
 60033 | Parameter {param0} error.  
@@ -88,8 +86,6 @@ Disclaimer: The availability of products and services listed on this page will d
 60026 | 不支持APIKey和token同时登录  
 60027 | 参数{0}不可为空  
 60028 | 当前服务不支持此功能，请检查WebSocket地址  
-60029 | 该频道仅支持手续费等级为 VIP6 及以上的用户订阅使用  
-60030 | books50-l2-tbt 深度频道仅支持手续费等级为 VIP5 及以上的用户订阅使用  
 60031 | WebSocket地址不支持多账户和重复登录  
 60032 | API key 不存在  
 60033 | {param0} 参数错误  

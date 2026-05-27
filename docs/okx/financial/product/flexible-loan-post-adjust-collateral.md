@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-post-adjust-collateral
 anchor_id: financial-product-flexible-loan-post-adjust-collateral
 api_type: API
-updated_at: 2026-01-15T23:28:05.628885
+updated_at: 2026-05-27 19:36:58.749846
 ---
 
 # POST / Adjust collateral
@@ -25,6 +25,7 @@ updated_at: 2026-01-15T23:28:05.628885
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -42,7 +43,7 @@ updated_at: 2026-01-15T23:28:05.628885
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -55,6 +56,9 @@ type | String | Yes | Operation type
 `reduce`: Reduce collateral  
 collateralCcy | String | Yes | Collateral currency, e.g. `BTC`  
 collateralAmt | String | Yes | Collateral amount  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return error `51063`  
   
 > Response Example
     
@@ -92,6 +96,7 @@ code = `0` means your request has been accepted (It doesn't mean the request has
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -109,7 +114,7 @@ code = `0` means your request has been accepted (It doesn't mean the request has
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -122,6 +127,9 @@ type | String | 是 | 操作类型
 `reduce`：减少抵押物  
 collateralCcy | String | 是 | 抵押物币种，如 `BTC`  
 collateralAmt | String | 是 | 抵押物数量  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回错误 `51063`  
   
 > 返回结果
     

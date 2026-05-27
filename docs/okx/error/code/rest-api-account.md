@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code-rest-api-account
 anchor_id: error-code-rest-api-account
 api_type: REST
-updated_at: 2026-01-15T23:28:06.417024
+updated_at: 2026-05-27 19:37:10.357871
 ---
 
 # Account
@@ -110,6 +110,8 @@ Error Code | HTTP Status Code | Error Message
 59526 | 200 | Failed to switch strategy because your delta-to-equity ratio will exceed the threshold and trigger the transfer-out restriction after the switch. Lower your delta and try again.  
 59527 | 200 | You must set all currencies as collateral when using delta neutral strategy.  
 59528 | 200 | Failed to switch strategy because your account’s {param0} borrowing in the targeted strategy will exceed the main account borrowing limit after the switch. Repay your liabilities and try again.  
+59529 | 200 | Failed to switch strategy. This account is part of a delta neutral risk unit. Remove it from the risk unit before switching strategies.  
+59550 | 200 | Complete identity verification (Lv2) to access this feature.  
 59601 | 200 | Subaccount name already exists.  
 59603 | 200 | Maximum number of subaccounts reached.  
 59604 | 200 | Only the API key of the main account can access this API.  
@@ -164,7 +166,10 @@ Error Code | HTTP Status Code | Error Message
 59683 | 200 | Set this crypto as your collateral crypto before selecting it as your settlement currency.  
 59684 | 200 | Borrowing isn’t supported for this currency.  
 59686 | 200 | This crypto can’t be set as a settlement currency.  
-59689 | 200 | Convert failed. The {param0} converted to {param1} is too small to process.
+59689 | 200 | Convert failed. The {param0} converted to {param1} is too small to process.  
+59691 | 200 | Daily increase limit reached {param0}. Please retry after UTC 0:00 or reset your demo account.  
+59692 | 200 | Insufficient {param0} balance. Balance cannot go below zero after operation.  
+59693 | 200 | {param0} transferable balance insufficient. Some funds are occupied by open orders or positions. Please cancel orders or close positions and try again.
 
 ---
 
@@ -274,6 +279,8 @@ Error Code | HTTP Status Code | Error Message
 59526 | 200 | 策略模式设置失败。设置后，您账户的 Delta 权益比率将超过限制，触发“账户限制转出”状态，请降低 Delta 值后重试  
 59527 | 200 | 使用 delta 中性策略模式，需开启全部币种的质押  
 59528 | 200 | 策略模式设置失败。设置后，您账户在对应策略模式下的 {param0} 借币将超过主账户借币限额，请偿还借币后重试  
+59529 | 200 | 策略模式设置失败。该账户属于 Delta 中性策略风险单元，设置策略模式前，请先将该账户移出风险单元  
+59550 | 200 | 完成2级身份认证方可使用此功能。  
 59601 | 200 | 子账户名称已存在  
 59603 | 200 | 创建的子账户数量已达到上限  
 59604 | 200 | 仅母账APIkey有操作此接口的权限  
@@ -329,4 +336,7 @@ Error Code | HTTP Status Code | Error Message
 59683 | 200 | 请先开启该币种的质押，再将其设置为结算币种  
 59684 | 200 | 该币种不支持进行借币交易  
 59686 | 200 | 不支持该币种作为结算币种  
-59689 | 200 | 兑换失败。{param0} 兑换至 {param1} 的金额过低，无法执行
+59689 | 200 | 兑换失败。{param0} 兑换至 {param1} 的金额过低，无法执行  
+59691 | 200 | 每日增加余额次数已达上限{param0}，请于 UTC 0:00 后重试或重置模拟盘  
+59692 | 200 | {param0} 余额不足，操作后余额不可小于零  
+59693 | 200 | {param0} 可转余额不足，部分资金被挂单或持仓占用，请取消订单或平仓后重试

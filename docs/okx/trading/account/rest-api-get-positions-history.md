@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-positions-history
 anchor_id: trading-account-rest-api-get-positions-history
 api_type: REST
-updated_at: 2026-01-15T23:27:49.811201
+updated_at: 2026-05-27 19:34:25.144626
 ---
 
 # Get positions history
@@ -52,6 +52,7 @@ instType | String | No | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instId | String | No | Instrument ID, e.g. `BTC-USD-SWAP`  
 mgnMode | String | No | Margin mode  
 `cross` `isolated`  
@@ -106,6 +107,11 @@ limit | String | No | Number of results per request. The maximum is 100. The def
 Parameter | Type | Description  
 ---|---|---  
 instType | String | Instrument type  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 instId | String | Instrument ID  
 mgnMode | String | Margin mode  
 `cross` `isolated`  
@@ -193,6 +199,7 @@ instType | String | 否 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 否 | 交易产品ID，如：`BTC-USD-SWAP`  
 mgnMode | String | 否 | 保证金模式  
 `cross`：全仓，`isolated`：逐仓  
@@ -247,6 +254,11 @@ limit | String | 否 | 分页返回结果的数量，最大为100，默认100条
 参数名 | 类型 | 描述  
 ---|---|---  
 instType | String | 产品类型  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 交易产品ID  
 mgnMode | String | 保证金模式  
 `cross`：全仓  

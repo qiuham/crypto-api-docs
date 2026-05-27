@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-positions
 anchor_id: trading-account-rest-api-get-positions
 api_type: REST
-updated_at: 2026-01-15T23:27:49.776630
+updated_at: 2026-05-27 19:34:24.826640
 ---
 
 # Get positions
@@ -54,6 +54,7 @@ instType | String | No | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 `instId` will be checked against `instType` when both parameters are passed.  
 instId | String | No | Instrument ID, e.g. `BTC-USDT-SWAP`. Single instrument ID or multiple instrument IDs (no more than 10) separated with comma  
 posId | String | No | Single position ID or multiple position IDs (no more than 20) separated with comma.   
@@ -143,6 +144,11 @@ If the instrument ever had position and its open interest is 0, it will return t
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 instType | String | Instrument type  
+`MARGIN`  
+`SWAP`  
+`FUTURES`  
+`OPTION`  
+`EVENTS`  
 mgnMode | String | Margin mode  
 `cross`   
 `isolated`  
@@ -151,7 +157,7 @@ posSide | String | Position side
 `long`, `pos` is positive   
 `short`, `pos` is positive   
 `net` (`FUTURES`/`SWAP`/`OPTION`: positive `pos` means long position and negative `pos` means short position. For `MARGIN`, `pos` is always positive, `posCcy` being base currency means long position, `posCcy` being quote currency means short position.)  
-pos | String | Quantity of positions. In the isolated margin mode, when doing manual transfers, a position with pos of `0` will be generated after the deposit is transferred  
+pos | String | Position quantity. Unit: number of contracts for SWAP/FUTURES/OPTIONS; base currency amount for MARGIN. Sign (net mode): positive = long, negative = short. In long/short mode, separate records are returned per side — check `posSide`. In the isolated margin mode, when doing manual transfers, a position with pos of `0` will be generated after the deposit is transferred (represents a funded-but-empty position record created after a margin deposit).  
 hedgedPos | String | Hedged position size  
 Only return for accounts in delta neutral strategy, stgyType:1. Return "" for accounts in general strategy.  
 baseBal | String | ~~Base currency balance, only applicable to`MARGIN`（Quick Margin Mode）~~(Deprecated)  
@@ -164,22 +170,22 @@ posCcy | String | Position currency, only applicable to `MARGIN` positions.
 availPos | String | Position that can be closed   
 Only applicable to `MARGIN` and `OPTION`.  
 For `MARGIN` position, the rest of sz will be `SPOT` trading after the liability is repaid while closing the position. Please get the available reduce-only amount from "Get maximum available tradable amount" if you want to reduce the amount of `SPOT` trading as much as possible.  
-avgPx | String | Average open price  
+avgPx | String | Volume-weighted average entry price of the current open position. Denominated in quote currency for linear contracts (e.g., USDT for BTC-USDT-SWAP) and in USD for inverse contracts (e.g., BTC-USD-SWAP). Recalculated after each fill that changes position size.  
 Under cross-margin mode, the entry price of expiry futures will update at settlement to the last settlement price, and when the position is opened or increased.  
 nonSettleAvgPx | String | Non-settlement entry price  
 The non-settlement entry price only reflects the average price at which the position is opened or increased.  
 Applicable to `cross` `FUTURES` positions.  
 markPx | String | Latest Mark price  
-upl | String | Unrealized profit and loss calculated by mark price.  
+upl | String | Unrealized PnL for this position, denominated in the instrument's settlement currency (see `ccy`). Formula: (markPx − avgPx) × pos × ctVal for linear; (1/avgPx − 1/markPx) × pos × ctVal for inverse. For account-level USD total, see `upl` in GET /api/v5/account/balance.  
 uplRatio | String | Unrealized profit and loss ratio calculated by mark price.  
 uplLastPx | String | Unrealized profit and loss calculated by last price. Main usage is showing, actual value is upl.  
 uplRatioLastPx | String | Unrealized profit and loss ratio calculated by last price.  
 instId | String | Instrument ID, e.g. `BTC-USDT-SWAP`  
 lever | String | Leverage  
 Not applicable to `OPTION` and positions of cross margin mode under `Portfolio margin`  
-liqPx | String | Estimated liquidation price   
+liqPx | String | Estimated mark price at which this position would be forcibly liquidated. This is an estimate based on current equity and margin rates — the actual liquidation price can change quickly due to funding rate accrual, other position changes, or rapid market moves.   
 Not applicable to `OPTION`  
-imr | String | Initial margin requirement, only applicable to `cross`.  
+imr | String | Initial margin requirement for this specific cross-margin position, in USD. Formula: position size × markPx × initial margin rate (1/lever). For total account IMR, see `imr` in GET /api/v5/account/balance. Empty string for isolated positions. Only applicable to `cross`.  
 margin | String | Margin, can be added or reduced. Only applicable to `isolated`.  
 mgnRatio | String | Maintenance margin ratio  
 mmr | String | Maintenance margin requirement  
@@ -190,8 +196,7 @@ tradeId | String | Last trade ID
 optVal | String | Option Value, only applicable to `OPTION`.  
 pendingCloseOrdLiabVal | String | The amount of close orders of isolated margin liability.  
 notionalUsd | String | Notional value of positions in `USD`  
-adl | String | Auto-deleveraging (ADL) indicator  
-Divided into 6 levels, from 0 to 5, the smaller the number, the weaker the adl intensity.   
+adl | String | Auto-Deleveraging (ADL) indicator. Range: 0–5, where 0 = lowest ADL priority (least likely to be forcibly deleveraged) and 5 = highest priority (first in queue if the insurance fund is depleted). Priority increases with higher unrealized profit and higher leverage.   
 Only applicable to `FUTURES/SWAP/OPTION`  
 ccy | String | Currency used for margin  
 last | String | Latest traded price  
@@ -222,8 +227,8 @@ Only applicable to `FUTURES`/`SWAP`/`OPTION`
 settledPnl | String | Accumulated settled profit and loss (calculated by settlement price)  
 Only applicable to `cross` `FUTURES`  
 pnl | String | Accumulated pnl of closing order(s) (excluding the fee).  
-fee | String | Accumulated fee  
-Negative number represents the user transaction fee charged by the platform.Positive number represents rebate.  
+fee | String | Accumulated fee since the current position was opened. Resets to 0 when the position is fully closed. For per-fill fees, use GET /api/v5/trade/fills.  
+Negative number represents the user transaction fee charged by the platform. Positive number represents rebate.  
 fundingFee | String | Accumulated funding fee  
 liqPenalty | String | Accumulated liquidation penalty. It is negative when there is a value.  
 closeOrderAlgo | Array of objects | Close position algo orders attached to the position. This array will have values only after you request "Place algo order" with `closeFraction`=1.  
@@ -294,6 +299,7 @@ instType | String | 否 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 `instType`和`instId`同时传入的时候会校验`instId`与`instType`是否一致。  
 instId | String | 否 | 交易产品ID，如：`BTC-USDT-SWAP`  
 支持多个`instId`查询（不超过10个），半角逗号分隔  
@@ -384,6 +390,11 @@ posId | String | 否 | 持仓ID
 参数名 | 类型 | 描述  
 ---|---|---  
 instType | String | 产品类型  
+`MARGIN`：币币杠杆  
+`SWAP`：永续合约  
+`FUTURES`：交割合约  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 mgnMode | String | 保证金模式  
 `cross`：全仓  
 `isolated`：逐仓  
@@ -392,7 +403,7 @@ posSide | String | 持仓方向
 `long`：开平仓模式开多，`pos`为正   
 `short`：开平仓模式开空，`pos`为正  
 `net`：买卖模式（`交割`/`永续`/`期权`：`pos`为正代表开多，`pos`为负代表开空。`币币杠杆`时，`pos`均为正，`posCcy`为交易货币时，代表开多；`posCcy`为计价货币时，代表开空。）  
-pos | String | 持仓数量，逐仓自主划转模式下，转入保证金后会产生pos为`0`的仓位  
+pos | String | 持仓量。单位：SWAP/FUTURES/OPTIONS为合约张数；MARGIN为标的币数量。符号（net模式）：正数=多头，负数=空头。long/short模式下按方向分开返回，请结合 `posSide` 判断。逐仓模式下手动划转保证金后，会生成一条 pos 为 `0` 的仓位记录（表示已划入资金但尚无持仓的状态）。  
 hedgedPos | String | 对冲持仓数量  
 仅在delta 中性策略模式的账户返回stgyType:1，对普通策略模式的账户返回""  
 baseBal | String | ~~交易币余额，适用于`币币杠杆`（逐仓一键借币模式）~~（已弃用）  
@@ -404,21 +415,21 @@ quoteInterest | String | ~~计价币计息，适用于`币币杠杆`（逐仓一
 posCcy | String | 仓位资产币种，仅适用于`币币杠杆`仓位  
 availPos | String | 可平仓数量，适用于 `币币杠杆`，`期权`  
 对于杠杆仓位，平仓时，杠杆还清负债后，余下的部分会视为币币交易，如果想要减少币币交易的数量，可通过"获取最大可用数量"接口获取只减仓的可用数量。  
-avgPx | String | 开仓均价  
+avgPx | String | 当前持仓的成交量加权平均开仓价格。线性合约以计价货币计价（如BTC-USDT-SWAP以USDT计），反向合约以USD计价（如BTC-USD-SWAP以USD计）。每次影响仓位大小的成交后重新计算。开仓均价  
 会随结算周期变化，特别是在交割合约全仓模式下，结算时开仓均价会更新为结算价格，同时新增头寸也会改变开仓均价。  
 nonSettleAvgPx | String | 未结算均价  
 不受结算影响的加权开仓价格，仅在新增头寸时更新，和开仓均价的主要区别在于是否受到结算影响。  
 仅适用于`全仓``交割`  
-upl | String | 未实现收益（以标记价格计算）  
+upl | String | 当前持仓按标记价格计算的未实现盈亏，以该合约的结算货币（见 `ccy`）计价。公式：线性 = (标记价格 − 开仓均价) × 持仓量 × `ctVal`；反向 = (1/开仓均价 − 1/标记价格) × 持仓量 × `ctVal`。账户层面USD总计见 GET /api/v5/account/balance 中的 `upl`。  
 uplRatio | String | 未实现收益率（以标记价格计算  
 uplLastPx | String | 以最新成交价格计算的未实现收益，主要做展示使用，实际值还是 upl  
 uplRatioLastPx | String | 以最新成交价格计算的未实现收益率  
 instId | String | 产品ID，如 `BTC-USDT-SWAP`  
 lever | String | 杠杆倍数，不适用于`期权`以及`组合保证金模式`下的全仓仓位  
-liqPx | String | 预估强平价   
-不适用于`期权`  
+liqPx | String | 预估强平价格。这是基于当前权益和保证金率的估算值，实际强平价格可能因资金费率累计、其他仓位变动或市场剧烈波动而迅速变化。  
+不适用于 `OPTION`  
 markPx | String | 最新标记价格  
-imr | String | 初始保证金，仅适用于`全仓`  
+imr | String | 该全仓持仓的初始保证金要求，以USD计价。公式：仓位数量 × 标记价格 × 初始保证金率（1/杠杆）。账户级别IMR请见 GET /api/v5/account/balance 中的 `imr`。逐仓持仓返回空字符串。仅适用于 `全仓`。  
 margin | String | 保证金余额，可增减，仅适用于`逐仓`  
 mgnRatio | String | 维持保证金率  
 mmr | String | 维持保证金  
@@ -429,9 +440,8 @@ tradeId | String | 最新成交ID
 optVal | String | 期权市值，仅适用于`期权`  
 pendingCloseOrdLiabVal | String | 逐仓杠杆负债对应平仓挂单的数量  
 notionalUsd | String | 以美金价值为单位的持仓数量  
-adl | String | 自动减仓信号区  
-分为6档，从0到5，数字越小代表adl强度越弱  
-仅适用于`交割/永续/期权`  
+adl | String | 自动减仓（ADL）指标。范围：0–5，0 = ADL优先级最低（最不可能被强制减仓），5 = 优先级最高（保险基金耗尽时最先被减仓）。优先级随未实现盈利增大和杠杆倍数增加而升高。  
+仅适用于 `FUTURES/SWAP/OPTION`  
 ccy | String | 占用保证金的币种  
 last | String | 最新成交价  
 idxPx | String | 最新指数价格  
@@ -459,7 +469,7 @@ realizedPnl | String | 已实现收益
 settledPnl | String | 已结算收益  
 仅适用于`全仓``交割`  
 pnl | String | 平仓订单累计收益额(不包括手续费)  
-fee | String | 累计手续费金额，正数代表平台返佣 ，负数代表平台扣除  
+fee | String | 自当前仓位开仓起累计手续费，仓位完全平仓后重置为0。逐笔手续费详情请使用 GET /api/v5/trade/fills。累计手续费金额，正数代表平台返佣 ，负数代表平台扣除  
 fundingFee | String | 累计资金费用  
 liqPenalty | String | 累计爆仓罚金，有值时为负数。  
 closeOrderAlgo | Array of objects | 平仓策略委托订单。调用策略委托下单，且`closeFraction`=1 时，该数组才会有值。  

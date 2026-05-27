@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-bills-details-last-7-days
 anchor_id: trading-account-rest-api-get-bills-details-last-7-days
 api_type: REST
-updated_at: 2026-01-15T23:27:49.881377
+updated_at: 2026-05-27 19:34:25.779476
 ---
 
 # Get bills details (last 7 days)
@@ -56,6 +56,7 @@ instType | String | No | Instrument type
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 instId | String | No | Instrument ID, e.g. `BTC-USDT`  
 ccy | String | No | Bill currency  
 mgnMode | String | No | Margin mode  
@@ -66,156 +67,9 @@ ctType | String | No | Contract type
 `inverse`  
 Only applicable to `FUTURES`/`SWAP`  
 type | String | No | Bill type  
-`1`: Transfer  
-`2`: Trade  
-`3`: Delivery  
-`4`: Forced repayment  
-`5`: Liquidation  
-`6`: Margin transfer  
-`7`: Interest deduction  
-`8`: Funding fee  
-`9`: ADL  
-`10`: Clawback  
-`11`: System token conversion  
-`12`: Strategy transfer  
-`13`: DDH  
-`14`: Block trade  
-`15`: Quick Margin  
-`16`: Borrowing  
-`22`: Repay  
-`24`: Spread trading  
-`26`: Structured products  
-`27`: Convert  
-`28`: Easy convert  
-`29`: One-click repay  
-`30`: Simple trade  
-`32`: Move position  
-`33`: Loans  
-`34`: Settlement  
-`250`: Copy trader profit sharing expenses  
-`251`: Copy trader profit sharing refund  
+Please refer to [Get bill types](/docs-v5/en/#trading-account-rest-api-get-bill-types) for the list of available types.  
 subType | String | No | Bill subtype  
-`1`: Buy  
-`2`: Sell  
-`3`: Open long  
-`4`: Open short  
-`5`: Close long  
-`6`: Close short  
-`9`: Interest deduction for Market loans  
-`11`: Transfer in  
-`12`: Transfer out  
-`14`: Interest deduction for VIP loans  
-`160`: Manual margin increase  
-`161`: Manual margin decrease  
-`162`: Auto margin increase  
-`114`: Forced repayment buy  
-`115`: Forced repayment sell  
-`118`: System token conversion transfer in  
-`119`: System token conversion transfer out  
-`100`: Partial liquidation close long  
-`101`: Partial liquidation close short  
-`102`: Partial liquidation buy  
-`103`: Partial liquidation sell  
-`104`: Liquidation long  
-`105`: Liquidation short  
-`106`: Liquidation buy  
-`107`: Liquidation sell  
-`108`: Clawback  
-`110`: Liquidation transfer in  
-`111`: Liquidation transfer out  
-`125`: ADL close long  
-`126`: ADL close short  
-`127`: ADL buy  
-`128`: ADL sell  
-`131`: ddh buy  
-`132`: ddh sell  
-`170`: Exercised(ITM buy side)  
-`171`: Counterparty exercised(ITM sell side)  
-`172`: Expired(Non-ITM buy and sell side)  
-`112`: Delivery long (applicable to `FUTURES` expiration and `SWAP` delisting)  
-`113`: Delivery short (applicable to `FUTURES` expiration and `SWAP` delisting)  
-`117`: Delivery/Exercise clawback  
-`173`: Funding fee expense  
-`174`: Funding fee income  
-`200`:System transfer in  
-`201`: Manually transfer in  
-`202`: System transfer out  
-`203`: Manually transfer out  
-`204`: block trade buy  
-`205`: block trade sell  
-`206`: block trade open long  
-`207`: block trade open short  
-`208`: block trade close long  
-`209`: block trade close short  
-`210`: Manual Borrowing of quick margin  
-`211`: Manual Repayment of quick margin  
-`212`: Auto borrow of quick margin  
-`213`: Auto repay of quick margin  
-`220`: Transfer in when using USDT to buy OPTION  
-`221`: Transfer out when using USDT to buy OPTION  
-`16`: Repay forcibly  
-`17`: Repay interest by borrowing forcibly  
-`224`: Repayment transfer in  
-`225`: Repayment transfer out  
-`236`: Easy convert in  
-`237`: Easy convert out  
-`250`: Profit sharing expenses  
-`251`: Profit sharing refund  
-`280`: SPOT profit sharing expenses  
-`281`: SPOT profit sharing refund  
-`282`: Spot profit share income  
-`283`: Asset transfer for spot copy trading  
-`270`: Spread trading buy  
-`271`: Spread trading sell  
-`272`: Spread trading open long  
-`273`: Spread trading open short  
-`274`: Spread trading close long  
-`275`: Spread trading close short  
-`280`: SPOT profit sharing expenses  
-`281`: SPOT profit sharing refund   
-`284`: Copy trade automatic transfer in  
-`285`: Copy trade manual transfer in  
-`286`: Copy trade automatic transfer out  
-`287`: Copy trade manual transfer out  
-`290`: Crypto dust auto-transfer out  
-~~`293`: Fixed loan interest deduction~~  
-~~`294`: Fixed loan interest refund~~  
-~~`295`: Fixed loan overdue penalty~~  
-`296`: From structured order placements  
-`297`: To structured order placements  
-`298`: From structured settlements  
-`299`: To structured settlements  
-`306`: Manual borrow  
-`307`: Auto borrow  
-`308`: Manual repay  
-`309`: Auto repay  
-`312`: Auto offset  
-`318`: Convert in  
-`319`: Convert out  
-`320`: Simple buy  
-`321`: Simple sell  
-`324`: Move position buy  
-`325`: Move position sell  
-`326`: Move position open long  
-`327`: Move position open short  
-`328`: Move position close long  
-`329`: Move position close short  
-`332`: Margin transfer in isolated margin position   
-`333`: Margin transfer out isolated margin position  
-`334`: Margin loss when closing isolated margin position  
-`355`: Settlement PnL  
-`376`: Collateralized borrowing auto conversion buy  
-`377`: Collateralized borrowing auto conversion sell  
-`381`: Auto lend interest transfer in  
-`372`: Bot airdrop (transfer in)  
-`373`: Bot airdrop (transfer out)  
-`374`: Bot airdrop reclaim (transfer in)  
-`375`: Bot airdrop reclaim (transfer out)   
-`381`: Auto earn (auto lend)  
-`384`: Auto earn (USDG)  
-`392`: Auto staking  
-`395`: Auto earn (auto lend) interest transferred to bots  
-`396`: Auto staking interest transferred to bots  
+Please refer to [Get bill types](/docs-v5/en/#trading-account-rest-api-get-bill-types) for the list of available types.  
 after | String | No | Pagination of data to return records earlier than the requested bill ID.  
 before | String | No | Pagination of data to return records newer than the requested bill ID.  
 begin | String | No | Filter with a begin timestamp `ts`. Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -276,7 +130,7 @@ billId | String | Bill ID
 type | String | Bill type  
 subType | String | Bill subtype  
 ts | String | The time when the balance complete update, Unix timestamp format in milliseconds, e.g.`1597026383085`  
-balChg | String | Change in balance amount at the account level  
+balChg | String | Signed change in account balance for this event, in the currency specified by the `ccy` field. Positive: balance increased (e.g., received funding fee rebate, closed profitable trade). Negative: balance decreased (e.g., paid trading fee, settled a loss).  
 posBalChg | String | Change in balance amount at the position level  
 bal | String | Balance at the account level  
 posBal | String | Balance at the position level  
@@ -400,8 +254,8 @@ instType | String | 否 | 产品类型
 `MARGIN`：币币杠杆  
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
-`OPTION`：期权   
-  
+`OPTION`：期权  
+`EVENTS`：事件合约  
 instId | String | 否 | 产品ID，如 `BTC-USDT`  
 ccy | String | 否 | 账单币种  
 mgnMode | String | 否 | 仓位类型  
@@ -412,155 +266,9 @@ ctType | String | 否 | 合约类型
 `inverse`：反向合约  
 仅`交割/永续`有效  
 type | String | 否 | 账单类型  
-`1`：划转  
-`2`：交易  
-`3`：交割  
-`4`：自动换币  
-`5`：强平  
-`6`：保证金划转  
-`7`：扣息  
-`8`：资金费  
-`9`：自动减仓  
-`10`：穿仓补偿  
-`11`：系统换币  
-`12`：策略划拨  
-`13`：对冲减仓  
-`14`：大宗交易  
-`15`：一键借币  
-`16`：借币  
-`22`：一键还债  
-`24`：价差交易  
-`26`：结构化产品  
-`27`：闪兑  
-`28`：小额兑换  
-`29`：一键还债  
-`30`：简单交易  
-`32`：移仓  
-`33`：借贷  
-`34`：结算  
-`250`：跟单人分润支出  
-`251`：跟单人分润退还  
-  
+枚举值请通过 [获取账单类型](/docs-v5/zh/#trading-account-rest-api-get-bill-types) 接口查询。  
 subType | String | 否 | 账单子类型  
-`1`：买入  
-`2`：卖出   
-`3`：开多   
-`4`：开空   
-`5`：平多   
-`6`：平空   
-`9`：市场借币扣息   
-`11`：转入   
-`12`：转出   
-~~`14`：尊享借币扣息~~  
-`160`：手动追加保证金   
-`161`：手动减少保证金   
-`162`：自动追加保证金   
-`114`：自动换币买入  
-`115`：自动换币卖出   
-`118`：系统换币转入   
-`119`：系统换币转出   
-`100`：强减平多   
-`101`：强减平空   
-`102`：强减买入   
-`103`：强减卖出   
-`104`：强平平多   
-`105`：强平平空   
-`106`：强平买入   
-`107`：强平卖出   
-`108`：穿仓补偿   
-`110`：强平换币转入   
-`111`：强平换币转出   
-`125`：自动减仓平多   
-`126`：自动减仓平空   
-`127`：自动减仓买入   
-`128`：自动减仓卖出   
-`131`：对冲买入   
-`132`：对冲卖出   
-`170`：到期行权（实值期权买方）   
-`171`：到期被行权（实值期权卖方）   
-`172`：到期作废（非实值期权的买方和卖方）   
-`112`：交割平多 （适用于`FUTURES`过期和`SWAP`下线）   
-`113`：交割平空 （适用于`FUTURES`过期和`SWAP`下线）  
-`117`：交割/行权穿仓补偿   
-`173`：资金费支出   
-`174`：资金费收入   
-`200`：系统转入   
-`201`：手动转入   
-`202`：系统转出   
-`203`：手动转出   
-`204`：大宗交易买   
-`205`：大宗交易卖   
-`206`：大宗交易开多   
-`207`：大宗交易开空   
-`208`：大宗交易平多   
-`209`：大宗交易平空   
-`210`：一键借币的手动借币   
-`211`：一键借币的手动还币   
-`212`：一键借币的自动借币   
-`213`：一键借币的自动还币  
-`220`：USDT 买期权转入   
-`221`：USDT 买期权转出   
-`16`：强制还币   
-`17`：强制借币还息   
-`224`：一键还债买入   
-`225`：一键还债卖出  
-`236`：小额兑换买入  
-`237`：小额兑换卖出  
-`250`：永续分润支出  
-`251`：永续分润退还  
-`280`：现货分润支出  
-`281`：现货分润退还  
-`282`：现货分润收入  
-`283`：现货跟单资产划转  
-`284`：跟单自动转入  
-`285`：跟单手动转入  
-`286`：跟单自动转出  
-`287`：跟单手动转出  
-`270`：价差交易买  
-`271`：价差交易卖  
-`272`：价差交易开多  
-`273`：价差交易开空  
-`274`：价差交易平多  
-`275`：价差交易平空  
-`290`：系统转出小额资产  
-~~`293`：固定借币扣息~~  
-~~`294`：固定借币利息退款~~  
-~~`295`：固定借币逾期利息~~  
-`296`：结构化下单转出  
-`297`：结构化下单转入  
-`298`：结构化结算转出  
-`299`：结构化结算转入  
-`306`：手动借币  
-`307`：自动借币  
-`308`：手动还币  
-`309`：自动还币  
-`312`：自动折抵  
-`318`：闪兑买入  
-`319`：闪兑卖出  
-`320`：简单交易买入  
-`321`：简单交易卖出  
-`324`：移仓买入  
-`325`：移仓卖出  
-`326`：移仓开多  
-`327`：移仓开空  
-`328`：移仓平多  
-`329`：移仓平空  
-`332`：逐仓杠杆仓位转入保证金  
-`333`：逐仓杠杆仓位转出保证金  
-`334`：逐仓杆仓位保证金平仓消耗  
-`355`：结算盈亏  
-`376`：质押借币超限买入  
-`377`： 质押借币超限卖出  
-`381`：自动出借利息转入  
-`372`：策略空投转入  
-`373`：策略空投转出  
-`374`：策略空投回收转入  
-`375`：策略空投回收转出   
-`381`：自动赚币（自动借出）  
-`384`：自动赚币（USDG）  
-`392`：自动质押  
-`395`：自动赚币（自动出借）利息转入策略  
-`396`：自动质押利息转入策略  
+枚举值请通过 [获取账单类型](/docs-v5/zh/#trading-account-rest-api-get-bill-types) 接口查询。  
 after | String | 否 | 请求此id之前（更旧的数据）的分页内容，传的值为对应接口的`billId`  
 before | String | 否 | 请求此id之后（更新的数据）的分页内容，传的值为对应接口的`billId`  
 begin | String | 否 | 筛选的开始时间戳 `ts`，Unix 时间戳为毫秒数格式，如 1597026383085  
@@ -621,7 +329,7 @@ billId | String | 账单ID
 type | String | 账单类型  
 subType | String | 账单子类型  
 ts | String | 余额更新完成的时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
-balChg | String | 账户层面的余额变动数量  
+balChg | String | 本次事件导致的账户余额变动量，以 `ccy` 字段指定的货币计价。正值表示余额增加（如收到资金费返佣、平仓盈利）；负值表示余额减少（如支付手续费、结算亏损）。  
 posBalChg | String | 仓位层面的余额变动数量  
 bal | String | 账户层面的余额数量  
 posBal | String | 仓位层面的余额数量  

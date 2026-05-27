@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#status-get-status
 anchor_id: status-get-status
 api_type: API
-updated_at: 2026-01-15T23:28:05.877389
+updated_at: 2026-05-27 19:37:05.718095
 ---
 
 # GET / Status
@@ -32,7 +32,7 @@ Planned system maintenance that may result in short interruption (lasting less t
     
     flag = "0"  # Production trading: 0, Demo trading: 1
     statusAPI = Status.StatusAPI(
-        domain="https://www.okx.com",
+        domain="https://openapi.okx.com",
         flag=flag,
     )
     
@@ -138,7 +138,7 @@ env | String | Environment
     
     flag = "0"  # 实盘:0 , 模拟盘：1
     statusAPI = Status.StatusAPI(
-        domain="https://www.okx.com",
+        domain="https://openapi.okx.com",
         flag=flag,
     )
     

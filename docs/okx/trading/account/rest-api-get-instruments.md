@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-instruments
 anchor_id: trading-account-rest-api-get-instruments
 api_type: REST
-updated_at: 2026-01-15T23:27:49.695827
+updated_at: 2026-05-27 19:34:24.161118
 ---
 
 # Get instruments
@@ -52,6 +52,8 @@ instType | String | Yes | Instrument type
 `SWAP`: Perpetual Futures  
 `FUTURES`: Expiry Futures  
 `OPTION`: Option  
+`EVENTS`: Event Contracts  
+seriesId | String | Conditional | Series ID, e.g. `BTC-ABOVE-DAILY`. Required when instType is `EVENTS`  
 instFamily | String | Conditional | Instrument family  
 Only applicable to `FUTURES`/`SWAP`/`OPTION`. If instType is `OPTION`, `instFamily` is required.  
 instId | String | No | Instrument ID  
@@ -86,6 +88,7 @@ instId | String | No | Instrument ID
                 "maxMktAmt": "1000000",
                 "maxMktSz": "1000000",
                 "maxPlatOILmt": "1000000000",
+                "maxPlatOICoinLmt": "",
                 "maxStopSz": "1000000",
                 "maxTriggerSz": "9999999999.0000000000000000",
                 "maxTwapSz": "9999999999.0000000000000000",
@@ -106,6 +109,7 @@ instId | String | No | Instrument ID
                 "tickSz": "1",
                 "uly": "",
                 "instIdCode": 1000000000,   
+                "instCategory": "1",
                 "upcChg": [
                     {
                         "param": "tickSz",
@@ -124,6 +128,7 @@ instId | String | No | Instrument ID
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 instType | String | Instrument type  
+seriesId | String | Series ID, e.g. `BTC-ABOVE-DAILY`. Only applicable to `EVENTS`  
 instId | String | Instrument ID, e.g. `BTC-USD-SWAP`  
 uly | String | Underlying, e.g. `BTC-USD`   
 Only applicable to `MARGIN/FUTURES`/`SWAP`/`OPTION`  
@@ -157,7 +162,8 @@ Perpetual futures:
 `2`: Perpetual futures USDT-margined  
 `3`: Perpetual futures USDC-margined  
 `4`: Perpetual futures group one  
-`5`: Perpetual futures group two  
+`5`: Perpetual futures group two   
+`6`: Stock perpetual futures   
   
 Options:  
 `1`: Options crypto-margined  
@@ -206,8 +212,8 @@ expTime | String | Expiry time
 Applicable to `SPOT`/`MARGIN`/`FUTURES`/`SWAP`/`OPTION`. For `FUTURES`/`OPTION`, it is natural delivery/exercise time. It is the instrument offline time when there is `SPOT/MARGIN/FUTURES/SWAP/` manual offline. Update once change.  
 lever | String | Max Leverage,   
 Not applicable to `SPOT`, `OPTION`  
-tickSz | String | Tick size, e.g. `0.0001`  
-For Option, it is minimum tickSz among tick band, please use "Get option tick bands" if you want get option tickBands.  
+tickSz | String | Tick size, e.g. `0.0001`.  
+For `OPTION`/`EVENTS`, it is the minimum tickSz among tick band. Use "Get instrument tick bands" endpoint with the corresponding `instType` for accurate tickSz per price range.  
 lotSz | String | Lot size  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
@@ -221,14 +227,24 @@ Only applicable to `FUTURES`/`SWAP`
 state | String | Instrument status  
 `live`   
 `suspend`  
+`rebase`: can't be traded during rebasing, only applicable to `SWAP`  
+`post_only`: only post-only orders are accepted; existing post-only orders can be amended and cancelled. Other order types (market, IOC, FOK, normal limit) are rejected. Only applicable to `SWAP`  
 `preopen` e.g. Futures and options contracts rollover from generation to trading start; certain symbols before they go live  
 `test`: Test pairs, can't be traded  
+`settling`: Settling, only applicable to `EVENTS`  
 ruleType | String | Trading rule types  
 `normal`: normal trading  
 `pre_market`: pre-market trading  
-posLmtAmt | String | Maximum position value (USD) for this instrument at the user level, based on the notional value of all same-direction open positions and resting orders. The effective user limit is max(posLmtAmt, oiUSD × posLmtPct). Applicable to `SWAP`/`FUTURES`.  
-posLmtPct | String | Maximum position ratio (e.g., 30 for 30%) a user may hold relative to the platform’s current total position value. The effective user limit is max(posLmtAmt, oiUSD × posLmtPct). Applicable to `SWAP`/`FUTURES`.  
-maxPlatOILmt | String | Platform-wide maximum position value (USD) for this instrument. If the global position limit switch is enabled and platform total open interest reaches or exceeds this value, all users’ new opening orders for this instrument are rejected; otherwise, orders pass.  
+`rebase_contract`: pre-market rebase contract  
+`xperp`: perpetual-style futures, only applicable to certain `FUTURES` contracts  
+posLmtAmt | String | Maximum position value (USD) for this instrument at the user level (shared across master and sub-accounts), based on the notional value of all same-direction open positions and resting orders. The effective user limit is max(posLmtAmt, oiUSD × posLmtPct). Applicable to `SWAP`/`FUTURES`.  
+posLmtPct | String | Maximum position ratio (e.g., 30 for 30%) a user (shared across master and sub-accounts) may hold relative to the platform's current total position value. The effective user limit is max(posLmtAmt, oiUSD × posLmtPct). Applicable to `SWAP`/`FUTURES`.  
+maxPlatOILmt | String | Platform-wide maximum position value (USD) for this instrument. If the platform total open interest (USD) reaches or exceeds this value, all users’ new opening orders for this instrument are rejected; otherwise, orders pass.  
+Applicable to `SWAP`/`FUTURES`  
+maxPlatOICoinLmt | String | Platform-wide maximum position value (coins) for this instrument. If the platform total open interest (coins) reaches or exceeds this value, all users’ new opening orders for this instrument are rejected; otherwise, orders pass.  
+Applicable to `SWAP`/`FUTURES`  
+longPosRemainingQuota | String | The remaining long position value (USD) the user is permitted to open, netting all existing long positions and resting buy orders. The quota is shared across the master account and all subaccounts.  
+shortPosRemainingQuota | String | The remaining short position value (USD) the user is permitted to open, netting all existing short positions and resting sell orders. The quota is shared across the master account and all subaccounts.  
 maxLmtSz | String | The maximum order quantity of a single limit order.  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
@@ -258,6 +274,13 @@ instIdCode | Integer | Instrument ID code.
 For simple binary encoding, you must use `instIdCode` instead of `instId`.  
 For the same `instId`, it's value may be different between production and demo trading.   
 It is `null` when the value is not generated.  
+instCategory | String | The asset category of the instrument’s base asset (the first segment of the instrument ID). For example, for `BTC-USDT-SWAP`, the `instCategory` represents the asset category of `BTC`.   
+`1`: Crypto   
+`3`: Stocks   
+`4`: Commodities   
+`5`: Forex   
+`6`: Bonds   
+`""`: Not available  
 upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 > param | String | The parameter name to be updated.   
 `tickSz`  
@@ -318,6 +341,8 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
+seriesId | String | 可选 | 系列 ID，如 `BTC-ABOVE-DAILY`。当 instType 为 `EVENTS` 时必填  
 instFamily | String | 可选 | 交易品种，仅适用于`交割`/`永续`/`期权`，期权必填  
 instId | String | 否 | 产品ID  
   
@@ -351,6 +376,7 @@ instId | String | 否 | 产品ID
                 "maxMktAmt": "1000000",
                 "maxMktSz": "1000000",
                 "maxPlatOILmt": "1000000000",
+                "maxPlatOICoinLmt": "",
                 "maxStopSz": "1000000",
                 "maxTriggerSz": "9999999999.0000000000000000",
                 "maxTwapSz": "9999999999.0000000000000000",
@@ -371,6 +397,7 @@ instId | String | 否 | 产品ID
                 "tickSz": "1",
                 "uly": "",
                 "instIdCode": 1000000000,
+                "instCategory": "1",
                 "upcChg": [
                     {
                         "param": "tickSz",
@@ -389,6 +416,7 @@ instId | String | 否 | 产品ID
 参数名 | 类型 | 描述  
 ---|---|---  
 instType | String | 产品类型  
+seriesId | String | 系列 ID，如 `BTC-ABOVE-DAILY`。仅适用于 `EVENTS`  
 instId | String | 产品id， 如 `BTC-USDT`  
 uly | String | 标的指数，如 `BTC-USD`，仅适用于`杠杆/交割/永续/期权`  
 groupId | String | 交易产品手续费分组ID  
@@ -422,6 +450,7 @@ groupId | String | 交易产品手续费分组ID
 `3`：USDC本位永续合约  
 `4`：永续合约分组一  
 `5`：永续合约分组二  
+`6`：股票永续合约  
   
 期权：  
 `1`：币本位期权  
@@ -461,8 +490,8 @@ elp | String | ELP 下单权限
 expTime | String | 产品下线时间  
 适用于`币币/杠杆/交割/永续/期权`，对于 `交割/期权`，为交割/行权日期；亦可以为产品下线时间，有变动就会推送。  
 lever | String | 该`instId`支持的最大杠杆倍数，不适用于`币币`、`期权`  
-tickSz | String | 下单价格精度，如 `0.0001`  
-对于期权来说，是梯度中的最小下单价格精度，如果想要获取期权价格梯度，请使用"获取期权价格梯度"接口  
+tickSz | String | 下单价格精度，如 `0.0001`。  
+对于 `OPTION`/`EVENTS`，该值为 tick band 中的最小 tickSz。如需获取各价格区间的精确 tickSz，请使用"获取期权价格梯度"接口并传入对应的 `instType` 参数。  
 lotSz | String | 下单数量精度  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 minSz | String | 最小下单数量  
@@ -474,14 +503,24 @@ ctType | String | 合约类型
 state | String | 产品状态  
 `live`：交易中   
 `suspend`：暂停中  
+`rebase`：合约在变基中，不可交易，仅适用于`SWAP`  
+`post_only`：仅接受 post-only 订单；已有 post-only 订单可改单和撤单。其他订单类型（市价单、IOC、FOK、普通限价单）将被拒绝。仅适用于 `SWAP`  
 `preopen`：预上线，交割和期权合约轮转生成到开始交易；部分交易产品上线前  
 `test`：测试中（测试产品，不可交易）  
+`settling`：结算中，仅适用于 `EVENTS`  
 ruleType | String | 交易规则类型  
 `normal`：普通交易  
 `pre_market`：盘前交易  
-posLmtAmt | String | 单一用户层面的该产品最大持仓名义价值（USD），按同方向已持仓与挂单的美元名义价值计算。单用户有效上限为 max(posLmtAmt, oiUSD × posLmtPct)。适用于 `SWAP`/`FUTURES`。  
-posLmtPct | String | 单一用户相对于平台当前总持仓名义价值可持有的最大比例（如 30 表示 30%）。单用户有效上限为 max(posLmtAmt, oiUSD × posLmtPct)。适用于 `SWAP`/`FUTURES`。  
-maxPlatOILmt | String | 该产品的全平台最大持仓名义价值（USD）。当开启全平台持仓限制开关且平台总持仓达到或超过该值时，系统将拒绝所有用户的新开仓委托；否则订单通过校验。  
+`rebase_contract`：盘前变基合约  
+`xperp`：永续合约风格的交割合约，仅适用于部分 `FUTURES` 合约  
+posLmtAmt | String | 单一用户（母子账户共享）层面的该产品最大持仓名义价值（USD），按同方向已持仓与挂单的美元名义价值计算。单用户有效上限为 max(posLmtAmt, oiUSD × posLmtPct)。适用于 `SWAP`/`FUTURES`。  
+posLmtPct | String | 单一用户（母子账户共享）相对于平台当前总持仓名义价值可持有的最大比例（如 30 表示 30%）。单用户有效上限为 max(posLmtAmt, oiUSD × posLmtPct)。适用于 `SWAP`/`FUTURES`。  
+maxPlatOILmt | String | 该产品的全平台最大持仓名义价值（USD）。当平台总持仓量（USD）达到或超过该值时，系统将拒绝所有用户对该产品的新开仓委托；否则订单通过校验。  
+适用于 `SWAP`/`FUTURES`  
+maxPlatOICoinLmt | String | 该产品的全平台最大持仓名义价值（币量）。当平台总持仓量（币量）达到或超过该值时，系统将拒绝所有用户对该产品的新开仓委托；否则订单通过校验。  
+适用于 `SWAP`/`FUTURES`  
+longPosRemainingQuota | String | 单一用户维度（母子账户共享），在该产品下扣除已有多头仓位及挂单中的买入订单后，仍可开立的多头仓位剩余额度（以 USD 计）。  
+shortPosRemainingQuota | String | 单一用户维度（母子账户共享），在该产品下扣除已有空头仓位及挂单中的卖出订单后，仍可开立的空头仓位剩余额度（以 USD 计）。  
 maxLmtSz | String | 限价单的单笔最大委托数量  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 maxMktSz | String | 市价单的单笔最大委托数量  
@@ -505,6 +544,13 @@ instIdCode | Integer | 产品唯一标识代码。
 对于简单二进制编码，您必须使用 `instIdCode` 而不是 `instId`。  
 对于同一`instId`，实盘和模拟盘的值可能会不一样。   
 当值还未生成时，返回 `null`。  
+instCategory | String | 标的资产类别（产品ID的第一部分）。例如：对于 `BTC-USDT-SWAP`，instCategory 表示 `BTC` 所属的资产类别。  
+`1`: 加密货币   
+`3`: 股票类资产   
+`4`: 大宗商品   
+`5`: 外汇   
+`6`: 债券   
+`""` 当值不可用时返回空字符串  
 upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 > param | String | 即将变更的参数名称。  
 `tickSz`  

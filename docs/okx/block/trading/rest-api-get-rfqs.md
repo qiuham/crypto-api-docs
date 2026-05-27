@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-get-rfqs
 anchor_id: block-trading-rest-api-get-rfqs
 api_type: REST
-updated_at: 2026-01-15T23:27:58.230071
+updated_at: 2026-05-27 19:35:46.919062
 ---
 
 # Get rfqs
@@ -51,7 +51,9 @@ rfqId | String | No | RFQ ID .
 clRfqId | String | No | Client-supplied RFQ ID. If both `clRfqId` and `rfqId` are passed, `rfqId` will be treated as primary identifier  
 state | String | No | The status of the RFQ.   
 Valid values can be `active` `canceled` `pending_fill` `filled` `expired` `failed` `traded_away`.   
-`traded_away` only applies to Maker  
+`filled` indicates the RFQ was successfully executed against the maker's quote.   
+`traded_away` only applies to Maker. The same RFQ can appear as `filled` to one maker and `traded_away` to another.   
+Example: taker creates RFQ → makerA quotes pxA, makerB quotes pxB → pxA is better than pxB → taker executes quoteA → makerA sees `filled`, makerB sees `traded_away`.  
 beginId | String | No | Start rfq id the request to begin with. Pagination of data to return records newer than the requested rfqId, not including beginId  
 endId | String | No | End rfq id the request to end with. Pagination of data to return records earlier than the requested rfqId, not including endId  
 limit | String | No | Number of results per request. The maximum is 100 which is also the default value.  
@@ -131,7 +133,9 @@ data | Array of objects | Array of objects containing the results of the RFQ cre
 > uTime | String | The timestamp the RFQ was last updated. Unix timestamp format in milliseconds.  
 > state | String | The status of the RFQ.   
 Valid values can be `active` `canceled` `pending_fill` `filled` `expired` `failed` `traded_away`.   
-`traded_away` only applies to Maker  
+`filled` indicates the RFQ was successfully executed against the maker's quote.   
+`traded_away` only applies to Maker. The same RFQ can appear as `filled` to one maker and `traded_away` to another.   
+Example: taker creates RFQ → makerA quotes pxA, makerB quotes pxB → pxA is better than pxB → taker executes quoteA → makerA sees `filled`, makerB sees `traded_away`.  
 > counterparties | Array of strings | The list of counterparties traderCode the RFQ was broadcasted to.  
 > validUntil | String | The timestamp the RFQ expires. Unix timestamp format in milliseconds.  
 > clRfqId | String | Client-supplied RFQ ID.   
@@ -235,7 +239,9 @@ rfqId | String | 否 | 询价单ID .
 clRfqId | String | 否 | 客户询价单自定义ID，当 clRfqId 和 rfqId 都传时，以 rfqId 为准  
 state | String | 否 | 询价单的状态  
 `active` `canceled` `pending_fill` `filled` `expired` `failed` `traded_away`  
-`traded_away` 仅适用于报价方  
+`filled` 表示询价单已成功按照做市商的报价成交。  
+`traded_away` 仅适用于报价方。同一笔询价单可能对一个报价方显示为 `filled`，而对另一个报价方显示为 `traded_away`。  
+示例：询价方创建询价单 → 做市商A报价 pxA，做市商B报价 pxB → pxA 优于 pxB → 询价方执行做市商A的报价 → 做市商A看到 `filled`，做市商B看到 `traded_away`。  
 beginId | String | 否 | 请求的起始询价单ID，请求此ID之后（更新的数据）的分页内容，不包括 beginId  
 endId | String | 否 | 请求的结束询价单ID，请求此ID之前（更旧的数据）的分页内容，不包括 endId  
 limit | String | 否 | 返回结果的数量，最大为100，默认100条  
@@ -315,7 +321,9 @@ data | Array of objects | 包含结果的对象数组
 > uTime | String | 询价单状态更新时间，Unix时间戳的毫秒数格式。  
 > state | String | 询价单的状态  
 `active` `canceled` `pending_fill` `filled` `expired` `failed` `traded_away`  
-`traded_away` 仅适用于报价方  
+`filled` 表示询价单已成功按照做市商的报价成交。  
+`traded_away` 仅适用于报价方。同一笔询价单可能对一个报价方显示为 `filled`，而对另一个报价方显示为 `traded_away`。  
+示例：询价方创建询价单 → 做市商A报价 pxA，做市商B报价 pxB → pxA 优于 pxB → 询价方执行做市商A的报价 → 做市商A看到 `filled`，做市商B看到 `traded_away`。  
 > counterparties | Array of strings | 报价方列表  
 > validUntil | String | 询价单的过期时间，Unix时间戳的毫秒数格式。  
 > clRfqId | String | 询价单自定义ID，为客户敏感信息，不会公开，对报价方返回""。  

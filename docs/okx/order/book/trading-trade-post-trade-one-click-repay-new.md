@@ -3,12 +3,12 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-trade-one-click-repay-new
 anchor_id: order-book-trading-trade-post-trade-one-click-repay-new
 api_type: API
-updated_at: 2026-01-15T23:27:52.841608
+updated_at: 2026-05-27 19:34:51.434890
 ---
 
 # POST / Trade one-click repay (New)
 
-Trade one-click repay to repay debts. Only applicable to `SPOT mode`.   
+Trade one-click repay to repay debts. Only applicable to `SPOT mode`/`Multi-currency margin mode`/`Portfolio margin mode`.  
   
 #### Rate Limit: 1 request per 2 seconds
 
@@ -84,7 +84,7 @@ ts | String | Request time, Unix timestamp format in milliseconds, e.g. `1597026
 
 # POST / 一键还债交易(新)
 
-交易一键偿还债务。仅适用于`现货模式`。  
+交易一键偿还债务。仅适用于`现货模式`/`跨币种保证金模式`/`组合保证金模式`。  
   
 #### 限速：1次/2s
 

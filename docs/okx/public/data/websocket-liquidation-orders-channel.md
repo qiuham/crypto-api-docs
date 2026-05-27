@@ -3,12 +3,12 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-liquidation-orders-channel
 anchor_id: public-data-websocket-liquidation-orders-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:01.843770
+updated_at: 2026-05-27 19:36:20.934221
 ---
 
 # Liquidation orders channel
 
-Retrieve the recent liquidation orders. For futures and swaps, each contract will only show a maximum of one order per one-second period. This data doesn’t represent the total number of liquidations on OKX.
+Retrieve the recent liquidation orders. This data doesn’t represent the total number of liquidations on OKX.
 
 #### URL Path
 
@@ -140,7 +140,7 @@ Liquidation data comes from different data sources, so the updated data is not n
 
 # 平台公共爆仓单频道
 
-获取爆仓单信息。对于交割和永续合约，强平数据代表每个交易对在任何一秒内的最多一个强平订单。因此，显示的强平数据并不准确代表欧易的总强平量，亦不应被当做总强平量使用。
+获取爆仓单信息。显示的强平数据并不准确代表欧易的总强平量，亦不应被当做总强平量使用。
 
 #### URL Path
 

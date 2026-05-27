@@ -3,14 +3,14 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-production-trading-services
 anchor_id: overview-production-trading-services
 api_type: API
-updated_at: 2026-01-15T23:27:48.900345
+updated_at: 2026-05-27 19:34:18.376134
 ---
 
 # Production Trading Services
 
 The Production Trading URL: 
 
-  * REST: `https://www.okx.com`  
+  * REST: `https://openapi.okx.com`  
 
   * Public WebSocket: `wss://ws.okx.com:8443/ws/v5/public`  
 
@@ -23,7 +23,7 @@ The Production Trading URL:
 
 实盘API交易地址如下： 
 
-  * REST：`https://www.okx.com`  
+  * REST：`https://openapi.okx.com`  
 
   * WebSocket公共频道：`wss://ws.okx.com:8443/ws/v5/public`  
 

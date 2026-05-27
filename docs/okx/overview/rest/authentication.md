@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-rest-authentication
 anchor_id: overview-rest-authentication
 api_type: REST
-updated_at: 2026-01-15T23:27:48.544355
+updated_at: 2026-05-27 19:34:14.649090
 ---
 
 # REST Authentication
@@ -16,7 +16,7 @@ All private REST requests must contain the following headers:
 
   * `OK-ACCESS-SIGN` The Base64-encoded signature (see Signing Messages subsection for details).
 
-  * `OK-ACCESS-TIMESTAMP` The UTC timestamp of your request .e.g : 2020-12-08T09:08:57.715Z
+  * `OK-ACCESS-TIMESTAMP` Request timestamp in ISO 8601 UTC format with millisecond precision, e.g. `2020-12-08T09:08:57.715Z`. The server rejects requests where this differs from server time by more than 30 seconds (error 50102). Always use UTC — local timezone offset is the most common cause of error 50102. Synchronise with GET /api/v5/public/time before placing orders.
 
   * `OK-ACCESS-PASSPHRASE` The passphrase you specified when creating the API key.
 
@@ -65,7 +65,7 @@ Example: `22582BD0CFF14C41EDBF1AB98506286D`
 
   * `OK-ACCESS-SIGN`使用HMAC SHA256哈希函数获得哈希值，再使用Base-64编码（请参阅签名）。
 
-  * `OK-ACCESS-TIMESTAMP`发起请求的时间（UTC），如：2020-12-08T09:08:57.715Z
+  * `OK-ACCESS-TIMESTAMP` 请求时间戳，ISO 8601 UTC格式，精确到毫秒，如：`2020-12-08T09:08:57.715Z`。服务器将拒绝与服务器时间相差超过30秒的请求（错误码50102）。请务必使用UTC时间——时区偏差是导致50102错误最常见的原因。建议在下单前通过 GET /api/v5/public/time 与服务器时间同步。
 
   * `OK-ACCESS-PASSPHRASE`您在创建API密钥时指定的Passphrase。
 

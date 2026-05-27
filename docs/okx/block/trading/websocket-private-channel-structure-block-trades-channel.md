@@ -3,12 +3,12 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-websocket-private-channel-structure-block-trades-channel
 anchor_id: block-trading-websocket-private-channel-structure-block-trades-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:58.576377
+updated_at: 2026-05-27 19:35:50.119533
 ---
 
 # Structure block trades channel
 
-Retrieve user's block trades data. All the legs in the same block trade are included in the same update. Data will be pushed whenever there is a block trade that the user is a counterparty for.  
+Retrieve user's block trades data. All the legs in the same block trade are included in the same update. Data will be pushed whenever there is a block trade that the user is a counterparty for (i.e. the taker or the executing maker). Makers who received a `traded_away` status will not receive data from this channel.  
   
 #### URL Path
 
@@ -227,7 +227,7 @@ Group RFQ introduction
 
 # 大宗交易频道
 
-获取用户自身的大宗交易信息。同一大宗交易中的所有腿都包含在同一更新中。只要用户自身作为交易对手进行大宗交易，数据都将被推送。  
+获取用户自身的大宗交易信息。同一大宗交易中的所有腿都包含在同一更新中。只要用户自身作为交易对手（即询价方或成交的报价方）进行大宗交易，数据都将被推送。状态为 `traded_away` 的报价方将不会收到本频道的推送。  
   
 #### 服务地址
 

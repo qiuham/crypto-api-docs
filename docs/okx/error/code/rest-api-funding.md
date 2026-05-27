@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code-rest-api-funding
 anchor_id: error-code-rest-api-funding
 api_type: REST
-updated_at: 2026-01-15T23:28:06.382525
+updated_at: 2026-05-27 19:37:10.027023
 ---
 
 # Funding
@@ -131,6 +131,10 @@ identity verification.
 58356 | 200 | The accounts of the same node do not support the Lightning network deposit or withdrawal.  
 58358 | 200 | The fromCcy parameter cannot be the same as the toCcy parameter.  
 58373 | 200 | The minimum {ccy} conversion amount is {amount}  
+58381 | 200 | This feature is not currently supported.  
+58382 | 200 | Unable to process unlock request. Please retry via the user interface.  
+58383 | 200 | Deposit record not found. Unable to process unlock request.  
+58384 | 200 | Per local regulations, please provide accurate sender information. For exchange addresses, please also provide the exchange information and sender identity details.  
 58400 | 200 | Request Failed  
 58401 | 200 | Payment method is not supported  
 58402 | 200 | Invalid payment account  
@@ -263,4 +267,8 @@ identity verification.
 58355 | 200 | 用户没有使用此API接口的权限，请联系您的客户经理  
 58356 | 200 | 同节点账户不支持闪电网络充币或提币  
 58358 | 200 | 参数fromCcy与参数toCcy不可相同  
-58373 | 200 | {ccy} 最小兑换数量为 {amount}
+58373 | 200 | {ccy} 最小兑换数量为 {amount}  
+58381 | 200 | 该功能暂不支持  
+58382 | 200 | 无法处理解锁请求，请通过用户界面重试  
+58383 | 200 | 未找到充值记录，无法处理解锁请求  
+58384 | 200 | 根据当地法规，请提供准确的发送方信息。对于交易所地址，请同时提供交易所信息和发送方身份详情

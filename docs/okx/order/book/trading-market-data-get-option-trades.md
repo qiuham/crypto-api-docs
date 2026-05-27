@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-market-data-get-option-trades
 anchor_id: order-book-trading-market-data-get-option-trades
 api_type: API
-updated_at: 2026-01-15T23:27:56.879874
+updated_at: 2026-05-27 19:35:34.955662
 ---
 
 # GET / Option trades
@@ -65,7 +65,7 @@ instId | String | Instrument ID
 instFamily | String | Instrument family  
 tradeId | String | Trade ID  
 px | String | Trade price  
-> sz | String | Trade quantity. The unit is contract.  
+sz | String | Trade quantity. The unit is contract.  
 side | String | Trade side   
 `buy`   
 `sell`  

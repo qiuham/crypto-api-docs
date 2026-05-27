@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan
 anchor_id: financial-product-flexible-loan
 api_type: API
-updated_at: 2026-01-15T23:28:05.478456
+updated_at: 2026-05-27 19:36:57.194166
 ---
 
 # Flexible loan
@@ -85,7 +85,7 @@ Get collateral assets in funding account.
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -99,7 +99,7 @@ Get collateral assets in funding account.
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -108,6 +108,9 @@ Get collateral assets in funding account.
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | No | Collateral currency, e.g. `BTC`  
+ordId | String. | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -166,6 +169,7 @@ assets | Array of objects | Collateral assets data
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -182,7 +186,7 @@ assets | Array of objects | Collateral assets data
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -191,6 +195,9 @@ assets | Array of objects | Collateral assets data
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 borrowCcy | String | Yes | Currency to borrow, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
 supCollateral | Array of objects | No | Supplementary collateral assets  
 > ccy | String | Yes | Currency, e.g. `BTC`  
 > amt | String | Yes | Amount  
@@ -236,7 +243,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -251,7 +258,7 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -260,6 +267,9 @@ remainingQuota | String | Remaining quota, unit in `borrowCcy`
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | Yes | Collateral currency, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -302,6 +312,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -319,7 +330,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -332,6 +343,9 @@ type | String | Yes | Operation type
 `reduce`: Reduce collateral  
 collateralCcy | String | Yes | Collateral currency, e.g. `BTC`  
 collateralAmt | String | Yes | Collateral amount  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return error `51063`  
   
 > Response Example
     
@@ -381,6 +395,13 @@ code = `0` means your request has been accepted (It doesn't mean the request has
     print(result)
     
 
+#### Request Parameters
+
+**Parameters** | **Types** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all existing orders  
+  
 > Response Example
     
     
@@ -388,6 +409,7 @@ code = `0` means your request has been accepted (It doesn't mean the request has
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -431,11 +453,12 @@ code = `0` means your request has been accepted (It doesn't mean the request has
 
 **Parameter** | **Type** | **Description**  
 ---|---|---  
+ordId | String | Order ID  
 loanNotionalUsd | String | Loan value in `USD`  
 loanData | Array of objects | Loan data  
 > ccy | String | Loan currency, e.g. `USDT`  
 > amt | String | Loan amount  
-collateralNotionalUsd | String | Collateral value in `USD`  
+collateralNotionalUsd | String | Adjusted collateral value in `USD`  
 collateralData | Array of objects | Collateral data  
 > ccy | String | Collateral currency, e.g. `BTC`  
 > amt | String | Collateral amount  
@@ -505,6 +528,8 @@ type | String | No | Action type
 after | String | No | Pagination of data to return records earlier than the requested `refId`(not include)  
 before | String | No | Pagination of data to return records newer than the requested `refId`(not include)  
 limit | String | No | Number of results per request. The maximum is `100`. The default is `100`.  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all orders  
   
 > Response Example
     
@@ -577,6 +602,8 @@ ccy | String | No | Loan currency, e.g. `BTC`
 after | String | No | Pagination of data to return records earlier than the requested `refId`(not include)  
 before | String | No | Pagination of data to return records newer than the requested `refId`(not include)  
 limit | String | No | Number of results per request. The maximum is `100`. The default is `100`.  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all orders  
   
 > 返回结果
     
@@ -689,7 +716,7 @@ borrowCcy | String | 可借币种，如 `BTC`
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -703,7 +730,7 @@ borrowCcy | String | 可借币种，如 `BTC`
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -712,6 +739,9 @@ borrowCcy | String | 可借币种，如 `BTC`
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 否 | 币种，如 `BTC`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     
@@ -770,6 +800,7 @@ assets | Array of objects | 可抵押资产信息
     POST /api/v5/finance/flexible-loan/max-loan
     body
     {
+        "ordId": "12345",
         "borrowCcy": "USDT"
     }
     
@@ -786,7 +817,7 @@ assets | Array of objects | 可抵押资产信息
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_loan(borrowCcy="USDT")
+    result = flexibleLoanAPI.max_loan(ordId="12345", borrowCcy="USDT")
     print(result)
     
 
@@ -795,6 +826,9 @@ assets | Array of objects | 可抵押资产信息
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 borrowCcy | String | 是 | 借币币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
 supCollateral | Array of objects | 否 | 补充抵押资产信息  
 > ccy | String | 是 | 币种，如 `BTC`  
 > amt | String | 是 | 数量  
@@ -840,7 +874,7 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -855,7 +889,7 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -864,6 +898,9 @@ remainingQuota | String | 剩余可借额度，单位为`borrowCcy`
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 是 | 抵押物币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     
@@ -906,6 +943,7 @@ maxRedeemAmt | String | 抵押物最大可赎回数量
     body
     {
         "type":"add",
+        "ordId": "12345",
         "collateralCcy": "BTC",
         "collateralAmt": "0.1"
     }
@@ -923,7 +961,7 @@ maxRedeemAmt | String | 抵押物最大可赎回数量
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.adjust_collateral(type="add", collateralCcy="USDT", collateralAmt="1")
+    result = flexibleLoanAPI.adjust_collateral(type="add", ordId="12345", collateralCcy="USDT", collateralAmt="1")
     print(result)
     
 
@@ -936,6 +974,9 @@ type | String | 是 | 操作类型
 `reduce`：减少抵押物  
 collateralCcy | String | 是 | 抵押物币种，如 `BTC`  
 collateralAmt | String | 是 | 抵押物数量  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回错误 `51063`  
   
 > 返回结果
     
@@ -985,6 +1026,13 @@ code = `0` 代表请求已被接受(不代表处理成功)
     print(result)
     
 
+#### 请求参数
+
+参数 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有现存订单数据  
+  
 > 返回结果
     
     
@@ -992,6 +1040,7 @@ code = `0` 代表请求已被接受(不代表处理成功)
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -1035,11 +1084,12 @@ code = `0` 代表请求已被接受(不代表处理成功)
 
 **参数名** | **类型** | **描述**  
 ---|---|---  
+ordId | String | 订单 ID  
 loanNotionalUsd | String | 借币资产美金价值  
 loanData | Array of objects | 借币数据  
 > ccy | String | 借贷币种  
 > amt | String | 借贷数量  
-collateralNotionalUsd | String | 抵押物美金价值  
+collateralNotionalUsd | String | 调整后的抵押物美金价值  
 collateralData | Array of objects | 抵押资产数据  
 > ccy | String | 抵押币种  
 > amt | String | 抵押数量  
@@ -1109,6 +1159,8 @@ type | String | 否 | 操作类型
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 limit | String | 否 | 返回结果的数量，最大为`100`，默认`100`条  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有订单数据  
   
 > 返回结果
     
@@ -1181,6 +1233,8 @@ ccy | String | 否 | 借贷币种，如 `BTC`
 after | String | 否 | 请求此 ID 之前（更旧的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 before | String | 否 | 请求此 ID 之后（更新的数据）的分页内容，传的值为对应接口的`refId`（不包含）  
 limit | String | 否 | 返回结果的数量，最大为`100`，默认`100`条  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有订单数据  
   
 > 返回结果
     

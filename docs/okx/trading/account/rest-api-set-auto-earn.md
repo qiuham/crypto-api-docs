@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-set-auto-earn
 anchor_id: trading-account-rest-api-set-auto-earn
 api_type: REST
-updated_at: 2026-01-15T23:27:51.211547
+updated_at: 2026-05-27 19:34:39.262265
 ---
 
 # Set auto earn
@@ -42,9 +42,9 @@ ccy | String | Yes | Currency
 action | String | Yes | Auto earn operation action  
 `turn_on`: turn on auto earn  
 `turn_off`: turn off auto earn  
-~~`amend`: amend minimum lending APR, applicable onlyto earnType `0`~~ (deprecated)  
+~~`amend`: amend minimum lending APR, applicable only to earnType `0`~~ (Deprecated)  
 apr | String | Optional | ~~Minimum lending APR. Users must pass in this field when earnType is`0` and action is `turn_on/amend`.  
-0.01 means 1%, available range 0.01-3.65, increment 0.01~~ (deprecated)  
+0.01 means 1%, available range 0.01-3.65, increment 0.01~~ (Deprecated)  
   
 > Response example
     
@@ -72,11 +72,11 @@ earnType | String | Auto earn type
 `0`: auto earn (auto lend, auto staking)   
 `1`: auto earn (USDG earn)  
 ccy | String | Currency  
-action | Boolean | Auto earn operation action  
+action | String | Auto earn operation action  
 `turn_on`  
 `turn_off`  
-~~`amend`~~ (deprecated)  
-apr | String | ~~Minimum lending APR~~ (deprecated)
+~~`amend`~~ (Deprecated)  
+apr | String | ~~Minimum lending APR~~ (Deprecated)
 
 ---
 

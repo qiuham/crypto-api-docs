@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading
 anchor_id: order-book-trading-copy-trading
 api_type: API
-updated_at: 2026-01-15T23:27:55.638834
+updated_at: 2026-05-27 19:35:22.681568
 ---
 
 # Copy Trading
@@ -980,7 +980,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 copyMgnMode | String | Yes | Copy margin mode  
 `cross`: cross  
 `isolated`: isolated  
@@ -1070,7 +1070,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 copyMgnMode | String | Yes | Copy margin mode  
 `cross`: cross  
 `isolated`: isolated  
@@ -1155,7 +1155,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 subPosCloseType | String | Yes | Action type for open positions, it is required if you have related copy position  
 `market_close`: immediately close at market price  
 `copy_close`：close when trader closes  
@@ -1210,7 +1210,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
   
 > Response example
     
@@ -1564,7 +1564,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
   
 > Response example
     
@@ -1623,7 +1623,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 lastDays | String | Yes | Last days  
 `1`: last 7 days   
 `2`: last 30 days  
@@ -1687,7 +1687,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 lastDays | String | Yes | Last days  
 `1`: last 7 days   
 `2`: last 30 days  
@@ -1754,7 +1754,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
   
 > Response example
     
@@ -1814,7 +1814,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value.  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 after | String | No | Pagination of data to return records earlier than the requested `subPosId`.  
 before | String | No | Pagination of data to return records newer than the requested `subPosId`.  
 limit | String | No | Number of results per request. Maximum is 100. Default is 100.  
@@ -1900,7 +1900,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value.  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 after | String | No | Pagination of data to return records earlier than the requested `subPosId`.  
 before | String | No | Pagination of data to return records newer than the requested `subPosId`.  
 limit | String | No | Number of results per request. Maximum is 100. Default is 100.  
@@ -1987,7 +1987,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 limit | String | No | Number of results per request. The maximum is `100`; The default is `100`  
   
 > Response example
@@ -3183,7 +3183,7 @@ details | Array of objects | 详情
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 copyMgnMode | String | 是 | 跟单时的保证金模式  
 `cross`: 全仓；  
 `isolated`: 逐仓；  
@@ -3272,7 +3272,7 @@ result | Boolean | 设置结果
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 copyMgnMode | String | 是 | 跟单时的保证金模式  
 `cross`: 全仓；  
 `isolated`: 逐仓；  
@@ -3356,7 +3356,7 @@ result | Boolean | 设置结果
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 subPosCloseType | String | 可选 | 剩余仓位处理方式，有相关的跟单条目时必填  
 `market_close`: 立即市价全平  
 `copy_close`：跟随交易员平仓  
@@ -3412,7 +3412,7 @@ result | Boolean | 设置结果
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
   
 > 返回结果
     
@@ -3770,7 +3770,7 @@ ranks | Array of objects | 交易员排名信息
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
   
 > 返回结果
     
@@ -3829,7 +3829,7 @@ pnlRatio | String | 当周收益率
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 lastDays | String | 是 | 最近天数  
 `1`: 近 7 天   
 `2`: 近 30 天  
@@ -3893,7 +3893,7 @@ pnlRatio | String | 累计收益率
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 lastDays | String | 是 | 最近天数  
 `1`: 近 7 天   
 `2`: 近 30 天  
@@ -3960,7 +3960,7 @@ ccy | String | 保证金币种
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
   
 > 返回结果
     
@@ -4105,7 +4105,7 @@ ccy | String | 币种
 instType | String | 否 | 产品类型  
 SWAP：永续合约，默认值  
 uniqueCode | String | 是 | 交易员唯一标识码  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 after | String | 否 | 请求此id之前（更旧的数据）的分页内容，传的值为对应接口的`subPosId`  
 before | String | 否 | 请求此id之后（更新的数据）的分页内容，传的值为对应接口的`subPosId`  
 limit | String | 否 | 分页返回的结果集数量，最大为100，不填默认返回100条  
@@ -4193,7 +4193,7 @@ uniqueCode | String | 交易员唯一标识代码
 instType | String | 否 | 产品类型  
 `SWAP`：永续合约，默认值  
 uniqueCode | String | 是 | 带单交易员唯一标识码。  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 limit | String | 否 | 返回结果的数量，最大为100，默认100条  
   
 > 返回结果

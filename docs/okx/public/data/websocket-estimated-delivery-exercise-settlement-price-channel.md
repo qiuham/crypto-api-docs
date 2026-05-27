@@ -3,14 +3,14 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-estimated-delivery-exercise-settlement-price-channel
 anchor_id: public-data-websocket-estimated-delivery-exercise-settlement-price-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:01.688864
+updated_at: 2026-05-27 19:36:19.354776
 ---
 
 # Estimated delivery/exercise/settlement price channel
 
-Retrieve the estimated delivery/exercise/settlement price of `FUTURES` and `OPTION` contracts.  
+Retrieve the estimated delivery/exercise/settlement price of `FUTURES`, `OPTION` and `SWAP` contracts.  
   
-Only the estimated price will be pushed in an hour before delivery/exercise/settlement, and will be pushed if there is any price change.
+The estimated price, calculated based on index price during the one-hour period prior to delivery, excerise, or settlement, with updates pushed approximately every 200ms.
 
 #### URL Path
 
@@ -77,6 +77,8 @@ args | Array of objects | Yes | List of subscribed channels
 > instType | String | Yes | Instrument type  
 `OPTION`  
 `FUTURES`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Conditional | Instrument family  
 Either `instFamily` or `instId` is required.  
 > instId | String | Conditional | Instrument ID  
@@ -123,6 +125,8 @@ arg | Object | No | Subscribed channel
 > instType | String | Yes | Instrument type  
 `OPTION`  
 `FUTURES`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Conditional | Instrument family  
 > instId | String | Conditional | Instrument ID  
 code | String | No | Error code  
@@ -157,6 +161,8 @@ arg | Object | Successfully subscribed channel
 > instType | String | Instrument type  
 `FUTURES`  
 `OPTION`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Instrument family  
 > instId | String | Instrument ID  
 data | Array of objects | Subscribed data  
@@ -171,9 +177,9 @@ data | Array of objects | Subscribed data
 
 ---
 
-# 预估交割/行权/结算价格频道
+# 预估永续/交割/行权/结算价格频道
 
-获取交割合约和期权预估交割/行权/结算价。只有交割/行权/结算前一小时开始推送预估价，有价格变化就推送。  
+在永续/交割/行权/结算前一小时内，将基于指数价格计算并推送预估价，更新频率约为每 200 毫秒一次。  
   
 #### URL Path
 
@@ -235,8 +241,10 @@ args | Array of objects | 是 | 请求订阅的频道列表
 > channel | String | 是 | 频道名  
 `estimated-price`  
 > instType | String | 是 | 产品类型  
-`FUTURES`：交割合约  
+`FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 可选 | 交易品种  
 `instFamily`和`instId`必须指定一个  
 > instId | String | 可选 | 产品ID  
@@ -283,6 +291,8 @@ arg | Object | 否 | 订阅的频道
 > instType | String | 是 | 产品类型  
 `FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 否 | 交易品种  
 > instId | String | 否 | 产品ID  
 code | String | 否 | 错误码  
@@ -317,6 +327,8 @@ arg | Object | 订阅成功的频道
 > instType | String | 产品类型  
 `FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 交易品种  
 > instId | String | 产品ID  
 data | Array of objects | 订阅的数据  

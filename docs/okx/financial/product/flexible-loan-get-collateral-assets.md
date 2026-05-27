@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-get-collateral-assets
 anchor_id: financial-product-flexible-loan-get-collateral-assets
 api_type: API
-updated_at: 2026-01-15T23:28:05.539043
+updated_at: 2026-05-27 19:36:57.816430
 ---
 
 # GET / Collateral assets
@@ -23,7 +23,7 @@ Get collateral assets in funding account.
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -37,7 +37,7 @@ Get collateral assets in funding account.
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -46,6 +46,9 @@ Get collateral assets in funding account.
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | No | Collateral currency, e.g. `BTC`  
+ordId | String. | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -105,7 +108,7 @@ assets | Array of objects | Collateral assets data
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/collateral-assets
+    GET /api/v5/finance/flexible-loan/collateral-assets?ordId=12345
     
     
     
@@ -119,7 +122,7 @@ assets | Array of objects | Collateral assets data
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.collateral_assets()
+    result = flexibleLoanAPI.collateral_assets(ordId="12345")
     print(result)
     
 
@@ -128,6 +131,9 @@ assets | Array of objects | Collateral assets data
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 否 | 币种，如 `BTC`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     

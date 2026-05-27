@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-simple-earn-flexible
 anchor_id: financial-product-simple-earn-flexible
 api_type: API
-updated_at: 2026-01-15T23:28:05.253926
+updated_at: 2026-05-27 19:36:54.986374
 ---
 
 # Simple earn flexible
@@ -430,6 +430,7 @@ If `ccy` is not specified, all data under the same `ts` will be returned, not li
             "ccy": "BTC",
             "amt": "0.01",
             "rate": "0.001",
+            "lendingRate": "0.001",
             "ts": "1597026383085"
         }]
     }
@@ -442,6 +443,7 @@ Parameter | Type | Description
 ccy | String | Currency, e.g. `BTC`  
 amt | String | ~~Lending amount~~(deprecated)  
 rate | String | Annual borrowing interest rate  
+lendingRate | String | Annual lending interest rate  
 ts | String | Time, Unix timestamp format in milliseconds, e.g. `1597026383085`
 
 ---
@@ -868,6 +870,7 @@ limit | String | 否 | 分页返回的结果集数量，最大为100，不填默
             "ccy": "BTC",
             "amt": "0.01",
             "rate": "0.001",
+            "lendingRate": "0.001",
             "ts": "1597026383085"
         }]
     }
@@ -880,4 +883,5 @@ limit | String | 否 | 分页返回的结果集数量，最大为100，不填默
 ccy | String | 币种，如 `BTC`  
 amt | String | ~~市场总出借数量~~ （已弃用）  
 rate | String | 出借年利率  
+lendingRate | String | 年化出借利率  
 ts | String | 时间，Unix时间戳的毫秒数格式，如 `1597026383085`

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-get-maximum-collateral-redeem-amount
 anchor_id: financial-product-flexible-loan-get-maximum-collateral-redeem-amount
 api_type: API
-updated_at: 2026-01-15T23:28:05.598754
+updated_at: 2026-05-27 19:36:58.438932
 ---
 
 # GET / Maximum collateral redeem amount
@@ -21,7 +21,7 @@ updated_at: 2026-01-15T23:28:05.598754
 > Request Example
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -36,7 +36,7 @@ updated_at: 2026-01-15T23:28:05.598754
     flag = "0"  # Production trading:0 , demo trading:1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -45,6 +45,9 @@ updated_at: 2026-01-15T23:28:05.598754
 **Parameters** | **Types** | **Required** | **Description**  
 ---|---|---|---  
 ccy | String | Yes | Collateral currency, e.g. `USDT`  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will assume it is acting against the existing order with the earliest order start time.  
+If there are no existing orders, system will return empty result data.  
   
 > Response Example
     
@@ -85,7 +88,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
 > 请求示例
     
     
-    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT
+    GET /api/v5/finance/flexible-loan/max-collateral-redeem-amount?ccy=USDT&ordId=12345
     
     
     
@@ -100,7 +103,7 @@ maxRedeemAmt | String | Maximum collateral redeem amount
     flag = "0"  # 实盘: 0, 模拟盘: 1
     
     flexibleLoanAPI = FlexibleLoan.FlexibleLoanAPI(apikey, secretkey, passphrase, False, flag)
-    result = flexibleLoanAPI.max_collateral_redeem_amount("USDT")
+    result = flexibleLoanAPI.max_collateral_redeem_amount(ordId="12345", ccy="USDT")
     print(result)
     
 
@@ -109,6 +112,9 @@ maxRedeemAmt | String | Maximum collateral redeem amount
 参数 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 ccy | String | 是 | 抵押物币种，如 `USDT`  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将默认对起始时间最早的现存订单进行操作。  
+如果没有现存订单，系统将返回空数据。  
   
 > 返回结果
     

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-get-grid-algo-order-history
 anchor_id: order-book-trading-grid-trading-get-grid-algo-order-history
 api_type: API
-updated_at: 2026-01-15T23:27:54.067762
+updated_at: 2026-05-27 19:35:02.294585
 ---
 
 # GET / Grid algo order history
@@ -116,6 +116,7 @@ limit | String | No | Number of results per request. The maximum is 100. The def
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -240,6 +241,7 @@ copyType | String | Profit sharing order type
 `2`: Copy order with profit sharing  
 `3`: Lead order  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 stopResult | String | Stop result  
 `0`: default, `1`: Successful selling of currency at market price, `-1`: Failed to sell currency at market price  
@@ -358,6 +360,7 @@ limit | String | 否 | 返回结果的数量，最大为100，默认100条
                 "profitSharingRatio": "",
                 "copyType": "0",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -482,6 +485,7 @@ copyType | String | 分润订单类型
 `2`：分润跟单  
 `3`：带单  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 stopResult | String | 策略停止结果  
 `0`：默认，`1`：市价卖币成功 `-1`：市价卖币失败  

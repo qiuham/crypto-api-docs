@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket
 anchor_id: public-data-websocket
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:01.448163
+updated_at: 2026-05-27 19:36:17.123835
 ---
 
 # WebSocket
@@ -81,6 +81,7 @@ args | Array of objects | Yes | List of subscribed channels
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
   
 > Successful Response Example
     
@@ -125,6 +126,7 @@ arg | Object | No | Subscribed channel
 `SWAP`  
 `FUTURES`  
 `OPTION`  
+`EVENTS`  
 code | String | No | Error code  
 msg | String | No | Error message  
 connId | String | Yes | WebSocket connection ID  
@@ -177,6 +179,7 @@ connId | String | Yes | WebSocket connection ID
             "tickSz": "0.1",
             "uly": "",
             "instIdCode": 1000000000,
+            "instCategory": "1",
             "upcChg": [
                 {
                     "param": "tickSz",
@@ -198,6 +201,7 @@ arg | Object | Subscribed channel
 > instType | String | Instrument type  
 data | Array of objects | Subscribed data  
 > instType | String | Instrument type  
+> seriesId | String | Series ID, e.g. `BTC-ABOVE-DAILY`. Only applicable to `EVENTS`  
 > instId | String | Instrument ID, e.g. `BTC-UST`  
 > uly | String | Underlying, e.g. `BTC-USD`   
 Only applicable to `FUTURES`/`SWAP`/`OPTION`  
@@ -232,6 +236,7 @@ Perpetual futures:
 `3`: Perpetual futures USDC-margined  
 `4`: Perpetual futures group one  
 `5`: Perpetual futures group two  
+`6`: Stock perpetual futures   
   
 Options:  
 `1`: Options crypto-margined  
@@ -275,8 +280,8 @@ Only applicable to `SPOT`/`MARGIN`, return "" for all other business lines
 Applicable to `SPOT`/`MARGIN`/`FUTURES`/`SWAP`/`OPTION`. For `FUTURES`/`OPTION`, it is the delivery/exercise time. It can also be the delisting time of the trading instrument. Update once change.  
 > lever | String | Max Leverage  
 Not applicable to `SPOT`/`OPTION`, used to distinguish between `MARGIN` and `SPOT`.  
-> tickSz | String | Tick size, e.g. `0.0001`  
-For Option, it is minimum tickSz among tick band.  
+> tickSz | String | Tick size, e.g. `0.0001`.  
+For `OPTION`/`EVENTS`, it is the minimum tickSz among tick band.  
 > lotSz | String | Lot size  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`  
@@ -287,30 +292,30 @@ If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`
 `linear`: linear contract  
 `inverse`: inverse contract  
 Only applicable to `FUTURES`/`SWAP`  
-> alias | String | Alias  
+> alias | String | Contract alias (deprecated — use expTime to obtain the delivery time, will be removed by the end of April 2026)  
 `this_week`  
 `next_week`  
 `this_month`  
 `next_month`  
 `quarter`  
 `next_quarter`  
-Only applicable to `FUTURES`   
-**Not recommended for use, users are encouraged to rely on the expTime field to determine the delivery time of the contract**  
+`this_five_years`: current 5-year contract  
+`next_five_years`: next 5-year contract  
+Only applicable to `FUTURES`  
 > state | String | Instrument status  
 `live`  
 `suspend`  
 `expired`  
-`preopen`. e.g. There will be preopen before the Futures and Options new contracts state is live.   
+`rebase`: can't be traded during rebasing, only applicable to `SWAP`  
+`post_only`: only post-only orders are accepted; existing post-only orders can be amended and cancelled. Other order types (market, IOC, FOK, normal limit) are rejected. Only applicable to `SWAP`  
+`preopen`. e.g. There will be `preopen` before the Futures and Options new contracts state is live.  
 `test`: Test pairs, can't be traded  
-> state | String | Instrument status  
-`live`  
-`suspend`  
-`expired`  
-`preopen` e.g. Futures and options contracts rollover from generation to trading start; certain symbols before they go live  
-`test`: Test pairs, can't be traded  
+`settling`: Settling, only applicable to `EVENTS`  
 > ruleType | String | Trading rule types  
 `normal`: normal trading  
 `pre_market`: pre-market trading  
+`rebase_contract`: pre-market rebase contract  
+`xperp`: perpetual-style futures, only applicable to certain `FUTURES` contracts  
 > maxLmtSz | String | The maximum order quantity of a single limit order.  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
@@ -335,6 +340,13 @@ Applicable to `FUTURES` `cross`
 For simple binary encoding, you must use `instIdCode` instead of `instId`.  
 For the same `instId`, it's value may be different between production and demo trading.   
 It is `null` when the value is not generated.  
+> instCategory | String | The asset category of the instrument’s base asset (the first segment of the instrument ID). For example, for `BTC-USDT-SWAP`, the `instCategory` represents the asset category of `BTC`.   
+`1`: Crypto   
+`3`: Stocks   
+`4`: Commodities   
+`5`: Forex   
+`6`: Bonds   
+`""`: Not available  
 > upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 >> param | String | The parameter name to be updated.   
 `tickSz`  
@@ -347,6 +359,139 @@ For spot symbols listed through a call auction or pre-open, listTime represents 
 The state will always change from `preopen` to `live` when the listTime is reached. Certain symbols will now have `state:preopen` before they go live. Before going live, the instruments channel will push data for pre-listing symbols with `state:preopen`. If the listing is cancelled, the channel will send full data excluding the cancelled symbol, without additional notification. When the symbol goes live (reaching listTime), the channel will push data with `state:live`. Users can also query the corresponding data via the REST endpoint.  
 When a product is going to be delisted (e.g. when a FUTURES contract is settled or OPTION contract is exercised), the instrument will not be available. 
 
+### Event contract markets channel
+
+Pushes event contract market status updates and floorStrike generation. No initial snapshot push.
+
+#### URL Path
+
+/ws/v5/public
+
+> Request Example
+    
+    
+    {
+        "op": "subscribe",
+        "args": [
+            {
+                "channel": "event-contract-markets",
+                "instType": "EVENTS"
+            }
+        ]
+    }
+    
+
+#### Request Parameters
+
+Parameter | Type | Required | Description  
+---|---|---|---  
+id | String | No | Unique identifier of the message. Provided by client. Returned in response. Alphanumeric, 1-32 characters.  
+op | String | Yes | Operation.  
+`subscribe`  
+`unsubscribe`  
+args | Array of objects | Yes | List of subscribed channels  
+> channel | String | Yes | Channel name.  
+`event-contract-markets`  
+> instType | String | Yes | Instrument type.  
+`EVENTS`  
+  
+> Successful Response Example
+    
+    
+    {
+        "id": "1512",
+        "event": "subscribe",
+        "arg": {
+            "channel": "event-contract-markets",
+            "instType": "EVENTS"
+        },
+        "connId": "a4d3ae55"
+    }
+    
+
+> Failure Response Example
+    
+    
+    {
+        "id": "1512",
+        "event": "error",
+        "code": "60012",
+        "msg": "Invalid request: {\"op\": \"subscribe\", \"argss\":[{\"channel\": \"event-contract-markets\", \"instType\": \"EVENTS\"}]}",
+        "connId": "a4d3ae55"
+    }
+    
+
+#### Response Parameters
+
+Parameter | Type | Description  
+---|---|---  
+id | String | Unique identifier of the message  
+event | String | Event.  
+`subscribe`  
+`unsubscribe`  
+`error`  
+arg | Object | Subscribed channel  
+> channel | String | Channel name  
+> instType | String | Instrument type  
+code | String | Error code  
+msg | String | Error message  
+connId | String | WebSocket connection ID  
+  
+> Push Data Example
+    
+    
+    {
+        "arg": {
+            "channel": "event-contract-markets"
+        },
+        "data": [
+            {
+                "seriesId": "BTC-ABOVE-DAILY",
+                "eventId": "BTC-ABOVE-DAILY-260224-1600",
+                "instId": "BTC-ABOVE-DAILY-260224-1600-65000",
+                "listTime": "1769697132335",
+                "fixTime": "",
+                "expTime": "1769697132335",
+                "state": "live",
+                "outcome": "0",
+                "floorStrike": "120000",
+                "settleValue": "",
+                "disputed": false
+            }
+        ]
+    }
+    
+
+#### Push Data Parameters
+
+Parameter | Type | Description  
+---|---|---  
+arg | Object | Subscribed channel  
+> channel | String | Channel name  
+data | Array of objects | Subscribed data  
+> seriesId | String | Series ID, e.g. `BTC-ABOVE-DAILY`  
+> eventId | String | Event ID, e.g. `BTC-ABOVE-DAILY-260224-1600`  
+> instId | String | Instrument ID, e.g. `BTC-ABOVE-DAILY-260224-1600-65000`  
+> listTime | String | Listing time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
+> fixTime | String | Strike price fixing time, Unix timestamp format in milliseconds, e.g. `1597026383085`. Only applicable to `price_up_down` settlement method.  
+> expTime | String | Strike time for this event, Unix timestamp format in milliseconds, e.g. `1597026383085`. Updated once the market is settled.  
+> state | String | Market state.  
+`preopen`  
+`live`  
+`settling`  
+`expired`  
+> outcome | String | Market outcome.  
+`0`: Not available  
+`1`: YES  
+`2`: NO.  
+`1`/`2` only applicable when state is `expired`  
+> floorStrike | String | Minimum expiration value that leads to a YES outcome  
+> settleValue | String | Settlement value  
+Only return when the state is `expired`  
+> disputed | Boolean | Whether the market has been disputed.  
+`true`  
+`false`  
+  
 ### Open interest channel
 
 Retrieve the open interest. Data will be pushed every 3 seconds when there are updates.
@@ -638,7 +783,9 @@ arg | Object | Successfully subscribed channel
 > channel | String | Channel name  
 > instId | String | Instrument ID  
 data | Array of objects | Subscribed data  
-> instType | String | Instrument type, `SWAP`  
+> instType | String | Instrument type  
+`SWAP`: Perpetual futures  
+`FUTURES`: X-Perps futures  
 > instId | String | Instrument ID, e.g. `BTC-USD-SWAP`  
 > method | String | Funding rate mechanism   
 `current_period` ~~  
@@ -982,9 +1129,9 @@ data | Array of objects | Subscribed data
   
 ### Estimated delivery/exercise/settlement price channel
 
-Retrieve the estimated delivery/exercise/settlement price of `FUTURES` and `OPTION` contracts.
+Retrieve the estimated delivery/exercise/settlement price of `FUTURES`, `OPTION` and `SWAP` contracts.
 
-Only the estimated price will be pushed in an hour before delivery/exercise/settlement, and will be pushed if there is any price change.
+The estimated price, calculated based on index price during the one-hour period prior to delivery, excerise, or settlement, with updates pushed approximately every 200ms.
 
 #### URL Path
 
@@ -1051,6 +1198,8 @@ args | Array of objects | Yes | List of subscribed channels
 > instType | String | Yes | Instrument type  
 `OPTION`  
 `FUTURES`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Conditional | Instrument family  
 Either `instFamily` or `instId` is required.  
 > instId | String | Conditional | Instrument ID  
@@ -1097,6 +1246,8 @@ arg | Object | No | Subscribed channel
 > instType | String | Yes | Instrument type  
 `OPTION`  
 `FUTURES`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Conditional | Instrument family  
 > instId | String | Conditional | Instrument ID  
 code | String | No | Error code  
@@ -1131,6 +1282,8 @@ arg | Object | Successfully subscribed channel
 > instType | String | Instrument type  
 `FUTURES`  
 `OPTION`  
+`SWAP`  
+`EVENTS`  
 > instFamily | String | Instrument family  
 > instId | String | Instrument ID  
 data | Array of objects | Subscribed data  
@@ -1750,7 +1903,7 @@ The order of the returned values is: [ts,o,h,l,c,confirm]
 
 ### Liquidation orders channel
 
-Retrieve the recent liquidation orders. For futures and swaps, each contract will only show a maximum of one order per one-second period. This data doesn’t represent the total number of liquidations on OKX.
+Retrieve the recent liquidation orders. This data doesn’t represent the total number of liquidations on OKX.
 
 #### URL Path
 
@@ -2309,6 +2462,7 @@ args | Array of objects | 是 | 请求订阅的频道列表
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
   
 > 成功返回示例
     
@@ -2353,6 +2507,7 @@ arg | Object | 否 | 订阅的频道
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
 code | String | 否 | 错误码  
 msg | String | 否 | 错误消息  
 connId | String | 是 | WebSocket连接ID  
@@ -2405,6 +2560,7 @@ connId | String | 是 | WebSocket连接ID
             "tickSz": "0.1",
             "uly": "",
             "instIdCode": 1000000000，
+            "instCategory": "1",
             "upcChg": [
                 {
                     "param": "tickSz",
@@ -2426,6 +2582,7 @@ arg | Object | 订阅的频道
 > instType | String | 产品类型  
 data | Array of objects | 订阅的数据  
 > instType | String | 产品类型  
+> seriesId | String | 系列 ID，如 `BTC-ABOVE-DAILY`。仅适用于 `EVENTS`  
 > instId | String | 产品ID，如 `BTC-USDT`  
 > category | String | ~~币种类别~~ （已废弃）  
 > uly | String | 标的指数，如 `BTC-USD`，仅适用于`交割`/`永续`/`期权`  
@@ -2460,6 +2617,7 @@ data | Array of objects | 订阅的数据
 `3`：USDC本位永续合约  
 `4`：永续合约分组一  
 `5`：永续合约分组二  
+`6`：股票永续合约  
   
 期权：  
 `1`：币本位期权  
@@ -2496,8 +2654,8 @@ data | Array of objects | 订阅的数据
 适用于`币币/杠杆/交割/永续/期权`，对于 `交割/期权`，为自然的交割/行权时间；如果`币币/杠杆/交割/永续`产品人工下线，为产品下线时间，有变动就会推送。  
 > lever | String | 该产品支持的最大杠杆倍数  
 不适用于`币币`/`期权`。可用来区分`币币杠杆`和`币币`  
-> tickSz | String | 下单价格精度，如 `0.0001`  
-对于期权来说，是梯度中的最小下单价格精度。  
+> tickSz | String | 下单价格精度，如 `0.0001`。  
+对于 `OPTION`/`EVENTS`，该值为 tick band 中的最小下单价格精度。  
 > lotSz | String | 下单数量精度  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 > minSz | String | 最小下单数  
@@ -2506,25 +2664,30 @@ data | Array of objects | 订阅的数据
 `linear`：正向合约  
 `inverse`：反向合约  
 仅适用于`交割/永续`  
-> alias | String | 合约日期别名  
+> alias | String | 合约日期别名（已废弃，将于 2026 年 4 月底下线，请使用 expTime 字段获取交割时间）  
 `this_week`：本周  
 `next_week`：次周  
 `this_month`：本月  
 `next_month`：次月  
 `quarter`：季度  
-`next_quarter`：次季度   
-  
-仅适用于`交割`   
-**不建议使用，用户应通过 expTime 字段获取合约的交割日期**  
+`next_quarter`：次季度  
+`this_five_years`：当期五年合约  
+`next_five_years`：次期五年合约  
+仅适用于`交割`  
 > state | String | 产品状态  
 `live`：交易中   
 `suspend`：暂停中  
 `expired`：已过期  
+`rebase`：合约在变基中，不可交易，仅适用于`SWAP`  
+`post_only`：仅接受 post-only 订单；已有 post-only 订单可改单和撤单。其他订单类型（市价单、IOC、FOK、普通限价单）将被拒绝。仅适用于 `SWAP`  
 `preopen`：预上线，交割和期权合约轮转生成到开始交易；部分交易产品上线前  
 `test`：测试中（测试产品，不可交易）  
+`settling`：结算中，仅适用于 `EVENTS`  
 > ruleType | String | 交易规则类型  
 `normal`：普通交易  
 `pre_market`：盘前交易  
+`rebase_contract`：盘前变基合约  
+`xperp`：永续合约风格的交割合约，仅适用于部分 `FUTURES` 合约  
 > maxLmtSz | String | 限价单的单笔最大委托数量  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 > maxMktSz | String | 市价单的单笔最大委托数量  
@@ -2543,6 +2706,13 @@ data | Array of objects | 订阅的数据
 对于简单二进制编码，您必须使用 `instIdCode` 而不是 `instId`。  
 对于同一`instId`，实盘和模拟盘的值可能会不一样。   
 当值还未生成时，返回 `null`。  
+> instCategory | String | 标的资产类别（产品ID的第一部分）。例如：对于 `BTC-USDT-SWAP`，instCategory 表示 `BTC` 所属的资产类别。  
+`1`: 加密货币   
+`3`: 股票类资产   
+`4`: 大宗商品   
+`5`: 外汇   
+`6`: 债券   
+`""` 当值不可用时返回空字符串  
 > upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 >> param | String | 即将变更的参数名称。  
 `tickSz`  
@@ -2555,6 +2725,139 @@ data | Array of objects | 订阅的数据
 状态state总是在时间到达listTime时由`preopen`转变为`live`。上线前，交易产品频道将推送预上线产品，状态为`state:preopen`；若上线被取消，频道将全量推送数据，其中不包括被取消的预上线产品，不做额外通知。交易产品上线时（到达listTime），频道将推送状态为交易中`state:live`。用户亦可以通过REST接口查询到相应数据。  
 当产品下线的时候（如交割合约被交割的时候，期权合约被行权的时候），查询不到该产品 
 
+### 事件合约市场频道 
+
+推送事件合约市场状态更新及 floorStrike 生成。不推送初始快照。
+
+#### URL Path
+
+/ws/v5/public
+
+> 请求示例
+    
+    
+    {
+        "op": "subscribe",
+        "args": [
+            {
+                "channel": "event-contract-markets",
+                "instType": "EVENTS"
+            }
+        ]
+    }
+    
+
+#### 请求参数
+
+参数名 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+id | String | 否 | 消息的唯一标识。用户提供，返回参数中会返回以便于找到相应的请求。字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度必须要在1-32位之间。  
+op | String | 是 | 操作。  
+`subscribe`  
+`unsubscribe`  
+args | Array of objects | 是 | 订阅频道列表  
+> channel | String | 是 | 频道名。  
+`event-contract-markets`  
+> instType | String | 是 | 产品类型。  
+`EVENTS`  
+  
+> 成功返回示例
+    
+    
+    {
+        "id": "1512",
+        "event": "subscribe",
+        "arg": {
+            "channel": "event-contract-markets",
+            "instType": "EVENTS"
+        },
+        "connId": "a4d3ae55"
+    }
+    
+
+> 失败返回示例
+    
+    
+    {
+        "id": "1512",
+        "event": "error",
+        "code": "60012",
+        "msg": "Invalid request: {\"op\": \"subscribe\", \"argss\":[{\"channel\": \"event-contract-markets\", \"instType\": \"EVENTS\"}]}",
+        "connId": "a4d3ae55"
+    }
+    
+
+#### 返回参数
+
+参数名 | 类型 | 描述  
+---|---|---  
+id | String | 消息的唯一标识  
+event | String | 事件。  
+`subscribe`  
+`unsubscribe`  
+`error`  
+arg | Object | 订阅的频道  
+> channel | String | 频道名  
+> instType | String | 产品类型  
+code | String | 错误码  
+msg | String | 错误消息  
+connId | String | WebSocket 连接 ID  
+  
+> 推送数据示例
+    
+    
+    {
+        "arg": {
+            "channel": "event-contract-markets"
+        },
+        "data": [
+            {
+                "seriesId": "BTC-ABOVE-DAILY",
+                "eventId": "BTC-ABOVE-DAILY-260224-1600",
+                "instId": "BTC-ABOVE-DAILY-260224-1600-65000",
+                "listTime": "1769697132335",
+                "fixTime": "",
+                "expTime": "1769697132335",
+                "state": "live",
+                "outcome": "0",
+                "floorStrike": "120000",
+                "settleValue": "",
+                "disputed": false
+            }
+        ]
+    }
+    
+
+#### 推送数据参数
+
+参数名 | 类型 | 描述  
+---|---|---  
+arg | Object | 订阅的频道  
+> channel | String | 频道名  
+data | Array of objects | 订阅数据  
+> seriesId | String | 系列 ID，如 `BTC-ABOVE-DAILY`  
+> eventId | String | 事件 ID，如 `BTC-ABOVE-DAILY-260224-1600`  
+> instId | String | 产品 ID，如 `BTC-ABOVE-DAILY-260224-1600-65000`  
+> listTime | String | 上线时间。Unix时间戳的毫秒数格式，如 `1597026383085`  
+> fixTime | String | 行权价格确定时间。Unix时间戳的毫秒数格式，如 `1597026383085`。仅适用于 `price_up_down` 结算方式。  
+> expTime | String | 行权时间。Unix时间戳的毫秒数格式，如 `1597026383085`。结算后更新。  
+> state | String | 市场状态。  
+`preopen`  
+`live`  
+`settling`  
+`expired`  
+> outcome | String | 市场结果。  
+`0`：未确定  
+`1`：YES  
+`2`：NO。  
+`1`/`2` 仅在 state 为 `expired` 时适用  
+> floorStrike | String | 导致 YES 结果的最低到期价格  
+> settleValue | String | 结算价格。  
+仅在 state 为 `expired` 时返回  
+> disputed | Boolean | 是否存在争议。  
+`true`  
+`false`  
+  
 ### 持仓总量频道 
 
 获取持仓总量，每3s有数据更新推送一次数据
@@ -2698,7 +3001,7 @@ data | Array of objects | 订阅的数据
   
 ### 资金费率频道 
 
-获取永续合约资金费率，30秒到90秒内推送一次数据
+获取合约资金费率，30秒到90秒内推送一次数据
 
 #### URL Path
 
@@ -2837,7 +3140,9 @@ arg | Object | 订阅成功的频道
 > channel | String | 频道名  
 > instId | String | 产品ID  
 data | Array of objects | 订阅的数据  
-> instType | String | 产品类型，`SWAP`  
+> instType | String | 产品类型  
+`SWAP`：永续合约  
+`FUTURES`：X-Perps 交割合约  
 > instId | String | 产品ID，如 `BTC-USD-SWAP`  
 > method | String | 资金费收取逻辑   
 `current_period`：当期收 ~~  
@@ -3171,9 +3476,9 @@ data | Array of objects | 订阅的数据
 > fwdPx | String | 远期价格  
 > ts | String | 数据更新时间，Unix时间戳的毫秒数格式，如 `1597026383085`  
   
-### 预估交割/行权/结算价格频道 
+### 预估永续/交割/行权/结算价格频道 
 
-获取交割合约和期权预估交割/行权/结算价。只有交割/行权/结算前一小时开始推送预估价，有价格变化就推送。
+在永续/交割/行权/结算前一小时内，将基于指数价格计算并推送预估价，更新频率约为每 200 毫秒一次。
 
 #### URL Path
 
@@ -3235,8 +3540,10 @@ args | Array of objects | 是 | 请求订阅的频道列表
 > channel | String | 是 | 频道名  
 `estimated-price`  
 > instType | String | 是 | 产品类型  
-`FUTURES`：交割合约  
+`FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 可选 | 交易品种  
 `instFamily`和`instId`必须指定一个  
 > instId | String | 可选 | 产品ID  
@@ -3283,6 +3590,8 @@ arg | Object | 否 | 订阅的频道
 > instType | String | 是 | 产品类型  
 `FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 否 | 交易品种  
 > instId | String | 否 | 产品ID  
 code | String | 否 | 错误码  
@@ -3317,6 +3626,8 @@ arg | Object | 订阅成功的频道
 > instType | String | 产品类型  
 `FUTURES`：交割  
 `OPTION`：期权  
+`SWAP`：永续  
+`EVENTS`：事件合约  
 > instFamily | String | 交易品种  
 > instId | String | 产品ID  
 data | Array of objects | 订阅的数据  
@@ -3927,7 +4238,7 @@ data | Array of Arrays | 订阅的数据
 
 ### 平台公共爆仓单频道
 
-获取爆仓单信息。对于交割和永续合约，强平数据代表每个交易对在任何一秒内的最多一个强平订单。因此，显示的强平数据并不准确代表欧易的总强平量，亦不应被当做总强平量使用。
+获取爆仓单信息。显示的强平数据并不准确代表欧易的总强平量，亦不应被当做总强平量使用。
 
 #### URL Path
 

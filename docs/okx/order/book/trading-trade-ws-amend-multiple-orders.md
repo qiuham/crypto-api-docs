@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-ws-amend-multiple-orders
 anchor_id: order-book-trading-trade-ws-amend-multiple-orders
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:53.286859
+updated_at: 2026-05-27 19:34:55.573497
 ---
 
 # WS / Amend multiple orders
@@ -34,12 +34,12 @@ Unlike other endpoints, the rate limit of this endpoint is determined by the num
       "op": "batch-amend-orders",
       "args": [
         {
-          "instId": "BTC-USDT",
+          "instIdCode": 123456,
           "ordId": "12345689",
           "newSz": "2"
         },
         {
-          "instId": "BTC-USDT",
+          "instIdCode": 123456,
           "ordId": "12344",
           "newSz": "2"
         }
@@ -57,10 +57,7 @@ A combination of case-sensitive alphanumerics, all numbers, or all letters of up
 op | String | Yes | Operation  
 `batch-amend-orders`  
 args | Array of objects | Yes | Request Parameters  
-> instIdCode | Integer | Conditional | Instrument ID code.   
-If both `instId` and `instIdCode` are provided, `instIdCode` takes precedence.  
-> instId | String | Conditional | Instrument ID   
-Will be deprecated on February 2026.  
+> instIdCode | Integer | Yes | Instrument ID code  
 > cxlOnFail | Boolean | No | Whether the order needs to be automatically canceled when the order amendment fails   
 Valid options: `false` or `true`, the default is `false`.  
 > ordId | String | Conditional | Order ID   
@@ -71,6 +68,8 @@ A combination of case-sensitive alphanumerics, all numbers, or all letters of up
 > newSz | String | Conditional | New quantity after amendment and it has to be larger than 0. Either `newSz` or `newPx` is required. When amending a partially-filled order, the `newSz` should include the amount that has been filled.  
 > newPx | String | Conditional | New price after amendment.   
 When modifying options orders, users can only fill in one of the following: newPx, newPxUsd, or newPxVol. It must be consistent with parameters when placing orders. For example, if users placed the order using px, they should use newPx when modifying the order.  
+> speedBump | String | Conditional | Speed bump  
+`1`: Event contract speed bumps (the delay duration will be changed subject to adjustment without prior notice). Required for non-post-only orders of `EVENTS` symbols.  
 > newPxUsd | String | Conditional | Modify options orders using USD prices   
 Only applicable to options.   
 When modifying options orders, users can only fill in one of the following: newPx, newPxUsd, or newPxVol.  
@@ -96,7 +95,8 @@ expTime | String | No | Request effective deadline. Unix timestamp format in mil
           "ts": "1695190491421",
           "reqId": "b12344",
           "sCode": "0",
-          "sMsg": ""
+          "sMsg": "",
+          "subCode": ""
         },
         {
           "clOrdId": "oktswap7",
@@ -104,7 +104,8 @@ expTime | String | No | Request effective deadline. Unix timestamp format in mil
           "ts": "1695190491421",
           "reqId": "b12344",
           "sCode": "0",
-          "sMsg": ""
+          "sMsg": "",
+          "subCode": ""
         }
       ],
       "code": "0",
@@ -134,8 +135,9 @@ expTime | String | No | Request effective deadline. Unix timestamp format in mil
           "ordId": "",
           "ts": "1695190491421",
           "reqId": "b12344",
-          "sCode": "5XXXX",
-          "sMsg": "order not exist"
+              "sCode": "51008",
+          "sMsg": "Order failed. Insufficient USDT balance in account",
+          "subCode": "1000"
         }
       ],
       "code": "1",
@@ -161,12 +163,13 @@ expTime | String | No | Request effective deadline. Unix timestamp format in mil
           "sMsg": ""
         },
         {
-          "clOrdId": "oktswap7",
-          "ordId": "",
+          "clOrdId": "",
+          "ordId": "oktswap7",
           "ts": "1695190491421",
           "reqId": "b12344",
-          "sCode": "5XXXX",
-          "sMsg": "order not exist"
+          "sCode": "51063",
+          "sMsg": "OrdId does not exist"
+          "subCode": ""
         }
       ],
       "code": "2",
@@ -206,6 +209,9 @@ data | Array of objects | Data
 If the user provides reqId in the request, the corresponding reqId will be returned  
 > sCode | String | Order status code, `0` means success  
 > sMsg | String | Order status message  
+> subCode | String | Sub-code of sCode.  
+Returns `""` when sCode is 0 (request successful).  
+When sCode is not 0 (request failed), returns the sub-code if available; otherwise returns `""`.  
 inTime | String | Timestamp at Websocket gateway when the request is received, Unix timestamp format in microseconds, e.g. `1597026383085123`  
 outTime | String | Timestamp at Websocket gateway when the response is sent, Unix timestamp format in microseconds, e.g. `1597026383085123`  
 newSz   
@@ -240,11 +246,11 @@ If the new quantity of the order is less than or equal to the filled quantity wh
         "id": "1513",
         "op": "batch-amend-orders",
         "args": [{
-            "instId": "BTC-USDT",
+            "instIdCode": 123456,
             "ordId": "12345689",
             "newSz": "2"
         }, {
-            "instId": "BTC-USDT",
+            "instIdCode": 123456,
             "ordId": "12344",
             "newSz": "2"
         }]
@@ -260,10 +266,7 @@ id | String | 是 | 消息的唯一标识
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度必须要在1-32位之间。  
 op | String | 是 | 支持的业务操作，如 `batch-amend-orders`  
 args | Array of objects | 是 | 请求参数  
-> instIdCode | Integer | 可选 | 产品唯一标识代码。  
-instId 和 instIdCode 两个都传时，instIdCode 优先级更高  
-> instId | String | 可选 | 产品ID   
-将于 2026 年 2 月 上旬下线  
+> instIdCode | Integer | 是 | 产品唯一标识代码  
 > cxlOnFail | Boolean | 否 | 当订单修改失败时，该订单是否需要自动撤销。默认为`false`  
 `false`：不自动撤单  
 `true`：自动撤单  
@@ -276,6 +279,8 @@ ordId 和 clOrdId 必须传一个，若传两个，以order id 为主
 > newSz | String | 可选 | 修改后的新数量，必须大于0。`newSz`和`newPx`不可同时为空。对于部分成交订单，该数量应包含已成交数量。  
 > newPx | String | 可选 | 修改后的新价格  
 修改的新价格期权改单时，newPx/newPxUsd/newPxVol 只能填一个，且必须与下单参数保持一致，如下单用px，改单时需使用newPx  
+> speedBump | String | 可选 | 减速带  
+`1`：事件合约速度限制（延迟可能因市场情况调整，不提前通知）。对 `EVENTS` 产品的非只挂单操作为必填。  
 > newPxUsd | String | 可选 | 以USD价格进行期权改单   
 仅适用于期权，期权改单时，newPx/newPxUsd/newPxVol 只能填一个  
 > newPxVol | String | 可选 | 以隐含波动率进行期权改单，例如 1 代表 100%   
@@ -298,14 +303,16 @@ expTime | String | 否 | 请求有效截止时间。Unix时间戳的毫秒数格
             "ts": "1695190491421",
             "reqId": "b12344",
             "sCode": "0",
-            "sMsg": ""
+            "sMsg": "",
+            "subCode": ""
         }, {
             "clOrdId": "oktswap7",
             "ordId": "12344",
             "ts": "1695190491421",
             "reqId": "b12344",
             "sCode": "0",
-            "sMsg": ""
+            "sMsg": "",
+            "subCode": ""
         }],
         "code": "0",
         "msg": "",
@@ -325,15 +332,17 @@ expTime | String | 否 | 请求有效截止时间。Unix时间戳的毫秒数格
             "ordId": "12345689",
             "ts": "1695190491421",
             "reqId": "b12344",
-            "sCode": "5XXXX",
-            "sMsg": "order not exist"
+            "sCode": "51008",
+            "sMsg": "Order failed. Insufficient USDT balance in account",
+            "subCode": "1000"
         }, {
             "clOrdId": "oktswap7",
             "ordId": "",
             "ts": "1695190491421",
             "reqId": "b12344",
-            "sCode": "5XXXX",
-            "sMsg": "order not exist"
+            "sCode": "51008",
+            "sMsg": "Order failed. Insufficient USDT balance in account",
+            "subCode": "1000"
         }],
         "code": "1",
         "msg": "",
@@ -354,14 +363,17 @@ expTime | String | 否 | 请求有效截止时间。Unix时间戳的毫秒数格
             "ts": "1695190491421",
             "reqId": "b12344",
             "sCode": "0",
-            "sMsg": ""
+            "sMsg": "",
+            "subCode": ""
+    
         }, {
             "clOrdId": "oktswap7",
             "ordId": "",
             "ts": "1695190491421",
             "reqId": "b12344",
-            "sCode": "5XXXX",
-            "sMsg": "order not exist"
+            "sCode": "51008",
+            "sMsg": "Order failed. Insufficient USDT balance in account",
+            "subCode": "1000"
         }],
         "code": "2",
         "msg": "",
@@ -400,5 +412,8 @@ data | Array of objects | 请求成功后返回的数据
 如果用户在请求中提供reqId，则返回相应reqId  
 > sCode | String | 订单状态码，0 代表成功  
 > sMsg | String | 订单状态消息  
+> subCode | String | sCode 的子码。  
+当 sCode 为 0（请求成功）时，返回 `""`。  
+当 sCode 不为 0（请求失败）且存在子码时，返回对应的子码；若无子码，则返回 `""`。  
 inTime | String | WebSocket 网关接收请求时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`  
 outTime | String | WebSocket 网关发送响应时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`

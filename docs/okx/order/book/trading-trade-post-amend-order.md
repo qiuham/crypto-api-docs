@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-amend-order
 anchor_id: order-book-trading-trade-post-amend-order
 api_type: API
-updated_at: 2026-01-15T23:27:52.308612
+updated_at: 2026-05-27 19:34:46.368967
 ---
 
 # POST / Amend order
@@ -65,16 +65,19 @@ Parameter | Type | Required | Description
 ---|---|---|---  
 instId | String | Yes | Instrument ID  
 cxlOnFail | Boolean | No | Whether the order needs to be automatically canceled when the order amendment fails   
-Valid options: `false` or `true`, the default is `false`.  
+Valid options: `false` or `true`, the default is `false`.   
+Amendment failure scenarios include: `newSz` not a multiple of `lotSz`, position or risk limit breach, etc. When `false` (default): the original order continues unchanged after a failed amendment. When `true`: the original order is auto-cancelled on any amendment failure.  
 ordId | String | Conditional | Order ID   
 Either `ordId` or `clOrdId` is required. If both are passed, `ordId` will be used.  
 clOrdId | String | Conditional | Client Order ID as assigned by the client  
 reqId | String | No | Client Request ID as assigned by the client for order amendment   
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.   
 The response will include the corresponding `reqId` to help you identify the request if you provide it in the request.  
-newSz | String | Conditional | New quantity after amendment and it has to be larger than 0. When amending a partially-filled order, the `newSz` should include the amount that has been filled.  
+newSz | String | Conditional | New **total** target quantity after amendment, must be > 0\. This is the desired total order size, not the remaining unfilled portion. For a partially-filled order: if 3 contracts are already filled and you want a total of 8, pass `newSz=8` (not 5). The system will attempt to fill the remaining 5. At least one of `newSz` or `newPx` (or `newPxUsd`/`newPxVol` for options) must be provided.  
 newPx | String | Conditional | New price after amendment.   
-When modifying options orders, users can only fill in one of the following: newPx, newPxUsd, or newPxVol. It must be consistent with parameters when placing orders. For example, if users placed the order using px, they should use newPx when modifying the order.  
+When modifying options orders, users can only fill in one of the following: newPx, newPxUsd, or newPxVol. It must be consistent with parameters when placing orders. For example, if users placed the order using px, they should use newPx when modifying the order. At least one of `newSz` or `newPx` must be provided.  
+speedBump | String | Conditional | Speed bump  
+`1`: Event contract speed bumps (the delay duration will be changed subject to adjustment without prior notice). Required for non-post-only orders of `EVENTS` symbols.  
 newPxUsd | String | Conditional | Modify options orders using USD prices   
 Only applicable to options.   
 When modifying options orders, users can only fill in one of the following: newPx, newPxUsd, or newPxVol.  
@@ -85,17 +88,17 @@ pxAmendType | String | No | The price amendment type for orders
 `0`: Do not allow the system to amend to order price if `newPx` exceeds the price limit   
 `1`: Allow the system to amend the price to the best available value within the price limit if `newPx` exceeds the price limit  
 The default value is `0`  
-attachAlgoOrds | Array of objects | No | TP/SL information attached when placing order  
-> attachAlgoId | String | Conditional | The order ID of attached TP/SL order. It is required to identity the TP/SL order when amending. It will not be posted to algoId when placing TP/SL order after the general order is filled completely.  
-> attachAlgoClOrdId | String | Conditional | Client-supplied Algo ID when placing order attaching TP/SL  
+attachAlgoOrds | Array of objects | No | Attached TP/SL or trailing stop order information  
+> attachAlgoId | String | Conditional | The order ID of the attached TP/SL or trailing stop order. It is required to identify the attached order when amending. It will not be posted to algoId when placing the attached algo order after the general order is filled completely.  
+> attachAlgoClOrdId | String | Conditional | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to `algoClOrdId` when placing TP/SL order once the general order is filled completely.  
+It will be posted to `algoClOrdId` when placing the attached algo order once the general order is filled completely.  
 > newTpTriggerPx | String | Conditional | Take-profit trigger price.   
 Either the take profit trigger price or order price is 0, it means that the take profit is deleted.  
 > newTpTriggerRatio | String | Conditional | Take profit trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.   
 Only one of `newTpTriggerPx` and `newTpTriggerRatio` can be passed.   
-If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be bewteen -1 and 0. 0 means to delete the take-profit.  
+If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be between -1 and 0. 0 means to delete the take-profit.  
 > newTpOrdPx | String | Conditional | Take-profit order price  
 If the price is -1, take-profit will be executed at the market price.  
 > newTpOrdKind | String | No | TP order kind  
@@ -103,10 +106,10 @@ If the price is -1, take-profit will be executed at the market price.
 `limit`  
 > newSlTriggerPx | String | Conditional | Stop-loss trigger price  
 Either the stop loss trigger price or order price is 0, it means that the stop loss is deleted.  
-> newSlTriggerRatio | String | Conditional | Stop profit trigger ratio, 0.3 represents 30%   
+> newSlTriggerRatio | String | Conditional | Stop-loss trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.  
 Only one of `newSlTriggerPx` and `newSlTriggerRatio` can be passed.   
-If the main order is a buy order, it should be bewteen 0 and 1, and if the main order is a sell order, it must be greater than 0.   
+If the main order is a buy order, it should be between 0 and 1, and if the main order is a sell order, it must be greater than 0.   
 Only one of `newSlTriggerPx` and `newSlTriggerRatio` can be passed, 0 means to delete the stop-loss.  
 > newSlOrdPx | String | Conditional | Stop-loss order price  
 If the price is -1, stop-loss will be executed at the market price.  
@@ -126,6 +129,14 @@ If you want to add the stop-loss, this parameter is required
 > amendPxOnTriggerType | String | No | Whether to enable Cost-price SL. Only applicable to SL order of split TPs.   
 `0`: disable, the default value   
 `1`: Enable  
+> newCallbackRatio | String | Conditional | New callback ratio, e.g. `0.05` represents 5%.  
+Either `newCallbackRatio` or `newCallbackSpread` can be passed. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> newCallbackSpread | String | Conditional | New callback spread (price distance).  
+Either `newCallbackRatio` or `newCallbackSpread` can be passed. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> newActivePx | String | No | New activation price.  
+Only applicable when `ordType` = `move_order_stop`  
   
 > Response Example
     
@@ -141,6 +152,7 @@ If you want to add the stop-loss, this parameter is required
              "reqId":"b12344",
              "sCode":"0",
              "sMsg":""
+             "subCode": ""
             }
         ],
         "inTime": "1695190491421339",
@@ -161,6 +173,9 @@ data | Array of objects | Array of objects contains the response results
 > reqId | String | Client Request ID as assigned by the client for order amendment.  
 > sCode | String | The code of the event execution result, `0` means success.  
 > sMsg | String | Rejection message if the request is unsuccessful.  
+> subCode | String | Sub-code of sCode.  
+Returns `""` when sCode is 0 (request successful).  
+When sCode is not 0 (request failed), returns the sub-code if available; otherwise returns `""`.  
 inTime | String | Timestamp at REST gateway when the request is received, Unix timestamp format in microseconds, e.g. `1597026383085123`   
 The time is recorded after authentication.  
 outTime | String | Timestamp at REST gateway when the response is sent, Unix timestamp format in microseconds, e.g. `1597026383085123`  
@@ -226,17 +241,20 @@ If the new quantity of the order is less than or equal to the filled quantity wh
 参数名 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 instId | String | 是 | 产品ID  
-cxlOnFail | Boolean | 否 | 当订单修改失败时，该订单是否需要自动撤销。默认为`false`  
-`false`：不自动撤单  
-`true`：自动撤单  
+cxlOnFail | Boolean | 否 | 订单修改失败时是否自动撤单  
+有效值：`false` 或 `true`，默认值为 `false`。  
+修改失败的场景包括：`newSz` 不是 `lotSz` 的整数倍、超出仓位或风险限额等。`false`（默认）：修改失败时原订单继续保持不变。`true`：修改失败时原订单将自动撤销。  
 ordId | String | 可选 | 订单ID  
 `ordId`和`clOrdId`必须传一个，若传两个，以`ordId`为主  
 clOrdId | String | 可选 | 用户自定义订单ID  
 reqId | String | 否 | 用户自定义修改事件ID  
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
-newSz | String | 可选 | 修改的新数量，必须大于0，对于部分成交订单，该数量应包含已成交数量。  
+newSz | String | 可选 | 修改后的总目标委托量，必须大于0。这是期望的总委托量，而非剩余未成交量。对于部分成交的订单：如果已成交3张合约，您希望总量为8张，则填写 `newSz=8`（而非5）。系统将尝试成交剩余的5张。`newSz`、`newPx`（或期权的 `newPxUsd`/`newPxVol`）至少需要填写一个。  
 newPx | String | 可选 | 修改后的新价格  
 修改的新价格期权改单时，newPx/newPxUsd/newPxVol 只能填一个，且必须与下单参数保持一致，如下单用px，改单时需使用newPx  
+`newSz` 或 `newPx` 至少需要填写一个。  
+speedBump | String | 可选 | 减速带  
+`1`：事件合约速度限制（延迟可能因市场情况调整，不提前通知）。对 `EVENTS` 产品的非只挂单操作为必填。  
 newPxUsd | String | 可选 | 以USD价格进行期权改单   
 仅适用于期权，期权改单时，newPx/newPxUsd/newPxVol 只能填一个  
 newPxVol | String | 可选 | 以隐含波动率进行期权改单，如 1 代表 100%   
@@ -245,9 +263,9 @@ pxAmendType | String | 否 | 订单价格修正类型
 `0`：当`newPx`超出价格限制时，不允许系统修改订单价格  
 `1`：当`newPx`超出价格限制时，允许系统将价格修改为限制范围内的最优值  
 默认值为`0`  
-attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损信息  
-> attachAlgoId | String | 可选 | 附带止盈止损的订单ID，由系统生成，改单时必填，用来标识该笔附带止盈止损订单。下止盈止损委托单时，该值不会传给 algoId  
-> attachAlgoClOrdId | String | 可选 | 下单附带止盈止损时，客户自定义的策略订单ID  
+attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损或移动止盈止损订单信息  
+> attachAlgoId | String | 可选 | 附带止盈止损或移动止盈止损的订单ID，由系统生成，改单时必填，用来标识该笔附带止盈止损订单。下附带策略委托单时，该值不会传给 algoId  
+> attachAlgoClOrdId | String | 可选 | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID  
 > newTpTriggerPx | String | 可选 | 止盈触发价  
 如果止盈触发价或者委托价为0，那代表删除止盈。  
 > newTpTriggerRatio | String | 可选 | 止盈触发比例，0.3 代表 30%   
@@ -283,6 +301,14 @@ attachAlgoOrds | Array of objects | 否 | 修改附带止盈止损信息
 > amendPxOnTriggerType | String | 否 | 是否启用开仓价止损，仅适用于分批止盈的止损订单  
 `0`：不开启，默认值  
 `1`：开启  
+> newCallbackRatio | String | 可选 | 新的回调幅度比例，如 `0.05` 代表 5%。  
+`newCallbackRatio` 和 `newCallbackSpread` 只能传入其中一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> newCallbackSpread | String | 可选 | 新的回调幅度价距。  
+`newCallbackRatio` 和 `newCallbackSpread` 只能传入其中一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> newActivePx | String | 否 | 新的激活价格。  
+仅适用于 `ordType` = `move_order_stop`  
 newSz  
 修改的数量<=该笔订单已成交数量时，该订单的状态会修改为完全成交状态。  
 
@@ -299,7 +325,8 @@ newSz
              "ts":"1695190491421",
              "reqId":"b12344",
              "sCode":"0",
-             "sMsg":""
+             "sMsg":"",
+             "subCode": ""
             }
         ],
         "inTime": "1695190491421339",
@@ -320,6 +347,9 @@ data | Array of objects | 包含结果的对象数组
 > reqId | String | 用户自定义修改事件ID  
 > sCode | String | 事件执行结果的code，0代表成功  
 > sMsg | String | 事件执行失败时的msg  
+> subCode | String | sCode 的子码。  
+当 sCode 为 0（请求成功）时，返回 `""`。  
+当 sCode 不为 0（请求失败）且存在子码时，返回对应的子码；若无子码，则返回 `""`。  
 inTime | String | REST网关接收请求时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`   
 返回的时间是请求验证后的时间。  
 outTime | String | REST网关发送响应时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`  

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-algo-trading-get-algo-order-details
 anchor_id: order-book-trading-algo-trading-get-algo-order-details
 api_type: API
-updated_at: 2026-01-15T23:27:53.539150
+updated_at: 2026-05-27 19:34:57.614349
 ---
 
 # GET / Algo order details
@@ -182,8 +182,8 @@ Only applicable to `move_order_stop` order
 moveTriggerPx | String | Trigger price  
 Only applicable to `move_order_stop` order  
 reduceOnly | String | Whether the order can only reduce the position size. Valid options: true or false.  
-quickMgnType | String | Quick Margin type, Only applicable to Quick Margin Mode of isolated margin  
-`manual`, `auto_borrow`, `auto_repay`  
+quickMgnType | String | ~~Quick Margin type, Only applicable to Quick Margin Mode of isolated margin  
+`manual`, `auto_borrow`, `auto_repay`~~ (Deprecated)  
 last | String | Last filled price while placing  
 failCode | String | It represents that the reason that algo order fails to trigger. It is "" when the state is `effective`/`canceled`. There will be value when the state is `order_failed`, e.g. 51008;  
 Only applicable to Stop Order, Trailing Stop Order, Trigger order.  
@@ -191,11 +191,11 @@ algoClOrdId | String | Client-supplied Algo ID
 amendPxOnTriggerType | String | Whether to enable Cost-price SL. Only applicable to SL order of split TPs.   
 `0`: disable, the default value   
 `1`: Enable  
-attachAlgoOrds | Array of objects | Attached SL/TP orders info  
+attachAlgoOrds | Array of objects | Attached TP/SL or trailing stop order info  
 Applicable to `Futures mode/Multi-currency margin/Portfolio margin`  
-> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order attaching TP/SL.  
+> attachAlgoClOrdId | String | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop.  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to algoClOrdId when placing TP/SL order once the general order is filled completely.  
+It will be posted to algoClOrdId when placing the attached algo order once the general order is filled completely.  
 > tpTriggerPx | String | Take-profit trigger price  
 If you fill in this parameter, you should fill in the take-profit order price as well.  
 > tpTriggerRatio | String | Take profit trigger ratio, 0.3 represents 30%   
@@ -209,7 +209,7 @@ If you fill in this parameter, you should fill in the take-profit trigger price 
 If the price is `-1`, take-profit will be executed at the market price.  
 > slTriggerPx | String | Stop-loss trigger price  
 If you fill in this parameter, you should fill in the stop-loss order price.  
-> slTriggerRatio | String | Stop profit trigger ratio, 0.3 represents 30%   
+> slTriggerRatio | String | Stop-loss trigger ratio, 0.3 represents 30%   
 Only applicable to FUTURES and SWAP.  
 > slTriggerPxType | String | Stop-loss trigger price type  
 `last`: last price  
@@ -218,6 +218,9 @@ Only applicable to FUTURES and SWAP.
 > slOrdPx | String | Stop-loss order price   
 If you fill in this parameter, you should fill in the stop-loss trigger price.   
 If the price is `-1`, stop-loss will be executed at the market price.  
+> callbackRatio | String | Callback ratio, e.g. `0.05` represents 5%  
+> callbackSpread | String | Callback spread (price distance)  
+> activePx | String | Activation price  
 linkedOrd | Object | Linked TP order detail, only applicable to SL order that comes from the one-cancels-the-other (OCO) order that contains the TP limit order.  
 > ordId | String | Order ID  
 cTime | String | Creation time Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -408,8 +411,8 @@ moveTriggerPx | String | 移动止盈止损触发价格
 仅适用于`移动止盈止损`  
 reduceOnly | String | 是否只减仓  
 `true`或`false`  
-quickMgnType | String | 一键借币类型，仅适用于杠杆逐仓的一键借币模式  
-`manual`：手动，`auto_borrow`：自动借币，`auto_repay`：自动还币  
+quickMgnType | String | ~~一键借币类型，仅适用于杠杆逐仓的一键借币模式  
+`manual`：手动，`auto_borrow`：自动借币，`auto_repay`：自动还币~~（已弃用）  
 last | String | 下单时的最新成交价  
 failCode | String | 代表策略触发失败的原因，已撤销和已生效时为""，委托失败时有值，如 51008；  
 仅适用于单向止盈止损委托、双向止盈止损委托、移动止盈止损委托、计划委托。  
@@ -418,10 +421,10 @@ amendPxOnTriggerType | String | 是否启用开仓价止损
 仅适用于分批止盈的止损订单  
 `0`：不开启，默认值   
 `1`：开启  
-attachAlgoOrds | Array of objects | 附带止盈止损信息  
+attachAlgoOrds | Array of objects | 附带止盈止损或移动止盈止损订单信息  
 适用于`合约模式/跨币种保证金模式/组合保证金模式`  
-> attachAlgoClOrdId | String | 下单附带止盈止损时，客户自定义的策略订单ID，字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
-订单完全成交，下止盈止损委托单时，该值会传给algoClOrdId。  
+> attachAlgoClOrdId | String | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID，字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
+订单完全成交，下附带策略委托单时，该值会传给algoClOrdId。  
 > tpTriggerPx | String | 止盈触发价，如果填写此参数，必须填写`止盈委托价`  
 > tpTriggerRatio | String | 止盈触发比例，0.3 代表 30%   
 仅适用于`交割`/`永续`合约  
@@ -440,6 +443,9 @@ attachAlgoOrds | Array of objects | 附带止盈止损信息
 `mark`：标记价格  
 > slOrdPx | String | 止损委托价，如果填写此参数，必须填写`止损触发价`  
 委托价格为`-1`时，执行市价止损  
+> callbackRatio | String | 回调幅度的比例，如 `0.05` 代表 5%  
+> callbackSpread | String | 回调幅度的价距  
+> activePx | String | 激活价格  
 linkedOrd | Object | 止盈订单信息，仅适用于止损单，且该止损订单来自包含限价止盈单的双向止盈止损订单  
 > ordId | String | 订单 ID  
 cTime | String | 订单创建时间，Unix时间戳的毫秒数格式，如 `1597026383085`  

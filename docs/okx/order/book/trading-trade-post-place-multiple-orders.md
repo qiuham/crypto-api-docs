@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-place-multiple-orders
 anchor_id: order-book-trading-trade-post-place-multiple-orders
 api_type: API
-updated_at: 2026-01-15T23:27:52.211601
+updated_at: 2026-05-27 19:34:45.425456
 ---
 
 # POST / Place multiple orders
@@ -89,7 +89,9 @@ tdMode | String | Yes | Trade mode
 Margin mode `cross` `isolated`  
 Non-Margin mode `cash`  
 `spot_isolated` (only applicable to SPOT lead trading, `tdMode` should be `spot_isolated` for `SPOT` lead trading.)  
-Note: `isolated` is not available in multi-currency margin mode and portfolio margin mode.  
+Note: `isolated` is not available in multi-currency margin mode and portfolio margin mode.   
+  
+Event contracts symbols only support `isolated`  
 ccy | String | No | Margin currency   
 Applicable to all `isolated` `MARGIN` orders and `cross` `MARGIN` orders in `Futures mode`.  
 clOrdId | String | No | Client Order ID as assigned by the client   
@@ -114,6 +116,12 @@ ordType | String | Yes | Order type
 sz | String | Yes | Quantity to buy or sell  
 px | String | Conditional | Order price. Only applicable to `limit`,`post_only`,`fok`,`ioc`,`mmp`,`mmp_and_post_only` order.  
 When placing an option order, one of px/pxUsd/pxVol must be filled in, and only one can be filled in  
+speedBump | String | Conditional | Speed bump  
+`1`: Event contract speed bumps (the delay duration will be changed subject to adjustment without prior notice). Required for non-post-only orders of `EVENTS` symbols.  
+outcome | String | Conditional | The market outcome users trade on.  
+`yes`  
+`no`  
+Only applicable and required for `EVENTS`  
 pxUsd | String | Conditional | Place options orders in `USD`   
 Only applicable to options   
 When placing an option order, one of px/pxUsd/pxVol must be filled in, and only one can be filled in  
@@ -138,6 +146,11 @@ pxAmendType | String | No | The price amendment type for orders
 The default value is `0`  
 tradeQuoteCcy | String | No | The quote currency used for trading. Only applicable to `SPOT`.   
 The default value is the quote currency of the `instId`, for example: for `BTC-USD`, the default is `USD`.  
+slippagePct | String | No | Maximum acceptable slippage for spot and spot margin market-side orders, where `tgtCcy` is the received currency (`base_ccy` for buy, `quote_ccy` for sell).  
+Range: `0` to `0.05` (0% to 5%, inclusive). Up to 2 decimal places of the percentage, e.g., `0.01` (1%) and `0.0123` (1.23%) are accepted; `0.01234` (1.234%) is rejected.  
+If not specified or empty, defaults to `0.00%`.  
+Slippage cannot be modified on an existing order. Cancel and resubmit to change the slippage setting.  
+Only applicable to `SPOT` and `SPOT margin` `market` orders.  
 stpMode | String | No | Self trade prevention mode.   
 `cancel_maker`,`cancel_taker`, `cancel_both`  
 Cancel both does not support FOK.   
@@ -148,16 +161,16 @@ isElpTakerAccess | Boolean | No | ELP taker access
 `false`: the request cannot trade with ELP orders and no speed bump  
   
 The default value is `false` while `true` is only applicable to ioc orders.  
-attachAlgoOrds | Array of objects | No | TP/SL information attached when placing order  
-> attachAlgoClOrdId | String | No | Client-supplied Algo ID when placing order attaching TP/SL  
+attachAlgoOrds | Array of objects | No | Attached TP/SL or trailing stop order information  
+> attachAlgoClOrdId | String | No | Client-supplied Algo ID when placing order with attached TP/SL or trailing stop  
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
-It will be posted to `algoClOrdId` when placing TP/SL order once the general order is filled completely.  
+It will be posted to `algoClOrdId` when placing the attached algo order once the general order is filled completely.  
 > tpTriggerPx | String | Conditional | Take-profit trigger price  
 For condition TP order, if you fill in this parameter, you should fill in the take-profit order price as well.  
 > tpTriggerRatio | String | Conditional | Take profit trigger ratio, 0.3 represents 30%   
 Only one of `tpTriggerPx` and `tpTriggerRatio` can be passed   
 Only applicable to FUTURES and SWAP.  
-If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be bewteen -1 and 0.  
+If the main order is a buy order, it must be greater than 0, and if the main order is a sell order, it must be between -1 and 0.  
 > tpOrdPx | String | Conditional | Take-profit order price   
 For condition TP order, if you fill in this parameter, you should fill in the take-profit trigger price as well.   
 For limit TP order, you need to fill in this parameter, take-profit trigger needn't to be filled.  
@@ -168,10 +181,10 @@ If the price is -1, take-profit will be executed at the market price.
 The default is `condition`  
 > slTriggerPx | String | Conditional | Stop-loss trigger price  
 If you fill in this parameter, you should fill in the stop-loss order price.  
-> slTriggerRatio | String | Conditional | Stop profit trigger ratio, 0.3 represents 30%   
+> slTriggerRatio | String | Conditional | Stop-loss trigger ratio, 0.3 represents 30%   
 Only one of `slTriggerPx` and `slTriggerRatio` can be passed   
 Only applicable to FUTURES and SWAP.  
-If the main order is a buy order, it should be bewteen 0 and 1, and if the main order is a sell order, it must be greater than 0.  
+If the main order is a buy order, it should be between 0 and 1, and if the main order is a sell order, it must be greater than 0.  
 > slOrdPx | String | Conditional | Stop-loss order price  
 If you fill in this parameter, you should fill in the stop-loss trigger price.  
 If the price is -1, stop-loss will be executed at the market price.  
@@ -189,6 +202,15 @@ The default is last
 > amendPxOnTriggerType | String | No | Whether to enable Cost-price SL. Only applicable to SL order of split TPs. Whether `slTriggerPx` will move to `avgPx` when the first TP order is triggered  
 `0`: disable, the default value   
 `1`: Enable  
+> callbackRatio | String | Conditional | Callback ratio, e.g. `0.05` represents 5%.  
+Either `callbackRatio` or `callbackSpread` is required. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> callbackSpread | String | Conditional | Callback spread (price distance).  
+Either `callbackRatio` or `callbackSpread` is required. Only one can be passed.  
+Only applicable when `ordType` = `move_order_stop`  
+> activePx | String | No | Activation price.  
+The trailing stop is activated when the market price reaches the activation price. After activation, the system starts calculating the actual trigger price. If not provided, the trailing stop is activated immediately upon order placement.  
+Only applicable when `ordType` = `move_order_stop`  
   
 > Response Example
     
@@ -203,7 +225,8 @@ The default is last
                 "tag":"",
                 "ts":"1695190491421",
                 "sCode":"0",
-                "sMsg":""
+                "sMsg":"",
+                "subCode": ""
             },
             {
                 "clOrdId":"oktswap7",
@@ -211,7 +234,8 @@ The default is last
                 "tag":"",
                 "ts":"1695190491421",
                 "sCode":"0",
-                "sMsg":""
+                "sMsg":"",
+                "subCode": ""
             }
         ],
         "inTime": "1695190491421339",
@@ -232,6 +256,9 @@ data | Array of objects | Array of objects contains the response results
 > ts | String | Timestamp when the order request processing is finished by our system, Unix timestamp format in milliseconds, e.g. `1597026383085`  
 > sCode | String | The code of the event execution result, `0` means success.  
 > sMsg | String | Rejection or success message of event execution.  
+> subCode | String | Sub-code of sCode.  
+Returns `""` when sCode is 0 (request successful).  
+When sCode is not 0 (request failed), returns the sub-code if available; otherwise returns `""`.  
 inTime | String | Timestamp at REST gateway when the request is received, Unix timestamp format in microseconds, e.g. `1597026383085123`   
 The time is recorded after authentication.  
 outTime | String | Timestamp at REST gateway when the response is sent, Unix timestamp format in microseconds, e.g. `1597026383085123`  
@@ -326,6 +353,8 @@ tdMode | String | 是 | 交易模式
 非保证金模式：`cash`：非保证金  
 `spot_isolated`：现货逐仓(仅适用于现货带单) ，现货带单时，`tdMode` 的值需要指定为`spot_isolated`  
 注意：`isolated` 在跨币种保证金模式和组合保证金模式下不可用。  
+  
+事件合约对应交易产品仅支持`isolated`逐仓下单  
 ccy | String | 否 | 保证金币种，适用于`逐仓杠杆`及`合约模式`下的`全仓杠杆`订单  
 clOrdId | String | 否 | 客户自定义订单ID  
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
@@ -347,6 +376,12 @@ ordType | String | 是 | 订单类型
 sz | String | 是 | 委托数量  
 px | String | 可选 | 委托价格，仅适用于`limit`、`post_only`、`fok`、`ioc`、`mmp`、`mmp_and_post_only`类型的订单  
 期权下单时，px/pxUsd/pxVol 只能填一个  
+speedBump | String | 可选 | 减速带  
+`1`：事件合约速度限制（延迟可能因市场情况调整，不提前通知）。对 `EVENTS` 产品的非只挂单操作为必填。  
+outcome | String | 可选 | 用户交易的市场结果方向。  
+`yes`  
+`no`  
+仅适用于 `EVENTS`，且为必填  
 pxUsd | String | 可选 | 以USD价格进行期权下单   
 仅适用于期权   
 期权下单时 px/pxUsd/pxVol 必填一个，且只能填一个  
@@ -372,15 +407,20 @@ Cancel both不支持FOK
 默认使用账户层面的acctStpMode进行下单，该字段的默认值为`cancel_maker`，用户可通过母账户登录网页修改该配置；用户亦可以通过下单接口的stpMode参数指定订单的STP模式。  
 tradeQuoteCcy | String | 否 | 用于交易的计价币种。仅适用于`币币`。  
 默认值为 `instId` 的计价币种，比如：对于 `BTC-USD`，默认取 `USD`。  
+slippagePct | String | 否 | 币币、币币杠杆市价单（`tgtCcy` 为到手币种：买单为 `base_ccy`，卖单为 `quote_ccy`）的最大可接受滑点。  
+取值范围：`0` 至 `0.05`（即 0% 至 5%，含边界），以百分比形式表示时最多保留 2 位小数，例如 `0.01`（1%）和 `0.0123`（1.23%）合法；`0.01234`（1.234%）将被拒绝。  
+不填或为空时，默认为 `0.00%`。  
+不支持改单修改滑点，如需调整请撤单重新提交。  
+仅适用于币币和币币杠杆的市价单。  
 isElpTakerAccess | Boolean | 否 | 是否作为 taker 吃单 ELP  
 `true`：该请求能吃单 ELP，但会被施加延迟  
 `false`：该请求不能吃单 ELP，并且没有延迟  
   
 默认值为`false`，`true`仅适用于ioc订单  
-attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息  
-> attachAlgoClOrdId | String | 否 | 下单附带止盈止损时，客户自定义的策略订单ID   
+attachAlgoOrds | Array of objects | 否 | 附带止盈止损或移动止盈止损订单信息  
+> attachAlgoClOrdId | String | 否 | 下单附带止盈止损或移动止盈止损时，客户自定义的策略订单ID   
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
-订单完全成交，下止盈止损委托单时，该值会传给`algoClOrdId`  
+订单完全成交，下附带策略委托单时，该值会传给`algoClOrdId`  
 > tpTriggerPx | String | 可选 | 止盈触发价  
 对于条件止盈单，如果填写此参数，必须填写 止盈委托价  
 > tpTriggerRatio | String | 可选 | 止盈触发比例，0.3 代表 30%   
@@ -416,6 +456,15 @@ attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息
 > amendPxOnTriggerType | String | 否 | 是否启用开仓价止损，仅适用于分批止盈的止损订单，第一笔止盈触发时，止损触发价格是否移动到开仓均价止损  
 `0`：不开启，默认值   
 `1`：开启，且止损触发价不能为空  
+> callbackRatio | String | 可选 | 回调幅度的比例，如 `0.05` 代表 5%。  
+`callbackRatio` 和 `callbackSpread` 必须传入其中一个，且只能传入一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> callbackSpread | String | 可选 | 回调幅度的价距。  
+`callbackRatio` 和 `callbackSpread` 必须传入其中一个，且只能传入一个。  
+仅适用于 `ordType` = `move_order_stop`  
+> activePx | String | 否 | 激活价格。  
+激活价格是移动止盈止损的激活条件，当市场最新成交价达到或超过激活价格，委托被激活。激活后系统开始计算止盈止损的实际触发价格。如果不填写激活价格，即下单后就被激活。  
+仅适用于 `ordType` = `move_order_stop`  
   
 > 返回结果
     
@@ -430,7 +479,8 @@ attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息
                 "tag":"",
                 "ts":"1695190491421",
                 "sCode":"0",
-                "sMsg":""
+                "sMsg":"",
+                "subCode":""
             },
             {
                 "clOrdId":"oktswap7",
@@ -438,7 +488,8 @@ attachAlgoOrds | Array of objects | 否 | 下单附带止盈止损信息
                 "tag":"",
                 "ts":"1695190491421",
                 "sCode":"0",
-                "sMsg":""
+                "sMsg":"",
+                "subCode":""
             }
         ],
         "inTime": "1695190491421339",
@@ -459,6 +510,9 @@ data | Array of objects | 包含结果的对象数组
 > ts | String | 系统完成订单请求处理的时间戳，Unix时间戳的毫秒数格式，如 `1597026383085`  
 > sCode | String | 事件执行结果的code，0代表成功  
 > sMsg | String | 事件执行失败或成功时的msg  
+> subCode | String | sCode 的子码。  
+当 sCode 为 0（请求成功）时，返回 `""`。  
+当 sCode 不为 0（请求失败）且存在子码时，返回对应的子码；若无子码，则返回 `""`。  
 inTime | String | REST网关接收请求时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`   
 返回的时间是请求验证后的时间。  
 outTime | String | REST网关发送响应时的时间戳，Unix时间戳的微秒数格式，如 `1597026383085123`  

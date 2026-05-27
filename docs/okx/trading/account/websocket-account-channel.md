@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-websocket-account-channel
 anchor_id: trading-account-websocket-account-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:51.414393
+updated_at: 2026-05-27 19:34:41.258919
 ---
 
 # Account channel
@@ -231,7 +231,7 @@ connId | String | Yes | WebSocket connection ID
             "crossLiab": "0",
             "colRes": "0",
             "collateralEnabled": false,
-            "collateralRestrict": false,
+            "collateralRestrict": false, // Deprecated, use colRes instead
             "colBorrAutoConversion": "0",
             "disEq": "4889.379316336831",
             "eq": "4892.951170691435",
@@ -316,7 +316,7 @@ Applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`
 > availEq | String | Account level available equity, excluding currencies that are restricted due to the collateralized borrowing limit.  
 Applicable to `Multi-currency margin`/`Portfolio margin`  
 > ordFroz | String | Margin frozen for pending cross orders in `USD`   
-Only applicable to `Spot mode`/`Multi-currency margin`  
+Only applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`  
 > imr | String | Initial margin requirement in `USD`   
 The sum of initial margins of all open positions and pending orders under cross-margin mode in `USD`.   
 Applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`  
@@ -349,13 +349,14 @@ deltaLever = delta / totalEq
 > details | Array of objects | Detailed asset information in all currencies  
 >> ccy | String | Currency  
 >> eq | String | Equity of currency  
->> cashBal | String | Cash Balance  
+>> cashBal | String | Cash balance  
 >> uTime | String | Update time, Unix timestamp format in milliseconds, e.g. `1597026383085`  
 >> isoEq | String | Isolated margin equity of currency  
 Applicable to `Futures mode`/`Multi-currency margin`/`Portfolio margin`  
 >> availEq | String | Available equity of currency  
 Applicable to `Futures mode`/`Multi-currency margin`/`Portfolio margin`  
->> disEq | String | Discount equity of currency in `USD`  
+>> disEq | String | Discount equity of currency in `USD`.  
+Applicable to `Spot mode`(enabled spot borrow)/`Multi-currency margin`/`Portfolio margin`  
 >> fixedBal | String | Frozen balance for `Dip Sniper` and `Peak Sniper`  
 >> availBal | String | Available balance of currency  
 >> frozenBal | String | Frozen balance of currency  
@@ -368,12 +369,12 @@ Applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`
 Applicable to `Futures mode`/`Multi-currency margin`/`Portfolio margin`  
 >> uplLiab | String | Liabilities due to Unrealized loss of currency  
 Applicable to `Multi-currency margin`/`Portfolio margin`  
->> crossLiab | String | Cross Liabilities of currency  
+>> crossLiab | String | Cross liabilities of currency  
 Applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`  
->> isoLiab | String | Isolated Liabilities of currency  
+>> isoLiab | String | Isolated liabilities of currency  
 Applicable to `Multi-currency margin`/`Portfolio margin`  
 >> rewardBal | String | Trial fund balance  
->> mgnRatio | String | Cross Maintenance margin ratio of currency   
+>> mgnRatio | String | Cross maintenance margin ratio of currency   
 The index for measuring the risk of a certain asset in the account.   
 Applicable to `Futures mode` and when there is cross position  
 >> imr | String | Cross initial margin requirement at the currency level  
@@ -391,7 +392,7 @@ Applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`
 `2`: platform based FRP  
   
 Return `1`/`2` when twap is >= 1, applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`  
->> maxLoan | String | Max loan of currency  
+>> maxLoan | String | Maximum borrowable amount for the currency under the current account conditions. Affects the amount available for margin borrowing and transfers.  
 Applicable to `cross` of `Spot mode`/`Multi-currency margin`/`Portfolio margin`  
 >> eqUsd | String | Equity `USD` of currency  
 >> borrowFroz | String | Potential borrowing IMR of currency in `USD`   
@@ -399,18 +400,17 @@ Only applicable to `Spot mode`/`Multi-currency margin`/`Portfolio margin`. It is
 >> notionalLever | String | Leverage of currency  
 Applicable to `Futures mode`  
 >> coinUsdPrice | String | Price index `USD` of currency  
->> stgyEq | String | strategy equity  
+>> stgyEq | String | Total equity allocated to trading bots for the currency. Covers Spot Grid, Futures Grid, Signal Bot, Futures Martingale, Spot Martingale, Infinite Grid, and Recurring Buy strategies.  
 >> isoUpl | String | Isolated unrealized profit and loss of currency  
 Applicable to `Futures mode`/`Multi-currency margin`/`Portfolio margin`  
->> spotInUseAmt | String | Spot in use amount  
+>> spotInUseAmt | String | Actual spot hedging amount in use for the currency.  
 Applicable to `Portfolio margin`  
->> clSpotInUseAmt | String | User-defined spot risk offset amount  
+>> clSpotInUseAmt | String | User-defined spot hedging amount for the currency.  
 Applicable to `Portfolio margin`  
->> maxSpotInUseAmt | String | Max possible spot risk offset amount  
+>> maxSpotInUseAmt | String | System-calculated maximum possible spot hedging amount for the currency.  
 Applicable to `Portfolio margin`  
->> spotIsoBal | String | Spot isolated balance  
-Applicable to copy trading  
-Applicable to `Spot mode`/`Futures mode`  
+>> spotIsoBal | String | Balance acquired through spot copy trading (as a follower or lead trader), including amounts currently frozen by open orders. For example, if 1 BTC was purchased via copy trading and 0.4 BTC is frozen in an open sell order, `spotIsoBal` returns `1`, not `0.6`.  
+Applicable to copy trading. Applicable to `Spot mode`/`Futures mode`.  
 >> smtSyncEq | String | Smart sync equity  
 The default is "0", only applicable to copy trader.  
 >> spotCopyTradingEq | String | Spot smart sync equity.   
@@ -437,11 +437,18 @@ Refer to [Introduction to the platform collateralized borrowing limit](https://w
 >> collateralEnabled | Boolean | `true`: Collateral enabled  
 `false`: Collateral disabled  
 Applicable to `Multi-currency margin`  
+>> autoLendStatus | String | Auto lend status  
+`unsupported`: auto lend is not supported by this currency  
+`off`: auto lend is supported but turned off  
+`pending`: auto lend is turned on but pending matching  
+`active`: auto lend is turned on and matched  
+>> autoLendMtAmt | String | Auto lend currency matched amount  
+Return "0" when autoLendStatus is `unsupported/off/pending`. Return matched amount when autoLendStatus is `active`  
 "" will be returned for inapplicable fields under the current account level.    
 \- The account data is sent on event basis and regular basis.   
 \- The event push is not pushed in real-time. It is aggregated and pushed at a fixed time interval, around 50ms. For example, if multiple events occur within a fixed time interval, the system will aggregate them into a single message and push it at the end of the fixed time interval. If the data volume is too large, it may be split into multiple messages.   
 \- The regular push sends updates regardless of whether there are activities in the trading account or not.    
-\- Only currencies with non-zero balance will be pushed. Definition of non-zero balance: any value of eq, availEq, availBql parameters is not 0. If the data is too large to be sent in a single push message, it will be split into multiple messages.   
+\- Only currencies with non-zero balance will be pushed. Definition of non-zero balance: any value of eq, availEq, availBal parameters is not 0. If the data is too large to be sent in a single push message, it will be split into multiple messages.   
 \- For example, when subscribing to account channel without specifying ccy and there are 5 currencies are with non-zero balance, all 5 currencies data will be pushed in initial snapshot and in regular update. Subsequently when there is change in balance or equity of an token, only the incremental data of that currency will be pushed triggered by this change.
 
 ---
@@ -695,7 +702,7 @@ connId | String | 是 | WebSocket连接ID
                 "crossLiab": "0",
                 "colRes": "0",
                 "collateralEnabled": false,
-                "collateralRestrict": false,
+                "collateralRestrict": false, // 已弃用，请使用colRes
                 "colBorrAutoConversion": "0",
                 "disEq": "4889.379316336831",
                 "eq": "4892.951170691435",

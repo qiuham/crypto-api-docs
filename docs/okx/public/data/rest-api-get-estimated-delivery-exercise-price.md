@@ -3,13 +3,13 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-estimated-delivery-exercise-price
 anchor_id: public-data-rest-api-get-estimated-delivery-exercise-price
 api_type: REST
-updated_at: 2026-01-15T23:28:00.530120
+updated_at: 2026-05-27 19:36:08.179687
 ---
 
 # Get estimated delivery/exercise price
 
-Retrieve the estimated delivery price which will only have a return value one hour before the delivery/exercise.
-
+Retrieve the estimated delivery price which will only have a return value one hour before the delivery/exercise.  
+  
 #### Rate Limit: 10 requests per 2 seconds
 
 #### Rate limit rule: IP + Instrument ID
@@ -43,7 +43,7 @@ Retrieve the estimated delivery price which will only have a return value one ho
 Parameter | Type | Required | Description  
 ---|---|---|---  
 instId | String | Yes | Instrument ID, e.g. `BTC-USD-200214`   
-only applicable to `FUTURES`/`OPTION`  
+only applicable to `FUTURES`/`OPTION`/`EVENTS`  
   
 > Response Example
     
@@ -77,8 +77,8 @@ ts | String | Data return time, Unix timestamp format in milliseconds, e.g. `159
 
 # 获取预估交割/行权价格
 
-获取交割合约和期权预估交割/行权价。交割/行权预估价只有交割/行权前一小时才有返回值
-
+获取交割合约和期权预估交割/行权价。交割/行权预估价只有交割/行权前一小时才有返回值  
+  
 #### 限速：10次/2s
 
 #### 限速规则：IP + Instrument ID
@@ -112,7 +112,7 @@ ts | String | Data return time, Unix timestamp format in milliseconds, e.g. `159
 参数名 | 类型 | 是否必须 | 描述  
 ---|---|---|---  
 instId | String | 是 | 产品ID，如 `BTC-USD-200214`  
-仅适用于`交割`/`期权`  
+仅适用于`交割`/`期权`/`事件合约`  
   
 > 返回结果
     

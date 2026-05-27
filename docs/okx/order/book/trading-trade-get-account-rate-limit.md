@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-get-account-rate-limit
 anchor_id: order-book-trading-trade-get-account-rate-limit
 api_type: API
-updated_at: 2026-01-15T23:27:52.968706
+updated_at: 2026-05-27 19:34:52.680208
 ---
 
 # GET / Account rate limit
@@ -57,18 +57,21 @@ None
 
 Parameter | Type | Description  
 ---|---|---  
-fillRatio | String | Sub account fill ratio during the monitoring period   
-Applicable for users with trading fee level >= VIP 5 and return "" for others   
-For accounts with no trading volume during the monitoring period, return "0". For accounts with trading volume but no order count due to our counting logic, return "9999".  
-mainFillRatio | String | Master account aggregated fill ratio during the monitoring period   
-Applicable for users with trading fee level >= VIP 5 and return "" for others   
-For accounts with no trading volume during the monitoring period, return "0"  
-accRateLimit | String | Current sub-account rate limit per two seconds  
-nextAccRateLimit | String | Expected sub-account rate limit (per two seconds) in the next period   
-Applicable for users with trading fee level >= VIP 5 and return "" for others  
-ts | String | Data update time   
-For users with trading fee level >= VIP 5, the data will be generated at 08:00 am (UTC)   
-For users with trading fee level < VIP 5, return the current timestamp
+fillRatio | String | Sub account fill ratio during the monitoring period.   
+Applicable to users with trading fee tier >= VIP 5; other users will receive `""`.  
+If there has been no trading activity on the account in the past 7 days, `""` will be returned.  
+If there is no executed volume during the monitoring period, `"0"` will be returned.  
+If there is executed volume but no order operation count during the monitoring period, `"9999"` will be returned.  
+mainFillRatio | String | Master account aggregated fill ratio during the monitoring period.   
+Applicable to users with trading fee tier >= VIP 5; other users will receive `""`.  
+If there has been no trading activity on the account in the past 7 days, `""` will be returned.  
+If there is no executed volume during the monitoring period, `"0"` will be returned.  
+accRateLimit | String | Current sub-account rate limit per 2 seconds  
+nextAccRateLimit | String | Expected sub-account rate limit (per 2 seconds) in the next monitoring period.   
+Applicable to users with trading fee tier >= VIP 5; other users will receive `""`.  
+ts | String | Data update timestamp   
+For users with trading fee tier >= VIP 5, the data will be generated daily at 08:00 am (UTC)   
+For users with trading fee tier < VIP 5, the current timestamp will be returned.
 
 ---
 
@@ -116,7 +119,7 @@ None
              "ts":"123456789000"
           }
        ],
-       "msg":""
+       "msg":`""`
     }
     
     
@@ -125,15 +128,18 @@ None
 
 参数名 | 类型 | 描述  
 ---|---|---  
-fillRatio | String | 监测期内子账户的成交比率   
-适用于交易费等级 >= VIP 5的用户，其余用户返回""   
-对于监测期内没有交易量的账户，返回"0"。对于监测期内有交易量，但没有订单操作数的用户，返回"9999"。  
-mainFillRatio | String | 监测期内母账户合计成交比率   
-适用于交易费等级 >= VIP 5的用户，其余用户返回""   
-对于监测期内没有交易量的账户，返回"0"  
+fillRatio | String | 监测期内子账户的成交比率。   
+适用于交易费等级 >= VIP 5 的用户，其他用户返回 `""`。  
+若账户在过去 7 天内无任何成交数据，则返回 `""`。  
+若监测期内无成交量，则返回 `"0"`。  
+若监测期内有成交量但无下单操作数，则返回 `"9999"`。  
+mainFillRatio | String | 监测期内母账户合计成交比率。  
+适用于交易费等级 >= VIP 5 的用户，其他用户返回 `""`。  
+若账户在过去 7 天内无任何成交数据，则返回 `""`。  
+若监测期内无成交量，则返回 `"0"`。  
 accRateLimit | String | 当前子账户交易限速（每两秒）  
-nextAccRateLimit | String | 预计下一周期子账户交易限速（每两秒）  
-适用于交易费等级 >= VIP 5的用户，其余用户返回""  
+nextAccRateLimit | String | 下一评估周期预计的子账户交易限速（每两秒）。  
+适用于交易费等级 >= VIP 5的用户，其余用户返回 `""` 。  
 ts | String | 数据更新时间   
-对于交易费等级>= VIP 5的用户，数据将于每日16:00（UTC+8）生成   
-对于交易费等级 < VIP 5的用户，返回当前时间戳
+对于交易费等级>= VIP 5的用户，数据将于每日 08:00（UTC）生成   
+对于交易费等级 < VIP 5的用户，返回当前时间戳 。

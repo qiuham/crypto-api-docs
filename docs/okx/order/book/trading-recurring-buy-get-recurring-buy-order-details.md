@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-get-recurring-buy-order-details
 anchor_id: order-book-trading-recurring-buy-get-recurring-buy-order-details
 api_type: API
-updated_at: 2026-01-15T23:27:55.438081
+updated_at: 2026-05-27 19:35:19.758793
 ---
 
 # GET / Recurring buy order details
@@ -59,6 +59,8 @@ algoId | String | Yes | Algo ID
                         "profit": "0",
                         "px": "36683.2",
                         "ratio": "0.2",
+                        "minPx": "",
+                        "maxPx": "",
                         "totalAmt": "0"
                     },
                     {
@@ -67,6 +69,8 @@ algoId | String | Yes | Algo ID
                         "profit": "0",
                         "px": "2058.36",
                         "ratio": "0.8",
+                        "minPx": "",
+                        "maxPx": "",
                         "totalAmt": "0"
                     }
                 ],
@@ -78,7 +82,10 @@ algoId | String | Yes | Algo ID
                 "totalAnnRate": "0",
                 "totalPnl": "0",
                 "uTime": "1699952485451",
-                "tradeQuoteCcy": "USDT"
+                "tradeQuoteCcy": "USDT"，
+                "source": ["1"],
+                "recurringTimeType": "1",
+                "recurringTimeMinutes": "0"
             }
         ],
         "msg": ""
@@ -105,6 +112,8 @@ stgyName | String | Custom name for trading bot, no more than 40 characters
 recurringList | Array of objects | Recurring buy info  
 > ccy | String | Recurring buy currency, e.g. `BTC`  
 > ratio | String | Proportion of recurring currency assets, e.g. "0.2" representing 20%  
+> minPx | String | Minimum price of recurring currency. `""` means no limit  
+> maxPx | String | Maximum price of recurring currency. `""` means no limit  
 > totalAmt | String | Accumulated quantity in unit of recurring buy currency  
 > profit | String | Profit in unit of `investmentCcy`  
 > avgPx | String | Average price of recurring buy, quote currency is `investmentCcy`  
@@ -132,7 +141,15 @@ pnlRatio | String | Rate of yield
 mktCap | String | Market value in unit of `USDT`  
 cycles | String | Accumulate recurring buy cycles  
 tag | String | Order tag  
-tradeQuoteCcy | String | The quote currency for trading.
+tradeQuoteCcy | String | The quote currency for trading.  
+source | Array | Funding source  
+`1`: Trading account  
+`2`: Funding account  
+`3`: Simple earn account  
+recurringTimeType | String | Recurring buy time type  
+`1`: Custom time  
+`2`: Immediate trigger  
+recurringTimeMinutes | String | Recurring buy time in minutes, integer of [0,59]
 
 ---
 
@@ -189,6 +206,8 @@ algoId | String | 是 | 策略订单ID
                         "profit": "0",
                         "px": "36683.2",
                         "ratio": "0.2",
+                        "minPx": "",
+                        "maxPx": "",
                         "totalAmt": "0"
                     },
                     {
@@ -197,6 +216,8 @@ algoId | String | 是 | 策略订单ID
                         "profit": "0",
                         "px": "2058.36",
                         "ratio": "0.8",
+                        "minPx": "",
+                        "maxPx": "",
                         "totalAmt": "0"
                     }
                 ],
@@ -208,7 +229,10 @@ algoId | String | 是 | 策略订单ID
                 "totalAnnRate": "0",
                 "totalPnl": "0",
                 "uTime": "1699952485451",
-                "tradeQuoteCcy": "USDT"
+                "tradeQuoteCcy": "USDT"，
+                "source": ["1"],
+                "recurringTimeType": "1",
+                "recurringTimeMinutes": "0"
             }
         ],
         "msg": ""
@@ -236,6 +260,8 @@ stgyName | String | 策略自定义名称，不超过40个字符
 recurringList | Array of objects | 定投信息  
 > ccy | String | 定投币种，如 `BTC`  
 > ratio | String | 定投币种资产占比，如 "0.2"代表占比20%  
+> minPx | String | 定投币种价格下限，`""`代表没有限制  
+> maxPx | String | 定投币种价格上限，`""`代表没有限制  
 > totalAmt | String | 累计购入定投币种的数量  
 > profit | String | 定投收益，单位为`investmentCcy`  
 > avgPx | String | 定投均价，计价单位为`investmentCcy`  
@@ -264,4 +290,12 @@ pnlRatio | String | 收益率
 mktCap | String | 当前总市值，单位为`USDT`  
 cycles | String | 定投累计轮数  
 tag | String | 订单标签  
-tradeQuoteCcy | String | 用于交易的计价币种。
+tradeQuoteCcy | String | 用于交易的计价币种。  
+source | Array | 资金来源  
+`1`：交易账户  
+`2`：资金账户  
+`3`：简单赚币账户  
+recurringTimeType | String | 定投周期类型  
+`1`：自定义时间  
+`2`：立即触发  
+recurringTimeMinutes | String | 定投时间（分钟），取值范围是 [0,59] 的整数

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-instruments
 anchor_id: public-data-rest-api-get-instruments
 api_type: REST
-updated_at: 2026-01-15T23:28:00.499773
+updated_at: 2026-05-27 19:36:06.933571
 ---
 
 # Get instruments
@@ -48,6 +48,8 @@ instType | String | Yes | Instrument type
 `SWAP`: Perpetual Futures  
 `FUTURES`: Expiry Futures  
 `OPTION`: Option  
+`EVENTS`: Event Contracts  
+seriesId | String | Conditional | Series ID, e.g. `BTC-ABOVE-DAILY`. Required when instType is `EVENTS`  
 instFamily | String | Conditional | Instrument family  
 Only applicable to `FUTURES`/`SWAP`/`OPTION`. If instType is `OPTION`, `instFamily` is required.  
 instId | String | No | Instrument ID  
@@ -101,6 +103,7 @@ instId | String | No | Instrument ID
                 "tickSz": "0.1",
                 "uly": "",
                 "instIdCode": 1000000000,
+                "instCategory": "1",
                 "upcChg": [
                     {
                         "param": "tickSz",
@@ -118,6 +121,7 @@ instId | String | No | Instrument ID
 **Parameter** | **Type** | **Description**  
 ---|---|---  
 instType | String | Instrument type  
+seriesId | String | Series ID, e.g. `BTC-ABOVE-DAILY`. Only applicable to `EVENTS`  
 instId | String | Instrument ID, e.g. `BTC-USD-SWAP`  
 uly | String | Underlying, e.g. `BTC-USD`   
 Only applicable to `MARGIN/FUTURES`/`SWAP`/`OPTION`  
@@ -151,7 +155,8 @@ Perpetual futures:
 `2`: Perpetual futures USDT-margined  
 `3`: Perpetual futures USDC-margined  
 `4`: Perpetual futures group one  
-`5`: Perpetual futures group two  
+`5`: Perpetual futures group two   
+`6`: Stock perpetual futures   
   
 Options:  
 `1`: Options crypto-margined  
@@ -169,7 +174,7 @@ quoteCcy | String | Quote currency, e.g. `USDT` in `BTC-USDT`
 Only applicable to `SPOT`/`MARGIN`  
 settleCcy | String | Settlement and margin currency, e.g. `BTC`   
 Only applicable to `FUTURES`/`SWAP`/`OPTION`  
-ctVal | String | Contract value   
+ctVal | String | Face value of one contract. Denomination depends on `ctType`: for linear contracts, `ctVal` is in the base currency (e.g., ctVal=0.01 BTC for BTC-USDT-SWAP); for inverse contracts, `ctVal` is in USD (e.g., ctVal=100 USD for BTC-USD-SWAP). Notional: linear = sz × ctVal × markPx (in quote ccy); inverse = sz × ctVal (in USD, fixed).   
 Only applicable to `FUTURES`/`SWAP`/`OPTION`  
 ctMult | String | Contract multiplier   
 Only applicable to `FUTURES`/`SWAP`/`OPTION`  
@@ -193,21 +198,21 @@ openType | String | Open type
 Only applicable to `SPOT`/`MARGIN`, return "" for all other business lines  
 expTime | String | Expiry time   
 Applicable to `SPOT`/`MARGIN`/`FUTURES`/`SWAP`/`OPTION`. For `FUTURES`/`OPTION`, it is natural delivery/exercise time. It is the instrument offline time when there is `SPOT/MARGIN/FUTURES/SWAP/` manual offline. Update once change.  
-lever | String | Max Leverage,   
+lever | String | Exchange-defined maximum leverage ceiling for this instrument. The actual leverage available to a specific account may be lower based on VIP tier and position size. Use GET /api/v5/account/leverage-info for the user's current configured leverage.   
 Not applicable to `SPOT`, `OPTION`  
-tickSz | String | Tick size, e.g. `0.0001`  
-For Option, it is minimum tickSz among tick band, please use "Get option tick bands" if you want get option tickBands.  
-lotSz | String | Lot size  
+tickSz | String | Minimum price increment, e.g. `0.0001`.  
+For `OPTION`/`EVENTS`, it is the minimum tickSz among tick band. Use "Get instrument tick bands" endpoint with the corresponding `instType` for accurate tickSz per price range.  
+lotSz | String | Lot size — the minimum order size increment. All order quantities (sz) must be a multiple of `lotSz`. Violation returns error 51121.  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
-minSz | String | Minimum order size  
+minSz | String | Minimum order size. Order size must satisfy both: sz ≥ `minSz` AND sz is a multiple of `lotSz`.  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
 ctType | String | Contract type  
-`linear`: linear contract  
-`inverse`: inverse contract   
+`linear`: linear contract — margin, P&L, and settlement in the quote currency (e.g., USDT for BTC-USDT-SWAP).  
+`inverse`: inverse contract — margin, P&L, and settlement in the base currency (e.g., BTC for BTC-USD-SWAP). For inverse contracts, P&L in USD terms is non-linear: the USD value of a fixed BTC gain changes with the BTC price.   
 Only applicable to `FUTURES`/`SWAP`  
-alias | String | Alias  
+alias | String | Contract alias (deprecated — use expTime to obtain the delivery time, will be removed by the end of April 2026)  
 `this_week`  
 `next_week`  
 `this_month`  
@@ -215,16 +220,22 @@ alias | String | Alias
 `quarter`  
 `next_quarter`  
 `third_quarter`  
-Only applicable to `FUTURES`   
-**Not recommended for use, users are encouraged to rely on the expTime field to determine the delivery time of the contract**  
+`this_five_years`: current 5-year contract  
+`next_five_years`: next 5-year contract  
+Only applicable to `FUTURES`  
 state | String | Instrument status  
 `live`   
 `suspend`  
+`rebase`: can’t be traded during rebasing, only applicable to `SWAP`  
+`post_only`: only post-only orders are accepted; existing post-only orders can be amended and cancelled. Other order types (market, IOC, FOK, normal limit) are rejected. Only applicable to `SWAP`  
 `preopen`. e.g. There will be `preopen` before the Futures and Options new contracts state is live.  
 `test`: Test pairs, can’t be traded  
+`settling`: Settling, only applicable to `EVENTS`  
 ruleType | String | Trading rule types  
 `normal`: normal trading  
 `pre_market`: pre-market trading  
+`rebase_contract`: pre-market rebase contract  
+`xperp`: perpetual-style futures, only applicable to certain `FUTURES` contracts  
 maxLmtSz | String | The maximum order quantity of a single limit order.  
 If it is a derivatives contract, the value is the number of contracts.  
 If it is `SPOT`/`MARGIN`, the value is the quantity in `base currency`.  
@@ -254,6 +265,13 @@ instIdCode | Integer | Instrument ID code.
 For simple binary encoding, you must use `instIdCode` instead of `instId`.  
 For the same `instId`, it's value may be different between production and demo trading.   
 It is `null` when the value is not generated.  
+instCategory | String | The asset category of the instrument’s base asset (the first segment of the instrument ID). For example, for `BTC-USDT-SWAP`, the `instCategory` represents the asset category of `BTC`.   
+`1`: Crypto   
+`3`: Stocks   
+`4`: Commodities   
+`5`: Forex   
+`6`: Bonds   
+`""`: Not available  
 upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 > param | String | The parameter name to be updated.   
 `tickSz`  
@@ -315,6 +333,8 @@ instType | String | 是 | 产品类型
 `SWAP`：永续合约  
 `FUTURES`：交割合约  
 `OPTION`：期权  
+`EVENTS`：事件合约  
+seriesId | String | 可选 | 系列 ID，如 `BTC-ABOVE-DAILY`。当 `instType` 为 `EVENTS` 时必填  
 instFamily | String | 否 | 交易品种，仅适用于`交割`/`永续`/`期权`  
 instId | String | 否 | 产品ID  
   
@@ -367,6 +387,7 @@ instId | String | 否 | 产品ID
                 "tickSz": "0.1",
                 "uly": "",
                 "instIdCode": 1000000000,
+                "instCategory": "1",
                 "upcChg": [
                     {
                         "param": "tickSz",
@@ -384,6 +405,7 @@ instId | String | 否 | 产品ID
 参数名 | 类型 | 描述  
 ---|---|---  
 instType | String | 产品类型  
+seriesId | String | 系列 ID，如 `BTC-ABOVE-DAILY`。仅适用于 `EVENTS`  
 instId | String | 产品id， 如 `BTC-USDT`  
 uly | String | 标的指数，如 `BTC-USD`，仅适用于`杠杆/交割/永续/期权`  
 groupId | String | 交易产品手续费分组ID  
@@ -417,6 +439,7 @@ groupId | String | 交易产品手续费分组ID
 `3`：USDC本位永续合约  
 `4`：永续合约分组一  
 `5`：永续合约分组二  
+`6`：股票永续合约  
   
 期权：  
 `1`：币本位期权  
@@ -430,7 +453,8 @@ category | String | ~~币种类别~~ （已废弃）
 baseCcy | String | 交易货币币种，如 `BTC-USDT` 中的 `BTC` ，仅适用于`币币/币币杠杆`  
 quoteCcy | String | 计价货币币种，如 `BTC-USDT` 中的`USDT` ，仅适用于`币币/币币杠杆`  
 settleCcy | String | 盈亏结算和保证金币种，如 `BTC` 仅适用于`交割`/`永续`/`期权`  
-ctVal | String | 合约面值，仅适用于`交割`/`永续`/`期权`  
+ctVal | String | 每张合约的面值。计价货币取决于 `ctType`：线性合约以标的货币计（如BTC-USDT-SWAP，ctVal=0.01 BTC）；反向合约以USD计（如BTC-USD-SWAP，ctVal=100 USD）。名义价值：线性 = 张数 × ctVal × 标记价格（计价货币）；反向 = 张数 × ctVal（USD固定）。  
+仅适用于 `FUTURES`/`SWAP`/`OPTION`  
 ctMult | String | 合约乘数，仅适用于`交割`/`永续`/`期权`  
 ctValCcy | String | 合约面值计价币种，仅适用于`交割`/`永续`/`期权`  
 optType | String | 期权类型，`C`或`P` 仅适用于`期权`  
@@ -450,35 +474,42 @@ openType | String | 开盘类型
 只适用于`SPOT`/`MARGIN`，其他业务线返回""  
 expTime | String | 产品下线时间  
 适用于`币币/杠杆/交割/永续/期权`，对于 `交割/期权`，为交割/行权日期；亦可以为产品下线时间，有变动就会推送。  
-lever | String | 该`instId`支持的最大杠杆倍数，不适用于`币币`、`期权`  
-tickSz | String | 下单价格精度，如 `0.0001`  
-对于期权来说，是梯度中的最小下单价格精度，如果想要获取期权价格梯度，请使用"获取期权价格梯度"接口  
-lotSz | String | 下单数量精度  
+lever | String | 交易所对该合约设定的最大杠杆上限。账户实际可用杠杆可能因VIP等级和仓位大小而更低。用户当前配置的杠杆请使用 GET /api/v5/account/leverage-info 查询。  
+不适用于 `SPOT`、`OPTION`  
+tickSz | String | 最小价格变动单位，如 `0.0001`。  
+对于 `OPTION`/`EVENTS`，该值为 tick band 中的最小 tickSz。如需获取各价格区间的精确 tickSz，请使用"获取期权价格梯度"接口并传入对应的 `instType` 参数。  
+lotSz | String | 合约面值最小变动单位（委托量步长），所有委托量（sz）必须为 `lotSz` 的整数倍，违反则返回错误51121。下单数量精度  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
-minSz | String | 最小下单数量  
+minSz | String | 最小委托量。委托量必须同时满足：sz ≥ `minSz` 且 sz 为 `lotSz` 的整数倍。最小下单数量  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 ctType | String | 合约类型  
-`linear`：正向合约  
-`inverse`：反向合约  
-仅适用于`交割/永续`  
-alias | String | 合约日期别名  
-`this_week`：本周   
-`next_week`：次周   
-`this_month`：本月   
+`linear`：正向合约，保证金、盈亏及结算均以计价货币计（如BTC-USDT-SWAP以USDT计）。  
+`inverse`：反向合约，保证金、盈亏及结算均以标的货币计（如BTC-USD-SWAP以BTC计）。反向合约的USD盈亏为非线性：固定BTC盈亏的USD价值随BTC价格变化。  
+仅适用于 `FUTURES`/`SWAP`  
+alias | String | 合约日期别名（已废弃，将于 2026 年 4 月底下线，请使用 expTime 字段获取交割时间）  
+`this_week`：本周  
+`next_week`：次周  
+`this_month`：本月  
 `next_month`：次月  
 `quarter`：季度  
 `next_quarter`：次季度  
-`third_quarter`：第三季度   
-仅适用于`交割`   
-**不建议使用，用户应通过 expTime 字段获取合约的交割日期**  
+`third_quarter`：第三季度  
+`this_five_years`：当期五年合约  
+`next_five_years`：次期五年合约  
+仅适用于`交割`  
 state | String | 产品状态  
 `live`：交易中   
 `suspend`：暂停中  
+`rebase`：合约在变基中，不可交易，仅适用于`SWAP`  
+`post_only`：仅接受 post-only 订单；已有 post-only 订单可改单和撤单。其他订单类型（市价单、IOC、FOK、普通限价单）将被拒绝。仅适用于 `SWAP`  
 `preopen`：预上线，交割和期权合约轮转生成到开始交易；部分交易产品上线前  
 `test`：测试中（测试产品，不可交易）  
+`settling`：结算中，仅适用于 `EVENTS`  
 ruleType | String | 交易规则类型  
 `normal`：普通交易  
 `pre_market`：盘前交易  
+`rebase_contract`：盘前变基合约  
+`xperp`：永续合约风格的交割合约，仅适用于部分 `FUTURES` 合约  
 maxLmtSz | String | 限价单的单笔最大委托数量  
 合约的数量单位是`张`，现货的数量单位是`交易货币`  
 maxMktSz | String | 市价单的单笔最大委托数量  
@@ -502,6 +533,13 @@ instIdCode | Integer | 产品唯一标识代码。
 对于简单二进制编码，您必须使用 `instIdCode` 而不是 `instId`。  
 对于同一`instId`，实盘和模拟盘的值可能会不一样。   
 当值还未生成时，返回 `null`。  
+instCategory | String | 标的资产类别（产品ID的第一部分）。例如：对于 `BTC-USDT-SWAP`，instCategory 表示 `BTC` 所属的资产类别。  
+`1`: 加密货币   
+`3`: 股票类资产   
+`4`: 大宗商品   
+`5`: 外汇   
+`6`: 债券   
+`""` 当值不可用时返回空字符串  
 upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 > param | String | 即将变更的参数名称。  
 `tickSz`  

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-get-recurring-buy-sub-orders
 anchor_id: order-book-trading-recurring-buy-get-recurring-buy-sub-orders
 api_type: API
-updated_at: 2026-01-15T23:27:55.475128
+updated_at: 2026-05-27 19:35:20.075221
 ---
 
 # GET / Recurring buy sub orders
@@ -104,6 +104,7 @@ Margin mode : `cross`
 Non-Margin mode : `cash`  
 ordType | String | Sub order type  
 `market`: Market order  
+`manual_add_order`: Manual add investment order  
 sz | String | Sub order quantity to buy or sell  
 state | String | Sub order state  
 `canceled`  
@@ -114,7 +115,7 @@ state | String | Sub order state
 side | String | Sub order side  
 `buy` `sell`  
 px | String | Sub order limit price  
-If it's a market order, "-1" will be return  
+If it is a market order, "-1" will be return  
 fee | String | Sub order fee  
 feeCcy | String | Sub order fee currency  
 avgPx | String | Sub order average filled price  
@@ -221,6 +222,7 @@ tdMode | String | 子订单交易模式
 `cross`：全仓 `cash`：非保证金  
 ordType | String | 子订单类型  
 `market`：市价单  
+`manual_add_order`：手动加仓单  
 sz | String | 子订单委托数量  
 state | String | 子订单状态  
 `canceled`：撤单成功  

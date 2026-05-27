@@ -3,12 +3,12 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-sol-staking-get-balance
 anchor_id: financial-product-sol-staking-get-balance
 api_type: API
-updated_at: 2026-01-15T23:28:05.149253
+updated_at: 2026-05-27 19:36:51.842984
 ---
 
 # GET / Balance
 
-The balance is summarized all OKSOL assets (including assets in redeeming) in account.
+The balance represents the real-time total OKSOL holdings across the entire account, including assets in the trading account, funding account, and those currently in the redeeming process.
 
 #### Rate Limit: 6 requests per second
 
@@ -77,7 +77,7 @@ totalInterestAccrual | String | Total interest accrual
 
 # GET / 获取余额
 
-该余额是一个汇总账户OKSOL资产（含赎回中）的实时数据。
+该余额表示账户内 OKSOL 的实时总持仓，包括交易账户、资金账户以及处于赎回过程中的资产。
 
 #### 限速：6 次/s
 

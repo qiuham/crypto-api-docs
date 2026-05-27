@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-create-rfq
 anchor_id: block-trading-rest-api-create-rfq
 api_type: REST
-updated_at: 2026-01-15T23:27:57.750240
+updated_at: 2026-05-27 19:35:42.217123
 ---
 
 # Create RFQ
@@ -217,7 +217,9 @@ data | Array of objects | Array of objects containing the results of the RFQ cre
 > uTime | String | The timestamp the RFQ was last updated. Unix timestamp format in milliseconds.  
 > state | String | The status of the RFQ.   
 Valid values can be `active` `canceled` `pending_fill` `filled` `expired` `traded_away` `failed`.   
-`traded_away` only applies to Maker  
+`filled` indicates the RFQ was successfully executed against the maker's quote.   
+`traded_away` only applies to Maker. The same RFQ can appear as `filled` to one maker and `traded_away` to another.   
+Example: taker creates RFQ → makerA quotes pxA, makerB quotes pxB → pxA is better than pxB → taker executes quoteA → makerA sees `filled`, makerB sees `traded_away`.  
 > counterparties | Array of strings | The list of counterparties traderCode the RFQ was broadcast to.  
 > validUntil | String | The timestamp the RFQ expires. Unix timestamp format in milliseconds.   
 If all legs are options, the RFQ will expire after 10 minutes; otherwise, the RFQ will expire after 2 minutes.  
@@ -486,7 +488,9 @@ data | Array of objects | 询价单结果
 > uTime | String | 询价单状态更新时间，Unix时间戳的毫秒数格式。  
 > state | String | 询价单的状态  
 有效值为 `active` `canceled` `pending_fill` `filled` `expired` `traded_away` `failed`   
-`traded_away` 仅适用于报价方  
+`filled` 表示询价单已成功按照做市商的报价成交。  
+`traded_away` 仅适用于报价方。同一笔询价单可能对一个报价方显示为 `filled`，而对另一个报价方显示为 `traded_away`。  
+示例：询价方创建询价单 → 做市商A报价 pxA，做市商B报价 pxB → pxA 优于 pxB → 询价方执行做市商A的报价 → 做市商A看到 `filled`，做市商B看到 `traded_away`。  
 > counterparties | Array of strings | 报价方列表  
 > validUntil | String | 询价单的过期时间，Unix时间戳的毫秒数格式。  
 若所有腿都为期权，则询价单将在10分钟后过期；其他情况，询价单将在2分钟后过期。  

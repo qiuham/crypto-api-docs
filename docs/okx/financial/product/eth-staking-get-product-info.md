@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-eth-staking-get-product-info
 anchor_id: financial-product-eth-staking-get-product-info
 api_type: API
-updated_at: 2026-01-15T23:28:04.813884
+updated_at: 2026-05-27 19:36:48.416659
 ---
 
 # GET / Product info
@@ -48,7 +48,10 @@ updated_at: 2026-01-15T23:28:04.813884
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -60,7 +63,10 @@ updated_at: 2026-01-15T23:28:04.813884
 Parameter | Type | Description  
 ---|---|---  
 fastRedemptionDailyLimit | String | Fast redemption daily limit  
-The master account and sub-accounts share the same limit
+The master account and sub-accounts share the same limit  
+rate | String | Latest BETH APY  
+redemptDays | String | Redemption days of BETH  
+minAmt | String | Minimum subscription amount of BETH
 
 ---
 
@@ -106,7 +112,10 @@ The master account and sub-accounts share the same limit
         "code": "0",
         "data": [
           {
-            "fastRedemptionDailyLimit": "100"
+            "fastRedemptionDailyLimit": "100",
+            "rate": "2.23",
+            "redemptDays": "8",
+            "minAmt": "0.001"
           }
         ],
         "msg": ""
@@ -118,4 +127,7 @@ The master account and sub-accounts share the same limit
 参数名 | 类型 | 描述  
 ---|---|---  
 fastRedemptionDailyLimit | String | 快速赎回每日最高份额  
-母账户和子账户共享同一个限额
+母账户和子账户共享同一个限额  
+rate | String | 最新 BETH 年化收益率  
+redemptDays | String | BETH 赎回天数  
+minAmt | String | BETH 最低申购数量

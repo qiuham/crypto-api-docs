@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-convert-trade
 anchor_id: funding-account-rest-api-convert-trade
 api_type: REST
-updated_at: 2026-01-15T23:28:03.357139
+updated_at: 2026-05-27 19:36:34.560382
 ---
 
 # Convert trade
@@ -55,6 +55,8 @@ clTReqId | String | No | Client Order ID as assigned by the client
 A combination of case-sensitive alphanumerics, all numbers, or all letters of up to 32 characters.  
 tag | String | No | Order tag  
 Applicable to broker user  
+convertMode | String | No | `0`: standard convert (default)   
+`1`: large order convert for VIP  
   
 > Response Example
     
@@ -155,6 +157,8 @@ clTReqId | String | 否 | 用户自定义的订单标识
 字母（区分大小写）与数字的组合，可以是纯字母、纯数字且长度要在1-32位之间。  
 tag | String | 否 | 订单标签  
 适用于broker用户  
+convertMode | String | 否 | `0`：标准闪兑（默认）  
+`1`：VIP大额闪兑  
   
 > 返回结果
     

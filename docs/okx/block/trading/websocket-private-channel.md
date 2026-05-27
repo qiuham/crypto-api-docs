@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-websocket-private-channel
 anchor_id: block-trading-websocket-private-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:27:58.469227
+updated_at: 2026-05-27 19:35:49.154545
 ---
 
 # WebSocket Private Channel
@@ -181,7 +181,9 @@ data | Array of objects | Subscribed data
 > cTime | String | The timestamp the RFQ was created, Unix timestamp format in milliseconds.  
 > uTime | String | The timestamp the RFQ was updated latest, Unix timestamp format in milliseconds.  
 > state | String | The status of the RFQ. Valid values can be `active`, `canceled`, `filled`, `expired` `traded_away` or `failed`.   
-`traded_away` only applies to Maker.  
+`filled` indicates the RFQ was successfully executed against the maker's quote.   
+`traded_away` only applies to Maker. The same RFQ can appear as `filled` to one maker and `traded_away` to another.   
+Example: taker creates RFQ → makerA quotes pxA, makerB quotes pxB → pxA is better than pxB → taker executes quoteA → makerA sees `filled`, makerB sees `traded_away`.  
 > counterparties | Array of Strings | The list of counterparties traderCode the RFQ was broadcasted to.  
 > validUntil | String | The timestamp the RFQ expires. Unix timestamp format in milliseconds.  
 > clRfqId | String | Client-supplied RFQ ID. This attribute is treated as client sensitive information. It will not be exposed to the Maker. Return empty for Maker, eg. "".  
@@ -448,7 +450,7 @@ The default value is the quote currency of the instId, for example: for `BTC-USD
   
 ### Structure block trades channel
 
-Retrieve user's block trades data. All the legs in the same block trade are included in the same update. Data will be pushed whenever there is a block trade that the user is a counterparty for.
+Retrieve user's block trades data. All the legs in the same block trade are included in the same update. Data will be pushed whenever there is a block trade that the user is a counterparty for (i.e. the taker or the executing maker). Makers who received a `traded_away` status will not receive data from this channel.
 
 #### URL Path
 
@@ -841,7 +843,9 @@ data | Array of objects | 订阅的数据
 > uTime | String | 询价单状态更新时间，Unix时间戳的毫秒数格式。  
 > state | String | 询价单的状态  
 有效值有 `active` `canceled` `filled` `expired` `traded_away` `failed`  
-`traded_away` 仅适用于报价方。  
+`filled` 表示询价单已成功按照做市商的报价成交。  
+`traded_away` 仅适用于报价方。同一笔询价单可能对一个报价方显示为 `filled`，而对另一个报价方显示为 `traded_away`。  
+示例：询价方创建询价单 → 做市商A报价 pxA，做市商B报价 pxB → pxA 优于 pxB → 询价方执行做市商A的报价 → 做市商A看到 `filled`，做市商B看到 `traded_away`。  
 > counterparties | Array of Strings | 报价方列表  
 > validUntil | String | 询价单的过期时间，Unix时间戳的毫秒数格式。  
 > clRfqId | String | 询价单自定义ID，为客户敏感信息，不会公开，对报价方返回""。  
@@ -1113,7 +1117,7 @@ data | Array of objects | 订阅的数据
   
 ### 大宗交易频道 
 
-获取用户自身的大宗交易信息。同一大宗交易中的所有腿都包含在同一更新中。只要用户自身作为交易对手进行大宗交易，数据都将被推送。
+获取用户自身的大宗交易信息。同一大宗交易中的所有腿都包含在同一更新中。只要用户自身作为交易对手（即询价方或成交的报价方）进行大宗交易，数据都将被推送。状态为 `traded_away` 的报价方将不会收到本频道的推送。
 
 #### 服务地址
 

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-flexible-loan-get-loan-info
 anchor_id: financial-product-flexible-loan-get-loan-info
 api_type: API
-updated_at: 2026-01-15T23:28:05.659989
+updated_at: 2026-05-27 19:36:59.063834
 ---
 
 # GET / Loan info
@@ -39,6 +39,13 @@ updated_at: 2026-01-15T23:28:05.659989
     print(result)
     
 
+#### Request Parameters
+
+**Parameters** | **Types** | **Required** | **Description**  
+---|---|---|---  
+ordId | String | No | Order ID of your flexible loan.  
+If `ordId` is not passed, system will return data of all existing orders  
+  
 > Response Example
     
     
@@ -46,6 +53,7 @@ updated_at: 2026-01-15T23:28:05.659989
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -89,11 +97,12 @@ updated_at: 2026-01-15T23:28:05.659989
 
 **Parameter** | **Type** | **Description**  
 ---|---|---  
+ordId | String | Order ID  
 loanNotionalUsd | String | Loan value in `USD`  
 loanData | Array of objects | Loan data  
 > ccy | String | Loan currency, e.g. `USDT`  
 > amt | String | Loan amount  
-collateralNotionalUsd | String | Collateral value in `USD`  
+collateralNotionalUsd | String | Adjusted collateral value in `USD`  
 collateralData | Array of objects | Collateral data  
 > ccy | String | Collateral currency, e.g. `BTC`  
 > amt | String | Collateral amount  
@@ -145,6 +154,13 @@ If your loan reaches liquidation LTV, it'll trigger forced liquidation. When thi
     print(result)
     
 
+#### 请求参数
+
+参数 | 类型 | 是否必须 | 描述  
+---|---|---|---  
+ordId | String | 否 | 活期借币订单 ID。  
+如果不传 `ordId`，系统将返回所有现存订单数据  
+  
 > 返回结果
     
     
@@ -152,6 +168,7 @@ If your loan reaches liquidation LTV, it'll trigger forced liquidation. When thi
         "code": "0",
         "data": [
             {
+                "ordId": "12345",
                 "collateralData": [
                     {
                         "amt": "0.0000097",
@@ -195,11 +212,12 @@ If your loan reaches liquidation LTV, it'll trigger forced liquidation. When thi
 
 **参数名** | **类型** | **描述**  
 ---|---|---  
+ordId | String | 订单 ID  
 loanNotionalUsd | String | 借币资产美金价值  
 loanData | Array of objects | 借币数据  
 > ccy | String | 借贷币种  
 > amt | String | 借贷数量  
-collateralNotionalUsd | String | 抵押物美金价值  
+collateralNotionalUsd | String | 调整后的抵押物美金价值  
 collateralData | Array of objects | 抵押资产数据  
 > ccy | String | 抵押币种  
 > amt | String | 抵押数量  

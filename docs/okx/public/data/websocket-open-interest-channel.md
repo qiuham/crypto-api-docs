@@ -3,13 +3,13 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-open-interest-channel
 anchor_id: public-data-websocket-open-interest-channel
 api_type: WebSocket
-updated_at: 2026-01-15T23:28:01.568483
+updated_at: 2026-05-27 19:36:18.085562
 ---
 
 # Open interest channel
 
-Retrieve the open interest. Data will be pushed every 3 seconds when there are updates.
-
+Retrieve the open interest. Data will be pushed every 3 seconds when there are updates.  
+  
 #### URL Path
 
 /ws/v5/public
@@ -154,8 +154,8 @@ data | Array of objects | Subscribed data
 
 # 持仓总量频道
 
-获取持仓总量，每3s有数据更新推送一次数据
-
+获取持仓总量，每3s有数据更新推送一次数据  
+  
 #### URL Path
 
 /ws/v5/public

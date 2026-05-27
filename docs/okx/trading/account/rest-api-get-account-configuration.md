@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-account-configuration
 anchor_id: trading-account-rest-api-get-account-configuration
 api_type: REST
-updated_at: 2026-01-15T23:27:50.014386
+updated_at: 2026-05-27 19:34:27.356468
 ---
 
 # Get account configuration
@@ -298,6 +298,9 @@ feeType | String | 手续费类型
 level | String | 当前在平台上真实交易量的用户等级，如 `Lv1`，代表普通用户等级。  
 levelTmp | String | 特约用户的临时体验用户等级，如 `Lv1`  
 ctIsoMode | String | 衍生品的逐仓保证金划转模式  
+`automatic`：开仓划转  
+`autonomy`：自主划转  
+mgnIsoMode | String | 币币杠杆的逐仓保证金划转模式  
 `automatic`：开仓划转  
 `autonomy`：自主划转  
 spotOffsetType | String | ~~现货对冲类型  

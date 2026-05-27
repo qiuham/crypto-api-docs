@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-get-lead-trader-lead-position-history
 anchor_id: order-book-trading-copy-trading-get-lead-trader-lead-position-history
 api_type: API
-updated_at: 2026-01-15T23:27:56.408442
+updated_at: 2026-05-27 19:35:30.749684
 ---
 
 # GET / Lead trader lead position history
@@ -35,7 +35,7 @@ Parameter | Type | Required | Description
 instType | String | No | Instrument type  
 `SWAP`, the default value.  
 uniqueCode | String | Yes | Lead trader unique code  
-A combination of case-sensitive alphanumerics, all numbers and the length is 16 characters, e.g. 213E8C92DC61EFAC  
+A combination of case-sensitive alphanumerics, all numbers and the length is 16 or 18 characters, e.g. 213E8C92DC61EFAC (16 characters) or 381749205163847291 (18 characters)  
 after | String | No | Pagination of data to return records earlier than the requested `subPosId`.  
 before | String | No | Pagination of data to return records newer than the requested `subPosId`.  
 limit | String | No | Number of results per request. Maximum is 100. Default is 100.  
@@ -124,7 +124,7 @@ uniqueCode | String | Lead trader unique code
 instType | String | 否 | 产品类型  
 SWAP：永续合约，默认值  
 uniqueCode | String | 是 | 交易员唯一标识码  
-数字加字母组合 长度为16位，如：213E8C92DC61EFAC  
+数字加字母组合 长度为16或18位，如：213E8C92DC61EFAC（16位）或381749205163847291（18位）  
 after | String | 否 | 请求此id之前（更旧的数据）的分页内容，传的值为对应接口的`subPosId`  
 before | String | 否 | 请求此id之后（更新的数据）的分页内容，传的值为对应接口的`subPosId`  
 limit | String | 否 | 分页返回的结果集数量，最大为100，不填默认返回100条  

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-get-grid-algo-order-details
 anchor_id: order-book-trading-grid-trading-get-grid-algo-order-details
 api_type: API
-updated_at: 2026-01-15T23:27:54.105615
+updated_at: 2026-05-27 19:35:02.618820
 ---
 
 # GET / Grid algo order details
@@ -120,6 +120,7 @@ algoId | String | Yes | Algo ID
                 "tpRatio": "",
                 "slRatio": "",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -269,6 +270,7 @@ copyType | String | Profit sharing order type
 tpRatio | String | Take profit ratio, 0.1 represents 10%  
 slRatio | String | Stop loss ratio, 0.1 represents 10%  
 fee | String | Accumulated fee. Only applicable to contract grid, or it will be ""  
+feeCcy | String | Accumulated fee currency. Only applicable to contract grid, or it will be ""  
 fundingFee | String | Accumulated funding fee. Only applicable to contract grid, or it will be ""  
 tradeQuoteCcy | String | The quote currency for trading.
 
@@ -388,6 +390,7 @@ algoId | String | 是 | 策略订单ID
                 "tpRatio": "",
                 "slRatio": "",
                 "fee": "",
+                "feeCcy": "",
                 "fundingFee": "",
                 "tradeQuoteCcy": "USDT"
             }
@@ -537,5 +540,6 @@ copyType | String | 分润订单类型
 tpRatio | String | 止盈比率，0.1 代表 10%  
 slRatio | String | 止损比率，0.1 代表 10%  
 fee | String | 累计手续费金额，仅适用于合约网格，其他网格策略为""  
+feeCcy | String | 累计手续费货币。仅适用于合约网格，其他网格策略为""  
 fundingFee | String | 累计资金费用，仅适用于合约网格，其他网格策略为""  
 tradeQuoteCcy | String | 用于交易的计价币种。

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-get-convert-currency-pair
 anchor_id: funding-account-rest-api-get-convert-currency-pair
 api_type: REST
-updated_at: 2026-01-15T23:28:03.294511
+updated_at: 2026-05-27 19:36:33.933998
 ---
 
 # Get convert currency pair
@@ -31,6 +31,8 @@ updated_at: 2026-01-15T23:28:03.294511
 ---|---|---|---  
 fromCcy | String | Yes | Currency to convert from, e.g. `USDT`  
 toCcy | String | Yes | Currency to convert to, e.g. `BTC`  
+convertMode | String | No | `0`: standard convert (default)   
+`1`: large order convert for VIP  
   
 > Response Example
     
@@ -91,6 +93,8 @@ quoteCcyMin | String | Minimum amount of quote currency
 ---|---|---|---  
 fromCcy | String | 是 | 消耗币种，如 `USDT`  
 toCcy | String | 是 | 获取币种，如 `BTC`  
+convertMode | String | 否 | `0`：标准闪兑（默认）  
+`1`：VIP大额闪兑  
   
 > 返回结果
     

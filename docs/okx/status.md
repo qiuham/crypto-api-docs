@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#status
 anchor_id: status
 api_type: API
-updated_at: 2026-01-15T23:28:05.846318
+updated_at: 2026-05-27 19:37:05.405208
 ---
 
 # Status
@@ -34,7 +34,7 @@ Planned system maintenance that may result in short interruption (lasting less t
     
     flag = "0"  # Production trading: 0, Demo trading: 1
     statusAPI = Status.StatusAPI(
-        domain="https://www.okx.com",
+        domain="https://openapi.okx.com",
         flag=flag,
     )
     
@@ -290,7 +290,7 @@ It is expected end time before `completed`, changed to actual end time after `co
     
     flag = "0"  # 实盘:0 , 模拟盘：1
     statusAPI = Status.StatusAPI(
-        domain="https://www.okx.com",
+        domain="https://openapi.okx.com",
         flag=flag,
     )
     
