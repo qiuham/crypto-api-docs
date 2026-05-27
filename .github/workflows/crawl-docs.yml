@@ -38,11 +38,11 @@ name: Crawl Docs
       commit_changes:
         description: Commit and push docs changes
         required: true
-        default: false
+        default: true
         type: boolean
   schedule:
-    # Weekly full refresh: Monday 02:00 Asia/Shanghai (Sunday 18:00 UTC).
-    - cron: "0 18 * * 0"
+    # Daily full refresh: 02:00 Asia/Shanghai (18:00 UTC).
+    - cron: "0 18 * * *"
 
 permissions:
   contents: write
