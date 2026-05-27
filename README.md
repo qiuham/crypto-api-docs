@@ -31,6 +31,17 @@ PYTHONPATH=. python src/main.py readme
 | [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-26 |
 | [OKX](./docs/okx/) | ✅ | 470 | 2026-01-15 |
 
+## GitHub Actions
+
+可以用 GitHub 免费 runner 手动更新文档：
+
+1. 打开仓库的 `Actions` 页面。
+2. 选择 `Crawl Docs` workflow。
+3. 点击 `Run workflow`。
+4. 选择 `exchange`，按需设置 `concurrency`、`limit` 和 `lang`。
+
+建议先用 `limit=3` 小范围测试；Kraken 和 Gate.io 这类动态/保护较强站点优先使用 `concurrency=1`。
+
 ## 项目结构
 
 ```
@@ -64,11 +75,6 @@ crypto-api-docs/
 
 ## TODO
 
-- 增加 GitHub Actions 爬取工作流。
-- 先用 `workflow_dispatch` 手动触发，避免全量任务误跑太久。
-- 支持 `exchange`、`concurrency`、`limit` 和可选语言参数。
-- 在 runner 上缓存/安装 Python 依赖、`agent-browser` 和浏览器运行环境。
-- 仅当 `docs/`、`index/` 或 `README.md` 有变化时自动提交并推送。
-- 上传 crawl logs 作为 artifacts，方便排查失败或部分爬取。
-- Kraken 和 Gate.io 这类动态/保护较强站点使用保守并发默认值。
+- 观察 GitHub 免费 runner 对 Kraken 和 Gate.io 的实际成功率。
+- 如果免费 runner 风控失败，再考虑为受保护站点单独加备用方案。
 - 手动工作流稳定后再增加 `schedule` 定时任务。
