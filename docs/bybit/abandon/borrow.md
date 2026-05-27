@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/borrow
 api_type: REST
-updated_at: 2026-01-16T09:37:38.144301
+updated_at: 2026-05-27 19:13:36.382802
 ---
 
 # Borrow
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/crypto-loan/borrow`
+POST`/v5/crypto-loan/borrow`
 
 ### Request Parameters
 
@@ -26,13 +26,22 @@ Parameter| Required| Type| Comments
 ---|---|---|---  
 loanCurrency| **true**|  string| Loan coin name  
 loanAmount| false| string| Amount to borrow
-* **Required** when collateral amount is not filled  
+
+  * **Required** when collateral amount is not filled
+
+  
 loanTerm| false| string| Loan term 
-* flexible term: `null` or not passed
-* fixed term: `7`, `14`, `30`, `90`, `180` days  
+
+  * flexible term: `null` or not passed
+  * fixed term: `7`, `14`, `30`, `90`, `180` days
+
+  
 collateralCurrency| **true**|  string| Currency used to mortgage  
 collateralAmount| false| string| Amount to mortgage
-* **Required** when loan amount is not filled  
+
+  * **Required** when loan amount is not filled
+
+  
   
 ### Response Parameters
 
@@ -136,7 +145,7 @@ orderId| string| Loan order ID
 
 ### HTTP 請求
 
-POST `/v5/crypto-loan/borrow`
+POST`/v5/crypto-loan/borrow`
 
 ### 請求參數
 
@@ -144,13 +153,22 @@ POST `/v5/crypto-loan/borrow`
 ---|---|---|---  
 loanCurrency| **true**|  string| 借貸幣種  
 loanAmount| false| string| 借貸金額
-* 當抵押金額未填時, 該字段**必填**  
+
+  * 當抵押金額未填時, 該字段**必填**
+
+  
 loanTerm| false| string| 借貸期限 
-* 活期: 傳`null`或者不傳字段
-* 定期: `7`, `14`, `30`, `90`, `180` 天  
+
+  * 活期: 傳`null`或者不傳字段
+  * 定期: `7`, `14`, `30`, `90`, `180` 天
+
+  
 collateralCurrency| **true**|  string| 質押幣種  
 collateralAmount| false| string| 質押金額
-* 當借貸金額未填時, 該字段**必填**  
+
+  * 當借貸金額未填時, 該字段**必填**
+
+  
   
 ### 響應參數
 

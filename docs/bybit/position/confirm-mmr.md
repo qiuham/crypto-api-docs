@@ -2,27 +2,68 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/confirm-mmr
 api_type: Position
-updated_at: 2026-01-16T09:40:25.020500
+updated_at: 2026-05-27 19:21:09.319737
 ---
 
-# Confirm New Risk Limit
+# Add Or Reduce Margin
 
-It is only applicable when the user is marked as only reducing positions (please see the isReduceOnly field in the [Get Position Info](/docs/v5/position) interface). After the user actively adjusts the risk level, this interface is called to try to calculate the adjusted risk level, and if it passes (retCode=0), the system will remove the position reduceOnly mark. You are recommended to call [Get Position Info](/docs/v5/position) to check `isReduceOnly` field.
+Manually add or reduce margin for **isolated** margin position
 
 ### HTTP Request
 
-POST `/v5/position/confirm-pending-mmr`
+POST`/v5/position/add-margin`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
 [category](/docs/v5/enum#category)| **true**|  string| Product type `linear`, `inverse`  
-symbol| **true**|  string| Symbol name  
+symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
+margin| **true**|  string| Add or reduce. To add, then `10`; To reduce, then `-10`. Support up to 4 decimal  
+[positionIdx](/docs/v5/enum#positionidx)| false| integer| Used to identify positions in different position modes. For hedge mode position, this param is **required**
+
+  * `0`: one-way mode
+  * `1`: hedge-mode Buy side
+  * `2`: hedge-mode Sell side
+
+  
   
 ### Response Parameters
 
-None
+Parameter| Type| Comments  
+---|---|---  
+[category](/docs/v5/enum#category)| string| Product type  
+symbol| string| Symbol name  
+[positionIdx](/docs/v5/enum#positionidx)| integer| Position idx, used to identify positions in different position modes
+
+  * `0`: One-Way Mode
+  * `1`: Buy side of both side mode
+  * `2`: Sell side of both side mode
+
+  
+riskId| integer| Risk limit ID  
+riskLimitValue| string| Risk limit value  
+size| string| Position size  
+avgPrice| string| Average entry price  
+liqPrice| string| Liquidation price  
+bustPrice| string| Bankruptcy price  
+markPrice| string| Last mark price  
+positionValue| string| Position value  
+leverage| string| Position leverage  
+autoAddMargin| integer| Whether to add margin automatically. `0`: false, `1`: true  
+[positionStatus](/docs/v5/enum#positionstatus)| String| Position status. `Normal`, `Liq`, `Adl`  
+positionIM| string| Initial margin  
+positionMM| string| Maintenance margin  
+takeProfit| string| Take profit price  
+stopLoss| string| Stop loss price  
+trailingStop| string| Trailing stop (The distance from market price)  
+unrealisedPnl| string| Unrealised PnL  
+cumRealisedPnl| string| Cumulative realised pnl  
+createdTime| string| Timestamp of the first time a position was created on this symbol (ms)  
+updatedTime| string| Position updated timestamp (ms)  
+[](/docs/api-explorer/v5/position/manual-add-margin)
+
+* * *
 
 ### Request Example
 
@@ -34,23 +75,35 @@ None
 
     
     
-    POST /v5/position/confirm-pending-mmr HTTP/1.1  
+    POST /v5/position/add-margin HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1698051123673  
+    X-BAPI-TIMESTAMP: 1684234363665  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 53  
+    Content-Length: 97  
       
     {  
-        "category": "linear",  
-        "symbol": "BTCUSDT"  
+        "category": "inverse",  
+        "symbol": "ETHUSD",  
+        "margin": "0.01",  
+        "positionIdx": 0  
     }  
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.add_or_reduce_margin(  
+        category="linear",  
+        symbol="BTCUSDT",  
+        margin="10"  
+    ))  
     
     
     
@@ -59,12 +112,31 @@ None
     import com.bybit.api.client.domain.position.request.*;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncPositionRestClient();  
-    var confirmNewRiskRequest = PositionDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").build();  
-    client.confirmPositionRiskLimit(confirmNewRiskRequest, System.out::println);  
+    var updateMarginRequest = PositionDataRequest.builder().category(CategoryType.INVERSE).symbol("ETHUSDT").margin("0.0001").build();  
+    client.modifyPositionMargin(updateMarginRequest, System.out::println);  
     
     
     
+    const { RestClientV5 } = require('bybit-api');  
       
+    const client = new RestClientV5({  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+        .addOrReduceMargin({  
+            category: 'linear',  
+            symbol: 'BTCUSDT',  
+            margin: '10',  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### Response Example
@@ -73,20 +145,44 @@ None
     {  
         "retCode": 0,  
         "retMsg": "OK",  
-        "result": {},  
+        "result": {  
+            "category": "inverse",  
+            "symbol": "ETHUSD",  
+            "positionIdx": 0,  
+            "riskId": 11,  
+            "riskLimitValue": "500",  
+            "size": "200",  
+            "positionValue": "0.11033265",  
+            "avgPrice": "1812.70004844",  
+            "liqPrice": "1550.80",  
+            "bustPrice": "1544.20",  
+            "markPrice": "1812.90",  
+            "leverage": "12",  
+            "autoAddMargin": 0,  
+            "positionStatus": "Normal",  
+            "positionIM": "0.01926611",  
+            "positionMM": "0",  
+            "unrealisedPnl": "0.00001217",  
+            "cumRealisedPnl": "-0.04618929",  
+            "stopLoss": "0.00",  
+            "takeProfit": "0.00",  
+            "trailingStop": "0.00",  
+            "createdTime": "1672737740039",  
+            "updatedTime": "1684234363788"  
+        },  
         "retExtInfo": {},  
-        "time": 1698051124588  
+        "time": 1684234363789  
     }
 
 ---
 
-# 確認新的風險限額
+# 手動增加或減少保證金
 
-僅適用於當用戶被標記為僅減倉 (請看[持倉](/docs/zh-TW/v5/position)接口中的isReduceOnly字段) 時, 在用戶主動調整風險水位後, 調用該接口來試算調整後的風 險水平, 若通過(retCode=0), 則系統會移除僅減倉標記, 推薦自行再調用下倉位接口確認`isReduceOnly`字段是否變成false
+手動增加或減少保證金，僅適用於**逐倉** 保證金模式
 
 ### HTTP 請求
 
-POST `/v5/position/confirm-pending-mmr`
+POST`/v5/position/add-margin`
 
 ### 請求參數
 
@@ -94,10 +190,45 @@ POST `/v5/position/confirm-pending-mmr`
 ---|---|---|---  
 [category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型 `linear`, `inverse`  
 symbol| **true**|  string| 合約名稱  
+margin| **true**|  string| 增加或減少的保證金金額. 增加, 則為正數, 比如`10`; 減少, 則為負數, 比如`-10`. 最多支持4位小數  
+[positionIdx](/docs/zh-TW/v5/enum#positionidx)| false| integer| 倉位標識，用於標識不同倉位, 雙向持倉模式下，該字段**必傳**
+
+  * `0`: 單向持倉模式
+  * `1`: 買側雙向持倉模式
+  * `2`: 賣側雙向持倉模式
+
+  
   
 ### 響應參數
 
-無
+參數| 類型| 說明  
+---|---|---  
+[category](/docs/zh-TW/v5/enum#category)| string| 產品類型  
+symbol| string| 合約名称  
+[positionIdx](/docs/zh-TW/v5/enum#positionidx)| integer| 倉位標識符, 用于在不同仓位模式下标识仓位  
+riskId| integer| 风险限额ID，參見[風險限額](/docs/zh-TW/v5/v5/market/risk-limit)接口  
+riskLimitValue| string| 當前風險限額ID對應的持倉限制量  
+size| string| 當前倉位的合约數量  
+avgPrice| string| 當前倉位的平均入場價格  
+liqPrice| string| 倉位強平價格  
+bustPrice| string| 倉位破產價格  
+markPrice| string| 最新標記價格  
+positionValue| string| 仓位的價值  
+leverage| string| 當前倉位的槓桿  
+autoAddMargin| integer| 是否自動追加保證金. `0`: 否, `1`: 是  
+[positionStatus](/docs/zh-TW/v5/enum#positionstatus)| String| 倉位状态. `Normal`, `Liq`, `Adl`  
+positionIM| string| 倉位起始保證金  
+positionMM| string| 倉位維持保證金  
+takeProfit| string| 止盈價格  
+stopLoss| string| 止損價格  
+trailingStop| string| 追蹤止損（與當前價格的距離）  
+unrealisedPnl| string| 未结盈亏  
+cumRealisedPnl| string| 累计已结盈亏  
+createdTime| string| 倉位創建時間  
+updatedTime| string| 倉位數據更新時間  
+[](/docs/zh-TW/api-explorer/v5/position/manual-add-margin)
+
+* * *
 
 ### 請求示例
 
@@ -109,18 +240,20 @@ symbol| **true**|  string| 合約名稱
 
     
     
-    POST /v5/position/confirm-pending-mmr HTTP/1.1  
+    POST /v5/position/add-margin HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1698051123673  
+    X-BAPI-TIMESTAMP: 1684234363665  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 53  
+    Content-Length: 97  
       
     {  
-        "category": "linear",  
-        "symbol": "BTCUSDT"  
+        "category": "inverse",  
+        "symbol": "ETHUSD",  
+        "margin": "0.01",  
+        "positionIdx": 0  
     }  
     
     
@@ -134,12 +267,31 @@ symbol| **true**|  string| 合約名稱
     import com.bybit.api.client.domain.position.request.*;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncPositionRestClient();  
-    var confirmNewRiskRequest = PositionDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").build();  
-    client.confirmPositionRiskLimit(confirmNewRiskRequest, System.out::println);  
+    var updateMarginRequest = PositionDataRequest.builder().category(CategoryType.INVERSE).symbol("ETHUSDT").margin("0.0001").build();  
+    client.modifyPositionMargin(updateMarginRequest, System.out::println);  
     
     
     
+    const { RestClientV5 } = require('bybit-api');  
       
+    const client = new RestClientV5({  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+        .addOrReduceMargin({  
+            category: 'linear',  
+            symbol: 'BTCUSDT',  
+            margin: '10',  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### 響應示例
@@ -148,7 +300,31 @@ symbol| **true**|  string| 合約名稱
     {  
         "retCode": 0,  
         "retMsg": "OK",  
-        "result": {},  
+        "result": {  
+            "category": "inverse",  
+            "symbol": "ETHUSD",  
+            "positionIdx": 0,  
+            "riskId": 11,  
+            "riskLimitValue": "500",  
+            "size": "200",  
+            "positionValue": "0.11033265",  
+            "avgPrice": "1812.70004844",  
+            "liqPrice": "1550.80",  
+            "bustPrice": "1544.20",  
+            "markPrice": "1812.90",  
+            "leverage": "12",  
+            "autoAddMargin": 0,  
+            "positionStatus": "Normal",  
+            "positionIM": "0.01926611",  
+            "positionMM": "0",  
+            "unrealisedPnl": "0.00001217",  
+            "cumRealisedPnl": "-0.04618929",  
+            "stopLoss": "0.00",  
+            "takeProfit": "0.00",  
+            "trailingStop": "0.00",  
+            "createdTime": "1672737740039",  
+            "updatedTime": "1684234363788"  
+        },  
         "retExtInfo": {},  
-        "time": 1698051124588  
+        "time": 1684234363789  
     }

@@ -2,41 +2,53 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/asset-info
 api_type: REST
-updated_at: 2026-01-16T09:37:38.076476
+updated_at: 2026-05-27 19:13:35.759265
 ---
 
-# Get Asset Info
+# Borrow
 
-Query Spot asset information
+> Permission: "Spot trade"
 
-> Apply to: classic account
+info
+
+  * The loan funds are released to the Funding wallet.
+  * The collateral funds are deducted from the Funding wallet, so make sure you have enough collateral amount in the Funding wallet.
+
+
 
 ### HTTP Request
 
-GET `/v5/asset/transfer/query-asset-info`
+POST`/v5/crypto-loan/borrow`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[accountType](/docs/v5/enum#accounttype)| **true**|  string| Account type. `SPOT`  
-coin| false| string| Coin name, uppercase only  
+loanCurrency| **true**|  string| Loan coin name  
+loanAmount| false| string| Amount to borrow
+
+  * **Required** when collateral amount is not filled
+
+  
+loanTerm| false| string| Loan term 
+
+  * flexible term: `null` or not passed
+  * fixed term: `7`, `14`, `30`, `90`, `180` days
+
+  
+collateralCurrency| **true**|  string| Currency used to mortgage  
+collateralAmount| false| string| Amount to mortgage
+
+  * **Required** when loan amount is not filled
+
+  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-spot| Object|   
-> status| string| account status. `ACCOUNT_STATUS_NORMAL`: normal, `ACCOUNT_STATUS_UNSPECIFIED`: banned  
-> assets| array| Object  
->> coin| string| Coin  
->> frozen| string| Freeze amount  
->> free| string| Free balance  
->> withdraw| string| Amount in withdrawing  
-[](/docs/api-explorer/v5/asset/asset-info)
-
-* * *
-
+orderId| string| Loan order ID  
+  
 ### Request Example
 
   * HTTP
@@ -46,12 +58,22 @@ spot| Object|
 
     
     
-    GET /v5/asset/transfer/query-asset-info?accountType=SPOT&coin=ETH HTTP/1.1  
+    POST /v5/crypto-loan/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672136538042  
+    X-BAPI-TIMESTAMP: 1728629356551  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 140  
+      
+    {  
+        "loanCurrency": "USDT",  
+        "loanAmount": "550",  
+        "collateralCurrency": "BTC",  
+        "loanTerm": null,  
+        "collateralAmount": null  
+    }  
     
     
     
@@ -61,9 +83,12 @@ spot| Object|
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_spot_asset_info(  
-        accountType="FUND",  
-        coin="USDC",  
+    print(session.borrow_crypto_loan(  
+            loanCurrency="USDT",  
+            loanAmount="550",  
+            collateralCurrency="BTC",  
+            loanTerm=None,  
+            collateralAmount=None,  
     ))  
     
     
@@ -77,7 +102,13 @@ spot| Object|
     });  
       
     client  
-      .getAssetInfo({ accountType: 'FUND', coin: 'USDC' })  
+      .borrowCryptoLoan({  
+        loanCurrency: 'USDT',  
+        loanAmount: '550',  
+        collateralCurrency: 'BTC',  
+        loanTerm: null,  
+        collateralAmount: null,  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -91,56 +122,60 @@ spot| Object|
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "request.success",  
         "result": {  
-            "spot": {  
-                "status": "ACCOUNT_STATUS_NORMAL",  
-                "assets": [  
-                    {  
-                        "coin": "ETH",  
-                        "frozen": "0",  
-                        "free": "11.53485",  
-                        "withdraw": ""  
-                    }  
-                ]  
-            }  
+            "orderId": "1794267532472646144"  
         },  
         "retExtInfo": {},  
-        "time": 1672136539127  
+        "time": 1728629357820  
     }
 
 ---
 
-# 查詢資產信息
+# 借款
 
-該接口廢棄
+> 權限: "現貨交易"
+
+信息
+
+  * 借款發放到資金帳戶
+  * 質押金將從資金帳戶扣減, 因此確保資金帳戶有足額質押幣種
+
+
 
 ### HTTP 請求
 
-GET `/v5/asset/transfer/query-asset-info`
+POST`/v5/crypto-loan/borrow`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-accountType| **true**|  string| 賬戶類型, `SPOT`  
-coin| false| string| 幣種  
+loanCurrency| **true**|  string| 借貸幣種  
+loanAmount| false| string| 借貸金額
+
+  * 當抵押金額未填時, 該字段**必填**
+
+  
+loanTerm| false| string| 借貸期限 
+
+  * 活期: 傳`null`或者不傳字段
+  * 定期: `7`, `14`, `30`, `90`, `180` 天
+
+  
+collateralCurrency| **true**|  string| 質押幣種  
+collateralAmount| false| string| 質押金額
+
+  * 當借貸金額未填時, 該字段**必填**
+
+  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-spot| Object|   
-> status| string| 賬戶狀態. `ACCOUNT_STATUS_NORMAL`: 正常, `ACCOUNT_STATUS_UNSPECIFIED`: 禁用  
-> assets| array| Object  
->> coin| string| 幣種  
->> frozen| string| 掛單凍結金額  
->> free| string| 可用余額  
->> withdraw| string| 提現中金額  
-[](/docs/zh-TW/api-explorer/v5/asset/asset-info)
-
-* * *
-
+orderId| string| 借貸訂單ID  
+  
 ### 請求示例
 
   * HTTP
@@ -150,12 +185,22 @@ spot| Object|
 
     
     
-    GET /v5/asset/transfer/query-asset-info?accountType=SPOT&coin=ETH HTTP/1.1  
+    POST /v5/crypto-loan/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672136538042  
+    X-BAPI-TIMESTAMP: 1728629356551  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 140  
+      
+    {  
+        "loanCurrency": "USDT",  
+        "loanAmount": "550",  
+        "collateralCurrency": "BTC",  
+        "loanTerm": null,  
+        "collateralAmount": null  
+    }  
     
     
     
@@ -165,9 +210,12 @@ spot| Object|
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_spot_asset_info(  
-        accountType="FUND",  
-        coin="USDC",  
+    print(session.borrow_crypto_loan(  
+            loanCurrency="USDT",  
+            loanAmount="550",  
+            collateralCurrency="BTC",  
+            loanTerm=None,  
+            collateralAmount=None,  
     ))  
     
     
@@ -181,7 +229,13 @@ spot| Object|
     });  
       
     client  
-      .getAssetInfo({ accountType: 'FUND', coin: 'USDC' })  
+      .borrowCryptoLoan({  
+        loanCurrency: 'USDT',  
+        loanAmount: '550',  
+        collateralCurrency: 'BTC',  
+        loanTerm: null,  
+        collateralAmount: null,  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -195,20 +249,10 @@ spot| Object|
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "request.success",  
         "result": {  
-            "spot": {  
-                "status": "ACCOUNT_STATUS_NORMAL",  
-                "assets": [  
-                    {  
-                        "coin": "ETH",  
-                        "frozen": "0",  
-                        "free": "11.53485",  
-                        "withdraw": ""  
-                    }  
-                ]  
-            }  
-    },  
+            "orderId": "1794267532472646144"  
+        },  
         "retExtInfo": {},  
-        "time": 1672136539127  
+        "time": 1728629357820  
     }

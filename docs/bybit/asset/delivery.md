@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/delivery
 api_type: REST
-updated_at: 2026-01-16T09:38:29.267865
+updated_at: 2026-05-27 19:14:58.855519
 ---
 
 # Get Delivery Record
@@ -17,7 +17,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/asset/delivery-record`
+GET`/v5/asset/delivery-record`
 
 ### Request Parameters
 
@@ -147,7 +147,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/asset/delivery-record`
+GET`/v5/asset/delivery-record`
 
 ### 請求參數
 

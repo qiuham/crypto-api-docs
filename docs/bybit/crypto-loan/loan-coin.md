@@ -2,54 +2,49 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/crypto-loan/loan-coin
 api_type: REST
-updated_at: 2026-01-16T09:39:06.807539
+updated_at: 2026-05-27 19:16:24.362789
 ---
 
-# Get Borrowable Coins
+# Get Loan LTV Adjustment History
+
+Query for your LTV adjustment history.
+
+> Permission: "Spot trade"
 
 info
 
-Does not need authentication.
+  * Support querying last 6 months adjustment transactions
+  * Only the ltv adjustment transactions launched by the user can be queried
 
-danger
 
-Borrowed coins can be returned at any time before the due date. You'll be charged 3 times the hourly interest during the overdue period. Your collateral will be liquidated to repay a loan and the interest if you fail to make the repayment 48 hours after the due time.
 
 ### HTTP Request
 
-GET `/v5/crypto-loan/loanable-data`
+GET`/v5/crypto-loan/adjustment-history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-vipLevel| false| string| VIP level 
-* `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(supreme VIP)
-* `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`  
-currency| false| string| Coin name, uppercase only  
+orderId| false| string| Loan order ID  
+adjustId| false| string| Collateral adjustment transaction ID  
+collateralCurrency| false| string| Collateral coin name  
+limit| false| string| Limit for data size per page. [`1`, `100`]. Default: `10`  
+cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-vipCoinList| array| Object  
-> list| array| Object  
->> borrowingAccuracy| integer| The number of decimal places (precision) of this coin  
->> currency| string| Coin name  
->> flexibleHourlyInterestRate| string| Flexible hourly floating interest rate 
-
-  * Flexible Crypto Loans offer an hourly floating interest rate, calculated based on the actual borrowing time per hour, with the option for early repayment
-  * Is `""` if the coin does not support flexible loan
-
-  
->> hourlyInterestRate7D| string| Hourly interest rate for 7 days loan. Is `""` if the coin does not support 7 days loan  
->> hourlyInterestRate14D| string| Hourly interest rate for 14 days loan. Is `""` if the coin does not support 14 days loan  
->> hourlyInterestRate30D| string| Hourly interest rate for 30 days loan. Is `""` if the coin does not support 30 days loan  
->> hourlyInterestRate90D| string| Hourly interest rate for 90 days loan. Is `""` if the coin does not support 90 days loan  
->> hourlyInterestRate180D| string| Hourly interest rate for 180 days loan. Is `""` if the coin does not support 180 days loan  
->> maxBorrowingAmount| string| Max. amount to borrow  
->> minBorrowingAmount| string| Min. amount to borrow  
-> vipLevel| string| VIP level  
+list| array| Object  
+> collateralCurrency| string| Collateral coin  
+> orderId| string| Loan order ID  
+> adjustId| string| Collateral adjustment transaction ID  
+> adjustTime| string| Adjust timestamp  
+> preLTV| string| LTV before the adjustment  
+> afterLTV| string| LTV after the adjustment  
+> direction| integer| The direction of adjustment, `0`: add collateral; `1`: reduce collateral  
+nextPageCursor| string| Refer to the `cursor` request parameter  
   
 ### Request Example
 
@@ -60,18 +55,23 @@ vipCoinList| array| Object
 
     
     
-    GET /v5/crypto-loan/loanable-data?currency=USDT&vipLevel=VIP0 HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/crypto-loan/adjustment-history?adjustId=1794318409405331968 HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1728635871668  
+    X-BAPI-RECV-WINDOW: 5000  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(  
         testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_borrowable_coins(  
-        currency="USDT",  
-        vipLevel="VIP0",  
+    print(session.get_crypto_loan_ltv_adjustment_history(  
+        adjustId="1794318409405331968",  
     ))  
     
     
@@ -85,10 +85,7 @@ vipCoinList| array| Object
     });  
       
     client  
-      .getBorrowableCoins({  
-        currency: 'USDT',  
-        vipLevel: 'VIP0',  
-      })  
+      .getLoanLTVAdjustmentHistory({ adjustId: '1794271131730737664' })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -104,80 +101,66 @@ vipCoinList| array| Object
         "retCode": 0,  
         "retMsg": "request.success",  
         "result": {  
-            "vipCoinList": [  
+            "list": [  
                 {  
-                    "list": [  
-                        {  
-                            "borrowingAccuracy": 4,  
-                            "currency": "USDT",  
-                            "flexibleHourlyInterestRate": "0.0000090346",  
-                            "hourlyInterestRate14D": "0.0000207796",  
-                            "hourlyInterestRate180D": "",  
-                            "hourlyInterestRate30D": "0.00002349",  
-                            "hourlyInterestRate7D": "0.0000180692",  
-                            "hourlyInterestRate90D": "",  
-                            "maxBorrowingAmount": "8000000",  
-                            "minBorrowingAmount": "20"  
-                        }  
-                    ],  
-                    "vipLevel": "VIP0"  
+                    "adjustId": "1794318409405331968",  
+                    "adjustTime": "1728635422814",  
+                    "afterLTV": "0.7164",  
+                    "amount": "0.001",  
+                    "collateralCurrency": "BTC",  
+                    "direction": 1,  
+                    "orderId": "1794267532472646144",  
+                    "preLTV": "0.6546"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": "1844656778923966466"  
         },  
         "retExtInfo": {},  
-        "time": 1728619315868  
+        "time": 1728635873329  
     }
 
 ---
 
-# 查詢可借幣種
+# 查詢質押金調整歷史
+
+查詢增減質押金的操作歷史
+
+> 權限: "現貨交易"
 
 信息
 
-不需要鑒權
+  * 支持查詢過去6個月的操作紀錄
+  * 僅返回由用戶主動發起的質押金操作紀錄
+
+
 
 ### HTTP 請求
 
-GET `/v5/crypto-loan/loanable-data`
+GET`/v5/crypto-loan/adjustment-history`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-vipLevel| false| string| Vip等級 
-* `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(至尊VIP)
-* `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`  
-currency| false| string| 幣種名稱  
+orderId| false| string| 借貸訂單ID  
+adjustId| false| string| 質押金調整操作ID  
+collateralCurrency| false| string| 質押幣種  
+limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
+cursor| false| string| 游標，用於分頁  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-vipCoinList| array| Object  
-> list| array| Object  
->> borrowingAccuracy| integer| 借貸幣種精度  
->> currency| string| 幣種名稱  
->> flexibleHourlyInterestRate| string| 活期每小時利率
-* 活期質押借幣採用小時浮動利率，按實際借款時長每小時計算利息，可提前還款
-* 如果借貸幣種不支持活期, 則總是`""`  
->> hourlyInterestRate7D| string| 7天定期每小時利率
-* 利息以實際借款每小時計算利息, 可提前還款, 逾期後每小時將收取3倍小時利息, 逾期超過48小時, 您的抵押資產將被清算以償還貸款和利息
-* 如果借貸幣種不支持7天定期, 則總是`""`  
->> hourlyInterestRate14D| string| 14天定期每小時利率
-* 利息以實際借款每小時計算利息, 可提前還款, 逾期後每小時將收取3倍小時利息, 逾期超過48小時, 您的抵押資產將被清算以償還貸款和利息
-* 如果借貸幣種不支持14天定期, 則總是`""`  
->> hourlyInterestRate30D| string| 30天定期每小時利率
-* 利息以實際借款每小時計算利息, 可提前還款, 逾期後每小時將收取3倍小時利息, 逾期超過48小時, 您的抵押資產將被清算以償還貸款和利息
-* 如果借貸幣種不支持30天定期, 則總是`""`  
->> hourlyInterestRate90D| string| 90天定期每小時利率
-* 利息以實際借款每小時計算利息, 可提前還款, 逾期後每小時將收取3倍小時利息, 逾期超過48小時, 您的抵押資產將被清算以償還貸款和利息
-* 如果借貸幣種不支持90天定期, 則總是`""`  
->> hourlyInterestRate180D| string| 180天定期每小時利率
-* 利息以實際借款每小時計算利息, 可提前還款, 逾期後每小時將收取3倍小時利息, 逾期超過48小時, 您的抵押資產將被清算以償還貸款和利息
-* 如果借貸幣種不支持180天定期, 則總是`""`  
->> maxBorrowingAmount| string| 借幣上限  
->> minBorrowingAmount| string| 單次最低可借金額  
-> vipLevel| string| Vip等級  
+list| array| Object  
+> collateralCurrency| string| 質押幣種  
+> orderId| string| 借貸訂單ID  
+> adjustId| string| 質押金調整操作ID  
+> adjustTime| string| 調整時間戳  
+> preLTV| string| 调整前LTV  
+> afterLTV| string| 調整後LTV  
+> direction| integer| 調整方向, `0`: 增加; `1`: 減少  
+nextPageCursor| string| 下一頁游標  
   
 ### 請求示例
 
@@ -188,18 +171,23 @@ vipCoinList| array| Object
 
     
     
-    GET /v5/crypto-loan/loanable-data?currency=USDT&vipLevel=VIP0 HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/crypto-loan/adjustment-history?adjustId=1794318409405331968 HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1728635871668  
+    X-BAPI-RECV-WINDOW: 5000  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(  
         testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_borrowable_coins(  
-        currency="USDT",  
-        vipLevel="VIP0",  
+    print(session.get_crypto_loan_ltv_adjustment_history(  
+        adjustId="1794318409405331968",  
     ))  
     
     
@@ -213,10 +201,7 @@ vipCoinList| array| Object
     });  
       
     client  
-      .getBorrowableCoins({  
-        currency: 'USDT',  
-        vipLevel: 'VIP0',  
-      })  
+      .getLoanLTVAdjustmentHistory({ adjustId: '1794271131730737664' })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -232,26 +217,20 @@ vipCoinList| array| Object
         "retCode": 0,  
         "retMsg": "request.success",  
         "result": {  
-            "vipCoinList": [  
+            "list": [  
                 {  
-                    "list": [  
-                        {  
-                            "borrowingAccuracy": 4,  
-                            "currency": "USDT",  
-                            "flexibleHourlyInterestRate": "0.0000090346",  
-                            "hourlyInterestRate14D": "0.0000207796",  
-                            "hourlyInterestRate180D": "",  
-                            "hourlyInterestRate30D": "0.00002349",  
-                            "hourlyInterestRate7D": "0.0000180692",  
-                            "hourlyInterestRate90D": "",  
-                            "maxBorrowingAmount": "8000000",  
-                            "minBorrowingAmount": "20"  
-                        }  
-                    ],  
-                    "vipLevel": "VIP0"  
+                    "adjustId": "1794318409405331968",  
+                    "adjustTime": "1728635422814",  
+                    "afterLTV": "0.7164",  
+                    "amount": "0.001",  
+                    "collateralCurrency": "BTC",  
+                    "direction": 1,  
+                    "orderId": "1794267532472646144",  
+                    "preLTV": "0.6546"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": "1844656778923966466"  
         },  
         "retExtInfo": {},  
-        "time": 1728619315868  
+        "time": 1728635873329  
     }

@@ -2,12 +2,12 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-subuid
 api_type: REST
-updated_at: 2026-01-16T09:41:39.221919
+updated_at: 2026-05-27 19:23:05.560585
 ---
 
 # Delete Sub UID
 
-Delete a sub UID. Before deleting the UID, please make sure there is no asset.  
+Delete a sub UID. If a sub-account’s asset balance is greater than 0.001 USDT, it cannot be deleted.  
 Use **master** user's api key**.
 
 tip
@@ -20,7 +20,7 @@ The API key must have one of the below permissions in order to call this endpoin
 
 ### HTTP Request
 
-POST `/v5/user/del-submember`
+POST`/v5/user/del-submember`
 
 ### Request Parameters
 
@@ -56,7 +56,15 @@ None
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.delete_sub_uid(  
+        subMemberId="112725187"  
+    ))  
     
     
     
@@ -95,8 +103,10 @@ None
 
 # 刪除子帳戶
 
-刪除子帳戶. 在刪除前, 確保該帳戶已經沒有資產了  
-僅可使用**母** 帳戶api key調用.
+刪除子帳戶. 如果子帳號資產餘額大於 0.001U, 禁止刪除
+
+  
+僅可使用**母**帳戶api key調用.
 
 提示
 
@@ -108,7 +118,7 @@ None
 
 ### HTTP 請求
 
-POST `/v5/user/del-submember`
+POST`/v5/user/del-submember`
 
 ### 請求參數
 

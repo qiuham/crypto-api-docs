@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/cancel-order
 api_type: Trading
-updated_at: 2026-01-16T09:40:07.811509
+updated_at: 2026-05-27 19:20:45.749704
 ---
 
 # Cancel Order
@@ -17,7 +17,7 @@ important
 
 ### HTTP Request
 
-POST `/v5/order/cancel`
+POST`/v5/order/cancel`
 
 ### Request Parameters
 
@@ -28,9 +28,11 @@ symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only
 orderId| false| string| Order ID. Either `orderId` or `orderLinkId` is **required**  
 orderLinkId| false| string| User customised order ID. Either `orderId` or `orderLinkId` is **required**  
 orderFilter| false| string| Spot trading **only**
-* `Order`
-* `tpslOrder`
-* `StopOrder`
+
+  * `Order`
+  * `tpslOrder`
+  * `StopOrder`
+
 If not passed, `Order` by default  
   
 ### Response Parameters
@@ -160,7 +162,7 @@ The acknowledgement of an cancel order request indicates that the request was su
 
 ### HTTP請求
 
-POST `/v5/order/cancel`
+POST`/v5/order/cancel`
 
 ### 請求參數
 
@@ -171,9 +173,11 @@ symbol| **true**|  string| 合約名稱
 orderId| false| string| 訂單Id. `orderId`和`orderLinkId`**必傳** 其中一個  
 orderLinkId| false| string| 用戶自定義訂單Id. `orderId`和`orderLinkId`**必傳** 其中一個  
 orderFilter| false| string| 僅現貨交易有效
-* `Order`: 普通單
-* `tpslOrder`: 止盈止損單
-* `StopOrder`: 條件單
+
+  * `Order`: 普通單
+  * `tpslOrder`: 止盈止損單
+  * `StopOrder`: 條件單
+
 若不傳, 默認是`Order`  
   
 ### 響應參數

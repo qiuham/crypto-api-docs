@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/api-broker/guidance
 api_type: REST
-updated_at: 2026-01-16T09:38:57.041162
+updated_at: 2026-05-27 19:15:57.673514
 ---
 
 # Application Process

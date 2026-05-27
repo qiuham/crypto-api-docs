@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/open-interest
 api_type: Market Data
-updated_at: 2026-01-16T09:39:32.949631
+updated_at: 2026-05-27 19:18:28.132135
 ---
 
 # Get Open Interest
@@ -20,7 +20,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/market/open-interest`
+GET`/v5/market/open-interest`
 
 ### Request Parameters
 
@@ -162,7 +162,7 @@ nextPageCursor| string| Used to paginate
 
 ### HTTP請求
 
-GET `/v5/market/open-interest`
+GET`/v5/market/open-interest`
 
 ### 請求參數
 

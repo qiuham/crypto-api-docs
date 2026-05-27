@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-all-rfq
 api_type: Trading
-updated_at: 2026-01-16T09:40:46.102756
+updated_at: 2026-05-27 19:21:34.499823
 ---
 
 # Cancel All RFQs
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/rfq/cancel-all-rfq`
+POST`/v5/rfq/cancel-all-rfq`
 
 ### Request Parameters
 
@@ -35,6 +35,11 @@ result| array of objects|
 > msg| string| Cancellation failure reason  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     POST /v5/rfq/cancel-all-rfq HTTP/1.1  
@@ -45,6 +50,16 @@ result| array of objects|
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
     Content-Length: 115  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.cancel_all_quotes())  
     
 
 ### Response Example
@@ -73,12 +88,14 @@ result| array of objects|
 
 信息
 
-* 詢價方取消訂單：取消詢價單，所有報價均失效。
-* 報價方取消訂單：詢價單不受影響，報價單失效。
+  * 詢價方取消訂單：取消詢價單，所有報價均失效。
+  * 報價方取消訂單：詢價單不受影響，報價單失效。
+
+
 
 ### HTTP 請求
 
-POST `/v5/rfq/cancel-all-rfq`
+POST`/v5/rfq/cancel-all-rfq`
 
 ### 請求參數
 

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/position-mode
 api_type: Position
-updated_at: 2026-01-16T09:40:29.491931
+updated_at: 2026-05-27 19:21:14.054649
 ---
 
 # Switch Position Mode
@@ -45,7 +45,7 @@ Inverse futures| Support one-way **only**
   
 ### HTTP Request
 
-POST `/v5/position/switch-mode`
+POST`/v5/position/switch-mode`
 
 ### Request Parameters
 
@@ -191,7 +191,7 @@ USDC 交割| 僅支持單向持倉
   
 ### HTTP 请求
 
-POST `/v5/position/switch-mode`
+POST`/v5/position/switch-mode`
 
 ### 請求參數
 

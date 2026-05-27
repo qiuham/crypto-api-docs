@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/pre-upgrade/settlement
 api_type: REST
-updated_at: 2026-01-16T09:40:32.462365
+updated_at: 2026-05-27 19:21:20.903922
 ---
 
 # Get Pre-upgrade USDC Session Settlement
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/pre-upgrade/asset/settlement-record`
+GET`/v5/pre-upgrade/asset/settlement-record`
 
 ### Request Parameters
 
@@ -105,7 +105,7 @@ nextPageCursor| string| Cursor. Used for pagination
 
 ### HTTP 請求
 
-GET `/v5/pre-upgrade/asset/settlement-record`
+GET`/v5/pre-upgrade/asset/settlement-record`
 
 ### 請求參數
 

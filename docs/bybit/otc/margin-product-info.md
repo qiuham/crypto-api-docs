@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/margin-product-info
 api_type: REST
-updated_at: 2026-01-16T09:40:21.271005
+updated_at: 2026-05-27 19:21:00.187418
 ---
 
 # Get Product Info
@@ -17,7 +17,7 @@ tip
 
 ### HTTP Request
 
-GET `/v5/ins-loan/product-infos`
+GET`/v5/ins-loan/product-infos`
 
 ### Request Parameters
 
@@ -205,7 +205,7 @@ marginProductInfo| array| Object
 
 ### HTTP 請求
 
-GET `/v5/ins-loan/product-infos`
+GET`/v5/ins-loan/product-infos`
 
 ### 請求參數
 

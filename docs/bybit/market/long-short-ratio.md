@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/long-short-ratio
 api_type: Market Data
-updated_at: 2026-01-16T09:39:28.881665
+updated_at: 2026-05-27 19:18:24.630456
 ---
 
 # Get Long Short Ratio
@@ -21,7 +21,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/market/account-ratio`
+GET`/v5/market/account-ratio`
 
 ### Request Parameters
 
@@ -65,7 +65,20 @@ nextPageCursor| string| Refer to the `cursor` request parameter
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_long_short_ratio(  
+        category="linear",  
+        symbol="BTCUSDT",  
+        period="1h",  
+        limit=2,  
+        startTime="1696089600000",  
+        endTime="1696262400000"  
+    ))  
     
     
     
@@ -157,7 +170,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP請求
 
-GET `/v5/market/account-ratio`
+GET`/v5/market/account-ratio`
 
 ### 請求參數
 

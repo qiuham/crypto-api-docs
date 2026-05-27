@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-query
 api_type: REST
-updated_at: 2026-01-16T09:40:36.638845
+updated_at: 2026-05-27 19:21:24.431618
 ---
 
 # Get Rate Limit
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/apilimit/query`
+GET`/v5/apilimit/query`
 
 ### Request Parameters
 
@@ -36,6 +36,12 @@ list| array| Object
 > rate| integer| API rate limit per second  
   
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
     GET /v5/apilimit/query?uids=290118 HTTP/1.1  
@@ -46,6 +52,22 @@ list| array| Object
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
     Content-Length: 2  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_api_rate_limit(  
+        uids="290118"  
+    ))  
+    
+    
+    
+      
     
 
 ### Response Example
@@ -89,7 +111,7 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/apilimit/query`
+GET`/v5/apilimit/query`
 
 ### 請求參數
 

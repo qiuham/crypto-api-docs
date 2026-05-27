@@ -2,33 +2,32 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-master-apikey
 api_type: REST
-updated_at: 2026-01-16T09:41:39.091238
+updated_at: 2026-05-27 19:23:04.314103
 ---
 
-# Delete Master API Key
+# Delete Sub UID
 
-Delete the api key of master account. Use the api key pending to be delete to call the endpoint. Use **master user's api key** **only**.
+Delete a sub UID. If a sub-account’s asset balance is greater than 0.001 USDT, it cannot be deleted.  
+Use **master** user's api key**.
 
 tip
 
-The API key must have one of the below permissions in order to call this endpoint..
+The API key must have one of the below permissions in order to call this endpoint
 
   * master API key: "Account Transfer", "Subaccount Transfer", "Withdrawal"
 
 
 
-danger
-
-BE CAREFUL! The API key used to call this interface will be invalid immediately.
-
 ### HTTP Request
 
-POST `/v5/user/delete-api`
+POST`/v5/user/del-submember`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+subMemberId| **true**|  string| Sub UID  
+  
 ### Response Parameters
 
 None
@@ -42,16 +41,17 @@ None
 
     
     
-    POST /v5/user/delete-api HTTP/1.1  
+    POST /v5/user/del-submember HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676431576621  
+    X-BAPI-TIMESTAMP: 1698907012755  
     X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
     Content-Type: application/json  
+    Content-Length: 34  
       
     {  
-      
+        "subMemberId": "112725187"  
     }  
     
     
@@ -62,7 +62,9 @@ None
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.delete_master_api_key())  
+    print(session.delete_sub_uid(  
+        subMemberId="112725187"  
+    ))  
     
     
     
@@ -75,7 +77,9 @@ None
     });  
       
     client  
-      .deleteMasterApiKey()  
+      .deleteSubMember({  
+        subMemberId: 'subUID',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -89,17 +93,20 @@ None
     
     {  
         "retCode": 0,  
-        "retMsg": "",  
+        "retMsg": "OK",  
         "result": {},  
         "retExtInfo": {},  
-        "time": 1676431577675  
+        "time": 1698907012962  
     }
 
 ---
 
-# 刪除母帳戶的API Key
+# 刪除子帳戶
 
-刪除母帳戶下的api key。使用待刪除的api key調用接口。需使用**母** 帳戶的API key。
+刪除子帳戶. 如果子帳號資產餘額大於 0.001U, 禁止刪除
+
+  
+僅可使用**母**帳戶api key調用.
 
 提示
 
@@ -109,18 +116,16 @@ None
 
 
 
-危險
-
-當心! 用於調用本接口的API KEY將會立馬失效。
-
 ### HTTP 請求
 
-POST `/v5/user/delete-api`
+POST`/v5/user/del-submember`
 
 ### 請求參數
 
-無
-
+參數| 是否必須| 類型| 說明  
+---|---|---|---  
+subMemberId| **true**|  string| Sub UID  
+  
 ### 返回參數
 
 無
@@ -134,27 +139,22 @@ POST `/v5/user/delete-api`
 
     
     
-    POST /v5/user/delete-api HTTP/1.1  
+    POST /v5/user/del-submember HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676431576621  
+    X-BAPI-TIMESTAMP: 1698907012755  
     X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
     Content-Type: application/json  
+    Content-Length: 34  
       
     {  
-      
+        "subMemberId": "112725187"  
     }  
     
     
     
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.delete_master_api_key())  
+      
     
     
     
@@ -167,7 +167,9 @@ POST `/v5/user/delete-api`
     });  
       
     client  
-      .deleteMasterApiKey()  
+      .deleteSubMember({  
+        subMemberId: 'subUID',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -181,8 +183,8 @@ POST `/v5/user/delete-api`
     
     {  
         "retCode": 0,  
-        "retMsg": "",  
+        "retMsg": "OK",  
         "result": {},  
         "retExtInfo": {},  
-        "time": 1676431577675  
+        "time": 1698907012962  
     }

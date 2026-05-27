@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/create-quote
 api_type: Trading
-updated_at: 2026-01-16T09:40:46.292312
+updated_at: 2026-05-27 19:21:37.922947
 ---
 
 # Create Quote
@@ -21,7 +21,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/rfq/create-quote`
+POST`/v5/rfq/create-quote`
 
 ### Request Parameters
 
@@ -29,21 +29,30 @@ Parameter| Required| Type| Comments
 ---|---|---|---  
 rfqId| **true**|  string| Inquiry ID  
 quoteLinkId| false| string| Custom quote ID: 
-* The length should be between 1-32 bits 
-* Combination of letters (case sensitive) and numbers
-* An rfqLinkId expires after three months – after which it can be reused
-* Open orders must have a unique ID whereas orders that have reached a final/terminated status do not have to be unique.   
+
+  * The length should be between 1-32 bits 
+  * Combination of letters (case sensitive) and numbers
+  * An rfqLinkId expires after three months – after which it can be reused
+  * Open orders must have a unique ID whereas orders that have reached a final/terminated status do not have to be unique. 
+
+  
 anonymous| false| boolean| Whether or not it is anonymous quote. The default value is `false`. When it is `true` the identity of the quoting party will not be revealed even after the transaction is concluded.  
 expireIn| false| integer| Duration of the quote (in secs). [`10`, `120`]. Default: `60`  
 quoteBuyList| false| array of objects| Quote direction 
-* In the `Buy` direction, for the maker (the quoting party), the execution direction is the same as the direction of the legs
-* For the taker (the inquiring party) it is opposite direction  
+
+  * In the `Buy` direction, for the maker (the quoting party), the execution direction is the same as the direction of the legs
+  * For the taker (the inquiring party) it is opposite direction
+
+  
 > category| **true**|  string| Product type: Unified account: `spot`, `linear`,`option`  
 > symbol| **true**|  string| Name of the trading contract  
 > price| **true**|  string| Quote price  
 quoteSellList| false| array of objects| Ask direction 
-* In the `Sell` direction, for the maker (the quoting party), the execution direction is opposite to the direction of the legs
-* For the taker (the inquiring party) it is the same direction  
+
+  * In the `Sell` direction, for the maker (the quoting party), the execution direction is opposite to the direction of the legs
+  * For the taker (the inquiring party) it is the same direction
+
+  
 > category| **true**|  string| Product type: Unified account: `spot`, `linear`,`option`  
 > symbol| **true**|  string| Name of the trading contract  
 > price| **true**|  string| Quote price  
@@ -61,6 +70,11 @@ result| object|
 > status| string| Status of quotation: `Active` `Canceled` `Filled` `Expired` `Failed`  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     POST /v5/rfq/create-quote HTTP/1.1  
@@ -89,6 +103,32 @@ result| object|
             }  
         ]  
     }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.create_quote(  
+        rfqId="1754364447601610516653123084412812",  
+        quoteBuyList=[  
+            {  
+                "category": "linear",  
+                "symbol": "BTCUSDT",  
+                "price": "106000"  
+            }  
+        ],  
+        quoteSellList=[  
+            {  
+                "category": "linear",  
+                "symbol": "BTCUSDT",  
+                "price": "126500"  
+            }  
+        ]  
+    ))  
     
 
 ### Response Example
@@ -127,7 +167,7 @@ result| object|
 
 ### HTTP 請求
 
-POST `/v5/rfq/create-quote`
+POST`/v5/rfq/create-quote`
 
 ### 請求參數
 
@@ -135,10 +175,13 @@ POST `/v5/rfq/create-quote`
 ---|---|---|---  
 rfqId| **true**|  string| 詢價單 ID  
 quoteLinkId| false| string| 報價自定義 ID： 
-* 長度應介於 1-32 位 
-* 字母（區分大小寫）與數字的組合，可以是純字母或純數字 
-* 指定 quoteLinkId 僅檢查最近 3 個月的資料 
-* 非終端狀態僅能保證在 24 小時內的唯一性，而終端狀態不保證唯一性   
+
+  * 長度應介於 1-32 位 
+  * 字母（區分大小寫）與數字的組合，可以是純字母或純數字 
+  * 指定 quoteLinkId 僅檢查最近 3 個月的資料 
+  * 非終端狀態僅能保證在 24 小時內的唯一性，而終端狀態不保證唯一性 
+
+  
 anonymous| false| boolean| 是否為匿名報價，`true` 表示匿名報價，`false` 表示公開報價，預設值為 `false` ，當為 `true` 時，即使交易執行後，身份也不會透露給詢價方。  
 expireIn| false| integer| 報價的有效持續時間（以秒為單位）. [`10`, `120`]. 默認: `60`  
 quoteBuyList| false| array of objects| 買入方向，報價方向為 `Buy`，對於 maker（報價方），執行方向與 legs 中的方向一致，對於 taker（詢價方）則相反  

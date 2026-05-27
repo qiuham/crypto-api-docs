@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/adjust-collateral
 api_type: REST
-updated_at: 2026-01-16T09:39:40.575973
+updated_at: 2026-05-27 19:18:38.569363
 ---
 
 # Adjust Collateral Amount
@@ -20,7 +20,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/crypto-loan-common/adjust-ltv`
+POST`/v5/crypto-loan-common/adjust-ltv`
 
 ### Request Parameters
 
@@ -109,7 +109,7 @@ adjustId| long| Collateral adjustment transaction ID
 
 ### HTTP 請求
 
-POST `/v5/crypto-loan-common/adjust-ltv`
+POST`/v5/crypto-loan-common/adjust-ltv`
 
 ### 請求參數
 

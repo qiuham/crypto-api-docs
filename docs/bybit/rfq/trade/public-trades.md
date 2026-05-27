@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/public-trades
 api_type: Trading
-updated_at: 2026-01-16T09:40:50.285713
+updated_at: 2026-05-27 19:21:41.325366
 ---
 
 # Get Public Trades
@@ -11,7 +11,7 @@ Get the recently executed rfq successfully. **Up to 50 requests per second**
 
 ### HTTP Request
 
-GET `/v5/rfq/public-trades`
+GET`/v5/rfq/public-trades`
 
 ### Request Parameters
 
@@ -42,6 +42,11 @@ result| Object|
 >>> markPrice| string| The futures markPrice at the time of transaction, the spot is indexPrice, and the option is the markPrice of the underlying Price.  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     GET /v5/rfq/public-trades HTTP/1.1  
@@ -50,6 +55,16 @@ result| Object|
     X-BAPI-TIMESTAMP: 1676430842094  
     X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_public_trades())  
     
 
 ### Response Example
@@ -123,7 +138,7 @@ result| Object|
 
 ### HTTP 請求
 
-GET `/v5/rfq/public-trades`
+GET`/v5/rfq/public-trades`
 
 ### 請求參數
 

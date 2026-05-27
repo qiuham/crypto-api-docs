@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/coin-greeks
 api_type: Account
-updated_at: 2026-01-16T09:37:57.112275
+updated_at: 2026-05-27 19:13:56.669388
 ---
 
 # Get Coin Greeks
@@ -17,7 +17,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/asset/coin-greeks`
+GET`/v5/asset/coin-greeks`
 
 ### Request Parameters
 
@@ -122,7 +122,7 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/asset/coin-greeks`
+GET`/v5/asset/coin-greeks`
 
 ### 請求參數
 

@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/coinstate
 api_type: REST
-updated_at: 2026-01-16T09:41:04.115373
+updated_at: 2026-05-27 19:22:03.754483
 ---
 
 # Get Coin State
 
 ### HTTP Request
 
-GET `/v5/spot-margin-trade/coinstate`
+GET`/v5/spot-margin-trade/coinstate`
 
 ### Request Parameters
 
@@ -45,7 +45,15 @@ list| arrayList| Object
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.spot_margin_trade_get_coin_state(  
+        currency="BTC"  
+    ))  
     
     
     
@@ -136,7 +144,7 @@ list| arrayList| Object
 
 ### HTTP 請求
 
-GET `/v5/spot-margin-trade/coinstate`
+GET`/v5/spot-margin-trade/coinstate`
 
 ### 請求參數
 

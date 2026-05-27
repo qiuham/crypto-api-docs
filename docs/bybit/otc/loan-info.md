@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/loan-info
 api_type: REST
-updated_at: 2026-01-16T09:40:16.805414
+updated_at: 2026-05-27 19:20:56.631222
 ---
 
 # Get Loan Orders
@@ -11,7 +11,7 @@ Get up to 2 years worth of historical loan orders.
 
 ### HTTP Request
 
-GET `/v5/ins-loan/loan-order`
+GET`/v5/ins-loan/loan-order`
 
 ### Request Parameters
 
@@ -38,7 +38,7 @@ loanInfo| array| Object
 > repaidAmount| string| Repaid principal  
 > repaidInterest| string| Repaid interest  
 > interestRate| string| Daily interest rate  
-> status| string| `1`：outstanding; `2`：paid off  
+> status| string| `1`: outstanding; `2`: paid off  
 > leverage| string| The maximum leverage for this loan product  
 > supportSpot| string| Whether to support spot. `0`:false; `1`:true  
 > supportContract| string| Whether to support contract . `0`:false; `1`:true  
@@ -279,7 +279,7 @@ loanInfo| array| Object
 
 ### HTTP 請求
 
-GET `/v5/ins-loan/loan-order`
+GET`/v5/ins-loan/loan-order`
 
 ### 請求參數
 

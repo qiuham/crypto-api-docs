@@ -2,190 +2,211 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/dcp-info
 api_type: Account
-updated_at: 2026-01-16T09:37:57.243245
+updated_at: 2026-05-27 19:13:59.439811
 ---
 
-# Get DCP Info
+# Get Fee Rate
 
-Query the DCP configuration of the account. Before calling the interface, please make sure you have applied for the UTA account DCP configuration with your account manager
-
-  * Only the configured main / sub account can query information from this API. Calling this API by an account always returns empty.
-
-  * If you only request to activate Spot trading for DCP, the contract and options data will not be returned.
-
-
-
-
-info
-
-  * Support USDT Perpetuals, USDT Futures, USDC Perpetuals, USDC Futures, Inverse Perpetuals, Inverse Futures [DERIVATIVES]  
-Spot [SPOT]  
-Options [OPTIONS]
-
-
+Get the trading fee rate.
 
 ### HTTP Request
 
-GET `/v5/account/query-dcp-info`
+GET`/v5/account/fee-rate`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+category| **true**|  string| Product type. `spot`, `linear`, `inverse`, `option`  
+symbol| false| string| Symbol name, like `BTCUSDT`, uppercase only. Valid for `linear`, `inverse`, `spot`  
+baseCoin| false| string| Base coin, uppercase only. `SOL`, `BTC`, `ETH`. Valid for `option`  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-dcpInfos| array<object>| DCP config for each product  
-> product| string| `SPOT`, `DERIVATIVES`, `OPTIONS`  
-> dcpStatus| string| [Disconnected-CancelAll-Prevention](/docs/v5/order/dcp) status: `ON`  
-> timeWindow| string| DCP trigger time window which user pre-set. Between [3, 300] seconds, default: 10 sec  
+category| string| Product type. `spot`, `option`. _Derivatives does not have this field_  
+list| array| Object  
+> symbol| string| Symbol name. Keeps `""` for Options  
+> baseCoin| string| Base coin. `SOL`, `BTC`, `ETH`
+
+  * Spot and Derivatives does not have this field
+
   
+> takerFeeRate| string| Taker fee rate  
+> makerFeeRate| string| Maker fee rate  
+[](/docs/api-explorer/v5/account/fee-rate)
+
+* * *
+
 ### Request Example
 
   * HTTP
+  * Python
   * Node.js
 
 
     
     
-    GET /v5/account/query-dcp-info HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/account/fee-rate?symbol=ETHUSDT HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1717065530867  
+    X-BAPI-TIMESTAMP: 1676360412362  
     X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_fee_rates(  
+        symbol="ETHUSDT",  
+    ))  
     
     
     
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .getDCPInfo()  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .getFeeRate({  
+            category: 'linear',  
+            symbol: 'ETHUSDT',  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### Response Example
     
     
-    // it means my account enables Spot and Deriviatvies on the backend  
-    // Options is not enabled with DCP  
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "OK",  
         "result": {  
-            "dcpInfos": [  
+            "list": [  
                 {  
-                    "product": "SPOT",  
-                    "dcpStatus": "ON",  
-                    "timeWindow": "10"  
-                },  
-                {  
-                    "product": "DERIVATIVES",  
-                    "dcpStatus": "ON",  
-                    "timeWindow": "10"  
+                    "symbol": "ETHUSDT",  
+                    "takerFeeRate": "0.0006",  
+                    "makerFeeRate": "0.0001"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1717065531697  
+        "time": 1676360412576  
     }
 
 ---
 
-# 查詢DCP配置
+# 查詢手續費率
 
-查詢帳戶的期貨 / 現貨 / 期權的dcp配置. 在調用接口前, 請確保已經和客戶經理申請了帳戶DCP開通
-
-  * 只有配置了的母子帳戶能夠從該接口查詢到信息, 沒有配置的母帳戶或者子帳戶調用該接口總是返回空
-  * 在配置時, 若只申請部分業務線, 比如只申請開通期貨, 則現貨和期權是不會返回數據的
-
-
+查詢交易手續費率
 
 ### HTTP 請求
 
-GET `/v5/account/query-dcp-info`
-
-### 請求參數
-
-無
-
+GET`/v5/account/fee-rate`參數| 是否必需| 類型| 說明  
+---|---|---|---  
+category| **true**|  string| 產品類型. `spot`, `linear`, `inverse`, `option`  
+symbol| false| string| 合約名稱. 僅`spot`, `linear`, `inverse`有效  
+baseCoin| false| string| 交易幣種. `SOL`, `BTC`, `ETH`.僅`option`有效  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-dcpInfos| array<object>|   
-> product| string| `SPOT`, `DERIVATIVES`, `OPTIONS`  
-> dcpStatus| string| [設置斷線保護時間](/docs/zh-TW/v5/order/dcp) 開關狀態: `ON`  
-> timeWindow| string| 設置的DCP觸發時間窗口. 範圍為[3, 300] 秒, 默認: 10 秒  
+category| string| 產品類型. `spot`, `option`. _期貨不返回該字段_  
+list| array| Object  
+> symbol| string| 合約名稱. 期權總是為`""`  
+> baseCoin| string| 交易幣種. `SOL`, `BTC`, `ETH`
+
+  * 現貨和期貨不返回該字段
+
   
+> takerFeeRate| string| 吃單手續費率  
+> makerFeeRate| string| 掛單手續費率  
+[](/docs/zh-TW/api-explorer/v5/account/fee-rate)
+
+* * *
+
 ### 請求示例
 
   * HTTP
+  * Python
   * Node.js
 
 
     
     
-    GET /v5/account/query-dcp-info HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/account/fee-rate?symbol=ETHUSDT HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1717065530867  
+    X-BAPI-TIMESTAMP: 1676360412362  
     X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_fee_rates(  
+        symbol="ETHUSDT",  
+    ))  
     
     
     
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .getDCPInfo()  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .getFeeRate({  
+            category: 'linear',  
+            symbol: 'ETHUSDT',  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### 響應示例
     
     
-    // 下面這個實例意味著帳戶只配置了現貨和期貨的dcp功能  
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "OK",  
         "result": {  
-            "dcpInfos": [  
+            "list": [  
                 {  
-                    "product": "SPOT",  
-                    "dcpStatus": "ON",  
-                    "timeWindow": "10"  
-                },  
-                {  
-                    "product": "DERIVATIVES",  
-                    "dcpStatus": "ON",  
-                    "timeWindow": "10"  
+                    "symbol": "ETHUSDT",  
+                    "takerFeeRate": "0.0006",  
+                    "makerFeeRate": "0.0001"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1717065531697  
+        "time": 1676360412576  
     }

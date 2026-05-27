@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/account-info
 api_type: REST
-updated_at: 2026-01-16T09:38:57.105197
+updated_at: 2026-05-27 19:16:01.063654
 ---
 
 # Get Account Info
@@ -17,7 +17,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/broker/account-info`
+GET`/v5/broker/account-info`
 
 ### Request Parameters
 
@@ -123,7 +123,7 @@ ts| string| System timestamp (ms)
 
 ### HTTP 請求
 
-GET `/v5/broker/account-info`
+GET`/v5/broker/account-info`
 
 ### 請求參數
 

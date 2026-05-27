@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/index-components
 api_type: Market Data
-updated_at: 2026-01-16T09:39:25.039500
+updated_at: 2026-05-27 19:18:17.583695
 ---
 
 # Get Index Price Components
 
 ### HTTP Request
 
-GET `/v5/market/index-price-components`
+GET`/v5/market/index-price-components`
 
 ### Request Parameters
 
@@ -48,7 +48,15 @@ components| array| List of components contributing to the index price
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_index_price_components(  
+        indexName="1000BTTUSDT"  
+    ))  
     
     
     
@@ -134,7 +142,7 @@ components| array| List of components contributing to the index price
 
 ### HTTP 請求
 
-GET `/v5/market/index-price-components`
+GET`/v5/market/index-price-components`
 
 ### 請求參數
 

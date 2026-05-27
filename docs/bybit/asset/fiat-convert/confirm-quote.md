@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/confirm-quote
 api_type: REST
-updated_at: 2026-01-16T09:38:39.537482
+updated_at: 2026-05-27 19:15:09.323660
 ---
 
 # Confirm a Quote
@@ -16,7 +16,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/fiat/trade-execute`
+POST`/v5/fiat/trade-execute`
 
 ### Request Parameters
 
@@ -26,7 +26,10 @@ quoteTxId| **true**|  string| The quote tx ID from [Request a Quote](/docs/v5/as
 subUserId| **true**|  string| The user's sub userId in bybit  
 webhookUrl| false| string| API URL to call when order is successful or failed (max 256 characters)  
 MerchantRequestId| false| string| Customised request ID(maximum length of 36)
-* Generally it is useless, but it is convenient to track the quote request internally if you fill this field  
+
+  * Generally it is useless, but it is convenient to track the quote request internally if you fill this field
+
+  
   
 ### Response Parameters
 
@@ -38,6 +41,7 @@ merchantRequestId| string| Customised request ID
 ### Request Example
 
   * HTTP
+  * Python
 
 
     
@@ -55,6 +59,19 @@ merchantRequestId| string| Customised request ID
         "quoteTxId": "QuoteTaxId123456",  
         "subUserId":"43456"  
     }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.confirm_a_quote_fiat_convert(  
+        quoteTxId="QuoteTaxId123456",  
+        subUserId="43456"  
+    ))  
     
 
 ### Response Example
@@ -82,7 +99,7 @@ merchantRequestId| string| Customised request ID
 
 ### HTTP 請求
 
-POST `/v5/fiat/trade-execute`
+POST`/v5/fiat/trade-execute`
 
 ### 請求參數
 
@@ -92,7 +109,10 @@ quoteTxId| **true**|  string| 報價交易 ID，來源於 [申請報價](/docs/z
 subUserId| **true**|  string| 用戶在 Bybit 平台的子用戶 ID  
 webhookUrl| false| string| 當訂單成功或失敗時調用的 API URL（最多 256 個字符）  
 merchantRequestId| false| string| 自定義請求 ID（最大長度為 36）
-* 通常無需填寫，但如果填寫此字段，便於內部跟踪報價請求  
+
+  * 通常無需填寫，但如果填寫此字段，便於內部跟踪報價請求
+
+  
   
 ### 響應參數
 

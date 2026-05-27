@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-config
 api_type: Trading
-updated_at: 2026-01-16T09:40:50.478074
+updated_at: 2026-05-27 19:21:44.918550
 ---
 
 # Get RFQ Configuration
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/rfq/config`
+GET`/v5/rfq/config`
 
 ### Request Parameters
 
@@ -46,6 +46,11 @@ list| Object|
 >> type| string| Quoter type. `LP` is an automated market maker connected via API, null means a normal quoting party  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     GET /v5/rfq/create-rfq HTTP/1.1  
@@ -54,6 +59,16 @@ list| Object|
     X-BAPI-TIMESTAMP: 1676430842094  
     X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_rfq_config())  
     
 
 ### Response Example
@@ -113,7 +128,7 @@ list| Object|
 
 ### HTTP 請求
 
-GET `/v5/rfq/config`
+GET`/v5/rfq/config`
 
 ### 請求參數
 

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/reset-mmp
 api_type: Account
-updated_at: 2026-01-16T09:38:06.747297
+updated_at: 2026-05-27 19:14:10.238925
 ---
 
 # Reset MMP
@@ -16,7 +16,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/account/mmp-reset`
+POST`/v5/account/mmp-reset`
 
 ### Request Parameters
 
@@ -102,7 +102,7 @@ None
 
 ### HTTP 請求
 
-POST `/v5/account/mmp-reset`
+POST`/v5/account/mmp-reset`
 
 ### 請求參數
 

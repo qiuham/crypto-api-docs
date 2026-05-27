@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/sub-deposit-record
 api_type: REST
-updated_at: 2026-01-16T09:38:57.236753
+updated_at: 2026-05-27 19:16:07.820009
 ---
 
 # Get Sub Account Deposit Records
@@ -13,11 +13,14 @@ Exchange broker can query subaccount's deposit records by **main** UID's API key
 
 tip
 
-`endTime` \- `startTime` should be less than 30 days. Queries for the last 30 days worth of records by default.
+  * `endTime` \- `startTime` should be less than 30 days. Queries for the last 30 days worth of records by default.
+  * Sort by deposit creation time in descending order.
+
+
 
 ### HTTP Request
 
-GET `/v5/broker/asset/query-sub-member-deposit-record`
+GET`/v5/broker/asset/query-sub-member-deposit-record`
 
 ### Request Parameters
 
@@ -54,11 +57,14 @@ rows| array| Object
 > batchReleaseLimit| string| The deposit limit for this coin in this chain. `"-1"` means no limit  
 > depositType| string| The deposit type. `0`: normal deposit, `10`: the deposit reaches daily deposit limit, `20`: abnormal deposit  
 > fromAddress| string| From address of deposit, only shown when the deposit comes from on-chain and from address is unique, otherwise gives `""`  
-> taxDepositRecordsId| string| This field is used for tax purposes by Bybit EU (Austria) users， declare tax id  
+> taxDepositRecordsId| string| This field is used for tax purposes by Bybit EU (Austria) users, declare tax id  
 > taxStatus| integer| This field is used for tax purposes by Bybit EU (Austria) users 
-* 0: No reporting required
-* 1: Reporting pending
-* 2: Reporting completed  
+
+  * 0: No reporting required
+  * 1: Reporting pending
+  * 2: Reporting completed
+
+  
 nextPageCursor| string| Refer to the `cursor` request parameter  
   
 ### Request Example
@@ -136,11 +142,14 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 提示
 
-`endTime` \- `startTime` 需要小於等於30天. 默認查詢最近30天的紀錄
+  * `endTime` \- `startTime` 需要小於等於30天. 默認查詢最近30天的紀錄
+  * 按照充值創建時間倒序排序
+
+
 
 ### HTTP 請求
 
-GET `/v5/broker/asset/query-sub-member-deposit-record`
+GET`/v5/broker/asset/query-sub-member-deposit-record`
 
 ### 請求參數
 
@@ -179,9 +188,12 @@ rows| array| Object
 > fromAddress| string| 入金來源地址, 僅當入金來自鏈上且來源地址唯一時返回地址, 其餘則返回`""`  
 > taxDepositRecordsId| string| Bybit EU（奧地利）用戶用於稅務目的, 保稅記錄id  
 > taxStatus| integer| Bybit EU（奧地利）用戶用於稅務目的 
-* 0: No reporting required
-* 1: Reporting pending
-* 2: Reporting completed  
+
+  * 0: No reporting required
+  * 1: Reporting pending
+  * 2: Reporting completed
+
+  
 nextPageCursor| string| 游標，用於翻頁  
   
 ### 請求示例

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/market/recent-trade
 api_type: Market Data
-updated_at: 2026-01-16T09:41:16.640190
+updated_at: 2026-05-27 19:22:27.714028
 ---
 
 # Get Recent Public Trades
@@ -11,7 +11,7 @@ Query recent public spread trading history in Bybit.
 
 ### HTTP Request
 
-GET `/v5/spread/recent-trade`
+GET`/v5/spread/recent-trade`
 
 ### Request Parameters
 
@@ -34,10 +34,28 @@ list| array<object>| Public trade info
 > seq| string| Cross sequence  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     GET /v5/spread/recent-trade?symbol=SOLUSDT_SOL/USDT&limit=2 HTTP/1.1  
     Host: api-testnet.bybit.com  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.spread_get_public_trade_history(  
+        symbol="SOLUSDT_SOL/USDT",  
+        limit=2  
+    ))  
     
 
 ### Response Example
@@ -78,7 +96,7 @@ list| array<object>| Public trade info
 
 ### HTTP請求
 
-GET `/v5/spread/recent-trade`
+GET`/v5/spread/recent-trade`
 
 ### 請求參數
 

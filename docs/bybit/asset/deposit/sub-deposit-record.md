@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record
 api_type: REST
-updated_at: 2026-01-16T09:38:35.284891
+updated_at: 2026-05-27 19:15:05.825465
 ---
 
 # Get Sub Deposit Records (on-chain)
@@ -15,7 +15,7 @@ tip
 
 ### HTTP Request
 
-GET `/v5/asset/deposit/query-sub-member-record`
+GET`/v5/asset/deposit/query-sub-member-record`
 
 ### Request Parameters
 
@@ -51,11 +51,14 @@ rows| array| Object
 > batchReleaseLimit| string| The deposit limit for this coin in this chain. `"-1"` means no limit  
 > depositType| string| The deposit type. `0`: normal deposit, `10`: the deposit reaches daily deposit limit, `20`: abnormal deposit  
 > fromAddress| string| From address of deposit, only shown when the deposit comes from on-chain and from address is unique, otherwise gives `""`  
-> taxDepositRecordsId| string| This field is used for tax purposes by Bybit EU (Austria) users， declare tax id  
+> taxDepositRecordsId| string| This field is used for tax purposes by Bybit EU (Austria) users, declare tax id  
 > taxStatus| integer| This field is used for tax purposes by Bybit EU (Austria) users 
-* 0: No reporting required
-* 1: Reporting pending
-* 2: Reporting completed  
+
+  * 0: No reporting required
+  * 1: Reporting pending
+  * 2: Reporting completed
+
+  
 nextPageCursor| string| Refer to the `cursor` request parameter  
 [](/docs/api-explorer/v5/asset/sub-deposit-record)
 
@@ -143,7 +146,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/asset/deposit/query-sub-member-record`
+GET`/v5/asset/deposit/query-sub-member-record`
 
 ### 請求參數
 
@@ -181,9 +184,12 @@ rows| array| Object
 > fromAddress| string| 入金來源地址, 僅當入金來自鏈上且來源地址唯一時返回地址, 其餘則返回`""`  
 > taxDepositRecordsId| string| Bybit EU（奧地利）用戶用於稅務目的, 保稅記錄id  
 > taxStatus| integer| Bybit EU（奧地利）用戶用於稅務目的 
-* 0: No reporting required
-* 1: Reporting pending
-* 2: Reporting completed  
+
+  * 0: No reporting required
+  * 1: Reporting pending
+  * 2: Reporting completed
+
+  
 nextPageCursor| string| 游標，用於翻頁  
 [](/docs/zh-TW/api-explorer/v5/asset/sub-deposit-record)
 

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/position
 api_type: WebSocket
-updated_at: 2026-01-16T09:41:49.629932
+updated_at: 2026-05-27 19:23:15.968980
 ---
 
 # Position
@@ -44,19 +44,34 @@ return an empty string `""` for an empty position
 > riskLimitValue| string| Risk limit value, become meaningless when auto risk-limit tier is applied  
  _for portfolio margin mode, this field returns 0, which means risk limit rules are invalid_  
 > entryPrice| string| Average entry price 
-* For USDC Perp & Futures, it indicates average entry price, and it will not be changed with 8-hour session settlement  
+
+  * For USDC Perp & Futures, it indicates average entry price, and it will not be changed with 8-hour session settlement
+
+  
 > markPrice| string| Mark price  
 > leverage| string| Position leverage  
  _for portfolio margin mode, this field returns "", which means leverage rules are invalid_  
 > breakEvenPrice| string| Break even price, only for `linear`,`inverse`. 
-* breakeven_price = (entry_price _qty - realized_pnl) / (qty - abs(qty)_ max(taker fee rate, 0.00055))  
+
+  * breakeven_price = (entry_price _qty - realized_pnl) / (qty - abs(qty)_ max(taker fee rate, 0.00055))
+
+  
 > autoAddMargin| integer| Whether to add margin automatically when using isolated margin mode 
-* `0`: false
-* `1`: true  
+
+  * `0`: false
+  * `1`: true
+
+  
 > positionIM| string| Initial margin, the same value as `positionIMByMp`, please note this change [The New Margin Calculation: Adjustments and Implications](https://www.bybit.com/en/help-center/article/Understanding-the-Adjustment-and-Impact-of-the-New-Margin-Calculation)
-* Portfolio margin mode: returns ""  
+
+  * Portfolio margin mode: returns ""
+
+  
 > positionMM| string| Maintenance margin, the same value as `positionMMByMp`
-* Portfolio margin mode: returns ""  
+
+  * Portfolio margin mode: returns ""
+
+  
 > liqPrice| string| Position liquidation price 
 
   * Isolated margin:   
@@ -92,6 +107,7 @@ it is an **estimated** price for cross positions(because the unified mode contro
   
 > createdTime| string| Timestamp of the first time a position was created on this symbol (ms)  
 > updatedTime| string| Position data updated timestamp (ms)  
+> openTime| integer| Position open timestamp (ms), default: `0`  
 > seq| long| Cross sequence, used to associate each fill and each position update
 
   * Different symbols may have the same seq, please use seq + symbol to check unique
@@ -103,24 +119,30 @@ it is an **estimated** price for cross positions(because the unified mode contro
 
   * When isReduceOnly=`true`: the timestamp (ms) when the MMR will be forcibly adjusted by the system
 When isReduceOnly=`false`: the timestamp when the MMR had been adjusted by system
-  * It returns the timestamp when the system operates, and if you manually operate, there is no timestamp
-  * Keeps `""` by default, if there was a lower risk limit system adjustment previously, it shows that system operation timestamp
-  * Only meaningful for isolated margin & cross margin of USDT Perp, USDC Perp, USDC Futures, Inverse Perp and Inverse Futures, meaningless for others
+    * It returns the timestamp when the system operates, and if you manually operate, there is no timestamp
+    * Keeps `""` by default, if there was a lower risk limit system adjustment previously, it shows that system operation timestamp
+    * Only meaningful for isolated margin & cross margin of USDT Perp, USDC Perp, USDC Futures, Inverse Perp and Inverse Futures, meaningless for others
 
   
 > leverageSysUpdatedTime| string| Useful when Bybit lower the risk limit 
 
   * When isReduceOnly=`true`: the timestamp (ms) when the leverage will be forcibly adjusted by the system
 When isReduceOnly=`false`: the timestamp when the leverage had been adjusted by system
-  * It returns the timestamp when the system operates, and if you manually operate, there is no timestamp
-  * Keeps `""` by default, if there was a lower risk limit system adjustment previously, it shows that system operation timestamp
-  * Only meaningful for isolated margin & cross margin of USDT Perp, USDC Perp, USDC Futures, Inverse Perp and Inverse Futures, meaningless for others
+    * It returns the timestamp when the system operates, and if you manually operate, there is no timestamp
+    * Keeps `""` by default, if there was a lower risk limit system adjustment previously, it shows that system operation timestamp
+    * Only meaningful for isolated margin & cross margin of USDT Perp, USDC Perp, USDC Futures, Inverse Perp and Inverse Futures, meaningless for others
 
   
 > positionIMByMp| string| Initial margin calculated by mark price, the same value as `positionIM`
-* Portfolio margin mode: returns ""  
+
+  * Portfolio margin mode: returns ""
+
+  
 > positionMMByMp| string| Maintenance margin calculated by mark price, the same value as `positionMM`
-* Portfolio margin mode: returns ""  
+
+  * Portfolio margin mode: returns ""
+
+  
 > tpslMode| string| **Deprecated** , always "Full"  
 > bustPrice| string| **Deprecated** , always `""`  
 > positionBalance| string| **Deprecated** , can refer to `positionIM` or `positionIMByMp` field  
@@ -242,23 +264,41 @@ data| array| Object
 _若賬戶為組合保證金模式(PM), 該字段返回0, 風險限額規則失效_  
 > riskLimitValue| string| 由於自動升降檔機制, 該字段變得**無意義**   
 _若賬戶為組合保證金模式(PM)，該字段返回"", 風險限額規則失效_  
-> avgPrice| string| 當前倉位的平均入場價格 
+> entryPrice| string| 當前倉位的平均入場價格 
 * 對於8小時結算的USDC合約倉位, 該字段表示的是平均開倉價格, 不隨著結算而改變  
 > markPrice| string| 標記價  
 > leverage| string| 槓桿. _注意: 組合保證金模式下，該字段返回""，槓桿規則失效_  
 > breakEvenPrice| string| 損益平衡價，**仅适用于合约**. 
-* breakeven_price = (entry_price _qty - realized_pnl) / (qty - abs(qty)_ max(taker fee rate, 0.00055))  
+
+  * breakeven_price = (entry_price _qty - realized_pnl) / (qty - abs(qty)_ max(taker fee rate, 0.00055))
+
+  
 > autoAddMargin| integer| 是否自動追加保證金, _反向合約不支持設置自動追加保證金_
-* `0`: 否
-* `1`: 是  
+
+  * `0`: 否
+  * `1`: 是
+
+  
 > positionIM| string| 倉位起始保證金(用mark price計算), 值和`positionIMByMp`保持相同, 请看这个这则[调整](https://www.bybit.com/zh-TW/help-center/article/Understanding-the-Adjustment-and-Impact-of-the-New-Margin-Calculation)
-* 組合保證金模式(PM)下, 該字段返回為空字符串  
+
+  * 組合保證金模式(PM)下, 該字段返回為空字符串
+
+  
 > positionIMByMp| string| 倉位起始保證金(過渡期字段, 用mark price計算), 值和`positionIM`保持相同 
-* 組合保證金模式(PM)下, 該字段返回為空字符串  
+
+  * 組合保證金模式(PM)下, 該字段返回為空字符串
+
+  
 > positionMM| string| 倉位維持保證金(用mark price計算) 
-* 組合保證金模式(PM)下, 該字段返回為空字符串  
+
+  * 組合保證金模式(PM)下, 該字段返回為空字符串
+
+  
 > positionMMByMp| string| 倉位維持保證金(過渡期字段, 用mark price計算) 
-* 組合保證金模式(PM)下, 該字段返回為空字符串  
+
+  * 組合保證金模式(PM)下, 該字段返回為空字符串
+
+  
 > liqPrice| string| 倉位強平價格
 
   * 逐倉保證金:  
@@ -287,6 +327,7 @@ _對於組合保證金模式, 此字段為空, 不會提供強平價格_
 > [adlRankIndicator](/docs/zh-TW/v5/enum#adlrankindicator)| integer| 自動減倉燈. [什麼是自動減倉機制?](https://www.bybit.com/zh-TW/help-center/s/article/What-is-Auto-Deleveraging-ADL)  
 > createdTime| string| 倉位創建時間戳 (毫秒)  
 > updatedTime| string| 倉位數據更新時間戳 (毫秒)  
+> openTime| integer| 開倉時間, 默認: `0`  
 > seq| long| 序列號, 用於關聯成交和倉位的更新
 
   * 不同的幣對會存在相同seq, 可以使用seq + symbol來做唯一性識別
@@ -305,18 +346,18 @@ _對於組合保證金模式, 此字段為空, 不會提供強平價格_
 
   * 當isReduceOnly=`true`: 這個時間戳表示系統強制修改MMR的時間
 當isReduceOnly=`false`: 若不為空, 則表示系統已經完成了MMR調整的時間
-  * 僅當系統調整才會賦值, 對於主動的調整, 不會在這裡展示時間戳
-  * 默認為`""`, 但如果曾經這個symbol有過系統降檔的操作, 那麼這裡會顯示上一次操作的時間
-  * 僅對逐倉和全倉的期貨倉位有意義
+    * 僅當系統調整才會賦值, 對於主動的調整, 不會在這裡展示時間戳
+    * 默認為`""`, 但如果曾經這個symbol有過系統降檔的操作, 那麼這裡會顯示上一次操作的時間
+    * 僅對逐倉和全倉的期貨倉位有意義
 
   
 > leverageSysUpdatedTime| string| 僅當Bybit需要降低某個Symbol的風險限額時有用 
 
   * 當isReduceOnly=`true`: 這個時間戳表示系統強制修改槓桿的時間
 當isReduceOnly=`false`: 若不為空, 則表示系統已經完成了槓桿調整的時間
-  * 僅當系統調整才會賦值, 對於主動的調整, 不會在這裡展示時間戳
-  * 默認為`""`, 但如果曾經這個symbol有過系統降檔的操作, 那麼這裡會顯示上一次操作的時間
-  * 僅對逐倉和全倉的期貨倉位有意義
+    * 僅當系統調整才會賦值, 對於主動的調整, 不會在這裡展示時間戳
+    * 默認為`""`, 但如果曾經這個symbol有過系統降檔的操作, 那麼這裡會顯示上一次操作的時間
+    * 僅對逐倉和全倉的期貨倉位有意義
 
   
 > tradeMode| integer| 該字段**廢棄** , 總是 `0`, 請通過接口[查詢賬戶配置](/docs/zh-TW/v5/account/account-info)查詢帳戶保證金模式  

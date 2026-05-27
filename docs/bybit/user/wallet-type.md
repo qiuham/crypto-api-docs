@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/wallet-type
 api_type: REST
-updated_at: 2026-01-16T09:41:39.349455
+updated_at: 2026-05-27 19:23:09.026660
 ---
 
 # Get UID Wallet Type
@@ -18,7 +18,7 @@ tip
 
 ### HTTP Request
 
-GET `/v5/user/get-member-type`
+GET`/v5/user/get-member-type`
 
 ### Request Parameters
 
@@ -63,7 +63,15 @@ accounts| array| Object
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_uid_wallet_type(  
+        memberIds="subUID1,subUID2"  
+    ))  
     
     
     
@@ -138,7 +146,7 @@ accounts| array| Object
 
 ### HTTP 請求
 
-GET `/v5/user/get-member-type`
+GET`/v5/user/get-member-type`
 
 ### 請求參數
 

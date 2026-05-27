@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/premium-index-kline
 api_type: Market Data
-updated_at: 2026-01-16T09:39:36.189560
+updated_at: 2026-05-27 19:18:31.633400
 ---
 
 # Get Premium Index Price Kline
@@ -13,7 +13,7 @@ Query for historical [premium index](https://www.bybit.com/data/basic/linear/ind
 
 ### HTTP Request
 
-GET `/v5/market/premium-index-price-kline`
+GET`/v5/market/premium-index-price-kline`
 
 ### Request Parameters
 
@@ -158,14 +158,17 @@ list| array|
 
 ### HTTP請求
 
-GET `/v5/market/premium-index-price-kline`
+GET`/v5/market/premium-index-price-kline`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
 [category](/docs/zh-TW/v5/enum#category)| false| string| 產品類型. `linear`
-* 當`category`不指定時, 默認是`linear`  
+
+  * 當`category`不指定時, 默認是`linear`
+
+  
 symbol| **true**|  string| 合約名稱  
 [interval](/docs/zh-TW/v5/enum#interval)| **true**|  string| 時間粒度. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`M`,`W`  
 start| false| integer| 開始時間戳 (毫秒)  

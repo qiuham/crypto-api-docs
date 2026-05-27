@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/transaction
 api_type: WebSocket
-updated_at: 2026-01-16T09:40:59.556146
+updated_at: 2026-05-27 19:21:51.742695
 ---
 
 # Execution
@@ -43,7 +43,7 @@ data| array|
 >> execId| string| The unique exec(trade) ID from the exchange  
 >> resultCode| integer| The status code of the this order. "0" means success  
 >>resultMessage| string| Error message about resultCode. If resultCode is "0", resultMessage is "".  
->> rejectParty| string| Empty if status is `Filled`. Valid values: `Taker` or `Maker` if status is `Rejected`，"rejectParty=`bybit`" to indicate errors that occur on the Bybit side.  
+>> rejectParty| string| Empty if status is `Filled`. Valid values: `Taker` or `Maker` if status is `Rejected`, "rejectParty=`bybit`" to indicate errors that occur on the Bybit side.  
   
 ### Subscribe Example
     

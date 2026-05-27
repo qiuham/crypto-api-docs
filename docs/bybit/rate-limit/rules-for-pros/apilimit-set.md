@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rate-limit/rules-for-pros/apilimit-set
 api_type: REST
-updated_at: 2026-01-16T09:40:36.831894
+updated_at: 2026-05-27 19:21:27.821211
 ---
 
 # Set Rate Limit
@@ -19,7 +19,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/apilimit/set`
+POST`/v5/apilimit/set`
 
 ### Request Parameters
 
@@ -42,6 +42,12 @@ list| array| Object
 > [msg](/docs/v5/enum#msg)| string| Result message  
   
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
     POST /v5/apilimit/set HTTP/1.1  
@@ -61,6 +67,28 @@ list| array| Object
             }  
         ]  
     }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.set_api_rate_limit(  
+        list=[  
+            {  
+                "uids": "106293838",  
+                "bizType": "DERIVATIVES",  
+                "rate": 50  
+            }  
+        ]  
+    ))  
+    
+    
+    
+      
     
 
 ### Response Example
@@ -102,7 +130,7 @@ list| array| Object
 
 ### HTTP 請求
 
-POST `/v5/apilimit/set`
+POST`/v5/apilimit/set`
 
 ### 請求參數
 

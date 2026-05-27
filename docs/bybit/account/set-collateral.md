@@ -2,34 +2,31 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-collateral
 api_type: Account
-updated_at: 2026-01-16T09:38:06.809937
+updated_at: 2026-05-27 19:14:12.428339
 ---
 
-# Set Collateral Coin
+# Set Margin Mode
 
-You can decide whether the assets in the Unified account needs to be collateral coins.
+Default is regular margin mode
 
 ### HTTP Request
 
-POST `/v5/account/set-collateral-switch`
+POST`/v5/account/set-margin-mode`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| **true**|  string| Coin name, uppercase only 
-
-  * You can get collateral coin from [here](/docs/v5/account/collateral-info)
-  * USDT, USDC cannot be set
-
-  
-collateralSwitch| **true**|  string| `ON`: switch on collateral, `OFF`: switch off collateral  
+setMarginMode| **true**|  string| `ISOLATED_MARGIN`, `REGULAR_MARGIN`(i.e. Cross margin), `PORTFOLIO_MARGIN`  
   
 ### Response Parameters
 
-None
-
-[](/docs/api-explorer/v5/account/set-collateral)
+Parameter| Type| Comments  
+---|---|---  
+reasons| array| Object. If requested successfully, it is an empty array  
+> reasonCode| string| Fail reason code  
+> reasonMsg| string| Fail reason msg  
+[](/docs/api-explorer/v5/account/set-margin-mode)
 
 * * *
 
@@ -42,18 +39,16 @@ None
 
     
     
-    POST /v5/account/set-collateral-switch HTTP/1.1  
+    POST /v5/account/set-margin-mode HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1690513916181  
+    X-BAPI-TIMESTAMP: 1672134396332  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 55  
       
     {  
-        "coin": "BTC",  
-        "collateralSwitch": "ON"  
+        "setMarginMode": "PORTFOLIO_MARGIN"  
     }  
     
     
@@ -64,9 +59,8 @@ None
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.set_collateral_coin(  
-        coin="BTC",  
-        collateralSwitch="ON"  
+    print(session.set_margin_mode(  
+        setMarginMode="PORTFOLIO_MARGIN",  
     ))  
     
     
@@ -74,62 +68,63 @@ None
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .setCollateralCoin({  
-        coin: 'BTC',  
-        collateralSwitch: 'ON',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .setMarginMode('PORTFOLIO_MARGIN')  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### Response Example
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "SUCCESS",  
-        "result": {},  
-        "retExtInfo": {},  
-        "time": 1690515818656  
+        "retCode": 3400045,  
+        "retMsg": "Set margin mode failed",  
+        "result": {  
+            "reasons": [  
+                {  
+                    "reasonCode": "3400000",  
+                    "reasonMsg": "Equity needs to be equal to or greater than 1000 USDC"  
+                }  
+            ]  
+        }  
     }
 
 ---
 
-# 設置抵押品幣種
+# 設置保證金模式(帳戶)
 
-用戶可以自行決定是否開啟統一帳戶中幣種是否進行抵押，默認都是**關閉** 的
+用戶如果不設置，默認按全倉保證金
 
 ### HTTP 請求
 
-POST `/v5/account/set-collateral-switch`
+POST`/v5/account/set-margin-mode`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| **true**|  string| 幣種名稱 
-
-  * 您可以從[這裡](/docs/zh-TW/v5/account/collateral-info)獲取抵押品幣種
-  * USDT, USDC不支持設置
-
-  
-collateralSwitch| **true**|  string| `ON`: 開啟抵押, `OFF`: 關閉抵押  
+setMarginMode| **true**|  string| `ISOLATED_MARGIN`(逐倉保證金模式)  
+`REGULAR_MARGIN`（全倉保證金模式）  
+`PORTFOLIO_MARGIN`（組合保證金模式）  
   
 ### 響應參數
 
-無
-
-[](/docs/zh-TW/api-explorer/v5/account/set-collateral)
+參數| 類型| 說明  
+---|---|---  
+reasons| array| Object. 若請求提交成功, 則返回空數組  
+> reasonCode| string| 失敗錯誤碼  
+> reasonMsg| string| 失敗錯誤消息  
+[](/docs/zh-TW/api-explorer/v5/account/set-margin-mode)
 
 * * *
 
@@ -142,18 +137,16 @@ collateralSwitch| **true**|  string| `ON`: 開啟抵押, `OFF`: 關閉抵押
 
     
     
-    POST /v5/account/set-collateral-switch HTTP/1.1  
+    POST /v5/account/set-margin-mode HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1690513916181  
+    X-BAPI-TIMESTAMP: 1672134396332  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 55  
       
     {  
-        "coin": "BTC",  
-        "collateralSwitch": "ON"  
+        "setMarginMode": "PORTFOLIO_MARGIN"  
     }  
     
     
@@ -164,9 +157,8 @@ collateralSwitch| **true**|  string| `ON`: 開啟抵押, `OFF`: 關閉抵押
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.set_collateral_coin(  
-        coin="BTC",  
-        collateralSwitch="ON"  
+    print(session.set_margin_mode(  
+        setMarginMode="PORTFOLIO_MARGIN",  
     ))  
     
     
@@ -174,31 +166,33 @@ collateralSwitch| **true**|  string| `ON`: 開啟抵押, `OFF`: 關閉抵押
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .setCollateralCoin({  
-        coin: 'BTC',  
-        collateralSwitch: 'ON',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .setMarginMode('PORTFOLIO_MARGIN')  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### 響應示例
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "SUCCESS",  
-        "result": {},  
-        "retExtInfo": {},  
-        "time": 1690515818656  
+        "retCode": 3400045,  
+        "retMsg": "Set margin mode failed",  
+        "result": {  
+            "reasons": [  
+                {  
+                    "reasonCode": "3400000",  
+                    "reasonMsg": "Equity needs to be equal to or greater than 1000 USDC"  
+                }  
+            ]  
+        }  
     }

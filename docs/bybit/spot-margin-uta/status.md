@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/status
 api_type: REST
-updated_at: 2026-01-16T09:41:12.137025
+updated_at: 2026-05-27 19:22:20.931643
 ---
 
 # Get Status And Leverage
@@ -11,7 +11,7 @@ Query the Spot margin status and leverage
 
 ### HTTP Request
 
-GET `/v5/spot-margin-trade/state`
+GET`/v5/spot-margin-trade/state`
 
 ### Request Parameters
 
@@ -99,7 +99,7 @@ effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal pl
 
 ### HTTP 請求
 
-GET `/v5/spot-margin-trade/state`
+GET`/v5/spot-margin-trade/state`
 
 ### 請求參數
 

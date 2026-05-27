@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/reduce-max-collateral-amt
 api_type: REST
-updated_at: 2026-01-16T09:40:05.113448
+updated_at: 2026-05-27 19:19:09.102439
 ---
 
 # Get Max. Allowed Collateral Reduction Amount
@@ -14,7 +14,7 @@ Retrieve the maximum redeemable amount of your collateral asset based on LTV.
 
 ### HTTP Request
 
-GET `/v5/crypto-loan-common/max-collateral-amount`
+GET`/v5/crypto-loan-common/max-collateral-amount`
 
 ### Request Parameters
 
@@ -85,7 +85,7 @@ maxCollateralAmount| string| Maximum reduction amount
 
 ### HTTP 請求
 
-GET `/v5/crypto-loan-common/max-collateral-amount`
+GET`/v5/crypto-loan-common/max-collateral-amount`
 
 ### 請求參數
 

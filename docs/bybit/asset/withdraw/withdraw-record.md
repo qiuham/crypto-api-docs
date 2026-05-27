@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-record
 api_type: REST
-updated_at: 2026-01-16T09:38:56.974716
+updated_at: 2026-05-27 19:15:33.352186
 ---
 
 # Get Withdrawal Records
@@ -18,7 +18,7 @@ tip
 
 ### HTTP Request
 
-GET `/v5/asset/withdraw/query-record`
+GET`/v5/asset/withdraw/query-record`
 
 ### Request Parameters
 
@@ -50,10 +50,9 @@ rows| array| Object
 > updateTime| string| Withdraw updated timestamp (ms)  
 > withdrawId| string| Withdraw ID  
 > withdrawType| integer| Withdraw type. `0`: on chain. `1`: off chain  
-> fee| string|   
-> tax| string|   
-> taxRate| string|   
-> taxType| string|   
+> tax| string| Tax amount. Applicable to specific users based on Tax Centre configuration. Default: `"0"`  
+> taxRate| string| Tax rate. Applicable to specific users based on Tax Centre configuration. Default: `"0"`  
+> taxType| string| Tax type. Applicable to specific users based on Tax Centre configuration. Default: `""`  
 nextPageCursor| string| Cursor. Used for pagination  
 [](/docs/api-explorer/v5/asset/withdraw-record)
 
@@ -177,7 +176,7 @@ nextPageCursor| string| Cursor. Used for pagination
 
 ### HTTP 請求
 
-GET `/v5/asset/withdraw/query-record`
+GET`/v5/asset/withdraw/query-record`
 
 ### 請求參數
 
@@ -209,10 +208,9 @@ rows| array| Object
 > updateTime| string| 提現更新時間戳 (毫秒)  
 > withdrawId| string| 提現Id  
 > withdrawType| integer| 提現類型. `0`: 鏈上提幣. `1`: 內部轉帳  
-> fee| string|   
-> tax| string|   
-> taxRate| string|   
-> taxType| string|   
+> tax| string| 稅額。根據稅務中心配置對特定用戶有具體值。默認返回 `"0"`  
+> taxRate| string| 稅率。根據稅務中心配置對特定用戶有具體值。默認返回 `"0"`  
+> taxType| string| 稅類型。根據稅務中心配置對特定用戶有具體值。默認返回 `""`  
 [](/docs/zh-TW/api-explorer/v5/asset/withdraw-record)
 
 * * *

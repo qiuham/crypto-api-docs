@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-history
 api_type: REST
-updated_at: 2026-01-16T09:38:29.046714
+updated_at: 2026-05-27 19:14:55.384880
 ---
 
 # Get Convert History
@@ -15,7 +15,7 @@ Starting from September 10, 2025, converts executed on the webpage can also be q
 
 ### HTTP Request
 
-GET `/v5/asset/exchange/query-convert-history`
+GET`/v5/asset/exchange/query-convert-history`
 
 ### Request Parameters
 
@@ -27,9 +27,12 @@ Parameter| Required| Type| Comments
 `funding`: normal crypto convert via web/app  
 `funding_fiat`: fiat crypto convert via web/app  
 `funding_fbtc_convert`: FBTC to BTC convert via web/app  
-`funding_block_trade`: block trade convert via web/app
-* Supports passing multiple types, separated by comma e.g., `eb_convert_funding,eb_convert_uta`
-* Return all wallet types data if not passed  
+`funding_block_trade`: block trade convert via web/app 
+
+  * Supports passing multiple types, separated by comma e.g., `eb_convert_funding,eb_convert_uta`
+  * Return all wallet types data if not passed
+
+  
 index| false| integer| Page number 
 * started from 1
 * 1st page by default  
@@ -58,10 +61,13 @@ list| array<object>| Array of quotes
 > fromAmount| string| From coin amount (amount to sell)  
 > toAmount| string| To coin amount (amount to buy according to exchange rate)  
 > exchangeStatus| string| Exchange status 
-* init
-* processing
-* success
-* failure  
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
 > extInfo| object|   
 >> paramType| string| This field is published when you send it in the [Request a Quote ](/docs/v5/asset/convert/apply-quote)  
 >> paramValue| string| This field is published when you send it in the [Request a Quote ](/docs/v5/asset/convert/apply-quote)  
@@ -175,7 +181,7 @@ list| array<object>| Array of quotes
 
 ### HTTP 請求
 
-GET `/v5/asset/exchange/query-convert-history`
+GET`/v5/asset/exchange/query-convert-history`
 
 ### 請求參數
 
@@ -188,14 +194,23 @@ GET `/v5/asset/exchange/query-convert-history`
 `funding_fiat`: 資金錢包數法兌換(網頁/APP)  
 `funding_fbtc_convert`: 資金錢包FBTC兌換成BTC(網頁/APP)  
 `funding_block_trade`: 大宗兌換兌換(網頁/APP)
-* 支持傳遞多個, 用逗號分開 比如, `eb_convert_funding,eb_convert_uta`
-* 當不傳時, 默認返回所有錢包  
+
+  * 支持傳遞多個, 用逗號分開 比如, `eb_convert_funding,eb_convert_uta`
+  * 當不傳時, 默認返回所有錢包
+
+  
 index| false| integer| 頁碼 
-* 從1開始
-* 不傳時, 默認返回第一頁  
+
+  * 從1開始
+  * 不傳時, 默認返回第一頁
+
+  
 limit| false| integer| 每頁數量 
-* 默認20條
-* 最多支持100條, 大於100, 按照100返回  
+
+  * 默認20條
+  * 最多支持100條, 大於100, 按照100返回
+
+  
   
 ### 響應參數
 
@@ -217,10 +232,13 @@ list| array<object>| 報價單列表
 > fromAmount| string| 兌出幣種數量  
 > toAmount| string| 兌入幣種數量  
 > exchangeStatus| string| 兌換狀態 
-* init
-* processing
-* success
-* failure  
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
 > extInfo| object|   
 >> paramType| string| 如果您在[申請報價](/docs/zh-TW/v5/asset/convert/apply-quote)接口中中有發送該字段, 則這裡會釋出該字段  
 >> paramValue| string| 如果您在[申請報價](/docs/zh-TW/v5/asset/convert/apply-quote)接口中中有發送該字段, 則這裡會釋出該字段  

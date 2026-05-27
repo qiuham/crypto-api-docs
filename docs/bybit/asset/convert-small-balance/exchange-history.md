@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/exchange-history
 api_type: REST
-updated_at: 2026-01-16T09:38:20.017667
+updated_at: 2026-05-27 19:14:48.405856
 ---
 
 # Get Exchange History
@@ -17,7 +17,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/asset/covert/small-balance-history`
+GET`/v5/asset/covert/small-balance-history`
 
 ### Request Parameters
 
@@ -177,7 +177,7 @@ records| array<object>|
 
 ### HTTP 請求
 
-GET `/v5/asset/covert/small-balance-history`
+GET`/v5/asset/covert/small-balance-history`
 
 ### 請求參數
 

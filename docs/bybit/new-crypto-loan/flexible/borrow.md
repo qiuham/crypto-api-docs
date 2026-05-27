@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/borrow
 api_type: REST
-updated_at: 2026-01-16T09:39:55.825942
+updated_at: 2026-05-27 19:18:58.997353
 ---
 
 # Borrow
@@ -19,7 +19,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/crypto-loan-flexible/borrow`
+POST`/v5/crypto-loan-flexible/borrow`
 
 ### Request Parameters
 
@@ -127,7 +127,7 @@ orderId| string| Loan order ID
 
 ### HTTP 請求
 
-POST `/v5/crypto-loan-flexible/borrow`
+POST`/v5/crypto-loan-flexible/borrow`
 
 ### 請求參數
 

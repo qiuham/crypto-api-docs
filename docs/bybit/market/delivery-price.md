@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/delivery-price
 api_type: Market Data
-updated_at: 2026-01-16T09:39:24.839465
+updated_at: 2026-05-27 19:18:14.098704
 ---
 
 # Get Delivery Price
@@ -20,7 +20,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/market/delivery-price`
+GET`/v5/market/delivery-price`
 
 ### Request Parameters
 
@@ -146,7 +146,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP請求
 
-GET `/v5/market/delivery-price`
+GET`/v5/market/delivery-price`
 
 ### 請求參數
 

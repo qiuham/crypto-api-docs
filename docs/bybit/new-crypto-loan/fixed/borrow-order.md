@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-order
 api_type: REST
-updated_at: 2026-01-16T09:39:45.065570
+updated_at: 2026-05-27 19:18:45.391314
 ---
 
 # Get Borrow Order Info
@@ -12,7 +12,7 @@ updated_at: 2026-01-16T09:39:45.065570
 
 ### HTTP Request
 
-GET `/v5/crypto-loan-fixed/borrow-order-info`
+GET`/v5/crypto-loan-fixed/borrow-order-info`
 
 ### Request Parameters
 
@@ -59,7 +59,15 @@ nextPageCursor| string| Refer to the `cursor` request parameter
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_borrowing_orders_fixed_crypto_loan(  
+        orderId="13010"  
+    ))  
     
     
     
@@ -101,7 +109,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/crypto-loan-fixed/borrow-order-info`
+GET`/v5/crypto-loan-fixed/borrow-order-info`
 
 ### 請求參數
 

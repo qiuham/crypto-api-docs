@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/pre-upgrade/delivery
 api_type: REST
-updated_at: 2026-01-16T09:40:32.267707
+updated_at: 2026-05-27 19:21:17.498543
 ---
 
 # Get Pre-upgrade Delivery Record
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/pre-upgrade/asset/delivery-record`
+GET`/v5/pre-upgrade/asset/delivery-record`
 
 ### Request Parameters
 
@@ -108,7 +108,7 @@ nextPageCursor| string| Cursor. Used for pagination
 
 ### HTTP 請求
 
-GET `/v5/pre-upgrade/asset/delivery-record`
+GET`/v5/pre-upgrade/asset/delivery-record`
 
 ### 請求參數
 

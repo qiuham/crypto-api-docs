@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/wallet-balance
 api_type: Account
-updated_at: 2026-01-16T09:38:15.072224
+updated_at: 2026-05-27 19:14:23.949989
 ---
 
 # Get Wallet Balance
@@ -20,7 +20,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/account/wallet-balance`
+GET`/v5/account/wallet-balance`
 
 ### Request Parameters
 
@@ -41,8 +41,11 @@ Parameter| Type| Comments
 list| array| Object  
 > accountType| string| Account type  
 > accountIMRate| string| Account IM rate 
-* You can refer to this [Glossary](https://www.bybit.com/en/help-center/article/Glossary-Unified-Trading-Account) to understand the below fields calculation and mearning
-* All account wide fields are **not** applicable to isolated margin  
+
+  * You can refer to this [Glossary](https://www.bybit.com/en/help-center/article/Glossary-Unified-Trading-Account) to understand the below fields calculation and mearning
+  * All account wide fields are **not** applicable to isolated margin
+
+  
 > accountMMRate| string| Account MM rate  
 > totalEquity| string| Account total equity (USD): ∑Asset Equity By USD value of each asset  
 > totalWalletBalance| string| Account wallet balance (USD): ∑Asset Wallet Balance By USD value of each asset  
@@ -77,9 +80,16 @@ list| array| Object
 >> cumRealisedPnl| string| Cumulative Realised P&L  
 >> bonus| string| Bonus  
 >> marginCollateral| boolean| Whether it can be used as a margin collateral currency (platform), `true`: YES, `false`: NO 
-* When marginCollateral=false, then collateralSwitch is meaningless  
+
+  * When marginCollateral=false, then collateralSwitch is meaningless
+
+  
 >> collateralSwitch| boolean| Whether the collateral is turned on by user (user), `true`: ON, `false`: OFF 
-* When marginCollateral=true, then collateralSwitch is meaningful  
+
+  * When marginCollateral=true, then collateralSwitch is meaningful
+
+  
+>> colRes| string| Platform level collateral restriction status. `-1`: Unknown. `0`: The restriction is not enabled. `1`: The restriction is not enabled. But the crypto is close to the platform's collateral limit. `2`: The restriction is enabled. Adding collateral, enabling the collateral switch, and switching margin mode will all be rejected. Refer to the [announcement](https://announcements.bybit.com/en/article/platform-collateral-limits-launching-june-2-2026-blt7794f992398fa15f/?category=maintenance_updates) for more details.  
 >> spotBorrow| string| Borrow amount by spot margin trade and manual borrow amount (does not include borrow amount by spot margin active order). `spotBorrow` field corresponding to spot liabilities is detailed in the [ announcement](https://announcements.bybit.com/en/article/bybit-uta-function-optimization-manual-coin-borrowing-will-be-launched-soon-blt5d858199bd12e849/).  
 >> free| string| **Deprecated** since there is no Spot wallet any more  
 >> availableToWithdraw| string| **Deprecated** for `accountType=UNIFIED` from 9 Jan, 2025 
@@ -218,14 +228,17 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/account/wallet-balance`
+GET`/v5/account/wallet-balance`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
 [accountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 帳戶類型 `UNIFIED`
-* 要查詢資金帳戶餘額, 可以使用這個[接口](/docs/zh-TW/v5/asset/balance/all-balance)  
+
+  * 要查詢資金帳戶餘額, 可以使用這個[接口](/docs/zh-TW/v5/asset/balance/all-balance)
+
+  
 coin| false| string| 幣種名稱 
 
   * 不傳則返回非零資產信息
@@ -240,8 +253,11 @@ coin| false| string| 幣種名稱
 list| array| Object  
 > accountType| string| 帳戶類型  
 > accountIMRate| string| 帳戶初始保證金率 
-* 您可以參考該[鏈結](https://www.bybit.com/en/help-center/article/Glossary-Unified-Trading-Account)了解統一帳戶下字段含義和計算方式
-* 下面所有帳戶維度的字段都不適用於逐倉模式  
+
+  * 您可以參考該[鏈結](https://www.bybit.com/en/help-center/article/Glossary-Unified-Trading-Account)了解統一帳戶下字段含義和計算方式
+  * 下面所有帳戶維度的字段都不適用於逐倉模式
+
+  
 > accountMMRate| string| 帳戶維持保證金率  
 > totalEquity| string| 總凈值為賬戶中每個幣種資產凈值的法幣估值之和 (USD): ∑Asset Equity By USD value of each asset  
 > totalWalletBalance| string| 賬戶維度換算成usd的錢包餘額: ∑Asset Wallet Balance By USD value of each asset  
@@ -285,6 +301,7 @@ list| array| Object
   * 僅當marginCollateral=true時, 才能主動選擇開關抵押
 
   
+>> colRes| string| 平台層面的抵押品限制狀態。`-1`: 未知。`0`: 未啟用限制。`1`: 未啟用限制，但該幣種已接近平台抵押上限。`2`: 已啟用限制，增加抵押品、開啟抵押開關及切換保證金模式的操作均將被拒絕。詳見[公告](https://announcements.bybit.com/en/article/platform-collateral-limits-launching-june-2-2026-blt7794f992398fa15f/?category=maintenance_updates)。  
 >> spotBorrow| string| 現貨槓桿交易借入金額以及手工借貸金額（不包含現貨槓桿活躍訂單借入金額）。現貨負債對應的`spotBorrow`, 請詳見[公告](https://announcements.bybit.com/en/article/bybit-uta-function-optimization-manual-coin-borrowing-will-be-launched-soon-blt5d858199bd12e849/).  
 >> free| string| **廢棄** , 不再有現貨錢包  
 >> availableToWithdraw| string| 該字段從2025年1月9日起已經**廢棄**

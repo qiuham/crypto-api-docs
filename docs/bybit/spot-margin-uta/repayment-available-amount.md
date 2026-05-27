@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/repayment-available-amount
 api_type: REST
-updated_at: 2026-01-16T09:41:08.383249
+updated_at: 2026-05-27 19:22:17.515764
 ---
 
 # Get Available Amount to Repay
 
 ### HTTP Request
 
-GET `/v5/spot-margin-trade/repayment-available-amount`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### Request Parameters
 
@@ -44,7 +44,15 @@ lossLessRepaymentAmount| string| Repayment amount = min(spot coin available bala
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.spot_margin_trade_get_repayment_available_amount(  
+        currency="BTC"  
+    ))  
     
     
     
@@ -71,7 +79,7 @@ lossLessRepaymentAmount| string| Repayment amount = min(spot coin available bala
 
 ### HTTP 請求
 
-GET `/v5/spot-margin-trade/repayment-available-amount`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### 請求參數
 

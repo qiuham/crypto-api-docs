@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/reward/voucher
 api_type: REST
-updated_at: 2026-01-16T09:39:01.977110
+updated_at: 2026-05-27 19:16:11.197700
 ---
 
 # Get Voucher Spec
 
 ### HTTP Request
 
-POST `/v5/broker/award/info`
+POST`/v5/broker/award/info`
 
 ### Request Parameters
 
@@ -24,8 +24,11 @@ Parameter| Type| Comments
 id| string| Voucher ID  
 coin| string| Coin  
 amountUnit| string| 
-* `AWARD_AMOUNT_UNIT_USD`
-* `AWARD_AMOUNT_UNIT_COIN`  
+
+  * `AWARD_AMOUNT_UNIT_USD`
+  * `AWARD_AMOUNT_UNIT_COIN`
+
+  
 productLine| string| Product line  
 subProductLine| string| Sub product line  
 totalAmount| Object| Total amount of voucher  
@@ -115,7 +118,7 @@ usedAmount| string| Used amount of voucher
 
 ### HTTP 請求
 
-POST `/v5/broker/award/info`
+POST`/v5/broker/award/info`
 
 ### 請求參數
 
@@ -130,8 +133,11 @@ id| **true**|  string| 代金券ID
 id| string| 代金券ID  
 coin| string| 幣種  
 amountUnit| string| 計價單位
-* `AWARD_AMOUNT_UNIT_USD`
-* `AWARD_AMOUNT_UNIT_COIN`  
+
+  * `AWARD_AMOUNT_UNIT_USD`
+  * `AWARD_AMOUNT_UNIT_COIN`
+
+  
 productLine| string| 業務線  
 subProductLine| string| 子業務線  
 totalAmount| Object| 代金券總金額  

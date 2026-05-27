@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/fast-execution
 api_type: WebSocket
-updated_at: 2026-01-16T09:41:45.662879
+updated_at: 2026-05-27 19:23:12.491207
 ---
 
 # Fast Execution
@@ -10,12 +10,12 @@ updated_at: 2026-01-16T09:41:45.662879
 Fast execution stream significantly reduces data latency compared original "execution" stream. However, it pushes limited execution type of trades, and fewer data fields.
 
 **All-In-One Topic:** `execution.fast`  
-**Categorised Topic:** `execution.fast.linear`, `execution.fast.inverse`, `execution.fast.spot`  
+**Categorised Topic:** `execution.fast.linear`, `execution.fast.inverse`, `execution.fast.spot`, `execution.fast.option`  
 
 
 info
 
-  * Supports all Perps, Futures and Spot exceution, and do not support Options for now
+  * Supports all Perps, Futures, Spot and Options exceution
   * You can only receive [execType](/docs/v5/enum#exectype)=Trade update
 
 
@@ -27,13 +27,17 @@ Parameter| Type| Comments
 topic| string| Topic name  
 creationTime| number| Data created timestamp (ms)  
 data| array| Object  
-> [category](/docs/v5/enum#category)| string| Product type `linear`, `inverse`, `spot`  
+> [category](/docs/v5/enum#category)| string| Product type `linear`, `inverse`, `spot`, `option`  
 > symbol| string| Symbol name  
 > orderId| string| Order ID  
 > isMaker| boolean| `true`: Maker, `false`: Taker  
 > orderLinkId| string| User customized order ID 
-* maker trade is always `""`
-* If a maker order in the orderbook is converted to taker (by price amend), orderLinkId is also ""  
+
+  * maker trade is always `""`
+  * If a maker order in the orderbook is converted to taker (by price amend), orderLinkId is also `""`
+  * For option: maker trade is always `""`, taker trade is always orderLinkId
+
+  
 > execId| string| Execution ID  
 > execPrice| string| Execution price  
 > execQty| string| Execution qty  
@@ -88,13 +92,13 @@ data| array| Object
 
 提示
 
-  * 目前支持USDT永續, USDC永續, USDC交割, 反向永續, 反向交割和現貨的成交推送, 不支持期權
+  * 支持USDT永續, USDC永續, USDC交割, 反向永續, 反向交割, 現貨和期權的成交推送
   * 僅推送[execType](/docs/zh-TW/v5/enum#exectype)=Trade的消息
 
 
 
 **All-In-One Topic:** `execution.fast`  
-**Categorised Topic:** `execution.fast.linear`, `execution.fast.inverse`, `execution.fast.spot`  
+**Categorised Topic:** `execution.fast.linear`, `execution.fast.inverse`, `execution.fast.spot`, `execution.fast.option`  
 
 
 ### 響應參數
@@ -104,13 +108,17 @@ data| array| Object
 topic| string| Topic名  
 creationTime| number| 消息數據創建時間  
 data| array| Object  
-> [category](/docs/zh-TW/v5/enum#category)| string| 產品類型 `linear`, `iverse`, `spot`  
+> [category](/docs/zh-TW/v5/enum#category)| string| 產品類型 `linear`, `inverse`, `spot`, `option`  
 > symbol| string| 合約名稱  
 > orderId| string| 訂單ID  
 > isMaker| boolean| `true`: maker成交, `false`: taker成交  
 > orderLinkId| string| 用戶自定義訂單ID 
-* maker成交總是返回`""`
-* 當maker訂單在訂單簿中轉化成了taker單(比如修改了價格), 這種情況orderLinkId也是""  
+
+  * maker成交總是返回`""`
+  * 當maker訂單在訂單簿中轉化成了taker單(比如修改了價格), 這種情況orderLinkId也是`""`
+  * 期權: maker成交永遠返回`""`, taker成交永遠返回orderLinkId
+
+  
 > side| string| 訂單方向.買：`Buy`,賣：`Sell`  
 > execId| string| 成交Id  
 > execPrice| string| 成交價格  

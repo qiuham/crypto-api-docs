@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/contract-transaction-log
 api_type: REST
-updated_at: 2026-01-16T09:37:42.841562
+updated_at: 2026-05-27 19:13:39.769306
 ---
 
 # Get Transaction Log
@@ -14,7 +14,7 @@ Query transaction logs in the derivatives wallet (classic account), and inverse 
 
 ### HTTP Request
 
-GET `/v5/account/contract-transaction-log`
+GET`/v5/account/contract-transaction-log`
 
 ### Request Parameters
 
@@ -47,7 +47,10 @@ list| array| Object
 > transactionTime| string| Transaction timestamp (ms)  
 > [type](/docs/v5/enum#type)| string| Type  
 > qty| string| Quantity 
-* Perps & Futures: it is the quantity for each trade entry and it does not have direction  
+
+  * Perps & Futures: it is the quantity for each trade entry and it does not have direction
+
+  
 > size| string| Size. The rest position size after the trade is executed, and it has direction, i.e., short with "-"  
 > currency| string| currency  
 > tradePrice| string| Trade price  
@@ -169,7 +172,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/account/contract-transaction-log`
+GET`/v5/account/contract-transaction-log`
 
 ### 請求參數
 
@@ -202,7 +205,10 @@ list| array| Object
 > transactionTime| string| 交易時間戳（毫秒）  
 > [type](/docs/zh-TW/v5/enum#type)| string| 類型  
 > qty| string| 數量. 
-* 期貨: 對於成交的流水來說, 這裡的qty表示每筆成交的數量, 不帶方向  
+
+  * 期貨: 對於成交的流水來說, 這裡的qty表示每筆成交的數量, 不帶方向
+
+  
 > size| string| 倉位. 特別地, 對於成交的流水來說, 這裡的size表示成交後的倉位大小, 帶有方向, 比如空倉, 則有"-"  
 > currency| string| 幣種  
 > tradePrice| string| 交易價格  

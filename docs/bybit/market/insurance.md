@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/insurance
 api_type: Market Data
-updated_at: 2026-01-16T09:39:28.679248
+updated_at: 2026-05-27 19:18:21.194670
 ---
 
 # Get Insurance Pool
@@ -19,7 +19,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/market/insurance`
+GET`/v5/market/insurance`
 
 ### Request Parameters
 
@@ -35,8 +35,11 @@ updatedTime| string| Data updated time (ms)
 list| array| Object  
 > coin| string| Coin  
 > symbols| string| 
-* symbols with `"BTCUSDT,ETHUSDT,SOLUSDT"` mean these contracts are shared with one insurance pool
-* For an isolated insurance pool, it returns one contract  
+
+  * symbols with `"BTCUSDT,ETHUSDT,SOLUSDT"` mean these contracts are shared with one insurance pool
+  * For an isolated insurance pool, it returns one contract
+
+  
 > balance| string| Balance  
 > value| string| USD value  
 [](/docs/api-explorer/v5/market/insurance)
@@ -158,7 +161,7 @@ list| array| Object
 
 ### HTTP請求
 
-GET `/v5/market/insurance`
+GET`/v5/market/insurance`
 
 ### 請求參數
 
@@ -174,8 +177,11 @@ updateTime| string| 數據最近更新的時間戳 (ms)
 list| array| Object  
 > coin| string| 保險池的幣種  
 > symbols| string| 
-* 對於共享保險池, 返回的symbols裡會有多個合約, 比如`"BTCUSDT,ETHUSDT,SOLUSDT"`
-* 對於獨立保險池, 將會返回一個合約  
+
+  * 對於共享保險池, 返回的symbols裡會有多個合約, 比如`"BTCUSDT,ETHUSDT,SOLUSDT"`
+  * 對於獨立保險池, 將會返回一個合約
+
+  
 > balance| string| 保險基金的幣種數量  
 > value| string| 保險基金的幣種價值，折合成USD的價值  
 [](/docs/zh-TW/api-explorer/v5/market/insurance)

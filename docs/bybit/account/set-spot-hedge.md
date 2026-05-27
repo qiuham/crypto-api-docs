@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-spot-hedge
 api_type: Account
-updated_at: 2026-01-16T09:38:10.754808
+updated_at: 2026-05-27 19:14:17.074300
 ---
 
 # Set Spot Hedging
@@ -11,7 +11,7 @@ You can turn on/off Spot hedging feature in Portfolio margin
 
 ### HTTP Request
 
-POST `/v5/account/set-hedging-mode`
+POST`/v5/account/set-hedging-mode`
 
 ### Request Parameters
 
@@ -53,7 +53,15 @@ retMsg| string| Result message
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.set_hedging_mode(  
+        setHedgingMode="OFF"  
+    ))  
     
     
     
@@ -93,7 +101,7 @@ retMsg| string| Result message
 
 ### HTTP 請求
 
-POST `/v5/account/set-hedging-mode`
+POST`/v5/account/set-hedging-mode`
 
 ### 請求參數
 

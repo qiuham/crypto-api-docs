@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-margin-mode
 api_type: Account
-updated_at: 2026-01-16T09:38:06.873946
+updated_at: 2026-05-27 19:14:13.679484
 ---
 
 # Set Margin Mode
@@ -11,7 +11,7 @@ Default is regular margin mode
 
 ### HTTP Request
 
-POST `/v5/account/set-margin-mode`
+POST`/v5/account/set-margin-mode`
 
 ### Request Parameters
 
@@ -107,7 +107,7 @@ reasons| array| Object. If requested successfully, it is an empty array
 
 ### HTTP 請求
 
-POST `/v5/account/set-margin-mode`
+POST`/v5/account/set-margin-mode`
 
 ### 請求參數
 

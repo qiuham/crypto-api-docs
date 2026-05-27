@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/ws/connect
 api_type: REST
-updated_at: 2026-01-16T09:41:58.506619
+updated_at: 2026-05-27 19:23:32.211519
 ---
 
 # Connect
@@ -14,6 +14,7 @@ Spot: `wss://stream.bybit.com/v5/public/spot`
 USDT, USDC perpetual & USDT Futures: `wss://stream.bybit.com/v5/public/linear`  
 Inverse contract: `wss://stream.bybit.com/v5/public/inverse`  
 Spread trading: `wss://stream.bybit.com/v5/public/spread`  
+RFQ: `wss://stream-testnet.bybit.com/v5/public/rfq`  
 USDT/USDC Options: `wss://stream.bybit.com/v5/public/option`
 
   * **Testnet:**  
@@ -21,6 +22,7 @@ Spot: `wss://stream-testnet.bybit.com/v5/public/spot`
 USDT,USDC perpetual & USDT Futures: `wss://stream-testnet.bybit.com/v5/public/linear`  
 Inverse contract: `wss://stream-testnet.bybit.com/v5/public/inverse`  
 Spread trading: `wss://stream-testnet.bybit.com/v5/public/spread`  
+RFQ: `wss://stream-testnet.bybit.com/v5/public/rfq`  
 USDT/USDC Options: `wss://stream-testnet.bybit.com/v5/public/option`
 
 
@@ -61,7 +63,7 @@ USDT/USDC Options: `wss://stream-testnet.bybit.com/v5/public/option`
 
 info
 
-  * If your account is registered from [www.bybit-tr.com](http://www.bybit-tr.com), please use `stream.bybit-tr.com` for mainnet access
+  * If your account is registered from [www.bybit.tr](http://www.bybit.tr), please use `stream.bybit.tr` for mainnet access
   * If your account is registered from [www.bybit.kz](http://www.bybit.kz), please use `stream.bybit.kz` for mainnet access
   * If your account is registered from [www.bybitgeorgia.ge](http://www.bybitgeorgia.ge), please use `stream.bybitgeorgia.ge` for mainnet access
 
@@ -343,6 +345,7 @@ You can dynamically subscribe and unsubscribe from topics without unsubscribing 
 USDT, USDC永續 & USDC交割: `wss://stream.bybit.com/v5/public/linear`  
 反向合約: `wss://stream.bybit.com/v5/public/inverse`  
 期權: `wss://stream.bybit.com/v5/public/option`  
+RFQ: `wss://stream.bybit.com/v5/public/rfq`  
 價差交易: `wss://stream.bybit.com/v5/public/spread`
 
   * **測試網:**  
@@ -350,6 +353,7 @@ USDT, USDC永續 & USDC交割: `wss://stream.bybit.com/v5/public/linear`
 USDT和USDC永續: `wss://stream-testnet.bybit.com/v5/public/linear`  
 反向合約: `wss://stream-testnet.bybit.com/v5/public/inverse`  
 期權: `wss://stream-testnet.bybit.com/v5/public/option`  
+RFQ: `wss://stream-testnet.bybit.com/v5/public/rfq`  
 價差交易: `wss://stream-testnet.bybit.com/v5/public/spread`
 
 
@@ -390,7 +394,7 @@ USDT和USDC永續: `wss://stream-testnet.bybit.com/v5/public/linear`
 
 信息
 
-  * 如果您的帳戶是在 [www.bybit-tr.com](http://www.bybit-tr.com) 註冊, 請使用`stream.bybit-tr.com`進行主網連接
+  * 如果您的帳戶是在 [www.bybit.tr](http://www.bybit.tr) 註冊, 請使用`stream.bybit.tr`進行主網連接
   * 如果您的帳戶是在 [www.bybit.kz](http://www.bybit.kz), 請使用 `stream.bybit.kz` 進行主網連接
   * 如果您的帳戶是在 [www.bybitgeorgia.ge](http://www.bybitgeorgia.ge) 註冊, 請使用 `stream.bybitgeorgia.ge` 進行主網連接
 

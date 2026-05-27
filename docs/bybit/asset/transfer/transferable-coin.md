@@ -2,21 +2,36 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/transferable-coin
 api_type: REST
-updated_at: 2026-01-16T09:38:48.348335
+updated_at: 2026-05-27 19:15:25.948746
 ---
 
-# Get Transferable Coin
+# Create Universal Transfer
 
-Query the transferable coin list between each [account type](/docs/v5/enum#accounttype)
+Transfer between sub-sub or main-sub.
+
+tip
+
+  * Use master or sub acct api key to request 
+    * To use sub acct api key, it must have "SubMemberTransferList" permission
+    * When use sub acct api key, it can only transfer to main account
+  * If you encounter errorCode: `131228` and msg: `your balance is not enough`, please go to [Get Single Coin Balance](/docs/v5/asset/balance/account-coin-balance) to check transfer safe amount.
+  * You can not transfer between the same UID.
+
+
 
 ### HTTP Request
 
-GET `/v5/asset/transfer/query-transfer-coin-list`
+POST`/v5/asset/transfer/universal-transfer`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
+transferId| **true**|  string| [UUID](https://www.uuidgenerator.net/dev-corner). Please manually generate a UUID  
+coin| **true**|  string| Coin, uppercase only  
+amount| **true**|  string| Amount  
+fromMemberId| **true**|  integer| From UID  
+toMemberId| **true**|  integer| To UID  
 [fromAccountType](/docs/v5/enum#accounttype)| **true**|  string| From account type  
 [toAccountType](/docs/v5/enum#accounttype)| **true**|  string| To account type  
   
@@ -24,8 +39,16 @@ Parameter| Required| Type| Comments
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| A list of coins (as strings)  
-[](/docs/api-explorer/v5/asset/transferable-coin)
+transferId| string| UUID  
+status| string| Transfer status 
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
+[](/docs/api-explorer/v5/asset/unitransfer)
 
 * * *
 
@@ -38,12 +61,24 @@ list| array| A list of coins (as strings)
 
     
     
-    GET /v5/asset/transfer/query-transfer-coin-list?fromAccountType=UNIFIED&toAccountType=CONTRACT HTTP/1.1  
+    POST /v5/asset/transfer/universal-transfer HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672144322595  
+    X-BAPI-TIMESTAMP: 1672189449697  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "transferId": "be7a2462-1138-4e27-80b1-62653f24925e",  
+        "coin": "ETH",  
+        "amount": "0.5",  
+        "fromMemberId": 592334,  
+        "toMemberId": 691355,  
+        "fromAccountType": "CONTRACT",  
+        "toAccountType": "UNIFIED"  
+      
+    }  
     
     
     
@@ -53,9 +88,14 @@ list| array| A list of coins (as strings)
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_transferable_coin(  
-        fromAccountType="UNIFIED",  
-        toAccountType="CONTRACT",  
+    print(session.create_universal_transfer(  
+        transferId="be7a2462-1138-4e27-80b1-62653f24925e",  
+        coin="ETH",  
+        amount="0.5",  
+        fromMemberId=592334,  
+        toMemberId=691355,  
+        fromAccountType="CONTRACT",  
+        toAccountType="UNIFIED",  
     ))  
     
     
@@ -69,7 +109,15 @@ list| array| A list of coins (as strings)
     });  
       
     client  
-      .getTransferableCoinList('UNIFIED', 'CONTRACT')  
+      .createUniversalTransfer({  
+        transferId: 'be7a2462-1138-4e27-80b1-62653f24925e',  
+        coin: 'ETH',  
+        amount: '0.5',  
+        fromMemberId: 592334,  
+        toMemberId: 691355,  
+        fromAccountType: 'CONTRACT',  
+        toAccountType: 'UNIFIED',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -85,36 +133,60 @@ list| array| A list of coins (as strings)
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "list": [  
-                "BTC",  
-                "ETH"  
-            ]  
+            "transferId": "be7a2462-1138-4e27-80b1-62653f24925e",  
+            "status": "SUCCESS"  
         },  
         "retExtInfo": {},  
-        "time": 1672144322954  
+        "time": 1672189450195  
     }
 
 ---
 
-# 帳戶類型間可劃轉的幣種
+# 創建萬能劃轉
+
+支持子子帳戶間劃轉或母子帳號間劃轉。
+
+提示
+
+  * 支持使用母帳戶或者子帳號api key請求
+    * 若要使用子帳號api key, 需要有"母子帳戶劃轉"(SubMemberTransferList)權限
+    * 當使用子帳號api key劃轉時, 僅能劃轉到母帳號下
+  * 如果您遇到錯誤碼是`131228`並且錯誤信息是`your balance is not enough`, 請前往[查詢賬戶單個幣種余額](/docs/zh-TW/v5/asset/balance/account-coin-balance)接口確認安全限額.
+  * 不支持同一個uid之間的劃轉.
+  * 資金賬戶轉出目前僅支持加密貨幣轉賬，不支持法定貨幣劃轉.
+
+
 
 ### HTTP 請求
 
-GET `/v5/asset/transfer/query-transfer-coin-list`
+POST`/v5/asset/transfer/universal-transfer`
 
-### HTTP 請求
+### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[fromAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 劃出帳戶類型  
-[toAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 劃入帳戶類型  
+transferId| **true**|  string| UUID. 請求手動生成UUID  
+coin| **true**|  string| 幣種  
+amount| **true**|  string| 劃轉金額  
+fromMemberId| **true**|  integer| 轉出UID  
+toMemberId| **true**|  integer| 轉入UID  
+[fromAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 轉出帳戶類型  
+[toAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 轉入帳戶類型  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| 幣種數組  
-[](/docs/zh-TW/api-explorer/v5/asset/transferable-coin)
+transferId| string| UUID  
+status| string| 劃轉狀態 
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
+[](/docs/zh-TW/api-explorer/v5/asset/unitransfer)
 
 * * *
 
@@ -127,12 +199,24 @@ list| array| 幣種數組
 
     
     
-    GET /v5/asset/transfer/query-transfer-coin-list?fromAccountType=UNIFIED&toAccountType=CONTRACT HTTP/1.1  
+    POST /v5/asset/transfer/universal-transfer HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672144322595  
+    X-BAPI-TIMESTAMP: 1672189449697  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "transferId": "be7a2462-1138-4e27-80b1-62653f24925e",  
+        "coin": "ETH",  
+        "amount": "0.5",  
+        "fromMemberId": 592334,  
+        "toMemberId": 691355,  
+        "fromAccountType": "CONTRACT",  
+        "toAccountType": "UNIFIED"  
+      
+    }  
     
     
     
@@ -142,9 +226,14 @@ list| array| 幣種數組
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_transferable_coin(  
-        fromAccountType="UNIFIED",  
-        toAccountType="CONTRACT",  
+    print(session.create_universal_transfer(  
+        transferId="be7a2462-1138-4e27-80b1-62653f24925e",  
+        coin="ETH",  
+        amount="0.5",  
+        fromMemberId=592334,  
+        toMemberId=691355,  
+        fromAccountType="CONTRACT",  
+        toAccountType="UNIFIED",  
     ))  
     
     
@@ -158,7 +247,15 @@ list| array| 幣種數組
     });  
       
     client  
-      .getTransferableCoinList('UNIFIED', 'CONTRACT')  
+      .createUniversalTransfer({  
+        transferId: 'be7a2462-1138-4e27-80b1-62653f24925e',  
+        coin: 'ETH',  
+        amount: '0.5',  
+        fromMemberId: 592334,  
+        toMemberId: 691355,  
+        fromAccountType: 'CONTRACT',  
+        toAccountType: 'UNIFIED',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -174,11 +271,9 @@ list| array| 幣種數組
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "list": [  
-                "BTC",  
-                "ETH"  
-            ]  
+            "transferId": "be7a2462-1138-4e27-80b1-62653f24925e",  
+            "status": "SUCCESS"  
         },  
         "retExtInfo": {},  
-        "time": 1672144322954  
+        "time": 1672189450195  
     }

@@ -2,59 +2,74 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-coin-list
 api_type: REST
-updated_at: 2026-01-16T09:38:39.603235
+updated_at: 2026-05-27 19:15:11.551586
 ---
 
-# Get Trading Pair List
+# Get Convert History
 
-Query for the list of coins you can convert to/from.
+Returns all the convert history
 
 ### HTTP Request
 
-GET `/v5/fiat/query-coin-list`
+GET`/v5/fiat/query-trade-history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-side| false| integer| `0`: buy, buy crypto sell fiat; `1`: sell, sell crypto buy fiat  
+index| false| integer| Page number,started from 1, default 1  
+limit| false| integer| Page Size [20-100] 20 records by default,up to 100 records, return 100 when exceeds 100  
+startTime| false| string| Query start time(Millisecond timestamp)  
+endTime| false| string| Query end time(Millisecond timestamp)  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-fiats| array| Fiat coin list  
-> coin| string| Fiat coin code  
-> fullName| string| Fiat full coin name  
-> icon| string| Coin icon url  
-> iconNight| string| Coin icon url (dark mode)  
-> precision| integer| Fiat precision  
-> disable| boolean| `true`: the coin is disabled, `false`: the coin is allowed  
-> singleFromMinLimit| string| For buy side, the minimum amount of fiatCoin per transaction  
-> singleFromMaxLimit| string| For buy side, the maximum amount of fiatCoin per transaction  
-cryptos| array| Crypto coin list  
-> coin| string| Fiat coin code  
-> fullName| string| Fiat full coin name  
-> icon| string| Coin icon url  
-> iconNight| string| Coin icon url (dark mode)  
-> precision| integer| Fiat precision  
-> disable| boolean| `true`: the coin is disabled, `false`: the coin is allowed  
-> singleFromMinLimit| string| For sell side, the minimum amount of cryptoCoin per transaction  
-> singleFromMaxLimit| string| For sell side, the maximum amount of cryptoCoin per transaction  
+result| array| Array of quotes  
+> tradeNo| string| Trade order No  
+> status| string| Trade status:
+
+  * processing
+  * success
+  * failed
+
+  
+> quoteTxId| string| Quote transaction ID. It is system generated, and it is used to confirm quote  
+> exchangeRate| string| Exchange rate  
+> fromCoin| string| Convert from coin (coin to sell)  
+> fromCoinType| string| From coin type. `fiat` or `crypto`  
+> toCoin| string| Convert to coin (coin to buy)  
+> toCoinType| string| To coin type. `fiat` or `crypto`  
+> fromAmount| string| From coin amount (amount to sell)  
+> toAmount| string| To coin amount (amount to buy according to exchange rate)  
+> createdAt| string| Trade created timee (Millisecond timestamp)  
+> subUserId| string| The user's sub userId in bybit  
   
 ### Request Example
 
   * HTTP
+  * Python
 
 
     
     
-    GET /v5/fiat/query-coin-list?side=0 HTTP/1.1  
+    GET /v5/fiat/trade-query-history HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1720064061248  
+    X-BAPI-TIMESTAMP: 1720074159814  
     X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_fiat_convert_history())  
     
 
 ### Response Example
@@ -63,92 +78,64 @@ cryptos| array| Crypto coin list
     {  
         "retCode": 0,  
         "retMsg": "success",  
-        "result": {  
-            "fiats": [  
-                {  
-                    "coin": "GEL",  
-                    "fullName": "Georgian Lari",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
-                    "precision": 2,  
-                    "disable": false,  
-                    "singleFromMinLimit": "10",  
-                    "singleFromMaxLimit": "100000"  
-                }  
-            ],  
-            "cryptos": [  
-                {  
-                    "coin": "USDT",  
-                    "fullName": "Tether USDT",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
-                    "precision": 4,  
-                    "disable": false,  
-                    "singleFromMinLimit": "10",  
-                    "singleFromMaxLimit": "10000"  
-                },  
-                {  
-                    "coin": "BTC",  
-                    "fullName": "Bitcoin",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
-                    "precision": 8,  
-                    "disable": false,  
-                    "singleFromMinLimit": "0.0001",  
-                    "singleFromMaxLimit": "1"  
-                },  
-                {  
-                    "coin": "ETH",  
-                    "fullName": "Ethereum",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
-                    "precision": 8,  
-                    "disable": false,  
-                    "singleFromMinLimit": "0.002",  
-                    "singleFromMaxLimit": "5"  
-                }  
-            ]  
-        }  
+        "result": [  
+            {  
+                "tradeNo": "TradeNo123456",  
+                "status": "success",  
+                "quoteTaxId": "QuoteTaxId123456",  
+                "exchangeRate": "1.0",  
+                "fromCoin": "GEL",  
+                "fromCoinType": "fiat",  
+                "toCoin": "USDT",  
+                "toCoinType": "crypto",  
+                "fromAmount": "100",  
+                "toAmount": "100",  
+                "createdAt": "1764560093588",  
+                "subUserId": "123456"  
+            }  
+        ]  
     }
 
 ---
 
-# 查詢兌換幣種列表
-
-查詢可兌換的幣種列表 
+# 查詢兌換歷史
 
 ### HTTP 請求
 
-GET `/v5/fiat/query-coin-list`
+GET`/v5/fiat/query-trade-history`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-side| false| integer| `0`: 買入，即買入加密貨幣賣出法幣；`1`: 賣出，即賣出加密貨幣買入法幣  
+index| false| integer| 頁碼，默認為 1  
+limit| false| integer| 每頁記錄數量，[20-100]，默認為 20 條，最大支持 100 條，超過 100 條時返回 100 條  
+startTime| false| string| 查詢開始時間（毫秒級時間戳）  
+endTime| false| string| 查詢結束時間（毫秒級時間戳）  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-fiats| array| 法幣列表  
-> coin| string| 法幣代碼code  
-> fullName| string| 法幣全名  
-> icon| string| 幣種icon URL  
-> iconNight| string| 幣種icon URL（深色模式）  
-> precision| integer| 法幣精度  
-> disable| boolean| `true`: 該幣種被禁用，`false`: 該幣種可用  
-> singleFromMinLimit| string| 對於買入方向，每筆交易的最小法幣數量  
-> singleFromMaxLimit| string| 對於買入方向，每筆交易的最大法幣數量  
-cryptos| array| 加密貨幣列表  
-> coin| string| 加密貨幣代碼code  
-> fullName| string| 加密貨幣全名  
-> icon| string| 幣種icon URL  
-> iconNight| string| 幣種icon URL（深色模式）  
-> precision| integer| 加密貨幣精度  
-> disable| boolean| `true`: 該幣種被禁用，`false`: 該幣種可用  
-> singleFromMinLimit| string| 對於賣出方向，每筆交易的最小加密貨幣數量  
-> singleFromMaxLimit| string| 對於賣出方向，每筆交易的最大加密貨幣數量  
+result| array| 報價記錄數組  
+> tradeNo| string| 交易訂單號  
+> status| string| 交易狀態：
+
+  * processing
+  * success
+  * failed
+
+  
+> quoteTxId| string| 報價交易 ID，系統生成，用於確認報價  
+> exchangeRate| string| 匯率  
+> fromCoin| string| 轉換前的幣種（賣出的幣種）  
+> fromCoinType| string| 轉換前的幣種類型：`fiat` 或 `crypto`  
+> toCoin| string| 轉換後的幣種（買入的幣種）  
+> toCoinType| string| 轉換後的幣種類型：`fiat` 或 `crypto`  
+> fromAmount| string| 轉換前的幣種數量（賣出數量）  
+> toAmount| string| 轉換後的幣種數量（根據匯率買入的數量）  
+> createdAt| string| 交易創建時間（毫秒級時間戳）  
+> subUserId| string| 用戶在 Bybit 平台的子用戶 ID  
   
 ### 請求示例
 
@@ -157,11 +144,11 @@ cryptos| array| 加密貨幣列表
 
     
     
-    GET /v5/fiat/query-coin-list?side=0 HTTP/1.1    
+    GET /v5/fiat/trade-query-history HTTP/1.1    
     Host: api-testnet.bybit.com    
     X-BAPI-SIGN: XXXXXX    
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx    
-    X-BAPI-TIMESTAMP: 1720064061248    
+    X-BAPI-TIMESTAMP: 1720074159814    
     X-BAPI-RECV-WINDOW: 5000    
     
 
@@ -171,50 +158,20 @@ cryptos| array| 加密貨幣列表
     {  
         "retCode": 0,  
         "retMsg": "success",  
-        "result": {  
-            "fiats": [  
-                {  
-                    "coin": "GEL",  
-                    "fullName": "Georgian Lari",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
-                    "precision": 2,  
-                    "disable": false,  
-                    "singleFromMinLimit": "10",  
-                    "singleFromMaxLimit": "100000"  
-                }  
-            ],  
-            "cryptos": [  
-                {  
-                    "coin": "USDT",  
-                    "fullName": "Tether USDT",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
-                    "precision": 4,  
-                    "disable": false,  
-                    "singleFromMinLimit": "10",  
-                    "singleFromMaxLimit": "10000"  
-                },  
-                {  
-                    "coin": "BTC",  
-                    "fullName": "Bitcoin",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
-                    "precision": 8,  
-                    "disable": false,  
-                    "singleFromMinLimit": "0.0001",  
-                    "singleFromMaxLimit": "1"  
-                },  
-                {  
-                    "coin": "ETH",  
-                    "fullName": "Ethereum",  
-                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
-                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
-                    "precision": 8,  
-                    "disable": false,  
-                    "singleFromMinLimit": "0.002",  
-                    "singleFromMaxLimit": "5"  
-                }  
-            ]  
-        }  
+        "result": [  
+            {  
+                "tradeNo": "TradeNo123456",  
+                "status": "success",  
+                "quoteTaxId": "QuoteTaxId123456",  
+                "exchangeRate": "1.0",  
+                "fromCoin": "GEL",  
+                "fromCoinType": "fiat",  
+                "toCoin": "USDT",  
+                "toCoinType": "crypto",  
+                "fromAmount": "100",  
+                "toAmount": "100",  
+                "createdAt": "1764560093588",  
+                "subUserId": "123456"  
+            }  
+        ]  
     }

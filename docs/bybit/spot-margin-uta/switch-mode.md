@@ -2,33 +2,43 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/switch-mode
 api_type: REST
-updated_at: 2026-01-16T09:41:12.201170
+updated_at: 2026-05-27 19:22:23.094494
 ---
 
-# Toggle Margin Trade
+# Get VIP Margin Data
 
-Turn on / off spot margin trade
+This margin data is for **Unified account** in particular.
 
-caution
+info
 
-Your account needs to activate spot margin first; i.e., you must have finished the quiz on web / app.
+Does not need authentication.
 
 ### HTTP Request
 
-POST `/v5/spot-margin-trade/switch-mode`
+GET`/v5/spot-margin-trade/data`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-spotMarginMode| **true**|  string| `1`: on, `0`: off  
+[vipLevel](/docs/v5/enum#viplevel)| false| string| VIP level  
+currency| false| string| Coin name, uppercase only  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-spotMarginMode| string| Spot margin status. `1`: on, `0`: off  
-[](/docs/api-explorer/v5/spot-margin-uta/switch-mode)
+vipCoinList| array| Object  
+> list| array| Object  
+>> borrowable| boolean| Whether it is allowed to be borrowed  
+>> collateralRatio| string| Due to the new Tiered Collateral value logic, this field will no longer be accurate starting on February 19, 2025. Please refer to [Get Tiered Collateral Ratio](/docs/v5/spot-margin-uta/tier-collateral-ratio)  
+>> currency| string| Coin name  
+>> hourlyBorrowRate| string| Borrow interest rate per hour  
+>> liquidationOrder| string| Liquidation order  
+>> marginCollateral| boolean| Whether it can be used as a margin collateral currency  
+>> maxBorrowingAmount| string| Max borrow amount  
+> vipLevel| string| VIP level  
+[](/docs/api-explorer/v5/spot-margin-uta/vip-margin)
 
 * * *
 
@@ -41,17 +51,8 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
 
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
+    GET /v5/spot-margin-trade/data?vipLevel=No VIP&currency=BTC HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "spotMarginMode": "0"  
-    }  
     
     
     
@@ -61,9 +62,7 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
-    ))  
+    print(session.spot_margin_trade_get_vip_margin_data())  
     
     
     
@@ -76,7 +75,10 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
     });  
       
     client  
-      .toggleSpotMarginTrade('0')  
+      .getVIPMarginData({  
+        vipLevel: 'No VIP',  
+        currency: 'BTC',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -90,42 +92,63 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
-            "spotMarginMode": "0"  
-        },  
-        "retExtInfo": {},  
-        "time": 1672297795542  
+            "vipCoinList": [  
+                {  
+                    "list": [  
+                        {  
+                            "borrowable": true,  
+                            "collateralRatio": "0.95",  
+                            "currency": "BTC",  
+                            "hourlyBorrowRate": "0.0000015021220000",  
+                            "liquidationOrder": "11",  
+                            "marginCollateral": true,  
+                            "maxBorrowingAmount": "3"  
+                        }  
+                    ],  
+                    "vipLevel": "No VIP"  
+                }  
+            ]  
+        }  
     }
 
 ---
 
-# 全倉槓桿開關
+# 查詢不同VIP的槓桿數據
 
-全倉槓桿開關
+查詢**統一帳戶** 下不同VIP等級的槓桿數據
 
-> **覆蓋範圍: 全倉槓桿 (統一帳戶)**
+信息
 
-警告
-
-您的帳戶需要先開啟全倉槓桿
+不需要鑒權
 
 ### HTTP 請求
 
-POST `/v5/spot-margin-trade/switch-mode`
+GET`/v5/spot-margin-trade/data`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-spotMarginMode| **true**|  string| `1`: 開啟，`0`: 關閉  
+[vipLevel](/docs/zh-TW/v5/enum#viplevel)| false| string| VIP 等級  
+currency| false| string| 幣種名稱  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）  
-[](/docs/zh-TW/api-explorer/v5/spot-margin-uta/switch-mode)
+vipCoinList| array| Object  
+> list| array| Object  
+>> borrowable| boolean| 幣種是否支持借貸  
+>> collateralRatio| string| 由於新的階梯價值率邏輯, 該字段從2025年2月19日開始不再準確。請使用[查詢階梯價值率](/docs/zh-TW/v5/spot-margin-uta/tier-collateral-ratio)  
+>> currency| string| 幣種名稱  
+>> hourlyBorrowRate| string| 每小時借貸利率  
+>> liquidationOrder| string| 強平順序  
+>> marginCollateral| boolean| 幣種是否支持作為保證金  
+>> maxBorrowingAmount| string| 最大借貸額度  
+> vipLevel| string| VIP 等級  
+[](/docs/zh-TW/api-explorer/v5/spot-margin-uta/vip-margin)
 
 * * *
 
@@ -138,17 +161,8 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
 
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
+    GET /v5/spot-margin-trade/data?vipLevel=No VIP&currency=BTC HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "spotMarginMode": "0"  
-    }  
     
     
     
@@ -158,9 +172,7 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
-    ))  
+    print(session.spot_margin_trade_get_vip_margin_data())  
     
     
     
@@ -173,7 +185,10 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
     });  
       
     client  
-      .toggleSpotMarginTrade('0')  
+      .getVIPMarginData({  
+        vipLevel: 'No VIP',  
+        currency: 'BTC',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -187,10 +202,23 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
-            "spotMarginMode": "0"  
-        },  
-        "retExtInfo": {},  
-        "time": 1672297795542  
+            "vipCoinList": [  
+                {  
+                    "list": [  
+                        {  
+                            "borrowable": true,  
+                            "collateralRatio": "0.95",  
+                            "currency": "BTC",  
+                            "hourlyBorrowRate": "0.0000015020640000",  
+                            "liquidationOrder": "11",  
+                            "marginCollateral": true,  
+                            "maxBorrowingAmount": "3"  
+                        }  
+                    ],  
+                    "vipLevel": "No VIP"  
+                }  
+            ]  
+        }  
     }

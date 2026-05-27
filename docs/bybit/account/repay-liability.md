@@ -2,50 +2,32 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/repay-liability
 api_type: Account
-updated_at: 2026-01-16T09:38:01.274053
+updated_at: 2026-05-27 19:14:09.618608
 ---
 
-# Repay Liability
-
-You can manually repay the liabilities of Unified account
-
-> **Permission** : USDC Contracts  
-> 
+# Reset MMP
 
 info
 
-  1. BYUSDT will not be used for repayment.
-  2. MNT will temporarily not be used for repayment, and repaying MNT liabilities through convert-repay is not supported. However, you may still use [Manual Repay Without Asset Conversion](/docs/v5/account/no-convert-repay) to repay MNT using your existing balance.
+  * Once the mmp triggered, you can unfreeze the account by this endpoint, then `qtyLimit` and `deltaLimit` will be reset to 0.
+  * If the account is not frozen, reset action can also remove previous accumulation, i.e., `qtyLimit` and `deltaLimit` will be reset to 0.
 
 
 
 ### HTTP Request
 
-POST `/v5/account/quick-repayment`
+POST`/v5/account/mmp-reset`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| false| string| The coin with liability, uppercase only 
-
-  * Input the specific coin: repay the liability of this coin in particular
-  * No coin specified: repay the liability of all coins
-
-  
+baseCoin| **true**|  string| Base coin, uppercase only  
   
 ### Response Parameters
 
-Parameter| Type| Comments  
----|---|---  
-list| array| Object  
-> coin| string| Coin used for repayment 
+None
 
-  * The order of currencies used to repay liability is based on `liquidationOrder` from [this endpoint](/docs/v5/spot-margin-uta/vip-margin)
-
-  
-> repaymentQty| string| Repayment qty  
-  
 ### Request Example
 
   * HTTP
@@ -55,43 +37,48 @@ list| array| Object
 
     
     
-    POST /v5/account/quick-repayment HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    POST /v5/account/mmp-reset HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1701848610019  
+    X-BAPI-TIMESTAMP: 1675842997277  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 22  
       
     {  
-        "coin": "USDT"  
+        "baseCoin": "ETH"  
     }  
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.reset_mmp(  
+        baseCoin="ETH",  
+    ))  
     
     
     
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .repayLiability({  
-        coin: 'USDT',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .resetMMP('ETH')  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### Response Example
@@ -99,65 +86,34 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "SUCCESS",  
-        "result": {  
-            "list": [  
-                {  
-                    "coin": "BTC",  
-                    "repaymentQty": "0.10549670"  
-                },  
-                {  
-                    "coin": "ETH",  
-                    "repaymentQty": "2.27768114"  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1701848610941  
+        "retMsg": "success"  
     }
 
 ---
 
-# 一鍵還款
-
-您可以通過該接口手動還清統一帳戶中的借款
-
-> 權限: USDC合約
+# 重置市商保護凍結
 
 信息
 
-  1. BYUSDT 不會被用於還款
-  2. MNT 暫時不會被用於還款, 亦不支援通過貨幣轉換還款(convert-repay)來償還 MNT 負債. 不過, 您仍可使用 [無損手工還款](/docs/zh-TW/v5/account/no-convert-repay)以現有餘額償還 MNT 借款
+  * 一旦mmp被觸發, 您的帳戶可以調用該接口進行主動解凍, 解凍後, `qtyLimit`和`deltaLimit`就重置為0.
+  * 若帳戶沒有被凍結, 該重置接口能夠清除之前的交易, 即不計算重置前發生的總數量和淨交易delta, `qtyLimit`和`deltaLimit`就重置為0.
 
 
 
 ### HTTP 請求
 
-POST `/v5/account/quick-repayment`
+POST`/v5/account/mmp-reset`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| false| string| 有負債的幣種
-
-  * 指定幣種: 則僅還清指定幣種的負債
-  * 不指定: 還清所有有負債的幣種
-
-  
+baseCoin| **true**|  string| 交易幣種  
   
 ### 響應參數
 
-參數| 類型| 說明  
----|---|---  
-list| array| Object  
-> coin| string| 用於償還借款的兌出幣種
+無
 
-  * 用於還款的幣種是基於這個[接口](/docs/zh-TW/v5/spot-margin-uta/vip-margin)中的`liquidationOrder`字段 
-
-  
-> repaymentQty| string| 兌出幣種數量  
-  
 ### 請求示例
 
   * HTTP
@@ -167,43 +123,48 @@ list| array| Object
 
     
     
-    POST /v5/account/quick-repayment HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    POST /v5/account/mmp-reset HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1701848610019  
+    X-BAPI-TIMESTAMP: 1675842997277  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 22  
       
     {  
-        "coin": "USDT"  
+        "baseCoin": "ETH"  
     }  
     
     
     
-      
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.reset_mmp(  
+        baseCoin="ETH",  
+    ))  
     
     
     
     const { RestClientV5 } = require('bybit-api');  
       
     const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+        testnet: true,  
+        key: 'xxxxxxxxxxxxxxxxxx',  
+        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
     });  
       
     client  
-      .repayLiability({  
-        coin: 'USDT',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+        .resetMMP('ETH')  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### 響應示例
@@ -211,19 +172,5 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "SUCCESS",  
-        "result": {  
-            "list": [  
-                {  
-                    "coin": "BTC",  
-                    "repaymentQty": "0.10549670"  
-                },  
-                {  
-                    "coin": "ETH",  
-                    "repaymentQty": "2.27768114"  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1701848610941  
+        "retMsg": "success"  
     }

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer
 api_type: REST
-updated_at: 2026-01-16T09:38:48.411215
+updated_at: 2026-05-27 19:15:26.573101
 ---
 
 # Create Universal Transfer
@@ -21,7 +21,7 @@ tip
 
 ### HTTP Request
 
-POST `/v5/asset/transfer/universal-transfer`
+POST`/v5/asset/transfer/universal-transfer`
 
 ### Request Parameters
 
@@ -41,10 +41,13 @@ Parameter| Type| Comments
 ---|---|---  
 transferId| string| UUID  
 status| string| Transfer status 
-* `STATUS_UNKNOWN`
-* `SUCCESS`
-* `PENDING`
-* `FAILED`  
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
 [](/docs/api-explorer/v5/asset/unitransfer)
 
 * * *
@@ -156,7 +159,7 @@ status| string| Transfer status
 
 ### HTTP 請求
 
-POST `/v5/asset/transfer/universal-transfer`
+POST`/v5/asset/transfer/universal-transfer`
 
 ### 請求參數
 
@@ -176,10 +179,13 @@ toMemberId| **true**|  integer| 轉入UID
 ---|---|---  
 transferId| string| UUID  
 status| string| 劃轉狀態 
-* `STATUS_UNKNOWN`
-* `SUCCESS`
-* `PENDING`
-* `FAILED`  
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
 [](/docs/zh-TW/api-explorer/v5/asset/unitransfer)
 
 * * *

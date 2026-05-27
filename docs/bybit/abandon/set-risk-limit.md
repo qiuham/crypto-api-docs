@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/set-risk-limit
 api_type: REST
-updated_at: 2026-01-16T09:37:47.977689
+updated_at: 2026-05-27 19:13:49.881479
 ---
 
 # Set Risk Limit
@@ -11,7 +11,7 @@ updated_at: 2026-01-16T09:37:47.977689
 
 ### HTTP Request
 
-POST `/v5/position/set-risk-limit`
+POST`/v5/position/set-risk-limit`
 
 ### Request Parameters
 
@@ -140,7 +140,7 @@ riskLimitValue| string| The position limit value corresponding to this risk ID
 
 ### HTTP 請求
 
-POST `/v5/position/set-risk-limit`
+POST`/v5/position/set-risk-limit`
 
 ### 請求參數
 

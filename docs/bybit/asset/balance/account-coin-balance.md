@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/balance/account-coin-balance
 api_type: REST
-updated_at: 2026-01-16T09:38:15.334779
+updated_at: 2026-05-27 19:14:41.495995
 ---
 
 # Get Single Coin Balance
@@ -17,7 +17,7 @@ important
 
 ### HTTP Request
 
-GET `/v5/asset/transfer/query-account-coin-balance`
+GET`/v5/asset/transfer/query-account-coin-balance`
 
 ### Request Parameters
 
@@ -154,7 +154,7 @@ balance| Object|
 
 ### HTTP 請求
 
-GET `/v5/asset/transfer/query-account-coin-balance`
+GET`/v5/asset/transfer/query-account-coin-balance`
 
 ### 請求參數
 

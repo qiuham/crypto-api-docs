@@ -2,52 +2,55 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/balance/all-balance
 api_type: REST
-updated_at: 2026-01-16T09:38:19.754769
+updated_at: 2026-05-27 19:14:43.705023
 ---
 
-# Get All Coins Balance
+# Get Withdrawable Amount
 
-You could get all coin balance of all account types under the master account, and sub account.
+info
 
-important
+**How can partial funds be subject to delayed withdrawal requests?**
 
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
+  * **On-chain deposit** : If the number of on-chain confirmations has not reached a risk-controlled level, a portion of the funds will be frozen for a period of time until they are unfrozen.
+  * **Buying crypto** : If there is a risk, the funds will be frozen for a certain period of time and cannot be withdrawn.
 
 
+
+**During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery**
 
 ### HTTP Request
 
-GET `/v5/asset/transfer/query-account-coins-balance`
+GET`/v5/asset/withdraw/withdrawable-amount`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-memberId| false| string| User Id. It is **required** when you use master api key to check sub account coin balance  
-[accountType](/docs/v5/enum#accounttype)| **true**|  string| Account type  
-coin| false| string| Coin name, uppercase only 
-
-  * Query all coins if not passed
-  * Can query multiple coins, separated by comma. `USDT,USDC,ETH`
-
-**Note:** this field is **mandatory** for accountType=`UNIFIED`, and supports up to 10 coins each request  
-withBonus| false| integer| `0`(default): not query bonus. `1`: query bonus  
+coin| **true**|  string| Coin name, uppercase only  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-[accountType](/docs/v5/enum#accounttype)| string| Account type  
-memberId| string| UserID  
-balance| array| Object  
-> coin| string| Currency  
-> walletBalance| string| Wallet balance  
-> transferBalance| string| Transferable balance  
-> bonus| string| Bonus  
-[](/docs/api-explorer/v5/asset/all-balance)
-
-* * *
-
+limitAmountUsd| string| The frozen amount due to risk, in USD  
+withdrawableAmount| Object|   
+> SPOT| Object| Spot wallet, it is not returned if spot wallet is removed  
+>> coin| string| Coin name  
+>> withdrawableAmount| string| Amount that can be withdrawn  
+>> availableBalance| string| Available balance  
+> FUND| Object| Funding wallet  
+>> coin| string| Coin name  
+>> withdrawableAmount| string| Amount that can be withdrawn  
+>> availableBalance| string| Available balance  
+> UTA| Object| Unified wallet  
+>> coin| string| Coin name  
+>> withdrawableAmount| string| Amount that can be withdrawn  
+>> availableBalance| string| Available balance  
+> EARN| Object| Earn account, it is not returned when the coin does not support to be withdrawn via Earn account  
+>> coin| string| Coin name  
+>> withdrawableAmount| string| Amount that can be withdrawn  
+>> availableBalance| string| Available balance  
+  
 ### Request Example
 
   * HTTP
@@ -57,12 +60,12 @@ balance| array| Object
 
     
     
-    GET /v5/asset/transfer/query-account-coins-balance?accountType=FUND&coin=USDC HTTP/1.1  
+    GET /v5/asset/withdraw/withdrawable-amount?coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1675866354698  
-    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-TIMESTAMP: 1677565621998  
+    X-BAPI-RECV-WINDOW: 50000  
+    X-BAPI-SIGN: XXXXXX  
     
     
     
@@ -72,9 +75,8 @@ balance| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_coins_balance(  
-        accountType="FUND",  
-        coin="USDC",  
+    print(session.get_withdrawable_amount(  
+        coin="USDT",  
     ))  
     
     
@@ -88,7 +90,9 @@ balance| array| Object
     });  
       
     client  
-      .getAllCoinsBalance({ accountType: 'FUND', coin: 'USDC' })  
+      .getWithdrawableAmount({  
+        coin: 'USDT',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -104,62 +108,72 @@ balance| array| Object
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "memberId": "XXXX",  
-            "accountType": "FUND",  
-            "balance": [  
-                {  
-                    "coin": "USDC",  
-                    "transferBalance": "0",  
-                    "walletBalance": "0",  
-                    "bonus": ""  
+            "limitAmountUsd": "595051.7",  
+            "withdrawableAmount": {  
+                "FUND": {  
+                    "coin": "USDT",  
+                    "withdrawableAmount": "155805.847",  
+                    "availableBalance": "155805.847"  
+                },  
+                "UTA": {  
+                    "coin": "USDT",  
+                    "withdrawableAmount": "498751.0882",  
+                    "availableBalance": "498751.0882"  
                 }  
-            ]  
+            }  
         },  
         "retExtInfo": {},  
-        "time": 1675866354913  
+        "time": 1754009688289  
     }
 
 ---
 
-# 查詢賬戶所有幣種余額
+# 查詢可提現金額
 
-支持查詢母帳戶的各個帳戶類型的幣種餘額，以及母帳戶下各子帳戶的各個帳戶類型的幣種餘額。
+信息
 
-important
+**如何會導致部分資金被要求延遲提幣？**
 
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
+  * **鏈上充值** : 鏈上區塊確認數未達到該幣種風險高度數時，部分資金將被凍結一段時間，直至解凍；具體風險高度數可查看 [查詢幣種信息](/docs/zh-TW/v5/asset/coin-info) 的返回值 `safeConfirmNumber`
+  * **買幣** : 若存在風險, 則一定時間內被凍結, 無法提幣
 
 
+
+**在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況**
 
 ### HTTP 請求
 
-GET `/v5/asset/transfer/query-account-coins-balance`
+GET`/v5/asset/withdraw/withdrawable-amount`
 
 ### 請求參數
 
-參數| 是否必須| 類型| 說明  
+參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-memberId| false| string| 用戶ID. 當使用母帳號api key查詢子帳戶的幣種餘額時，該字段**必傳**  
-[accountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 賬戶類型  
-coin| false| string| 幣種類型, 支持傳入多個幣種   
-**注意:** 對於accountType=UNIFIED, coin參數是**必傳** 字段, 並且最多支持單次查詢10個幣種  
-withBonus| false| integer| 是否查詢體驗金. `0`(默認)：不查詢; `1`：查詢  
+coin| **true**|  string| 幣種名稱  
   
-### 返回參數
+### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-[accountType](/docs/zh-TW/v5/enum#accounttype)| string| 賬戶類型  
-memberId| string| 用戶ID  
-balance| Object|   
-> coin| string| 幣種類型  
-> walletBalance| string| 錢包余額  
-> transferBalance| string| 可划余額  
-> bonus| string| 体验金  
-[](/docs/zh-TW/api-explorer/v5/asset/all-balance)
-
-* * *
-
+limitAmountUsd| string| 延遲提幣凍結金額 (USD)  
+withdrawableAmount| Object|   
+> SPOT| Object| 現貨錢包, 若該錢包被移除, 則不會返回該對象  
+>> coin| string| 幣種名稱  
+>> withdrawableAmount| string| 可提現金額  
+>> availableBalance| string| 可用餘額  
+> FUND| Object| 資金錢包  
+>> coin| string| 幣種名稱  
+>> withdrawableAmount| string| 可提現金額  
+>> availableBalance| string| 可用餘額  
+> UTA| Object| Unified錢包  
+>> coin| string| 幣種名稱  
+>> withdrawableAmount| string| 可提現金額  
+>> availableBalance| string| 可用餘額  
+> EARN| Object| 理財帳戶, 如果幣種不支持從理財帳戶出金, 則不返回  
+>> coin| string| 幣種  
+>> withdrawableAmount| string| 可提現金額  
+>> availableBalance| string| 可用餘額  
+  
 ### 請求示例
 
   * HTTP
@@ -169,12 +183,12 @@ balance| Object|
 
     
     
-    GET /v5/asset/transfer/query-account-coins-balance?accountType=FUND&coin=USDC HTTP/1.1  
+    GET /v5/asset/withdraw/withdrawable-amount?coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1675866354698  
-    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-TIMESTAMP: 1677565621998  
+    X-BAPI-RECV-WINDOW: 50000  
+    X-BAPI-SIGN: XXXXXX  
     
     
     
@@ -184,9 +198,8 @@ balance| Object|
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_coins_balance(  
-        accountType="FUND",  
-        coin="USDC",  
+    print(session.get_withdrawable_amount(  
+        coin="USDT",  
     ))  
     
     
@@ -200,7 +213,9 @@ balance| Object|
     });  
       
     client  
-      .getAllCoinsBalance({ accountType: 'FUND', coin: 'USDC' })  
+      .getWithdrawableAmount({  
+        coin: 'USDT',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -216,23 +231,20 @@ balance| Object|
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "memberId": "533285",  
-            "accountType": "FUND",  
-            "balance": [  
-                {  
+            "limitAmountUsd": "595051.7",  
+            "withdrawableAmount": {  
+                "FUND": {  
                     "coin": "USDT",  
-                    "transferBalance": "1010",  
-                    "walletBalance": "1010",  
-                    "bonus": ""  
+                    "withdrawableAmount": "155805.847",  
+                    "availableBalance": "155805.847"  
                 },  
-                {  
-                    "coin": "USDC",  
-                    "transferBalance": "0",  
-                    "walletBalance": "0",  
-                    "bonus": ""  
+                "UTA": {  
+                    "coin": "USDT",  
+                    "withdrawableAmount": "498751.0882",  
+                    "availableBalance": "498751.0882"  
                 }  
-            ]  
+            }  
         },  
         "retExtInfo": {},  
-        "time": 1675865290069  
+        "time": 1754009688289  
     }

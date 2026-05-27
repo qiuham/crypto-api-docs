@@ -2,118 +2,70 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/cross-isolate
 api_type: REST
-updated_at: 2026-01-16T09:37:42.908521
+updated_at: 2026-05-27 19:13:41.881687
 ---
 
-# Switch Cross/Isolated Margin
+# Get Broker Earning
 
-Select cross margin mode or isolated margin mode per symbol level
+danger
+
+This endpoint has been deprecated, please move to new [Get Exchange Broker Earning](/docs/v5/broker/exchange-broker/exchange-earning)
+
+info
+
+  * Use exchange broker master account to query
+  * The data can support up to past 6 months until T-1
+  * `startTime` & `endTime` are either entered at the same time or not entered
+
+
 
 ### HTTP Request
 
-POST `/v5/position/switch-isolated`
+GET`/v5/broker/earning-record`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type 
-
-  * [UTA2.0](/docs/v5/acct-mode#uta-20): not supported
-  * [UTA1.0](/docs/v5/acct-mode#uta-10): `inverse`
-  * Classic: `linear`(USDT Preps), `inverse`
-
+bizType| false| string| Business type. `SPOT`, `DERIVATIVES`, `OPTIONS`  
+startTime| false| integer| The start timestamp(ms)  
+endTime| false| integer| The end timestamp(ms)  
+limit| false| integer| Limit for data size per page. [`1`, `1000`]. Default: `1000`  
+cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
   
-symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-tradeMode| **true**|  integer| `0`: cross margin. `1`: isolated margin  
-buyLeverage| **true**|  string| The value must be equal to `sellLeverage` value  
-sellLeverage| **true**|  string| The value must be equal to `buyLeverage` value  
-[](/docs/api-explorer/v5/position/cross-isolate)
-
-* * *
-
 ### Response Parameters
 
-None
-
+Parameter| Type| Comments  
+---|---|---  
+list| array| Object  
+> userId| string| UID  
+> bizType| string| Business type  
+> symbol| string| Symbol name  
+> coin| string| Coin name. The currency of earning  
+> earning| string| Commission  
+> orderId| string| Order ID  
+> execTime| string| Execution timestamp (ms)  
+nextPageCursor| string| Refer to the `cursor` request parameter  
+  
 ### Request Example
 
   * HTTP
   * Python
-  * Java
-  * Node.js
 
 
     
     
-    POST /v5/position/switch-isolated HTTP/1.1  
+    GET /v5/broker/earning-record?bizType=SPOT&startTime=1686240000000&endTime=1686326400000&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN-TYPE: 2  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1675248447965  
+    X-BAPI-TIMESTAMP: 1686708862669  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 121  
+    
+    
+    
       
-    {  
-        "category": "linear",  
-        "symbol": "ETHUSDT",  
-        "tradeMode": 1,  
-        "buyLeverage": "10",  
-        "sellLeverage": "10"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.switch_margin_mode(  
-        category="linear",  
-        symbol="ETHUSDT",  
-        tradeMode=1,  
-        buyLeverage="10",  
-        sellLeverage="10",  
-    ))  
-    
-    
-    
-    import com.bybit.api.client.domain.*;  
-    import com.bybit.api.client.domain.position.*;  
-    import com.bybit.api.client.domain.position.request.*;  
-    import com.bybit.api.client.service.BybitApiClientFactory;  
-    var client = BybitApiClientFactory.newInstance().newAsyncPositionRestClient();  
-    var switchMarginRequest = PositionDataRequest.builder().category(CategoryType.LINEAR).symbol("BTC-31MAR23").tradeMode(MarginMode.CROSS_MARGIN).buyLeverage("5").sellLeverage("5").build();  
-    client.swithMarginRequest(switchMarginRequest, System.out::println);  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-        testnet: true,  
-        key: 'xxxxxxxxxxxxxxxxxx',  
-        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-        .switchIsolatedMargin({  
-            category: 'linear',  
-            symbol: 'ETHUSDT',  
-            tradeMode: 1,  
-            buyLeverage: '10',  
-            sellLeverage: '10',  
-        })  
-        .then((response) => {  
-            console.log(response);  
-        })  
-        .catch((error) => {  
-            console.error(error);  
-        });  
     
 
 ### Response Example
@@ -121,123 +73,88 @@ None
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
-        "result": {},  
+        "retMsg": "success",  
+        "result": {  
+            "list": [  
+                {  
+                    "userId": "xxxx",  
+                    "bizType": "SPOT",  
+                    "symbol": "BTCUSDT",  
+                    "coin": "BTC",  
+                    "earning": "0.000015",  
+                    "orderId": "1531607271849858304",  
+                    "execTime": "1686306035957"  
+                }  
+            ],  
+            "nextPageCursor": "0%2C1"  
+        },  
         "retExtInfo": {},  
-        "time": 1675248433635  
+        "time": 1686708863283  
     }
 
 ---
 
-# 切換全倉/逐倉保證金(交易對)
+# 查詢經紀商返佣
 
-選擇全倉保證金或者是逐倉保證金，請參閱[這裡](https://www.bybit.com/zh-TW/help-center/bybitHC_Article/?language=en_US&id=000001053)了解關於全倉/逐倉保證金模式。
+危險
+
+該接口已經廢棄, 請使用[查詢經紀商返佣信息](/docs/zh-TW/v5/broker/exchange-broker/exchange-earning)
+
+信息
+
+  * 使用經紀商的母帳戶進行查詢
+  * 支持查詢過去6個月的數據
+  * `startTime` & `endTime`兩個入参, 要麼同時輸入, 要麼都不輸入
+
+
 
 ### HTTP 請求
 
-POST `/v5/position/switch-isolated`
+GET`/v5/broker/earning-record`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型 
-
-  * [統一帳戶2.0](/docs/zh-TW/v5/acct-mode#%E7%B5%B1%E4%B8%80%E5%B8%B3%E6%88%B620): 不適用
-  * [統一帳戶1.0](/docs/zh-TW/v5/acct-mode#%E7%B5%B1%E4%B8%80%E5%B8%B3%E6%88%B610): `inverse`
-  * 經典帳戶: `linear`, `inverse`
-
+bizType| false| string| 業務類型. `SPOT`, `DERIVATIVES`, `OPTIONS`  
+startTime| false| integer| 開始時間戳 (毫秒)  
+endTime| false| integer| 結束時間戳 (毫秒)  
+limit| false| integer| 每頁數量限制. [`1`, `1000`]. 默認: `1000`  
+cursor| false| string| 游標，用於翻頁  
   
-symbol| **true**|  string| 合約名稱  
-tradeMode| **true**|  integer| `0`: 全倉. `1`: 逐倉  
-buyLeverage| **true**|  string| 買側槓桿倍數. 必須與`sellLeverage`的值保持相同  
-sellLeverage| **true**|  string| 賣側槓桿倍數. 必須與`buyLeverage`的值保持相同  
-[](/docs/zh-TW/api-explorer/v5/position/cross-isolate)
-
-* * *
-
 ### 響應參數
 
-無
-
+參數| 類型| 說明  
+---|---|---  
+list| array| Object  
+> userId| string| uid  
+> bizType| string| 業務類型  
+> symbol| string| 合約名稱  
+> coin| string| 幣種名稱. 即`earning`的單位  
+> earning| string| 佣金  
+> orderId| string| 訂單ID  
+> execTime| string| 成交時間戳 (毫秒)  
+nextPageCursor| string| 游標，用於翻頁  
+  
 ### 請求示例
 
   * HTTP
   * Python
-  * Java
-  * Node.js
 
 
     
     
-    POST /v5/position/switch-isolated HTTP/1.1  
+    GET /v5/broker/earning-record?bizType=SPOT&startTime=1686240000000&endTime=1686326400000&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN-TYPE: 2  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1675248447965  
+    X-BAPI-TIMESTAMP: 1686708862669  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 121  
+    
+    
+    
       
-    {  
-        "category": "linear",  
-        "symbol": "ETHUSDT",  
-        "tradeMode": 1,  
-        "buyLeverage": "10",  
-        "sellLeverage": "10"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.switch_margin_mode(  
-        category="linear",  
-        symbol="ETHUSDT",  
-        tradeMode=1,  
-        buyLeverage="10",  
-        sellLeverage="10",  
-    ))  
-    
-    
-    
-    import com.bybit.api.client.domain.*;  
-    import com.bybit.api.client.domain.position.*;  
-    import com.bybit.api.client.domain.position.request.*;  
-    import com.bybit.api.client.service.BybitApiClientFactory;  
-    var client = BybitApiClientFactory.newInstance().newAsyncPositionRestClient();  
-    var switchMarginRequest = PositionDataRequest.builder().category(CategoryType.LINEAR).symbol("BTC-31MAR23").tradeMode(MarginMode.CROSS_MARGIN).buyLeverage("5").sellLeverage("5").build();  
-    client.swithMarginRequest(switchMarginRequest, System.out::println);  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-        testnet: true,  
-        key: 'xxxxxxxxxxxxxxxxxx',  
-        secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-        .switchIsolatedMargin({  
-            category: 'linear',  
-            symbol: 'ETHUSDT',  
-            tradeMode: 1,  
-            buyLeverage: '10',  
-            sellLeverage: '10',  
-        })  
-        .then((response) => {  
-            console.log(response);  
-        })  
-        .catch((error) => {  
-            console.error(error);  
-        });  
     
 
 ### 響應示例
@@ -245,8 +162,21 @@ sellLeverage| **true**|  string| 賣側槓桿倍數. 必須與`buyLeverage`的�
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
-        "result": {},  
+        "retMsg": "success",  
+        "result": {  
+            "list": [  
+                {  
+                    "userId": "xxxx",  
+                    "bizType": "SPOT",  
+                    "symbol": "BTCUSDT",  
+                    "coin": "BTC",  
+                    "earning": "0.000015",  
+                    "orderId": "1531607271849858304",  
+                    "execTime": "1686306035957"  
+                }  
+            ],  
+            "nextPageCursor": "0%2C1"  
+        },  
         "retExtInfo": {},  
-        "time": 1675248433635  
+        "time": 1686708863283  
     }

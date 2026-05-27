@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert/apply-quote
 api_type: REST
-updated_at: 2026-01-16T09:38:24.890381
+updated_at: 2026-05-27 19:14:51.897263
 ---
 
 # Request a Quote
 
 ### HTTP Request
 
-POST `/v5/asset/exchange/quote-apply`
+POST`/v5/asset/exchange/quote-apply`
 
 ### Request Parameters
 
@@ -19,15 +19,21 @@ Parameter| Required| Type| Comments
 fromCoin| **true**|  string| Convert from coin (coin to sell)  
 toCoin| **true**|  string| Convert to coin (coin to buy)  
 requestCoin| **true**|  string| Request coin, same as fromCoin 
-* In the future, we may support requestCoin=toCoin  
+
+  * In the future, we may support requestCoin=toCoin
+
+  
 requestAmount| **true**|  string| request coin amount (the amount you want to sell)  
 fromCoinType| false| string| `crypto`  
 toCoinType| false| string| `crypto`  
 paramType| false| string| `opFrom`, mainly used for API broker user  
 paramValue| false| string| Broker ID, mainly used for API broker user  
 requestId| false| string| Customised request ID 
-* a maximum length of 36
-* Generally it is useless, but it is convenient to track the quote request internally if you fill this field  
+
+  * a maximum length of 36
+  * Generally it is useless, but it is convenient to track the quote request internally if you fill this field
+
+  
   
 ### Response Parameters
 
@@ -149,7 +155,7 @@ extTaxAndFee| array| Compliance-related field. Currently returns an empty array,
 
 ### HTTP 請求
 
-POST `/v5/asset/exchange/quote-apply`
+POST`/v5/asset/exchange/quote-apply`
 
 ### 請求參數
 
@@ -159,15 +165,21 @@ POST `/v5/asset/exchange/quote-apply`
 fromCoin| **true**|  string| 兌出幣種  
 toCoin| **true**|  string| 兌入幣種  
 requestCoin| **true**|  string| 請求報價幣種, 和兌出幣種保持一致 
-* 未來, 可能會支援requestCoin=兌入幣種  
+
+  * 未來, 可能會支援requestCoin=兌入幣種
+
+  
 requestAmount| **true**|  string| 請求報價幣種數量  
 fromCoinType| false| string| `crypto`  
 toCoinType| false| string| `crypto`  
 paramType| false| string| `opFrom`, 主要用於API broker  
 paramValue| false| string| Broker ID, 主要用於API broker  
 requestId| false| string| 自定義的請求ID 
-* 最長不超過36位的字符串
-* 一般來說該字段無用, 可用於內部追蹤這次報價請求  
+
+  * 最長不超過36位的字符串
+  * 一般來說該字段無用, 可用於內部追蹤這次報價請求
+
+  
   
 ### 響應參數
 

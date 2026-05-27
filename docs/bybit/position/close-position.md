@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/close-position
 api_type: Position
-updated_at: 2026-01-16T09:40:24.955607
+updated_at: 2026-05-27 19:21:07.141020
 ---
 
 # Get Closed Options Positions
@@ -18,7 +18,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/position/get-closed-positions`
+GET`/v5/position/get-closed-positions`
 
 ### Request Parameters
 
@@ -148,7 +148,7 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/position/get-closed-positions`
+GET`/v5/position/get-closed-positions`
 
 ### 請求參數
 

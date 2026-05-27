@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/instrument
 api_type: Account
-updated_at: 2026-01-16T09:38:01.084710
+updated_at: 2026-05-27 19:14:03.506633
 ---
 
 # Get Account Instruments Info
@@ -17,12 +17,13 @@ caution
   * This endpoint returns 200 entries by default. There are now more than 200 `linear` symbols on the platform. As a result, you will need to use `cursor` for pagination or `limit` to get all entries.
   * Custodial sub-accounts do not support queries.
   * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
+  * The fields `maxLimitOrderQty`, `maxMarketOrderQty`, and `postOnlyMaxLimitOrderSize` are adjusted bi-monthly (3rd and 17th, 08:00 UTC+8). Developers should not assume these values remain constant.
 
 
 
 ### HTTP Request
 
-GET `/v5/account/instruments-info`
+GET`/v5/account/instruments-info`
 
 ### Request Parameters
 
@@ -46,6 +47,7 @@ category| string| Product type
 nextPageCursor| string| Cursor. Used to pagination  
 list| array| Object  
 > symbol| string| Symbol name   
+> symbolId| integer| The ID of symbol name   
 > [contractType](/docs/v5/enum#contracttype)| string| Contract type  
 > [status](/docs/v5/enum#status)| string| Instrument status   
 > baseCoin| string| Base coin   
@@ -53,8 +55,11 @@ list| array| Object
 > [symbolType](/docs/v5/enum#symboltype)| string| the region to which the trading pair belongs  
 > launchTime| string| Launch timestamp (ms)   
 > deliveryTime| string| Delivery timestamp (ms) 
-* Expired futures delivery time
-* Perpetual delisting time  
+
+  * Expired futures delivery time
+  * Perpetual delisting time
+
+  
 > deliveryFeeRate| string| Delivery fee rate  
 > priceScale| string| Price scale   
 > leverageFilter| Object| Leverage attributes   
@@ -79,15 +84,21 @@ list| array| Object
 > upperFundingRate| string| Upper limit of funding date  
 > lowerFundingRate| string| Lower limit of funding date  
 > displayName| string| The USDC futures & perpetual name displayed in the Web or App  
-> riskParameters| object| Risk parameters for limit order price. Note that the [formula changed](https://announcements.bybit.com/en/article/adjustments-to-bybit-s-derivative-trading-limit-order-mechanism-blt469228de1902fff6/) in Jan 2025  
+> riskParameters| object| Risk parameters for limit order price. Note that the [formula changed](https://announcements.bybit.com/en/article/update-contract-price-limit-enhancement-bltf9ebdcebe3089641/) in May 2026  
 >> priceLimitRatioX| string| Ratio X  
 >> priceLimitRatioY| string| Ratio Y  
 > isPreListing| boolean| 
-* Whether the contract is a pre-market contract
-* When the pre-market contract is converted to official contract, it will be false  
+
+  * Whether the contract is a pre-market contract
+  * When the pre-market contract is converted to official contract, it will be false
+
+  
 > preListingInfo| object| 
-* If isPreListing=false, preListingInfo=null
-* If isPreListing=true, preListingInfo is an object  
+
+  * If isPreListing=false, preListingInfo=null
+  * If isPreListing=true, preListingInfo is an object
+
+  
 >> [curAuctionPhase](/docs/v5/enum#curauctionphase)| string| The current auction phase  
 >> phases| array<object>| Each phase time info  
 >>> [phase](/docs/v5/enum#curauctionphase)| string| pre-market trading phase  
@@ -95,26 +106,40 @@ list| array| Object
 >>> endTime| string| The end time of the phase, timestamp(ms)  
 >> auctionFeeInfo| object| Action fee info  
 >>> auctionFeeRate| string| The trading fee rate during auction phase 
-* There is no trading fee until entering continues trading phase  
+
+  * There is no trading fee until entering continues trading phase
+
+  
 >>> takerFeeRate| string| The taker fee rate during continues trading phase   
 >>> makerFeeRate| string| The maker fee rate during continues trading phase  
 >> skipCallAuction| boolean| `false`, `true` Whether the pre-market contract skips the call auction phase  
 > isPublicRpi | boolean| Whether RPI Is Openly Provided to Market Makers or not.
-* true: RPI Is Openly Provided to Market Makers
-* false: RPI Is Not Openly Provided to Market Makers  
+
+  * true: RPI Is Openly Provided to Market Makers
+  * false: RPI Is Not Openly Provided to Market Makers
+
+  
 > myRpiPermission | boolean| Whether the Current User Has RPI Permissions or not
-* true: Has RPI Permissions
-* false: Does Not Have RPI Permissions  
+
+  * true: Has RPI Permissions
+  * false: Does Not Have RPI Permissions
+
+  
   
 Parameter| Type| Comments  
 ---|---|---  
 category| string| Product type  
 list| array| Object  
+> symbolId| integer| The ID of symbol name   
 > symbol| string| Symbol name   
 > baseCoin| string| Base coin   
 > quoteCoin| string| Quote coin   
 > innovation| string| deprecated, please use `symbolType`  
 > [symbolType](/docs/v5/enum#symboltype)| string| the region to which the trading pair belongs  
+> xstockMultiplier| string| Xstock mutiplier 
+* It only applies to those "symbolType"=`xstocks` trading pairs  
+relationship: stock_price = token_price / mutiplier; stock_qty = token_qty * mutiplier
+* default value: "1"  
 > [status](/docs/v5/enum#status)| string| Instrument status   
 > [marginTrading](/docs/v5/enum#margintrading)| string| Margin trade symbol or not 
 
@@ -139,11 +164,17 @@ list| array| Object
 >> priceLimitRatioX| string| Ratio X  
 >> priceLimitRatioY| string| Ratio Y  
 > isPublicRpi | boolean| Whether RPI Is Openly Provided to Market Makers or not.
-* true: RPI Is Openly Provided to Market Makers
-* false: RPI Is Not Openly Provided to Market Makers  
+
+  * true: RPI Is Openly Provided to Market Makers
+  * false: RPI Is Not Openly Provided to Market Makers
+
+  
 > myRpiPermission | boolean| Whether the Current User Has RPI Permissions or not
-* true: Has RPI Permissions
-* false: Does Not Have RPI Permissions  
+
+  * true: Has RPI Permissions
+  * false: Does Not Have RPI Permissions
+
+  
   
 * * *
 
@@ -155,6 +186,7 @@ list| array| Object
 
 
   * HTTP
+  * Python
 
 
     
@@ -162,14 +194,41 @@ list| array| Object
     GET /v5/account/instruments-info?category=linear&symbol=1000000BABYDOGEUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_account_instruments_info(  
+        category="linear",  
+        symbol="BTCUSDT"  
+    ))  
+    
 
   * HTTP
+  * Python
 
 
     
     
     GET /v5/account/instruments-info?category=spot&symbol=BTCUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_account_instruments_info(  
+        category="spot",  
+        symbol="MNTUSDT"  
+    ))  
     
 
 ### Response Example
@@ -189,6 +248,7 @@ list| array| Object
             "list": [  
                 {  
                     "symbol": "1000000BABYDOGEUSDT",  
+                    "symbolId": 527,  
                     "contractType": "LinearPerpetual",  
                     "status": "Trading",  
                     "baseCoin": "1000000BABYDOGE",  
@@ -249,6 +309,7 @@ list| array| Object
             "category": "spot",  
             "list": [  
                 {  
+                    "symbolId": 9,  
                     "symbol": "BTCUSDT",  
                     "baseCoin": "BTC",  
                     "quoteCoin": "USDT",  
@@ -297,12 +358,13 @@ list| array| Object
   * 現貨不支持翻頁，因此`limit`, `cusor`無效
   * 托管子账户不支持查询
   * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
+  * `maxLimitOrderQty`, `maxMarketOrderQty`, `postOnlyMaxLimitOrderSize` 欄位會於每月 3 日與 17 日（UTC+8 08:00）進行定期調整。請開發者勿假設上述欄位數值為固定不變，並應於系統設計時預留動態更新與重新讀取機制。
 
 
 
 ### HTTP請求
 
-GET `/v5/account/instruments-info`
+GET`/v5/account/instruments-info`
 
 ### 請求參數
 
@@ -326,6 +388,7 @@ category| string| 產品類型
 nextPageCursor| string| 游標，用於翻頁  
 list| array| Object  
 > symbol| string| 合約名稱   
+> symbolId| integer| 合約symbol ID   
 > [contractType](/docs/zh-TW/v5/enum#contracttype)| string| 合約類型  
 > [status](/docs/zh-TW/v5/enum#status)| string| 合約狀態   
 > baseCoin| string| 交易幣種   
@@ -333,8 +396,11 @@ list| array| Object
 > [symbolType](/docs/zh-TW/v5/enum#symboltype)| string|  交易對所屬區域  
 > launchTime| string| 發佈時間 (ms)   
 > deliveryTime| string| 交割時間 (ms)
-* 交割合約交割時間
-* 永續合約下架時間  
+
+  * 交割合約交割時間
+  * 永續合約下架時間
+
+  
 > deliveryFeeRate| string| 交割費率. 僅對交割合約有效  
 > priceScale| string| 價格精度   
 > leverageFilter| Object| 槓桿屬性   
@@ -359,15 +425,21 @@ list| array| Object
 > upperFundingRate| string| 資金費率上限   
 > lowerFundingRate| string| 資金費率下限   
 > displayName| string| 網頁或APP端展示的USDC永續和交割合約的名稱  
-> riskParameters| object| 限價單價格風控參數, 參讀該[公告內容](https://announcements.bybit.com/zh-TW/article/adjustments-to-bybit-s-derivative-trading-limit-order-mechanism-blt469228de1902fff6/)  
+> riskParameters| object| 限價單價格風控參數, 參讀該[公告內容](https://announcements.bybit.com/en/article/update-contract-price-limit-enhancement-bltf9ebdcebe3089641/)（2026年5月更新）  
 >> priceLimitRatioX| string| 參數X  
 >> priceLimitRatioY| string| 參數Y  
 > isPreListing| boolean| 
-* 該合約是否為盤前合約
-* 當盤前合約轉為正式合約後, 值將變成false  
+
+  * 該合約是否為盤前合約
+  * 當盤前合約轉為正式合約後, 值將變成false
+
+  
 > preListingInfo| object| 
-* 如果isPreListing=false, preListingInfo=null
-* 如果isPreListing=true, preListingInfo是object  
+
+  * 如果isPreListing=false, preListingInfo=null
+  * 如果isPreListing=true, preListingInfo是object
+
+  
 >> [curAuctionPhase](/docs/zh-TW/v5/enum#curauctionphase)| string| 當前的盤前階段  
 >> phases| array<object>| 每個階段的時間信息  
 >>> [phase](/docs/zh-TW/v5/enum#curauctionphase)| string| 盤前交易階段  
@@ -375,26 +447,40 @@ list| array| Object
 >>> endTime| string| 該階段的結束時間戳(毫秒)  
 >> auctionFeeInfo| object| 盤前交易手續費率信息  
 >>> auctionFeeRate| string| 集合競價期間的手續費率 
-* 目前, 僅在連續競價期間才會產生手續費  
+
+  * 目前, 僅在連續競價期間才會產生手續費
+
+  
 >>> takerFeeRate| string| 連續競價期間的吃單成交手續費率  
 >>> makerFeeRate| string| 連續競價期間的掛單成交手續費率  
 >> skipCallAuction| boolean| `false`, `true` 是否跳過集合競價階段  
 > isPublicRpi | boolean| 是否公開給做市商進行 RPI
-* true: 公開給做市商進行 RPI
-* false: 没有公開給做市商進行 RPI  
+
+  * true: 公開給做市商進行 RPI
+  * false: 没有公開給做市商進行 RPI
+
+  
 > myRpiPermission | boolean| 當前使用者是否有RPI權限
-* true: 有RPI權限
-* false: 没有有RPI權限  
+
+  * true: 有RPI權限
+  * false: 没有有RPI權限
+
+  
   
 參數| 類型| 說明  
 ---|---|---  
 category| string| 產品類型  
 list| array| Object  
-> symbol| string| 合約名稱   
+> symbolId| integer| 現貨交易對ID   
+> symbol| string| 現貨交易對名稱   
 > baseCoin| string| 交易幣種   
 > quoteCoin| string| 報價幣種   
 > innovation| string| 廢棄, 請參照`symbolType`  
 > [symbolType](/docs/zh-TW/v5/enum#symboltype)| string|  交易對所屬區域  
+> xstockMultiplier| string| 股票代幣係數
+* 僅適用於"symbolType"=`xstocks`交易對  
+關係: 股票價格 = 代幣價格 / 係數; 股票數量 = 代幣數量 * 係數
+* 默認值: "1"  
 > [status](/docs/zh-TW/v5/enum#status)| string| 合約狀態   
 > [marginTrading](/docs/zh-TW/v5/enum#margintrading)| string| 該幣對是否支持槓桿交易 
 
@@ -419,11 +505,17 @@ list| array| Object
 >> priceLimitRatioX| string| 參數 X  
 >> priceLimitRatioY| string| 參數 Y  
 > isPublicRpi | boolean| 是否公開給做市商進行 RPI
-* true: 公開給做市商進行 RPI
-* false: 没有公開給做市商進行 RPI  
+
+  * true: 公開給做市商進行 RPI
+  * false: 没有公開給做市商進行 RPI
+
+  
 > myRpiPermission | boolean| 當前使用者是否有RPI權限
-* true: 有RPI權限
-* false: 没有有RPI權限  
+
+  * true: 有RPI權限
+  * false: 没有有RPI權限
+
+  
   
 * * *
 
@@ -469,6 +561,7 @@ list| array| Object
             "list": [  
                 {  
                     "symbol": "1000000BABYDOGEUSDT",  
+                    "symbolId": 527,  
                     "contractType": "LinearPerpetual",  
                     "status": "Trading",  
                     "baseCoin": "1000000BABYDOGE",  
@@ -529,6 +622,7 @@ list| array| Object
             "category": "spot",  
             "list": [  
                 {  
+                    "symbolId": 9,  
                     "symbol": "BTCUSDT",  
                     "baseCoin": "BTC",  
                     "quoteCoin": "USDT",  

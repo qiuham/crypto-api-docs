@@ -2,58 +2,77 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert/convert-coin-list
 api_type: REST
-updated_at: 2026-01-16T09:38:25.021985
+updated_at: 2026-05-27 19:14:54.758177
 ---
 
-# Get Convert Coin List
+# Get Convert History
 
-Query for the list of coins you can convert to/from.
+Returns all confirmed quotes.
+
+info
+
+Starting from September 10, 2025, converts executed on the webpage can also be queried via this API.
 
 ### HTTP Request
 
-GET `/v5/asset/exchange/query-coin-list`
+GET`/v5/asset/exchange/query-convert-history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[accountType](/docs/v5/enum#convertaccounttype)| **true**|  string| Wallet type 
-* `eb_convert_funding`
-* `eb_convert_uta`
-* `eb_convert_spot`
-* `eb_convert_contract`
-* `eb_convert_inverse`  
-coin| false| string| Coin, uppercase only 
-* Convert from coin (coin to sell)
-* when side=0, coin field is ignored  
-side| false| integer| `0`: fromCoin list, the balance is given if you have it; `1`: toCoin list (coin to buy) 
-* when side=1 and coin field is filled, it returns toCoin list based on coin field  
+[accountType](/docs/v5/enum#convertaccounttype)| false| string| Wallet type   
+`eb_convert_funding`: funding wallet convert records via API  
+`eb_convert_uta`: uta wallet convert records via API  
+`funding`: normal crypto convert via web/app  
+`funding_fiat`: fiat crypto convert via web/app  
+`funding_fbtc_convert`: FBTC to BTC convert via web/app  
+`funding_block_trade`: block trade convert via web/app 
+
+  * Supports passing multiple types, separated by comma e.g., `eb_convert_funding,eb_convert_uta`
+  * Return all wallet types data if not passed
+
+  
+index| false| integer| Page number 
+* started from 1
+* 1st page by default  
+limit| false| integer| Page size 
+* 20 records by default
+* up to 100 records, return 100 when exceeds 100  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-coins| array<object>| Coin spec  
-> coin| string| Coin  
-> fullName| string| Full coin name  
-> icon| string| Coin icon url  
-> iconNight| string| Coin icon url (dark mode)  
-> accuracyLength| integer| Coin precision  
-> coinType| string| `crypto`  
-> balance| string| Balance 
-* When side=0, it gives available balance but cannot used to convert. To get an exact balance to convert, you need specify `side=1` and `coin` parameter  
-> uBalance| string| Coin balance in USDT worth value  
-> singleFromMinLimit| string| The minimum amount of fromCoin per transaction  
-> singleFromMaxLimit| string| The maximum amount of fromCoin per transaction  
-> disableFrom| boolean| `true`: the coin is disabled to be fromCoin, `false`: the coin is allowed to be fromCoin  
-> disableTo| boolean| `true`: the coin is disabled to be toCoin, `false`: the coin is allowed to be toCoin  
-> timePeriod| integer| Reserved field, ignored for now  
-> singleToMinLimit| string| Reserved field, ignored for now  
-> singleToMaxLimit| string| Reserved field, ignored for now  
-> dailyFromMinLimit| string| Reserved field, ignored for now  
-> dailyFromMaxLimit| string| Reserved field, ignored for now  
-> dailyToMinLimit| string| Reserved field, ignored for now  
-> dailyToMaxLimit| string| Reserved field, ignored for now  
+list| array<object>| Array of quotes  
+> [accountType](/docs/v5/enum#convertaccounttype)| string| Wallet type  
+`eb_convert_funding`: funding wallet convert records via API  
+`eb_convert_uta`: uta wallet convert records via API  
+`funding`: normal crypto convert via web/app  
+`funding_fiat`: fiat crypto convert via web/app  
+`funding_fbtc_convert`: FBTC to BTC convert via web/app  
+`funding_block_trade`: block trade convert via web/app  
+> exchangeTxId| string| Exchange tx ID, same as quote tx ID  
+> userId| string| User ID  
+> fromCoin| string| From coin  
+> fromCoinType| string| From coin type. `crypto`  
+> toCoin| string| To coin  
+> toCoinType| string| To coin type. `crypto`  
+> fromAmount| string| From coin amount (amount to sell)  
+> toAmount| string| To coin amount (amount to buy according to exchange rate)  
+> exchangeStatus| string| Exchange status 
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
+> extInfo| object|   
+>> paramType| string| This field is published when you send it in the [Request a Quote ](/docs/v5/asset/convert/apply-quote)  
+>> paramValue| string| This field is published when you send it in the [Request a Quote ](/docs/v5/asset/convert/apply-quote)  
+> convertRate| string| Exchange rate  
+> createdAt| string| Quote created time  
   
 ### Request Example
 
@@ -64,11 +83,11 @@ coins| array<object>| Coin spec
 
     
     
-    GET /v5/asset/exchange/query-coin-list?side=0&accountType=eb_convert_funding HTTP/1.1  
+    GET /v5/asset/exchange/query-convert-history?accountType=eb_convert_uta,eb_convert_funding HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1720064061248  
+    X-BAPI-TIMESTAMP: 1720074159814  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -79,9 +98,8 @@ coins| array<object>| Coin spec
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_convert_coin_list(  
-        side="0",  
-        accountType="eb_convert_funding",  
+    print(session.get_convert_history(  
+        accountType="eb_convert_uta,eb_convert_funding",  
     ))  
     
     
@@ -95,7 +113,7 @@ coins| array<object>| Coin spec
     });  
       
     client  
-      .getConvertCoins({ accountType: 'eb_convert_spot' })  
+      .getConvertHistory()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -111,128 +129,121 @@ coins| array<object>| Coin spec
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "coins": [  
+            "list": [  
                 {  
-                    "coin": "BTC",  
-                    "fullName": "BTC",  
-                    "icon": "https://t1.bycsi.com/app/assets/token/0717b8c28c2373bf714c964195411d0f.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/9504b4c841194cc38f04041003ffbfdb.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "0",  
-                    "uBalance": "0",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.001",  
-                    "singleFromMaxLimit": "1",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
+                    "accountType": "eb_convert_funding",  
+                    "exchangeTxId": "10100108106409343501030232064",  
+                    "userId": "XXXXX",  
+                    "fromCoin": "ETH",  
+                    "fromCoinType": "crypto",  
+                    "fromAmount": "0.1",  
+                    "toCoin": "BTC",  
+                    "toCoinType": "crypto",  
+                    "toAmount": "0.00534882723991",  
+                    "exchangeStatus": "success",  
+                    "extInfo": {  
+                        "paramType": "opFrom",  
+                        "paramValue": "broker-id-001"  
+                    },  
+                    "convertRate": "0.0534882723991",  
+                    "createdAt": "1720071899995"  
                 },  
-                ...  
                 {  
-                    "coin": "SOL",  
-                    "fullName": "SOL",  
-                    "icon": "https://s1.bycsi.com/app/assets/token/87ca5f1ca7229bdf0d9a16435653007c.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/383a834046655ffe5ef1be1a025791cc.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "18.05988133",  
-                    "uBalance": "2458.46990211775033220586588327",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.1",  
-                    "singleFromMaxLimit": "1250",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
-                },  
-                ...  
-                {  
-                    "coin": "ETH",  
-                    "fullName": "ETH",  
-                    "icon": "https://s1.bycsi.com/app/assets/token/d6c17c9e767e1810875c702d86ac9f32.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/9613ac8e7d62081f4ca20488ae5b168d.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "0.80264489",  
-                    "uBalance": "2596.09751650032773106431534138",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.01",  
-                    "singleFromMaxLimit": "250",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
+                    "accountType": "eb_convert_uta",  
+                    "exchangeTxId": "23070eb_convert_uta408933875189391360",  
+                    "userId": "XXXXX",  
+                    "fromCoin": "BTC",  
+                    "fromCoinType": "crypto",  
+                    "fromAmount": "0.1",  
+                    "toCoin": "ETH",  
+                    "toCoinType": "crypto",  
+                    "toAmount": "1.773938248611074",  
+                    "exchangeStatus": "success",  
+                    "extInfo": {},  
+                    "convertRate": "17.73938248611074",  
+                    "createdAt": "1719974243256"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1720064061736  
+        "time": 1720074457715  
     }
 
 ---
 
-# 查詢兌換幣種列表
+# 查詢兌換歷史
 
-您可以通過該接口獲取到各個帳戶內的兌入兌出幣種列表
+那些被確認的報價單, 不管最終狀態如何, 該接口都會返回
+
+信息
+
+自 2025 年 9 月 10 日起，前端進行的閃兌也可以在此介面中查詢到
 
 ### HTTP 請求
 
-GET `/v5/asset/exchange/query-coin-list`
+GET`/v5/asset/exchange/query-convert-history`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[accountType](/docs/zh-TW/v5/enum#convertaccounttype)| **true**|  string| 錢包類型 
-* `eb_convert_funding`
-* `eb_convert_uta`
-* `eb_convert_spot`
-* `eb_convert_contract`
-* `eb_convert_inverse`  
-coin| false| string| 兌出幣種
-* 當side=0時, 該字段會被忽略  
-side| false| integer| `0`: 查詢兌出幣種列表, 會返回幣種餘額  
-`1`: 有傳coin的話, 會根據兌出幣種查詢支持的兌入幣種列表  
+[accountType](/docs/zh-TW/v5/enum#convertaccounttype)| false| string| 錢包類型   
+`eb_convert_funding`: 資金錢包閃兌紀錄(API)  
+`eb_convert_uta`: uta錢包閃兌紀錄(API)  
+`funding`: 資金錢包普通幣幣兌換(網頁/APP)  
+`funding_fiat`: 資金錢包數法兌換(網頁/APP)  
+`funding_fbtc_convert`: 資金錢包FBTC兌換成BTC(網頁/APP)  
+`funding_block_trade`: 大宗兌換兌換(網頁/APP)
+
+  * 支持傳遞多個, 用逗號分開 比如, `eb_convert_funding,eb_convert_uta`
+  * 當不傳時, 默認返回所有錢包
+
+  
+index| false| integer| 頁碼 
+
+  * 從1開始
+  * 不傳時, 默認返回第一頁
+
+  
+limit| false| integer| 每頁數量 
+
+  * 默認20條
+  * 最多支持100條, 大於100, 按照100返回
+
+  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-coins| array<object>| 幣種信息  
-> coin| string| 幣種  
-> fullName| string| 完整幣種名  
-> icon| string| 幣種圖標url  
-> iconNight| string| 幣種圖標url (夜間模式)  
-> accuracyLength| integer| 幣種精度  
-> coinType| string| 幣種類型. `crypto`(加密貨幣)  
-> balance| string| 幣種餘額 
-* 當side=0時, 返回餘額不可直接用於兌換. 要獲取準確的可用於兌換的餘額, 應當帶上side=1和指定coin來查  
-> uBalance| string| 幣種折成USDT的價值  
-> singleFromMinLimit| string| 單筆交易最小兌出幣種數量  
-> singleFromMaxLimit| string| 單筆交易最大兌出幣種數量  
-> disableFrom| boolean| `true`: 該幣種禁止兌出, `false`: 該幣種允許兌出  
-> disableTo| boolean| `true`: 該幣入禁止兌出, `false`: 該幣種允許兌入  
-> timePeriod| integer| 保留字段, 當前可忽略  
-> singleToMinLimit| string| 保留字段, 當前可忽略  
-> singleToMaxLimit| string| 保留字段, 當前可忽略  
-> dailyFromMinLimit| string| 保留字段, 當前可忽略  
-> dailyFromMaxLimit| string| 保留字段, 當前可忽略保留字段, 當前可忽略  
-> dailyToMinLimit| string| 保留字段, 當前可忽略  
-> dailyToMaxLimit| string| 保留字段, 當前可忽略  
+list| array<object>| 報價單列表  
+> [accountType](/docs/zh-TW/v5/enum#convertaccounttype)| string| `eb_convert_funding`: 資金錢包閃兌紀錄(API)  
+`eb_convert_uta`: uta錢包閃兌紀錄(API)  
+`funding`: 資金錢包普通幣幣兌換(網頁/APP)  
+`funding_fiat`: 資金錢包數法兌換(網頁/APP)  
+`funding_fbtc_convert`: 資金錢包FBTC兌換成BTC(網頁/APP)  
+`funding_block_trade`: 大宗兌換兌換(網頁/APP)  
+> exchangeTxId| string| 報價單ID, 和quoteTxId保持一致  
+> userId| string| 用戶ID  
+> fromCoin| string| 兌出幣種  
+> fromCoinType| string| 兌出幣種類型. `crypto`  
+> toCoin| string| 兌入幣種  
+> toCoinType| string| 兌入幣種類型. `crypto`  
+> fromAmount| string| 兌出幣種數量  
+> toAmount| string| 兌入幣種數量  
+> exchangeStatus| string| 兌換狀態 
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
+> extInfo| object|   
+>> paramType| string| 如果您在[申請報價](/docs/zh-TW/v5/asset/convert/apply-quote)接口中中有發送該字段, 則這裡會釋出該字段  
+>> paramValue| string| 如果您在[申請報價](/docs/zh-TW/v5/asset/convert/apply-quote)接口中中有發送該字段, 則這裡會釋出該字段  
+> convertRate| string| 兌換率  
+> createdAt| string| 報價單創建時間  
   
 ### 請求示例
 
@@ -243,11 +254,11 @@ coins| array<object>| 幣種信息
 
     
     
-    GET /v5/asset/exchange/query-coin-list?side=0&accountType=eb_convert_funding HTTP/1.1  
+    GET /v5/asset/exchange/query-convert-history?accountType=eb_convert_uta,eb_convert_funding HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1720064061248  
+    X-BAPI-TIMESTAMP: 1720074159814  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -258,9 +269,8 @@ coins| array<object>| 幣種信息
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_convert_coin_list(  
-        side="0",  
-        accountType="eb_convert_funding",  
+    print(session.get_convert_history(  
+        accountType="eb_convert_uta,eb_convert_funding",  
     ))  
     
     
@@ -274,7 +284,7 @@ coins| array<object>| 幣種信息
     });  
       
     client  
-      .getConvertCoins({ accountType: 'eb_convert_spot' })  
+      .getConvertHistory()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -290,74 +300,42 @@ coins| array<object>| 幣種信息
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "coins": [  
+            "list": [  
                 {  
-                    "coin": "BTC",  
-                    "fullName": "BTC",  
-                    "icon": "https://t1.bycsi.com/app/assets/token/0717b8c28c2373bf714c964195411d0f.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/9504b4c841194cc38f04041003ffbfdb.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "0",  
-                    "uBalance": "0",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.001",  
-                    "singleFromMaxLimit": "1",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
+                    "accountType": "eb_convert_funding",  
+                    "exchangeTxId": "10100108106409343501030232064",  
+                    "userId": "XXXXX",  
+                    "fromCoin": "ETH",  
+                    "fromCoinType": "crypto",  
+                    "fromAmount": "0.1",  
+                    "toCoin": "BTC",  
+                    "toCoinType": "crypto",  
+                    "toAmount": "0.00534882723991",  
+                    "exchangeStatus": "success",  
+                    "extInfo": {  
+                        "paramType": "opFrom",  
+                        "paramValue": "broker-id-001"  
+                    },  
+                    "convertRate": "0.0534882723991",  
+                    "createdAt": "1720071899995"  
                 },  
-                ...  
                 {  
-                    "coin": "SOL",  
-                    "fullName": "SOL",  
-                    "icon": "https://s1.bycsi.com/app/assets/token/87ca5f1ca7229bdf0d9a16435653007c.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/383a834046655ffe5ef1be1a025791cc.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "18.05988133",  
-                    "uBalance": "2458.46990211775033220586588327",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.1",  
-                    "singleFromMaxLimit": "1250",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
-                },  
-                ...  
-                {  
-                    "coin": "ETH",  
-                    "fullName": "ETH",  
-                    "icon": "https://s1.bycsi.com/app/assets/token/d6c17c9e767e1810875c702d86ac9f32.svg",  
-                    "iconNight": "https://t1.bycsi.com/app/assets/token/9613ac8e7d62081f4ca20488ae5b168d.svg",  
-                    "accuracyLength": 8,  
-                    "coinType": "crypto",  
-                    "balance": "0.80264489",  
-                    "uBalance": "2596.09751650032773106431534138",  
-                    "timePeriod": 0,  
-                    "singleFromMinLimit": "0.01",  
-                    "singleFromMaxLimit": "250",  
-                    "singleToMinLimit": "0",  
-                    "singleToMaxLimit": "0",  
-                    "dailyFromMinLimit": "0",  
-                    "dailyFromMaxLimit": "0",  
-                    "dailyToMinLimit": "0",  
-                    "dailyToMaxLimit": "0",  
-                    "disableFrom": false,  
-                    "disableTo": false  
+                    "accountType": "eb_convert_uta",  
+                    "exchangeTxId": "23070eb_convert_uta408933875189391360",  
+                    "userId": "XXXXX",  
+                    "fromCoin": "BTC",  
+                    "fromCoinType": "crypto",  
+                    "fromAmount": "0.1",  
+                    "toCoin": "ETH",  
+                    "toCoinType": "crypto",  
+                    "toAmount": "1.773938248611074",  
+                    "exchangeStatus": "success",  
+                    "extInfo": {},  
+                    "convertRate": "17.73938248611074",  
+                    "createdAt": "1719974243256"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1720064061736  
+        "time": 1720074457715  
     }

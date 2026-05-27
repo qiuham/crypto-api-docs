@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/websocket/public/orderbook
 api_type: WebSocket
-updated_at: 2026-01-16T09:41:25.911190
+updated_at: 2026-05-27 19:22:41.347093
 ---
 
 # Orderbook
@@ -44,13 +44,22 @@ data| map| Object
 > b| array| Bids. For `snapshot` stream. Sorted by price in descending order  
 >> b[0]| string| Bid price  
 >> b[1]| string| Bid size 
-* The delta data has size=0, which means that all quotations for this price have been filled or cancelled  
+
+  * The delta data has size=0, which means that all quotations for this price have been filled or cancelled
+
+  
 > a| array| Asks. For `snapshot` stream. Sorted by price in ascending order  
 >> a[0]| string| Ask price  
 >> a[1]| string| Ask size 
-* The delta data has size=0, which means that all quotations for this price have been filled or cancelled  
+
+  * The delta data has size=0, which means that all quotations for this price have been filled or cancelled
+
+  
 > u| integer| Update ID
-* Occasionally, you'll receive "u"=1, which is a snapshot data due to the restart of the service. So please overwrite your local orderbook  
+
+  * Occasionally, you'll receive "u"=1, which is a snapshot data due to the restart of the service. So please overwrite your local orderbook
+
+  
 > seq| integer| Cross sequence  
 cts| number| The timestamp from the matching engine when this orderbook data is produced. It can be correlated with `T` from [public trade channel](/docs/v5/spread/websocket/public/trade)  
   
@@ -117,13 +126,22 @@ data| map| Object
 > b| array| Bid, 買方. `snapshot`數據，是按照價格從大到小  
 >> b[0]| string| 買方報價  
 >> b[1]| string| 買方數量 
-* 增量數據的推送當出現size=0時，這意味著該價位的報價單全部成交或者全部撤銷  
+
+  * 增量數據的推送當出現size=0時，這意味著該價位的報價單全部成交或者全部撤銷
+
+  
 > a| array| Ask, 賣方. `snapshot`數據，是按照價格從小到大  
 >> a[0]| string| 賣方報價  
 >> a[1]| string| 賣方數量 
-* 增量數據的推送當出現size=0時，這意味著該價位的報價單全部成交或者全部撤銷  
+
+  * 增量數據的推送當出現size=0時，這意味著該價位的報價單全部成交或者全部撤銷
+
+  
 > u| integer| 更新id 
-* 一般情況下該id是連續的。偶爾會因後台的重啟而發送"u"=1的全量數據，接收到後請覆蓋本地保存的orderbook  
+
+  * 一般情況下該id是連續的。偶爾會因後台的重啟而發送"u"=1的全量數據，接收到後請覆蓋本地保存的orderbook
+
+  
 > seq| integer| 撮合版本號  
 cts| number| 產生此訂單簿數據時來自撮合引擎的時間戳. 可用於與[平台成交](/docs/zh-TW/v5/spread/websocket/public/trade)頻道中的`T`進行關聯  
   

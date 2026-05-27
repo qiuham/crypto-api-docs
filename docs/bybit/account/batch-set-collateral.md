@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/batch-set-collateral
 api_type: Account
-updated_at: 2026-01-16T09:37:52.775939
+updated_at: 2026-05-27 19:13:53.279792
 ---
 
 # Batch Set Collateral Coin
 
 ### HTTP Request
 
-POST `/v5/account/set-collateral-switch-batch`
+POST`/v5/account/set-collateral-switch-batch`
 
 ### Request Parameters
 
@@ -162,7 +162,7 @@ result| Object|
 
 ### HTTP 請求
 
-POST `/v5/account/set-collateral-switch-batch`
+POST`/v5/account/set-collateral-switch-batch`
 
 ### 請求參數
 

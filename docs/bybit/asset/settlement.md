@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/settlement
 api_type: REST
-updated_at: 2026-01-16T09:38:44.420375
+updated_at: 2026-05-27 19:15:19.766303
 ---
 
 # Get USDC Session Settlement
@@ -17,7 +17,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/asset/settlement-record`
+GET`/v5/asset/settlement-record`
 
 ### Request Parameters
 
@@ -142,7 +142,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/asset/settlement-record`
+GET`/v5/asset/settlement-record`
 
 ### 請求參數
 

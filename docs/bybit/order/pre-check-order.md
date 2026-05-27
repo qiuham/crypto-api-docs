@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/pre-check-order
 api_type: Trading
-updated_at: 2026-01-16T09:40:11.424360
+updated_at: 2026-05-27 19:20:53.147704
 ---
 
 # Pre Check Order
@@ -26,7 +26,7 @@ info
 
 ### HTTP Request
 
-POST `/v5/order/pre-check`
+POST`/v5/order/pre-check`
 
 ### Request Parameters
 
@@ -155,7 +155,7 @@ postMmrE4| int| Maintenance margin rate calculated after checking, keep four dec
 
 ### HTTP請求
 
-POST `/v5/order/pre-check`
+POST`/v5/order/pre-check`
 
 ### 請求參數
 

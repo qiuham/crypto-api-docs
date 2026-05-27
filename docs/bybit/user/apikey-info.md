@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/apikey-info
 api_type: REST
-updated_at: 2026-01-16T09:41:30.052546
+updated_at: 2026-05-27 19:22:51.767876
 ---
 
 # Get API Key Information
@@ -15,7 +15,7 @@ Any permission can access this endpoint.
 
 ### HTTP Request
 
-GET `/v5/user/query-api`
+GET`/v5/user/query-api`
 
 ### Request Parameters
 
@@ -39,10 +39,12 @@ permissions| Object| The types of permission
 > Exchange| array| Permission of convert `ExchangeHistory`  
 > Earn| array| Permission of earn product `Earn`  
 > FiatP2P| array| Permission of P2P `FiatP2POrder`, `Advertising`. Not applicable to subaccount, always `[]`  
-> FiatBybitPay| array| Permission of Bybit Pay `FaitPayOrder`. Not applicable to subaccount, always `[]`  
+> FiatBitPay| array| Permission of Bybit Pay `FaitPayOrder`. Not applicable to subaccount, always `[]`  
 > FiatConvertBroker| array| Permission of fiat convert `FiatConvertBrokerOrder`. Not applicable to subaccount, always `[]`  
-> BlockTrade| array| Permission of blocktrade. Not applicable to subaccount, always `[]`  
+> BitCard| array| Bybit card permission, `BitCard`. Not applicable to subaccount  
+> ByXPost| array| Community post permission, `ByXPost`. Not applicable to subaccount  
 > Affiliate| array| Permission of Affiliate. Only affiliate can have this permission, otherwise always `[]`  
+> BlockTrade| array| Permission of blocktrade. Not applicable to subaccount, always `[]`  
 > NFT| array| **Deprecated** , always `[]`  
 > CopyTrading| array| **Deprecated** , always `[]`  
 ips| array| IP bound  
@@ -50,7 +52,6 @@ type| integer| The type of api key. `1`: personal, `2`: connected to the third-p
 deadlineDay| integer| The remaining valid days of api key. Only for those api key with no IP bound or the password has been changed  
 expiredAt| datetime| The expiry day of the api key. Only for those api key with no IP bound or the password has been changed  
 createdAt| datetime| The create day of the api key  
-unified| integer| **Deprecated** field  
 uta| integer| Whether the account to which the account upgrade to unified trade account. `0`: regular account; `1`: unified trade account  
 userID| integer| User ID  
 inviterID| integer| Inviter ID (the UID of the account which invited this account to the platform)  
@@ -62,6 +63,7 @@ isMaster| boolean| If this api key belongs to master account or not
 parentUid| string| The main account uid. Returns `"0"` when the endpoint is called by main account  
 kycLevel| string| Personal account kyc level. `LEVEL_DEFAULT`, `LEVEL_1`, `LEVEL_2`  
 kycRegion| string| Personal account kyc region  
+unified| integer| **Deprecated**  
 [](/docs/api-explorer/v5/user/apikey-info)
 
 * * *
@@ -119,10 +121,10 @@ kycRegion| string| Personal account kyc region
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "id": "13770661",  
-            "note": "readwrite api key",  
-            "apiKey": "XXXXXX",  
-            "readOnly": 0,  
+            "id": "2208369",  
+            "note": "testnet",  
+            "apiKey": "XXXXXXXX",  
+            "readOnly": 1,  
             "secret": "",  
             "permissions": {  
                 "ContractTrade": [  
@@ -136,39 +138,65 @@ kycRegion| string| Personal account kyc region
                     "AccountTransfer",  
                     "SubMemberTransfer"  
                 ],  
-                "Options": [  
-                    "OptionsTrade"  
+                "Options": [],  
+                "Derivatives": [  
+                    "DerivativesTrade"  
                 ],  
-                "Derivatives": [],  
                 "CopyTrading": [],  
                 "BlockTrade": [],  
-                "Exchange": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
                 "NFT": [],  
                 "Affiliate": [],  
-                "Earn": []  
+                "Earn": [  
+                    "Earn"  
+                ],  
+                "FiatP2P": [  
+                    "FiatP2POrder",  
+                    "Advertising"  
+                ],  
+                "FiatConvertBroker": [  
+                    "FiatConvertBrokerOrder"  
+                ],  
+                "FiatGlobalPay": [],  
+                "FiatBitPay": [  
+                    "FaitPayOrder"  
+                ],  
+                "BitCard": [  
+                    "BitCard"  
+                ],  
+                "ByXPost": [  
+                    "ByXPost"  
+                ]  
             },  
             "ips": [  
-                "*"  
+                "18.181.170.164",  
+                "13.212.45.47",  
+                "13.212.45.48"  
             ],  
             "type": 1,  
-            "deadlineDay": 66,  
-            "expiredAt": "2023-12-22T07:20:25Z",  
-            "createdAt": "2022-10-16T02:24:40Z",  
+            "deadlineDay": -2,  
+            "expiredAt": "1970-01-01T00:00:00Z",  
+            "createdAt": "2025-10-13T03:20:45Z",  
             "unified": 0,  
-            "uta": 0,  
-            "userID": 24617703,  
+            "uta": 1,  
+            "userID": 1448939,  
             "inviterID": 0,  
-            "vipLevel": "No VIP",  
+            "vipLevel": "PRO-1",  
             "mktMakerLevel": "0",  
             "affiliateID": 0,  
             "rsaPublicKey": "",  
             "isMaster": true,  
             "parentUid": "0",  
-            "kycLevel": "LEVEL_DEFAULT",  
-            "kycRegion": ""  
+            "kycLevel": "LEVEL_1",  
+            "kycRegion": "MYS",  
+            "userIDInt64": "0",  
+            "inviterIDInt64": "0",  
+            "affiliateIDInt64": "0"  
         },  
         "retExtInfo": {},  
-        "time": 1697525990798  
+        "time": 1776149990532  
     }
 
 ---
@@ -183,7 +211,7 @@ kycRegion| string| Personal account kyc region
 
 ### HTTP 請求
 
-GET `/v5/user/query-api`
+GET`/v5/user/query-api`
 
 ### 請求參數
 
@@ -207,8 +235,10 @@ permissions| Object| 權限類型
 > Exchange| array| 兌換的權限 `ExchangeHistory`  
 > Earn| array| 理財產品的權限 `Earn`  
 > FiatP2P| array| P2P `FiatP2POrder`, `Advertising`  
-> FiatBybitPay| array| Bybit Pay `FaitPayOrder`  
-> FiatConvertBroker| array| 數法兌換權限 `FiatConvertBrokerOrder`  
+> FiatBitPay| array| Bybit Pay `FaitPayOrder`。不支持子帳戶，總是 `[]`  
+> FiatConvertBroker| array| 數法兌換權限(僅支援經紀商) `FiatConvertBrokerOrder`  
+> BitCard| array| Bybit卡權限, `BitCard`. 不支持子帳戶，總是`[]`  
+> ByXPost| array| 社區帖子, `ByXPost`. 不支持子帳戶，總是`[]`  
 > Affiliate| array| 代理商權限. 僅代理商可以擁有此權限, 否則總是`[]`  
 > BlockTrade| array| 大宗交易的權限. 不支持子帳戶，總是[]  
 ips| array| 綁定的IP  
@@ -216,7 +246,6 @@ type| integer| Api key類型. `1`：個人使用, `2`：綁定到第三方應用
 deadlineDay| integer| API key失效的倒數日. 針對那些未綁定IP的api key或者修改過密碼的帳戶  
 expiredAt| datetime| API key的過期日. 針對那些未綁定IP的api key或者修改過密碼的帳戶  
 createdAt| datetime| API key的創建日  
-unified| integer| 該字段已廢棄  
 uta| integer| API Key所屬的帳戶是否為統一交易帳戶. `0`：經典帳戶; `1`：統一交易账户  
 userID| integer| 用戶 ID  
 inviterID| integer| 邀請人 ID（邀請該賬號加入平台的賬號的UID）  
@@ -228,6 +257,7 @@ isMaster| boolean| 是否為主帳戶下的api key
 parentUid| string| 主帳戶uid. 如果是主帳戶本身調用, 則返回`"0"`  
 kycLevel| string| 個人帳戶的kyc等級. `LEVEL_DEFAULT`, `LEVEL_1`， `LEVEL_2`  
 kycRegion| string| 個人帳戶的kyc地區  
+unified| integer| 該字段**已廢棄**  
 [](/docs/zh-TW/api-explorer/v5/user/apikey-info)
 
 * * *
@@ -285,10 +315,10 @@ kycRegion| string| 個人帳戶的kyc地區
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "id": "13770661",  
-            "note": "readwrite api key",  
-            "apiKey": "XXXXXX",  
-            "readOnly": 0,  
+            "id": "2208369",  
+            "note": "testnet",  
+            "apiKey": "XXXXXXXX",  
+            "readOnly": 1,  
             "secret": "",  
             "permissions": {  
                 "ContractTrade": [  
@@ -302,36 +332,63 @@ kycRegion| string| 個人帳戶的kyc地區
                     "AccountTransfer",  
                     "SubMemberTransfer"  
                 ],  
-                "Options": [  
-                    "OptionsTrade"  
+                "Options": [],  
+                "Derivatives": [  
+                    "DerivativesTrade"  
                 ],  
-                "Derivatives": [],  
                 "CopyTrading": [],  
                 "BlockTrade": [],  
-                "Exchange": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
                 "NFT": [],  
-                "Affiliate": []  
+                "Affiliate": [],  
+                "Earn": [  
+                    "Earn"  
+                ],  
+                "FiatP2P": [  
+                    "FiatP2POrder",  
+                    "Advertising"  
+                ],  
+                "FiatConvertBroker": [  
+                    "FiatConvertBrokerOrder"  
+                ],  
+                "FiatGlobalPay": [],  
+                "FiatBitPay": [  
+                    "FaitPayOrder"  
+                ],  
+                "BitCard": [  
+                    "BitCard"  
+                ],  
+                "ByXPost": [  
+                    "ByXPost"  
+                ]  
             },  
             "ips": [  
-                "*"  
+                "18.181.170.164",  
+                "13.212.45.47",  
+                "13.212.45.48"  
             ],  
             "type": 1,  
-            "deadlineDay": 66,  
-            "expiredAt": "2023-12-22T07:20:25Z",  
-            "createdAt": "2022-10-16T02:24:40Z",  
+            "deadlineDay": -2,  
+            "expiredAt": "1970-01-01T00:00:00Z",  
+            "createdAt": "2025-10-13T03:20:45Z",  
             "unified": 0,  
-            "uta": 0,  
-            "userID": 24617703,  
+            "uta": 1,  
+            "userID": 1448939,  
             "inviterID": 0,  
-            "vipLevel": "No VIP",  
+            "vipLevel": "PRO-1",  
             "mktMakerLevel": "0",  
             "affiliateID": 0,  
             "rsaPublicKey": "",  
             "isMaster": true,  
             "parentUid": "0",  
-            "kycLevel": "LEVEL_DEFAULT",  
-            "kycRegion": ""  
+            "kycLevel": "LEVEL_1",  
+            "kycRegion": "MYS",  
+            "userIDInt64": "0",  
+            "inviterIDInt64": "0",  
+            "affiliateIDInt64": "0"  
         },  
         "retExtInfo": {},  
-        "time": 1697525990798  
+        "time": 1776149990532  
     }

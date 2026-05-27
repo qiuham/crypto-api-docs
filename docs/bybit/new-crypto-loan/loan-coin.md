@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/loan-coin
 api_type: REST
-updated_at: 2026-01-16T09:40:04.982691
+updated_at: 2026-05-27 19:19:05.745012
 ---
 
 # Get Borrowable Coins
@@ -13,15 +13,18 @@ Does not need authentication.
 
 ### HTTP Request
 
-GET `/v5/crypto-loan-common/loanable-data`
+GET`/v5/crypto-loan-common/loanable-data`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
 vipLevel| false| string| VIP level 
-* `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(supreme VIP)
-* `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`  
+
+  * `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(supreme VIP)
+  * `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`
+
+  
 currency| false| string| Coin name, uppercase only  
   
 ### Response Parameters
@@ -113,15 +116,18 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/crypto-loan-common/loanable-data`
+GET`/v5/crypto-loan-common/loanable-data`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
 vipLevel| false| string| Vip等級 
-* `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(supreme VIP)
-* `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`  
+
+  * `VIP0`, `VIP1`, `VIP2`, `VIP3`, `VIP4`, `VIP5`, `VIP99`(supreme VIP)
+  * `PRO1`, `PRO2`, `PRO3`, `PRO4`, `PRO5`, `PRO6`
+
+  
 currency| false| string| 幣種名稱  
   
 ### 響應參數

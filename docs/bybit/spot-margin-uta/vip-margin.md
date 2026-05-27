@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/vip-margin
 api_type: REST
-updated_at: 2026-01-16T09:41:12.327499
+updated_at: 2026-05-27 19:22:24.339267
 ---
 
 # Get VIP Margin Data
@@ -15,7 +15,7 @@ Does not need authentication.
 
 ### HTTP Request
 
-GET `/v5/spot-margin-trade/data`
+GET`/v5/spot-margin-trade/data`
 
 ### Request Parameters
 
@@ -125,7 +125,7 @@ vipCoinList| array| Object
 
 ### HTTP 請求
 
-GET `/v5/spot-margin-trade/data`
+GET`/v5/spot-margin-trade/data`
 
 ### 請求參數
 

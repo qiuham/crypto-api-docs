@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/page-subuid
 api_type: REST
-updated_at: 2026-01-16T09:41:34.488893
+updated_at: 2026-05-27 19:23:02.105602
 ---
 
 # Get Sub UID List (Unlimited)
@@ -19,7 +19,7 @@ The API key must have one of the below permissions in order to call this endpoin
 
 ### HTTP Request
 
-GET `/v5/user/submembers`
+GET`/v5/user/submembers`
 
 ### Request Parameters
 
@@ -130,7 +130,7 @@ nextCursor| string| The next page cursor value. "0" means no more pages
 
 ### HTTP 請求
 
-GET `/v5/user/submembers`
+GET`/v5/user/submembers`
 
 ### 請求參數
 

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/fee-rate
 api_type: Account
-updated_at: 2026-01-16T09:37:57.306514
+updated_at: 2026-05-27 19:14:00.062070
 ---
 
 # Get Fee Rate
@@ -11,7 +11,7 @@ Get the trading fee rate.
 
 ### HTTP Request
 
-GET `/v5/account/fee-rate`
+GET`/v5/account/fee-rate`
 
 ### Request Parameters
 
@@ -30,8 +30,7 @@ list| array| Object
 > symbol| string| Symbol name. Keeps `""` for Options  
 > baseCoin| string| Base coin. `SOL`, `BTC`, `ETH`
 
-  * Derivatives does not have this field
-  * Keeps `""` for Spot
+  * Spot and Derivatives does not have this field
 
   
 > takerFeeRate| string| Taker fee rate  
@@ -118,9 +117,7 @@ list| array| Object
 
 ### HTTP 請求
 
-GET `/v5/account/fee-rate`
-
-參數| 是否必需| 類型| 說明  
+GET`/v5/account/fee-rate`參數| 是否必需| 類型| 說明  
 ---|---|---|---  
 category| **true**|  string| 產品類型. `spot`, `linear`, `inverse`, `option`  
 symbol| false| string| 合約名稱. 僅`spot`, `linear`, `inverse`有效  
@@ -135,8 +132,7 @@ list| array| Object
 > symbol| string| 合約名稱. 期權總是為`""`  
 > baseCoin| string| 交易幣種. `SOL`, `BTC`, `ETH`
 
-  * 期貨不返回該字段
-  * 現貨總是返回`""`
+  * 現貨和期貨不返回該字段
 
   
 > takerFeeRate| string| 吃單手續費率  

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/master-deposit-addr
 api_type: REST
-updated_at: 2026-01-16T09:38:35.090703
+updated_at: 2026-05-27 19:15:02.419562
 ---
 
 # Get Master Deposit Address
@@ -11,7 +11,7 @@ Query the deposit address information of MASTER account.
 
 ### HTTP Request
 
-GET `/v5/asset/deposit/query-address`
+GET`/v5/asset/deposit/query-address`
 
 ### Request Parameters
 
@@ -118,7 +118,7 @@ chains| array| Object
 
 ### HTTP 請求
 
-GET `/v5/asset/deposit/query-address`
+GET`/v5/asset/deposit/query-address`
 
 ### 請求參數
 

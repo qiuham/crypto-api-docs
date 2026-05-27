@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/trade/trade-history
 api_type: Trading
-updated_at: 2026-01-16T09:41:21.228623
+updated_at: 2026-05-27 19:22:37.921550
 ---
 
 # Get Trade History
@@ -16,7 +16,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/spread/execution/list`
+GET`/v5/spread/execution/list`
 
 ### Request Parameters
 
@@ -67,6 +67,11 @@ list| array<object>| Trade info
 nextPageCursor| string| Refer to the `cursor` request parameter  
   
 ### Request Example
+
+  * HTTP
+  * Python
+
+
     
     
     GET /v5/spread/execution/list?orderId=5e010c35-2b44-4f03-8081-8fa31fb73376 HTTP/1.1  
@@ -76,6 +81,18 @@ nextPageCursor| string| Refer to the `cursor` request parameter
     X-BAPI-TIMESTAMP: 1744105738529  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.spread_get_trade_history(  
+        orderId="5e010c35-2b44-4f03-8081-8fa31fb73376"  
+    ))  
     
 
 ### Response Example
@@ -143,7 +160,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP請求
 
-GET `/v5/spread/execution/list`
+GET`/v5/spread/execution/list`
 
 ### 請求參數
 

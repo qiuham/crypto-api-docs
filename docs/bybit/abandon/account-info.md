@@ -2,40 +2,119 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/account-info
 api_type: REST
-updated_at: 2026-01-16T09:37:38.006141
+updated_at: 2026-05-27 19:13:35.135243
 ---
 
-# Get Lending Account Info
+# Borrow
+
+> Permission: "Spot trade"
+
+info
+
+  * The loan funds are released to the Funding wallet.
+  * The collateral funds are deducted from the Funding wallet, so make sure you have enough collateral amount in the Funding wallet.
+
+
 
 ### HTTP Request
 
-GET `/v5/lending/account`
+POST`/v5/crypto-loan/borrow`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| **true**|  string| Coin name  
+loanCurrency| **true**|  string| Loan coin name  
+loanAmount| false| string| Amount to borrow
+
+  * **Required** when collateral amount is not filled
+
+  
+loanTerm| false| string| Loan term 
+
+  * flexible term: `null` or not passed
+  * fixed term: `7`, `14`, `30`, `90`, `180` days
+
+  
+collateralCurrency| **true**|  string| Currency used to mortgage  
+collateralAmount| false| string| Amount to mortgage
+
+  * **Required** when loan amount is not filled
+
+  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-coin| string| Coin name  
-principalInterest| string| User Redeemable interest  
-principalQty| string| Leftover quantity you can redeem for today (measured from 0 - 24 UTC), formula: min(the rest amount of principle, the amount that the user can redeem on the day)  
-principalTotal| string| Total amount redeemable by user  
-quantity| string| Current deposit quantity  
+orderId| string| Loan order ID  
   
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/lending/account?coin=ETH HTTP/1.1  
+    POST /v5/crypto-loan/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1682049556563  
+    X-BAPI-TIMESTAMP: 1728629356551  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 140  
+      
+    {  
+        "loanCurrency": "USDT",  
+        "loanAmount": "550",  
+        "collateralCurrency": "BTC",  
+        "loanTerm": null,  
+        "collateralAmount": null  
+    }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.borrow_crypto_loan(  
+            loanCurrency="USDT",  
+            loanAmount="550",  
+            collateralCurrency="BTC",  
+            loanTerm=None,  
+            collateralAmount=None,  
+    ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .borrowCryptoLoan({  
+        loanCurrency: 'USDT',  
+        loanAmount: '550',  
+        collateralCurrency: 'BTC',  
+        loanTerm: null,  
+        collateralAmount: null,  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### Response Example
@@ -43,51 +122,126 @@ quantity| string| Current deposit quantity
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "request.success",  
         "result": {  
-            "coin": "BTC",  
-            "principalInterest": "0",  
-            "principalQty": "1",  
-            "principalTotal": "1",  
-            "quantity": "1"  
+            "orderId": "1794267532472646144"  
         },  
         "retExtInfo": {},  
-        "time": 1682049706988  
+        "time": 1728629357820  
     }
 
 ---
 
-# 查詢余幣寶帳戶信息
+# 借款
+
+> 權限: "現貨交易"
+
+信息
+
+  * 借款發放到資金帳戶
+  * 質押金將從資金帳戶扣減, 因此確保資金帳戶有足額質押幣種
+
+
 
 ### HTTP 請求
 
-GET `/v5/lending/account`
+POST`/v5/crypto-loan/borrow`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| **true**|  string| 幣種名稱  
+loanCurrency| **true**|  string| 借貸幣種  
+loanAmount| false| string| 借貸金額
+
+  * 當抵押金額未填時, 該字段**必填**
+
+  
+loanTerm| false| string| 借貸期限 
+
+  * 活期: 傳`null`或者不傳字段
+  * 定期: `7`, `14`, `30`, `90`, `180` 天
+
+  
+collateralCurrency| **true**|  string| 質押幣種  
+collateralAmount| false| string| 質押金額
+
+  * 當借貸金額未填時, 該字段**必填**
+
+  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-coin| string| 幣種名稱  
-principalInterest| string| 可贖回收益  
-principalQty| string| 可贖回本金金額, 計算公式: min(用戶剩餘本金, 用戶當日可贖回額度)  
-principalTotal| string| 可贖回總計  
-quantity| string| 當前存入本金  
+orderId| string| 借貸訂單ID  
   
 ### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/lending/account?coin=ETH HTTP/1.1  
+    POST /v5/crypto-loan/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1682049556563  
+    X-BAPI-TIMESTAMP: 1728629356551  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 140  
+      
+    {  
+        "loanCurrency": "USDT",  
+        "loanAmount": "550",  
+        "collateralCurrency": "BTC",  
+        "loanTerm": null,  
+        "collateralAmount": null  
+    }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.borrow_crypto_loan(  
+            loanCurrency="USDT",  
+            loanAmount="550",  
+            collateralCurrency="BTC",  
+            loanTerm=None,  
+            collateralAmount=None,  
+    ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .borrowCryptoLoan({  
+        loanCurrency: 'USDT',  
+        loanAmount: '550',  
+        collateralCurrency: 'BTC',  
+        loanTerm: null,  
+        collateralAmount: null,  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### 響應示例
@@ -95,14 +249,10 @@ quantity| string| 當前存入本金
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "request.success",  
         "result": {  
-            "coin": "BTC",  
-            "principalInterest": "0",  
-            "principalQty": "1",  
-            "principalTotal": "1",  
-            "quantity": "1"  
+            "orderId": "1794267532472646144"  
         },  
         "retExtInfo": {},  
-        "time": 1682049706988  
+        "time": 1728629357820  
     }

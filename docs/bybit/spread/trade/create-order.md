@@ -2,61 +2,41 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/trade/create-order
 api_type: Trading
-updated_at: 2026-01-16T09:41:21.037163
+updated_at: 2026-05-27 19:22:33.881151
 ---
 
-# Create Order
+# Get Max Qty
 
-Place a spread combination order. **Up to 50 open orders** per account.
+Query the maximum order quantity for the given symbol.
 
 ### HTTP Request
 
-POST `/v5/spread/order/create`
+GET`/v5/spread/max-qty`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-symbol| **true**|  string| Spread combination symbol name  
-side| **true**|  string| Order side. `Buy`, `Sell`  
-orderType| **true**|  string| `Limit`, `Market`  
-qty| **true**|  string| Order qty  
-price| false| string| Order price  
-orderLinkId| false| string| User customised order ID, a max of 45 characters. Combinations of numbers, letters (upper and lower cases), dashes, and underscores are supported.  
-timeInForce| false| string| [Time in force](https://www.bybit.com/en/help-center/article/What-Are-Time-In-Force-TIF-GTC-IOC-FOK). `IOC`, `FOK`, `GTC`, `PostOnly`  
+symbol| **true**|  string| Spread symbol name  
+side| **true**|  string| Order side. `1`: Buy, `2`: Sell  
+orderPrice| **true**|  string| Order price  
   
-info
-
-The acknowledgement of an place order request indicates that the request was sucessfully accepted. This request is asynchronous so please use the websocket to confirm the order status.
-
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Spread combination order ID  
-orderLinkId| string| User customised order ID  
+ab| string| Maximum order quantity  
   
 ### Request Example
     
     
-    POST /v5/spread/order/create HTTP/1.1  
+    GET /v5/spread/max-qty?symbol=SOLUSDT_SOL/USDT&side=1&orderPrice=50000 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1744079410023  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 191  
-      
-    {  
-        "symbol": "SOLUSDT_SOL/USDT",  
-        "side": "Buy",  
-        "orderType": "Limit",  
-        "qty": "0.1",  
-        "price": "21",  
-        "orderLinkId": "1744072052193428479",  
-        "timeInForce": "PostOnly"  
-    }  
     
 
 ### Response Example
@@ -64,65 +44,48 @@ orderLinkId| string| User customised order ID
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "orderId": "1b00b997-d825-465e-ad1d-80b0eb1955af",  
-            "orderLinkId": "1744072052193428479"  
+            "ab": "1992.55199490"  
         },  
         "retExtInfo": {},  
-        "time": 1744075839332  
+        "time": 1774318807656  
     }
 
 ---
 
-# 創建價差委托單
+# 查詢最大下單數量
 
-每個帳戶最多支持50個活動單
+查詢指定交易對的最大下單數量。
 
 ### HTTP請求
 
-POST `/v5/spread/order/create`
+GET`/v5/spread/max-qty`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-symbol| **true**|  string| 價差產品名稱  
-side| **true**|  string| 訂單方向, `Buy`, `Sell`  
-orderType| **true**|  string| 訂單類型 `Limit`, `Market`  
-qty| **true**|  string| 訂單數量  
-price| **true**|  string| 訂單價格  
-orderLinkId| **true**|  string| 用戶自定義訂單ID, 最多 45 個字元。支援數字、字母（大寫和小寫）、破折號和底線的組合  
-timeInForce| **true**|  string| [訂單執行策略](https://www.bybit.com/en/help-center/article/What-Are-Time-In-Force-TIF-GTC-IOC-FOK) `IOC`, `FOK`, `GTC`, `PostOnly`  
+symbol| **true**|  string| 價差交易對名稱  
+side| **true**|  string| 訂單方向. `1`: 買, `2`: 賣  
+orderPrice| **true**|  string| 下單價格  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 價差訂單ID  
-orderLinkId| string| 用戶自定義訂單ID  
+ab| string| 最大下單數量  
   
 ### 請求示例
     
     
-    POST /v5/spread/order/create HTTP/1.1  
+    GET /v5/spread/max-qty?symbol=SOLUSDT_SOL/USDT&side=1&orderPrice=50000 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1744079410023  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 191  
-      
-    {  
-        "symbol": "SOLUSDT_SOL/USDT",  
-        "side": "Buy",  
-        "orderType": "Limit",  
-        "qty": "0.1",  
-        "price": "21",  
-        "orderLinkId": "1744072052193428479",  
-        "timeInForce": "PostOnly"  
-    }  
     
 
 ### 響應示例
@@ -130,11 +93,10 @@ orderLinkId| string| 用戶自定義訂單ID
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "orderId": "1b00b997-d825-465e-ad1d-80b0eb1955af",  
-            "orderLinkId": "1744072052193428479"  
+            "ab": "1992.55199490"  
         },  
         "retExtInfo": {},  
-        "time": 1744075839332  
+        "time": 1774318807656  
     }

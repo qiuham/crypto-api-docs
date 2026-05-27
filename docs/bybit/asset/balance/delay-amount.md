@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/balance/delay-amount
 api_type: REST
-updated_at: 2026-01-16T09:38:19.821647
+updated_at: 2026-05-27 19:14:44.952544
 ---
 
 # Get Withdrawable Amount
@@ -20,7 +20,7 @@ info
 
 ### HTTP Request
 
-GET `/v5/asset/withdraw/withdrawable-amount`
+GET`/v5/asset/withdraw/withdrawable-amount`
 
 ### Request Parameters
 
@@ -43,6 +43,10 @@ withdrawableAmount| Object|
 >> withdrawableAmount| string| Amount that can be withdrawn  
 >> availableBalance| string| Available balance  
 > UTA| Object| Unified wallet  
+>> coin| string| Coin name  
+>> withdrawableAmount| string| Amount that can be withdrawn  
+>> availableBalance| string| Available balance  
+> EARN| Object| Earn account, it is not returned when the coin does not support to be withdrawn via Earn account  
 >> coin| string| Coin name  
 >> withdrawableAmount| string| Amount that can be withdrawn  
 >> availableBalance| string| Available balance  
@@ -139,7 +143,7 @@ withdrawableAmount| Object|
 
 ### HTTP 請求
 
-GET `/v5/asset/withdraw/withdrawable-amount`
+GET`/v5/asset/withdraw/withdrawable-amount`
 
 ### 請求參數
 
@@ -163,6 +167,10 @@ withdrawableAmount| Object|
 >> availableBalance| string| 可用餘額  
 > UTA| Object| Unified錢包  
 >> coin| string| 幣種名稱  
+>> withdrawableAmount| string| 可提現金額  
+>> availableBalance| string| 可用餘額  
+> EARN| Object| 理財帳戶, 如果幣種不支持從理財帳戶出金, 則不返回  
+>> coin| string| 幣種  
 >> withdrawableAmount| string| 可提現金額  
 >> availableBalance| string| 可用餘額  
   

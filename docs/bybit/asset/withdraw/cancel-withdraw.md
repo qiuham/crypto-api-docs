@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/withdraw/cancel-withdraw
 api_type: REST
-updated_at: 2026-01-16T09:38:52.581458
+updated_at: 2026-05-27 19:15:29.940915
 ---
 
 # Cancel Withdrawal
@@ -11,7 +11,7 @@ Cancel the withdrawal
 
 ### HTTP Request
 
-POST `/v5/asset/withdraw/cancel`
+POST`/v5/asset/withdraw/cancel`
 
 ### Request Parameters
 
@@ -97,7 +97,7 @@ status| integer| `0`: fail. `1`: success
 
 ### HTTP 請求
 
-POST `/v5/asset/withdraw/cancel`
+POST`/v5/asset/withdraw/cancel`
 
 ### 請求參數
 

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/manual-add-margin
 api_type: Position
-updated_at: 2026-01-16T09:40:25.153178
+updated_at: 2026-05-27 19:21:10.581584
 ---
 
 # Add Or Reduce Margin
@@ -11,7 +11,7 @@ Manually add or reduce margin for **isolated** margin position
 
 ### HTTP Request
 
-POST `/v5/position/add-margin`
+POST`/v5/position/add-margin`
 
 ### Request Parameters
 
@@ -182,7 +182,7 @@ updatedTime| string| Position updated timestamp (ms)
 
 ### HTTP 請求
 
-POST `/v5/position/add-margin`
+POST`/v5/position/add-margin`
 
 ### 請求參數
 

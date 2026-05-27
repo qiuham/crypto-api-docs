@@ -2,40 +2,40 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-market
 api_type: REST
-updated_at: 2026-01-16T09:39:55.693827
+updated_at: 2026-05-27 19:18:57.753731
 ---
 
-# Get Lending Market
+# Borrow
+
+> Permission: "Spot trade"  
+>  UID rate limit: 1 req / second
 
 info
 
-Does not need authentication.
+  * The loan funds are released to the Funding wallet.
+  * The collateral funds are deducted from the Funding wallet, so make sure you have enough collateral amount in the Funding wallet.
 
-If you want to supply, you can use this endpoint to check whether there are any suitable counterparty borrow orders available.
+
 
 ### HTTP Request
 
-GET `/v5/crypto-loan-fixed/supply-order-quote`
+POST`/v5/crypto-loan-flexible/borrow`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderCurrency| **true**|  string| Coin name  
-term| false| string| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-orderBy| **true**|  string| Order by, `apy`: annual rate; `term`; `quantity`  
-sort| false| integer| `0`: ascend, default; `1`: descend  
-limit| false| integer| Limit for data size per page. [`1`, `100`]. Default: `10`  
+loanCurrency| **true**|  string| Loan coin name  
+loanAmount| **true**|  string| Amount to borrow  
+collateralList| false| array<object>| Collateral coin list, supports putting up to 100 currency in the array  
+> currency| false| string| Currency used to mortgage  
+> amount| false| string| Amount to mortgage  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| Coin name  
-> term| integer| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-> annualRate| string| Annual rate  
-> qty| string| Quantity  
+orderId| string| Loan order ID  
   
 ### Request Example
 
@@ -46,8 +46,29 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/supply-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-flexible/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752569210041  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 244  
+      
+    {  
+        "loanCurrency": "BTC",  
+        "loanAmount": "0.1",  
+        "collateralList": [  
+            {  
+                "currency": "USDT",  
+                "amount": "1000"  
+            },  
+            {  
+                "currency": "ETH",  
+                "amount": "1"  
+            }  
+        ]  
+    }  
     
     
     
@@ -57,9 +78,19 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_lending_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.borrow_flexible_crypto_loan(  
+        loanCurrency="BTC",  
+        loanAmount="0.1",  
+        collateralList=[  
+            {  
+                "currency": "USDT",  
+                "amount": "1000"  
+            },  
+            {  
+                "currency": "ETH",  
+                "amount": "1"  
+            }  
+        ]  
     ))  
     
     
@@ -74,58 +105,45 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.02",  
-                    "orderCurrency": "USDT",  
-                    "qty": "1000.1234",  
-                    "term": 60  
-                },  
-                {  
-                    "annualRate": "0.022",  
-                    "orderCurrency": "USDT",  
-                    "qty": "212.1234",  
-                    "term": 7  
-                }  
-            ]  
+            "orderId": "1363"  
         },  
         "retExtInfo": {},  
-        "time": 1752652136224  
+        "time": 1752569209682  
     }
 
 ---
 
-# 查詢可存市場
+# 借款
+
+> 權限: "現貨"  
+>  頻率: 1次/秒
 
 信息
 
-公共接口, 無需鑒權
+  * 借款發放到資金帳戶
+  * 質押金將從資金帳戶扣減, 因此確保資金帳戶有足額質押幣種
 
-如果您是存款方, 可通過該接口查詢到市場上可匹配的借款單報價
+
 
 ### HTTP 請求
 
-GET `/v5/crypto-loan-fixed/supply-order-quote`
+POST`/v5/crypto-loan-flexible/borrow`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderCurrency| **true**|  string| 幣種名稱  
-term| false| string| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-orderBy| **true**|  string| 排序依據，`apy`: 年化利率；`term`: 期限；`quantity`: 數量  
-sort| false| integer| `0`: 升序，預設；`1`: 降序  
-limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
+loanCurrency| **true**|  string| 借款幣種名稱  
+loanAmount| **true**|  string| 借款金額  
+collateralList| false| array<object>| 抵押幣種清單，最多支持放入 100 種幣種  
+> currency| false| string| 用於抵押的幣種  
+> amount| false| string| 抵押金額  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| 幣種名稱  
-> term| integer| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-> annualRate| string| 年化利率  
-> qty| string| 數量  
+orderId| string| 借款單ID  
   
 ### 請求示例
 
@@ -136,8 +154,29 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/supply-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-flexible/borrow HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752569210041  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 244  
+      
+    {  
+        "loanCurrency": "BTC",  
+        "loanAmount": "0.1",  
+        "collateralList": [  
+            {  
+                "currency": "USDT",  
+                "amount": "1000"  
+            },  
+            {  
+                "currency": "ETH",  
+                "amount": "1"  
+            }  
+        ]  
+    }  
     
     
     
@@ -147,9 +186,19 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_lending_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.borrow_flexible_crypto_loan(  
+        loanCurrency="BTC",  
+        loanAmount="0.1",  
+        collateralList=[  
+            {  
+                "currency": "USDT",  
+                "amount": "1000"  
+            },  
+            {  
+                "currency": "ETH",  
+                "amount": "1"  
+            }  
+        ]  
     ))  
     
     
@@ -164,21 +213,8 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.02",  
-                    "orderCurrency": "USDT",  
-                    "qty": "1000.1234",  
-                    "term": 60  
-                },  
-                {  
-                    "annualRate": "0.022",  
-                    "orderCurrency": "USDT",  
-                    "qty": "212.1234",  
-                    "term": 7  
-                }  
-            ]  
+            "orderId": "1363"  
         },  
         "retExtInfo": {},  
-        "time": 1752652136224  
+        "time": 1752569209682  
     }

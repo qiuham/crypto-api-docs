@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/execution
 api_type: Trading
-updated_at: 2026-01-16T09:40:11.214981
+updated_at: 2026-05-27 19:20:49.459535
 ---
 
 # Get Trade History
@@ -19,7 +19,7 @@ tip
 
 ### HTTP Request
 
-GET `/v5/execution/list`
+GET`/v5/execution/list`
 
 ### Request Parameters
 
@@ -29,14 +29,13 @@ Parameter| Required| Type| Comments
 symbol| false| string| Symbol name, like `BTCUSDT`, uppercase only  
 orderId| false| string| Order ID  
 orderLinkId| false| string| User customised order ID  
-baseCoin| false| string| Base coin, uppercase only  
+baseCoin| false| string| Base coin, uppercase only. For type `option`, default value is BTC  
 settleCoin| false| string| Settle coin, uppercase only. Only for `linear`, `inverse`,`option`  
 startTime| false| integer| The start timestamp (ms) 
 
-  * startTime and endTime are not passed, return 7 days by default;  
-
+  * startTime and endTime are not passed, return 7 days by default
   * Only startTime is passed, return range between startTime and startTime+7 days
-  * Only endTime is passed, return range between endTime-7 days and endTime
+  * Only endTime is passed, return range between endTime-7 days and endTime  
 If both are passed, the rule is endTime - startTime <= 7 days
 
   
@@ -59,7 +58,7 @@ list| array| Object
 > orderQty| string| Order qty  
 > leavesQty| string| The remaining qty not executed  
 > [createType](/docs/v5/enum#createtype)| string| Order create type 
-* Spot, Option do not have this key  
+* Spot does not have this key  
 > [orderType](/docs/v5/enum#ordertype)| string| Order type. `Market`,`Limit`  
 > [stopOrderType](/docs/v5/enum#stopordertype)| string| Stop order type. If the order is not stop order, it either returns `UNKNOWN` or `""`  
 > execFee| string| Executed trading fee. You can get spot fee currency instruction [here](/docs/v5/enum#spot-fee-currency-instruction)  
@@ -219,7 +218,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
 ### HTTP 請求
 
-GET `/v5/execution/list`
+GET`/v5/execution/list`
 
 ### 請求參數
 
@@ -229,7 +228,7 @@ GET `/v5/execution/list`
 symbol| false| string| 合約名稱  
 orderId| false| string| 訂單Id  
 orderLinkId| false| string| 用戶自定義訂單id  
-baseCoin| false| string| 交易幣種  
+baseCoin| false| string| 交易幣種. 對於期權來說，默认是BTC  
 settleCoin| false| string| 结算幣種. 只支持 `linear`, `inverse`,`option`  
 startTime| false| integer| 開始時間戳 (毫秒) 
 
@@ -258,7 +257,7 @@ list| array| Object
 > orderQty| string| 訂單數量  
 > leavesQty| string| 剩餘委託未成交數量  
 > [createType](/docs/zh-TW/v5/enum#createtype)| string| 訂單創建類型
-* 現貨、期權不返回該字段  
+* 現貨不返回該字段  
 > [orderType](/docs/zh-TW/v5/enum#ordertype)| string| 訂單類型. 市價單：`Market`,限價單：`Limit`  
 > [stopOrderType](/docs/zh-TW/v5/enum#stopordertype)| string| 条件单的订单类型。如果该订单不是条件单，则可能返回`""`或者`UNKNOWN`.  
 > execFee| string| 交易手續費. 您可以從[這裡](/docs/zh-TW/v5/enum#%E7%8F%BE%E8%B2%A8%E4%BA%A4%E6%98%93%E6%89%8B%E7%BA%8C%E8%B2%BB%E5%B9%A3%E7%A8%AE%E8%AA%AA%E6%98%8E)了解現貨手續費幣種信息  

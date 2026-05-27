@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/enum
 api_type: REST
-updated_at: 2026-01-16T09:39:20.830739
+updated_at: 2026-05-27 19:16:31.853401
 ---
 
 # Enums Definitions
@@ -176,18 +176,19 @@ updated_at: 2026-01-16T09:39:20.830739
   * `CreateByAdl_PassThrough` [Auto-Deleveraging(ADL)](https://www.bybit.com/en/help-center/article/Auto-Deleveraging-ADL)
   * `CreateByBlock_PassThrough` Order placed via Paradigm
   * `CreateByBlockTradeMovePosition_PassThrough` Order created by move position
+  * `CreateByChaseOrder` Chase limit order
+  * `CreateByFGridBot` Order created via grid bot
+  * `CloseByFGridBot` Order closed via grid bot
+  * `CreateByTWAP` Order created by TWAP
+  * `CreateByMartingaleBot` Order created by Martingale bot
+  * `CloseByMartingaleBot` Order closed by Martingale bot
+  * `CreateByIceBerg` Order created by Ice berg strategy
+  * `CreateByBboOrder` BBO order
   * `CreateByClosing` The close order placed via web or app position area - web/app
-  * `CreateByFGridBot` Order created via grid bot - web/app
-  * `CloseByFGridBot` Order closed via grid bot - web/app
-  * `CreateByTWAP` Order created by TWAP - web/app
   * `CreateByTVSignal` Order created by TV webhook - web/app
   * `CreateByMmRateClose` Order created by Mm rate close function - web/app
-  * `CreateByMartingaleBot` Order created by Martingale bot - web/app
-  * `CloseByMartingaleBot` Order closed by Martingale bot - web/app
-  * `CreateByIceBerg` Order created by Ice berg strategy - web/app
   * `CreateByArbitrage` Order created by arbitrage - web/app
   * `CreateByDdh` Option dynamic delta hedge order - web/app
-  * `CreateByBboOrder` BBO order
 
 
 
@@ -197,8 +198,8 @@ updated_at: 2026-01-16T09:39:20.830739
   * `AdlTrade` [Auto-Deleveraging](https://www.bybit.com/en/help-center/article/Auto-Deleveraging-ADL)
   * `Funding` [Funding fee](https://www.bybit.com/en/help-center/article/Introduction-to-Funding-Rate)
   * `BustTrade` Takeover liquidation
-  * `Delivery` USDC futures delivery; Position closed by contract delisted
-  * `Settle` Inverse futures settlement; Position closed due to delisting
+  * `Delivery` USDT futures delivery; Position closed due to delisting
+  * `Settle` Inverse futures settlement
   * `BlockTrade`
   * `MovePosition`
   * `FutureSpread` Spread leg execution
@@ -292,7 +293,7 @@ updated_at: 2026-01-16T09:39:20.830739
   * `EC_NoImmediateQtyToFill` a maker could not be found to fill your order
   * `EC_PerCancelRequest`
   * `EC_MarketOrderCannotBePostOnly`
-  * `EC_PostOnlyWillTakeLiquidity`
+  * `EC_PostOnlyWillTakeLiquidity` your post only order would have executed as a taker, and so was rejected
   * `EC_CancelReplaceOrder`
   * `EC_InvalidSymbolStatus`
   * `EC_CancelForNoFullFill`
@@ -329,6 +330,37 @@ updated_at: 2026-01-16T09:39:20.830739
 
   * `UNIFIED` Unified Trading Account
   * `FUND` Funding Account
+
+
+
+### assetCategory
+
+  * `Easy Earn` Earn account sub-category
+  * `Futures Grid Bot` Trading Bot account sub-category
+  * `Futures Combo Bot` Trading Bot account sub-category
+  * `Futures Martingale Bot` Trading Bot account sub-category
+  * `Copy Trading Classic` Copy Trading account sub-category
+  * `Copy Trading TradFi` Copy Trading account sub-category
+  * `Copy Trading Pro` Copy Trading account sub-category
+  * `trade` Alpha account sub-category — spot alpha token holdings
+  * `farm` Alpha account sub-category — spot alpha farming positions
+
+
+
+### assetAccountType
+
+  * `FundingAccount` Funding Account
+  * `UnifiedTradingAccount` Unified Trading Account
+  * `Earn` Earn Account
+  * `TradingBot` Trading Bot Account
+  * `CopyTrading` Copy Trading Account
+  * `CryptoLoans` Crypto Loans Account
+  * `CryptoLoans_legacy` Crypto Loans Account (Legacy)
+  * `PayLater` Bybit Pay Later Account
+  * `Launchpool` Launchpool Account
+  * `TradFi` TradFi Account
+  * `MarginStakedSOL` Margin Staked SOL Account
+  * `Alpha` Alpha Account
 
 
 
@@ -446,9 +478,12 @@ updated_at: 2026-01-16T09:39:20.830739
 
 ### symbolType
 
-  * `innovation`
-  * `adventure`
-  * `xstocks`
+  * `innovation` linear
+  * `adventure` spot
+  * `xstocks` spot
+  * `commodity` linear
+  * `stock` linear
+  * `forex` linear Foreign exchange
 
 
 
@@ -569,8 +604,8 @@ updated_at: 2026-01-16T09:39:20.830739
   * `INSTITUTION_PAYBACK_INTEREST_OUT` Interest repayment (INS Loan) 
   * `INSTITUTION_EXCHANGE_SELL` Auto sold collateral (INS Loan)
   * `INSTITUTION_EXCHANGE_BUY` Auto buy liability (INS Loan)
-  * `INSTITUTION_LIQ_PRINCIPAL_OUT` Auto principal repayment (INS Loan)
-  * `INSTITUTION_LIQ_INTEREST_OUT` Auto interest repayment (INS Loan)
+  * `INSTITUTION_LIQ_PRINCIPAL_OUT` Forced principal repayment, i.e. liquidation (INS Loan)
+  * `INSTITUTION_LIQ_INTEREST_OUT` Forced interest repayment, i.e. liquidation (INS Loan)
   * `INSTITUTION_LOAN_TRANSFER_IN` Transfer in (INS Loan)
   * `INSTITUTION_LOAN_TRANSFER_OUT` Transfer out (INS Loan)
   * `INSTITUTION_LOAN_WITHOUT_WITHDRAW` Transfer out (INS Loan)
@@ -581,6 +616,7 @@ updated_at: 2026-01-16T09:39:20.830739
   * `PLATFORM_TOKEN_MNT_LIQRETURNEDMNT` Return MNT
   * `BORROW` Manual loan borrow and auto loan borrow
   * `REPAY` Manual loan repay and auto loan repay
+  * `CONVERT` Currency convert repayment
   * `BROKER_ABACCOUNT_FEE` Borker AB fee deduction
   * `EARNING_REDEMPTION_SELL`
   * `EARNING_REDEMPTION_BUY`
@@ -590,6 +626,12 @@ updated_at: 2026-01-16T09:39:20.830739
   * `DBS_CASH_IN_TR`
   * `CUSTODY_CASH_RECOVER_TR`
   * `ALPHA_SMALL_TOKEN_REFUND`
+  * `TWAP_BUDGET_AIRDROP`
+  * `TWAP_BUDGET_RECALL`
+  * `FLOATING_TO_FIXED_BORROW`
+  * `FLOATING_TO_FIXED_REPAY`
+  * `IDN_CONVERT_IN`
+  * `IDN_CONVERT_OUT`
 
 
 
@@ -822,6 +864,7 @@ The types of USDT Futures contracts offered by Bybit include: Weekly, Bi-Weekly,
   * `5` Long Tail
   * `6` Innovation Zone
   * `7` Pre-Listing
+  * `8` USDC contracts
 
 
 
@@ -834,6 +877,7 @@ The types of USDT Futures contracts offered by Bybit include: Weekly, Bi-Weekly,
   * `G5(Long Tail)` Long Tail
   * `Innovation-Zone` Innovation Zone
   * `Pre-listing` Pre-listing
+  * `USDC` USDC group
 
 
 
@@ -915,6 +959,35 @@ with the example of BTCUSDT:
   * `112` EC_CancelByMatchValueZero 
   * `113` EC_CancelByMatchValueZero 
   * `200` EC_ReachMarketPriceLimit
+
+
+
+### Advanced-Earn-category
+
+  * `DualAssets`
+
+
+
+### Advanced-Earn-Product-Status
+
+  * `Available`
+  * `NotAvailable`
+
+
+
+### Advanced-Earn-Position-Status
+
+  * `Active`
+  * `Redeeming`
+
+
+
+### Advanced-Earn-Order-Status
+
+  * `Pending`
+  * `Success`
+  * `Settled`
+  * `Fail`
 
 ---
 
@@ -1064,10 +1137,10 @@ with the example of BTCUSDT:
   * [PostOnly](https://www.bybit.com/zh-TW/help-center/bybitHC_Article?language=zh_TW&id=000001051) 被動委託
   * [RPI(Retail Price Improvement)](https://www.bybit.com/en/help-center/article/Retail-Price-Improvement-RPI-Order) 特性:
     * **獨家匹配** : 僅匹配非演算法用戶；不執行來自 Open API 的訂單.
-    * **Post-Only 機制** : 充當掛單，增加流動性
-    * **較低優先順序** : 在相同價格水準的非 RPI 訂單之後執行
-    * **有限訪問** : 最初僅針對部分幣對的選定做市商.
-    * **訂單簿更新** : 從 API 中排除，但顯示在 GUI 上.
+      * **Post-Only 機制** : 充當掛單，增加流動性
+      * **較低優先順序** : 在相同價格水準的非 RPI 訂單之後執行
+      * **有限訪問** : 最初僅針對部分幣對的選定做市商.
+      * **訂單簿更新** : 從 API 中排除，但顯示在 GUI 上.
 
 
 
@@ -1089,17 +1162,18 @@ with the example of BTCUSDT:
   * `CreateByBlock_PassThrough` 從Paradigm下的大宗交易
   * `CreateByBlockTradeMovePosition_PassThrough` 移倉觸發的訂單
   * `CreateByClosing` 在持倉區進行平倉 - web/app
-  * `CreateByFGridBot` 網格機器人創建訂單 - web/app
-  * `CloseByFGridBot` 網格機器人平倉 - web/app
-  * `CreateByTWAP` TWAP創建訂單 - web/app
+  * `CreateByFGridBot` 網格機器人創建訂單
+  * `CloseByFGridBot` 網格機器人平倉
+  * `CreateByTWAP` TWAP創建訂單
   * `CreateByTVSignal` TradingView webhook觸發訂單 - web/app
   * `CreateByMmRateClose` 通過設置mmrate觸發的訂單 - web/app
-  * `CreateByMartingaleBot` 馬丁格爾訂單 - web/app
-  * `CloseByMartingaleBot` 馬丁格爾平倉 - web/app
-  * `CreateByIceBerg` 冰山策略訂單 - web/app
+  * `CreateByMartingaleBot` 馬丁格爾訂單
+  * `CloseByMartingaleBot` 馬丁格爾平倉
+  * `CreateByIceBerg` 冰山策略訂
   * `CreateByArbitrage` 套利策略下單 - web/app
   * `CreateByDdh` 期權動態Delta對衝訂單 - web/app
   * `CreateByBboOrder` BBO 訂單
+  * `CreateByChaseOrder` 追逐限價訂單
 
 
 
@@ -1109,8 +1183,8 @@ with the example of BTCUSDT:
   * `AdlTrade` [自動減倉](https://www.bybit.com/zh-TW/help-center/bybitHC_Article?language=zh_TW&id=000001124)
   * `Funding` [資金費率](https://www.bybit.com/zh-TW/help-center/HelpCenterKnowledge/bybitHC_Article?id=000001123&language=zh_TW)
   * `BustTrade` 強平
-  * `Delivery` USDC.USDT到期交割; 因合約下架導致的平倉
-  * `Settle` 反向合約到期交割; 下架合約到期平倉
+  * `Delivery` USDT到期交割; 下架合約到期平倉
+  * `Settle` 反向合約到期交割;
   * `BlockTrade`
   * `MovePosition`
 
@@ -1234,6 +1308,37 @@ with the example of BTCUSDT:
 
 
 
+### assetCategory
+
+  * `Easy Earn` 理財帳戶子分類
+  * `Futures Grid Bot` 交易機器人帳戶子分類
+  * `Futures Combo Bot` 交易機器人帳戶子分類
+  * `Futures Martingale Bot` 交易機器人帳戶子分類
+  * `Copy Trading Classic` 跟單交易帳戶子分類
+  * `Copy Trading TradFi` 跟單交易帳戶子分類
+  * `Copy Trading Pro` 跟單交易帳戶子分類
+  * `trade` Alpha 帳戶子分類 — 現貨Alpha代幣持倉
+  * `farm` Alpha 帳戶子分類 — 現貨Alpha挖礦倉位
+
+
+
+### assetAccountType
+
+  * `FundingAccount` 資金帳戶
+  * `UnifiedTradingAccount` 統一交易帳戶
+  * `Earn` 理財帳戶
+  * `TradingBot` 交易機器人帳戶
+  * `CopyTrading` 跟單交易帳戶
+  * `CryptoLoans` 加密借貸帳戶
+  * `CryptoLoans_legacy` 加密借貸帳戶（舊版）
+  * `PayLater` 先享後付帳戶
+  * `Launchpool` Launchpool 帳戶
+  * `TradFi` 傳統金融帳戶
+  * `MarginStakedSOL` SOL 質押保證金帳戶
+  * `Alpha` Alpha 帳戶
+
+
+
 ### transferStatus
 
   * `SUCCESS`
@@ -1348,9 +1453,12 @@ with the example of BTCUSDT:
 
 ### symbolType
 
-  * `innovation`
-  * `adventure`
-  * `xstocks`
+  * `innovation` 合約
+  * `adventure` 現貨
+  * `xstocks` 現貨
+  * `commodity` 合約
+  * `stock` 合約 股票
+  * `forex` 合約 外匯
 
 
 
@@ -1482,6 +1590,7 @@ with the example of BTCUSDT:
   * `PLATFORM_TOKEN_MNT_LIQRETURNEDMNT` MNT返回
   * `BORROW` 手工借幣和自動借幣
   * `REPAY` 手工還幣和自動還幣
+  * `CONVERT` 貨幣兌換還款
   * `INTEREST_REFUND` 固定利率利息
   * `EU_FIAT_HEDGE_TRADING_TRADER_IN` 歐盟站法貨幣對沖交易流入
   * `EU_FIAT_HEDGE_TRADING_TRADER_OUT` 歐盟站法貨幣對沖交易資金流出
@@ -1497,6 +1606,12 @@ with the example of BTCUSDT:
   * `DBS_CASH_IN_TR`
   * `CUSTODY_CASH_RECOVER_TR`
   * `ALPHA_SMALL_TOKEN_REFUND`
+  * `TWAP_BUDGET_AIRDROP`
+  * `TWAP_BUDGET_RECALL`
+  * `FLOATING_TO_FIXED_BORROW`
+  * `FLOATING_TO_FIXED_REPAY`
+  * `IDN_CONVERT_IN`
+  * `IDN_CONVERT_OUT`
 
 
 
@@ -1738,6 +1853,7 @@ Bybit提供的USDC交割合約類型包括: 週報、雙週報、三週報、月
   * `5` 長尾資產交易對
   * `6` 創新區交易對
   * `7` 盤前交易對
+  * `8` USDC合約
 
 
 
@@ -1750,6 +1866,7 @@ Bybit提供的USDC交割合約類型包括: 週報、雙週報、三週報、月
   * `G5(Long Tail)` G5, 長尾資產交易對
   * `Innovation-Zone` 創新區交易對
   * `Pre-listing` 盤前交易對
+  * `USDC` USDC合約組
 
 
 
@@ -1831,3 +1948,32 @@ Bybit提供的USDC交割合約類型包括: 週報、雙週報、三週報、月
   * `112` EC_CancelByMatchValueZero 
   * `113` EC_CancelByMatchValueZero 
   * `200` EC_ReachMarketPriceLimit
+
+
+
+### Advanced-Earn-category
+
+  * `DualAssets`
+
+
+
+### Advanced-Earn-Product-Status
+
+  * `Available`
+  * `NotAvailable`
+
+
+
+### Advanced-Earn-Position-Status
+
+  * `Active`
+  * `Redeeming`
+
+
+
+### Advanced-Earn-Order-Status
+
+  * `Pending`
+  * `Success`
+  * `Settled`
+  * `Fail`
