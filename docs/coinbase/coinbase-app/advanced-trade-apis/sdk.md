@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/sdk
 api_type: REST
-updated_at: 2026-05-26 17:29:08.999984
+updated_at: 2026-05-27 18:47:39.468289
 ---
 
 # Python SDK Overview
