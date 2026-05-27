@@ -15,11 +15,13 @@ agent-browser install
 # 爬取文档
 PYTHONPATH=. python src/main.py crawl -e hyperliquid -c 5
 
-# 只刷新 README 交易所表格
+# 刷新 README 动态内容
 PYTHONPATH=. python src/main.py readme
 ```
 
 ## 支持的交易所
+
+> 此表由 `src/utils/readme_updater.py` 根据 `config/*.yaml` 和 `index/*.json` 自动生成。
 
 | 交易所 | 状态 | 文档数量 | 最后更新 |
 |--------|------|----------|----------|
@@ -42,26 +44,62 @@ PYTHONPATH=. python src/main.py readme
 
 建议先用 `limit=3`、`commit_changes=false` 小范围测试；确认成功后再用 `commit_changes=true` 更新仓库。Kraken 和 Gate.io 这类动态/保护较强站点优先使用 `concurrency=1`。
 
+工作流也会每周自动全量刷新一次：北京时间周一 02:00 触发。定时任务按交易所拆成独立 job，并通过 `max-parallel=1` 一个一个更新，避免多个 runner 同时提交造成冲突。默认并发为 Coinbase 5、Hyperliquid 2、Binance/Bybit/OKX 3、Kraken/Gate.io 1。
+
 ## 项目结构
+
+> 此结构由 `src/utils/readme_updater.py` 根据当前仓库文件自动生成。
 
 ```
 crypto-api-docs/
+├── .github/
+│   └── workflows/        # GitHub Actions
+│       └── crawl-docs.yml
 ├── config/                 # 交易所配置（YAML）
-│   └── <exchange>.yaml
+│   ├── binance.yaml
+│   ├── bybit.yaml
+│   ├── coinbase.yaml
+│   ├── gateio.yaml
+│   ├── hyperliquid.yaml
+│   ├── kraken.yaml
+│   └── okx.yaml
 ├── docs/                   # 生成的 Markdown 文档
-│   └── <exchange>/         # 按交易所分目录
+│   ├── binance/                # 804 Markdown docs
+│   ├── bybit/                  # 294 Markdown docs
+│   ├── coinbase/               # 71 Markdown docs
+│   ├── gateio/                 # 66 Markdown docs
+│   ├── hyperliquid/            # 34 Markdown docs
+│   ├── kraken/                 # 243 Markdown docs
+│   └── okx/                    # 470 Markdown docs
 ├── index/                  # JSON 索引（供 AI 读取）
-│   └── <exchange>.json
+│   ├── binance.json
+│   ├── bybit.json
+│   ├── coinbase.json
+│   ├── gateio.json
+│   ├── hyperliquid.json
+│   ├── kraken.json
+│   └── okx.json
 ├── src/
 │   ├── adapters/           # 交易所适配器
-│   │   ├── base.py         # 基类
-│   │   └── <exchange>.py
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── binance.py
+│   │   ├── bybit.py
+│   │   ├── coinbase.py
+│   │   ├── gateio.py
+│   │   ├── hyperliquid.py
+│   │   ├── kraken.py
+│   │   └── okx.py
 │   ├── utils/              # 工具类
-│   │   ├── browser.py      # 浏览器自动化
-│   │   ├── markdown.py     # HTML → Markdown
-│   │   ├── indexer.py      # 索引生成
-│   │   └── path_generator.py # 路径生成工具
+│   │   ├── __init__.py
+│   │   ├── browser.py
+│   │   ├── indexer.py
+│   │   ├── markdown.py
+│   │   ├── path_generator.py
+│   │   ├── readme_updater.py
+│   │   └── repair.py
 │   └── main.py             # 主程序入口
+├── requirements.txt
 └── README.md
 ```
 
@@ -75,6 +113,6 @@ crypto-api-docs/
 
 ## TODO
 
-- 观察 GitHub 免费 runner 对 Kraken 和 Gate.io 的实际成功率。
+- 观察定时全量任务对 Kraken 和 Gate.io 的长期成功率。
 - 如果免费 runner 风控失败，再考虑为受保护站点单独加备用方案。
-- 手动工作流稳定后再增加 `schedule` 定时任务。
+- 如果多个交易所全量更新耗时过长，再拆成按天错峰的多个 schedule。

@@ -40,6 +40,9 @@ name: Crawl Docs
         required: true
         default: false
         type: boolean
+  schedule:
+    # Weekly full refresh: Monday 02:00 Asia/Shanghai (Sunday 18:00 UTC).
+    - cron: "0 18 * * 0"
 
 permissions:
   contents: write
@@ -48,19 +51,26 @@ defaults:
   run:
     shell: bash
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 concurrency:
-  group: crawl-docs-${{ inputs.exchange }}
+  group: crawl-docs-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   crawl:
     name: Crawl ${{ inputs.exchange }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Sync latest branch
+        run: git pull --ff-only origin "${GITHUB_REF_NAME:-main}"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -126,6 +136,8 @@ jobs:
 
       - name: Commit updated docs
         if: ${{ inputs.commit_changes }}
+        env:
+          EXCHANGE: ${{ inputs.exchange }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -135,6 +147,93 @@ jobs:
           if git diff --cached --quiet; then
             echo "No docs changes to commit."
           else
-            git commit -m "Update ${{ inputs.exchange }} API docs"
+            git commit -m "Update ${EXCHANGE} API docs"
+            git pull --rebase origin "${GITHUB_REF_NAME:-main}"
+            git push
+          fi
+
+  scheduled-crawl:
+    name: Scheduled crawl ${{ matrix.exchange }}
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - exchange: coinbase
+            concurrency: "5"
+          - exchange: hyperliquid
+            concurrency: "2"
+          - exchange: binance
+            concurrency: "3"
+          - exchange: bybit
+            concurrency: "3"
+          - exchange: okx
+            concurrency: "3"
+          - exchange: kraken
+            concurrency: "1"
+          - exchange: gateio
+            concurrency: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync latest branch
+        run: git pull --ff-only origin "${GITHUB_REF_NAME:-main}"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Install agent-browser
+        run: |
+          npm install -g agent-browser
+          agent-browser install
+
+      - name: Crawl docs
+        env:
+          EXCHANGE: ${{ matrix.exchange }}
+          CRAWL_CONCURRENCY: ${{ matrix.concurrency }}
+        run: |
+          set -euo pipefail
+          args=(src/main.py crawl -e "$EXCHANGE" -c "$CRAWL_CONCURRENCY")
+          echo "PYTHONPATH=. python ${args[*]}"
+          PYTHONPATH=. python "${args[@]}" 2>&1 | tee crawl.log
+
+      - name: Upload crawl log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-crawl-log-${{ matrix.exchange }}-${{ github.run_id }}
+          path: crawl.log
+          if-no-files-found: ignore
+
+      - name: Commit updated docs
+        env:
+          EXCHANGE: ${{ matrix.exchange }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add docs index README.md
+          if git diff --cached --quiet; then
+            echo "No docs changes to commit."
+          else
+            git commit -m "Update ${EXCHANGE} API docs"
+            git pull --rebase origin "${GITHUB_REF_NAME:-main}"
             git push
           fi
