@@ -2,49 +2,38 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/create-order
 api_type: REST
-updated_at: 2026-05-27 19:17:25.416970
+updated_at: 2026-05-28 19:22:45.029141
 ---
 
-# Get Hourly Yield History
+# Modify Position
 
 info
 
 API key needs "Earn" permission
 
+note
+
+Only positions with `duration` = `Fixed` support setting auto-reinvestment. You can get the `duration` value from the response of [GET /v5/earn/product?category=OnChain](/docs/v5/finance/earn/easy-onchain/product-info).
+
 ### HTTP Request
 
-GET`/v5/earn/hourly-yield`
+POST`/v5/earn/position/modify`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`  
-productId| false| string| Product ID  
-startTime| false| integer| The start timestamp (ms).
-
-  * 1\. If both are not provided, the default is to return data from the last 7 days.
-  * 2\. If both are provided, the difference between the endTime and startTime must be less than or equal to 7 days. 
-
-  
-endTime| false| integer| The endTime timestamp (ms)  
-limit| false| integer| Limit for data size per page. Range: [1, 100]. Default: 50  
-cursor| false| string| Cursor, use the returned `nextPageCursor` to query data for the next page.  
+category| **true**|  string| Product category. Fixed value: `OnChain`  
+productId| **true**|  integer| Product ID. Obtained from [GET /v5/earn/product](/docs/v5/finance/earn/easy-onchain/product-info)  
+positionId| **true**|  integer| Position ID. Obtained from [GET /v5/earn/position](/docs/v5/finance/earn/easy-onchain/position)  
+autoReinvest| **true**|  integer| Auto-reinvestment switch. `0`: Off, `1`: On  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-nextPageCursor| string| Refer to the `cursor` request parameter  
-list| array| Object  
-> productId| string| Product ID  
-> coin| string| Coin name: "BTC", "ETH"  
-> id| string| Unique key (guaranteed to be unique only under the same user)  
-> amount| string| Yield Amount. Example: 10  
-> effectiveStakingAmount| string| Effective staking amount, e.g., 1000.00  
-> status| string| Order status: `Pending`, `Success`, `Fail`  
-> hourlyDate| string| Hourly yield time(ms) eg: 1755478800000  
-> createdAt| string| Order creation time in milliseconds, e.g., 1684738540561  
+retCode| integer| Return code. `0` means success  
+retMsg| string| Return message. Empty string `""` on success  
   
 ### Request Example
 
@@ -55,25 +44,24 @@ list| array| Object
 
     
     
-    GET /v5/earn/hourly-yield?category=FlexibleSaving HTTP/1.1  
+    POST /v5/earn/position/modify HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739937044221  
+    X-BAPI-TIMESTAMP: 1773732693000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+      
+    {  
+        "category": "OnChain",  
+        "productId": 8,  
+        "positionId": 326,  
+        "autoReinvest": 1  
+    }  
     
     
     
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_hourly_yield(  
-        category="FlexibleSaving"  
-    ))  
+      
     
     
     
@@ -86,66 +74,42 @@ list| array| Object
     {  
         "retCode": 0,  
         "retMsg": "",  
-        "result": {  
-            "list": [  
-                {  
-                    "productId": "428",  
-                    "coin": "USDT",  
-                    "amount": "0.060810502283105022",  
-                    "effectiveStakingAmount": "1000",  
-                    "hourlyDate": "1759989600000",  
-                    "status": "Success",  
-                    "createdAt": "1759989603000"  
-                }  
-            ],  
-            "nextPageCursor": ""  
-        },  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1759993045287  
+        "time": 1773732693032  
     }
 
 ---
 
-# 查詢每小時收益歷史
+# 修改持倉設置
 
 信息
 
-API key需要"理財""權限
+API key 需要「理財」權限
+
+備註
+
+僅 `duration` = `Fixed` 的持倉支持設置自動複投。您可以從 [GET /v5/earn/product?category=OnChain](/docs/zh-TW/v5/finance/earn/easy-onchain/product-info) 的響應參數中獲取 `duration` 的值。
 
 ### HTTP 請求
 
-GET`/v5/earn/hourly-yield`
+POST`/v5/earn/position/modify`
 
 ### 請求參數
 
-參數名稱| 必填| 類型| 說明  
+參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`  
-productId| false| string| 產品 ID  
-startTime| false| integer| 開始時間戳 (ms)。
-
-  * 1\. 如果未提供 startTime 和 endTime，默認返回最近 7 天的數據。
-  * 2\. 如果提供了 startTime 和 endTime，則結束時間與開始時間的差值必須小於或等於 7 天。
-
-  
-endTime| false| integer| 結束時間戳 (ms)  
-limit| false| integer| 每頁數據大小限制。範圍：[1, 100]。默認值：50  
-cursor| false| string| 游標，使用返回的 `nextPageCursor` 查詢下一頁的數據。  
+category| **true**|  string| 產品類別，固定傳 `OnChain`  
+productId| **true**|  integer| 產品 ID，從 [GET /v5/earn/product](/docs/zh-TW/v5/finance/earn/easy-onchain/product-info) 獲取  
+positionId| **true**|  integer| 持倉 ID，從 [GET /v5/earn/position](/docs/zh-TW/v5/finance/earn/easy-onchain/position) 獲取  
+autoReinvest| **true**|  integer| 自動續期開關。`0`：關閉，`1`：開啟  
   
 ### 響應參數
 
-參數名稱| 類型| 說明  
+參數| 類型| 說明  
 ---|---|---  
-nextPageCursor| string| 游標，用於翻頁  
-list| array|   
-> productId| string| 產品 ID  
-> coin| string| 幣種名稱："BTC", "ETH"  
-> id| string| 唯一鍵（僅在同一用戶下保證唯一）  
-> amount| string| 收益金額  
->effectiveStakingAmount| string| 有效持倉金額，例如：1000.00  
-> status| string| 訂單狀態：`Pending`，`Success`，`Fail`  
-> hourlyDate| string| 每小時收益時間 (ms)，例如：1755478800000  
-> createdAt| string| 訂單創建時間 (ms)，例如：1684738540561  
+retCode| integer| 返回碼，`0` 表示成功  
+retMsg| string| 返回信息，成功時為 `""`  
   
 ### 請求示例
 
@@ -156,13 +120,20 @@ list| array|
 
     
     
-    GET /v5/earn/hourly-yield?category=FlexibleSaving HTTP/1.1  
+    POST /v5/earn/position/modify HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739937044221  
+    X-BAPI-TIMESTAMP: 1773732693000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+      
+    {  
+        "category": "OnChain",  
+        "productId": 8,  
+        "positionId": 326,  
+        "autoReinvest": 1  
+    }  
     
     
     
@@ -179,20 +150,7 @@ list| array|
     {  
         "retCode": 0,  
         "retMsg": "",  
-        "result": {  
-            "list": [  
-                {  
-                    "productId": "428",  
-                    "coin": "USDT",  
-                    "amount": "0.060810502283105022",  
-                    "effectiveStakingAmount": "1000",  
-                    "hourlyDate": "1759989600000",  
-                    "status": "Success",  
-                    "createdAt": "1759989603000"  
-                }  
-            ],  
-            "nextPageCursor": ""  
-        },  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1759993045287  
+        "time": 1773732693032  
     }

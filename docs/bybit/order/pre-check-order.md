@@ -2,49 +2,72 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/pre-check-order
 api_type: Trading
-updated_at: 2026-05-27 19:20:53.147704
+updated_at: 2026-05-28 19:24:45.780230
 ---
 
-# Pre Check Order
+# Get LTV
 
-This endpoint is used to calculate the changes in IMR and MMR of UTA account before and after placing an order.
+Get your loan-to-value (LTV) ratio.
 
-info
+important
 
-  1. This endpoint supports orders with category = `inverse`,`linear`,`option`.   
-
-  2. Only Cross Margin mode and Portfolio Margin mode are supported, isolated margin mode is not supported.  
-
-  3. category = `inverse` is not supported in Cross Margin mode.  
-
-  4. Conditional order is not supported.  
-
-  5. If `retCode` is neither 0 nor 110007, `result` will return an empty json. `future_order_id`, `future_order_link_id` will be displayed in the `retExtInfo` json.
-  6. If `retCode` is 110007, `result` will return an empty json. `future_order_id`, `future_order_link_id`, `post_imr_e4`, and `post_mmr_e4` will be displayed in the `retExtInfo` json.
+  * In cases where an institutional user makes frequent transfers, LTV calculations may become inaccurate, and this endpoint will return retCode = 100016, retMsg = "Transfers within your risk unit are too frequent. Please reduce the transfer frequency and try again."
+  * If you encounter this error, it is recommended to reduce the transfer frequency first and retry
+  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
+  * When a user is in a state such as liquidation, transfer, or manual repayment, LTV is not calculated. We have added a new `liqStatus` to represent these states. When `liqStatus` != 0, `ltvInfo` returns empty strings for `ltv`, `unpaidAmount` and `balance`, and `unpaidInfo` and `balanceInfo` return empty arrays.
 
 
 
 ### HTTP Request
 
-POST`/v5/order/pre-check`
+GET`/v5/ins-loan/ltv-convert`
 
 ### Request Parameters
 
-refer to [create order request](/docs/v5/order/create-order#request-parameters)
+None
 
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| User customised order ID  
-preImrE4| int| Initial margin rate before checking, keep four decimal places. For examples, 30 means IMR = 30/1e4 = 0.30%  
-preMmrE4| int| Maintenance margin rate before checking, keep four decimal places. For examples, 30 means MMR = 30/1e4 = 0.30%  
-postImrE4| int| Initial margin rate calculated after checking, keep four decimal places. For examples, 30 means IMR = 30/1e4 = 0.30%  
-postMmrE4| int| Maintenance margin rate calculated after checking, keep four decimal places. For examples, 30 means MMR = 30/1e4 = 0.30%  
-  
-* * *
+ltvInfo| array| Object  
+> ltv| string| Risk rate 
 
+  * ltv is calculated in real time
+  * If you have an INS loan, it is highly recommended to query this data every second. Liquidation occurs when it reachs 0.9 (90%)
+
+. When `liqStatus` != 0, empty string is returned.  
+> rst| string| Remaining liquidation time (UTC time in seconds). When it is not triggered, it is displayed as an empty string. When `liqStatus` != 0, empty string is returned.  
+> parentUid| string| The designated Risk Unit ID that was used to bind with the INS loan  
+> subAccountUids| array| Bound user ID  
+> unpaidAmount| string| Total debt(USDT). When `liqStatus` != 0, empty string is returned.  
+> unpaidInfo| array| Debt details. When `liqStatus` != 0, empty array is returned.  
+>> token| string| coin  
+>> unpaidQty| string| Unpaid principle  
+>> unpaidInterest| string| Useless field, please ignore this for now  
+> balance| string| Total asset (margin coins converted to USDT). Please read [here](https://www.bybit.com/en-US/help-center/s/article/Over-the-counter-OTC-Lending) to understand the calculation. When `liqStatus` != 0, empty string is returned.  
+> balanceInfo| array| Asset details. When `liqStatus` != 0, empty array is returned.  
+>> token| string| Margin coin  
+>> price| string| Margin coin price  
+>> qty| string| Margin coin quantity  
+>> convertedAmount| string| Margin conversion amount  
+> liqStatus| integer| Liquidation status. 
+
+  * `0`: Normal
+  * `1`: Under liquidation
+  * `2`: Manual repayment in progress
+  * `3`: Transfer in progress
+
+  
+liqStatus| integer| Liquidation status. 
+
+  * `0`: Normal
+  * `1`: Under liquidation
+  * `2`: Manual repayment in progress
+  * `3`: Transfer in progress
+
+  
+  
 ### Request Example
 
   * HTTP
@@ -54,38 +77,12 @@ postMmrE4| int| Maintenance margin rate calculated after checking, keep four dec
 
     
     
-    POST /v5/order/pre-check HTTP/1.1  
+    GET /v5/ins-loan/ltv-convert HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
+    X-BAPI-TIMESTAMP: 1686638165351  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    // Spot Limit order with market tp sl  
-    {"category": "spot","symbol": "BTCUSDT","side": "Buy","orderType": "Limit","qty": "0.01","price": "28000","timeInForce": "PostOnly","takeProfit": "35000","stopLoss": "27000","tpOrderType": "Market","slOrderType": "Market"}  
-      
-    // Spot Limit order with limit tp sl  
-    {"category": "spot","symbol": "BTCUSDT","side": "Buy","orderType": "Limit","qty": "0.01","price": "28000","timeInForce": "PostOnly","takeProfit": "35000","stopLoss": "27000","tpLimitPrice": "36000","slLimitPrice": "27500","tpOrderType": "Limit","slOrderType": "Limit"}  
-      
-    // Spot PostOnly normal order  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","timeInForce":"PostOnly","orderLinkId":"spot-test-01","isLeverage":0,"orderFilter":"Order"}  
-      
-    // Spot TP/SL order  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","triggerPrice": "15000", "timeInForce":"Limit","orderLinkId":"spot-test-02","isLeverage":0,"orderFilter":"tpslOrder"}  
-      
-    // Spot margin normal order (UTA)  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","timeInForce":"GTC","orderLinkId":"spot-test-limit","isLeverage":1,"orderFilter":"Order"}  
-      
-    // Spot Market Buy order, qty is quote currency  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Market","qty":"200","timeInForce":"IOC","orderLinkId":"spot-test-04","isLeverage":0,"orderFilter":"Order"}  
-      
-      
-    // USDT Perp open long position (one-way mode)  
-    {"category":"linear","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"1","price":"25000","timeInForce":"GTC","positionIdx":0,"orderLinkId":"usdt-test-01","reduceOnly":false,"takeProfit":"28000","stopLoss":"20000","tpslMode":"Partial","tpOrderType":"Limit","slOrderType":"Limit","tpLimitPrice":"27500","slLimitPrice":"20500"}  
-      
-    // USDT Perp close long position (one-way mode)  
-    {"category": "linear", "symbol": "BTCUSDT", "side": "Sell", "orderType": "Limit", "qty": "1", "price": "30000", "timeInForce": "GTC", "positionIdx": 0, "orderLinkId": "usdt-test-02", "reduceOnly": true}  
+    X-BAPI-SIGN: XXXXX  
     
     
     
@@ -95,23 +92,26 @@ postMmrE4| int| Maintenance margin rate calculated after checking, keep four dec
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.pre_check_order(  
-        category="spot",  
-        symbol="BTCUSDT",  
-        side="Buy",  
-        orderType="Limit",  
-        qty="0.1",  
-        price="28000",  
-        timeInForce="PostOnly",  
-        takeProfit="35000",  
-        stopLoss="27000",  
-        tpOrderType="Market",  
-        slOrderType="Market",  
-    ))  
+    print(session.get_ltv())  
     
     
     
+    const { RestClientV5 } = require('bybit-api');  
       
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getInstitutionalLendingLTVWithLadderConversionRate()  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### Response Example
@@ -119,61 +119,130 @@ postMmrE4| int| Maintenance margin rate calculated after checking, keep four dec
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "",  
         "result": {  
-            "orderId": "24920bdb-4019-4e37-ad1c-876e3a855ac3",  
-            "orderLinkId": "test129",  
-            "preImrE4": 30,  
-            "preMmrE4": 21,  
-            "postImrE4": 357,  
-            "postMmrE4": 294  
+            "ltvInfo": [  
+                {  
+                    "ltv": "0.75",  
+                    "rst": "",  
+                    "parentUid": "xxxxx",  
+                    "subAccountUids": [  
+                        "60568258"  
+                    ],  
+                    "unpaidAmount": "30",  
+                    "unpaidInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "unpaidQty": "30",  
+                            "unpaidInterest": "0"  
+                        }  
+                    ],  
+                    "balance": "40",  
+                    "balanceInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "price": "1",  
+                            "qty": "40",  
+                            "convertedAmount": "40"  
+                        }  
+                    ]  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1749541599589  
+        "time": 1686638166323  
+    }  
+      
+    When `liqStatus` != 0:  
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "ltvInfo": [  
+                {  
+                    "ltv": "",  
+                    "parentUid": "100331354",  
+                    "subAccountUids": [  
+                        "100334094",  
+                        "100334098"  
+                    ],  
+                    "unpaidAmount": "",  
+                    "unpaidInfo": [],  
+                    "balance": "",  
+                    "balanceInfo": [],  
+                    "rst": "",  
+                    "liqStatus": 3  
+                }  
+            ],  
+            "liqStatus": 3  
+        },  
+        "retExtInfo": {},  
+        "time": 1766462020703  
     }
 
 ---
 
-# 預下單
+# 查詢風險率
 
-此接口用於計算UTA帳戶下單前後IMR、MMR的變化。
+important
 
-信息
-
-  1. 此接口只支持期貨和期權的訂單。   
-
-  2. 僅支持全倉模式和組合保證金模式，不支援逐倉模式。   
-
-  3. 全倉模式下不支持反向訂單。   
-
-  4. 不支持條件訂單。   
-
-  5. 如果`retCode`既不是0也不是110007，`result`將回傳空json。 `future_order_id`，`future_order_link_id` 會顯示在`retExtInfo`這個json裡。
-  6. 如果`retCode` 是 110007，`result`將回傳空json。 `future_order_id`，`future_order_link_id`，`post_imr_e4`，`post_mmr_e4`會顯示在`retExtInfo`這個json裡。
+  * 如果機構用戶頻繁轉帳，LTV 計算可能會變得不準確，此端點將返回 retCode = 100016，retMsg = "Transfers within your risk unit are too frequent. Please reduce the transfer frequency and try again."
+  * 遇到這個報錯，建議先減少轉帳頻率，再重試
+  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
+  * 當用戶發生強平、劃轉、手工還款等過程中的狀態時，LTV不進行計算。我們新增了一個`liqStatus`來表示這些狀態。當`liqStatus`!=0時，此時`ltvInfo`裡`ltv`、`unpaidAmount`、`balance`都是空字串，`unpaidInfo`、`balanceInfo`都是空數組。
 
 
 
-### HTTP請求
+### HTTP 請求
 
-POST`/v5/order/pre-check`
+GET`/v5/ins-loan/ltv-convert`
 
 ### 請求參數
 
-參考 [create order request](/docs/zh-TW/v5/order/create-order#request-parameters)
+無
 
-### 響應參數
+### 返回參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 訂單ID  
-orderLinkId| string| 用戶自定義訂單ID  
-preImrE4| int| 預下單前的初始保證金率，保留小數點後四位。例如，30 表示 IMR = 30/1e4 = 0.30%  
-preMmrE4| int| 預下單前的維持保證金率，保留小數點後四位。例如：30 表示 MMR = 30/1e4 = 0.30%  
-postImrE4| int| 預下單後計算的初始保證金率，保留小數點後四位。例如：30 表示 IMR = 30/1e4 = 0.30%  
-postMmrE4| int| 預下單後計算的維持保證金率，保留小數點後四位。例如：30 表示 MMR = 30/1e4 = 0.30%  
-  
-* * *
+ltvInfo| array| Object  
+> ltv| string| 風險率 
 
+  * 該數據是實時計算
+  * 如果持有機構借貸, 強烈建議每秒查詢一次ltv。當達到0.9 (90%)時即觸發強平
+
+. 當 `liqStatus` != 0 時，傳回空字串。  
+> rst| string| 剩餘清算時間（UTC 時間，以秒為單位）。 未觸發時顯示為空字串。當 `liqStatus` != 0 時，傳回空字串。  
+> parentUid| string| 被指定綁定為機構借貸產品的風險單元Id  
+> subAccountUids| array| 綁定場外借貸產品的UID  
+> unpaidAmount| string| 總負債 (USDT)。當 `liqStatus` != 0 時，傳回空字串。  
+> unpaidInfo| array| 負債明細。 當 `liqStatus` != 0 時，傳回空數組。  
+>> token| string| 幣種  
+>> unpaidQty| string| 未還本金  
+>> unpaidInterest| string| 該字段無效, 暫時請忽略  
+> balance| string| 總資產(保證金幣種資產折算為USDT資產). 可以參考[這裡](https://www.bybit.com/zh-MY/help-center/s/article/Over-the-counter-OTC-Lending)了解詳細計算。當 `liqStatus` != 0 時，傳回空字串。  
+> balanceInfo| array| 資產明細。當 `liqStatus` != 0 時，傳回空數組。  
+>> token| string| 保證金幣種  
+>> price| string| 保證金幣種價格  
+>> qty| string| 保證金數量  
+>> convertedAmount| string| 保證金折算金額  
+> liqStatus| integer| 清算狀態。 
+
+  * `0`: 正常
+  * `1`: 強平
+  * `2`: 手工還款
+  * `3`: 劃轉
+
+  
+liqStatus| integer| 清算狀態。 
+
+  * `0`: 正常
+  * `1`: 強平
+  * `2`: 手工還款
+  * `3`: 劃轉
+
+  
+  
 ### 請求示例
 
   * HTTP
@@ -183,38 +252,12 @@ postMmrE4| int| 預下單後計算的維持保證金率，保留小數點後四�
 
     
     
-    POST /v5/order/pre-check HTTP/1.1  
+    GET /v5/ins-loan/ltv-convert HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
+    X-BAPI-TIMESTAMP: 1686638165351  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    // Spot Limit order with market tp sl  
-    {"category": "spot","symbol": "BTCUSDT","side": "Buy","orderType": "Limit","qty": "0.01","price": "28000","timeInForce": "PostOnly","takeProfit": "35000","stopLoss": "27000","tpOrderType": "Market","slOrderType": "Market"}  
-      
-    // Spot Limit order with limit tp sl  
-    {"category": "spot","symbol": "BTCUSDT","side": "Buy","orderType": "Limit","qty": "0.01","price": "28000","timeInForce": "PostOnly","takeProfit": "35000","stopLoss": "27000","tpLimitPrice": "36000","slLimitPrice": "27500","tpOrderType": "Limit","slOrderType": "Limit"}  
-      
-    // Spot PostOnly normal order  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","timeInForce":"PostOnly","orderLinkId":"spot-test-01","isLeverage":0,"orderFilter":"Order"}  
-      
-    // Spot TP/SL order  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","triggerPrice": "15000", "timeInForce":"Limit","orderLinkId":"spot-test-02","isLeverage":0,"orderFilter":"tpslOrder"}  
-      
-    // Spot margin normal order (UTA)  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"0.1","price":"15600","timeInForce":"GTC","orderLinkId":"spot-test-limit","isLeverage":1,"orderFilter":"Order"}  
-      
-    // Spot Market Buy order, qty is quote currency  
-    {"category":"spot","symbol":"BTCUSDT","side":"Buy","orderType":"Market","qty":"200","timeInForce":"IOC","orderLinkId":"spot-test-04","isLeverage":0,"orderFilter":"Order"}  
-      
-      
-    // USDT Perp open long position (one-way mode)  
-    {"category":"linear","symbol":"BTCUSDT","side":"Buy","orderType":"Limit","qty":"1","price":"25000","timeInForce":"GTC","positionIdx":0,"orderLinkId":"usdt-test-01","reduceOnly":false,"takeProfit":"28000","stopLoss":"20000","tpslMode":"Partial","tpOrderType":"Limit","slOrderType":"Limit","tpLimitPrice":"27500","slLimitPrice":"20500"}  
-      
-    // USDT Perp close long position (one-way mode)  
-    {"category": "linear", "symbol": "BTCUSDT", "side": "Sell", "orderType": "Limit", "qty": "1", "price": "30000", "timeInForce": "GTC", "positionIdx": 0, "orderLinkId": "usdt-test-02", "reduceOnly": true}  
+    X-BAPI-SIGN: XXXXX  
     
     
     
@@ -224,23 +267,26 @@ postMmrE4| int| 預下單後計算的維持保證金率，保留小數點後四�
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.pre_check_order(  
-        category="spot",  
-        symbol="BTCUSDT",  
-        side="Buy",  
-        orderType="Limit",  
-        qty="0.1",  
-        price="28000",  
-        timeInForce="PostOnly",  
-        takeProfit="35000",  
-        stopLoss="27000",  
-        tpOrderType="Market",  
-        slOrderType="Market",  
-    ))  
+    print(session.get_ltv())  
     
     
     
+    const { RestClientV5 } = require('bybit-api');  
       
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getInstitutionalLendingLTVWithLadderConversionRate()  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### 響應示例
@@ -248,15 +294,63 @@ postMmrE4| int| 預下單後計算的維持保證金率，保留小數點後四�
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "",  
         "result": {  
-            "orderId": "24920bdb-4019-4e37-ad1c-876e3a855ac3",  
-            "orderLinkId": "test129",  
-            "preImrE4": 30,  
-            "preMmrE4": 21,  
-            "postImrE4": 357,  
-            "postMmrE4": 294  
+            "ltvInfo": [  
+                {  
+                    "ltv": "0.75",  
+                    "rst": "",  
+                    "parentUid": "xxxxx",  
+                    "subAccountUids": [  
+                        "60568258"  
+                    ],  
+                    "unpaidAmount": "30",  
+                    "unpaidInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "unpaidQty": "30",  
+                            "unpaidInterest": "0"  
+                        }  
+                    ],  
+                    "balance": "40",  
+                    "balanceInfo": [  
+                        {  
+                            "token": "USDT",  
+                            "price": "1",  
+                            "qty": "40",  
+                            "convertedAmount": "40"  
+                        }  
+                    ]  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1749541599589  
+        "time": 1686638166323  
+    }  
+      
+    When `liqStatus` != 0:  
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "ltvInfo": [  
+                {  
+                    "ltv": "",  
+                    "parentUid": "100331354",  
+                    "subAccountUids": [  
+                        "100334094",  
+                        "100334098"  
+                    ],  
+                    "unpaidAmount": "",  
+                    "unpaidInfo": [],  
+                    "balance": "",  
+                    "balanceInfo": [],  
+                    "rst": "",  
+                    "liqStatus": 3  
+                }  
+            ],  
+            "liqStatus": 3  
+        },  
+        "retExtInfo": {},  
+        "time": 1766462020703  
     }

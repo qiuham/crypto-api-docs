@@ -2,240 +2,286 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/subuid-list
 api_type: REST
-updated_at: 2026-05-27 19:23:08.404366
+updated_at: 2026-05-28 19:27:00.672259
 ---
 
-# Get UID Wallet Type
+# Execution
 
-Get available wallet types for the master account or sub account
+Subscribe to the execution stream to see your executions in **real-time**.
 
 tip
 
-  * Master api key: you can get master account and appointed sub account available wallet types, and support up to 200 sub UID in one request.
-  * Sub api key: you can get its own available wallet types
+You may have multiple executions for one order in a single message.
+
+**All-In-One Topic:** `execution`  
+**Categorised Topic:** `execution.spot`, `execution.linear`, `execution.inverse`, `execution.option`
+
+info
+
+  * All-In-One topic and Categorised topic **cannot** be in the same subscription request
+  * All-In-One topic: Allow you to listen to all categories (spot, linear, inverse, option) websocket updates
+  * Categorised Topic: Allow you to listen only to specific category websocket updates
 
 
 
-### HTTP Request
-
-GET`/v5/user/get-member-type`
-
-### Request Parameters
-
-Parameter| Required| Type| Comments  
----|---|---|---  
-memberIds| false| string| 
-
-  * Query itself wallet types when not passed
-  * When use master api key to query sub UID, master UID data is always returned in the top of the array
-  * Multiple sub UID are supported, separated by commas
-  * This param is ignored when you use sub account api key
-
-  
-  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-accounts| array| Object  
-> uid| string| Master/Sub user Id  
-> [accountType](/docs/v5/enum#accounttype)| array| Wallets array. `FUND`,`UNIFIED`  
-[](/docs/api-explorer/v5/user/wallet-type)
+id| string| Message ID  
+topic| string| Topic name  
+creationTime| number| Data created timestamp (ms)  
+data| array| Object  
+> [category](/docs/v5/enum#category)| string| Product type `spot`, `linear`, `inverse`, `option`  
+> symbol| string| Symbol name  
+> isLeverage| string| Whether to borrow. `0`: false, `1`: true  
+> orderId| string| Order ID  
+> orderLinkId| string| User customized order ID  
+> side| string| Side. `Buy`,`Sell`  
+> orderPrice| string| Order price  
+> orderQty| string| Order qty  
+> leavesQty| string| The remaining qty not executed  
+> [createType](/docs/v5/enum#createtype)| string| Order create type 
 
-* * *
+  * Spot, Option do not have this key
 
-### Request Example
+  
+> [orderType](/docs/v5/enum#ordertype)| string| Order type. `Market`,`Limit`  
+> [stopOrderType](/docs/v5/enum#stopordertype)| string| Stop order type. If the order is not stop order, any type is not returned  
+> execFee| string| Executed trading fee. You can get spot fee currency instruction [here](/docs/v5/enum#spot-fee-currency-instruction)  
+  
+> execId| string| Execution ID  
+> execPrice| string| Execution price  
+> execQty| string| Execution qty  
+> execPnl| string| Profit and Loss for each close position execution. The value keeps consistent with the field "cashFlow" in the [Get Transaction Log](/docs/v5/account/transaction-log)  
+> [execType](/docs/v5/enum#exectype)| string| Executed type  
+> execValue| string| Executed order value  
+> execTime| string| Executed timestamp (ms)  
+> isMaker| boolean| Is maker order. `true`: maker, `false`: taker  
+> feeRate| string| Trading fee rate  
+> tradeIv| string| Implied volatility. valid for `option`  
+> markIv| string| Implied volatility of mark price. valid for `option`  
+> markPrice| string| The mark price of the symbol when executing. valid for `option`  
+> indexPrice| string| The index price of the symbol when executing. valid for `option`  
+> underlyingPrice| string| The underlying price of the symbol when executing. valid for `option`  
+> blockTradeId| string| Paradigm block trade ID  
+> closedSize| string| Closed position size  
+> extraFees| List| Extra trading fee information. Currently, this data is returned only for kyc=Indian user or spot orders placed on the Indonesian site or spot fiat currency orders placed on the EU site. In other cases, an empty string is returned. Enum: [feeType](/docs/v5/enum#extrafeesfeetype), [subFeeType](/docs/v5/enum#extrafeessubfeetype)  
+> seq| long| Cross sequence, used to associate each fill and each position update
 
-  * HTTP
-  * Python
-  * Node.js
+  * The seq will be the same when conclude multiple transactions at the same time
+  * Different symbols may have the same seq, please use seq + symbol to check unique
 
-
-    
-    
-    GET /v5/user/get-member-type HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1686884973961  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_uid_wallet_type(  
-        memberIds="subUID1,subUID2"  
-    ))  
-    
-    
-    
-    // https://api.bybit.com/v5/user/get-member-type  
-      
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getUIDWalletType({  
-        memberIds: 'subUID1,subUID2',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
-    
-
-### Response Example
+  
+> feeCurrency| string| Trading fee currency  
+  
+### Subscribe Example
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "",  
-        "result": {  
-            "accounts": [  
-                {  
-                    "uid": "533285",  
-                    "accountType": [  
-                        "UNIFIED",  
-                        "FUND"  
-                    ]  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1686884974151  
+        "op": "subscribe",  
+        "args": [  
+            "execution"  
+        ]  
+    }  
+    
+    
+    
+    from pybit.unified_trading import WebSocket  
+    from time import sleep  
+    ws = WebSocket(  
+        testnet=True,  
+        channel_type="private",  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    def handle_message(message):  
+        print(message)  
+    ws.execution_stream(callback=handle_message)  
+    while True:  
+        sleep(1)  
+    
+
+### Stream Example
+    
+    
+    {  
+        "topic": "execution",  
+        "id": "386825804_BTCUSDT_140612148849382",  
+        "creationTime": 1746270400355,  
+        "data": [  
+            {  
+                "category": "linear",  
+                "symbol": "BTCUSDT",  
+                "closedSize": "0.5",  
+                "execFee": "26.3725275",  
+                "execId": "0ab1bdf7-4219-438b-b30a-32ec863018f7",  
+                "execPrice": "95900.1",  
+                "execQty": "0.5",  
+                "execType": "Trade",  
+                "execValue": "47950.05",  
+                "feeRate": "0.00055",  
+                "tradeIv": "",  
+                "markIv": "",  
+                "blockTradeId": "",  
+                "markPrice": "95901.48",  
+                "indexPrice": "",  
+                "underlyingPrice": "",  
+                "leavesQty": "0",  
+                "orderId": "9aac161b-8ed6-450d-9cab-c5cc67c21784",  
+                "orderLinkId": "",  
+                "orderPrice": "94942.5",  
+                "orderQty": "0.5",  
+                "orderType": "Market",  
+                "stopOrderType": "UNKNOWN",  
+                "side": "Sell",  
+                "execTime": "1746270400353",  
+                "isLeverage": "0",  
+                "isMaker": false,  
+                "seq": 140612148849382,  
+                "marketUnit": "",  
+                "execPnl": "0.05",  
+                "createType": "CreateByUser",  
+                "extraFees":[{"feeCoin":"USDT","feeType":"GST","subFeeType":"IND_GST","feeRate":"0.0000675","fee":"0.006403779"}],  
+                "feeCurrency": "USDT"  
+            }  
+        ]  
     }
 
 ---
 
-# 查詢帳戶支持的錢包類型
+# 個人成交
 
-查詢母帳戶或者子帳戶下支持的錢包類型
+訂閱個人成交的推送
 
 提示
 
-  * 使用母帳戶api key: 您可以查詢到母帳戶以及指定的子帳戶的錢包類型, 子帳戶的uid最多單次可查詢200個.
-  * 使用子帳戶api key: 僅能查詢自身的錢包類型
+單筆訂單可能有多次成交
+
+**All-In-One Topic:** `execution`  
+**Categorised Topic:** `execution.spot`, `execution.linear`, `execution.inverse`, `execution.option`
+
+信息
+
+  * All-In-One topic 和 Categorised topic **不能** 放在同一個訂閱請求裡
+  * All-In-One topic: 允許您監聽所有業務線的websocket更新(現貨, 正向合約, 反向合約, 期權)
+  * Categorised Topic: 您只能監聽您指定的那個業務的websocket更新
 
 
 
-最佳實踐
-
-"FUND" - 這個資金錢包, 如果您從未存入或者轉入過資金, 該接口返回的數組裡將不會呈現該枚舉值, 但實際上您的帳戶總是擁有該錢包.
-
-  * `["SPOT","OPTION","FUND","CONTRACT"]` : 經典帳戶並且資金錢包曾經操作過
-  * `["SPOT","OPTION","CONTRACT"]` : 經典帳戶並且資金錢包不曾操作過
-  * `["SPOT","UNIFIED","FUND","CONTRACT"]` : UMA帳戶並且資金錢包曾經操作過. (等強制或主動升級到UTA後, 就沒有UMA帳戶的概念了)
-  * `["SPOT","UNIFIED","CONTRACT"]` : UMA帳戶並且資金錢包不曾操作過. (等強制或主動升級到UTA後, 就沒有UMA帳戶的概念了)
-  * `["UNIFIED""FUND","CONTRACT"]` : UTA帳戶並且資金錢包曾經操作過
-  * `["UNIFIED","CONTRACT"]` : UTA帳戶並且資金錢包不曾操作過
-
-
-
-### HTTP 請求
-
-GET`/v5/user/get-member-type`
-
-### 請求參數
-
-參數| 是否必須| 類型| 說明  
----|---|---|---  
-memberIds| false| string| 
-
-  * 不入参時, 僅查詢自身
-  * 當使用母帳戶api key查詢子uid時, 母帳戶的數據總是返回且在數組的第一個
-  * 支持輸入多個子uid, 用逗號隔開, 單次查詢最多支持200個
-  * 子帳戶api key查詢時, 該入参將會被忽略
-
-  
-  
-### 返回參數
+### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-accounts| array| Object  
-> uid| string| 母/子 uid  
-> [accountType](/docs/zh-TW/v5/enum#accounttype)| array| `SPOT`, `CONTRACT`, `FUND`, `OPTION`, `UNIFIED`. 請查閱上面的最佳實踐來理解返回的值  
-[](/docs/zh-TW/api-explorer/v5/user/wallet-type)
+id| string| 消息id  
+topic| string| Topic名  
+creationTime| number| 消息數據創建時間  
+data| array| Object  
+> [category](/docs/zh-TW/v5/enum#category)| string| 產品類型 `spot`, `linear`, `iverse`, `option`  
+> symbol| string| 合約名稱  
+> isLeverage| string| 是否自動借貸. 僅`spot`有效. `0`: 否, 幣幣交易, `1`: 是, 槓桿交易  
+> orderId| string| 訂單ID  
+> orderLinkId| string| 用戶自定義訂單ID  
+> side| string| 訂單方向.買：`Buy`,賣：`Sell`  
+> orderPrice| string| 訂單價格  
+> orderQty| string| 訂單數量  
+> leavesQty| string| 剩餘委託未成交數量  
+> [createType](/docs/zh-TW/v5/enum#createtype)| string| 訂單創建類型. 現貨、期權不返回該字段  
+> [orderType](/docs/zh-TW/v5/enum#ordertype)| string| 訂單類型. 市價單：`Market`,限價單：`Limit`  
+> [stopOrderType](/docs/zh-TW/v5/enum#stopordertype)| string| 条件单的订单类型。如果该订单不是条件单，则不会返回任何类型  
+> execFee| string| 交易手續費. 您可以從[這裡](/docs/zh-TW/v5/enum#%E7%8F%BE%E8%B2%A8%E4%BA%A4%E6%98%93%E6%89%8B%E7%BA%8C%E8%B2%BB%E5%B9%A3%E7%A8%AE%E8%AA%AA%E6%98%8E)了解現貨手續費幣種信息  
+> execId| string| 成交Id  
+> execPrice| string| 成交價格  
+> execQty| string| 成交數量  
+> execPnl| string| 每筆平倉成交的盈虧. 該值和[交易日誌(統一帳戶)](/docs/zh-TW/v5/account/transaction-log)中的"cashFlow"字段一致  
+> [execType](/docs/zh-TW/v5/enum#exectype)| string| 成交類型  
+> execValue| string| 成交價值  
+> execTime| string| 成交時間（毫秒）  
+> isMaker| Bool| 是否是 Maker 訂單,`true` 為 maker 訂單，`false` 為 taker 訂單  
+> feeRate| string| 手續費率  
+> tradeIv| string| 隱含波動率，僅期權有效  
+> markIv| string| 標記價格的隱含波動率，僅期權有效  
+> markPrice| string| 成交執行時，該 symbol 當時的標記價格  
+> indexPrice| string| 成交執行時，該 symbol 當時的指數價格，僅對期權有效  
+> underlyingPrice| string| 成交執行時，該 symbol 當時的底層資產價格，僅期權有效  
+> blockTradeId| string| 大宗交易的订单 ID ，使用 paradigm 进行大宗交易时生成的 ID  
+> closedSize| string| 平倉數量  
+> extraFees| List| 交易費率。目前，僅針對kyc=Indian用戶或在印尼網站的現貨訂單或在歐盟站的現貨法定貨幣訂單返回此數據。在其他情況下，傳回空字串。字段枚舉: [feeType](/docs/zh-TW/v5/enum#extrafeesfeetype), [subFeeType](/docs/zh-TW/v5/enum#extrafeessubfeetype)  
+> seq| long| 序列號, 用於關聯成交和倉位的更新
 
-* * *
+  * 同一時間有多筆成交, seq相同
+  * 不同的幣對會存在相同seq, 可以使用seq + symbol來做唯一性識別
 
-### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
-    
-    
-    GET /v5/user/get-member-type HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1686884973961  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-      
-    
-    
-    
-    // https://api.bybit.com/v5/user/get-member-type  
-      
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getUIDWalletType({  
-        memberIds: 'subUID1,subUID2',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
-    
-
-### 響應示例
+  
+> feeCurrency| string| 交易費用貨幣  
+  
+### 訂閱示例
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "",  
-        "result": {  
-            "accounts": [  
-                {  
-                    "uid": "24617703",  
-                    "accountType": [  
-                        "SPOT",  
-                        "OPTION",  
-                        "FUND",  
-                        "CONTRACT"  
-                    ]  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1686895670002  
+        "op": "subscribe",  
+        "args": [  
+            "execution"  
+        ]  
+    }  
+    
+    
+    
+    from pybit.unified_trading import WebSocket  
+    from time import sleep  
+    ws = WebSocket(  
+        testnet=True,  
+        channel_type="private",  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    def handle_message(message):  
+        print(message)  
+    ws.execution_stream(callback=handle_message)  
+    while True:  
+        sleep(1)  
+    
+
+### 推送示例
+    
+    
+    {  
+        "id": "592324803b2785-26fa-4214-9963-bdd4727f07be",  
+        "topic": "execution",  
+        "creationTime": 1672364174455,  
+        "data": [  
+            {  
+                "category": "linear",  
+                "symbol": "XRPUSDT",  
+                "execFee": "0.005061",  
+                "execId": "7e2ae69c-4edf-5800-a352-893d52b446aa",  
+                "execPrice": "0.3374",  
+                "execQty": "25",  
+                "execType": "Trade",  
+                "execValue": "8.435",  
+                "execPnl": "0",  
+                "isMaker": false,  
+                "feeRate": "0.0006",  
+                "tradeIv": "",  
+                "markIv": "",  
+                "blockTradeId": "",  
+                "markPrice": "0.3391",  
+                "indexPrice": "",  
+                "underlyingPrice": "",  
+                "leavesQty": "0",  
+                "orderId": "f6e324ff-99c2-4e89-9739-3086e47f9381",  
+                "orderLinkId": "",  
+                "orderPrice": "0.3207",  
+                "orderQty": "25",  
+                "orderType": "Market",  
+                "stopOrderType": "UNKNOWN",  
+                "side": "Sell",  
+                "execTime": "1672364174443",  
+                "isLeverage": "0",  
+                "closedSize": "25",  
+                "extraFees":[{"feeCoin":"USDT","feeType":"GST","subFeeType":"IND_GST","feeRate":"0.0000675","fee":"0.006403779"}],  
+                "seq": 4688002127,  
+                "feeCurrency": "USDT"  
+            }  
+        ]  
     }

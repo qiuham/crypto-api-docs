@@ -2,54 +2,55 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/settle-profit
 api_type: REST
-updated_at: 2026-05-27 19:17:52.309375
+updated_at: 2026-05-28 19:23:12.282952
 ---
 
-# Get Subscribable Product Info
-
-info
-
-Does not need authentication.
+# Get All Investment Plans
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/customize-plan/product`
+GET`/v5/earn/pwm/investment-plan/all`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+planId| false| string| Investment plan ID. Returns all plans if omitted  
+status| false| string| Filter by status: `PendingSubscription` / `Active` / `Closed`. Returns all if omitted  
+limit| false| int| Page size. Default: `20`, max: `50`  
+cursor| false| string| Pagination cursor  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-products| array| Product card list grouped by category  
-> type| string| Product category: `equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| Product card list for this category  
->> category| string| Product type  
->> productId| string| Underlying product ID (available for flexible savings / fixed yield / on-chain earn products)  
->> fundName| string| Fund name in English (fund products)  
->> coin| string| Product coin  
->> apr| string| Current annualized return rate (flexible savings / fixed yield products)  
->> aprRangeLow| string| APR lower bound (fund products)  
->> aprRangeHigh| string| APR upper bound (fund products)  
->> tags| array[string]| Product tags  
->> introduction| string| Product introduction in English (fund products)  
->> aum| string| Assets under management (base coin)  
->> minInvestmentAmount| string| Minimum subscription amount  
->> maxInvestmentAmount| string| Maximum subscription amount  
->> duration| int| Lock-up period in days. `0` means flexible (fixed yield products)  
->> maxDrawdown| string| Historical maximum drawdown (fund products)  
->> sharpRatio| string| Sharpe ratio (fund products)  
->> estAPR| string| Estimated APR for the product  
+list| array| Investment plan list  
+> planId| string| Unique identifier of the investment plan  
+> planName| string| Investment plan name  
+> planType| string| Plan type: `stable` / `advanced`  
+> status| string| Plan status: `PendingSubscription` (newly configured, not yet subscribed) / `Active` (running) / `Closed` (closed)  
+> source| string| Creation source: `consultant` (created by consultant) / `direct` (self-created by client) / `institution` (created by institution)  
+> currentAssetUsd| string| Total current assets of the plan (USD valuation). When status is `PendingSubscription`, this is the configured amount  
+> accumulateYieldUsd| string| Accumulated yield (USD valuation). Returns `"0"` when status is `PendingSubscription`  
+> investmentDistribution| array| Investment distribution list  
+>> category| string| Product category: `multiCoinEarning` / `fixedYield` / `equityFund` / `onchainEarn`  
+>> coin| string| Denominated coin  
+>> productId| string| Subscribed product ID. For funds, this corresponds to `fundId`  
+>> currentAmount| string| Investment asset amount. When status is `PendingSubscription`, this is the configured coin amount; otherwise it is the current holding amount  
+> createdTime| string| Creation timestamp (milliseconds)  
+nextPageCursor| string| Next page cursor. Empty string indicates no more data  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/all HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
     
 
 ### Response Example
@@ -58,93 +59,78 @@ products| array| Product card list grouped by category
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
+            "list": [  
                 {  
-                    "type": "equityFund",  
-                    "cards": [  
+                    "planId": "10001",  
+                    "planName": "Conservative Growth Plan",  
+                    "planType": "stable",  
+                    "status": "Active",  
+                    "source": "consultant",  
+                    "currentAssetUsd": "200137.50",  
+                    "accumulateYieldUsd": "2137.50",  
+                    "investmentDistribution": [  
                         {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
+                            "category": "fundPool",  
                             "productId": "430",  
                             "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
+                            "currentAmount": "50000.00"  
                         }  
-                    ]  
+                    ],  
+                    "createdTime": "1700000000000"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": ""  
         }  
     }
 
 ---
 
-# 查詢可申購產品卡片（直客模式）
-
-信息
-
-無需身份驗證。
+# 查詢所有投資計劃
 
 ### HTTP 請求
 
-GET`/v5/earn/pwm/customize-plan/product`
+GET`/v5/earn/pwm/investment-plan/all`
 
 ### 請求參數
 
-無
-
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+planId| false| string| 投資計劃ID，不傳返回全部  
+status| false| string| 篩選狀態：`PendingSubscription` / `Active` / `Closed`，不傳返回全部  
+limit| false| int| 分頁大小，默認 `20`，最大 `50`  
+cursor| false| string| 分頁游標  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-products| array| 按產品類別分組的卡片列表  
-> type| string| 產品類別：`equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| 該類別下的產品卡片列表  
->> category| string| 產品類型  
->> productId| string| 對應的底層產品ID（活期 / 固收 / 鏈上賺幣產品有此字段）  
->> fundName| string| 基金名稱英文（基金產品）  
->> coin| string| 產品幣種  
->> apr| string| 當前年化收益率（活期 / 固收產品）  
->> aprRangeLow| string| 年化收益率下界（基金產品）  
->> aprRangeHigh| string| 年化收益率上界（基金產品）  
->> tags| array[string]| 產品標籤  
->> introduction| string| 產品簡介英文（基金產品）  
->> aum| string| 基金管理規模（本位幣）  
->> minInvestmentAmount| string| 最小申購金額  
->> maxInvestmentAmount| string| 最大申購金額  
->> duration| int| 鎖定期天數，`0` 表示活期（固收產品）  
->> maxDrawdown| string| 歷史最大回撤（基金產品）  
->> sharpRatio| string| 夏普比率（基金產品）  
->> estAPR| string| 產品預估APR  
+list| array| 投資計劃列表  
+> planId| string| 投資計劃唯一標識  
+> planName| string| 投資計劃名稱  
+> planType| string| 計劃類型：`stable` / `advanced`  
+> status| string| 計劃狀態：`PendingSubscription`（新配置，未申購）/ `Active`（運行中）/ `Closed`（已關閉）  
+> source| string| 創建來源：`consultant`（顧問創建）/ `direct`（直客自建）/ `institution`（機構創建）  
+> currentAssetUsd| string| 當前計劃總資產（USD估值），`PendingSubscription` 狀態時為配置金額  
+> accumulateYieldUsd| string| 累計收益（USD估值），`PendingSubscription` 狀態時為 `"0"`  
+> investmentDistribution| array| 投資分佈比例列表  
+>> category| string| 產品類別：`multiCoinEarning` / `fixedYield` / `equityFund` / `onchainEarn`  
+>> coin| string| 本位幣種  
+>> productId| string| 申購的對應產品ID，基金對應為 `fundId`  
+>> currentAmount| string| 投資資產數量，`PendingSubscription` 狀態時為後台配置幣種數量，否則為持倉幣種數量  
+> createdTime| string| 創建時間戳（毫秒）  
+nextPageCursor| string| 下一頁游標，為空表示無更多數據  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/all HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
     
 
 ### 響應示例
@@ -153,42 +139,26 @@ products| array| 按產品類別分組的卡片列表
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
+            "list": [  
                 {  
-                    "type": "equityFund",  
-                    "cards": [  
+                    "planId": "10001",  
+                    "planName": "Conservative Growth Plan",  
+                    "planType": "stable",  
+                    "status": "Active",  
+                    "source": "consultant",  
+                    "currentAssetUsd": "200137.50",  
+                    "accumulateYieldUsd": "2137.50",  
+                    "investmentDistribution": [  
                         {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
+                            "category": "fundPool",  
                             "productId": "430",  
                             "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
+                            "currentAmount": "50000.00"  
                         }  
-                    ]  
+                    ],  
+                    "createdTime": "1700000000000"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": ""  
         }  
     }

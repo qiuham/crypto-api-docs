@@ -2,38 +2,37 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rate-limit
 api_type: REST
-updated_at: 2026-05-27 19:21:23.810785
+updated_at: 2026-05-28 19:25:15.664403
 ---
 
-# Get Rate Limit
+# Get Rate Limit Cap
 
 > API rate limit: 50 req per second
 
 info
 
-  * A master account can query its own and its subaccounts' API rate limit.
-  * A subaccount can only query its own API rate limit.
+  * Get your institutions's total rate limit usage and cap, across the board.
+  * Main UIDs or sub UIDs can query this endpoint, but a main UID can only see the rate limits of subs below it, and not the subs of other main UIDs.
 
 
 
 ### HTTP Request
 
-GET`/v5/apilimit/query`
+GET`/v5/apilimit/query-cap`
 
 ### Request Parameters
 
-Parameter| Required| Type| Comments  
----|---|---|---  
-uids| **true**|  string| Multiple UIDs separated by commas  
-  
+None
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
 list| array| Object  
-> uids| string| Multiple UIDs separated by commas  
 > [bizType](/docs/v5/enum#biztype)| string| Business type  
-> rate| integer| API rate limit per second  
+> totalRate| integer| Total API rate limit usage accross all subaccounts and master account  
+> insCap| integer| Institutional-level API rate limit per second (depends on your pro level)  
+> uidCap| integer| UID-level API rate limit per second  
   
 ### Request Example
 
@@ -44,7 +43,7 @@ list| array| Object
 
     
     
-    GET /v5/apilimit/query?uids=290118 HTTP/1.1  
+    GET /v5/apilimit/query-cap HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -61,9 +60,7 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_api_rate_limit(  
-        uids="290118"  
-    ))  
+    print(session.get_api_rate_limit_cap())  
     
     
     
@@ -79,59 +76,68 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "uids": "290118",  
-                    "bizType": "SPOT",  
-                    "rate": 600  
+                    "insCap": "30000",  
+                    "uidCap": "600",  
+                    "totalRate": "29882",  
+                    "bizType": "SPOT"  
                 },  
                 {  
-                    "uids": "290118",  
-                    "bizType": "DERIVATIVES",  
-                    "rate": 400  
+                    "insCap": "30000",  
+                    "uidCap": "600",  
+                    "totalRate": "29882",  
+                    "bizType": "OPTIONS"  
+                },  
+                {  
+                    "insCap": "40000",  
+                    "uidCap": "800",  
+                    "totalRate": "39932",  
+                    "bizType": "DERIVATIVES"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1754894341984  
+        "time": 1758857589872  
     }
 
 ---
 
-# 查詢 API 速率限制
+# 查詢 Ins level的速率限制上限和使用量
 
-### 查詢 API 速率限制
+### 查詢 Ins level的速率限制上限和使用量
 
-> API 速率限制：每秒 50 個請求
+> API 限速：每秒 50 次請求  
+> 
 
 信息
 
-  * 母帳戶能查詢自己和子帳戶的頻率
-  * 子帳戶只能查詢自己的頻率
+  * 查詢 Ins 等級的速率限制上限和使用量
+  * 僅允許透過main UID或來自sub-INS的子帳戶 UID 的API key進行查詢
+  * 目前已刪除的子帳戶仍會占用限速額度，我們正在優化中。
 
 
 
 ### HTTP 請求
 
-GET`/v5/apilimit/query`
+GET`/v5/apilimit/query-cap`
 
 ### 請求參數
 
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-uids| true| string| uid列表，多個以逗號隔開  
-  
+無
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
 list| array| Object  
-> uids| string| uid列表，多個以逗號隔開  
 > [bizType](/docs/zh-TW/v5/enum#biztype)| string| 業務類型  
-> rate| integer| api rate limit 每秒頻率  
+> totalRate| integer| 所有子帳號與主帳號的 API 速率限制總使用量  
+> insCap| integer| 基於 Ins 等級的每秒 API 限速  
+> uidCap| integer| 基於 UID 等級的每秒 API 限速  
   
-### 響應參數
+### 請求範例
     
     
-    GET /v5/apilimit/query?uids=290118 HTTP/1.1  
+    GET /v5/apilimit/query-cap HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -141,7 +147,7 @@ list| array| Object
     Content-Length: 2  
     
 
-### 響應示例
+### 響應範例
     
     
     {  
@@ -150,17 +156,25 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "uids": "290118",  
-                    "bizType": "SPOT",  
-                    "rate": 600  
+                    "insCap": "30000",  
+                    "uidCap": "600",  
+                    "totalRate": "29882",  
+                    "bizType": "SPOT"  
                 },  
                 {  
-                    "uids": "290118",  
-                    "bizType": "DERIVATIVES",  
-                    "rate": 400  
+                    "insCap": "30000",  
+                    "uidCap": "600",  
+                    "totalRate": "29882",  
+                    "bizType": "OPTIONS"  
+                },  
+                {  
+                    "insCap": "40000",  
+                    "uidCap": "800",  
+                    "totalRate": "39932",  
+                    "bizType": "DERIVATIVES"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1754894341984  
+        "time": 1758857589872  
     }

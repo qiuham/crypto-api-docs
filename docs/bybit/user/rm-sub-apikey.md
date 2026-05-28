@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-sub-apikey
 api_type: REST
-updated_at: 2026-05-27 19:23:04.937288
+updated_at: 2026-05-28 19:26:56.063129
 ---
 
 # Delete Sub UID

@@ -2,87 +2,75 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/position
 api_type: REST
-updated_at: 2026-05-27 19:17:29.450606
+updated_at: 2026-05-28 19:22:50.058326
 ---
 
-# Get Staked Position
+# Get Order List
+
+API ker permission: `Earn`  
+API rate limit: 10 reqs / sec
 
 info
 
-API key needs "Earn" permission
+  * Pass `orderId` alone to retrieve a single order. Omit to query the full order list with optional filters.
+  * For `Stake` orders, `startTime`/`endTime` filters on order creation time. For `Redeem` orders, filters are applied on settlement time.
+  * When `productId` is passed, `category` is required.
 
-note
 
-For Flexible Saving, fully redeemed position is also returned in the response For Onchain, only active position will be returned in the response
 
 ### HTTP Request
 
-GET`/v5/earn/position`
+GET`/v5/earn/fixed-term/order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`  
-productId| false| string| Product ID  
-coin| false| string| Coin name  
+orderType| false| string| Filter by order type: `Stake`, `Redeem`, `Reinvest`. Returns all types if omitted  
+productId| false| string| Filter by product ID. Requires `category` when passed  
+category| false| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`. Required when `productId` is passed  
+orderId| false| string| System order ID for single order lookup  
+startTime| false| integer| Start timestamp in ms  
+endTime| false| integer| End timestamp in ms  
+limit| false| integer| Number of items per page. Default: `20`, Max: `50`  
+cursor| false| string| Pagination cursor. Use `nextPageCursor` from the previous response  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> coin| string| Coin name  
+list| array| Order list  
+> orderId| string| System-generated order ID  
+> orderLinkId| string| User-customised idempotent ID  
+> orderType| string| Order type: `Stake`, `Redeem`, `Reinvest`  
+> status| string| Order status: `Processing`, `Active`, `Complete`, `Failed`  
 > productId| string| Product ID  
-> amount| string| Total staked amount  
-> totalPnl| string| Return the profit of the current position. Only has value in Onchain non-LST mode  
-> claimableYield| string| Yield accrues on an hourly basis and is distributed at 00:30 UTC daily. If you unstake your assets before yield distribution, any undistributed yield will be credited to your account along with your principal. Onchain products do not return values  
-> id| string| Position Id. Only for Onchain  
-> status| string| `Processing`,`Active`. Only for Onchain  
-> orderId| string| Order Id. Only for Onchain  
-> estimateRedeemTime| string| Estimate redeem time, in milliseconds. Only for Onchain  
-> estimateStakeTime| string| Estimate stake time, in milliseconds. Only for Onchain  
-> estimateInterestCalculationTime| string| Estimated Interest accrual time, in milliseconds. Only for Onchain  
-> settlementTime| string| Settlement time, in milliseconds. Only has value for Onchain `Fixed` product  
-> autoReinvest| string| Auto-reinvest status. `Enable`: enabled, `Disable`: disabled. See [Modify Position](/docs/v5/finance/earn/easy-onchain/modify-position)  
-> availableAmount| string| Redeemable amount  
-> freezeDetails| array| Freeze detail list  
->> amount| string| Frozen amount  
->> description| string| Reason for freeze  
+> category| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
+> coin| string| Coin  
+> amount| string| Order amount  
+> duration| string| Fixed term duration, e.g. `1d`, `8h`, `2m`  
+> accountType| string| Account type: `FUND`, `UNIFIED`. Redeem orders always show `FUND`  
+> settlementTime| string| Settlement time, unix timestamp in ms  
+> createdAt| string| Order creation time, unix timestamp in ms  
+> yieldInfoList| array| Yield info list. Populated after settlement  
+>> coin| string| Yield coin  
+>> amount| string| Yield amount  
+>> status| string| Yield status: `Pending`, `Distributed`, `Fail`, `ReinvestSuccess`  
+>> createdAt| string| Yield record creation time, unix timestamp in ms  
+>> apy| string| APY applied for this yield  
+nextPageCursor| string| Cursor for the next page. Empty string means no more data  
   
+* * *
+
 ### Request Example
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/position?category=FlexibleSaving&coin=USDT HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739944576277  
+    X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_staked_position(  
-        category="FlexibleSaving",  
-        coin="USDT",  
-    ))  
-    
-    
-    
-      
     
 
 ### Response Example
@@ -94,113 +82,103 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "coin": "BTC",  
-                    "productId": "8",  
-                    "amount": "0.1",  
-                    "totalPnl": "0.000027397260273973",  
-                    "claimableYield": "0",  
-                    "id": "326",  
-                    "status": "Active",  
-                    "orderId": "1a5a8945-e042-4dd5-a93f-c0f0577377ad",  
-                    "estimateRedeemTime": "",  
-                    "estimateStakeTime": "",  
-                    "estimateInterestCalculationTime": "1744243200000",  
-                    "settlementTime": "1744675200000",  
-                    "autoReinvest": "Enable",  
-                    "availableAmount": "4900",  
-                    "freezeDetails": [  
+                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
+                    "orderLinkId": "",  
+                    "orderType": "Redeem",  
+                    "status": "Complete",  
+                    "productId": "546",  
+                    "category": "FixedTermSaving",  
+                    "coin": "USDT",  
+                    "amount": "100.056",  
+                    "duration": "1d",  
+                    "accountType": "UNIFIED",  
+                    "settlementTime": "1750811400000",  
+                    "createdAt": "1750648976000",  
+                    "yieldInfoList": [  
                         {  
-                            "amount": "100",  
-                            "description": "Locked in Fixed-Rate Loan"  
+                            "coin": "USDT",  
+                            "amount": "0.0063",  
+                            "status": "Distributed",  
+                            "createdAt": "1750811401000",  
+                            "apy": "2.33%"  
                         }  
                     ]  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": ""  
         },  
         "retExtInfo": {},  
-        "time": 1739944577575  
+        "time": 1776070828622  
     }
 
 ---
 
-# 查詢理財持倉
+# 取得訂單列表
+
+API key權限：`Earn`  
+API 頻率限制：每秒10次
 
 信息
 
-API key需要"理財""權限
+  * 單獨傳入 `orderId` 可查詢單筆訂單；省略則搭配可選過濾條件查詢完整訂單列表。
+  * `Stake` 訂單的 `startTime`/`endTime` 按訂單創建時間過濾；`Redeem` 訂單則按結算時間過濾。
+  * 傳入 `productId` 時，`category` 為必填項。
 
-備註
 
-對於活期儲蓄，返回訊息裡也返回完全贖回的部分 對於鏈上賺幣，返回訊息中僅返回當前的部分
 
 ### HTTP 請求
 
-GET`/v5/earn/position`
+GET`/v5/earn/fixed-term/order`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| 產品類別：`FlexibleSaving`,`OnChain`  
-productId| false| string| 持倉對應的產品 ID  
-coin| false| string| 幣種名稱  
+orderType| false| string| 依訂單類型篩選：`Stake`、`Redeem`、`Reinvest`。若省略則返回所有類型  
+productId| false| string| 依產品ID篩選。傳入時需要 `category`  
+category| false| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`。傳入 `productId` 時必填  
+orderId| false| string| 系統訂單ID，用於單筆訂單查詢  
+startTime| false| integer| 開始時間戳（毫秒）  
+endTime| false| integer| 結束時間戳（毫秒）  
+limit| false| integer| 每頁數量。預設：`20`，最大：`50`  
+cursor| false| string| 分頁游標。使用上次響應中的 `nextPageCursor`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> coin| string| 幣種名稱  
-> productId| string| 持倉對應的產品 ID  
-> amount| string| 持倉金額  
-> totalPnl| string| 持倉總收益。僅在 OnChain 非 LST 模式下有價值  
-> claimableYield| string| 收益按小時累計，並於每天 UTC 時間 00:30 分發。如果您在收益分配之前取消質押資產，任何未分配的收益將與您的本金一起記入您的帳戶。  
-> id| string| 持倉ID. 僅適用於 OnChain  
-> status| string| `Processing`,`Active`. 僅適用於 OnChain  
-> orderId| string| 訂單編號. 僅適用於 OnChain  
-> estimateRedeemTime| string| 預計贖回時間。以毫秒為單位.僅適用於 OnChain  
-> estimateStakeTime| string| 預計質押時間。以毫秒為單位.僅適用於 OnChain  
-> estimateInterestCalculationTime| string| 預計計息時間。以毫秒為單位.僅適用於 OnChain  
-> settlementTime| string| 結算時間。以毫秒為單位.僅對 OnChain `Fixed`產品有價值  
-> autoReinvest| string| 自動複投狀態。`Enable`：已開啟，`Disable`：已關閉。參考 [修改持倉設置](/docs/zh-TW/v5/finance/earn/easy-onchain/modify-position)  
-> availableAmount| string| 可贖回金額  
-> freezeDetails| array| 凍結明細列表  
->> amount| string| 凍結金額  
->> description| string| 凍結原因  
+list| array| 訂單列表  
+> orderId| string| 系統生成的訂單ID  
+> orderLinkId| string| 用戶自訂冪等ID  
+> orderType| string| 訂單類型：`Stake`、`Redeem`、`Reinvest`  
+> status| string| 訂單狀態：`Processing`、`Active`、`Complete`、`Failed`  
+> productId| string| 產品ID  
+> category| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
+> coin| string| 幣種  
+> amount| string| 訂單金額  
+> duration| string| 固定期限，例如 `1d`、`8h`、`2m`  
+> accountType| string| 帳戶類型：`FUND`、`UNIFIED`。贖回訂單始終顯示 `FUND`  
+> settlementTime| string| 結算時間，毫秒級unix時間戳  
+> createdAt| string| 訂單創建時間，毫秒級unix時間戳  
+> yieldInfoList| array| 收益資訊列表，結算後填充  
+>> coin| string| 收益幣種  
+>> amount| string| 收益金額  
+>> status| string| 收益狀態：`Pending`、`Distributed`、`Fail`、`ReinvestSuccess`  
+>> createdAt| string| 收益記錄創建時間，毫秒級unix時間戳  
+>> apy| string| 此收益適用的APY  
+nextPageCursor| string| 下一頁游標。空字符串表示無更多數據  
   
+* * *
+
 ### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/position?category=FlexibleSaving&coin=USDT HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739944576277  
+    X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_staked_position(  
-        category="FlexibleSaving",  
-        coin="USDT",  
-    ))  
-    
-    
-    
-      
     
 
 ### 響應示例
@@ -212,29 +190,31 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "coin": "BTC",  
-                    "productId": "8",  
-                    "amount": "0.1",  
-                    "totalPnl": "0.000027397260273973",  
-                    "claimableYield": "0",  
-                    "id": "326",  
-                    "status": "Active",  
-                    "orderId": "1a5a8945-e042-4dd5-a93f-c0f0577377ad",  
-                    "estimateRedeemTime": "",  
-                    "estimateStakeTime": "",  
-                    "estimateInterestCalculationTime": "1744243200000",  
-                    "settlementTime": "1744675200000",  
-                    "autoReinvest": "Enable",  
-                    "availableAmount": "4900",  
-                    "freezeDetails": [  
+                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
+                    "orderLinkId": "",  
+                    "orderType": "Redeem",  
+                    "status": "Complete",  
+                    "productId": "546",  
+                    "category": "FixedTermSaving",  
+                    "coin": "USDT",  
+                    "amount": "100.056",  
+                    "duration": "1d",  
+                    "accountType": "UNIFIED",  
+                    "settlementTime": "1750811400000",  
+                    "createdAt": "1750648976000",  
+                    "yieldInfoList": [  
                         {  
-                            "amount": "100",  
-                            "description": "Locked in Fixed-Rate Loan"  
+                            "coin": "USDT",  
+                            "amount": "0.0063",  
+                            "status": "Distributed",  
+                            "createdAt": "1750811401000",  
+                            "apy": "2.33%"  
                         }  
                     ]  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": ""  
         },  
         "retExtInfo": {},  
-        "time": 1739944577575  
+        "time": 1776070828622  
     }

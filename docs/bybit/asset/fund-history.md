@@ -2,59 +2,43 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fund-history
 api_type: REST
-updated_at: 2026-05-27 19:15:18.520095
+updated_at: 2026-05-28 19:20:38.203916
 ---
 
-# Get USDC Session Settlement
+# Get Total Members Assets
 
-Query session settlement records of USDC perpetual and futures
-
-info
-
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
-
-
+Query total assets across all member accounts (master and sub-accounts), with optional coin-denominated valuation.
 
 ### HTTP Request
 
-GET`/v5/asset/settlement-record`
+GET`/v5/asset/total-members-assets`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type `linear`(USDC contract)  
-symbol| false| string| Symbol name, like `BTCPERP`, uppercase only  
-startTime| false| integer| The start timestamp (ms) 
-
-  * startTime and endTime are not passed, return 30 days by default
-  * Only startTime is passed, return range between startTime and startTime + 30 days 
-  * Only endTime is passed, return range between endTime-30 days and endTime
-  * If both are passed, the rule is endTime - startTime <= 30 days
-
-  
-endTime| false| integer| The end time. timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `50`]. Default: `20`  
-cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
+coin| false| string| Coin name, e.g. `BTC`, `USDT`. If not specified, defaults to `BTC`. If specified, total assets will be quoted in this coin  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-category| string| Product type  
-list| array| Object  
-> symbol| string| Symbol name  
-> side| string| `Buy`,`Sell`  
-> size| string| Position size  
-> sessionAvgPrice| string| Settlement price  
-> markPrice| string| Mark price  
-> realisedPnl| string| Realised PnL  
-> createdTime| string| Created time (ms)  
-nextPageCursor| string| Refer to the `cursor` request parameter  
-[](/docs/api-explorer/v5/asset/settlement)
-
-* * *
-
+total| string| Total asset value  
+quoteTotal| string| Total asset value in quoted coin  
+stat| integer| Whether there was an exception when requesting downstream data. `0`: normal, non-zero: exception occurred  
+list| array<object>| Account asset list  
+> uid| long| User ID  
+> isM| boolean| Whether it is a master account. Only returned when the account is a **master account**  
+> type| integer| Sub-account type. Only returned when the account is a **sub-account**. `1`: Normal sub-account, `2`: MT4 sub-account, `3`: Trading Bot sub-account, `4`: Copy trading leader sub-account, `5`: Copy trading follower sub-account, `6`: Custodial sub-account, `7`: Fund custodial sub-account, `8`: Demo sub-account, `9`: Copy Pro sub-account, `10`: MT5 follow sub-account, `11`: Earn vendor sub-account, `12`: Earn fund sub-account  
+> stat| integer| Whether there was an exception when requesting downstream data. `0`: normal, non-zero: exception occurred  
+> origb| string| Original balance in USD  
+> quoteb| string| Balance in quoted coin (the coin specified in the request parameter)  
+> items| array<object>| Sub-account type breakdown  
+>> type| string| Account type, e.g. `ACCOUNT_TYPE_FUND`, `ACCOUNT_TYPE_UNIFIED`  
+>> origb| string| Original balance in USD  
+>> quoteb| string| Balance in quoted coin (the coin specified in the request parameter)  
+>> stat| integer| Whether there was an exception when requesting downstream data. `0`: normal, non-zero: exception occurred  
+  
 ### Request Example
 
   * HTTP
@@ -64,43 +48,20 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
     
     
-    GET /v5/asset/settlement-record?category=linear HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    GET /v5/asset/total-members-assets?coin=BTC HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672284883483  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     
     
     
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_usdc_contract_settlement(  
-        category="linear",  
-    ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
       
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
+    
+    
+    
       
-    client  
-      .getSettlementRecords({ category: 'linear' })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### Response Example
@@ -108,78 +69,80 @@ nextPageCursor| string| Refer to the `cursor` request parameter
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "nextPageCursor": "116952%3A1%2C116952%3A1",  
-            "category": "linear",  
+            "total": "7369376.9136310276027477088095516543224115696",  
+            "stat": 0,  
+            "quoteTotal": "126.18796084984636306",  
             "list": [  
                 {  
-                    "realisedPnl": "-71.28",  
-                    "symbol": "BTCPERP",  
-                    "side": "Buy",  
-                    "markPrice": "16620",  
-                    "size": "1.5",  
-                    "createdTime": "1672214400000",  
-                    "sessionAvgPrice": "16620"  
+                    "origb": "7252396.5385745423203887154762334543224115696",  
+                    "uid": 1001796602,  
+                    "isM": true,  
+                    "stat": 0,  
+                    "items": [  
+                        {  
+                            "origb": "7180203.788461284230524983",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_FUND",  
+                            "quoteb": "122.948695007898702577"  
+                        },  
+                        {  
+                            "origb": "17.467024256661260423",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_UNIFIED",  
+                            "quoteb": "0.000299092881107213"  
+                        },  
+                        {  
+                            "origb": "17920.161",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_CONTRACT",  
+                            "quoteb": "0.306782556651556862"  
+                        }  
+                    ]  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672284884285  
+        "time": 1773230927614  
     }
 
 ---
 
-# 查詢USDC合約結算紀錄
+# 查詢全部成員資產
 
-查詢USDC合約的結算紀錄
-
-信息
-
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
-
-
+查詢所有成員帳戶（母帳戶及子帳戶）的總資產，支持指定幣種計價。
 
 ### HTTP 請求
 
-GET`/v5/asset/settlement-record`
+GET`/v5/asset/total-members-assets`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `linear`  
-symbol| false| string| 合約名稱  
-startTime| false| integer| 開始時間戳 (毫秒) 
-
-  * startTime 和 endTime都不傳入, 則默認返回最近30天的數據
-  * startTime 和 endTime都傳入的話, 則確保endTime - startTime <= 30天
-  * 若只傳startTime，則查詢startTime和startTime+30天的數據
-  * 若只傳endTime，則查詢endTime-30天和endTime的數據
-
-  
-endTime| false| integer| 結束時間 (毫秒)  
-limit| false| integer| 每頁數量限制. [`1`, `50`]. 默認: `20`  
-cursor| false| string| 游標，用於翻頁  
+coin| false| string| 幣種，如 `BTC`、`USDT`。不傳時默認為 `BTC`。指定後總資產以該幣種計價  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-category| string| 產品類型  
-list| array| Object  
-> symbol| string| 合約名稱  
-> side| string| `Buy`,`Sell`  
-> size| string| 倉位大小  
-> sessionAvgPrice| string| 結算價格  
-> markPrice| string| 標記價格  
-> realisedPnl| string| 已實現盈虧  
-> createdTime| string| 結算時間 (毫秒)  
-nextPageCursor| string| 游標，用於翻頁  
-[](/docs/zh-TW/api-explorer/v5/asset/settlement)
-
-* * *
-
+total| string| 總資產價值  
+quoteTotal| string| 計價後總資產價值  
+stat| integer| 請求下游接口是否存在異常。`0`: 正常，非零: 存在異常  
+list| array<object>| 帳戶資產列表  
+> uid| long| 用戶ID  
+> isM| boolean| 是否為母帳戶。僅當帳戶為**母帳戶** 時返回  
+> type| integer| 子帳戶類型。僅當帳戶為**子帳戶** 時返回。`1`: 普通子帳戶，`2`: MT4 子帳戶，`3`: 交易機器人子帳戶，`4`: 跟單交易員子帳戶，`5`: 跟單用戶子帳戶，`6`: 托管子帳戶，`7`: 資金托管子帳戶，`8`: 模擬盤子帳戶，`9`: Copy Pro 子帳戶，`10`: MT5 跟單子帳戶，`11`: 理財 Vendor 子帳戶，`12`: 理財基金子帳戶  
+> stat| integer| 請求下游接口是否存在異常。`0`: 正常，非零: 存在異常  
+> origb| string| USD 計價的原始餘額  
+> quoteb| string| 請求入參指定幣種計價的餘額  
+> items| array<object>| 子帳戶類型明細  
+>> type| string| 帳戶類型，如 `ACCOUNT_TYPE_FUND`、`ACCOUNT_TYPE_UNIFIED`  
+>> origb| string| USD 計價的原始餘額  
+>> quoteb| string| 請求入參指定幣種計價的餘額  
+>> stat| integer| 請求下游接口是否存在異常。`0`: 正常，非零: 存在異常  
+  
 ### 請求示例
 
   * HTTP
@@ -189,43 +152,20 @@ nextPageCursor| string| 游標，用於翻頁
 
     
     
-    GET /v5/asset/settlement-record?category=linear HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    GET /v5/asset/total-members-assets?coin=BTC HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672284883483  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     
     
     
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_usdc_contract_settlement(  
-        category="linear",  
-    ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
       
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
+    
+    
+    
       
-    client  
-      .getSettlementRecords({ category: 'linear' })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### 響應示例
@@ -233,22 +173,40 @@ nextPageCursor| string| 游標，用於翻頁
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "nextPageCursor": "116952%3A1%2C116952%3A1",  
-            "category": "linear",  
+            "total": "7369376.9136310276027477088095516543224115696",  
+            "stat": 0,  
+            "quoteTotal": "126.18796084984636306",  
             "list": [  
                 {  
-                    "realisedPnl": "-71.28",  
-                    "symbol": "BTCPERP",  
-                    "side": "Buy",  
-                    "markPrice": "16620",  
-                    "size": "1.5",  
-                    "createdTime": "1672214400000",  
-                    "sessionAvgPrice": "16620"  
+                    "origb": "7252396.5385745423203887154762334543224115696",  
+                    "uid": 1001796602,  
+                    "isM": true,  
+                    "stat": 0,  
+                    "items": [  
+                        {  
+                            "origb": "7180203.788461284230524983",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_FUND",  
+                            "quoteb": "122.948695007898702577"  
+                        },  
+                        {  
+                            "origb": "17.467024256661260423",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_UNIFIED",  
+                            "quoteb": "0.000299092881107213"  
+                        },  
+                        {  
+                            "origb": "17920.161",  
+                            "stat": 0,  
+                            "type": "ACCOUNT_TYPE_CONTRACT",  
+                            "quoteb": "0.306782556651556862"  
+                        }  
+                    ]  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672284884285  
+        "time": 1773230927614  
     }

@@ -2,54 +2,41 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/small-balanc-coins
 api_type: REST
-updated_at: 2026-05-27 19:14:51.270895
+updated_at: 2026-05-28 19:20:10.310367
 ---
 
-# Request a Quote
+# Confirm a Quote
+
+info
+
+  1. The exchange is async; please check the final status by calling the query result API.
+  2. Make sure you confirm the quote before it expires.
+
+
 
 ### HTTP Request
 
-POST`/v5/asset/exchange/quote-apply`
+POST`/v5/asset/exchange/convert-execute`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[accountType](/docs/v5/enum#convertaccounttype)| **true**|  string| Wallet type  
-fromCoin| **true**|  string| Convert from coin (coin to sell)  
-toCoin| **true**|  string| Convert to coin (coin to buy)  
-requestCoin| **true**|  string| Request coin, same as fromCoin 
-
-  * In the future, we may support requestCoin=toCoin
-
-  
-requestAmount| **true**|  string| request coin amount (the amount you want to sell)  
-fromCoinType| false| string| `crypto`  
-toCoinType| false| string| `crypto`  
-paramType| false| string| `opFrom`, mainly used for API broker user  
-paramValue| false| string| Broker ID, mainly used for API broker user  
-requestId| false| string| Customised request ID 
-
-  * a maximum length of 36
-  * Generally it is useless, but it is convenient to track the quote request internally if you fill this field
-
-  
+quoteTxId| **true**|  string| The quote tx ID from [Request a Quote](/docs/v5/asset/convert/apply-quote#response-parameters)  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-quoteTxId| string| Quote transaction ID. It is system generated, and it is used to confirm quote and query the result of transaction  
-exchangeRate| string| Exchange rate  
-fromCoin| string| From coin  
-fromCoinType| string| From coin type. `crypto`  
-toCoin| string| To coin  
-toCoinType| string| To coin type. `crypto`  
-fromAmount| string| From coin amount (amount to sell)  
-toAmount| string| To coin amount (amount to buy according to exchange rate)  
-expiredTime| string| The expiry time for this quote (15 seconds)  
-requestId| string| Customised request ID  
-extTaxAndFee| array| Compliance-related field. Currently returns an empty array, which may be used in the future  
+quoteTxId| string| Quote transaction ID  
+exchangeStatus| string| Exchange status 
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
   
 ### Request Example
 
@@ -60,24 +47,17 @@ extTaxAndFee| array| Compliance-related field. Currently returns an empty array,
 
     
     
-    POST /v5/asset/exchange/quote-apply HTTP/1.1  
+    POST /v5/asset/exchange/convert-execute HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1720071077014  
-    X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1720071899789  
+    X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 172  
+    Content-Length: 52  
       
     {  
-        "requestId": "test-00002",  
-        "fromCoin": "ETH",  
-        "toCoin": "BTC",  
-        "accountType": "eb_convert_funding",  
-        "requestCoin": "ETH",  
-        "requestAmount": "0.1",  
-        "paramType": "opFrom",  
-        "paramValue": "broker-id-001"  
+        "quoteTxId": "10100108106409343501030232064"  
     }  
     
     
@@ -88,15 +68,8 @@ extTaxAndFee| array| Compliance-related field. Currently returns an empty array,
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.request_a_quote(  
-        requestId="test-00002",  
-        fromCoin="ETH",  
-        toCoin="BTC",  
-        accountType="eb_convert_funding",  
-        requestCoin="ETH",  
-        requestAmount="0.1",  
-        paramType="opFrom",  
-        paramValue="broker-id-001",  
+    print(session.confirm_a_quote(  
+        quoteTxId="10100108106409343501030232064",  
     ))  
     
     
@@ -110,13 +83,8 @@ extTaxAndFee| array| Compliance-related field. Currently returns an empty array,
     });  
       
     client  
-      .requestConvertQuote({  
-        requestId: 'test-00002',  
-        fromCoin: 'ETH',  
-        toCoin: 'BTC',  
-        accountType: 'eb_convert_funding',  
-        requestCoin: 'ETH',  
-        requestAmount: '0.1',  
+      .confirmConvertQuote({  
+        quoteTxId: '10100108106409343501030232064',  
       })  
       .then((response) => {  
         console.log(response);  
@@ -133,69 +101,47 @@ extTaxAndFee| array| Compliance-related field. Currently returns an empty array,
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "quoteTxId": "10100108106409340067234418688",  
-            "exchangeRate": "0.053517914861880000",  
-            "fromCoin": "ETH",  
-            "fromCoinType": "crypto",  
-            "toCoin": "BTC",  
-            "toCoinType": "crypto",  
-            "fromAmount": "0.1",  
-            "toAmount": "0.005351791486188000",  
-            "expiredTime": "1720071092225",  
-            "requestId": "test-00002",  
-            "extTaxAndFee":[]  
+            "exchangeStatus": "processing",  
+            "quoteTxId": "10100108106409343501030232064"  
         },  
         "retExtInfo": {},  
-        "time": 1720071077265  
+        "time": 1720071900529  
     }
 
 ---
 
-# 申請報價
+# 確認報價
+
+信息
+
+  1. 該接口是異步的, 請通過查詢請求確認最終兌換結果
+  2. 確保您在報價單過期前確認該報價, 否則失效
+
+
 
 ### HTTP 請求
 
-POST`/v5/asset/exchange/quote-apply`
+POST`/v5/asset/exchange/convert-execute`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[accountType](/docs/zh-TW/v5/enum#convertaccounttype)| **true**|  string| 帳戶類型  
-fromCoin| **true**|  string| 兌出幣種  
-toCoin| **true**|  string| 兌入幣種  
-requestCoin| **true**|  string| 請求報價幣種, 和兌出幣種保持一致 
-
-  * 未來, 可能會支援requestCoin=兌入幣種
-
-  
-requestAmount| **true**|  string| 請求報價幣種數量  
-fromCoinType| false| string| `crypto`  
-toCoinType| false| string| `crypto`  
-paramType| false| string| `opFrom`, 主要用於API broker  
-paramValue| false| string| Broker ID, 主要用於API broker  
-requestId| false| string| 自定義的請求ID 
-
-  * 最長不超過36位的字符串
-  * 一般來說該字段無用, 可用於內部追蹤這次報價請求
-
-  
+quoteTxId| **true**|  string| 報價單ID, 來自於[提交報價的響應](/docs/zh-TW/v5/asset/convert/apply-quote#response-parameters)  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-quoteTxId| string| 報價單號. 由系統生成, 用於後面的確認報價和查詢  
-exchangeRate| string| 兌換率  
-fromCoin| string| 兌出幣種  
-fromCoinType| string| 兌出幣種類型. `crypto`  
-toCoin| string| 兌入幣種  
-toCoinType| string| 兌入幣種類型. `crypto`  
-fromAmount| string| 兌出幣種數量  
-toAmount| string| 兌入幣種數量  
-expiredTime| string| 報價單過期的時間戳(有效期為15秒)  
-requestId| string| 自定義請求ID  
-extTaxAndFee| array| 合規相關字段. 目前返回一個空數組，將來可能會用到  
+quoteTxId| string| 報價單ID  
+exchangeStatus| string| 兌換狀態 
+
+  * init
+  * processing
+  * success
+  * failure
+
+  
   
 ### 請求示例
 
@@ -206,24 +152,17 @@ extTaxAndFee| array| 合規相關字段. 目前返回一個空數組，將來可
 
     
     
-    POST /v5/asset/exchange/quote-apply HTTP/1.1  
+    POST /v5/asset/exchange/convert-execute HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1720071077014  
-    X-BAPI-RECV-WINDOW: 5000  
     X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1720071899789  
+    X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 172  
+    Content-Length: 52  
       
     {  
-        "requestId": "test-00002",  
-        "fromCoin": "ETH",  
-        "toCoin": "BTC",  
-        "accountType": "eb_convert_funding",  
-        "requestCoin": "ETH",  
-        "requestAmount": "0.1",  
-        "paramType": "opFrom",  
-        "paramValue": "broker-id-001"  
+        "quoteTxId": "10100108106409343501030232064"  
     }  
     
     
@@ -234,15 +173,8 @@ extTaxAndFee| array| 合規相關字段. 目前返回一個空數組，將來可
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.request_a_quote(  
-        requestId="test-00002",  
-        fromCoin="ETH",  
-        toCoin="BTC",  
-        accountType="eb_convert_funding",  
-        requestCoin="ETH",  
-        requestAmount="0.1",  
-        paramType="opFrom",  
-        paramValue="broker-id-001",  
+    print(session.confirm_a_quote(  
+        quoteTxId="10100108106409343501030232064",  
     ))  
     
     
@@ -256,13 +188,8 @@ extTaxAndFee| array| 合規相關字段. 目前返回一個空數組，將來可
     });  
       
     client  
-      .requestConvertQuote({  
-        requestId: 'test-00002',  
-        fromCoin: 'ETH',  
-        toCoin: 'BTC',  
-        accountType: 'eb_convert_funding',  
-        requestCoin: 'ETH',  
-        requestAmount: '0.1',  
+      .confirmConvertQuote({  
+        quoteTxId: '10100108106409343501030232064',  
       })  
       .then((response) => {  
         console.log(response);  
@@ -279,18 +206,9 @@ extTaxAndFee| array| 合規相關字段. 目前返回一個空數組，將來可
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "quoteTxId": "10100108106409340067234418688",  
-            "exchangeRate": "0.053517914861880000",  
-            "fromCoin": "ETH",  
-            "fromCoinType": "crypto",  
-            "toCoin": "BTC",  
-            "toCoinType": "crypto",  
-            "fromAmount": "0.1",  
-            "toAmount": "0.005351791486188000",  
-            "expiredTime": "1720071092225",  
-            "requestId": "test-00002",  
-            "extTaxAndFee":[]  
+            "exchangeStatus": "processing",  
+            "quoteTxId": "10100108106409343501030232064"  
         },  
         "retExtInfo": {},  
-        "time": 1720071077265  
+        "time": 1720071900529  
     }

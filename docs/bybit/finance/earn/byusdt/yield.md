@@ -2,47 +2,70 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/yield
 api_type: REST
-updated_at: 2026-05-27 19:17:22.665659
+updated_at: 2026-05-28 19:22:43.789107
 ---
 
-# Get Daily Yield Records
+# Modify Position
+
+info
+
+API key needs "Earn" permission
+
+note
+
+Only positions with `duration` = `Fixed` support setting auto-reinvestment. You can get the `duration` value from the response of [GET /v5/earn/product?category=OnChain](/docs/v5/finance/earn/easy-onchain/product-info).
 
 ### HTTP Request
 
-GET`/v5/earn/token/yield`
+POST`/v5/earn/position/modify`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| **true**|  string| Token coin. Currently only `BYUSDT` is supported  
-startTime| false| integer| Start timestamp in seconds  
-endTime| false| integer| End timestamp in seconds  
-cursor| false| string| Pagination cursor. Use `nextPageCursor` from the previous response  
-limit| false| integer| Number of items per page. Default: `5`  
+category| **true**|  string| Product category. Fixed value: `OnChain`  
+productId| **true**|  integer| Product ID. Obtained from [GET /v5/earn/product](/docs/v5/finance/earn/easy-onchain/product-info)  
+positionId| **true**|  integer| Position ID. Obtained from [GET /v5/earn/position](/docs/v5/finance/earn/easy-onchain/position)  
+autoReinvest| **true**|  integer| Auto-reinvestment switch. `0`: Off, `1`: On  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Daily yield record list  
-> yield| string| Base yield amount  
-> bonusYield| string| Bonus yield amount  
-> status| string| Status: `Success`, `Processing`  
-> createdTime| string| Record time, unix timestamp in seconds  
-nextPageCursor| string| Cursor for the next page. Empty string means no more data  
+retCode| integer| Return code. `0` means success  
+retMsg| string| Return message. Empty string `""` on success  
   
-* * *
-
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/token/yield?coin=BYUSDT&limit=5 HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    POST /v5/earn/position/modify HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-TIMESTAMP: 1773732693000  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "category": "OnChain",  
+        "productId": 8,  
+        "positionId": 326,  
+        "autoReinvest": 1  
+    }  
+    
+    
+    
+      
+    
+    
+    
+      
     
 
 ### Response Example
@@ -50,62 +73,75 @@ nextPageCursor| string| Cursor for the next page. Empty string means no more dat
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
-        "result": {  
-            "list": [  
-                {  
-                    "yield": "0.50",  
-                    "bonusYield": "0.20",  
-                    "status": "Success",  
-                    "createdTime": "1710691200"  
-                }  
-            ],  
-            "nextPageCursor": "eyJpZCI6MTIzNDU2fQ=="  
-        },  
+        "retMsg": "",  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1741651200000  
+        "time": 1773732693032  
     }
 
 ---
 
-# 查詢每日收益記錄
+# 修改持倉設置
+
+信息
+
+API key 需要「理財」權限
+
+備註
+
+僅 `duration` = `Fixed` 的持倉支持設置自動複投。您可以從 [GET /v5/earn/product?category=OnChain](/docs/zh-TW/v5/finance/earn/easy-onchain/product-info) 的響應參數中獲取 `duration` 的值。
 
 ### HTTP 請求
 
-GET`/v5/earn/token/yield`
+POST`/v5/earn/position/modify`
 
 ### 請求參數
 
-參數| 必填| 類型| 說明  
+參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| **true**|  string| 代幣幣種。目前僅支援 `BYUSDT`  
-startTime| false| integer| 開始時間，秒級時間戳  
-endTime| false| integer| 結束時間，秒級時間戳  
-cursor| false| string| 分頁游標。使用上次響應中的 `nextPageCursor`  
-limit| false| integer| 每頁返回數量。預設：`5`  
+category| **true**|  string| 產品類別，固定傳 `OnChain`  
+productId| **true**|  integer| 產品 ID，從 [GET /v5/earn/product](/docs/zh-TW/v5/finance/earn/easy-onchain/product-info) 獲取  
+positionId| **true**|  integer| 持倉 ID，從 [GET /v5/earn/position](/docs/zh-TW/v5/finance/earn/easy-onchain/position) 獲取  
+autoReinvest| **true**|  integer| 自動續期開關。`0`：關閉，`1`：開啟  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| 每日收益記錄列表  
-> yield| string| 基礎收益金額  
-> bonusYield| string| 加成收益金額  
-> status| string| 狀態：`Success`（成功）、`Processing`（處理中）  
-> createdTime| string| 記錄時間，秒級 Unix 時間戳  
-nextPageCursor| string| 下一頁游標，為空表示無更多資料  
+retCode| integer| 返回碼，`0` 表示成功  
+retMsg| string| 返回信息，成功時為 `""`  
   
-* * *
-
 ### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/token/yield?coin=BYUSDT&limit=5 HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    POST /v5/earn/position/modify HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-TIMESTAMP: 1773732693000  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "category": "OnChain",  
+        "productId": 8,  
+        "positionId": 326,  
+        "autoReinvest": 1  
+    }  
+    
+    
+    
+      
+    
+    
+    
+      
     
 
 ### 響應示例
@@ -113,18 +149,8 @@ nextPageCursor| string| 下一頁游標，為空表示無更多資料
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
-        "result": {  
-            "list": [  
-                {  
-                    "yield": "0.50",  
-                    "bonusYield": "0.20",  
-                    "status": "Success",  
-                    "createdTime": "1710691200"  
-                }  
-            ],  
-            "nextPageCursor": "eyJpZCI6MTIzNDU2fQ=="  
-        },  
+        "retMsg": "",  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1741651200000  
+        "time": 1773732693032  
     }

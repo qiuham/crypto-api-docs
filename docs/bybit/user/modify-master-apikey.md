@@ -2,73 +2,128 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/modify-master-apikey
 api_type: REST
-updated_at: 2026-05-27 19:23:00.863258
+updated_at: 2026-05-28 19:26:50.936064
 ---
 
-# Get Sub UID List (Unlimited)
+# Modify Master API Key
 
-This API is applicable to the client who has over 10k sub accounts. Use **master user's api key** **only**.
+Modify the settings of master api key. Use the api key pending to be modified to call the endpoint. Use **master user's api key** **only**.
 
 tip
 
 The API key must have one of the below permissions in order to call this endpoint..
 
   * master API key: "Account Transfer", "Subaccount Transfer", "Withdrawal"
+  * For Read_Write apikey, adding or deleting FiatP2P, FiatBitPay, and FiatConvertBroker is prohibited.
 
 
+
+info
+
+Only the api key that calls this interface can be modified
 
 ### HTTP Request
 
-GET`/v5/user/submembers`
+POST`/v5/user/update-api`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-pageSize| false| string| Data size per page. Return up to 100 records per request  
-nextCursor| false| string| Cursor. Use the `nextCursor` token from the response to retrieve the next page of the result set  
+readOnly| false| integer| `0` (default): Read and Write. `1`: Read only  
+permissions| false| Object| Tick the types of permission. Don't send this param if you don't want to change the permission  
+> ContractTrade| false| array| Contract Trade. ["Order","Position"]  
+> Spot| false| array| Spot Trade. ["SpotTrade"]  
+> Wallet| false| array| Wallet. ["AccountTransfer","SubMemberTransfer"]  
+> Options| false| array| USDC Contract. ["OptionsTrade"]  
+> Exchange| false| array| Convert. ["ExchangeHistory"]  
+> Earn| false| array| Earn product. ["Earn"]  
+> FiatP2P| false| array| P2P ["FiatP2POrder", "Advertising"]  
+> FiatBitPay| false| array| Bybit Pay ["FaitPayOrder"]  
+> FiatConvertBroker| false| array| Fiat convert ["FiatConvertBrokerOrder"]  
+> BitCard| false| array| Bybit card permission, ["BitCard"]  
+> ByXPost| false| array| Community post permission, ["ByXPost"]  
+> Affiliate| false| array| Affiliate permission. ["Affiliate"]
+
+  * This permission is only useful for affiliate
+  * If you need this permission, make sure you remove all other permissions
+
+  
+> Derivatives| false| array| ["DerivativesTrade"]  
+> BlockTrade| false| array| ["BlockTrade"]  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-subMembers| array| Object  
-> uid| string| Sub user Id  
-> username| string| Username  
-> memberType| integer| `1`: standard subaccount, `6`: [custodial subaccount](https://www.bybit.com/en/help-center/article?id=000001683)  
-> status| integer| The status of the user account
-
-  * `1`: normal
-  * `2`: login banned
-  * `4`: frozen 
-
-  
-> accountMode| integer| The account mode of the user account
-
-  * `1`: Classic Account
-  * `3`: UTA1.0
-  * `4`: UTA1.0 Pro
-  * `5`: UTA2.0
-  * `6`: UTA2.0 Pro
-
-  
-> remark| string| The remark  
-nextCursor| string| The next page cursor value. "0" means no more pages  
+id| string| Unique id. Internal used  
+note| string| The remark  
+apiKey| string| Api key  
+readOnly| integer| `0`: Read and Write. `1`: Read only  
+secret| string| Always `""`  
+permissions| Object| The types of permission  
+> ContractTrade| array| Permisson of contract trade  
+> Spot| array| Permisson of spot  
+> Wallet| array| Permisson of wallet  
+> Options| array| Permission of USDC Contract. It supports trade option and usdc perpetual.  
+> Derivatives| array| Permission of Unified account  
+> BlockTrade| array| Permission of blocktrade  
+> Exchange| array| Permission of convert  
+> Earn| array| Permission of earn  
+> Affiliate| array| Affiliate permission  
+> FiatP2P| array| Permission of P2P  
+> FiatBitPay| array| Permission of Bybit pay  
+> FiatConvertBroker| array| Permission of fiat convert  
+> NFT| array| **Deprecated** , always `[]`  
+> CopyTrading| array| **Deprecated** , always `[]`  
+ips| array| IP bound  
   
 ### Request Example
 
   * HTTP
   * Python
+  * Node.js
 
 
     
     
-    GET /v5/user/submembers?pageSize=1 HTTP/1.1  
+    POST /v5/user/update-api HTTP/1.1  
     Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676430318405  
+    X-BAPI-TIMESTAMP: 1676431264739  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "readOnly": null,  
+        "permissions": {  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            }  
+    }  
     
     
     
@@ -78,9 +133,68 @@ nextCursor| string| The next page cursor value. "0" means no more pages
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_uid_list_unlimited(  
-        pageSize="1",  
+    print(session.modify_master_api_key(  
+        permissions={  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "Derivatives": [  
+                    "DerivativesTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            }  
     ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .updateMasterApiKey({  
+        permissions: {  
+          ContractTrade: ['Order', 'Position'],  
+          Spot: ['SpotTrade'],  
+          Wallet: ['AccountTransfer', 'SubMemberTransfer'],  
+          Options: ['OptionsTrade'],  
+          Derivatives: ['DerivativesTrade'],  
+          CopyTrading: ['CopyTrading'],  
+          BlockTrade: [],  
+          Exchange: ['ExchangeHistory'],  
+          NFT: ['NFTQueryProductList'],  
+        },  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### Response Example
@@ -90,96 +204,170 @@ nextCursor| string| The next page cursor value. "0" means no more pages
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "subMembers": [  
-                {  
-                    "uid": "106314365",  
-                    "username": "xxxx02",  
-                    "memberType": 1,  
-                    "status": 1,  
-                    "remark": "",  
-                    "accountMode": 5  
-                },  
-                {  
-                    "uid": "106279879",  
-                    "username": "xxxx01",  
-                    "memberType": 1,  
-                    "status": 1,  
-                    "remark": "",  
-                    "accountMode": 6  
-                }  
-            ],  
-            "nextCursor": "0"  
+            "id": "13770661",  
+            "note": "xxxxx",  
+            "apiKey": "xxxxx",  
+            "readOnly": 0,  
+            "secret": "",  
+            "permissions": {  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "Derivatives": [  
+                    "DerivativesTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "Earn": [],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            },  
+            "ips": [  
+                "*"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1760388041006  
+        "time": 1676431265427  
     }
 
 ---
 
-# 查詢子帳戶UID列表 (無限制)
+# 修改母帳戶的API Key設置
 
-通過翻頁獲取當前母帳戶下所有的子帳戶列表，適合超過擁有1萬個子帳戶的母帳戶進行調用。需使用**母** 帳戶的API key。
+修改母帳戶API key的設置。使用待修改的api key調用接口。需使用**母** 帳戶的API key。
 
 提示
 
 在調用接口時，使用的API key至少需要擁有以下其中一種權限
 
   * 母API key: "Account Transfer（資產帳戶劃轉）", "Subaccount Transfer（母子帳戶劃轉）", "Withdrawal（提幣）"
+  * 針對讀写 (Read_Write) API ，禁止新增或刪除 FiatP2P、FiatBitPay 及 FiatConvertBroker 權限。
 
 
+
+信息
+
+只能修改調用該接口的api key
 
 ### HTTP 請求
 
-GET`/v5/user/submembers`
+POST`/v5/user/update-api`
 
 ### 請求參數
 
 參數| 是否必須| 類型| 說明  
 ---|---|---|---  
-pageSize| false| string| 數據頁大小. 每次至多返回100條  
-nextCursor| false| string| 游標. 傳入響應中的`nextCursor`來獲取下一頁的數據  
+readOnly| false| integer| `0` (默認)：可讀可寫. `1`：只讀  
+permissions| false| Object| 勾選api key權限. 如果不修改權限, 則不要傳入該參數  
+> ContractTrade| false| array| 合約. ["Order","Position"]  
+> Spot| false| array| 現貨. ["SpotTrade"]  
+> Wallet| false| array| 錢包. ["AccountTransfer","SubMemberTransfer"]  
+> Options| false| array| USDC合約和期權. ["OptionsTrade"]  
+> Exchange| false| array| 兌換. ["ExchangeHistory"]  
+> Earn| false| array| 理財產品的權限 ["Earn"]  
+> FiatP2P| false| array| P2P ["FiatP2POrder", "Advertising"]  
+> FiatBitPay| false| array| Bybit Pay ["FaitPayOrder"]  
+> FiatConvertBroker| false| array| 數法兌換權限(僅支援經紀商) ["FiatConvertBrokerOrder"]  
+> BitCard| false| array| Bybit卡權限, ["BitCard"]  
+> ByXPost| false| array| 社區帖子, ["ByXPost"]  
+> Affiliate| false| array| 代理商查詢權限. ["Affiliate"]
+
+  * 該權限僅作用於代理商
+  * 如果您需要該權限, 請確保移除所有其他權限項
+
+  
+> Derivatives| false| array| 統一帳戶權限. ["DerivativesTrade"]  
+> BlockTrade| false| array| 大宗商品交易權限. ["BlockTrade"]  
   
 ### 返回參數
 
 參數| 類型| 說明  
 ---|---|---  
-subMembers| array| Object  
-> uid| string| 子帳戶userId  
-> username| string| 用戶名  
-> memberType| integer| `1`: 普通子帳戶, `6`: 託管子帳戶  
-> status| integer| 帳戶狀態.
-
-  * `1`: 正常
-  * `2`: 登陸封禁
-  * `4`: 凍結 
-
-  
-> accountMode| integer| 帳戶模式.
-
-  * `1`: 經典帳戶
-  * `3`: UTA帳戶
-  * `4`: UTA1.0 Pro 帳戶
-  * `5`: UTA2.0 帳戶
-  * `6`: UTA2.0 Pro 帳戶
-
-  
-> remark| string| 備註  
-nextCursor| string| 下一頁數據的游標. 返回"0"表示沒有更多的數據了  
+id| string| 唯一id. 內部使用  
+note| string| 備註  
+apiKey| string| Api key  
+readOnly| integer| `0`：可讀可寫. `1`：只讀  
+secret| string| 總是 `""`  
+permissions| Object| 權限類型  
+> ContractTrade| array| 合約交易的權限  
+> Spot| array| 現貨交易的權限  
+> Wallet| array| 錢包的權限  
+> Options| array| USDC合約和期權  
+> Derivatives| array| 統一帳戶權限  
+> Earn| array| 理財的權限  
+> Exchange| array| 兌換的權限  
+> FiatP2P| array| P2P `FiatP2POrder`, `Advertising`  
+> FiatBitPay| array| Bybit Pay `FaitPayOrder`  
+> FiatConvertBroker| array| 數法兌換權限 `FiatConvertBrokerOrder`  
+> Affiliate| array| 代理商查詢權限  
+> BlockTrade| array| 大宗交易的權限  
+> NFT| array| **廢棄** , 總是[]  
+> CopyTrading| array| **廢棄** , 總是[]  
+ips| array| 綁定的IP  
   
 ### 請求示例
 
   * HTTP
   * Python
+  * Node.js
 
 
     
     
-    GET /v5/user/submembers?pageSize=1 HTTP/1.1  
+    POST /v5/user/update-api HTTP/1.1  
     Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676430318405  
+    X-BAPI-TIMESTAMP: 1676431264739  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "readOnly": null,  
+        "permissions": {  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            }  
+    }  
     
     
     
@@ -189,9 +377,65 @@ nextCursor| string| 下一頁數據的游標. 返回"0"表示沒有更多的數�
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_uid_list_unlimited(  
-        pageSize="1",  
+    print(session.modify_master_api_key(  
+        permissions={  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            }  
     ))  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .updateMasterApiKey({  
+        permissions: {  
+          ContractTrade: ['Order', 'Position'],  
+          Spot: ['SpotTrade'],  
+          Wallet: ['AccountTransfer', 'SubMemberTransfer'],  
+          Options: ['OptionsTrade'],  
+          Derivatives: ['DerivativesTrade'],  
+          CopyTrading: ['CopyTrading'],  
+          BlockTrade: [],  
+          Exchange: ['ExchangeHistory'],  
+          NFT: ['NFTQueryProductList'],  
+        },  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### 響應示例
@@ -201,26 +445,44 @@ nextCursor| string| 下一頁數據的游標. 返回"0"表示沒有更多的數�
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "subMembers": [  
-                {  
-                    "uid": "106314365",  
-                    "username": "xxxx02",  
-                    "memberType": 1,  
-                    "status": 1,  
-                    "remark": "",  
-                    "accountMode": 5  
-                },  
-                {  
-                    "uid": "106279879",  
-                    "username": "xxxx01",  
-                    "memberType": 1,  
-                    "status": 1,  
-                    "remark": "",  
-                    "accountMode": 6  
-                }  
-            ],  
-            "nextCursor": "0"  
+            "id": "13770661",  
+            "note": "xxxxx",  
+            "apiKey": "xxxxx",  
+            "readOnly": 0,  
+            "secret": "",  
+            "permissions": {  
+                "ContractTrade": [  
+                    "Order",  
+                    "Position"  
+                ],  
+                "Spot": [  
+                    "SpotTrade"  
+                ],  
+                "Wallet": [  
+                    "AccountTransfer",  
+                    "SubMemberTransfer"  
+                ],  
+                "Options": [  
+                    "OptionsTrade"  
+                ],  
+                "Derivatives": [  
+                    "DerivativesTrade"  
+                ],  
+                "CopyTrading": [  
+                    "CopyTrading"  
+                ],  
+                "BlockTrade": [],  
+                "Exchange": [  
+                    "ExchangeHistory"  
+                ],  
+                "NFT": [  
+                    "NFTQueryProductList"  
+                ]  
+            },  
+            "ips": [  
+                "*"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1760388041006  
+        "time": 1676431265427  
     }

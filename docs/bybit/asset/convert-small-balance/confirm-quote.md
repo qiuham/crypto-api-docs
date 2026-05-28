@@ -2,68 +2,39 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/confirm-quote
 api_type: REST
-updated_at: 2026-05-27 19:14:47.778253
+updated_at: 2026-05-28 19:20:05.864253
 ---
 
-# Get Exchange History
+# Confirm a Quote
 
 info
 
   * API key permission: `Convert`
-  * API rate limit: `10 req /s`
-  * You can query all small-balance exchange records made via API or web/app from both the Unified and Funding wallets.
+  * API rate limit: `5 req /s`
+  * The exchange is async; please check the final status by calling the query [Get Exchange History](/docs/v5/asset/convert-small-balance/exchange-history).
+  * Make sure you confirm the quote before it expires.
 
 
 
 ### HTTP Request
 
-GET`/v5/asset/covert/small-balance-history`
+POST`/v5/asset/covert/small-balance-execute`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-accountType| false| string| `eb_convert_uta`, `eb_convert_funding`  
-quoteId| false| string| Quote ID, highest priority when querying  
-startTime| false| string| The start timestamp (ms)  
-endTime| false| string| The end timestamp (ms)  
-cursor| false| string| Page number  
-size| false| string| Page size, default is 50, maximum is 100  
+quoteId| **true**|  string| The quote ID from [Request a Quote](/docs/v5/asset/convert-small-balance/request-quote#response-parameters)  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-cursor| string| Current page number  
-size| string| Curreng page size  
-lastPage| string| Last page number  
-totalCount| string| Total number of records  
-records| array<object>|   
-> accountType| string| `eb_convert_uta`: unified wallet, `eb_convert_funding`: funding wallet  
-> exchangeTxId| string| Exchange transaction ID  
-> toCoin| string| Target currency  
-> toAmount| string| Actual total amount received  
-> subRecords| array<object>| details  
->> fromCoin| string| Source currency  
->> fromAmount| string| Source currency amount  
->> toCoin| string| Target currency  
->> toAmount| string| Actual amount received  
->> feeCoin| string| Exchange fee currency  
->> feeAmount| string| Exchange fee  
->> status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
->> taxFeeInfo| object|   
->>> totalAmount| string| Tax fee amount  
->>> feeCoin| string| Tax fee currency  
->>> taxFeeItems| array| Tax fee items  
-> status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
-> createdAt| string| Quote created timestamp  
-> exchangeSource| string| Exchange source `small_asset_uta`, `small_asset_funding`  
-> feeCoin| string| Exchange fee currency  
-> totalFeeAmount| string| Total exchange fee amount  
-> totalTaxFeeInfo| object|   
->> totalAmount| string| Total tax fee amount  
->> feeCoin| string| Tax fee currency  
->> taxFeeItems| array| Tax fee items  
+quoteId| string| Quote ID  
+exchangeTxId| string| Exchange ID, the same value as `quoteId`  
+submitTime| string| Submit ts  
+status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
+msg| string| By default is `""`  
   
 ### Request Example
 
@@ -74,12 +45,18 @@ records| array<object>|
 
     
     
-    GET /v5/asset/covert/small-balance-history?quoteId=1010075157602517596339322880&accountType=eb_convert_uta HTTP/1.1  
+    POST /v5/asset/covert/small-balance-execute HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1766134218672  
+    X-BAPI-TIMESTAMP: 1766128195297  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    Content-Type: application/json  
+    Content-Length: 49  
+      
+    {  
+        "quoteId": "1010075157602517596339322880"  
+    }  
     
     
     
@@ -89,9 +66,8 @@ records| array<object>|
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_exchange_history_small_balance(  
+    print(session.confirm_a_quote_small_balance(  
         quoteId="1010075157602517596339322880",  
-        accountType="eb_convert_uta",  
     ))  
     
     
@@ -106,140 +82,69 @@ records| array<object>|
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "cursor": "1",  
-            "size": "50",  
-            "lastPage": "1",  
-            "totalCount": "1",  
-            "records": [  
-                {  
-                    "accountType": "eb_convert_uta",  
-                    "exchangeTxId": "1010075157602517596339322880",  
-                    "toCoin": "USDC",  
-                    "toAmount": "0.000728325793503221",  
-                    "subRecords": [  
-                        {  
-                            "fromCoin": "SOL",  
-                            "fromAmount": "0.000003",  
-                            "toCoin": "USDC",  
-                            "toAmount": "0.000363439538230885",  
-                            "feeCoin": "USDC",  
-                            "feeAmount": "0.000007417133433283",  
-                            "status": "success",  
-                            "taxFeeInfo": {  
-                                "totalAmount": "0",  
-                                "feeCoin": "",  
-                                "taxFeeItems": []  
-                            }  
-                        },  
-                        {  
-                            "fromCoin": "XRP",  
-                            "fromAmount": "0.0002",  
-                            "toCoin": "USDC",  
-                            "toAmount": "0.000364886255272336",  
-                            "feeCoin": "USDC",  
-                            "feeAmount": "0.000007446658270864",  
-                            "status": "success",  
-                            "taxFeeInfo": {  
-                                "totalAmount": "0",  
-                                "feeCoin": "",  
-                                "taxFeeItems": []  
-                            }  
-                        }  
-                    ],  
-                    "status": "success",  
-                    "createdAt": "1766128195000",  
-                    "exchangeSource": "small_asset_uta",  
-                    "feeCoin": "USDC",  
-                    "totalFeeAmount": "0.000014863791704147",  
-                    "totalTaxFeeInfo": {  
-                        "totalAmount": "0",  
-                        "feeCoin": "",  
-                        "taxFeeItems": []  
-                    }  
-                }  
-            ]  
+            "quoteId": "1010075157602517596339322880",  
+            "exchangeTxId": "1010075157602517596339322880",  
+            "submitTime": "1766128195512",  
+            "status": "processing",  
+            "msg": ""  
         },  
         "retExtInfo": {},  
-        "time": 1766129394948  
+        "time": 1766128195512  
     }
 
 ---
 
-# 獲取兌換記錄
+# 確認報價
 
 信息
 
   * API密鑰權限: `Convert`
-  * API速率限制: `10 req /s`
-  * 您可以查詢通過API或網頁/應用程序在統一錢包和資金錢包中進行的小額資產兌換記錄。
+  * API速率限制: `5 req /s`
+  * 兌換為異步操作；請通過調用 [獲取兌換記錄](/docs/zh-TW/v5/asset/convert-small-balance/exchange-history) 查詢最終狀態。
+  * 請確保在報價過期之前確認報價。
 
 
 
 ### HTTP 請求
 
-GET`/v5/asset/covert/small-balance-history`
+POST`/v5/asset/covert/small-balance-execute`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-accountType| false| string| `eb_convert_uta`, `eb_convert_funding`  
-quoteId| false| string| 報價ID，查詢時優先級最高  
-startTime| false| string| 起始時間戳（毫秒）  
-endTime| false| string| 結束時間戳（毫秒）  
-cursor| false| string| 頁碼  
-size| false| string| 每頁大小，默認為50，最大為100  
+quoteId| **true**|  string| 來自 [請求報價](/docs/zh-TW/v5/asset/convert-small-balance/request-quote#response-parameters) 的報價ID  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-cursor| string| 當前頁碼  
-size| string| 當前頁大小  
-lastPage| string| 最後一頁頁碼  
-totalCount| string| 記錄總數  
-records| array<object>|   
-> accountType| string| `eb_convert_uta`: 統一錢包, `eb_convert_funding`: 資金錢包  
-> exchangeTxId| string| 兌換交易ID  
-> toCoin| string| 目標幣種  
-> toAmount| string| 實際接收的總金額  
-> subRecords| array<object>| 詳細信息  
->> fromCoin| string| 源幣種  
->> fromAmount| string| 源幣種金額  
->> toCoin| string| 目標幣種  
->> toAmount| string| 實際接收金額  
->> feeCoin| string| 兌換手續費幣種  
->> feeAmount| string| 兌換手續費金額  
->> status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
->> taxFeeInfo| object|   
->>> totalAmount| string| 稅費金額  
->>> feeCoin| string| 稅費幣種  
->>> taxFeeItems| array| 稅費項目  
-> status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
-> createdAt| string| 報價創建時間戳  
-> exchangeSource| string| 兌換來源 `small_asset_uta`, `small_asset_funding`  
-> feeCoin| string| 兌換手續費幣種  
-> totalFeeAmount| string| 兌換手續費總金額  
-> totalTaxFeeInfo| object|   
->> totalAmount| string| 稅費總金額  
->> feeCoin| string| 稅費幣種  
->> taxFeeItems| array| 稅費項目  
+quoteId| string| 報價ID  
+exchangeTxId| string| 兌換ID，與 `quoteId` 值相同  
+submitTime| string| 提交時間戳  
+status| string| `init`, `processing`, `success`, `failure`, `partial_fulfillment`  
+msg| string| 默認為 `""`  
   
 ### 請求示例
 
   * HTTP
   * Python
-  * Node.js
 
 
     
     
-    GET /v5/asset/covert/small-balance-history?quoteId=1010075157602517596339322880&accountType=eb_convert_uta HTTP/1.1  
+    POST /v5/asset/covert/small-balance-execute HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1766134218672  
+    X-BAPI-TIMESTAMP: 1766128195297  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXXX  
+    Content-Type: application/json  
+    Content-Length: 49  
+      
+    {  
+        "quoteId": "1010075157602517596339322880"  
+    }  
     
     
     
@@ -249,14 +154,9 @@ records| array<object>|
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_exchange_history_small_balance(  
+    print(session.confirm_a_quote_small_balance(  
         quoteId="1010075157602517596339322880",  
-        accountType="eb_convert_uta",  
     ))  
-    
-    
-    
-      
     
 
 ### 響應示例
@@ -266,59 +166,12 @@ records| array<object>|
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "cursor": "1",  
-            "size": "50",  
-            "lastPage": "1",  
-            "totalCount": "1",  
-            "records": [  
-                {  
-                    "accountType": "eb_convert_uta",  
-                    "exchangeTxId": "1010075157602517596339322880",  
-                    "toCoin": "USDC",  
-                    "toAmount": "0.000728325793503221",  
-                    "subRecords": [  
-                        {  
-                            "fromCoin": "SOL",  
-                            "fromAmount": "0.000003",  
-                            "toCoin": "USDC",  
-                            "toAmount": "0.000363439538230885",  
-                            "feeCoin": "USDC",  
-                            "feeAmount": "0.000007417133433283",  
-                            "status": "success",  
-                            "taxFeeInfo": {  
-                                "totalAmount": "0",  
-                                "feeCoin": "",  
-                                "taxFeeItems": []  
-                            }  
-                        },  
-                        {  
-                            "fromCoin": "XRP",  
-                            "fromAmount": "0.0002",  
-                            "toCoin": "USDC",  
-                            "toAmount": "0.000364886255272336",  
-                            "feeCoin": "USDC",  
-                            "feeAmount": "0.000007446658270864",  
-                            "status": "success",  
-                            "taxFeeInfo": {  
-                                "totalAmount": "0",  
-                                "feeCoin": "",  
-                                "taxFeeItems": []  
-                            }  
-                        }  
-                    ],  
-                    "status": "success",  
-                    "createdAt": "1766128195000",  
-                    "exchangeSource": "small_asset_uta",  
-                    "feeCoin": "USDC",  
-                    "totalFeeAmount": "0.000014863791704147",  
-                    "totalTaxFeeInfo": {  
-                        "totalAmount": "0",  
-                        "feeCoin": "",  
-                        "taxFeeItems": []  
-                    }  
-                }  
-            ]  
+            "quoteId": "1010075157602517596339322880",  
+            "exchangeTxId": "1010075157602517596339322880",  
+            "submitTime": "1766128195512",  
+            "status": "processing",  
+            "msg": ""  
         },  
         "retExtInfo": {},  
-        "time": 1766129394948  
+        "time": 1766128195512  
     }

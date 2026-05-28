@@ -2,50 +2,71 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/open-interest
 api_type: Market Data
-updated_at: 2026-05-27 19:18:28.132135
+updated_at: 2026-05-28 19:23:48.143709
 ---
 
-# Get Open Interest
+# Get Orderbook
 
-Get the [open interest](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms) of each symbol.
+Query for orderbook depth data.
 
-> **Covers: USDT contract / USDC contract / Inverse contract**
+> **Covers: Spot / USDT contract / USDC contract / Inverse contract / Option**
+
+  * Contract: 1000-level of orderbook data
+  * Spot: 1000-level of orderbook data
+  * Option: 25-level of orderbook data
+
+
 
 info
 
-  * The upper limit time you can query is the launch time of the symbol.
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
+  * The response is in the snapshot format.
+  * [Retail Price Improvement (RPI)](https://www.bybit.com/en/help-center/article/Retail-Price-Improvement-RPI-Order) orders will not be included in the response message and will not be visible over API.
 
 
 
 ### HTTP Request
 
-GET`/v5/market/open-interest`
+GET`/v5/market/orderbook`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type. `linear`,`inverse`  
+[category](/docs/v5/enum#category)| **true**|  string| Product type. `spot`, `linear`, `inverse`, `option`  
 symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-[intervalTime](/docs/v5/enum#intervaltime)| **true**|  string| Interval time. `5min`,`15min`,`30min`,`1h`,`4h`,`1d`  
-startTime| false| integer| The start timestamp (ms)  
-endTime| false| integer| The end timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `200`]. Default: `50`  
-cursor| false| string| Cursor. Used to paginate  
+limit| false| integer| Limit size for each bid and ask
+
+  * `spot`: [`1`, `1000`]. Default: `1`.
+  * `linear`&`inverse`: [`1`, `1000`]. Default: `25`.
+  * `option`: [`1`, `25`]. Default: `1`.
+
+  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-category| string| Product type  
-symbol| string| Symbol name  
-list| array| Object  
-> openInterest| string| Open interest. The value is the sum of both sides.   
-The unit of value, e.g., BTCUSD(inverse) is USD, BTCUSDT(linear) is BTC  
-> timestamp| string| The timestamp (ms)  
-nextPageCursor| string| Used to paginate  
-[](/docs/api-explorer/v5/market/open-interest)
+s| string| Symbol name  
+b| array| Bid, buyer. Sorted by price in descending order  
+> b[0]| string| Bid price  
+> b[1]| string| Bid size  
+a| array| Ask, seller. Sorted by price in ascending order  
+> a[0]| string| Ask price  
+> a[1]| string| Ask size  
+ts| integer| The timestamp (ms) that the system generates the data  
+u| integer| Update ID, is always in sequence
+
+  * For contract, corresponds to `u` in the 1000-level [WebSocket orderbook stream](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)
+  * For spot, corresponds to `u` in the 1000-level [WebSocket orderbook stream](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook)
+
+  
+seq| integer| Cross sequence 
+
+  * You can use this field to compare different levels orderbook data, and for the smaller seq, then it means the data is generated earlier. 
+
+  
+cts| integer| The timestamp from the matching engine when this orderbook data is produced. It can be correlated with `T` from [public trade channel](/docs/v5/websocket/public/trade)  
+[](/docs/api-explorer/v5/market/orderbook)
 
 * * *
 
@@ -53,26 +74,23 @@ nextPageCursor| string| Used to paginate
 
   * HTTP
   * Python
-  * GO
+  * Go
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/open-interest?category=inverse&symbol=BTCUSD&intervalTime=5min&startTime=1669571100000&endTime=1669571400000 HTTP/1.1  
+    GET /v5/market/orderbook?category=spot&symbol=BTCUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_open_interest(  
-        category="inverse",  
-        symbol="BTCUSD",  
-        intervalTime="5min",  
-        startTime=1669571100000,  
-        endTime=1669571400000,  
+    print(session.get_orderbook(  
+        category="linear",  
+        symbol="BTCUSDT",  
     ))  
     
     
@@ -83,8 +101,8 @@ nextPageCursor| string| Used to paginate
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetOpenInterests(context.Background())  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT"}  
+    client.NewUtaBybitServiceWithParams(params).GetOrderBookInfo(context.Background())  
     
     
     
@@ -93,8 +111,8 @@ nextPageCursor| string| Used to paginate
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var openInterest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.FIVE_MINUTES).build();  
-    client.getOpenInterest(openInterest, System.out::println);  
+    var orderbookRequest = MarketDataRequest.builder().category(CategoryType.SPOT).symbol("BTCUSDT").build();  
+    client.getMarketOrderBook(orderbookRequest,System.out::println);  
     
     
     
@@ -105,12 +123,9 @@ nextPageCursor| string| Used to paginate
     });  
       
     client  
-        .getOpenInterest({  
-            category: 'inverse',  
-            symbol: 'BTCUSD',  
-            intervalTime: '5min',  
-            startTime: 1669571100000,  
-            endTime: 1669571400000,  
+        .getOrderbook({  
+            category: 'linear',  
+            symbol: 'BTCUSDT',  
         })  
         .then((response) => {  
             console.log(response);  
@@ -127,67 +142,89 @@ nextPageCursor| string| Used to paginate
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSD",  
-            "category": "inverse",  
-            "list": [  
-                {  
-                    "openInterest": "461134384.00000000",  
-                    "timestamp": "1669571400000"  
-                },  
-                {  
-                    "openInterest": "461134292.00000000",  
-                    "timestamp": "1669571100000"  
-                }  
+            "s": "BTCUSDT",  
+            "a": [  
+                [  
+                    "65557.7",  
+                    "16.606555"  
+                ]  
             ],  
-            "nextPageCursor": ""  
+            "b": [  
+                [  
+                    "65485.47",  
+                    "47.081829"  
+                ]  
+            ],  
+            "ts": 1716863719031,  
+            "u": 230704,  
+            "seq": 1432604333,  
+            "cts": 1716863718905  
         },  
         "retExtInfo": {},  
-        "time": 1672053548579  
+        "time": 1716863719382  
     }
 
 ---
 
-# 查詢未平倉合約持倉數量
+# Order Book (深度)
 
-查詢各個合約市場內所有未平倉的數量
+獲取深度數據
 
-> **覆蓋範圍: USDT永續 / USDC永續 / USDC交割 / 反向合約**
+> **覆蓋範圍: 現貨 / USDT永續 / USDT交割 / USDC永續 / USDC交割 / 反向合約 / 期權**
 
-信息
+  * 期貨: 最多返回1000檔的數據.
+  * 現貨: 最多返回1000檔的數據.
+  * 期權: 僅返回25檔的數據.
 
-  * 最久可以查詢到自合約上線開始的數據
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
 
 
+提示
+
+響應是當前時間的切片數據
 
 ### HTTP請求
 
-GET`/v5/market/open-interest`
+GET`/v5/market/orderbook`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `linear`,`inverse`  
-symbol| **true**|  string| 合約名稱  
-[intervalTime](/docs/zh-TW/v5/enum#intervaltime)| **true**|  string| 時間粒度. `5min` `15min` `30min` `1h` `4h` `1d`  
-startTime| false| integer| 開始時間戳 (毫秒)  
-endTime| false| integer| 結束時間戳 (毫秒)  
-limit| false| integer| 每頁數量限制. [`1`, `200`]. 默認: `50`  
-cursor| false| string| 游標，用於翻頁  
+[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `spot`, `linear`, `inverse`, `option`  
+[symbol](/docs/zh-TW/v5/enum#symbol)| **true**|  string| 合約名稱  
+limit| false| integer| 深度限制.
+
+  * `spot`: [`1`, `1000`], 默認: `1`.
+  * `linear`&`inverse`: [`1`, `1000`],默認: `25`.
+  * `option`: [`1`, `25`],默認: `1`.
+
+  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-category| string| 產品類型  
-symbol| string| 合約名稱  
-list| array| Object  
-> openInterest| string| 未平倉合約數量, 數值為雙邊的和  
-這個數值的單位是, 比如, BTCUSDT永續是BTC, BTCUSD反向合約是USD  
-> timestamp| string| 數據產生的時間戳（毫秒）  
-nextPageCursor| string| 游標，用於翻頁  
-[](/docs/zh-TW/api-explorer/v5/market/open-interest)
+s| string| 合約名稱  
+b| array| Bid, 買方. 按照價格從大到小  
+> b[0]| string| 買方報價  
+> b[1]| string| 買方數量  
+a| array| Ask, 賣方. 按照價格從小到大  
+> a[0]| string| 賣方報價  
+> a[1]| string| 賣方數量  
+ts| integer| 行情服務生成數據時間戳（毫秒）  
+u| integer| 表示數據連續性的id. 
+
+  * 對於期貨, 它和wss推送裡的1000檔的`u`對齊
+  * 對於現貨, 它和wss推送裡的1000檔的`u`對齊
+
+  
+seq| integer| 撮合版本號 
+
+  * 該字段可以用於關聯不同檔位的orderbook, 如果值越小, 則說明數據生成越早
+
+  
+cts| number| 產生此訂單簿數據時來自撮合引擎的時間戳. 可用於與[平台成交](/docs/zh-TW/v5/websocket/public/trade)頻道中的`T`進行關聯  
+[](/docs/zh-TW/api-explorer/v5/market/orderbook)
 
 * * *
 
@@ -195,26 +232,23 @@ nextPageCursor| string| 游標，用於翻頁
 
   * HTTP
   * Python
-  * GO
+  * Go
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/open-interest?category=inverse&symbol=BTCUSD&intervalTime=5min&startTime=1669571100000&endTime=1669571400000 HTTP/1.1  
+    GET /v5/market/orderbook?category=spot&symbol=BTCUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_open_interest(  
-        category="inverse",  
-        symbol="BTCUSD",  
-        intervalTime="5min",  
-        startTime=1669571100000,  
-        endTime=1669571400000,  
+    print(session.get_orderbook(  
+        category="linear",  
+        symbol="BTCUSDT",  
     ))  
     
     
@@ -225,8 +259,8 @@ nextPageCursor| string| 游標，用於翻頁
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetOpenInterests(context.Background())  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT"}  
+    client.NewUtaBybitServiceWithParams(params).GetOrderBookInfo(context.Background())  
     
     
     
@@ -235,8 +269,8 @@ nextPageCursor| string| 游標，用於翻頁
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var openInterest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.FIVE_MINUTES).build();  
-    client.getOpenInterest(openInterest, System.out::println);  
+    var orderbookRequest = MarketDataRequest.builder().category(CategoryType.SPOT).symbol("BTCUSDT").build();  
+    client.getMarketOrderBook(orderbookRequest,System.out::println);  
     
     
     
@@ -247,12 +281,9 @@ nextPageCursor| string| 游標，用於翻頁
     });  
       
     client  
-        .getOpenInterest({  
-            category: 'inverse',  
-            symbol: 'BTCUSD',  
-            intervalTime: '5min',  
-            startTime: 1669571100000,  
-            endTime: 1669571400000,  
+        .getOrderbook({  
+            category: 'linear',  
+            symbol: 'BTCUSDT',  
         })  
         .then((response) => {  
             console.log(response);  
@@ -269,20 +300,24 @@ nextPageCursor| string| 游標，用於翻頁
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSD",  
-            "category": "inverse",  
-            "list": [  
-                {  
-                    "openInterest": "461134384.00000000",  
-                    "timestamp": "1669571400000"  
-                },  
-                {  
-                    "openInterest": "461134292.00000000",  
-                    "timestamp": "1669571100000"  
-                }  
+            "s": "BTCUSDT",  
+            "a": [  
+                [  
+                    "65557.7",  
+                    "16.606555"  
+                ]  
             ],  
-            "nextPageCursor": ""  
+            "b": [  
+                [  
+                    "65485.47",  
+                    "47.081829"  
+                ]  
+            ],  
+            "ts": 1716863719031,  
+            "u": 230704,  
+            "seq": 1432604333,  
+            "cts": 1716863718905  
         },  
         "retExtInfo": {},  
-        "time": 1672053548579  
+        "time": 1716863719382  
     }

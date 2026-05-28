@@ -2,82 +2,59 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record
 api_type: REST
-updated_at: 2026-05-27 19:15:05.825465
+updated_at: 2026-05-28 19:20:26.552867
 ---
 
-# Get Sub Deposit Records (on-chain)
+# Get Trading Pair List
 
-Query subaccount's deposit records by **main** UID's API key.
-
-tip
-
-`endTime` \- `startTime` should be less than 30 days. Queries for the last 30 days worth of records by default.
+Query for the list of coins you can convert to/from.
 
 ### HTTP Request
 
-GET`/v5/asset/deposit/query-sub-member-record`
+GET`/v5/fiat/query-coin-list`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-id| false| string| Internal ID: Can be used to uniquely identify and filter the deposit. When combined with other parameters, this field takes the highest priority  
-txID| false| string| Transaction ID: Please note that data generated before Jan 1, 2024 cannot be queried using txID  
-subMemberId| **true**|  string| Sub UID  
-coin| false| string| Coin, uppercase only  
-startTime| false| integer| The start timestamp (ms) _Note: the query logic is actually effective based on**second** level_  
-endTime| false| integer| The end timestamp (ms) _Note: the query logic is actually effective based on**second** level_  
-limit| false| integer| Limit for data size per page. [`1`, `50`]. Default: `50`  
-cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
+side| false| string| `0`: buy, buy crypto sell fiat; `1`: sell, sell crypto buy fiat  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-rows| array| Object  
-> id| string| Unique ID  
-> coin| string| Coin  
-> chain| string| Chain  
-> amount| string| Amount  
-> txID| string| Transaction ID  
-> [status](/docs/v5/enum#depositstatus)| integer| Deposit status  
-> toAddress| string| Deposit target address  
-> tag| string| Tag of deposit target address  
-> depositFee| string| Deposit fee  
-> successAt| string| Deposit's success time  
-> confirmations| string| Number of confirmation blocks  
-> txIndex| string| Transaction sequence number  
-> blockHash| string| Hash number on the chain  
-> batchReleaseLimit| string| The deposit limit for this coin in this chain. `"-1"` means no limit  
-> depositType| string| The deposit type. `0`: normal deposit, `10`: the deposit reaches daily deposit limit, `20`: abnormal deposit  
-> fromAddress| string| From address of deposit, only shown when the deposit comes from on-chain and from address is unique, otherwise gives `""`  
-> taxDepositRecordsId| string| This field is used for tax purposes by Bybit EU (Austria) users, declare tax id  
-> taxStatus| integer| This field is used for tax purposes by Bybit EU (Austria) users 
-
-  * 0: No reporting required
-  * 1: Reporting pending
-  * 2: Reporting completed
-
+fiats| array| Fiat coin list  
+> coin| string| Fiat coin code  
+> fullName| string| Fiat full coin name  
+> icon| string| Coin icon url  
+> iconNight| string| Coin icon url (dark mode)  
+> precision| integer| Fiat precision  
+> disable| boolean| `true`: the coin is disabled, `false`: the coin is allowed  
+> singleFromMinLimit| string| For buy side, the minimum amount of fiatCoin per transaction  
+> singleFromMaxLimit| string| For buy side, the maximum amount of fiatCoin per transaction  
+cryptos| array| Crypto coin list  
+> coin| string| Fiat coin code  
+> fullName| string| Fiat full coin name  
+> icon| string| Coin icon url  
+> iconNight| string| Coin icon url (dark mode)  
+> precision| integer| Fiat precision  
+> disable| boolean| `true`: the coin is disabled, `false`: the coin is allowed  
+> singleFromMinLimit| string| For sell side, the minimum amount of cryptoCoin per transaction  
+> singleFromMaxLimit| string| For sell side, the maximum amount of cryptoCoin per transaction  
   
-nextPageCursor| string| Refer to the `cursor` request parameter  
-[](/docs/api-explorer/v5/asset/sub-deposit-record)
-
-* * *
-
 ### Request Example
 
   * HTTP
   * Python
-  * Node.js
 
 
     
     
-    GET /v5/asset/deposit/query-sub-member-record?coin=USDT&limit=1&subMemberId=592334 HTTP/1.1  
+    GET /v5/fiat/query-coin-list?side=0 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
+    X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672192441294  
+    X-BAPI-TIMESTAMP: 1720064061248  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -88,34 +65,9 @@ nextPageCursor| string| Refer to the `cursor` request parameter
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_deposit_records(  
-        coin="USDT",  
-        limit=1,  
-        subMemberId=592334,  
+    print(session.get_fiat_trading_pair_list(  
+        side="0"  
     ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getSubAccountDepositRecords({  
-        coin: 'USDT',  
-        limit: 1,  
-        subMemberId: '592334',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### Response Example
@@ -125,128 +77,105 @@ nextPageCursor| string| Refer to the `cursor` request parameter
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "rows": [],  
-            "nextPageCursor": ""  
-        },  
-        "retExtInfo": {},  
-        "time": 1672192441742  
+            "fiats": [  
+                {  
+                    "coin": "GEL",  
+                    "fullName": "Georgian Lari",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
+                    "precision": 2,  
+                    "disable": false,  
+                    "singleFromMinLimit": "10",  
+                    "singleFromMaxLimit": "100000"  
+                }  
+            ],  
+            "cryptos": [  
+                {  
+                    "coin": "USDT",  
+                    "fullName": "Tether USDT",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
+                    "precision": 4,  
+                    "disable": false,  
+                    "singleFromMinLimit": "10",  
+                    "singleFromMaxLimit": "10000"  
+                },  
+                {  
+                    "coin": "BTC",  
+                    "fullName": "Bitcoin",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
+                    "precision": 8,  
+                    "disable": false,  
+                    "singleFromMinLimit": "0.0001",  
+                    "singleFromMaxLimit": "1"  
+                },  
+                {  
+                    "coin": "ETH",  
+                    "fullName": "Ethereum",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
+                    "precision": 8,  
+                    "disable": false,  
+                    "singleFromMinLimit": "0.002",  
+                    "singleFromMaxLimit": "5"  
+                }  
+            ]  
+        }  
     }
 
 ---
 
-# 查詢子帳號的充值紀錄 (鏈上)
+# 查詢兌換幣種列表
 
-僅能通過**主帳號** 的API key來查詢子帳號的充值紀錄
-
-提示
-
-  * `endTime` \- `startTime` 需要小於等於30天. 默認查詢最近30天的紀錄
-
-
+查詢可兌換的幣種列表 
 
 ### HTTP 請求
 
-GET`/v5/asset/deposit/query-sub-member-record`
+GET`/v5/fiat/query-coin-list`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-id| false| string| 內部ID: 可用於唯一篩選入金紀錄. 當跟其他參數組合時, 具有最高優先級  
-txID| false| string| 鏈上交易ID: 請注意2024年1月1日之前的入金紀錄, 無法通過txID來篩選  
-subMemberId| **true**|  string| 子帳號  
-coin| false| string| 幣種  
-startTime| false| integer| 開始時間戳 (毫秒) _注意: 實際查詢時是秒級維度生效_  
-endTime| false| integer| 結束時間戳 (毫秒) _注意: 實際查詢時是秒級維度生效_  
-limit| false| integer| 每頁數量限制. [`1`, `50`]. 默認: `50`  
-cursor| false| string| 游標，用於翻頁  
+side| false| integer| `0`: 買入，即買入加密貨幣賣出法幣；`1`: 賣出，即賣出加密貨幣買入法幣  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-rows| array| Object  
-> id| string| 內部ID, 唯一鍵  
-> coin| string| 幣種  
-> chain| string| 鏈名  
-> amount| string| 充值金額  
-> txID| string| 交易Id. 充值失敗或取消充值時為空  
-> [status](/docs/zh-TW/v5/enum#depositstatus)| integer| 充值狀態  
-> toAddress| string| 充值的目標地址  
-> tag| string| 充值目標地址的tag  
-> depositFee| string| 充值手續費  
-> successAt| string| 最後更新時間  
-> confirmations| string| 确认区块的数量  
-> txIndex| string| 交易序列号  
-> blockHash| string| 鏈上的哈希數  
-> batchReleaseLimit| string| 當前幣鏈每日充值限額. `"-1"`表示無限制  
-> depositType| string| 入金類型. `0`: 正常充值, `10`: 充值觸發每日限額, `20`: 異常充值  
-> fromAddress| string| 入金來源地址, 僅當入金來自鏈上且來源地址唯一時返回地址, 其餘則返回`""`  
-> taxDepositRecordsId| string| Bybit EU（奧地利）用戶用於稅務目的, 保稅記錄id  
-> taxStatus| integer| Bybit EU（奧地利）用戶用於稅務目的 
-
-  * 0: No reporting required
-  * 1: Reporting pending
-  * 2: Reporting completed
-
+fiats| array| 法幣列表  
+> coin| string| 法幣代碼code  
+> fullName| string| 法幣全名  
+> icon| string| 幣種icon URL  
+> iconNight| string| 幣種icon URL（深色模式）  
+> precision| integer| 法幣精度  
+> disable| boolean| `true`: 該幣種被禁用，`false`: 該幣種可用  
+> singleFromMinLimit| string| 對於買入方向，每筆交易的最小法幣數量  
+> singleFromMaxLimit| string| 對於買入方向，每筆交易的最大法幣數量  
+cryptos| array| 加密貨幣列表  
+> coin| string| 加密貨幣代碼code  
+> fullName| string| 加密貨幣全名  
+> icon| string| 幣種icon URL  
+> iconNight| string| 幣種icon URL（深色模式）  
+> precision| integer| 加密貨幣精度  
+> disable| boolean| `true`: 該幣種被禁用，`false`: 該幣種可用  
+> singleFromMinLimit| string| 對於賣出方向，每筆交易的最小加密貨幣數量  
+> singleFromMaxLimit| string| 對於賣出方向，每筆交易的最大加密貨幣數量  
   
-nextPageCursor| string| 游標，用於翻頁  
-[](/docs/zh-TW/api-explorer/v5/asset/sub-deposit-record)
-
-* * *
-
 ### 請求示例
 
   * HTTP
-  * Python
-  * Node.js
 
 
     
     
-    GET /v5/asset/deposit/query-sub-member-record?coin=USDT&limit=1&subMemberId=592334 HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672192441294  
-    X-BAPI-RECV-WINDOW: 5000  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_sub_deposit_records(  
-        coin="USDT",  
-        limit=1,  
-        subMemberId=592334,  
-    ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getSubAccountDepositRecords({  
-        coin: 'USDT',  
-        limit: 1,  
-        subMemberId: '592334',  
-      })  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
+    GET /v5/fiat/query-coin-list?side=0 HTTP/1.1    
+    Host: api-testnet.bybit.com    
+    X-BAPI-SIGN: XXXXXX    
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx    
+    X-BAPI-TIMESTAMP: 1720064061248    
+    X-BAPI-RECV-WINDOW: 5000    
     
 
 ### 響應示例
@@ -256,9 +185,49 @@ nextPageCursor| string| 游標，用於翻頁
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "rows": [],  
-            "nextPageCursor": ""  
-        },  
-        "retExtInfo": {},  
-        "time": 1672192441742  
+            "fiats": [  
+                {  
+                    "coin": "GEL",  
+                    "fullName": "Georgian Lari",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2023-5-4/Tyoe=GEL.svg",  
+                    "precision": 2,  
+                    "disable": false,  
+                    "singleFromMinLimit": "10",  
+                    "singleFromMaxLimit": "100000"  
+                }  
+            ],  
+            "cryptos": [  
+                {  
+                    "coin": "USDT",  
+                    "fullName": "Tether USDT",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/2024-8-5/8e50959d5f3e45bebf522e0cad456439_1726814031848.svg",  
+                    "precision": 4,  
+                    "disable": false,  
+                    "singleFromMinLimit": "10",  
+                    "singleFromMaxLimit": "10000"  
+                },  
+                {  
+                    "coin": "BTC",  
+                    "fullName": "Bitcoin",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/20d09e76a0ab401f80bd545ae874c6a3_48x48.svg",  
+                    "precision": 8,  
+                    "disable": false,  
+                    "singleFromMinLimit": "0.0001",  
+                    "singleFromMaxLimit": "1"  
+                },  
+                {  
+                    "coin": "ETH",  
+                    "fullName": "Ethereum",  
+                    "icon": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
+                    "iconNight": "https://s1.bycsi.com/common-static/wove/fiat-admin/40b217058a474e17b5d88653b039055c_48x48.svg",  
+                    "precision": 8,  
+                    "disable": false,  
+                    "singleFromMinLimit": "0.002",  
+                    "singleFromMaxLimit": "5"  
+                }  
+            ]  
+        }  
     }

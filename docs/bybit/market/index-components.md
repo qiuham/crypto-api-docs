@@ -2,36 +2,55 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/index-components
 api_type: Market Data
-updated_at: 2026-05-27 19:18:17.583695
+updated_at: 2026-05-28 19:23:37.082190
 ---
 
-# Get Index Price Components
+# Get Index Price Kline
+
+Query for historical [index price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms) klines. Charts are returned in groups based on the requested interval.
+
+> **Covers: USDT contract / USDC contract / Inverse contract**
 
 ### HTTP Request
 
-GET`/v5/market/index-price-components`
+GET`/v5/market/index-price-kline`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-indexName| **true**|  string| Index name, like `BTCUSDT`  
+[category](/docs/v5/enum#category)| false| string| Product type. `linear`,`inverse`
+
+  * When `category` is not passed, use `linear` by default
+
+  
+symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
+[interval](/docs/v5/enum#interval)| **true**|  string| Kline interval. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`W`,`M`  
+start| false| integer| The start timestamp (ms)  
+end| false| integer| The end timestamp (ms)  
+limit| false| integer| Limit for data size per page. [`1`, `1000`]. Default: `200`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-indexName| string| Name of the index (e.g., BTCUSDT)  
-lastPrice| string| Last price of the index  
-updateTime| string| Timestamp of the last update in milliseconds  
-components| array| List of components contributing to the index price  
-> exchange| string| Name of the exchange  
-> spotPair| string| Spot trading pair on the exchange (e.g., BTCUSDT)  
-> equivalentPrice| string| Equivalent price  
-> multiplier| string| Multiplier used for the component price  
-> price| string| Actual price  
-> weight| string| Weight in the index calculation  
+category| string| Product type  
+symbol| string| Symbol name  
+list| array| 
+
+  * An string array of individual candle
+  * Sort in reverse by `startTime`
+
   
+> list[0]: startTime| string| Start time of the candle (ms)  
+> list[1]: openPrice| string| Open price  
+> list[2]: highPrice| string| Highest price  
+> list[3]: lowPrice| string| Lowest price  
+> list[4]: closePrice| string| Close price. _Is the last traded price when the candle is not closed_  
+[](/docs/api-explorer/v5/market/index-kline)
+
+* * *
+
 ### Request Example
 
   * HTTP
@@ -43,128 +62,144 @@ components| array| List of components contributing to the index price
 
     
     
-    GET /v5/market/index-price-components?indexName=1000BTTUSDT HTTP/1.1  
+    GET /v5/market/index-price-kline?category=inverse&symbol=BTCUSDZ22&interval=1&start=1670601600000&end=1670608800000&limit=2 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.get_index_price_components(  
-        indexName="1000BTTUSDT"  
+    session = HTTP(testnet=True)  
+    print(session.get_index_price_kline(  
+        category="inverse",  
+        symbol="BTCUSDZ22",  
+        interval=1,  
+        start=1670601600000,  
+        end=1670608800000,  
+        limit=2,  
     ))  
     
     
     
+    import (  
+        "context"  
+        "fmt"  
+        bybit "github.com/bybit-exchange/bybit.go.api"  
+    )  
+    client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
+    client.NewUtaBybitServiceWithParams(params).GetIndexPriceKline(context.Background())  
+    
+    
+    
+    import com.bybit.api.client.domain.CategoryType;  
+    import com.bybit.api.client.domain.market.*;  
+    import com.bybit.api.client.domain.market.request.MarketDataRequest;  
+    import com.bybit.api.client.service.BybitApiClientFactory;  
+    var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
+    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
+    client.getIndexPriceLinesData(marketKLineRequest, System.out::println);  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
       
-    
-    
-    
+    const client = new RestClientV5({  
+        testnet: true,  
+    });  
       
-    
-    
-    
-      
+    client  
+        .getIndexPriceKline({  
+            category: 'inverse',  
+            symbol: 'BTCUSDZ22',  
+            interval: '1',  
+            start: 1670601600000,  
+            end: 1670608800000,  
+            limit: 2,  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### Response Example
     
     
     {  
-      "retCode": 0,  
-      "retMsg": "",  
-      "result": {  
-        "indexName": "1000BTTUSDT",  
-        "lastPrice": "0.0006496",  
-        "updateTime": "1758182745072",  
-        "components": [  
-          {  
-            "exchange": "GateIO",  
-            "spotPair": "BTT_USDT",  
-            "equivalentPrice": "0.0006485",  
-            "multiplier": "1000",  
-            "price": "0.0006485",  
-            "weight": "0.1383220862762299"  
-          },  
-          {  
-            "exchange": "Bybit",  
-            "spotPair": "BTTUSDT",  
-            "equivalentPrice": "0.0006502",  
-            "multiplier": "1000",  
-            "price": "0.0006502",  
-            "weight": "0.0407528429737999"  
-          },  
-          {  
-            "exchange": "Bitget",  
-            "spotPair": "BTTUSDT",  
-            "equivalentPrice": "0.000648",  
-            "multiplier": "1000",  
-            "price": "0.000648",  
-            "weight": "0.1629044859431618"  
-          },  
-          {  
-            "exchange": "BitMart",  
-            "spotPair": "BTT_USDT",  
-            "equivalentPrice": "0.000649",  
-            "multiplier": "1000",  
-            "price": "0.000649",  
-            "weight": "0.0432327388538453"  
-          },  
-          {  
-            "exchange": "Binance",  
-            "spotPair": "BTTCUSDT",  
-            "equivalentPrice": "0.00065",  
-            "multiplier": "1000",  
-            "price": "0.00065",  
-            "weight": "0.5322401401714303"  
-          },  
-          {  
-            "exchange": "Mexc",  
-            "spotPair": "BTTUSDT",  
-            "equivalentPrice": "0.0006517",  
-            "multiplier": "1000",  
-            "price": "0.0006517",  
-            "weight": "0.0825477057815328"  
-          }  
-        ]  
-      },  
-      "retExtInfo": {},  
-      "time": 1758182745621  
+        "retCode": 0,  
+        "retMsg": "OK",  
+        "result": {  
+            "symbol": "BTCUSDZ22",  
+            "category": "inverse",  
+            "list": [  
+                [  
+                    "1670608800000",  
+                    "17167.00",  
+                    "17167.00",  
+                    "17161.90",  
+                    "17163.07"  
+                ],  
+                [  
+                    "1670608740000",  
+                    "17166.54",  
+                    "17167.69",  
+                    "17165.42",  
+                    "17167.00"  
+                ]  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1672026471128  
     }
 
 ---
 
-# 獲取指數價格組成
+# 查詢指數價格K線數據
 
-### HTTP 請求
+查詢指數價格K線
 
-GET`/v5/market/index-price-components`
+> **覆蓋範圍: USDT永續 / USDC交割 / USDC永續 / USDC交割 / 反向合約**
+
+### HTTP請求
+
+GET`/v5/market/index-price-kline`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-indexName| **true**|  string| 指數名稱，例如 `BTCUSDT`  
+[category](/docs/zh-TW/v5/enum#category)| false| string| 產品類型. `linear`,`inverse`
+
+  * 當`category`不指定時, 默認是`linear`
+
+  
+symbol| **true**|  string| 合約名稱  
+[interval](/docs/zh-TW/v5/enum#interval)| **true**|  string| 時間粒度. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`M`,`W`  
+start| false| integer| 開始時間戳 (毫秒)  
+end| false| integer| 結束時間戳 (毫秒)  
+limit| false| integer| 每頁數量限制. [`1`, `1000`]. 默認: `200`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-indexName| string| 指數名稱（例如 BTCUSDT）  
-lastPrice| string| 指數的最新價格  
-updateTime| string| 最近更新的時間戳，單位為毫秒  
-components| array| 構成指數價格的組成部分列表  
-> exchange| string| 交易所名稱  
-> spotPair| string| 交易所的現貨交易對（例如 BTCUSDT）  
-> equivalentPrice| string| 等效價格  
-> multiplier| string| 用於計算價格的乘數  
-> price| string| 實際價格  
-> weight| string| 指數計算中的權重  
+category| string| 產品類型  
+symbol| string| 合約名稱  
+list| array| 
+
+  * 一個字符串數組構成單個蠟燭
+  * 按照`startTime`降序排列
+
   
+> list[0]: startTime| string| 蠟燭的開始時間戳 (毫秒)  
+> list[1]: openPrice| string| 開始價格  
+> list[2]: highPrice| string| 最高價格  
+> list[3]: lowPrice| string| 最低價格  
+> list[4]: closePrice| string| 結束價格. _如果蠟燭尚未結束，則表示為最新成交價格_  
+[](/docs/zh-TW/api-explorer/v5/market/index-kline)
+
 * * *
 
 ### 請求示例
@@ -178,87 +213,94 @@ components| array| 構成指數價格的組成部分列表
 
     
     
-    GET /v5/market/index-price-components?indexName=1000BTTUSDT HTTP/1.1    
-    Host: api-testnet.bybit.com    
+    GET /v5/market/index-price-kline?category=inverse&symbol=BTCUSDZ22&interval=1&start=1670601600000&end=1670608800000&limit=2 HTTP/1.1  
+    Host: api-testnet.bybit.com  
     
     
     
+    from pybit.unified_trading import HTTP  
+    session = HTTP(testnet=True)  
+    print(session.get_index_price_kline(  
+        category="inverse",  
+        symbol="BTCUSDZ22",  
+        interval=1,  
+        start=1670601600000,  
+        end=1670608800000,  
+        limit=2,  
+    ))  
+    
+    
+    
+    import (  
+        "context"  
+        "fmt"  
+        bybit "github.com/bybit-exchange/bybit.go.api"  
+    )  
+    client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
+    client.NewUtaBybitServiceWithParams(params).GetIndexPriceKline(context.Background())  
+    
+    
+    
+    import com.bybit.api.client.domain.CategoryType;  
+    import com.bybit.api.client.domain.market.*;  
+    import com.bybit.api.client.domain.market.request.MarketDataRequest;  
+    import com.bybit.api.client.service.BybitApiClientFactory;  
+    var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
+    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
+    client.getIndexPriceLinesData(marketKLineRequest, System.out::println);  
+    
+    
+    
+    const { RestClientV5 } = require('bybit-api');  
       
-    
-    
-    
+    const client = new RestClientV5({  
+        testnet: true,  
+    });  
       
-    
-    
-    
-      
-    
-    
-    
-      
+    client  
+        .getIndexPriceKline({  
+            category: 'inverse',  
+            symbol: 'BTCUSDZ22',  
+            interval: '1',  
+            start: 1670601600000,  
+            end: 1670608800000,  
+            limit: 2,  
+        })  
+        .then((response) => {  
+            console.log(response);  
+        })  
+        .catch((error) => {  
+            console.error(error);  
+        });  
     
 
 ### 響應示例
     
     
-    {    
-      "retCode": 0,    
-      "retMsg": "",    
-      "result": {    
-        "indexName": "1000BTTUSDT",    
-        "lastPrice": "0.0006496",    
-        "updateTime": "1758182745072",    
-        "components": [    
-          {    
-            "exchange": "GateIO",    
-            "spotPair": "BTT_USDT",    
-            "equivalentPrice": "0.0006485",    
-            "multiplier": "1000",    
-            "price": "0.0006485",    
-            "weight": "0.1383220862762299"    
-          },    
-          {    
-            "exchange": "Bybit",    
-            "spotPair": "BTTUSDT",    
-            "equivalentPrice": "0.0006502",    
-            "multiplier": "1000",    
-            "price": "0.0006502",    
-            "weight": "0.0407528429737999"    
-          },    
-          {    
-            "exchange": "Bitget",    
-            "spotPair": "BTTUSDT",    
-            "equivalentPrice": "0.000648",    
-            "multiplier": "1000",    
-            "price": "0.000648",    
-            "weight": "0.1629044859431618"    
-          },    
-          {    
-            "exchange": "BitMart",    
-            "spotPair": "BTT_USDT",    
-            "equivalentPrice": "0.000649",    
-            "multiplier": "1000",    
-            "price": "0.000649",    
-            "weight": "0.0432327388538453"    
-          },    
-          {    
-            "exchange": "Binance",    
-            "spotPair": "BTTCUSDT",    
-            "equivalentPrice": "0.00065",    
-            "multiplier": "1000",    
-            "price": "0.00065",    
-            "weight": "0.5322401401714303"    
-          },    
-          {    
-            "exchange": "Mexc",    
-            "spotPair": "BTTUSDT",    
-            "equivalentPrice": "0.0006517",    
-            "multiplier": "1000",    
-            "price": "0.0006517",    
-            "weight": "0.0825477057815328"    
-          }    
-        ]    
-      },    
-      "retExtInfo": {},    
-      "time": 1758182745621    
+    {  
+        "retCode": 0,  
+        "retMsg": "OK",  
+        "result": {  
+            "symbol": "BTCUSDZ22",  
+            "category": "inverse",  
+            "list": [  
+                [  
+                    "1670608800000",  
+                    "17167.00",  
+                    "17167.00",  
+                    "17161.90",  
+                    "17163.07"  
+                ],  
+                [  
+                    "1670608740000",  
+                    "17166.54",  
+                    "17167.69",  
+                    "17165.42",  
+                    "17167.00"  
+                ]  
+            ]  
+        },  
+        "retExtInfo": {},  
+        "time": 1672026471128  
     }
