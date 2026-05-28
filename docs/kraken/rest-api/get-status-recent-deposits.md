@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-deposits
 api_type: REST
-updated_at: 2026-05-27 20:04:49.075774
+updated_at: 2026-05-28 19:49:48.292776
 ---
 
 # Get Status of Recent Deposits

@@ -2,193 +2,142 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-book-v2
 api_type: WebSocket
-updated_at: 2026-05-27 19:59:34.703108
+updated_at: 2026-05-28 19:48:35.406814
 ---
 
-# Spot Websockets (v2) Book Checksum
+# Spot Websockets Introduction
 
-This page describes how to maintain the book and generate the checksum for the websockets v2 [book](/api/docs/websocket-v2/book) channel. The feed describes the aggregate quantities at each price level.
+Websockets is a bi-directional protocol helping you build fast, real-time, event-driven applications. This sections contains a summary of the connection details and versions.
 
-The checksum verification is optional. It provides an additional check that the client 
-The checksum is only calculated for the top 10 price levels of the book regardless of the subscription depth.
+## Connection Details
 
-## Maintaining the `book` Channel
+The websocket URLs to connect to our trading environments are:
 
-All price level updates in a `book` message should be processed before the checksum is calculated. An update message may contain many updates to either the bids and/or asks.
+Environment| API| Public Data| Private Data (authentication required)  
+---|---|---|---  
+Primary| v2| wss://ws.kraken.com/v2| wss://ws-auth.kraken.com/v2  
+Primary| v1| wss://ws.kraken.com| wss://ws-auth.kraken.com  
+Beta| v2| wss://beta-ws.kraken.com/v2| wss://beta-ws-auth.kraken.com/v2  
+Beta| v1| wss://beta-ws.kraken.com| wss://beta-ws-auth.kraken.com  
+* **Primary** : Production API and production trading engine.
+  * **Beta** : Beta API and production trading engine. Beta receives API software updates prior to the primary platform. A beta connection may required to access new or enhanced features, this will be indicated by the API guides or the support team
 
-An update with `"qty": 0` indicates that price level should be removed from your book.
+## Websockets Versions
 
-Additionally, after each update, the book should be truncated to your subscribed depth as you won't receive `"qty": 0` for price levels that fall out of scope. In other words, if you are subscribed with `"depth": 10` and an insert into the middle of the book results in you having 11 bids, you must remove the 11th worst bid.
+We have 2 versions of websockets for spot: v1 and v2. Websockets v2 cleans up a number idiosyncrasies and ambiguities from v1 with the overall aim to enable easier integration with applications. It is intended that v1 will be maintained but future enhancements will be developed in v2.
 
-## Checksum Calculation
+Each version is described separately in the API pages:
 
-Checksum logic in websockets v2 is very similar to v1. The `price` and `qty` fields are pushed onto the wire containing full precision.
+  * Websockets v2: [API Reference](/api/docs/websocket-v2/add_order)
+  * Websockets v1: [API Reference](/api/docs/websocket-v1/addorder)
 
-tip
+## Websockets v2
 
-To keep the full precision through deserialization and decoding, parse the `book` message using a decimal (or string decoder) for the prices and quantities.
+The latest version of websockets has been completely re-designed to enable simpler and faster integration with applications:
 
-Example code for decoding message with full precision:
-    
-    
-        async for bytes in websocket:  
-            message = json.loads(bytes, parse_float=Decimal)  
-            self.on_message(message)  
-    
+### Cleaner Document Structure
 
-### Checksum Steps with Example
+  * It has a FIX-like design, FIX is standard communication protocol across the financial industry, enabling a more familiar experience across all of our APIs.
+  * Pair symbols have been aligned into the more readable "BTC/USD" format.
+  * The timestamps use the RFC3339 format `2021-05-11T19:47:09.896860Z` which are readable, parsable and easy to sort.
+  * Prices and quantities are published as a number type for ease of processing. The values contain the same precision as the engine and full precision can be maintained when decoded as a decimal or a string instead of the default json parser setting (usually float). This offers ease of processing and precision where required.
+  * Payloads are normalised JSON objects with no/minimal positional or variable length fields, to allow for maximum future flexibility without breaking client code.
+  * The message structure is consistent (i.e. predictable dictionary keys) and is more readable for both human and machine clients.
 
-This example data below can be used as input to your checksum calculator to confirm correct behaviour and steps.
-
-**Example** : Generating a `book` snapshot checksum (using json string decoder):
+**Example:** Add a `trailing-stop` order which triggers when the market reverts 1% from trough price
     
     
     {  
-       "channel": "book",  
-       "type": "snapshot",  
-       "data": [  
-          {  
-             "symbol": "BTC/USD",  
-             "bids": [  
-                {  
-                   "price": "45283.5",  
-                   "qty": "0.10000000"  
-                },  
-                {  
-                   "price": "45283.4",  
-                   "qty": "1.54582015"  
-                },  
-                {  
-                   "price": "45282.1",  
-                   "qty": "0.10000000"  
-                },  
-                {  
-                   "price": "45281.0",  
-                   "qty": "0.10000000"  
-                },  
-                {  
-                   "price": "45280.3",  
-                   "qty": "1.54592586"  
-                },  
-                {  
-                   "price": "45279.0",  
-                   "qty": "0.07990000"  
-                },  
-                {  
-                   "price": "45277.6",  
-                   "qty": "0.03310103"  
-                },  
-                {  
-                   "price": "45277.5",  
-                   "qty": "0.30000000"  
-                },  
-                {  
-                   "price": "45277.3",  
-                   "qty": "1.54602737"  
-                },  
-                {  
-                   "price": "45276.6",  
-                   "qty": "0.15445238"  
-                }  
-             ],  
-             "asks": [  
-                {  
-                   "price": "45285.2",  
-                   "qty": "0.00100000"  
-                },  
-                {  
-                   "price": "45286.4",  
-                   "qty": "1.54571953"  
-                },  
-                {  
-                   "price": "45286.6",  
-                   "qty": "1.54571109"  
-                },  
-                {  
-                   "price": "45289.6",  
-                   "qty": "1.54560911"  
-                },  
-                {  
-                   "price": "45290.2",  
-                   "qty": "0.15890660"  
-                },  
-                {  
-                   "price": "45291.8",  
-                   "qty": "1.54553491"  
-                },  
-                {  
-                   "price": "45294.7",  
-                   "qty": "0.04454749"  
-                },  
-                {  
-                   "price": "45296.1",  
-                   "qty": "0.35380000"  
-                },  
-                {  
-                   "price": "45297.5",  
-                   "qty": "0.09945542"  
-                },  
-                {  
-                   "price": "45299.5",  
-                   "qty": "0.18772827"  
-                }  
-             ],  
-             "checksum": 3310070434  
-          }  
-       ]  
+        "method": "add_order",  
+        "params": {  
+            "order_type": "trailing-stop",  
+            "side": "buy",  
+            "order_qty": 100,  
+            "symbol": "MATIC/USD",  
+            "triggers": {  
+                "reference": "last",  
+                "price": 1.0,  
+                "price_type": "pct"  
+            },  
+            "token": "G38a1tGFzqGiUCmnegBcm8d4nfP3tytiNQz6tkCBYXY"  
+        }  
     }  
     
 
-#### Generate Checksum String
+### Order Transactions and Requests
 
-The checksum is generated by iterating through the top 10 price levels in each side of book to generate a string representation, then passing this string to a CRC32 checksum function. The final checksum is a integer value.
+#### Requests
 
-1, Generate formatted string for each price level in the **asks** (sorted by price from low to high):
+  * All requests accept an optional, client-specified integer request identifier (`req_id`) for matching up the response, when returned. The uniqueness of the `req_id` is not enforced by the exchange.
+  * Warnings are generated on `add_order` transactions when deprecated fields are detected.
 
-  * Remove the decimal character, '.', from the `price`, i.e. "45285.2" -> "452852".
-  * Remove all leading zero characters from the `price`. i.e. "452852" -> "452852".
-  * Remove the decimal character, '.', from the `qty`, i.e. "0.00100000" -> "000100000".
-  * Remove all leading zero characters from the `qty`. i.e. "000100000" -> "100000".
-  * Add the `price` \+ `qty` (`452852100000`) string to the **asks** concatenation.
-  * Repeat for the remaining 9 price levels.
+#### Responses
 
-    
-    
-    45285210000045286415457195345286615457110945289615456091145290215890660452918154553491452947445474945296135380000452975994554245299518772827  
-    
+All responses to requests have a standardised response:
 
-2, Generate formatted string for each price level in the **bids** (sorted by price from high to low):
+  * `time_in` and `time_out` describe when our server received the request and sent the response, to help further isolate and measure network/client/server latency.
+  * `success` indicates if the request was handled successfully.
+  * `result` includes details specific to the type of request.
+  * `error` if present, gives details of what error occurred.
 
-  * Remove the decimal character, '.', from the `price`, i.e. "45283.5" -> "452835".
-  * Remove all leading zero characters from the `price`. i.e. "452835" -> "452835".
-  * Remove the decimal character, '.', from the `qty`, i.e. "0.10000000" -> "010000000".
-  * Remove all leading zero characters from the `qty`. i.e. "010000000" -> "10000000".
-  * Add the `price` \+ `qty` (`45283510000000`) string to the **bids** concatenation.
-  * Repeat for the remaining 9 price levels.
+Additionally, the responses now contain advisory messages, highlighting deprecated fields or upcoming changes to the request / channel.
 
-    
-    
-    452835100000004528341545820154528211000000045281010000000452803154592586452790799000045277633101034527753000000045277315460273745276615445238  
-    
+### Channels
 
-#### Generate Integer Value from Checksum String
+Additional event driven streams have been added:
 
-3, Concatenate the generated **asks** \+ **bids** strings.
-    
-    
-    45285210000045286415457195345286615457110945289615456091145290215890660452918154553491452947445474945296135380000452975994554245299518772827452835100000004528341545820154528211000000045281010000000452803154592586452790799000045277633101034527753000000045277315460273745276615445238  
-    
+  * `level3`: streams the orders that constitute the central limit order book. This offers an additional level of granularity over level2 `book` channel. This feed enables queue priority and a range of order book analytics to be calculated.
+  * `balance`: streams the client asset balances and transactions from your account ledger.
 
-4, Feed the concatenated string as input to a CRC32 checksum function.
-    
-    
-    3310070434  
-    
+## FAQs
 
-This value can now be compared to the checksum received to ensure your local book is accurate.
+The Frequently Asked Questions (FAQs) section tries to answer the most common questions that users can encounter.
 
-Optionally, depending on the CRC32 checksum function, the result may need to be cast to unsigned 32-bit integer.
+### Connection times out
 
-  * Maintaining the `book` Channel
-  * Checksum Calculation
-* Checksum Steps with Example
+The server closes any open websocket connection within approximately one minute of inactivity.
+
+Any, for example a [ping](/api/docs/websocket-v2/ping), request can be used to keep the connection alive.
+
+### EOrder:Reduce only:Non-PC
+
+The "**EOrder :Reduce only:Non-PC**" error response indicated to a problem with the Permitted Client (PC).
+
+For more information please see the Kraken support article [Margin trading and Permitted Client self-certification for Ontario, Canada clients](https://support.kraken.com/hc/en-us/articles/6474011237268#whataretherequirementsforontariocanadaresidentstocontinuemargintrading).
+
+### XBT/USD pair is missing
+
+If you are getting the error "**Currency pair not supported XBT/USD** " that is because we are using `BTC` instead of `XBT` for bitcoin in v2.
+
+Please use the [instrument](/api/docs/websocket-v2/instrument) channel to fetch the list of pairs which can be subscribed to via WebSockets API.
+
+## General Considerations (v1 and v2 connections)
+
+  * Transport Layer Security (TLS) with Server Name Indication (SNI) is required in order to establish a Kraken WebSockets API connection. See [Cloudflare's "What is SNI?" guide](https://www.cloudflare.com/learning/ssl/what-is-sni/) for more details.
+  * All messages sent and received via websockets are encoded in JavaScript Object Notation (JSON) format.
+  * Timestamps should not be considered unique and not be considered as aliases for transaction identifiers (IDs). Also, the granularity of timestamps is not representative of transaction rates.
+  * At least one private message should be subscribed to keep the authenticated client connection open.
+  * Cloudflare imposes a connection/re-connection rate limit---per Internet Protocol (IP) address---of approximately 150 attempts per rolling 10 minutes. If the reconnection rate limit is exceeded, the IP address is banned for 10 minutes.
+
+### Instrument supported
+
+  * For websocket v1, Please use REST API endpoint [AssetPairs](/api/docs/rest-api/get-tradable-asset-pairs) to fetch the list of pairs which can be subscribed via WebSockets API. For example, field 'wsname' gives the supported pairs name which can be used to subscribe.
+  * For websocket v2, Please use websocket endpoint [instrument](/api/docs/websocket-v2/instrument) on Websocket v2 channel to fetch the list of pairs which can be subscribed via WebSockets API. The `pairs` array contains the supported pair names (see field`symbol`).
+
+### Recommended Reconnection Behaviour
+
+  * Normal operation: Attempt reconnection instantly up to a handful of times if the websocket is dropped randomly.
+  * After maintenance or extended downtime: Attempt to reconnect no more quickly than once every five (5) seconds. There is no advantage to reconnecting more rapidly after maintenance during `cancel_only` mode.
+* Connection Details
+  * Websockets Versions
+  * Websockets v2
+* Cleaner Document Structure
+* Order Transactions and Requests
+* Channels
+  * FAQs
+* Connection times out
+* EOrder only
+* XBT/USD pair is missing
+  * General Considerations (v1 and v2 connections)
+* Instrument supported
+* Recommended Reconnection Behaviour

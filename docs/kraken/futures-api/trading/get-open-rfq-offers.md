@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfq-offers
 api_type: REST
-updated_at: 2026-05-27 19:50:10.516474
+updated_at: 2026-05-28 19:46:27.617664
 ---
 
-# List open offers on open RFQs
+# List all open RFQs
 
-**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-offers`
+**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs`
 
-Retrieve all open offers for the account on currently open RFQs
+Retrieve all currently open RFQs
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
@@ -18,7 +18,7 @@ Note: This is currently available exclusively in the Kraken pre-prod environment
   * 200
   * 404
 
-Open Offers
+All open RFQs
 
   * application/json
 * Schema
@@ -31,69 +31,53 @@ Open Offers
 
 **serverTime** string<date-time>required
 
-**offers** `object[]` *required*
+**rfqs** `object[]` *required*
 
   * Array [
 
     ↳ **uid** `string<uuid>` *required*
 
-Unique identifier for the offer
+The unique identifier for this RFQ
 
-**rfqUid** string<uuid>required
+    ↳ **expiry** `string<date-time>` *required*
 
-Unique identifier for the RFQ
+The time at which this RFQ expires
 
-**placementDate** string<date-time>required
+**markPrice** number<double>required
 
-The date and time when the offer was placed
+The reference price of the RFQ
 
-**lastUpdateDate** string<date-time>required
+    ↳ **legs** `object[]` *required*
 
-The last update date and time of the offer
-
-    ↳ **bid** `string<decimal>`
-
-The bid price, if available
-
-    ↳ **ask** `string<decimal>`
-
-The ask price, if available
-
-**bidSide** object[]
-
-Per-leg bid pricing. Null when using package-level pricing.
+The positions associated with the RFQ
 
   * Array [
 
-    ↳ **tradeable** `string` *required*
+        ↳ **symbol** `string` *required*
 
 The symbol of the derivatives contract
 
-    ↳ **price** `number<double>` *required*
+        ↳ **size** `number<double>` *required*
 
-The price for this leg
+The size of the position
 
-  * ]
+**markPrice** number<double>required
 
-**askSide** object[]
+The current mark price of the market
 
-Per-leg ask pricing. Null when using package-level pricing.
+**bestBid** number<double>
 
-  * Array [
+The best per-leg bid price across all offers
 
-    ↳ **tradeable** `string` *required*
+**bestAsk** number<double>
 
-The symbol of the derivatives contract
-
-    ↳ **price** `number<double>` *required*
-
-The price for this leg
+The best per-leg ask price across all offers
 
   * ]
 
-    ↳ **status** `string` *required*
+        ↳ **status** `string` *required*
 
-Lifecycle status of the parent RFQ at the time this offer is being read. `open` is returned from the `/open-offers` endpoint. The other values are returned from `/closed-offers`.
+Lifecycle status of the RFQ. `open` means the RFQ is still accepting offers. `expired` and `cancelled` indicate it closed without a trade. `filled_bid_side` and `filled_ask_side` indicate the requestor accepted an offer on the corresponding side.
 
 **Possible values:** [`open`, `expired`, `cancelled`, `filled_bid_side`, `filled_ask_side`]
 
@@ -106,7 +90,7 @@ RFQ feature is not enabled.
 
 **Schema**
 
-    ↳ **errors** `Error (string)[]`
+        ↳ **errors** `Error (string)[]`
 
 **Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
 
@@ -144,16 +128,7 @@ Error description.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
-
-#### Authorization: APIKey
-    
-    
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
-    
-    
-    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
-
-  * curl
+* curl
   * python
   * go
   * nodejs
@@ -162,10 +137,8 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-offers' \  
-    -H 'Accept: application/json' \  
-    -H 'APIKey: <APIKey>' \  
-    -H 'Authent: <Authent>'  
+    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
@@ -173,9 +146,3 @@ Request Collapse all
 Base URL
 
 https://demo-futures.kraken.com/derivatives/api/v3
-
-Auth
-
-general-api-key-read-only
-
-authent

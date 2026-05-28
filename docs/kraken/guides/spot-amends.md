@@ -2,134 +2,115 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-amends
 api_type: Guide
-updated_at: 2026-05-27 19:58:09.146066
+updated_at: 2026-05-28 19:48:15.879426
 ---
 
-# Spot Atomic Amends
+# Spot Client Order Identifiers
 
-The atomic amend model is a fast, single phase transaction that enables clients to modify order parameters in-place within the trading engine.
+The `cl_ord_id` parameter enables clients to tag orders with their own text or UUID identifiers for tracking and managing transactions across all Kraken APIs.
 
-A single order will be maintained across the lifetime of amend transactions. Each amended order will:
+## Overview
 
-  * Keep the same order identifiers assigned by Kraken and/or client.
-  * Keep the execution information on the order for any previous fills.
-  * Keep queue priority in the order book where possible.
+### What is cl_ord_id?
 
-**Example** : using `AmendOrder` endpoint to modify both order quantity and limit price by client order identifier.
+The `cl_ord_id` terminology is borrowed from Financial Information eXchange (FIX) protocol. It is a parameter used as a "client order identifier" for tracking and managing transactions.
+
+### Why is cl_ord_id Important?
+
+It's essential for clients to communicate about specific orders without confusion, and the `cl_ord_id` provides a unique identifier for each open order. The client assigns a `cl_ord_id` on order placement and Kraken uses this identifier to provide status updates back to the client.
+
+Kraken verifies `cl_ord_id` uniqueness across open orders for each client. FIX protocol extends this uniqueness check to across open orders and FIX session.
+
+The `cl_ord_id` is particularly important when it comes to managing flow. If a client wants to cancel or amend an order, they can provide the `cl_ord_id` of that order in the request.
+
+## Comparing Order Identifiers
+
+Kraken has a range of order identifiers with different characteristics. The client can choose the combination of identifiers to best fit their requirements.
+
+Characteristic| cl_ord_id| Kraken Id| Userref  
+---|---|---|---  
+Format| string| string| number  
+Encoding| UUID, free text| Kraken proprietary| +/- integer  
+Example| `d15708c1-dbb6-465d-b77d-47258319cc90`| `OCNNCT-MEB2I-2XGM7L`| `123948576`  
+Enforced Uniqueness| Open orders (+ FIX session) per client| Open and closed orders for all clients| None  
+Assigned By| Client| Kraken| Client  
+Good For| Managing daily flow with client preferred id format| Record keeping (unique across all orders over time) and managing flow| Tagging groups of orders with single reference  
+  
+note
+
+The `cl_ord_id` and `userref` are mutually exclusive—they cannot both be used on the same order.
+
+## Format and Performance
+
+`cl_ord_id` supports 3 different formats, depending on the length of the string:
+
+Format| Description| Example  
+---|---|---  
+Long UUID| 32 hex characters separated with 4 dashes| `6d1b345e-2821-40e2-ad83-4ecb18a06876`  
+Short UUID| 32 hex characters with no dashes| `da8e4ad59b78481c93e589746b0cf91f`  
+Free text| Free format ASCII text up to 18 characters| `meme-20240509-00010`  
+  
+Under the covers, the strings are stored as a 128-bit integer for efficiency and performance. A 128-bit integer is much more space efficient than a 36-character string.
+
+Operations and indexing on integers is more efficient than strings, meaning checking uniqueness and queries for orders can be much faster.
+
+## Example: Order Management with UUID
+
+**New Order:** Client creates a new passive order with UUID as `cl_ord_id`
     
     
     {  
-        "nonce": 1695828490,  
-        "cl_ord_id": "6d1b345e-2821-40e2-ad83-4ecb18a06876",  
-        "order_qty": "1.25",  
-        "limit_price": "690795"  
+        "method": "add_order",  
+        "params": {  
+            "order_type": "limit",  
+            "side": "buy",  
+            "limit_price": 60299.9,  
+            "order_qty": 1.0,  
+            "symbol": "BTC/USD",  
+            "cl_ord_id": "0835958d-c526-4ad8-aea8-af54836de47e"  
+        }  
     }  
     
 
-## Background
+**Cancel Order:** Client cancels the order using `cl_ord_id` (a list of identifiers is supported)
+    
+    
+    {  
+        "method": "cancel_order",  
+        "params": {  
+            "cl_ord_id": [  
+                "0835958d-c526-4ad8-aea8-af54836de47e"  
+            ]  
+        }  
+    }  
+    
 
-### Legacy Edit Transactions
+## FIX Protocol Guidelines
 
-The legacy `editOrder` endpoints are implemented using a **cancel-new** transaction model in the engine. This offers an effective and clean model for adjusting many of the core order attributes but also has some disadvantages.
+In the FIX protocol, the Tags ClOrdID and OrigClOrdID (Tags `11` and `41`) are mapped to the ClOrdID format as described above. This means that these order parameters are no longer limited to INT32. Instead, FIX ClOrdID now supports UUIDs.
 
-The cancel-new model has multiple phases: a cancel phase, a creation phase for a new order, and a 
-Caveats are introduced because the cancel phase loses some order state. Fill information for any executions is attached to the previous order and cannot be copied to the new one.
+The adoption of UUIDs, specifically timestamp-first version 4 UUIDs, significantly improves the efficiency and uniqueness of order identifiers. Unlike traditional INT32 identifiers, UUIDs offer a virtually limitless address space, greatly reducing the risk of identifier collisions and enhancing the robustness of the trading system.
 
-From a client perspective, legacy edit transactions have the following limitations:
+### Timestamp-First v4 UUIDs
 
-  * Latency is introduced due to multiple phases of processing and persistence.
-  * The client needs to chain order identifiers to track changes to an order.
-  * Orders always lose priority in the price queue.
-  * The loss of fill information on the order makes the transaction difficult to use when trading around the market price.
+  * **Structure** : Timestamp-first v4 UUIDs start with a timestamp, ensuring that each generated UUID is unique and sequential based on the time of creation.
+  * **Uniqueness** : These UUIDs combine the uniqueness of version 4 UUIDs with the time-based ordering, making them ideal for high-frequency trading environments.
+  * **Compatibility** : They are fully compatible with existing systems that support UUIDs, ensuring a smooth transition and integration.
 
-### Atomic Amend Benefits
+### Implementation Guidelines
 
-Atomic amends address these limitations with significant performance gains:
+To improve the efficiency of the FIX API, clients are required to send a ClOrdID of either:
 
-  * Atomic amends are **faster than legacy edit transactions** within the engine due to a reduction in phases.
-  * Atomic amends are **faster than creating a new order** given they adjust the existing order in the book.
-  * Given the efficiency increase, **higher rate limits** are available on atomic amends. See [spot transaction limits](/api/docs/guides/spot-ratelimits).
-  * Due to better handling of race conditions, systematic clients are no longer required to initiate their own cancel-new transactions, reducing risk, number of transactions, I/O, and latency.
-
-### API Support
-
-The atomic amend transactions are supported in the following APIs:
-
-  * REST [/AmendOrder](/api/docs/rest-api/amend-order)
-  * Websockets v2 [/amend_order](/api/docs/websocket-v2/amend_order) and v1 [/amendOrder](/api/docs/websocket-v1/amendorder)
-  * FIX [cancel-replace 35=G](/api/docs/fix-api/ocrr-fix)
-
-The amend history for an order can be retrieved using the REST [/OrderAmends](/api/docs/rest-api/get-order-amends) endpoint.
-
-### Amending Below Fill Quantity
-
-To keep the behaviour consistent with the client intentions (i.e. not to trade above given order quantity), amending the order quantity to below the filled quantity will be accepted.
-
-The order quantity will be amended to match the filled quantity and the remaining order is canceled back to the client.
-
-In terms of rate limits, if an order is cancelled by an amend it has the standard cancel rate limit penalty.
-
-## Supported Fields
-
-The atomic amend model allows modification of the price and quantity fields. Single or multiple parameters can be amended in a transaction.
-
-  * Order limit price.
-  * Order trigger price.
-  * Order quantity.
-  * Display quantity on iceberg orders.
-
-All other order attributes are not amendable. If the order type, margin characteristics or the lifetime attributes (start, end, time-in-force) need to be changed then cancel the existing order and resend a new one.
-
-## Identifiers
-
-The order to be amended can be identified by either:
-
-  * **Kraken order identifier** : the Kraken order identifier is unique over all order history and is received following the creation of a new order, e.g. `OGYHBI-KTAUP-5TC3HO`.
-  * **Client order identifier** : `cl_ord_id` are generated by the client and passed as a parameter on new orders, they are enforced to be unique over open orders and can be a UUID or text string, e.g.`2c6be801-1f53-4f79-a0bb-4ea1c95dfae9`.
-
-### Post Only
-
-For changes to limit price, an additional `post_only` attribute can be added to the transaction. The `post_only` flag will cause the amend to be rejected if the transaction would cause an immediate match in the book. This prevents clients from inadvertently crossing the spread and taking liquidity.
-
-## Queue Priority
-
-The matching engine uses a central limit order book (CLOB) model that matches orders on a price-time priority basis. Keeping queue priority can be important, especially for illiquid assets.
-
-The impact of an amend on queue priority depends on which field is amended, see table below.
-
-Field| Amend Up| Amend Down| Notes  
----|---|---|---  
-Order Quantity| Order placed at back of price queue.| Order maintains position in price queue.|   
-Display Quantity| Displayed order maintains position in the price queue, the next iceberg reload will be at the new display quantity.| Displayed order maintains position in the price queue.| Iceberg orders only.  
-Order Limit Price| Order placed at back of new price queue.| Order placed at back of new price queue.|   
-Trigger Price| No impact.| No impact.| Trigger based orders are placed in the book after triggering.  
-  
-## Iceberg Order Types
-
-Iceberg orders show display size resting in the price queue with the remaining order quantity hidden. When the display quantity fully fills, the iceberg order appends the more quantity to the back of the visible price queue from the hidden residual.
-
-The iceberg display size parameter is a maximum quantity to show in the book, the amount of quantity in the market at any time can be less than display size but never more. Amending display size will always try to maintain queue priority: amending down will maintain existing queue position and amending up will come into effect next reload cycle.
-
-To avoid very granular trading of iceberg orders, there is a restriction on display size which must be greater than or equal to 1/15 of order remaining size. This validation is performed on amendment of both display quantity and order quantity for iceberg orders.
-
-## Chaining of Unacknowledged Requests
-
-For the FIX API, chaining of _unacknowledged_ amends and cancels is fully supported. They are guaranteed to be processed in sequence by the API layer and the trading engine.
-
-For websockets API, the sequence of _unacknowledged_ amends and cancels is **not** guaranteed. The sequence of transactions is not deterministic, the API hot path depends on the load balancing of processes and threads.
-
-## Caveats
-
-  * Orders with conditional close terms attached are not supported by the atomic amend model.
-* Background
-* Legacy Edit Transactions
-* Atomic Amend Benefits
-* API Support
-* Amending Below Fill Quantity
-  * Supported Fields
-  * Identifiers
-* Post Only
-  * Queue Priority
-  * Iceberg Order Types
-  * Chaining of Unacknowledged Requests
-  * Caveats
+  * **Ever-Increasing Positive Numbers** : Clients can use ever-increasing positive numbers, such as nanosecond timestamps, to ensure the uniqueness and sequential nature of the identifiers.
+* _Example_ : Using the current microsecond timestamp as the ClOrdID, such as `1623448294234000` (the field is max 18 characters)
+  * **Timestamp-First v4 UUIDs** : Alternatively, clients can adopt timestamp-first v4 UUIDs, which provide a robust and scalable solution for order identification.
+* _Example_ : A timestamp-first v4 UUID might look like `1b4e28ba-2fa1-11d2-883f-0016d3cca427`, where the initial part (`1b4e28ba-2fa1`) of the UUID represents the timestamp.
+* Overview
+* What is cl_ord_id?
+* Why is cl_ord_id Important?
+  * Comparing Order Identifiers
+  * Format and Performance
+  * Example: Order Management with UUID
+  * FIX Protocol Guidelines
+* Timestamp-First v4 UUIDs
+* Implementation Guidelines

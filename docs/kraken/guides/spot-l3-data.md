@@ -1,160 +1,104 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-l3-data
-api_type: Market Data
-updated_at: 2026-05-27 19:58:37.710865
+api_type: Guide
+updated_at: 2026-05-28 19:48:21.709748
 ---
 
-# Spot Level 3 Market Data
+# Spot Trading Limits
 
-Level 3 (L3) market data provides visibility of individual orders in the order book. This insight enables determination of queue priorities, resting times, fill probabilities, and many other analytics to help make better informed trading decisions.
+The engine has two categories of limits:
 
-## Market Data Levels Overview
+  * Rate of transactions.
+  * Open order count.
 
-Using the Kraken API channels as a reference:
+The limits are agnostic of the API used, i.e. there is a shared limit across REST, Websockets and FIX.
 
-Level| Description| Channel  
----|---|---  
-**L1**|  Top of the book (best bid/offer) and recent trade data| `ticker`  
-**L2**|  Individual price levels with aggregated order quantities at each level| `book`  
-**L3**|  Individual orders in the book with order IDs and timestamps| `level3`  
+## Transaction Rate Limits
+
+Each client has a rate counter **per pair** , the count starts at 0 and the count is incremented on each transaction by a given amount depending on the transaction type. The count is decremented over time by a decay rate based on client tier.
+
+When the rate counter threshold is reached, the engine will generate `EOrder:Rate limit exceeded` rejection message.
+
+Note, most clients will never reach the trading rate threshold and the restriction is designed to protect the market / platform when clients trading at higher frequencies with a larger quantity of orders.
+
+### Incrementing the rate counter
+
+The table below shows the increase in the rate counter for different transactions:
+
+  * **Fixed count** : this is always applied on receipt of the transaction (even if the transaction fails validation).
+  * **Decaying count** : this is an additional count depending on the resting time of the order. The size of the count depends on the number of seconds since the order was created or amended.
+
+Transaction| Fixed| < 5s| < 10s| < 15s| < 45s| < 90s| < 300s  
+---|---|---|---|---|---|---|---  
+Add Order| +1| -| -| -| -| -| -  
+Amend Order| +1| +3| +2| +1| -| -| -  
+Edit Order| +1| +6| +5| +4| +2| +1| -  
+Cancel Order| -| +8| +6| +5| +4| +2| +1  
+Batch Add| +(n/2)| -| -| -| -| -| -  
+Batch Cancel| -| +(8*n)| +(6*n)| +(5*n)| +(4*n)| +(2*n)| (1*n)  
   
-## Order Visibility
+Note, for batch orders:
 
-The Level 3 feed shows orders **resting** in the visible order book. The book will never be crossed (i.e. no overlapping buy and sell orders). Therefore, this feed excludes:
+  * `n` represents the number of orders in a batch.
+  * If the rate counter in the batch exceeds maximum for a batch cancel, the requests in batch are still accepted.
 
-  * In-flight orders
-  * Unmatched market orders
-  * Untriggered stop-loss and take-profit orders
-  * Hidden quantity of `iceberg` orders
+#### Example: rate counter increase over short order lifetime
 
-## Use Cases
+Scenario: a client sends a new order and amends the price after 7 seconds. After a further 36 seconds, the client cancels the order from the book, what would be the increase to the rate counter?
 
-Level 3 data enables advanced trading analytics:
+Description| Rate Count Change| Rate Count Total  
+---|---|---  
+Add order - fixed| +1| 1  
+Amend order - fixed| +1| 2  
+Amend order - decay < 15s| +2| 4  
+Cancel order - decay < 45s| +4| 8  
+  
+The client will have accumulated a total rate counter value of **8** for this specific pair.
 
-  * **Queue Priority Analysis** : Understand your position in the order queue at each price level
-  * **Resting Time Metrics** : Track how long orders have been in the book
-  * **Fill Probability Estimation** : Estimate likelihood of order execution based on queue depth
-  * **Market Microstructure Analysis** : Study order flow patterns and participant behavior
-  * **Liquidity Analysis** : Assess true market depth beyond aggregated views
+This simple example shows the _increase_ in rate counter only. In practise the rate counter is also decrementing over time, this will be covered in the next section.
 
-## REST API
+### Decrementing the rate counter
 
-The `/private/Level3` endpoint provides a snapshot of the Level 3 order book.
+The rate counter is decreased by a **decay rate every second** , the decay rate varies by client tier.
 
-### Example Request
+| Starter Tier| Intermediate Tier| Pro Tier  
+---|---|---|---  
+Rate counter decay rate| -1| -2.34| -3.75  
+  
+#### Example: rate counter decrease over 10 seconds
+
+Scenario: a intermediate tier client has entered a burst of 50 orders and waited 10 seconds, what would be the new rate counter value at the end of the period?
     
     
-    {  
-        "nonce": 1695828490,  
-        "pair": "BTC/USD",  
-        "depth": 10  
-    }  
+    rate counter = (50 orders * add order) - (10 seconds * intermediate decay rate) = (50 * 1) - (10 * 2.34) = 26.6  
     
 
-### Example Response
-    
-    
-    {  
-        "error": [],  
-        "result": {  
-            "pair": "BTC/USD",  
-            "bids": [  
-                {  
-                    "price": "90509.00000",  
-                    "qty": "0.04902300",  
-                    "order_id": "ONLALL-67PF5-3CAQCL",  
-                    "timestamp": 1765628335242269554  
-                },  
-                {  
-                    "price": "90509.00000",  
-                    "qty": "0.00010000",  
-                    "order_id": "OZMMNG-E5B3K-4DCURI",  
-                    "timestamp": 1765628346024196738  
-                },  
-                {  
-                    "price": "90509.00000",  
-                    "qty": "0.14670600",  
-                    "order_id": "OGXZBL-RDLER-I45MMN",  
-                    "timestamp": 1765628373027400852  
-                },  
-                {  
-                    "price": "90506.80000",  
-                    "qty": "1.65733300",  
-                    "order_id": "O3YQDB-56ZLD-PYJJCD",  
-                    "timestamp": 1765628373581704382  
-                }  
-            ],  
-            "asks": [  
-                {  
-                    "price": "90509.10000",  
-                    "qty": "0.00110900",  
-                    "order_id": "OVT3GM-4OLSW-L4PPLG",  
-                    "timestamp": 1765628340224297666  
-                },  
-                {  
-                    "price": "90509.10000",  
-                    "qty": "0.02771600",  
-                    "order_id": "OBT7YM-NK4AM-3Z6CZR",  
-                    "timestamp": 1765628349238326760  
-                },  
-                {  
-                    "price": "90509.10000",  
-                    "qty": "0.88510000",  
-                    "order_id": "OPFXIF-2BHGV-3NJJTE",  
-                    "timestamp": 1765628369865693932  
-                },  
-                {  
-                    "price": "90509.50000",  
-                    "qty": "0.34119400",  
-                    "order_id": "OWMYX7-E63XJ-RHV64F",  
-                    "timestamp": 1765628363316840374  
-                }  
-            ]  
-        }  
-    }  
-    
+### Exceeding rate counter threshold
 
-## Websockets
+When the rate counter exceeds the threshold for the client tier, further transactions will be restricted with `EOrder:Rate limit exceeded` rejection until the rate counter has decayed below the threshold.
 
-For real-time Level 3 data, use the `level3` channel on the authenticated websockets connection. The channel provides:
+| Starter Tier| Intermediate Tier| Pro Tier  
+---|---|---|---  
+Rate counter threshold| 60| 125| 180  
+  
+### Additional rate counter information
 
-  * Initial snapshot of the order book
-  * Real-time updates as orders are added, modified, or removed
-  * Sequence numbers for synchronization
+  * The rate counter values can be monitored in the websockets feeds [openOrders (v1)](/api/docs/websocket-v1/openorders) or [executions (v2)](/api/docs/websocket-v2/executions).
+  * A [rate counter calculator](https://support.kraken.com/hc/en-us/articles/360061656951-Trading-rate-limit-calculator) is available in the support pages.
 
-### Building the Book
+## Open Order Limits
 
-The `level3` channel synchronizes the initial snapshot and subsequent stream of updates in a similar mechanism to the `book` feed. Only a single subscription request is required to build the book—the channel handles snapshot and update synchronization automatically.
+The open order limit is the maximum number of open orders **per pair**. When the open order threshold is reached, the engine will generate `EOrder:Orders limit exceeded` rejection message.
 
-### Checksum Verification
+The maximum open order limit varies per client tier.
 
-Optional checksum verification provides an additional check that the client version of the book has been constructed correctly and is synchronized to the exchange.
-
-The checksum can be verified in production on every update or periodically depending on requirements. Some clients generate the checksum in the development environment only when building their book models.
-
-See the [Level3 Checksum Guide](/api/docs/guides/spot-ws-l3-v2) for detailed checksum calculation instructions.
-
-## Performance Considerations
-
-The latency differences between the `level3` and `book` feeds will be negligible compared to the transport time. However, here are some performance considerations:
-
-  * **Direct Stream** : `level3` is a direct stream of order events from the matching engine. The `book` feed contains cumulative data which is aggregated extremely efficiently in the engine. Consider both channels as streams from the matching engine with a thin API layer.
-
-  * **Payload Size** : `level3` data payload is larger than `book`. It takes more time to encode, transmit over the wire, and decode since it describes all orders in the book, not just cumulative quantity at a price level.
-
-  * **Channel Load** : The channels are hosted on different market data stacks. `level3` uses an authenticated channel while `book` uses a public channel. Typically, the authenticated channel has less load than the public channel (but this may not always be the case).
-
-  * **Checksum Computation** : `level3` checksum takes longer to compute than `book` checksum since it also verifies the sequence of orders in a price level.
-
-  * **Latency Metrics** : The timestamps in both feeds enable clients to create latency metrics for detailed performance tracking.
-* Market Data Levels Overview
-  * Order Visibility
-  * Use Cases
-  * REST API
-* Example Request
-* Example Response
-  * Websockets
-* Building the Book
-* Checksum Verification
-  * Performance Considerations
+| Starter Tier| Intermediate Tier| Pro Tier  
+---|---|---|---  
+Max open orders per pair| 60| 80| 225  
+* Transaction Rate Limits
+* Incrementing the rate counter
+* Decrementing the rate counter
+* Exceeding rate counter threshold
+* Additional rate counter information
+  * Open Order Limits

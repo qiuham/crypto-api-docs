@@ -2,18 +2,19 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/cancelallordersafter
 api_type: WebSocket
-updated_at: 2026-05-27 20:09:17.453790
+updated_at: 2026-05-28 19:55:34.072941
 ---
 
-# Cancel on Disconnect
+# Cancel Order
 
 **WebSocket Endpoint:** `wss://ws-auth.kraken.com`
     
-    cancelAllOrdersAfterAuthentication Required
+    cancelOrderAuthentication Required
 
-`cancelAllOrdersAfter` request provides a "Dead Man's Switch" mechanism to protect the client from network malfunction, extreme latency or unexpected matching engine downtime. The client can send a request with a timeout (in seconds), that will start a countdown timer which will cancel _all_ client orders when the timer expires. The client has to keep sending new requests to push back the trigger time, or deactivate the mechanism by specifying a timeout of 0. If the timer expires, all orders are cancelled and then the timer remains disabled until the client provides a new (non-zero) timeout.
+The `cancelOrder` request cancels one or more open orders in a single request. The orders to be cancelled can be identified by a range of client or Kraken identifiers.
 
-The recommended use is to make a call every 15 to 30 seconds, providing a timeout of 60 seconds. This allows the client to keep the orders in place in case of a brief disconnection or transient delay, while keeping them safe in case of a network breakdown. It is also recommended to disable the timer ahead of regularly scheduled trading engine maintenance (if the timer is enabled, all orders will be cancelled when the trading engine comes back from downtime - planned or otherwise).
+  * For every cancelled order, a `cancelOrderStatus` message is sent.
+  * For example, if a cancelOrder request is sent for cancelling three orders [A, B, C], then if two update messages for 'cancelOrderStatus' are received along with an error such as 'EOrder: Unknown order', then it would imply that the third order is not cancelled. The error message could be different based on the condition which was not met by the 'cancelOrder' request.
 
 ## Request
 
@@ -24,56 +25,46 @@ The recommended use is to make a call every 15 to 30 seconds, providing a timeou
 
 **event** `string` *required*
 
-**Value:** `cancelAllOrdersAfter`
+**Value:** `cancelOrder`
 
-**timeout** `integer` *required*
+**txid** `array of string` *required*
 
-Timeout specified in seconds. 0 to disable the timer.
+A list containing either client `order_userref` or Kraken `order_id` identifiers.
 
-**reqid** `integer`
+    ↳ **cl_ord_id** `array of string`
+
+A list of client `cl_ord_id` identifiers.
+
+        ↳ **reqid** `integer`
 
 Optional client originated request identifier sent as acknowledgment in the response.
 
-**token** `string` *required*
+        ↳ **token** `string` *required*
 
 This is a authenticated request, a session token is required.
     
     
     {  
-      "event": "cancelAllOrdersAfter",  
-      "reqid": 1608543428050,  
-      "timeout": 60,  
-      "token": "0000000000000000000000000000000000000000"  
+      "event": "cancelOrder",  
+      "token": "0000000000000000000000000000000000000000",  
+      "txid": [  
+        "OGTT3Y-C6I3P-XRI6HX",  
+        "OGTT3Y-C6I3P-X2I6HX"  
+      ]  
     }  
     
 
 ## Response
 
   * Response Schema
-  * Example: Enabled
-  * Example: Disabled
+  * Example
+  * Example
 
 ### MESSAGE BODY
 
 **event** `string`
 
-**Value:** `cancelAllOrdersAfterStatus`
-
-**currentTime** string
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-Timestamp when the request has been handled (second precision, rounded up).
-
-**triggerTime** string
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-Timestamp at which all open orders will be cancelled, unless the timer is extended or disabled (second precision, rounded up).
+**Value:** `cancelAllStatus`
 
 **status** `string`
 
@@ -89,19 +80,14 @@ Error message for unsuccessful requests.
     
     
     {  
-      "currentTime": "2020-12-21T09:37:09Z",  
-      "event": "cancelAllOrdersAfterStatus",  
-      "reqid": 1608543428050,  
-      "status": "ok",  
-      "triggerTime": "2020-12-21T09:38:09Z"  
+      "event": "cancelOrderStatus",  
+      "status": "ok"  
     }  
     
     
     
     {  
-      "currentTime": "2020-12-21T09:37:09Z",  
-      "event": "cancelAllOrdersAfterStatus",  
-      "reqid": 1608543428051,  
-      "status": "ok",  
-      "triggerTime": "0"  
+      "errorMessage": "EOrder:Unknown order",  
+      "event": "cancelOrderStatus",  
+      "status": "error"  
     }

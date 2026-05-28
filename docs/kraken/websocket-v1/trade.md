@@ -2,18 +2,18 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/trade
 api_type: WebSocket
-updated_at: 2026-05-27 20:10:43.678188
+updated_at: 2026-05-28 19:55:52.934092
 ---
 
-# Trade
+# Unsubscribe
 
-CHANNEL
-**Endpoint:** `wss://ws.kraken.com`
-    trade
+**WebSocket Endpoint:** `wss://ws.kraken.com`
+    
+    unsubscribe
 
-Trade feed for a currency pair.
+Unsubscribe, can specify a channelID or multiple currency pairs.
 
-## Subscription Request
+## Request
 
   * Request Schema
   * Example
@@ -22,124 +22,48 @@ Trade feed for a currency pair.
 
 **event** `string` *required*
 
-**Value:** `subscribe`
+**Value:** `unsubscribe`
 
-**pair** `array of strings` *required*
+**pair** `array of strings` *conditional*
+
+**Condition:** All channels which support pair subscriptions. 
 
 **Example:**["BTC/USD", "MATIC/GBP"]
 
-The currency pairs for this request.
+Unsubscribe to specific pairs.
+
+    ↳ **reqid** `string`
+
+Optional client originated request identifier sent as acknowledgment in the response.
 
     ↳ **subscription** `object`
 
         ↳ **name** `string` *required*
 
-**Value:** `trade`
+**Possible values:**[`book`, `ohlc`, `openOrders`, `ownTrades`, `spread`, `ticker`, `trade`, `*`] 
 
-        ↳ **reqid** `string`
+The name of the channel to unsubscribe. Wildcard "*" is supported. 
 
-Optional client originated request identifier sent as acknowledgment in the response.
+        ↳ **depth** `integer` *conditional*
+
+**Condition:** 'book' channel only. 
+
+Unsubscribe to a specific depth.
+
+        ↳ **interval** `integer` *conditional*
+
+**Condition:** 'ohlc' channel only. 
+
+Unsubscribe to a specific interval.
     
     
     {  
-      "event": "subscribe",  
+      "event": "unsubscribe",  
       "pair": [  
-        "XBT/EUR"  
+        "XBT/EUR",  
+        "XBT/USD"  
       ],  
       "subscription": {  
-        "name": "trade"  
+        "name": "ticker"  
       }  
-    }  
-    
-
-## Subscription Snapshot and Update Response
-
-  * Response Schema
-  * Example
-
-### MESSAGE BODY
-
-****array [
-
-**[0] channel_id** integer deprecated
-
-**Deprecated Usage:** Use 'channel_name' and 'pair'.
-
-Channel identifier.
-
-**[1] trades** array [
-
-A list of trades.
-
-**[many] trade** array [
-
-**[0] price** string
-
-Price.
-
-**[1] volume** string
-
-Volume.
-
-**[2] time** string
-
-Time, seconds since epoch.
-
-**[3] side** string
-
-**Possible values:**[`buy`, `sell`] 
-
-Taker side.
-
-**[4] order_type** string
-
-**Possible values:**[`market`, `limit`] 
-
-Taker order type.
-
-**[5] misc** string
-
-Miscellaneous.
-
-]
-
-]
-
-**[2] pair** string
-
-**Example:** "BTC/USD"
-
-The symbol of the currency pair.
-
-**[3] channel_name** string
-
-**Value:** `trade`
-
-The name of the channel.
-
-]
-    
-    
-    [  
-      0,  
-      [  
-        [  
-          "5541.20000",  
-          "0.15850568",  
-          "1534614057.321597",  
-          "s",  
-          "l",  
-          ""  
-        ],  
-        [  
-          "6060.00000",  
-          "0.02455000",  
-          "1534614057.324998",  
-          "b",  
-          "l",  
-          ""  
-        ]  
-      ],  
-      "trade",  
-      "XBT/USD"  
-    ]
+    }

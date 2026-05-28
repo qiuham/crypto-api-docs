@@ -2,69 +2,109 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-websockets
 api_type: WebSocket
-updated_at: 2026-05-27 19:57:54.812807
+updated_at: 2026-05-28 19:48:12.697376
 ---
 
-# Futures Websockets
+# Kraken APIs
 
-## Sign challenge
+## Introduction
 
-The subscribe and unsubscribe requests to WebSocket private feeds require a signed challenge message with the user `api_secret`.
+We offer a range of Application Programming Interfaces (APIs) to send order transactions, stream market data, manage accounts, and integrate crypto services into your applications.
 
-The challenge is obtained as is shown in Section WebSocket API Public (using the `api_key`).
+### Direct Trading APIs
 
-Authenticated requests must include both the original challenge message (`original_challenge`) and the signed (`signed_challenge`) in JSON format.
+For direct access to Kraken's spot and futures trading platforms:
 
-### Challenge
+  * [**REST API**](/api/docs/guides/spot-rest-intro): REST (REpresentational State Transfer) is one of the most widely used architectures for building web-based applications, use this interface for request-response style messages over HTTP.
 
-> Challenge example
-    
-    
-    c100b894-1729-464d-ace1-52dbce11db42  
-    
+  * [**Websocket API**](/api/docs/guides/spot-ws-intro): WebSockets offers 2-way communication over a persisted network connection. This interface is useful for receiving event-driven responses without the need to continuously poll for data.
 
-The challenge is a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) string.
+  * [**FIX API**](/api/docs/guides/fix-intro): FIX (Financial Information eXchange) is used extensively by institutional firms (buy and sell-side) for sending key-value pair trading data over a session based protocol.
 
-The steps to sign the challenge are the same as the steps to generate an authenticated HTTP request except for step 1 which now is just the `challenge` string:
+### Embed API (B2B / B2B2C)
 
-  1. Hash the challenge with the [SHA-256 algorithm](https://en.wikipedia.org/wiki/SHA-2)
-  2. [Base64-decode](https://en.wikipedia.org/wiki/Base64) your `api_secret`
-  3. Use the result of step 2 to hash the result of step 1 with the [HMAC-SHA-512 algorithm](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code)
-  4. [Base64-encode](https://en.wikipedia.org/wiki/Base64) the result of step 3
+For businesses looking to integrate crypto services into their own products:
 
-The result of the step 4 is the signed challenge which will be included in the subscribe request.
+  * [**Embed REST API**](/api/docs/embed-api/list-embed-assets): Enables partners to offer crypto trading, portfolio management, and earn features to their end users. The Embed API is designed for B2B and B2B2C use cases where you want to provide Kraken-powered crypto services under your own brand.
 
-The table below shows the expected output from example inputs:
+With the Embed API, partners can:
 
-Name| Value  
----|---  
-`challenge`| `c100b894-1729-464d-ace1-52dbce11db42`  
-`api_secret`| `7zxMEF5p/Z8l2p2U7Ghv6x14Af+Fx+92tPgUdVQ748FOIrEoT9bgT+bTRfXc5pz8na+hL/QdrCVG7bh9KpT0eMTm`  
-signed output| `4JEpF3ix66GA2B+ooK128Ift4XQVtc137N9yeg4Kqsn9PI0Kpzbysl9M1IeCEdjg0zl00wkVqcsnG4bmnlMb3A==`  
+  * Create and manage users on behalf of their customers
+  * Execute trades using a quote-based model
+  * Access portfolio and earn features
+  * Receive real-time updates via webhooks
+
+See the [Embed Authentication Guide](/api/docs/guides/embed-rest-auth) and [Your First Trade](/api/docs/guides/embed-first-trade) to get started.
+
+### Choosing an API
+
+Our APIs offer a versatile ecosystem. Each API has distinct characteristics - clients can choose a single protocol or combination of protocols that best fit their requirements.
+
+Please see the Kraken [support article](https://support.kraken.com/hc/en-us/articles/4404197772052-Which-API-should-I-use-REST-versus-WebSocket) for further information to help choose an API.
+
+### Summary of product versus exchange / API
+
+| **Spot REST**| **Spot Websocket**| **Spot FIX**| **Futures REST**| **Futures Websocket**| **Futures FIX**  
+---|---|---|---|---|---|---  
+**Market Data**| [Yes](/api/docs/rest-api/get-order-book)| [Yes](/api/docs/websocket-v2/book)| [Yes](/api/docs/fix-api/mdr-fix)| [Yes](/api/docs/futures-api/trading/get-orderbook)| [Yes](/api/docs/futures-api/websocket/book)| [Yes](/api/docs/fix-api/mdr-fix)  
+**Order Transactions**| [Yes](/api/docs/rest-api/add-order)| [Yes](/api/docs/websocket-v2/add_order)| [Yes](/api/docs/fix-api/nos-fix)| [Yes](/api/docs/futures-api/trading/send-order)| -| [Yes](/api/docs/fix-api/nos-fix)  
+**Account Data**| [Yes](/api/docs/rest-api/get-account-balance)| [Yes](/api/docs/websocket-v2/balances)| -| [Yes](/api/docs/futures-api/trading/get-accounts)| [Yes](/api/docs/futures-api/websocket/balances)| -  
+**Funding**| [Yes](/api/docs/rest-api/get-deposit-methods)| -| -| [Yes](/api/docs/futures-api/trading/transfer)| -| -  
+**Earn**| [Yes](/api/docs/rest-api/allocate-strategy)| -| -| -| -| -  
+**Subaccounts**| [Yes](/api/docs/rest-api/create-subaccount)| -| -| [Yes](/api/docs/futures-api/trading/subaccounts)| -| -  
+**Charts**|  -| -| -| [Yes](/api/docs/futures-api/charts/analytics)| -| -  
   
-## Subscriptions
+## Futures and Spot Trading
 
-Subscriptions requests are sent through a web socket connection.
+Kraken currently has 2 distinct trading engines, for **spot** and **futures**. There are many similarities in the behaviours between the engines, however the spot and futures engines have important differences in terms of:
 
-To subscribe to a feed, a web socket connection is required to establish a connection using the following URL:
+  * API protocols and endpoints.
+  * Onboarding process and testing.
+  * Authentication.
+  * Rate limits.
+  * Error messages.
 
-`wss://futures.kraken.com/ws/v1`
+## IP Whitelisting
 
-### Keeping the connection alive
+API/programmatic traders can connect directly to Kraken AWS point of presence to improve latency and performance by whitelisting IPs. Detailed instructions on connecting to the UAT environment will be provided by Kraken’s support team.
 
-In order to keep the websocket connection alive, you will need to make a ping request at least every 60 seconds. You can see this in our [sample implementation](https://github.com/CryptoFacilities/WebSocket-v1-Python/blob/master/cfWebSocketApiV1.py#L138).
+## Colocation Access
 
-## Snapshots and updates
+We offer colocation services through our partnership with [Beeks Group](https://kraken.exchange-cloud.beeksgroup.com/), enabling you to host your trading infrastructure in close proximity to Kraken's API endpoints for enhanced performance and reduced latency.
 
-For ease of use, most web socket feeds first send a snapshot of the history or current state and subsequently send real-time updates.
+> **Note:** Dedicated URLs are required to access colocation services.
 
-### Authentication
+### Endpoint URLs
 
-In order to subscription to a private feed, clients must pass a challenge which involves signing a message (see Section Sign Challenge) with the private API key. First, a message must be sent to request the challenge. Second, the solved challenge has to be passed in every subscribe and unsubscribe message that is sent.
+  * **Spot WebSocket (WS):**
+* `colo-london.vip-ws.kraken.com`
+* `colo-london.vip-ws-auth.kraken.com`
+  * **FIX API:**
+* `colo-london.vip-fix.kraken.com`
+  * **Futures REST API:**
+* `colo-london.vip.futures.kraken.com`
+  * **Futures WS API:**
+* `wss://colo-london.vip.futures.kraken.com/ws/v1`
 
-  * Sign challenge
-* Challenge
-  * Subscriptions
-* Keeping the connection alive
-  * Snapshots and updates
-* Authentication
+## FAQ and Support
+
+Further information can be found on the [API section](https://support.kraken.com/hc/en-us/sections/4402371110548-API) of our support pages.
+
+If you have problems making API requests, please [send us](https://support.kraken.com/hc/en-us/requests/new?ticket_form_id=360000104043) a full 
+## Notices
+
+Use of the Kraken APIs is subject to the [Kraken Terms & Conditions](https://www.kraken.com/legal) and [Privacy Notice](https://www.kraken.com/legal/privacy), as well as all other applicable terms and disclosures made available on [www.kraken.com](https://www.kraken.com/).
+
+You must seek our prior permission for certain uses of the Kraken API’s. This includes, but is not limited to, any non-personal commercial use of data from publicly accessible endpoints, such as market data, exchange status, and any other data. You may seek such permission by contacting [marketdata@kraken.com](mailto:marketdata@kraken.com).
+
+  * Introduction
+* Direct Trading APIs
+* Embed API (B2B / B2B2C)
+* Choosing an API
+* Summary of product versus exchange / API
+  * Futures and Spot Trading
+  * IP Whitelisting
+  * Colocation Access
+* Endpoint URLs
+  * FAQ and Support
+  * Notices

@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-public-order-events
 api_type: REST
-updated_at: 2026-05-27 19:46:34.411767
+updated_at: 2026-05-28 19:45:38.116537
 ---
 
-# Get public order events
+# Get public mark price events
 
-**GET** `https://futures.kraken.com/api/history/v3/market/:tradeable/orders`
+**GET** `https://futures.kraken.com/api/history/v3/market/:tradeable/price`
 
-Lists order events for a market.
+Lists price events for a market.
 
 ## Request
 
@@ -69,158 +69,9 @@ The maximum number of results to return. The upper bound is determined by a glob
 
     ↳ **event** `object` *required*
 
-oneOf
-* MOD1
-* MOD2
-* MOD3
-
-**OrderPlaced** objectrequired
-
-        ↳ **order** `object` *required*
-
-            ↳ **uid** `string<uuid>` *required*
-
-            ↳ **tradeable** `string` *required*
-
-            ↳ **direction** `string` *required*
-
-`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
-
-**Possible values:** [`Buy`, `Sell`, `Unknown`]
-
-            ↳ **quantity** `string<decimal>` *required*
+        ↳ **price** `string<decimal>` *required*
 
 **Example:**`1234.56789`
-
-            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
-
-**Example:**`1604937694000`
-
-**limitPrice** string<decimal>required
-
-**Example:**`1234.56789`
-
-**orderType** stringrequired
-
-**reduceOnly** booleanrequired
-
-**lastUpdateTimestamp** integer<timestamp-milliseconds>required
-
-**Example:**`1604937694000`
-
-            ↳ **reason** `string` *required*
-
-**reducedQuantity** stringrequired
-
-always empty string
-
-**OrderUpdated** objectrequired
-
-**oldOrder** objectrequired
-
-            ↳ **uid** `string<uuid>` *required*
-
-            ↳ **tradeable** `string` *required*
-
-            ↳ **direction** `string` *required*
-
-`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
-
-**Possible values:** [`Buy`, `Sell`, `Unknown`]
-
-            ↳ **quantity** `string<decimal>` *required*
-
-**Example:**`1234.56789`
-
-            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
-
-**Example:**`1604937694000`
-
-**limitPrice** string<decimal>required
-
-**Example:**`1234.56789`
-
-**orderType** stringrequired
-
-**reduceOnly** booleanrequired
-
-**lastUpdateTimestamp** integer<timestamp-milliseconds>required
-
-**Example:**`1604937694000`
-
-**newOrder** objectrequired
-
-            ↳ **uid** `string<uuid>` *required*
-
-            ↳ **tradeable** `string` *required*
-
-            ↳ **direction** `string` *required*
-
-`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
-
-**Possible values:** [`Buy`, `Sell`, `Unknown`]
-
-            ↳ **quantity** `string<decimal>` *required*
-
-**Example:**`1234.56789`
-
-            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
-
-**Example:**`1604937694000`
-
-**limitPrice** string<decimal>required
-
-**Example:**`1234.56789`
-
-**orderType** stringrequired
-
-**reduceOnly** booleanrequired
-
-**lastUpdateTimestamp** integer<timestamp-milliseconds>required
-
-**Example:**`1604937694000`
-
-            ↳ **reason** `string` *required*
-
-**reducedQuantity** string<decimal>required
-
-**Example:**`1234.56789`
-
-**OrderCancelled** objectrequired
-
-            ↳ **order** `object` *required*
-
-                ↳ **uid** `string<uuid>` *required*
-
-                ↳ **tradeable** `string` *required*
-
-                ↳ **direction** `string` *required*
-
-`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
-
-**Possible values:** [`Buy`, `Sell`, `Unknown`]
-
-                ↳ **quantity** `string<decimal>` *required*
-
-**Example:**`1234.56789`
-
-                ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
-
-**Example:**`1604937694000`
-
-**limitPrice** string<decimal>required
-
-**Example:**`1234.56789`
-
-**orderType** stringrequired
-
-**reduceOnly** booleanrequired
-
-**lastUpdateTimestamp** integer<timestamp-milliseconds>required
-
-**Example:**`1604937694000`
-
-                ↳ **reason** `string` *required*
 
   * ]
 
@@ -235,7 +86,7 @@ Opaque token to pass to the next request to continue listing events. The `sort` 
 
     
     
-    curl -L 'https://futures.kraken.com/api/history/v3/market/:tradeable/orders' \  
+    curl -L 'https://futures.kraken.com/api/history/v3/market/:tradeable/price' \  
     -H 'Accept: application/json'  
     
 

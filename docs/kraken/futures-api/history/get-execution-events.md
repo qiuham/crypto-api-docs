@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-execution-events
 api_type: REST
-updated_at: 2026-05-27 19:46:05.724620
+updated_at: 2026-05-28 19:45:31.636701
 ---
 
-# Get execution events
+# Get order events
 
-**GET** `https://futures.kraken.com/api/history/v3/executions`
+**GET** `https://futures.kraken.com/api/history/v3/orders`
 
-Lists executions/trades for authenticated account.
+Lists order events for authenticated account.
 
 ## Request
 
@@ -47,6 +47,18 @@ The maximum number of results to return. The upper bound is determined by a glob
 
 If present events of other tradeables are filtered out.
 
+**opened** `boolean`
+
+Determines status of the orders that should be included in response(s).
+* `true` = return orders that have been placed within given time range.
+* `false` = don't return orders that have been placed within given time range.
+
+**closed** `boolean`
+
+Determines status of the order that should be included in response(s).
+* `true` = return orders that have been closed/cancelled/rejected within given time range.
+* `false` = don't return orders that have been closed/cancelled/rejected within given time range.
+
 ## Responses
 
   * 200
@@ -73,11 +85,175 @@ If present events of other tradeables are filtered out.
 
     ↳ **event** `object` *required*
 
-**Execution** objectrequired
+oneOf
+* MOD1
+* MOD2
+* MOD3
+* MOD4
+* MOD5
+* MOD6
 
-        ↳ **execution** `object` *required*
+**OrderPlaced** objectrequired
+
+        ↳ **order** `object` *required*
 
             ↳ **uid** `string<uuid>` *required*
+
+**accountUid** string<uuid>required
+
+            ↳ **tradeable** `string` *required*
+
+            ↳ **direction** `string` *required*
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Buy`, `Sell`, `Unknown`]
+
+            ↳ **quantity** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **filled** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+
+**Example:**`1604937694000`
+
+**limitPrice** string<decimal>required
+
+**Example:**`1234.56789`
+
+**orderType** stringrequired
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Limit`, `IoC`, `Post`, `Market`, `Liquidation`, `Assignment`, `Unwind`, `Unknown`]
+
+**clientId** stringrequired
+
+**reduceOnly** booleanrequired
+
+**lastUpdateTimestamp** integer<timestamp-milliseconds>required
+
+**Example:**`1604937694000`
+
+**spotData** string | nullnullablerequired
+
+**regulatoryExternalUid** string<uuid>
+
+            ↳ **reason** `string` *required*
+
+**reducedQuantity** stringrequired
+
+always empty string
+
+**OrderUpdated** objectrequired
+
+**oldOrder** objectrequired
+
+            ↳ **uid** `string<uuid>` *required*
+
+**accountUid** string<uuid>required
+
+            ↳ **tradeable** `string` *required*
+
+            ↳ **direction** `string` *required*
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Buy`, `Sell`, `Unknown`]
+
+            ↳ **quantity** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **filled** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+
+**Example:**`1604937694000`
+
+**limitPrice** string<decimal>required
+
+**Example:**`1234.56789`
+
+**orderType** stringrequired
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Limit`, `IoC`, `Post`, `Market`, `Liquidation`, `Assignment`, `Unwind`, `Unknown`]
+
+**clientId** stringrequired
+
+**reduceOnly** booleanrequired
+
+**lastUpdateTimestamp** integer<timestamp-milliseconds>required
+
+**Example:**`1604937694000`
+
+**spotData** string | nullnullablerequired
+
+**regulatoryExternalUid** string<uuid>
+
+**newOrder** objectrequired
+
+            ↳ **uid** `string<uuid>` *required*
+
+**accountUid** string<uuid>required
+
+            ↳ **tradeable** `string` *required*
+
+            ↳ **direction** `string` *required*
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Buy`, `Sell`, `Unknown`]
+
+            ↳ **quantity** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **filled** `string<decimal>` *required*
+
+**Example:**`1234.56789`
+
+            ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+
+**Example:**`1604937694000`
+
+**limitPrice** string<decimal>required
+
+**Example:**`1234.56789`
+
+**orderType** stringrequired
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Limit`, `IoC`, `Post`, `Market`, `Liquidation`, `Assignment`, `Unwind`, `Unknown`]
+
+**clientId** stringrequired
+
+**reduceOnly** booleanrequired
+
+**lastUpdateTimestamp** integer<timestamp-milliseconds>required
+
+**Example:**`1604937694000`
+
+**spotData** string | nullnullablerequired
+
+**regulatoryExternalUid** string<uuid>
+
+            ↳ **reason** `string` *required*
+
+**reducedQuantity** string<decimal>required
+
+**Example:**`1234.56789`
+
+**OrderRejected** objectrequired
 
             ↳ **order** `object` *required*
 
@@ -127,51 +303,35 @@ If present events of other tradeables are filtered out.
 
 **regulatoryExternalUid** string<uuid>
 
-                ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+**orderError** stringrequired
 
-**Example:**`1604937694000`
+                ↳ **reason** `string` *required*
 
-                ↳ **quantity** `string<decimal>` *required*
+**OrderCancelled** objectrequired
 
-**Example:**`1234.56789`
+                ↳ **order** `object` *required*
 
-                ↳ **price** `string<decimal>` *required*
-
-**Example:**`1234.56789`
-
-**markPrice** string<decimal>required
-
-**Example:**`1234.56789`
-
-**executionType** executionType (string)
-
-**Possible values:** [`maker`, `taker`]
-
-**limitFilled** booleanrequired
-
-**oldTakerOrder** object
-
-                ↳ **uid** `string<uuid>` *required*
+                    ↳ **uid** `string<uuid>` *required*
 
 **accountUid** string<uuid>required
 
-                ↳ **tradeable** `string` *required*
+                    ↳ **tradeable** `string` *required*
 
-                ↳ **direction** `string` *required*
+                    ↳ **direction** `string` *required*
 
 `Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
 
 **Possible values:** [`Buy`, `Sell`, `Unknown`]
 
-                ↳ **quantity** `string<decimal>` *required*
+                    ↳ **quantity** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-                ↳ **filled** `string<decimal>` *required*
+                    ↳ **filled** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-                ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+                    ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
 
 **Example:**`1604937694000`
 
@@ -197,61 +357,115 @@ If present events of other tradeables are filtered out.
 
 **regulatoryExternalUid** string<uuid>
 
-**usdValue** string<decimal>required
+                    ↳ **reason** `string` *required*
+
+**OrderNotFound** objectrequired
+
+**accountUid** string<uuid>required
+
+**orderId** stringrequired
+
+**Example:**`Uuid(uuid=2ceb1d31-f619-457b-870c-fd4ddbb10d45)`
+
+**OrderEditRejected** objectrequired
+
+**oldOrder** objectrequired
+
+                    ↳ **uid** `string<uuid>` *required*
+
+**accountUid** string<uuid>required
+
+                    ↳ **tradeable** `string` *required*
+
+                    ↳ **direction** `string` *required*
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Buy`, `Sell`, `Unknown`]
+
+                    ↳ **quantity** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-**orderData** objectnullablerequired
-
-                ↳ **fee** `string<decimal>` *required*
+                    ↳ **filled** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-**positionSize** string<decimal>required
+                    ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
+
+**Example:**`1604937694000`
+
+**limitPrice** string<decimal>required
 
 **Example:**`1234.56789`
 
-**feeCalculationInfo** object[]required
+**orderType** stringrequired
 
-  * Array [
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
 
-**percentageFee** string<decimal>required
+**Possible values:** [`Limit`, `IoC`, `Post`, `Market`, `Liquidation`, `Assignment`, `Unwind`, `Unknown`]
+
+**clientId** stringrequired
+
+**reduceOnly** booleanrequired
+
+**lastUpdateTimestamp** integer<timestamp-milliseconds>required
+
+**Example:**`1604937694000`
+
+**spotData** string | nullnullablerequired
+
+**regulatoryExternalUid** string<uuid>
+
+**attemptedOrder** objectrequired
+
+                    ↳ **uid** `string<uuid>` *required*
+
+**accountUid** string<uuid>required
+
+                    ↳ **tradeable** `string` *required*
+
+                    ↳ **direction** `string` *required*
+
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+**Possible values:** [`Buy`, `Sell`, `Unknown`]
+
+                    ↳ **quantity** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-**userFeeDiscountApplied** objectrequired
-
-oneOf
-* Decimal
-* MOD2
-
-****string
+                    ↳ **filled** `string<decimal>` *required*
 
 **Example:**`1234.56789`
 
-**marketShareRebateCredited** objectrequired
+                    ↳ **timestamp** `integer<timestamp-milliseconds>` *required*
 
-oneOf
-* Decimal
-* MOD2
+**Example:**`1604937694000`
 
-****string
+**limitPrice** string<decimal>required
 
 **Example:**`1234.56789`
 
-  * ]
+**orderType** stringrequired
 
-**regulatoryData** object
+`Unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
 
-                ↳ **venue** `string`
+**Possible values:** [`Limit`, `IoC`, `Post`, `Market`, `Liquidation`, `Assignment`, `Unwind`, `Unknown`]
 
-                ↳ **counterparty** `string`
+**clientId** stringrequired
 
-**externalUid** string<uuid>
+**reduceOnly** booleanrequired
 
-**takerReducedQuantity** stringrequired
+**lastUpdateTimestamp** integer<timestamp-milliseconds>required
 
-sometimes empty string
+**Example:**`1604937694000`
+
+**spotData** string | nullnullablerequired
+
+**regulatoryExternalUid** string<uuid>
+
+**orderError** stringrequired
 
   * ]
 
@@ -275,7 +489,7 @@ Opaque token to pass to the next request to continue listing events. The `sort` 
 
     
     
-    curl -L 'https://futures.kraken.com/api/history/v3/executions' \  
+    curl -L 'https://futures.kraken.com/api/history/v3/orders' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -308,3 +522,11 @@ continuation_token — query
 count — query
 
 tradeable — query
+
+opened — query
+
+\---truefalse
+
+closed — query
+
+\---truefalse

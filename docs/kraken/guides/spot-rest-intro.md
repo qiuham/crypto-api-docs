@@ -2,83 +2,37 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-rest-intro
 api_type: Guide
-updated_at: 2026-05-27 19:59:06.438341
+updated_at: 2026-05-28 19:48:28.126681
 ---
 
-# Spot REST Introduction
+# Spot REST Rate Limits
 
-## API Organisation
+## REST Specific Limits
 
-The Spot REST API is organised by function, covering a wide range of services:
+Every REST API user has a "call counter" which starts at `0`. Ledger/trade history calls increase the counter by `4`. All other API calls increase this counter by `1` (except AddOrder, CancelOrder which operate on a different limiter detailed further below).
 
-  * [Market Data](/api/docs/rest-api/get-order-book)
-  * [Account Data](/api/docs/rest-api/get-account-balance)
-  * [Trading](/api/docs/rest-api/add-order)
-  * [Funding](/api/docs/rest-api/get-deposit-addresses)
-  * [Subaccounts](/api/docs/rest-api/create-subaccount)
-  * [Earn](/api/docs/rest-api/allocate-strategy)
-  * [Websocket Authentication](/api/docs/rest-api/get-websockets-token)
+Tier| Max API Counter| API Counter Decay  
+---|---|---  
+Intermediate| 20| -0.5/sec  
+Pro| 20| -1/sec  
+  
+The user's counter is reduced every couple of seconds depending on their verification tier. Each API key's counter is separate, and if the counter exceeds the maximum value, subsequent calls using that API key would be rate limited. If the rate limits are reached, additional calls will be restricted for a few seconds (or possibly longer if calls continue to be made while the rate limits are active).
 
-## Requests, Responses and Errors
+note
 
-### Requests
+Master accounts and subaccounts will share the same default trading rate limits as determined by the master account's tier.
 
-Request payloads supports Json encoding (`Content-Type: application/json`) as well as form-encoded (`Content-Type: application/x-www-form-urlencoded`). We recommend clients to specify `User-Agent` in the headers of all their requests. This will help us optimize interactions and improve the overall efficiency and security of the API.
+## Matching Engine Limits
 
-### Responses
+In extension to the REST specific limits, the trading engine has additional limits applicable to all user flow. See [Trading Engine Rate Limits](/api/docs/guides/spot-ratelimits)
 
-Responses are JSON encoded and contain one or two top-level keys (`result` and `error` for successful requests or those with warnings, or only `error` for failed or rejected requests)
+## Errors
 
-### Example
+  * "EAPI:Rate limit exceeded" if the REST API counter exceeds the user's maximum.
+  * "EService: Throttled: [UNIX timestamp]" if there are too many concurrent requests. Try again after [timestamp].
 
-Request:
-    
-    
-    GET <https://api.kraken.com/0/public/SystemStatus>  
-    
+Additional information can be found on our [support center](https://support.kraken.com/hc/en-us/articles/206548367-What-are-the-API-rate-limits-).
 
-Successful response:
-    
-    
-    {  
-        "error": [],  
-        "result": {  
-            "status": "online",  
-            "timestamp": "2021-03-22T17:18:03Z"  
-        }  
-    }  
-    
-
-Error response:
-    
-    
-    {  
-        "error": [  
-            "EGeneral:Invalid arguments:ordertype"  
-        ]  
-    }  
-    
-
-### Error Details
-
-HTTP status codes are generally not used by our API to convey information about the state of requests and any errors or warnings are denoted in the `error` field of the response as described above. Status codes **other** than 200 indicate that there was an issue with the request reaching our servers.
-
-Error messages follow the general format "<severity><category>: <description>"
-
-  * <severity> : `E` for error, `W` for warning.
-  * <category> : `General`, `Auth`, `API`, `Query`, `Order`, `Trade`, `Funding`, or `Service`.
-  * <description> : a text string that describes the reason for the error.
-
-    
-    
-    i.e., "EGeneral: Invalid arguments:ordertype"  
-    
-
-Additional information can be found on our [support center](https://support.kraken.com/hc/en-us/articles/360001491786-API-error-messages).
-
-  * API Organisation
-  * Requests, Responses and Errors
-* Requests
-* Responses
-* Example
-* Error Details
+  * REST Specific Limits
+  * Matching Engine Limits
+  * Errors

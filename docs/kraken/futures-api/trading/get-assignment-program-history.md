@@ -2,74 +2,113 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-history
 api_type: REST
-updated_at: 2026-05-27 19:48:58.522323
+updated_at: 2026-05-28 19:46:10.952577
 ---
 
-# List assignment preferences history
+# List offers placed by the account on closed RFQs
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/assignmentprogram/history`
+**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/closed-offers`
 
-This endpoint returns information on assignment program preferences change history
+Retrieve all offers the account placed on RFQs that have since closed. The `status` field on each offer indicates how the parent RFQ closed (`expired`, `cancelled`, `filled_bid_side`, or `filled_ask_side`).
+
+Closed RFQs are tracked in an in-memory cache only and are not persisted; offers may be evicted by the cache eviction policy or wiped on service restart.
+
+Note: This is currently available exclusively in the Kraken pre-prod environments.
 
 ## Responses
 
   * 200
-* application/json
+  * 404
+
+Closed Offers
+
+  * application/json
 * Schema
 
 **Schema**
-
-oneOf
-* Success Response
-* ErrorResponse
-
-**participants** `object[]` *required*
-
-  * Array [
-
-    ↳ **deleted** `boolean` *required*
-
-    ↳ **participant** `object` *required*
-
-**contractType** stringrequired
-
-        ↳ **contract** `string | nullnullable`
-
-**maxSize** number,null<double>nullable
-
-**maxPosition** number,null<double>nullable
-
-**acceptLong** booleanrequired
-
-**acceptShort** booleanrequired
-
-**timeFrame** AssignmentPreferenceTimeFrame (string)required
-
-**Possible values:** [`WEEKDAYS`, `WEEKEND`, `ALL`]
-
-        ↳ **enabled** `boolean` *required*
-
-        ↳ **timestamp** `string<date-time>`
-
-RFC 3339 formatted date-time
-
-**Example:**`2019-08-24T14:15:22Z`
-
-  * ]
 
 **result** `string` *required*
 
 **Possible values:** [`success`]
 
-**Example:**`success`
-
 **serverTime** string<date-time>required
 
-Server time in Coordinated Universal Time (UTC)
+**offers** `object[]` *required*
 
-**Example:**`2020-08-27T17:03:33.196Z`
+  * Array [
 
-**errors** `Error (string)[]`
+    ↳ **uid** `string<uuid>` *required*
+
+Unique identifier for the offer
+
+**rfqUid** string<uuid>required
+
+Unique identifier for the RFQ
+
+**placementDate** string<date-time>required
+
+The date and time when the offer was placed
+
+**lastUpdateDate** string<date-time>required
+
+The last update date and time of the offer
+
+    ↳ **bid** `string<decimal>`
+
+The bid price, if available
+
+    ↳ **ask** `string<decimal>`
+
+The ask price, if available
+
+**bidSide** object[]
+
+Per-leg bid pricing. Null when using package-level pricing.
+
+  * Array [
+
+    ↳ **tradeable** `string` *required*
+
+The symbol of the derivatives contract
+
+    ↳ **price** `number<double>` *required*
+
+The price for this leg
+
+  * ]
+
+**askSide** object[]
+
+Per-leg ask pricing. Null when using package-level pricing.
+
+  * Array [
+
+    ↳ **tradeable** `string` *required*
+
+The symbol of the derivatives contract
+
+    ↳ **price** `number<double>` *required*
+
+The price for this leg
+
+  * ]
+
+    ↳ **status** `string` *required*
+
+Lifecycle status of the parent RFQ at the time this offer is being read. `open` is returned from the `/open-offers` endpoint. The other values are returned from `/closed-offers`.
+
+**Possible values:** [`open`, `expired`, `cancelled`, `filled_bid_side`, `filled_ask_side`]
+
+  * ]
+
+RFQ feature is not enabled.
+
+  * application/json
+* Schema
+
+**Schema**
+
+    ↳ **errors** `Error (string)[]`
 
 **Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
 
@@ -120,11 +159,12 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/assignmentprogram/history' \  
+    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/closed-offers' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -134,7 +174,7 @@ Request Collapse all
 
 Base URL
 
-https://futures.kraken.com/derivatives/api/v3
+https://demo-futures.kraken.com/derivatives/api/v3
 
 Auth
 

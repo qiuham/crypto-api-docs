@@ -2,22 +2,18 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ledgers-info
 api_type: REST
-updated_at: 2026-05-27 20:03:14.106704
+updated_at: 2026-05-28 19:49:26.640808
 ---
 
-# Query Ledgers
+# Query L3 Order Book
 
-**POST** `https://api.kraken.com/0/private/QueryLedgers`
+**POST** `https://api.kraken.com/0/private/Level3`
 
-Retrieve information about specific ledger entries.
+Retrieve Level3 order book data, which provides individual order information at each price level. This includes order IDs and timestamps for each order in the book.
 
-> **Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
-> 
->   * `.B`, which represents balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
->   * `.F`, which represents balances earning automatically in Kraken Rewards
-> 
+The Level3 endpoint requires authentication.
 
-**API Key Permissions Required:** `Data - Query ledger entries`
+**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
 ## Request
 
@@ -29,99 +25,144 @@ Retrieve information about specific ledger entries.
 
 Nonce used in construction of `API-Sign` header
 
-**id** `string` *required*
+**pair** `string` *required*
 
-Comma delimited list of ledger IDs to query info about (20 maximum)
+Asset pair to get order book for
 
-**trades** `boolean`
+**Example:**`YFI/EUR`
 
-Whether or not to include trades related to position in output
+**depth** `integer`
 
-**Default value:**`false`
+Number of price levels to return per side (bids/asks). Use 0 to return the full book.
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**Possible values:** [`0`, `10`, `25`, `100`, `250`, `1000`]
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
+**Default value:**`100`
 
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+**Example:**`10`
 
 ## Responses
 
   * 200
 
-Ledgers info retrieved.
+Level 3 order book data retrieved.
 
   * application/json
 * Schema
+  * Example
 
 **Schema**
 
 **result** `object`
 
-**property name*** LedgerEntry
+    ↳ **pair** `string`
 
-Ledger Entry
+Asset pair
 
-    ↳ **refid** `string`
+    ↳ **bids** `object[]`
 
-Reference Id of the parent transaction (trade, deposit, withdrawal, etc.) that caused the ledger entry.
+Bid orders
 
-    ↳ **time** `number`
+  * Array [
 
-Unix timestamp of ledger
+        ↳ **price** `string`
 
-    ↳ **type** `string`
+Bid price
 
-Type of ledger entry
+        ↳ **qty** `string`
 
-**Possible values:** [`none`, `trade`, `deposit`, `withdrawal`, `transfer`, `margin`, `adjustment`, `rollover`, `spend`, `receive`, `settled`, `credit`, `staking`, `reward`, `dividend`, `sale`, `conversion`, `nfttrade`, `nftcreatorfee`, `nftrebate`, `custodytransfer`]
+Bid quantity
 
-    ↳ **subtype** `string`
+        ↳ **order_id** `string`
 
-Additional info relating to the ledger entry type, where applicable
+Order ID
 
-    ↳ **aclass** `string`
+        ↳ **timestamp** `integer`
 
-Asset class
+Order timestamp (nanoseconds)
 
-    ↳ **asset** `string`
+  * ]
 
-Asset
+        ↳ **asks** `object[]`
 
-    ↳ **amount** `string`
+Ask orders
 
-Transaction amount
+  * Array [
 
-    ↳ **fee** `string`
+            ↳ **price** `string`
 
-Transaction fee
+Ask price
 
-    ↳ **balance** `string`
+            ↳ **qty** `string`
 
-Resulting balance
+Ask quantity
 
-**error** `string[]`
+            ↳ **order_id** `string`
+
+Order ID
+
+            ↳ **timestamp** `integer`
+
+Order timestamp (nanoseconds)
+
+  * ]
+
+**error** `array[]`
+
+    
+    
+    {  
+      "error": [],  
+      "result": {  
+        "pair": "YFI/EUR",  
+        "bids": [  
+          {  
+            "price": "3062.00000",  
+            "qty": "0.29665800",  
+            "order_id": "O5KJU4-IEQTM-NDMS6W",  
+            "timestamp": 1765622008594292000  
+          },  
+          {  
+            "price": "3062.00000",  
+            "qty": "0.13917400",  
+            "order_id": "OERRY6-MXYER-6EQKNY",  
+            "timestamp": 1765622011396903000  
+          }  
+        ],  
+        "asks": [  
+          {  
+            "price": "3066.00000",  
+            "qty": "0.00278335",  
+            "order_id": "ORAWGV-N5L4J-LBA3WH",  
+            "timestamp": 1765622008499456000  
+          },  
+          {  
+            "price": "3067.00000",  
+            "qty": "0.13902210",  
+            "order_id": "OZWNZS-QE3G6-ZPKZUT",  
+            "timestamp": 1765622021013826600  
+          }  
+        ]  
+      }  
+    }  
 * curl
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/QueryLedgers' \  
+    curl -L 'https://api.kraken.com/0/private/Level3' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828490,  
-      "id": "LUI2RA-CJFLB-EN5I4P, L2QE42-IGSZ3-WEVTLK",  
-      "trade": false  
+      "nonce": 0,  
+      "pair": "YFI/EUR",  
+      "depth": 10  
     }'  
     
 
@@ -141,7 +182,7 @@ Body required
     
     
     {
-      "nonce": 1695828490,
-      "id": "LUI2RA-CJFLB-EN5I4P, L2QE42-IGSZ3-WEVTLK",
-      "trade": false
+      "nonce": 0,
+      "pair": "YFI/EUR",
+      "depth": 10
     }

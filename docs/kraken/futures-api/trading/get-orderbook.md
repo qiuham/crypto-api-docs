@@ -2,28 +2,24 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-orderbook
 api_type: REST
-updated_at: 2026-05-27 19:50:39.352671
+updated_at: 2026-05-28 19:46:34.268183
 ---
 
-# Get orderbook
+# Get PNL currency preferences
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/orderbook`
+**GET** `https://futures.kraken.com/derivatives/api/v3/pnlpreferences`
 
-This endpoint returns the entire non-cumulative order book of currently listed Futures contracts.
-
-## Request
-
-### Query Parameters
-
-**symbol** `string` *required*
-
-The symbol of the Futures.
+The PNL currency preference is used to determine which currency to pay out when realizing PNL gains.
 
 ## Responses
 
   * 200
-* application/json
+
+OK
+
+  * application/json
 * Schema
+  * success
 
 **Schema**
 
@@ -31,21 +27,17 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**orderBook** objectrequired
+**preferences** `object[]` *required*
 
-A structure containing lists with bid and ask prices and sizes.
+  * Array [
 
-**asks** `array[]` *required*
+    ↳ **symbol** `string` *required*
 
-The first value of the inner list is the ask price, the second is the ask size. The outer list is sorted ascending by ask price.
+**pnlCurrency** stringrequired
 
-**Possible values:** `>= 2`, `<= 2`
+**Example:**`USD`
 
-    ↳ **bids** `array[]` *required*
-
-The first value of the inner list is the bid price, the second is the bid size. The outer list is sorted descending by bid price.
-
-**Possible values:** `>= 2`, `<= 2`
+  * ]
 
 **result** `string` *required*
 
@@ -97,7 +89,30 @@ Error description.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
-* curl
+
+    
+    
+    {  
+      "result": "success",  
+      "serverTime": "2022-06-28T15:04:06.710Z",  
+      "preferences": [  
+        {  
+          "symbol": "PF_XBTUSD",  
+          "pnlCurrency": "BTC"  
+        }  
+      ]  
+    }  
+    
+
+#### Authorization: APIKey
+    
+    
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    
+    
+    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
+
+  * curl
   * python
   * go
   * nodejs
@@ -105,8 +120,10 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/orderbook' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/pnlpreferences' \  
+    -H 'Accept: application/json' \  
+    -H 'APIKey: <APIKey>' \  
+    -H 'Authent: <Authent>'  
     
 
 Request Collapse all
@@ -115,10 +132,8 @@ Base URL
 
 https://futures.kraken.com/derivatives/api/v3
 
-Parameters
+Auth
 
-symbol — queryrequired
+general-api-key-read-only
 
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!
+authent

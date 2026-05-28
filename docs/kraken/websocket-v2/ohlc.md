@@ -2,91 +2,65 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ohlc
 api_type: WebSocket
-updated_at: 2026-05-27 20:12:38.061852
+updated_at: 2026-05-28 19:56:17.897482
 ---
 
-# Candles (OHLC)
+# Ping
 
-CHANNEL
-**Endpoint:** `wss://ws.kraken.com/v2`
-    ohlc
+**WebSocket Endpoint:** `wss://ws.kraken.com/v2`
+    
+    ping
 
-The `ohlc` channel streams the Open, High, Low and Close (OHLC) data for the specific interval period.
+Clients can ping the server to verify connection is alive and the server will respond with a `pong`.
 
-The feed accepts a list symbols for subscription and the updates are generated on trade events.
+This is an application level ping, distinct from the protocol-level ping in the WebSockets standard.
 
-## Subscribe Request
+## Request
 
-There is an acknowledgement response for each symbol in the subscription list.
-
-  * Subscribe Schema
-  * Subscribe Ack Schema
-  * Example: Subscribe
-  * Example: Subscribe Ack
+  * Request Schema
+  * Example
 
 ### MESSAGE BODY
 
 **method** `string` *required*
 
-**Value:** `subscribe`
-
-**params** `object`
-
-    ↳ **channel** `string` *required*
-
-**Value:** `ohlc`
-
-    ↳ **symbol** `array of strings` *required*
-
-**Example:**["BTC/USD", "MATIC/GBP"]
-
-A list of currency pairs.
-
-        ↳ **interval** `integer`
-
-**Possible values:**[`1`, ` 5`, ` 15`, ` 30`, ` 60`, ` 240`, ` 1440`, ` 10080`, ` 21600`] 
-
-The interval timeframe in minutes.
-
-        ↳ **snapshot** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-**Default value:**`true`
-
-Request a snapshot after subscribing.
+**Value:** `ping`
 
 **req_id** `integer`
 
 Optional client originated request identifier sent as acknowledgment in the response.
+    
+    
+    {  
+        "method": "ping",  
+        "req_id": 101  
+    }  
+    
+
+## Response
+
+  * Response Schema
+  * Response Schema
 
 ### MESSAGE BODY
 
-**method** `string` *required*
+**method** `string`
 
-**Value:** `subscribe`
+**Value:** `pong`
 
-**result** `object`
+**result** `object` *conditional*
 
-    ↳ **channel** `string` *required*
-
-**Value:** `ohlc`
-
-    ↳ **symbol** `string` *required*
-
-**Example:** "BTC/USD"
-
-The currency pair associated with this subscription.
-
-    ↳ **snapshot** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-Indicates if a snapshot is requested.
+**Condition:** On successful requests only 
 
     ↳ **warnings** `array of strings`
 
-An advisory message, highlighting deprecated fields or upcoming changes to the channel.
+An advisory message, highlighting deprecated fields or upcoming changes to the request.
+
+**error** `string` *conditional*
+
+**Condition:** On unsuccessful requests only 
+
+The error message for a rejected request.
 
 **success** `boolean`
 
@@ -94,11 +68,9 @@ An advisory message, highlighting deprecated fields or upcoming changes to the c
 
 Indicates if the request was successfully processed by the engine.
 
-**error** `string` *conditional*
+**req_id** `integer`
 
-**Condition:** If success is false. 
-
-Error message.
+Optional client originated request identifier sent as acknowledgment in the response.
 
 **time_in** `string`
 
@@ -106,7 +78,7 @@ Error message.
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the subscription was received on the wire, just prior to parsing data.
+The timestamp when the request was received on the wire, just prior to parsing data.
 
 **time_out** `string`
 
@@ -114,323 +86,12 @@ The timestamp when the subscription was received on the wire, just prior to pars
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
+The timestamp when the response was sent on the wire, just prior to transmitting data.
     
     
     {  
-        "method": "subscribe",  
-        "params": {  
-            "channel": "ohlc",  
-            "symbol": [  
-                "ALGO/USD",  
-                "MATIC/USD"  
-            ],  
-            "interval": 5  
-        }  
-    }  
-    
-    
-    
-    {  
-        "method": "subscribe",  
-        "result": {  
-            "channel": "ohlc",  
-            "interval": 5,  
-            "snapshot": true,  
-            "symbol": "ALGO/USD",  
-            "warnings": [  
-                "timestamp is deprecated, use interval_begin"  
-            ]  
-        },  
-        "success": true,  
-        "time_in": "2023-10-04T16:26:01.802708Z",  
-        "time_out": "2023-10-04T16:26:01.802791Z"  
-    }  
-      
-    {  
-        "method": "subscribe",  
-        "result": {  
-            "channel": "ohlc",  
-            "interval": 5,  
-            "snapshot": true,  
-            "symbol": "MATIC/USD",  
-            "warnings": [  
-                "timestamp is deprecated, use interval_begin"  
-            ]  
-        },  
-        "success": true,  
-        "time_in": "2023-10-04T16:26:01.802708Z",  
-        "time_out": "2023-10-04T16:26:01.802791Z"  
-    }  
-    
-
-## Snapshot and Update Response
-
-The snapshot and update responses share the same schema. An update message is streamed on a trade event.
-
-  * Response Schema
-  * Example: Snapshot
-  * Example: Update
-
-### MESSAGE BODY
-
-**channel** `string`
-
-**Value:** `ohlc`
-
-**type** `string`
-
-**Possible values:**[`snapshot`, ` update`] 
-
-**data** `array [`
-
-A list of candle events.
-
-**[many] candle** object
-
-    ↳ **symbol** `string`
-
-**Example:** "BTC/USD"
-
-The symbol of the currency pair.
-
-    ↳ **open** `float`
-
-The opening trade price within the interval.
-
-    ↳ **high** `float`
-
-The highest trade price within the interval.
-
-    ↳ **low** `float`
-
-The lowest trade price within the interval.
-
-    ↳ **close** `float`
-
-The last trade price within the interval.
-
-    ↳ **vwap** `float`
-
-Volume weighted average trade price within the interval.
-
-    ↳ **trades** `float`
-
-Number of trades within the interval.
-
-    ↳ **volume** `float`
-
-Total traded volume (in base currency terms) within the interval.
-
-    ↳ **interval_begin** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp of start of the interval.
-
-    ↳ **interval** `integer`
-
-The timeframe from the interval in minutes.
-
-    ↳ **timestamp** `string deprecated`
-
-**Deprecated Usage:** Use 'interval_begin'.
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp of start of the interval.
-
-]
-    
-    
-    {  
-        "channel": "ohlc",  
-        "type": "snapshot",  
-        "timestamp": "2023-10-04T16:26:01.806315597Z",  
-        "data": [  
-            {  
-                "symbol": "ALGO/USD",  
-                "open": 0.09875,  
-                "high": 0.09875,  
-                "low": 0.09875,  
-                "close": 0.09875,  
-                "trades": 1,  
-                "volume": 201.86015,  
-                "vwap": 0.09875,  
-                "interval_begin": "2023-10-04T15:25:00.000000000Z",  
-                "interval": 5,  
-                "timestamp": "2023-10-04T15:30:00.000000Z"  
-            },  
-            {  
-                "symbol": "ALGO/USD",  
-                "open": 0.09875,  
-                "high": 0.0988,  
-                "low": 0.09875,  
-                "close": 0.09875,  
-                "trades": 13,  
-                "volume": 16255.46368,  
-                "vwap": 0.09879,  
-                "interval_begin": "2023-10-04T15:30:00.000000000Z",  
-                "interval": 5,  
-                "timestamp": "2023-10-04T15:35:00.000000Z"  
-            }  
-        ]  
-    }  
-    
-    
-    
-    {  
-        "channel": "ohlc",  
-        "type": "update",  
-        "timestamp": "2023-10-04T16:26:30.524394914Z",  
-        "data": [  
-            {  
-                "symbol": "MATIC/USD",  
-                "open": 0.5624,  
-                "high": 0.5628,  
-                "low": 0.5622,  
-                "close": 0.5627,  
-                "trades": 12,  
-                "volume": 30927.68066226,  
-                "vwap": 0.5626,  
-                "interval_begin": "2023-10-04T16:25:00.000000000Z",  
-                "interval": 5,  
-                "timestamp": "2023-10-04T16:30:00.000000Z"  
-            }  
-        ]  
-    }  
-    
-
-## Unsubscribe Request
-
-There is an acknowledgement response for each symbol in the unsubscribe list.
-
-  * Unsubscribe Schema
-  * Unsubscribe Ack Schema
-  * Example: Unsubscribe
-  * Example: Unsubscribe Ack
-
-### MESSAGE BODY
-
-**method** `string` *required*
-
-**Value:** `unsubscribe`
-
-**params** `object`
-
-    ↳ **channel** `string` *required*
-
-**Value:** `ohlc`
-
-    ↳ **symbol** `array of strings` *required*
-
-**Example:**["BTC/USD", "MATIC/GBP"]
-
-A list of currency pairs.
-
-        ↳ **interval** `integer`
-
-**Possible values:**[`1`, ` 5`, ` 15`, ` 30`, ` 60`, ` 240`, ` 1440`, ` 10080`, ` 21600`] 
-
-The interval timeframe in minutes.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-
-### MESSAGE BODY
-
-**method** `string` *required*
-
-**Value:** `unsubscribe`
-
-**result** `object`
-
-    ↳ **channel** `string` *required*
-
-**Value:** `ohlc`
-
-    ↳ **symbol** `string` *required*
-
-**Example:** "BTC/USD"
-
-The currency pair associated with this subscription.
-
-**success** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-Indicates if the request was successfully processed by the engine.
-
-**error** `string` *conditional*
-
-**Condition:** If success is false. 
-
-Error message.
-
-**time_in** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the subscription was received on the wire, just prior to parsing data.
-
-**time_out** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-    
-    
-    {  
-        "method": "unsubscribe",  
-        "params": {  
-            "channel": "ohlc",  
-            "symbol": [  
-                "ALGO/USD",  
-                "MATIC/USD"  
-            ],  
-            "interval": 5  
-        }  
-    }  
-    
-    
-    
-    {  
-        "method": "unsubscribe",  
-        "result": {  
-            "channel": "ohlc",  
-            "interval": 5,  
-            "symbol": "ALGO/USD"  
-        },  
-        "success": true,  
-        "time_in": "2023-10-04T16:26:01.802708Z",  
-        "time_out": "2023-10-04T16:26:01.802791Z"  
-    }  
-      
-    {  
-        "method": "unsubscribe",  
-        "result": {  
-            "channel": "ohlc",  
-            "interval": 5,  
-            "symbol": "MATIC/USD"  
-        },  
-        "success": true,  
-        "time_in": "2023-10-04T16:26:01.802708Z",  
-        "time_out": "2023-10-04T16:26:01.802791Z"  
+        "method": "pong",  
+        "req_id": 101,  
+        "time_in": "2023-09-24T14:10:23.799685Z",  
+        "time_out": "2023-09-24T14:10:23.799703Z"  
     }

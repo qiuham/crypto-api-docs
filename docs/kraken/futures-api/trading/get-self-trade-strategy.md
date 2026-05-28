@@ -2,20 +2,27 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-self-trade-strategy
 api_type: REST
-updated_at: 2026-05-27 19:51:08.361882
+updated_at: 2026-05-28 19:46:40.851614
 ---
 
-# Get self trade strategy
+# Check subaccount trading status
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/self-trade-strategy`
+**GET** `https://futures.kraken.com/derivatives/api/v3/subaccount/:subaccountUid/trading-enabled`
 
-Returns account-wide self-trade matching strategy.
+Returns trading capability info for given subaccount.
+
+## Request
+
+### Path Parameters
+
+**subaccountUid** uuidrequired
 
 ## Responses
 
   * 200
+  * 404
 
-Get current self trade strategy
+Trading enabled status.
 
   * application/json
 * Schema
@@ -23,30 +30,10 @@ Get current self trade strategy
 **Schema**
 
 oneOf
-* Success Response
+* SubaccountEnabledJson
 * ErrorResponse
 
-**strategy** `SelfTradeStrategy (string)` *required*
-
-Self trade matching behaviour:
-* `REJECT_TAKER` \- default behaviour, rejects the taker order that would match against a maker order from any sub-account
-* `CANCEL_MAKER_SELF` \- only cancels the maker order if it is from the same account that sent the taker order
-* `CANCEL_MAKER_CHILD` \- only allows master to cancel its own maker orders and orders from its sub-account
-* `CANCEL_MAKER_ANY` \- allows both master accounts and their subaccounts to cancel maker orders
-
-**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
-
-**result** `string` *required*
-
-**Possible values:** [`success`]
-
-**Example:**`success`
-
-**serverTime** string<date-time>required
-
-Server time in Coordinated Universal Time (UTC)
-
-**Example:**`2020-08-27T17:03:33.196Z`
+**tradingEnabled** booleanrequired
 
 **errors** `Error (string)[]`
 
@@ -87,10 +74,12 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
+The account or subaccount could not be found
+
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -103,7 +92,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/self-trade-strategy' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/subaccount/:subaccountUid/trading-enabled' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -117,6 +106,10 @@ https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key-read-only
+general-api-key
 
 authent
+
+Parameters
+
+subaccountUid — pathrequired

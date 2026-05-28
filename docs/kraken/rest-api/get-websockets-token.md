@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-websockets-token
 api_type: WebSocket
-updated_at: 2026-05-27 20:06:00.434535
+updated_at: 2026-05-28 19:50:11.012591
 ---
 
-# Get Websockets Token
+# Get Withdrawal Addresses
 
-**POST** `https://api.kraken.com/0/private/GetWebSocketsToken`
+**POST** `https://api.kraken.com/0/private/WithdrawAddresses`
 
-An authentication token must be requested via this REST API endpoint in order to connect to and authenticate with our [Websockets API](/api/docs/guides/spot-ws-auth). The token should be used within 15 minutes of creation, but it does not expire once a successful Websockets connection and private subscription has been made and is maintained.
+Retrieve a list of withdrawal addresses available for the user.
 
-**API Key Permissions Required:** `WebSocket interface - On`
+**API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Withdraw`
 
 ## Request
 
@@ -23,26 +23,72 @@ An authentication token must be requested via this REST API endpoint in order to
 
 Nonce used in construction of `API-Sign` header
 
+**asset** `string`
+
+Filter addresses for specific asset
+
+**aclass** `string`
+
+Filter addresses for specific asset class
+
+**Possible values:** [`currency`, `tokenized_asset`]
+
+**Default value:**`currency`
+
+**method** `string`
+
+Filter addresses for specific method
+
+**key** `string`
+
+Find address for by withdrawal key name, as set up on your account
+
+**verified** `boolean`
+
+Filter by verification status of the withdrawal address. Withdrawal addresses successfully completing email confirmation will have a verification status of true.
+
 ## Responses
 
   * 200
 
-Websockets token retrieved.
+Withdrawal addresses retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object`
+**result** `object[]`
 
-    ↳ **token** `string`
+Withdrawal Addresses
 
-Websockets token
+  * Array [
 
-    ↳ **expires** `integer`
+    ↳ **address** `string`
 
-Time (in seconds) after which the token expires
+Withdrawal address
+
+    ↳ **asset** `string`
+
+Name of asset being withdrawn
+
+**method** `string`
+
+Name of the withdrawal method
+
+**key** `string`
+
+Withdrawal key name, as set up on your account
+
+**tag** `string`
+
+Contains tags for [XRP](https://support.kraken.com/hc/en-us/articles/360000184443-Destination-Tag-for-Ripple-XRP-deposits) deposit addresses and memos for [STX](https://support.kraken.com/hc/en-us/articles/10902306995860-Memo-for-Stacks-STX-deposits), [XLM](https://support.kraken.com/hc/en-us/articles/360000184543-Memo-for-Stellar-Lumens-XLM-deposits), and [EOS](https://support.kraken.com/hc/en-us/articles/360001099203-Memo-for-EOS-deposits) deposit addresses
+
+**verified** `boolean`
+
+Verification status of withdrawal address
+
+  * ]
 
 **error** `string[]`
 * curl
@@ -53,13 +99,18 @@ Time (in seconds) after which the token expires
 
     
     
-    curl -L 'https://api.kraken.com/0/private/GetWebSocketsToken' \  
+    curl -L 'https://api.kraken.com/0/private/WithdrawAddresses' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828436  
+      "nonce": 0,  
+      "asset": "string",  
+      "aclass": "currency",  
+      "method": "string",  
+      "key": "string",  
+      "verified": true  
     }'  
     
 
@@ -79,5 +130,10 @@ Body required
     
     
     {
-      "nonce": 1695828436
+      "nonce": 0,
+      "asset": "string",
+      "aclass": "currency",
+      "method": "string",
+      "key": "string",
+      "verified": true
     }

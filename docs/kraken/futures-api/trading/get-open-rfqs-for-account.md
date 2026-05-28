@@ -2,135 +2,128 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs-for-account
 api_type: REST
-updated_at: 2026-05-27 19:50:24.912860
+updated_at: 2026-05-28 19:46:30.933694
 ---
 
-# List open RFQs for account
+# Get Specific Orders' Status
 
-**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs`
+**POST** `https://futures.kraken.com/derivatives/api/v3/orders/status`
 
-Retrieve all currently open RFQs created by the authenticated account.
+Returns information on specified orders which are open or were filled/cancelled in the last 5 seconds.
 
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+## Request
+
+### Query Parameters
+
+**orderIds** uuid[]
+
+UIDs associated with orders or triggers.
+
+**cliOrdIds** string[]
+
+Client Order IDs associated with orders or triggers.
+
+**Example:**[testOrder1, testOrder2]
 
 ## Responses
 
   * 200
-  * 404
-
-Open RFQs for account
-
-  * application/json
+* application/json
 * Schema
 
 **Schema**
+
+oneOf
+* Success Response
+* ErrorResponse
+
+**orders** `object[]` *required*
+
+  * Array [
+
+    ↳ **order** `object` *required*
+
+        ↳ **type** `string` *required*
+
+**Possible values:** [`TRIGGER_ORDER`, `ORDER`]
+
+**orderId** string<uuid>required
+
+**cliOrdId** string | nullnullablerequired
+
+        ↳ **symbol** `string` *required*
+
+        ↳ **side** `string` *required*
+
+        ↳ **quantity** `number | nullnullable` *required*
+
+        ↳ **filled** `number | nullnullable` *required*
+
+**limitPrice** number | nullnullablerequired
+
+**reduceOnly** booleanrequired
+
+        ↳ **timestamp** `string` *required*
+
+**lastUpdateTimestamp** stringrequired
+
+**priceTriggerOptions** objectrequired
+
+oneOf
+* TriggerOptions
+* MOD2
+
+**triggerPrice** numberrequired
+
+**triggerSide** stringrequired
+
+**Possible values:** [`TRIGGER_ABOVE`, `TRIGGER_BELOW`]
+
+**triggerSignal** stringrequired
+
+**Possible values:** [`MARK_PRICE`, `LAST_PRICE`, `SPOT_PRICE`]
+
+**triggerTime** string | nullnullablerequired
+
+        ↳ **status** `OrderStatusJson (string)` *required*
+
+**Possible values:** [`ENTERED_BOOK`, `FULLY_EXECUTED`, `REJECTED`, `CANCELLED`, `TRIGGER_PLACED`, `TRIGGER_ACTIVATION_FAILURE`]
+
+**updateReason** objectrequired
+
+oneOf
+* OrderUpdateReason
+* MOD2
+
+****string
+
+**Possible values:** [`LOADING_MARKET`, `NEW_USER_ORDER`, `LIQUIDATION_ORDER`, `STOP_ORDER_TRIGGERED`, `LIMIT_FROM_STOP`, `PARTIAL_FILL`, `FULL_FILL`, `CANCELLED_BY_USER`, `CONTRACT_EXPIRED`, `NOT_ENOUGH_MARGIN`, `MARKET_INACTIVE`, `DEAD_MAN_SWITCH`, `CANCELLED_BY_ADMIN`, `POST_WOULD_EXECUTE_REASON`, `IOC_WOULD_NOT_EXECUTE_REASON`, `WOULD_EXECUTE_SELF_REASON`, `WOULD_NOT_REDUCE_POSITION`, `EDITED_BY_USER`, `ORDER_FOR_EDIT_NOT_FOUND_REASON`, `EXPIRED`, `TRAILING_STOP_PRICE_UPDATED`, `TRAILING_STOP_CANCELLED_AND_REPLACED_BY_ADMIN`]
+
+**error** `object` *required*
+
+oneOf
+* OrderError
+* MOD2
+
+****string
+
+**Possible values:** [`MARKET_SUSPENDED`, `MARKET_NOT_FOUND`, `INVALID_PRICE`, `INVALID_QUANTITY`, `SMALL_ORDER_LIMIT_EXCEEDED`, `INSUFFICIENT_MARGIN`, `WOULD_CAUSE_LIQUIDATION`, `CLIENT_ORDER_ID_IN_USE`, `CLIENT_ORDER_ID_TOO_LONG`, `MAX_POSITION_EXCEEDED`, `PRICE_COLLAR`, `PRICE_DISLOCATION`, `EDIT_HAS_NO_EFFECT`, `ORDER_FOR_CANCELLATION_NOT_FOUND`, `ORDER_FOR_EDIT_NOT_FOUND`, `ORDER_CANNOT_HAVE_TRIGGER_PRICE`, `POST_WOULD_EXECUTE`, `IOC_WOULD_NOT_EXECUTE`, `WOULD_EXECUTE_SELF`, `WOULD_NOT_REDUCE_POSITION`, `REJECTED_AFTER_EXECUTION`, `MARKET_IS_POST_ONLY`, `ORDER_LIMIT_EXCEEDED`, `FIXED_LEVERAGE_TOO_HIGH`, `CANNOT_EDIT_TRIGGER_PRICE_OF_TRAILING_STOP`, `CANNOT_EDIT_LIMIT_PRICE_OF_TRAILING_STOP`, `TRAILING_STOP_ORDER_LIMIT_EXCEEDED`, `TRAILING_STOP_PERCENT_DEVIATION_EXCEEDS_MAX_DECIMAL_PLACES`, `TRAILING_STOP_QUOTE_DEVIATION_NOT_MULTIPLE_OF_TICK_SIZE`, `TRAILING_STOP_MAX_DEVIATION_TOO_LARGE`, `TRAILING_STOP_MAX_DEVIATION_TOO_SMALL`, `INSUFFICIENT_HEADROOM_AROUND_CURRENT_PRICE_TO_EDIT_TRAILING_STOP`, `NO_REFERENCE_PRICE_AVAILABLE_FOR_CALCULATING_TRAILING_STOP_TRIGGER_PRICE`, `INSUFFICIENT_CLOSING_MARGIN`, `LIMIT_PRICE_SET_AS_ABSOLUTE_AND_RELATIVE`, `LIMIT_PRICE_OFFSET_VALUE_INVALID`, `LIMIT_PRICE_OFFSET_UNIT_INVALID`, `LIMIT_PRICE_OFFSET_MUST_HAVE_VALUE_AND_UNIT`, `LIMIT_PRICE_OFFSET_QUOTE_CURRENCY_VALUE_MUST_BE_MULTIPLE_OF_TICK_SIZE`, `LIMIT_PRICE_OFFSET_PERCENT_VALUE_TOO_MANY_DECIMAL_PLACES`, `LIMIT_PRICE_OFFSET_TOO_HIGH`, `LIMIT_PRICE_OFFSET_TOO_LOW`]
+
+  * ]
 
 **result** `string` *required*
 
 **Possible values:** [`success`]
 
+**Example:**`success`
+
 **serverTime** string<date-time>required
 
-**rfqs** `object[]` *required*
+Server time in Coordinated Universal Time (UTC)
 
-  * Array [
+**Example:**`2020-08-27T17:03:33.196Z`
 
-    ↳ **uid** `string<uuid>` *required*
-
-The unique identifier for this RFQ
-
-    ↳ **expiry** `string<date-time>` *required*
-
-The time at which this RFQ expires
-
-**markPrice** number<double>required
-
-The reference price of the RFQ
-
-    ↳ **legs** `object[]` *required*
-
-The positions associated with the RFQ
-
-  * Array [
-
-        ↳ **symbol** `string` *required*
-
-The symbol of the derivatives contract
-
-        ↳ **size** `number<double>` *required*
-
-The size of the position
-
-**markPrice** number<double>required
-
-The current mark price of the market
-
-**bestBid** number<double>
-
-The best per-leg bid price across all offers
-
-**bestAsk** number<double>
-
-The best per-leg ask price across all offers
-
-  * ]
-
-**bestBid** number<double>
-
-The best bid price across all offers
-
-**bestAsk** number<double>
-
-The best ask price across all offers
-
-**bidSide** object[]
-
-Per-leg pricing of the offer that produced bestBid. Null when that offer was placed as a package total or when no bid offers exist.
-
-  * Array [
-
-        ↳ **tradeable** `string` *required*
-
-The symbol of the derivatives contract
-
-        ↳ **price** `number<double>` *required*
-
-The price for this leg
-
-  * ]
-
-**askSide** object[]
-
-Per-leg pricing of the offer that produced bestAsk. Null when that offer was placed as a package total or when no ask offers exist.
-
-  * Array [
-
-        ↳ **tradeable** `string` *required*
-
-The symbol of the derivatives contract
-
-        ↳ **price** `number<double>` *required*
-
-The price for this leg
-
-  * ]
-
-        ↳ **status** `string` *required*
-
-Lifecycle status of the RFQ. Always `open` for entries returned from this endpoint.
-
-**Possible values:** [`open`, `expired`, `cancelled`, `filled_bid_side`, `filled_ask_side`]
-
-  * ]
-
-RFQ feature is not enabled.
-
-  * application/json
-* Schema
-
-**Schema**
-
-        ↳ **errors** `Error (string)[]`
+**errors** `Error (string)[]`
 
 **Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
 
@@ -172,7 +165,7 @@ Server time in Coordinated Universal Time (UTC)
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -181,12 +174,11 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/orders/status' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -196,10 +188,16 @@ Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key-read-only
+general-api-key
 
 authent
+
+Parameters
+
+orderIds — query
+
+cliOrdIds — query

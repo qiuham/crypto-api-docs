@@ -2,24 +2,22 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fee-schedules-v-3
 api_type: REST
-updated_at: 2026-05-27 19:49:12.712607
+updated_at: 2026-05-28 19:46:14.309813
 ---
 
-# Get fee schedules
+# Get your fills
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/feeschedules`
+**GET** `https://futures.kraken.com/derivatives/api/v3/fills`
 
-deprecated
+This endpoint returns information on your filled orders for all futures contracts.
 
-This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+## Request
 
-**DEPRECATED** — Effective 2026-06-22, the fee values returned by this endpoint no longer reflect the fees actually charged on Futures trades. Futures fee calculation has been migrated to a centralised Kraken fee service.
+### Query Parameters
 
-To determine the fee rate applied to your trades, use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key.
+**lastFillTime** string
 
-* * *
-
-This endpoint lists all fee schedules.
+If not provided, returns the last 100 fills in any futures contract. If provided, returns the 100 entries before lastFillTime.
 
 ## Responses
 
@@ -34,47 +32,71 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**feeSchedules** object[]required
+**fills** `object[]` *required*
+
+A list containing structures with information on filled orders. The list is sorted descending by `fillTime`.
 
   * Array [
 
-**tiers** `object[]` *required*
+**cliOrdId** string | nullnullable
 
-A list containing a structures for each fee tier, see below.
+The unique client order identifier.
 
-  * Array [
+This field is returned only if the order has a client order ID.
 
-**makerFee** numberrequired
+**fillTime** stringrequired
 
-Percentage value of maker fee in the tier.
+The date and time the order was filled.
 
-**Example:**`0.015`
+**Example:**`2021-11-18T02:39:41.826Z`
 
-**takerFee** numberrequired
+**fillType** stringrequired
 
-Percentage value of taker fee in the tier.
+The classification of the fill:
+* `maker` \- user has a limit order that gets filled
+* `taker` \- the user makes an execution that crosses the spread
+* `liquidation` \- execution is result of a liquidation
+* `partialLiquidation` \- execution is part of a partial liquidation to gradually reduce a position before full liquidation
+* `assignee` \- execution is a result of a counterparty receiving an Assignment in PAS
+* `assignor` \- execution is a result of user assigning their position due to failed liquidation
 
-**Example:**`0.04`
+**Possible values:** [`maker`, `taker`, `liquidation`, `partialLiquidation`, `assignor`, `assignee`, `takerAfterEdit`, `unwindBankrupt`, `unwindCounterparty`]
 
-**usdVolume** numberrequired
+**Example:**`maker`
 
-Minimum 30-day USD volume for fee tier to be applicable.
+    ↳ **fill_id** `string<uuid>` *required*
 
-**Example:**`100000`
+The unique identifier of the fill. Note that several `fill_id` can pertain to one `order_id` (but not vice versa)
 
-  * ]
+    ↳ **order_id** `string<uuid>` *required*
 
-    ↳ **name** `string` *required*
+The unique identifier of the order.
 
-Name of schedule.
+    ↳ **price** `number` *required*
 
-**Example:**`PGTMainFees`
+The price of the fill.
 
-    ↳ **uid** `string` *required*
+**Example:**`47000`
 
-Unique identifier of fee schedule.
+    ↳ **side** `string` *required*
 
-**Example:**`7fc4d7c0-464f-4029-a9bb-55856d0c5247`
+The direction of the order.
+
+**Possible values:** [`buy`, `sell`]
+
+**Example:**`buy`
+
+    ↳ **size** `number` *required*
+
+The size of the fill.
+
+**Example:**`10`
+
+    ↳ **symbol** `string` *required*
+
+The symbol of the futures the fill occurred in.
+
+**Example:**`PI_XBTUSD`
 
   * ]
 
@@ -133,103 +155,41 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "serverTime": "2022-03-31T20:38:53.677Z",  
-      "feeSchedules": [  
+      "fills": [  
         {  
-          "uid": "7fc4d7c0-464f-4029-a9bb-55856d0c5247",  
-          "name": "PGTMainFees",  
-          "tiers": [  
-            {  
-              "makerFee": 0.02,  
-              "takerFee": 0.05,  
-              "usdVolume": 0  
-            },  
-            {  
-              "makerFee": 0.015,  
-              "takerFee": 0.04,  
-              "usdVolume": 100000  
-            },  
-            {  
-              "makerFee": 0.0125,  
-              "takerFee": 0.03,  
-              "usdVolume": 1000000  
-            },  
-            {  
-              "makerFee": 0.01,  
-              "takerFee": 0.025,  
-              "usdVolume": 5000000  
-            },  
-            {  
-              "makerFee": 0.0075,  
-              "takerFee": 0.02,  
-              "usdVolume": 10000000  
-            },  
-            {  
-              "makerFee": 0.005,  
-              "takerFee": 0.015,  
-              "usdVolume": 20000000  
-            },  
-            {  
-              "makerFee": 0.0025,  
-              "takerFee": 0.0125,  
-              "usdVolume": 50000000  
-            },  
-            {  
-              "makerFee": 0,  
-              "takerFee": 0.01,  
-              "usdVolume": 100000000  
-            }  
-          ]  
+          "fill_id": "3d57ed09-fbd6-44f1-8e8b-b10e551c5e73",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "order_id": "693af756-055e-47ef-99d5-bcf4c456ebc5",  
+          "size": 5490,  
+          "price": 9400,  
+          "fillTime": "2020-07-22T13:37:27.077Z",  
+          "fillType": "maker"  
         },  
         {  
-          "uid": "d46c2190-81e3-4370-a333-424f24387829",  
-          "name": "mainfees",  
-          "tiers": [  
-            {  
-              "makerFee": 0.02,  
-              "takerFee": 0.05,  
-              "usdVolume": 0  
-            },  
-            {  
-              "makerFee": 0.015,  
-              "takerFee": 0.04,  
-              "usdVolume": 100000  
-            },  
-            {  
-              "makerFee": 0.0125,  
-              "takerFee": 0.03,  
-              "usdVolume": 1000000  
-            },  
-            {  
-              "makerFee": 0.01,  
-              "takerFee": 0.025,  
-              "usdVolume": 5000000  
-            },  
-            {  
-              "makerFee": 0.0075,  
-              "takerFee": 0.02,  
-              "usdVolume": 10000000  
-            },  
-            {  
-              "makerFee": 0.005,  
-              "takerFee": 0.015,  
-              "usdVolume": 20000000  
-            },  
-            {  
-              "makerFee": 0.0025,  
-              "takerFee": 0.0125,  
-              "usdVolume": 50000000  
-            },  
-            {  
-              "makerFee": 0,  
-              "takerFee": 0.01,  
-              "usdVolume": 100000000  
-            }  
-          ]  
+          "fill_id": "56b86ada-73b0-454d-a95a-e29e3e85b349",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "order_id": "3f513c4c-683d-44ab-a73b-d296abbea201",  
+          "size": 5000,  
+          "price": 9456,  
+          "fillTime": "2020-07-21T12:41:52.790Z",  
+          "fillType": "taker"  
         }  
-      ]  
+      ],  
+      "serverTime": "2020-07-22T13:44:24.311Z"  
     }  
-* curl
+    
+
+#### Authorization: APIKey
+    
+    
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    
+    
+    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
+
+  * curl
   * python
   * go
   * nodejs
@@ -237,8 +197,10 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/feeschedules' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/fills' \  
+    -H 'Accept: application/json' \  
+    -H 'APIKey: <APIKey>' \  
+    -H 'Authent: <Authent>'  
     
 
 Request Collapse all
@@ -247,6 +209,12 @@ Base URL
 
 https://futures.kraken.com/derivatives/api/v3
 
-ResponseClear
+Auth
 
-Click the `Send API Request` button above and see the response here!
+general-api-key-read-only
+
+authent
+
+Parameters
+
+lastFillTime — query

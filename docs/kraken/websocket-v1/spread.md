@@ -2,119 +2,138 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/spread
 api_type: WebSocket
-updated_at: 2026-05-27 20:10:14.893675
+updated_at: 2026-05-28 19:55:46.662649
 ---
 
-# Spreads
+# Subscription Status
 
 CHANNEL
 **Endpoint:** `wss://ws.kraken.com`
-    spread
+    subscriptionStatus
 
-Spread feed for a currency pair.
+Subscription status response to subscribe, unsubscribe or exchange initiated unsubscribe.
 
-## Subscription Request
-
-  * Request Schema
-  * Example
-
-### MESSAGE BODY
-
-**event** `string` *required*
-
-**Value:** `subscribe`
-
-**pair** `array of strings` *required*
-
-**Example:**["BTC/USD", "MATIC/GBP"]
-
-The currency pairs for this request.
-
-    ↳ **subscription** `object`
-
-        ↳ **name** `string` *required*
-
-**Value:** `spread`
-
-        ↳ **reqid** `string`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-    
-    
-    {  
-      "event": "subscribe",  
-      "pair": [  
-        "XBT/EUR"  
-      ],  
-      "subscription": {  
-        "name": "spread"  
-      }  
-    }  
-    
-
-## Subscription Snapshot and Update Response
+## Payload
 
   * Response Schema
-  * Example
+  * Example: Ticker
+  * Example: OHLC
+  * Example: ownTrades
+  * Example: book
 
 ### MESSAGE BODY
 
-****array [
+**event** `string`
 
-**[0] channel_id** integer deprecated
+**Value:** `subscriptionStatus`
 
-**Deprecated Usage:** Use 'channel_name' and 'pair'.
+**channelName** string required
 
-Channel identifier.
-
-**[1] spread** array [
-
-**[0] bid** string
-
-Bid price
-
-**[1] ask** string
-
-Ask price
-
-**[2] timestamp** string
-
-Time, seconds since epoch
-
-**[3] bid_volume** string
-
-Bid Volume
-
-**[4] ask_volume** string
-
-Ask Volume
-
-]
-
-**[2] pair** string
-
-**Example:** "BTC/USD"
-
-The symbol of the currency pair.
-
-**[3] channel_name** string
-
-**Value:** `spread`
+**Possible values:**[`book`, `ohlc`, `openOrders`, `ownTrades`, `spread`, `ticker`, `trade`, `*`] 
 
 The name of the channel.
 
-]
+**pair** `string`
+
+**Example:** "BTC/USD"
+
+The currency pair associated with this subscription.
+
+**status** `string`
+
+**Possible values:**[`subscribed`, `unsubscribed`, `ok`, `error`] 
+
+**subscription** `object`
+
+    ↳ **depth** `integer` *conditional*
+
+**Condition:** 'book' channel only. 
+
+The book depth.
+
+    ↳ **interval** `integer` *conditional*
+
+**Condition:** 'ohlc' channel only. 
+
+The ohlc interval.
+
+    ↳ **maxratecount** `integer`
+
+The rate counter.
+
+    ↳ **name** `string` *required*
+
+**Possible values:**[`book`, `ohlc`, `openOrders`, `ownTrades`, `spread`, `ticker`, `trade`, `*`] 
+
+The name of the channel.
+
+    ↳ **token** `string` *conditional*
+
+**Condition:** Authenticated requests only. 
+
+The authentication token associated with the request.
+
+    ↳ **reqid** `integer`
+
+Client originated identifier for the request that initiated this response.
+
+**errorMessage** string conditional
+
+**Condition:** Unsuccessful requests only. 
+
+Error message for unsuccessful requests.
+
+**channelID** integer
+
+Channel ID on successful subscription, applicable to public messages only - deprecated, use channelName and pair.
     
     
-    [  
-      0,  
-      [  
-        "5698.40000",  
-        "5700.00000",  
-        "1542057299.545897",  
-        "1.01234567",  
-        "0.98765432"  
-      ],  
-      "spread",  
-      "XBT/USD"  
-    ]
+    {  
+      "channelID": 10001,  
+      "channelName": "ticker",  
+      "event": "subscriptionStatus",  
+      "pair": "XBT/EUR",  
+      "status": "subscribed",  
+      "subscription": {  
+        "name": "ticker"  
+      }  
+    }  
+    
+    
+    
+    {  
+      "channelID": 10001,  
+      "channelName": "ohlc-5",  
+      "event": "subscriptionStatus",  
+      "pair": "XBT/EUR",  
+      "reqid": 42,  
+      "status": "unsubscribed",  
+      "subscription": {  
+        "interval": 5,  
+        "name": "ohlc"  
+      }  
+    }  
+    
+    
+    
+    {  
+      "channelName": "ownTrades",  
+      "event": "subscriptionStatus",  
+      "status": "subscribed",  
+      "subscription": {  
+        "name": "ownTrades"  
+      }  
+    }  
+    
+    
+    
+    {  
+      "errorMessage": "Subscription depth not supported",  
+      "event": "subscriptionStatus",  
+      "pair": "XBT/USD",  
+      "status": "error",  
+      "subscription": {  
+        "depth": 42,  
+        "name": "book"  
+      }  
+    }

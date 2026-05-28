@@ -2,24 +2,28 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/instrument-status
 api_type: REST
-updated_at: 2026-05-27 19:52:20.587513
+updated_at: 2026-05-28 19:46:57.214449
 ---
 
-# Get instrument status
+# Get instrument status list
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/instruments/:symbol/status`
+**GET** `https://futures.kraken.com/derivatives/api/v3/instruments/status`
 
-Returns price dislocation and volatility details for given market.
+Returns price dislocation and volatility details for all markets.
 
 ## Request
 
-### Path Parameters
+### Query Parameters
 
-**symbol** `MarketSymbol` *required*
+**contractType** string[]
 
-**Possible values:** Value must match regular expression `[A-Z0-9_.]+`
+**Possible values:** [`futures_inverse`, `futures_vanilla`, `flexible_futures`, `options`, `all`]
 
-Market symbol.
+Contract type(s) to return statuses for.
+
+By default, includes all futures instrument types.
+
+Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
 
 ## Responses
 
@@ -32,6 +36,10 @@ Market symbol.
 oneOf
 * Success Response
 * ErrorResponse
+
+**instrumentStatus** object[]required
+
+  * Array [
 
 **tradeable** `MarketSymbol (string)` *required*
 
@@ -50,6 +58,8 @@ Market symbol
 **experiencingExtremeVolatility** booleanrequired
 
 **extremeVolatilityInitialMarginMultiplier** integerrequired
+
+  * ]
 
 **result** `string` *required*
 
@@ -109,7 +119,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/instruments/:symbol/status' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/instruments/status' \  
     -H 'Accept: application/json'  
     
 
@@ -121,7 +131,9 @@ https://futures.kraken.com/derivatives/api/v3
 
 Parameters
 
-symbol — pathrequired
+contractType — query
+
+futures_inversefutures_vanillaflexible_futuresoptionsall
 
 ResponseClear
 

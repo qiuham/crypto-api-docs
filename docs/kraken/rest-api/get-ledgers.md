@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ledgers
 api_type: REST
-updated_at: 2026-05-27 20:03:06.842186
+updated_at: 2026-05-28 19:49:23.997839
 ---
 
 # Get Ledgers Info

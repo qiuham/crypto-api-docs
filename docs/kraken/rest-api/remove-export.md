@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/remove-export
 api_type: REST
-updated_at: 2026-05-27 20:08:20.240201
+updated_at: 2026-05-28 19:50:33.901548
 ---
 
-# Delete Export Report
+# Retrieve Data Export
 
-**POST** `https://api.kraken.com/0/private/RemoveExport`
+**POST** `https://api.kraken.com/0/private/RetrieveExport`
 
-Delete exported trades/ledgers report
+Retrieve a processed data export
 
 **API Key Permissions Required:** `Data - Export data`
 
@@ -25,36 +25,22 @@ Nonce used in construction of `API-Sign` header
 
 **id** `string` *required*
 
-ID of report to delete or cancel
-
-**type** `string` *required*
-
-`delete` can only be used for reports that have already been processed. Use `cancel` for queued or processing reports.
-
-**Possible values:** [`cancel`, `delete`]
+Report ID to retrieve
 
 ## Responses
 
   * 200
 
-Export report deleted or cancelled
+Data export report retrieved
 
-  * application/json
+  * application/octet-stream
 * Schema
 
 **Schema**
 
-**result** `object`
+**report** `string<binary>`
 
-    ↳ **delete** `boolean`
-
-Whether deletion was successful
-
-    ↳ **cancel** `boolean`
-
-Whether cancellation was successful
-
-**error** `string[]`
+Binary zip archive containing the report
 * curl
   * python
   * go
@@ -63,15 +49,14 @@ Whether cancellation was successful
 
     
     
-    curl -L 'https://api.kraken.com/0/private/RemoveExport' \  
+    curl -L 'https://api.kraken.com/0/private/RetrieveExport' \  
     -H 'Content-Type: application/json' \  
-    -H 'Accept: application/json' \  
+    -H 'Accept: application/octet-stream' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828490,  
-      "id": "1234556",  
-      "type": "cancel"  
+      "id": "1234556"  
     }'  
     
 
@@ -92,6 +77,5 @@ Body required
     
     {
       "nonce": 1695828490,
-      "id": "1234556",
-      "type": "cancel"
+      "id": "1234556"
     }

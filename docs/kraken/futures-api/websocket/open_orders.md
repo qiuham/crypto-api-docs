@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_orders
 api_type: WebSocket
-updated_at: 2026-05-27 19:55:43.178826
+updated_at: 2026-05-28 19:47:43.701280
 ---
 
-# Open Orders
+# Open Orders (verbose)
 
 CHANNEL
 **Endpoint:** `wss://futures.kraken.com/ws/v1`
-    open_orders
+    open_orders_verbose
 
-This subscription feed publishes information about user open orders.
+This subscription feed publishes information about user open orders. This feed adds extra information about all the post-only orders that failed to cross the book.
 
 ## Request
 
@@ -26,7 +26,7 @@ This subscription feed publishes information about user open orders.
 
 **feed** `string` *required*
 
-The requested subscription feed `open_orders`
+The requested subscription feed `open_orders_verbose `
 
 **api_key** `string` *required*
 
@@ -63,7 +63,7 @@ The result, `subscribed` or `subscribed_failed` or `unsubscribed` or `unsubscrib
 
 **feed** `string`
 
-The requested subscription feed `open_orders`
+The requested subscription feed `open_orders_verbose `
 
 **api_key** `string`
 
@@ -80,7 +80,7 @@ The signed challenge message with user api secret
     
     {  
       "event": "subscribed",  
-      "feed": "open_orders",  
+      "feed": "open_orders_verbose",  
       "api_key": "CMl2SeSn09Tz+2tWuzPiPUjaXEQRGq6qv5UaexXuQ3SnahDQU/gO3aT+",  
       "original_challenge": "226aee50-88fc-4618-a42a-34f7709570b2",  
       "signed_challenge": "RE0DVOc7vS6pzcEjGWd/WJRRBWb54RkyvV+AZQSRl4+rap8Rlk64diR+Z9DQILm7qxncswMmJyvP/2vgzqqh+g=="  
@@ -123,7 +123,7 @@ The quantity or the order.
 
 **filled** `positive float`
 
-The total amount of the order that is filled.
+The total amount of the order that has been filled.
 
 **limit_price** `positive float`
 
@@ -156,68 +156,49 @@ If true, the order can only reduce open positions, it cannot increase or open ne
 **triggerSignal** string
 
 Trigger signal selected for take profit or stop loss order. Options are `last`, `mark`, or `spot`. Returned only for take profit or stop loss orders.
-
-**trailing_stop_options** `list of structures`
-
-If this order is a trailing stop, this contains its parameters 
-
-**max_deviation** `double`
-
-The maximum distance the trigger price may be away from the trigger signal.
-
-**unit** `string`
-
-The unit of the deviation, one of:  
-`percent`  
-`quote_currency`
     
     
     {  
-      "feed": "open_orders_snapshot",  
-      "account": "e258dba9-4dd4-4da5-bfef-75beb91c098e",  
+      "feed": "open_orders_verbose_snapshot",  
+      "account": "0f9c23b8-63e2-40e4-9592-6d5aa57c12ba",  
       "orders": [  
         {  
           "instrument": "PI_XBTUSD",  
-          "time": 1612275024153,  
-          "last_update_time": 1612275024153,  
-          "qty": 1000,  
-          "filled": 0,  
-          "limit_price": 34900,  
-          "stop_price": 13789,  
-          "type": "stop",  
-          "order_id": "723ba95f-13b7-418b-8fcf-ab7ba6620555",  
-          "direction": 1,  
-          "reduce_only": false,  
-          "triggerSignal": "last"  
-        },  
-        {  
-          "instrument": "PI_XBTUSD",  
-          "time": 1612275024153,  
-          "last_update_time": 1612275178153,  
-          "qty": 12,  
-          "filled": 0,  
-          "stop_price": 3200.1,  
-          "type": "trailing_stop",  
-          "order_id": "59302619-41d2-4f0b-941f-7e7914760ad3",  
-          "direction": 1,  
-          "reduce_only": false,  
-          "triggerSignal": "mark",  
-          "trailing_stop_options": {  
-            "max_deviation": 20.0,  
-            "unit": "percent"  
-          }  
-        },  
-        {  
-          "instrument": "PI_XBTUSD",  
-          "time": 1612275209430,  
-          "last_update_time": 1612275209430,  
-          "qty": 1000,  
-          "filled": 0,  
-          "limit_price": 35058,  
-          "stop_price": 0,  
+          "time": 1567428848005,  
+          "last_update_time": 1567428848005,  
+          "qty": 100.0,  
+          "filled": 0.0,  
+          "limit_price": 8500.0,  
+          "stop_price": 0.0,  
           "type": "limit",  
-          "order_id": "7a2f793e-26f3-4987-a938-56d296a11560",  
-          "direction": 1,  
+          "order_id": "566942c8-a3b5-4184-a451-622b09493129",  
+          "direction": 0,  
+          "reduce_only": false  
+        },  
+        {  
+          "instrument": "PI_XBTUSD",  
+          "time": 1567428874347,  
+          "last_update_time": 1567428874347,  
+          "qty": 1501.0,  
+          "filled": 0.0,  
+          "limit_price": 7200.0,  
+          "stop_price": 0.0,  
+          "type": "limit",  
+          "order_id": "fcbb1459-6ed2-4b3c-a58c-67c4df7412cf",  
+          "direction": 0,  
+          "reduce_only": false  
+        },  
+        {  
+          "instrument": "PI_XBTUSD",  
+          "time": 1567515137945,  
+          "last_update_time": 1567515137945,  
+          "qty": 102.0,  
+          "filled": 0.0,  
+          "limit_price": 8500.0,  
+          "stop_price": 0.0,  
+          "type": "limit",  
+          "order_id": "3deea5c8-0274-4d33-988c-9e5a3895ccf8",  
+          "direction": 0,  
           "reduce_only": false  
         }  
       ]  
@@ -228,7 +209,7 @@ The unit of the deviation, one of:
 
   * Response Fields
   * Subscription Delta Data
-  * Cancelled Subscription
+  * Cancelled subscription
 
 ### MESSAGE BODY
 
@@ -257,7 +238,7 @@ The quantity or the order.
 
 **filled** `positive float`
 
-The total amount of the order that is filled.
+The amount of the order that is filled.
 
 **limit_price** `positive float`
 
@@ -291,69 +272,57 @@ If true, the order can only reduce open positions, it cannot increase or open ne
 
 Trigger signal selected for take profit or stop loss order. Options are `last`, `mark`, or `spot`. Returned only for take profit or stop loss orders.
 
-**trailing_stop_options** `list of structures`
-
-If this order is a trailing stop, this contains its parameters 
-
-**max_deviation** `double`
-
-The maximum distance the trigger price may be away from the trigger signal.
-
-**unit** `string`
-
-The unit of the deviation, one of:  
-`percent`  
-`quote_currency`
-
 **is_cancel** `boolean`
 
 If false the open order has been either placed or partially filled and needs to be updated. If true the open order was either fully filled, cancelled or rejected (for post-only). If it was filled or cancelled it must be removed from open orders snapshot.
 
 **reason** `string`
 
-Reason behind the received delta.  
-`new_placed_order_by_user`: User placed a new order  
-`liquidation`: User position liquidated. The order cancelled  
-`stop_order_triggered`: A stop order triggered. The system removed the stop order  
-`limit_order_from_stop`: The system created a limit order because an existing stop order triggered  
-`partial_fill`: The order filled partially  
-`full_fill`: The order filled fully and removed  
-`cancelled_by_user`: The order cancelled by the user and removed  
-`contract_expired`: The order contract expired. All open orders of that contract removed  
-`not_enough_margin`: The order removed due to insufficient margin  
-`market_inactive`: The order removed because market became inactive  
-`cancelled_by_admin`: The order removed by administrator's action  
-`dead_man_switch`: The order removed because dead man's switch was triggered  
-`ioc_order_failed_because_it_would_not_be_executed`: The immediate or cancel order was rejected due to insufficient liquidity  
-`post_order_failed_because_it_would_filled`: The post only order was rejected as it crosses the spread and would be immediately filled  
-`would_execute_self`: The order was rejected as it would execute against another order from the same account  
-`would_not_reduce_position`: The order was rejected as it the reduce-only option was selected and it would not reduce the position  
-`order_for_edit_not_found`: The order edit was rejected as the order to be edited could not be found
+Reason behind the received delta.   
+`new_placed_order_by_user`: User placed a new order   
+`liquidation`: User position liquidated. The order cancelled   
+`stop_order_triggered`: A stop order triggered. The system removed the stop order   
+`limit_order_from_stop`: The system created a limit order because an existing stop order triggered   
+`partial_fill`: The order filled partially   
+`full_fill`: The order filled fully and removed   
+`cancelled_by_user`: The order cancelled by the user and removed   
+`contract_expired`: The order contract expired. All open orders of that contract removed   
+`not_enough_margin`: The order removed due to insufficient margin   
+`market_inactive`: The order removed because market became inactive   
+`cancelled_by_admin`: The order removed by administrator's action   
+`dead_man_switch`: The order removed because dead man's switch was triggered   
+`ioc_order_failed_because_it_would_not_be_executed`: The immediate or cancel order was rejected due to insufficient liquidity   
+`post_order_failed_because_it_would_filled`: The post only order was rejected as it crosses the spread and would be immediately filled   
+`would_execute_self`: The order was rejected as it would execute against another order from the same account   
+`would_not_reduce_position`: The order was rejected as it the reduce-only option was selected and it would not reduce the position   
+`order_for_edit_not_found`: The order edit was rejected as the order to be edited could not be found  
+
     
     
     {  
-      "feed": "open_orders",  
+      "feed": "open_orders_verbose",  
       "order": {  
         "instrument": "PI_XBTUSD",  
-        "time": 1567702877410,  
-        "last_update_time": 1567702877410,  
-        "qty": 304.0,  
+        "time": 1567597581495,  
+        "last_update_time": 1567597581495,  
+        "qty": 102.0,  
         "filled": 0.0,  
-        "limit_price": 10640.0,  
+        "limit_price": 10601.0,  
         "stop_price": 0.0,  
         "type": "limit",  
-        "order_id": "59302619-41d2-4f0b-941f-7e7914760ad3",  
-        "direction": 1,  
-        "reduce_only": true  
+        "order_id": "fa9806c9-cba9-4661-9f31-8c5fd045a95d",  
+        "direction": 0,  
+        "reduce_only": false  
       },  
-      "is_cancel": false,  
-      "reason": "new_placed_order_by_user"  
+      "is_cancel": true,  
+      "reason": "post_order_failed_because_it_would_be_filled"  
     }  
+      
     
     
     
     {  
-      "feed": "open_orders",  
+      "feed": "open_orders_verbose",  
       "order_id": "660c6b23-8007-48c1-a7c9-4893f4572e8c",  
       "is_cancel": true,  
       "reason": "cancelled_by_user"  

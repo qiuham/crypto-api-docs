@@ -2,16 +2,18 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-balance
 api_type: REST
-updated_at: 2026-05-27 20:05:28.829759
+updated_at: 2026-05-28 19:50:00.507385
 ---
 
-# Get Trade Balance
+# Get Trades History
 
-**POST** `https://api.kraken.com/0/private/TradeBalance`
+**POST** `https://api.kraken.com/0/private/TradesHistory`
 
-Retrieve a summary of collateral balances, margin position valuations, equity and margin level.
+Retrieve information about trades/fills. 50 results are returned at a time, the most recent by default.
 
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
+  * Unless otherwise stated, costs, fees, prices, and volumes are specified with the precision for the asset pair (`pair_decimals` and `lot_decimals`), not the individual assets' precision (`decimals`).
+
+**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
 ## Request
 
@@ -23,11 +25,50 @@ Retrieve a summary of collateral balances, margin position valuations, equity an
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string`
+**type** `string`
 
-Base asset used to determine balance
+Type of trade
 
-**Default value:**`ZUSD`
+**Possible values:** [`all`, `any position`, `closed position`, `closing position`, `no position`]
+
+**Default value:**`all`
+
+**trades** `boolean`
+
+Whether or not to include trades related to position in output
+
+**Default value:**`false`
+
+**start** `integer`
+
+Starting unix timestamp or trade tx ID of results (exclusive)
+
+**end** `integer`
+
+Ending unix timestamp or trade tx ID of results (inclusive)
+
+**ofs** `integer`
+
+Result offset for pagination
+
+**without_count** `boolean`
+
+If true, does not retrieve count of ledger entries. Request can be noticeably faster for users with many ledger entries as this avoids an extra database query.
+
+**Default value:**`false`
+
+**consolidate_taker** `boolean`
+
+Whether or not to consolidate trades by individual taker trades
+
+**Default value:**`true`
+
+**ledgers** `boolean`
+
+Whether or not to include related ledger ids for given trade   
+Note that setting this to true will slow request performance
+
+**Default value:**`false`
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -43,7 +84,7 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Trade balances retrieved.
+Trade history retrieved.
 
   * application/json
 * Schema
@@ -52,67 +93,124 @@ Trade balances retrieved.
 
 **result** `object`
 
-Account Balance
+Trade History
 
-    ↳ **eb** `string`
+    ↳ **count** `integer`
 
-Equivalent balance (combined balance of all currencies)
+Amount of available trades matching criteria
 
-**Example:**`3224744.0162`
+    ↳ **trades** `object`
 
-    ↳ **tb** `string`
+Trade info
 
-Trade balance (combined balance of all equity currencies)
+**property name*** Trade
 
-**Example:**`3224744.0162`
+Trade Info
 
-    ↳ **m** `string`
+        ↳ **ordertxid** `string`
 
-Margin amount of open positions
+Order responsible for execution of trade
 
-**Example:**`0.0000`
+        ↳ **postxid** `string`
 
-    ↳ **n** `string`
+Position responsible for execution of trade
 
-Unrealized net profit/loss of open positions
+        ↳ **pair** `string`
 
-**Example:**`0.0000`
+Asset pair
 
-    ↳ **c** `string`
+        ↳ **time** `number`
 
-Cost basis of open positions
+Unix timestamp of trade
 
-**Example:**`0.0000`
+        ↳ **type** `string`
 
-    ↳ **v** `string`
+Type of order (buy/sell)
 
-Current floating valuation of open positions
+        ↳ **ordertype** `string`
 
-**Example:**`0.0000`
+Order type
 
-    ↳ **e** `string`
+        ↳ **price** `string`
 
-Equity: `trade balance + unrealized net profit/loss`
+Average price order was executed at (quote currency)
 
-**Example:**`3224744.0162`
+        ↳ **cost** `string`
 
-    ↳ **mf** `string`
+Total cost of order (quote currency)
 
-Free margin: `Equity - initial margin (maximum margin available to open new positions)`
+        ↳ **fee** `string`
 
-**Example:**`3224744.0162`
+Total fee (quote currency)
 
-    ↳ **ml** `string`
+        ↳ **vol** `string`
 
-Margin level: `(equity / initial margin) * 100`
+Volume (base currency)
 
-**Example:**`0.0000`
+        ↳ **margin** `string`
 
-    ↳ **uv** `string`
+Initial margin (quote currency)
 
-Unexecuted value: Value of unfilled and partially filled orders
+        ↳ **leverage** `string`
 
-**Example:**`0.0000`
+Amount of leverage used in trade
+
+        ↳ **misc** `string`
+
+Comma delimited list of miscellaneous info:
+* `closing` — Trade closes all or part of a position
+
+        ↳ **ledgers** `string[]`
+
+List of ledger ids for entries associated with trade
+
+        ↳ **trade_id** `integer`
+
+Unique identifier of trade executed
+
+        ↳ **maker** `boolean`
+
+`true` if trade was executed with user as the maker, `false` if taker
+
+        ↳ **posstatus** `string`
+
+Position status (open/closed)   
+Only present if trade opened a position
+
+        ↳ **cprice** `number`
+
+Average price of closed portion of position (quote currency)   
+Only present if trade opened a position
+
+        ↳ **ccost** `number`
+
+Total cost of closed portion of position (quote currency)   
+Only present if trade opened a position
+
+        ↳ **cfee** `number`
+
+Total fee of closed portion of position (quote currency)   
+Only present if trade opened a position
+
+        ↳ **cvol** `number`
+
+Total fee of closed portion of position (quote currency)   
+Only present if trade opened a position
+
+        ↳ **cmargin** `number`
+
+Total margin freed in closed portion of position (quote currency)   
+Only present if trade opened a position
+
+        ↳ **net** `number`
+
+Net profit/loss of closed portion of position (quote currency, quote currency scale)   
+Only present if trade opened a position
+
+        ↳ **trades** `string[]`
+
+List of closing trades for position (if available)   
+Only present if trade opened a position
 
 **error** `string[]`
 * curl
@@ -123,14 +221,16 @@ Unexecuted value: Value of unfilled and partially filled orders
 
     
     
-    curl -L 'https://api.kraken.com/0/private/TradeBalance' \  
+    curl -L 'https://api.kraken.com/0/private/TradesHistory' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828490,  
-      "asset": "ZUSD"  
+      "type": "all",  
+      "trades": false,  
+      "consolidate_taker": true  
     }'  
     
 
@@ -151,5 +251,7 @@ Body required
     
     {
       "nonce": 1695828490,
-      "asset": "ZUSD"
+      "type": "all",
+      "trades": false,
+      "consolidate_taker": true
     }

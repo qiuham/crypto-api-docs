@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/ticker_lite
 api_type: WebSocket
-updated_at: 2026-05-27 19:56:12.617041
+updated_at: 2026-05-28 19:47:49.789267
 ---
 
-# Ticker Lite
+# Trade
 
 CHANNEL
 **Endpoint:** `wss://futures.kraken.com/ws/v1`
-    ticker_lite
+    trade
 
-The ticker lite feed returns ticker information about listed products. Delta messages are throttled such that they are published every 1s.
+The trade feed returns information about executed trades
 
 ## Request
 
@@ -26,7 +26,7 @@ The ticker lite feed returns ticker information about listed products. Delta mes
 
 **feed** `string` *required*
 
-The requested subscription feed `ticker_lite`
+The requested subscription feed `trade`
 
 **product_ids** `list of strings` *required*
 
@@ -35,8 +35,8 @@ A list of strings which represent the products that user will receive informatio
     
     {  
       "event": "subscribe",  
-      "feed": "ticker_lite",  
-      "product_ids": ["PI_XBTUSD", "FI_ETHUSD_210625"]  
+      "feed": "trade",  
+      "product_ids": ["PI_XBTUSD"]  
     }  
     
 
@@ -53,7 +53,7 @@ The result, `subscribed` or `subscribed_failed` or `unsubscribed` or `unsubscrib
 
 **feed** `string`
 
-The requested subscription feed `ticker_lite`
+The requested subscription feed `trade`
 
 **product_ids** `list of strings` *required*
 
@@ -62,7 +62,7 @@ A list of strings which represent the products that user will receive informatio
     
     {  
       "event": "subscribed ",  
-      "feed": "ticker_lite",  
+      "feed": "trade",  
       "product_ids": ["PI_XBTUSD"]  
     }  
     
@@ -70,8 +70,7 @@ A list of strings which represent the products that user will receive informatio
 ## Response Snapshot
 
   * Response Fields
-  * Subscription Data
-  * Subscription Data 2
+  * Subscription Snapshot Data
 
 ### MESSAGE BODY
 
@@ -83,105 +82,121 @@ The subscribed feed.
 
 The subscribed product (referred also as instrument or symbol).
 
-**bid** `positive float`
+**trades** `list of structures`
 
-The price of the current best bid.
+**uid** `string`
 
-**ask** `positive float`
+Unique identifier for the matched trade.
 
-The price of the current best ask.
+**side** `string`
 
-**change** `float`
+The classification of the taker side in the matched trade: `buy` if the taker is a buyer, `sell` if the taker is a seller.
 
-The 24h change in price.
+**type** `string`
 
-**premium** `float`
+The classification of the matched trade in an orderbook: `fill`if it is a normal buyer and seller, `liquidation` if it is a result of a user being liquidated from their position, `termination` if it is a result of a user being terminated, or block if it is a component of a `block` trade.
 
-The premium associated with the product.
+**seq** `positive integer`
 
-**volume** `positive float`
+The subscription message sequence number.
 
-The sum of the sizes of all fills observed in the last 24 hours.
+**time** `positive integer`
 
-**tag** `string`
+The UTC or GMT time of the trade in milliseconds
 
-Currently can be `week`, `month` or `quarter`. Other tags may be added without notice..
+**qty** `positive float`
 
-**pair** `string`
+The quantity of the traded product.
 
-The currency pair of the instrument.
+**price** `positive float`
 
-**dtm** `integer`
-
-The days until maturity.
-
-**maturityTime** positive integer
-
-Maturity time in milliseconds.
-
-**volumeQuote** positive float
-
-The same as `volume` except that, for multi-collateral futures, it is converted to the non-base currency
-
-**greeks** `structure`
-
-The current Greeks, if this is an option. 
-
-**iv** `float`
-
-The option's implied volatility. 
-
-**delta** `float`
-
-Delta, the option value's sensitivity to change in the underlying price. 
-
-**theta** `float`
-
-Theta, the option value's sensitivity to the passage of time. 
-
-**gamma** `float`
-
-Gamma, delta's sensitivity to change in the underlying price. 
-
-**vega** `float`
-
-Vega, the option value's sensitivity to change in volatility. 
-
-**rho** `float`
-
-Rho, the option value's sensitivity to the interest ratea. 
+The price that the product got traded.
     
     
     {  
-      "feed": "ticker_lite",  
+      "feed": "trade_snapshot",  
       "product_id": "PI_XBTUSD",  
-      "bid": 34932,  
-      "ask": 34949.5,  
-      "change": 3.3705205220015966,  
-      "premium": 0.1,  
-      "volume": 264126741,  
-      "tag": "perpetual",  
-      "pair": "XBT:USD",  
-      "dtm": 0,  
-      "maturityTime": 0,  
-      "volumeQuote": 264126741  
+      "trades": [  
+        {  
+          "feed": "trade",  
+          "product_id": "PI_XBTUSD",  
+          "uid": "caa9c653-420b-4c24-a9f1-462a054d86f1",  
+          "side": "sell",  
+          "type": "fill",  
+          "seq": 655508,  
+          "time": 1612269657781,  
+          "qty": 440,  
+          "price": 34893  
+        },  
+        {  
+          "feed": "trade",  
+          "product_id": "PI_XBTUSD",  
+          "uid": "45ee9737-1877-4682-bc68-e4ef818ef88a",  
+          "side": "sell",  
+          "type": "fill",  
+          "seq": 655507,  
+          "time": 1612269656839,  
+          "qty": 9643,  
+          "price": 34891  
+        }  
+      ]  
     }  
     
+
+## Response Delta
+
+  * Response Fields
+  * Subscription Delta Data
+
+### MESSAGE BODY
+
+**feed** `string`
+
+The subscribed feed.
+
+**product_id** `string`
+
+The subscribed product (referred also as instrument or symbol).
+
+**uid** `string`
+
+Unique identifier for the matched trade.
+
+**side** `string`
+
+The classification of the taker side in the matched trade: `buy` if the taker is a buyer, `sell` if the taker is a seller.
+
+**type** `string`
+
+The classification of the matched trade in an orderbook: `fill`if it is a normal buyer and seller, `liquidation` if it is a result of a user being liquidated from their position, `termination` if it is a result of a user being terminated, or block if it is a component of a `block` trade.
+
+**seq** `positive integer`
+
+The subscription message sequence number.
+
+**time** `positive integer`
+
+The UTC or GMT time of the trade in milliseconds
+
+**qty** `positive float`
+
+The quantity of the traded product.
+
+**price** `positive float`
+
+The price that the product got traded.
     
     
     {  
-      "feed": "ticker_lite",  
-      "product_id": "FI_ETHUSD_210625",  
-      "bid": 1753.45,  
-      "ask": 1760.35,  
-      "change": 13.448175559936647,  
-      "premium": 9.1,  
-      "volume": 6899673.0,  
-      "tag": "semiannual",  
-      "pair": "ETH:USD",  
-      "dtm": 141,  
-      "maturityTime": 1624633200000,  
-      "volumeQuote": 6899673.0  
+      "feed": "trade",  
+      "product_id": "PI_XBTUSD",  
+      "uid": "05af78ac-a774-478c-a50c-8b9c234e071e",  
+      "side": "sell",  
+      "type": "fill",  
+      "seq": 653355,  
+      "time": 1612266317519,  
+      "qty": 15000,  
+      "price": 34969.5  
     }  
     
 

@@ -2,29 +2,63 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/sequence-reset-fix
 api_type: REST
-updated_at: 2026-05-27 19:43:56.566777
+updated_at: 2026-05-28 19:45:02.881319
 ---
 
-# Sequence Reset
+# Header & Trailer
 
-* FIX Specification
+The baseline specification for this API is FIX 4.4. A standard header must be present at the start of every message in both directions. All messages sent in either direction should contain both _**SenderCompID**_ and _**TargetCompID**_. These values will be communicated by kraken during the onboarding process.
+
+## Standard Header 
 
 ### MESSAGE BODY
 
-**header** `` *required*
+**8 - BeginString** string required
 
-MsgType `4`
+Must be `FIX.4.4`
 
-**123 - SequenceReset** boolean required
+**9 - BodyLength** integer required
 
-**Possible values:**[`true`, ` false`] 
+Length of message expressed as the number of characters in the message following the BodyLength field up to, and including, the delimiter immediately preceding the checksum tag(10)
 
-Indicates that the Sequence Reset (4) message is replacing administrative or application messages which will not be resent.  
-* `Y` : Gap Fill message, MsgSeqNum field valid
-  * `N` : Sequence Reset, ignore MsgSeqNum
+**35 - MsgType** char required
 
-**36 - NewSeqNo** integer required
+The message type
 
-New sequence number. 
+**34 - MsgSeqNum** integer required
 
-**trailer** `` *required*
+The sequence number for this message
+
+**52 - SendingTime** string required
+
+**Format:** YYYYMMDD-HH:MM:SS.uuu
+
+Time of message transmission by the sender expressed in UTC.
+
+**49 - SenderCompID** string required
+
+Identifies the party sending the message
+
+**56 - TargetCompID** string required
+
+Identifies the party receiving the message
+
+**122 - OrigSendingTime** string conditional
+
+**Condition:** Required for retransmission of message
+
+**Format:** YYYYMMDD-HH:MM:SS.uuu
+
+If no data is available, this value is set to the SendingTime value.
+
+**43 - PossDupFlag** boolean
+
+**Possible values:**[`true`, ` false`]
+
+Indicates possible retransmission of message with this sequence number
+
+## Standard Trailer
+
+**10 - Checksum** string required
+
+Always the last field in a FIX message

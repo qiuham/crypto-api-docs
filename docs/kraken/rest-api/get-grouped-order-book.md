@@ -2,16 +2,22 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book
 api_type: REST
-updated_at: 2026-05-27 20:02:58.609657
+updated_at: 2026-05-28 19:49:23.219607
 ---
 
-# Get Grouped Order Book
+# Get Ledgers Info
 
-**GET** `https://api.kraken.com/0/public/GroupedBook`
+**POST** `https://api.kraken.com/0/private/Ledgers`
 
-The GroupedBook endpoint aggregates the volume in the order book over a specified tick range. It provides a summary of liquidity deep into the book, useful for user interface display.
+Retrieve information about ledger entries. 50 results are returned at a time, the most recent by default.
 
-Bids and asks between grouped price levels are accumulated to the nearest passive level (asks rounded up, bids down).
+> **Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
+> 
+>   * `.B`, which represents balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
+>   * `.F`, which represents balances earning automatically in Kraken Rewards
+> 
+
+**API Key Permissions Required:** `Data - Query ledger entries`
 
 ## Request
 
@@ -19,197 +25,140 @@ Bids and asks between grouped price levels are accumulated to the nearest passiv
 
 ### Body**required**
 
-**pair** `string` *required*
+**nonce** `integer<int64>` *required*
 
-Asset pair to get order book for
+Nonce used in construction of `API-Sign` header
 
-**Example:**`BTC/USD`
+**asset** `string`
 
-**depth** `integer`
+Filter output by asset or comma delimited list of assets
 
-The number of price levels to return per side (bids/asks).
+**Default value:**`all`
 
-**Possible values:** [`10`, `25`, `100`, `250`, `1000`]
+**aclass** `string`
 
-**Default value:**`10`
+Filter output by asset class
 
-**Example:**`10`
+**Default value:**`currency`
 
-**grouping** `integer<int32>nullable`
+**type** `string`
 
-Specifies how many tick levels should be within each price level. Bids and asks between grouped price levels are accumulated to the nearest passive level (asks rounded up, bids down).
+Type of ledger to retrieve
 
-**Possible values:** [`1`, `5`, `10`, `25`, `50`, `100`, `250`, `500`, `1000`]
+**Possible values:** [`all`, `trade`, `deposit`, `withdrawal`, `transfer`, `margin`, `adjustment`, `rollover`, `credit`, `settled`, `staking`, `dividend`, `sale`, `nft_rebate`]
 
-**Default value:**`1`
+**Default value:**`all`
 
-**Example:**`1000`
+**start** `integer`
+
+Starting unix timestamp or ledger ID of results (exclusive)
+
+**end** `integer`
+
+Ending unix timestamp or ledger ID of results (inclusive)
+
+**ofs** `integer`
+
+Result offset for pagination
+
+**without_count** `boolean`
+
+If true, does not retrieve count of ledger entries. Request can be noticeably faster for users with many ledger entries as this avoids an extra database query.
+
+**Default value:**`false`
+
+**rebase_multiplier** `rebase_multiplier (string)nullable`
+
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
+
+**Possible values:** [`rebased`, `base`]
+
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Grouped order book data retrieved.
+Ledgers info retrieved.
 
   * application/json
 * Schema
-  * Example
 
 **Schema**
 
 **result** `object`
 
-    ↳ **pair** `string`
+Ledgers Info
 
-Asset pair
+    ↳ **ledger** `object`
 
-    ↳ **grouping** `integer`
+**property name*** LedgerEntry
 
-The grouping value used
+Ledger Entry
 
-    ↳ **bids** `object[]`
+        ↳ **refid** `string`
 
-Aggregated bid levels
+Reference Id of the parent transaction (trade, deposit, withdrawal, etc.) that caused the ledger entry.
 
-  * Array [
+        ↳ **time** `number`
 
-        ↳ **price** `string`
+Unix timestamp of ledger
 
-Grouped price level
+        ↳ **type** `string`
 
-        ↳ **qty** `string`
+Type of ledger entry
 
-Aggregated quantity at this price level
+**Possible values:** [`none`, `trade`, `deposit`, `withdrawal`, `transfer`, `margin`, `adjustment`, `rollover`, `spend`, `receive`, `settled`, `credit`, `staking`, `reward`, `dividend`, `sale`, `conversion`, `nfttrade`, `nftcreatorfee`, `nftrebate`, `custodytransfer`]
 
-  * ]
+        ↳ **subtype** `string`
 
-        ↳ **asks** `object[]`
+Additional info relating to the ledger entry type, where applicable
 
-Aggregated ask levels
+        ↳ **aclass** `string`
 
-  * Array [
+Asset class
 
-            ↳ **price** `string`
+        ↳ **asset** `string`
 
-Grouped price level
+Asset
 
-            ↳ **qty** `string`
+        ↳ **amount** `string`
 
-Aggregated quantity at this price level
+Transaction amount
 
-  * ]
+        ↳ **fee** `string`
 
-**error** `array[]`
+Transaction fee
 
-    
-    
-    {  
-      "error": [],  
-      "result": {  
-        "pair": "BTC/USD",  
-        "grouping": 1000,  
-        "bids": [  
-          {  
-            "price": "90400.00000",  
-            "qty": "19.83057746"  
-          },  
-          {  
-            "price": "90300.00000",  
-            "qty": "45.35073006"  
-          },  
-          {  
-            "price": "90200.00000",  
-            "qty": "35.33199856"  
-          },  
-          {  
-            "price": "90100.00000",  
-            "qty": "32.40807838"  
-          },  
-          {  
-            "price": "90000.00000",  
-            "qty": "46.00445468"  
-          },  
-          {  
-            "price": "89900.00000",  
-            "qty": "22.71486458"  
-          },  
-          {  
-            "price": "89800.00000",  
-            "qty": "11.55482018"  
-          },  
-          {  
-            "price": "89700.00000",  
-            "qty": "13.77715743"  
-          },  
-          {  
-            "price": "89600.00000",  
-            "qty": "27.72185770"  
-          },  
-          {  
-            "price": "89500.00000",  
-            "qty": "14.09383330"  
-          }  
-        ],  
-        "asks": [  
-          {  
-            "price": "90500.00000",  
-            "qty": "38.96185061"  
-          },  
-          {  
-            "price": "90600.00000",  
-            "qty": "55.96402032"  
-          },  
-          {  
-            "price": "90700.00000",  
-            "qty": "34.64783055"  
-          },  
-          {  
-            "price": "90800.00000",  
-            "qty": "25.26797469"  
-          },  
-          {  
-            "price": "90900.00000",  
-            "qty": "20.48922196"  
-          },  
-          {  
-            "price": "91000.00000",  
-            "qty": "14.87773628"  
-          },  
-          {  
-            "price": "91100.00000",  
-            "qty": "18.99740224"  
-          },  
-          {  
-            "price": "91200.00000",  
-            "qty": "19.00592802"  
-          },  
-          {  
-            "price": "91300.00000",  
-            "qty": "4.05573682"  
-          },  
-          {  
-            "price": "91400.00000",  
-            "qty": "1.60667017"  
-          }  
-        ]  
-      }  
-    }  
+        ↳ **balance** `string`
+
+Resulting balance
+
+        ↳ **count** `integer`
+
+Amount of available ledger info matching criteria
+
+**error** `string[]`
 * curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L -X GET 'https://api.kraken.com/0/public/GroupedBook' \  
+    curl -L 'https://api.kraken.com/0/private/Ledgers' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
+    -H 'API-Key: <API-Key>' \  
+    -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "pair": "BTC/USD",  
-      "depth": 10,  
-      "grouping": 1000  
+      "nonce": 1695828490,  
+      "type": "trade",  
+      "start": 1695728276,  
+      "end": 1695828276  
     }'  
     
 
@@ -219,16 +168,18 @@ Base URL
 
 https://api.kraken.com/0
 
+Auth
+
+API-Key
+
+API-Sign
+
 Body required
     
     
     {
-      "pair": "BTC/USD",
-      "depth": 10,
-      "grouping": 1000
+      "nonce": 1695828490,
+      "type": "trade",
+      "start": 1695728276,
+      "end": 1695828276
     }
-    
-
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!

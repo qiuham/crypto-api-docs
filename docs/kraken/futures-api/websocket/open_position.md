@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_position
 api_type: WebSocket
-updated_at: 2026-05-27 19:55:57.883531
+updated_at: 2026-05-28 19:47:47.013684
 ---
 
-# Open Position
+# Ticker
 
 CHANNEL
 **Endpoint:** `wss://futures.kraken.com/ws/v1`
-    open_positions
+    ticker
 
-This subscription feed publishes the open positions of the user account.
+The ticker feed returns ticker information about listed products. Only tradeable markets are available via individual WebSocket market data feeds. Delta messages are throttled such that they are published every 1s.
 
 ## Request
 
@@ -26,30 +26,18 @@ This subscription feed publishes the open positions of the user account.
 
 **feed** `string` *required*
 
-The requested subscription feed `open_positions`
+The requested subscription feed `ticker`
 
-**api_key** `string` *required*
+**product_ids** `list of strings` *required*
 
-The user api key
-
-**original_challenge** `string` *required*
-
-The message that is received from a challenge request
-
-**signed_challenge** `string` *required*
-
-The signed challenge message with user api secret
+A list of strings which represent the products that user will receive information upon.
     
     
-      
     {  
       "event": "subscribe",  
-      "feed": "open_positions",  
-      "api_key": "CMl2SeSn09Tz+2tWuzPiPUjaXEQRGq6qv5UaexXuQ3SnahDQU/gO3aT+",  
-      "original_challenge": "226aee50-88fc-4618-a42a-34f7709570b2",  
-      "signed_challenge":"RE0DVOc7vS6pzcEjGWd/WJRRBWb54RkyvV+AZQSRl4+rap8Rlk64diR+Z9DQILm7qxncswMmJyvP/2vgzqqh+g=="  
+      "feed": "ticker",  
+      "product_ids": ["PI_XBTUSD"]  
     }  
-      
     
 
 ## Response Success
@@ -65,108 +53,149 @@ The result, `subscribed` or `subscribed_failed` or `unsubscribed` or `unsubscrib
 
 **feed** `string`
 
-The requested subscription feed `open_positions `
+The requested subscription feed `ticker`
 
-**api_key** `string`
+**product_ids** `list of strings` *required*
 
-The user api key
-
-**original_challenge** `string`
-
-The message that is received from a challenge request
-
-**signed_challenge** `string`
-
-The signed challenge message with user api secret
+A list of strings which represent the products that user will receive information upon.
     
     
     {  
       "event": "subscribed",  
-      "feed": "open_positions",  
-      "api_key": "CMl2SeSn09Tz+2tWuzPiPUjaXEQRGq6qv5UaexXuQ3SnahDQU/gO3aT+",  
-      "original_challenge": "226aee50-88fc-4618-a42a-34f7709570b2",  
-      "signed_challenge":"RE0DVOc7vS6pzcEjGWd/WJRRBWb54RkyvV+AZQSRl4+rap8Rlk64diR+Z9DQILm7qxncswMmJyvP/2vgzqqh+g=="  
+      "feed": "ticker",  
+      "product_ids": ["PI_XBTUSD"]  
     }  
     
 
 ## Response Snapshot
 
+The subscription data will return values for all fields even if the value of only a single field has changed since the last payload.
+
   * Response Fields
   * Subscription Data
+  * Subscription Dat Options
 
 ### MESSAGE BODY
 
+**time** `positive integer`
+
+The UTC time of the server in milliseconds
+
+**product_id** `string`
+
+The subscribed product (referred also as instrument or symbol).
+
+**funding_rate** `float`
+
+The current funding rate. If zero, field is not populated. (Perpetuals only) 
+
+**funding_rate_prediction** `float`
+
+The estimated next funding rate. If zero, field is not populated. (Perpetuals only) 
+
+**relative_funding_rate** `float`
+
+The absolute funding rate relative to the spot price at the time of funding rate calculation. If zero, field is not populated. (Perpetuals only) 
+
+**relative_funding_rate_prediction** `float`
+
+The estimated next absolute funding rate relative to the current spot price. If zero, field is not populated. (Perpetuals only) 
+
+**next_funding_rate_time** `float`
+
+The time until next funding rate in milliseconds. (Perpetuals only) 
+
 **feed** `string`
 
-The subscribed feed
+The subscribed feed.
 
-**account** `string`
+**bid** `positive float`
 
-The user account
+The price of the current best bid.
 
-**positions** `list of structures`
+**ask** `positive float`
 
-A list containing the user open positions. 
+The price of the current best ask.
 
-**instrument** `string`
+**bid_size** `positive float`
 
-The instrument (referred also as symbol or product_id) of the order
+The size of the current best bid.
 
-**balance** `float`
+**ask_size** `positive float`
 
-The size of the position.
+The size of the current best ask.
 
-**entry_price** `positive float`
+**volume** `positive float`
 
-The average entry price of the instrument.
+The sum of the sizes of all fills observed in the last 24 hours.
 
-**mark_price** `positive float`
+**dtm** `positive integer`
 
-The market price of the position instrument.
+The days until maturity.
 
-**index_price** `positive float`
+**leverage** `string`
 
-The index price of the position instrument.
+The leverage of the product.
 
-**pnl** `float`
+**index** `positive float`
 
-The profit and loss of the position.
+The real time index of the product.
 
-**liquidation_threshold** `float`
+**last** `positive float`
 
-The mark price of the contract at which the position will be liquidated.
+The price of the last fill.
 
-**return_on_equity** `float`
+**change** `float`
 
-The percentage gain or loss relative to the initial margin used in the position. Formula: PnL/IM
+The 24h change in price.
 
-**unrealized_funding** `float`
+**suspended** `boolean`
 
-Unrealised funding from funding rate
+True if the market is suspended.
 
-**effective_leverage** `float`
+**tag** `string`
 
-How leveraged the net position is in a given margin account. Formula: Position Value at Market / Portfolio Value.
+Currently can be `perpetual`, `month` or `quarter`. Other tags may be added without notice..
 
-**initial_margin** `float`
+**pair** `string`
 
-The initial margin for the open position. 
+The currency pair of the instrument.
 
-**initial_margin_with_orders** `float`
+**openInterest** float
 
-The initial margin for the open position and open orders of the same instrument.
+The current open interest of the instrument.
 
-**maintenance_margin** `float`
+**markPrice** float
 
-The maintenance margin for the open. 
+The market price of the instrument.
 
-**pnl_currency** `float`
+**maturityTime** positive integer
 
-The profit currency for the position, not returned for inverse positions. 
+The UTC time, in milliseconds, at which the contract will stop trading.
 
-**seq** `float`
+**post_only** `boolean`
 
-The message sequence. 
+True if the market is in post-only.
+
+**volumeQuote** positive float
+
+The same as `volume` except that, for multi-collateral futures, it is converted to the non-base currency
+
+**open** `positive float`
+
+The first traded price in the last 24h.
+
+**high** `positive float`
+
+The highest traded price in the last 24h.
+
+**low** `positive float`
+
+The lowest traded price in the last 24h.
+
+**greeks** `structure`
+
+The current Greeks, if this is an option. 
 
 **iv** `float`
 
@@ -194,57 +223,69 @@ Rho, the option value's sensitivity to the interest ratea.
     
     
     {  
-      "feed": "open_positions",  
-      "account": "DemoUser",  
-      "positions": [  
-        {  
-          "instrument":"PI_XRPUSD"    
-          "balance":500.0,  
-          "pnl":-239.6506683474764,  
-          "entry_price":0.3985,  
-          "mark_price":0.4925844,  
-          "index_price":0.49756,  
-          "liquidation_threshold":0.0,  
-          "effective_leverage":0.17404676894304316,  
-          "return_on_equity":-2.3609636135508127,  
-          "initial_margin":101.5054475943615,  
-          "initial_margin_with_orders":101.5054475943615,  
-          "maintenance_margin":50.75272379718075  
-        },  
-        {  
-          "instrument":"PF_XBTUSD",  
-          "balance":0.04,  
-          "pnl":119.56244985549435,  
-          "entry_price":26911.75,  
-          "mark_price":29900.81124638736,  
-          "index_price":29900.47,  
-          "liquidation_threshold":9572.804662403718,  
-          "effective_leverage":0.31865408963748215,  
-          "return_on_equity":5.553450159107747,  
-          "unrealized_funding":0.0004114160669590132,  
-          "initial_margin":21.529400000000003,  
-          "initial_margin_with_orders":21.529400000000003,  
-          "maintenance_margin":10.764700000000001,  
-          "pnl_currency":"USD"  
-        },  
-        {  
-          "instrument":"OF_ETHUSD_240101_1000_C",  
-          "balance":0.04,  
-          "pnl":119.56244985549435,  
-          "entry_price":26911.75,  
-          "mark_price":29900.81124638736,  
-          "index_price":29900.47,  
-          "return_on_equity":5.553450159107747,  
-          "iv": 0.3,  
-          "delta": 0.5,  
-          "gamma": 0.5,  
-          "vega": 0.5,  
-          "theta": 0.5,  
-          "rho": 0.5  
-        }  
-      ],  
-      "seq":4,  
-      "timestamp":1687383625330  
+      "time":1676393235406,  
+      "product_id": "PI_XBTUSD",  
+      "funding_rate": -6.2604214e-11,  
+      "funding_rate_prediction": -3.65989977e-10,  
+      "relative_funding_rate": -1.380384722222e-6,  
+      "relative_funding_rate_prediction": -8.047629166667e-6,  
+      "next_funding_rate_time": 1676394000000,  
+      "feed": "ticker",  
+      "bid": 21978.5,  
+      "ask": 21987.0,  
+      "bid_size": 2536.0,  
+      "ask_size": 13948.0,  
+      "volume": 31403908.0,  
+      "dtm": 0,  
+      "leverage": "50x",  
+      "index": 21984.54,  
+      "premium": -0.0,  
+      "last": 21983.5,  
+      "change": 1.9974017538161748,  
+      "suspended": false,  
+      "tag": "perpetual",  
+      "pair": "XBT:USD",  
+      "openInterest": 30072580.0,  
+      "markPrice": 21979.68641534714,  
+      "maturityTime": 0,  
+      "post_only": false,  
+      "volumeQuote": 31403908.0  
+      "open": 21968.5,  
+      "high": 22123.0,  
+      "low": 21456.0,  
+    }  
+    
+    
+    
+    {  
+      "time":1676393235406,  
+      "product_id": "OF_ETHUSD_240101_1000_C",  
+      "feed": "ticker",  
+      "bid": 21978.5,  
+      "ask": 21987.0,  
+      "bid_size": 2536.0,  
+      "ask_size": 13948.0,  
+      "volume": 31403908.0,  
+      "dtm": 0,  
+      "index": 21984.54,  
+      "last": 21983.5,  
+      "change": 1.9974017538161748,  
+      "suspended": false,  
+      "tag": "month",  
+      "pair": "ETH:USD",  
+      "openInterest": 30072580.0,  
+      "markPrice": 100.68641534714,  
+      "maturityTime": 1676393235406,  
+      "post_only": false,  
+      "volumeQuote": 31403908.0,  
+      "greeks": {  
+        "iv": 0.3,  
+        "delta": 0.5,  
+        "gamma": 0.5,  
+        "vega": 0.5,  
+        "theta": 0.5,  
+        "rho": 0.5  
+      }  
     }  
     
 

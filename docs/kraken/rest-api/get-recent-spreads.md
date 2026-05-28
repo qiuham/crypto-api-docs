@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-spreads
 api_type: REST
-updated_at: 2026-05-27 20:04:27.326420
+updated_at: 2026-05-28 19:49:44.482929
 ---
 
-# Get Recent Spreads
+# Get Recent Trades
 
-**GET** `https://api.kraken.com/0/public/Spread`
+**GET** `https://api.kraken.com/0/public/Trades`
 
-Returns the last ~200 top-of-book spreads for a given pair
+Returns the last 1000 trades by default
 
 ## Request
 
@@ -21,11 +21,21 @@ Asset pair to get data for
 
 **Example:** XBTUSD
 
-**since** `integer`
+**since** `string`
 
-Returns spread data since given timestamp. Optional, intended for incremental updates within available dataset (does not contain all historical spreads).
+Return trade data since given timestamp
 
-**Example:** 1678219570
+**Example:** 1616663618
+
+**count** `integer`
+
+**Possible values:** `>= 1` and `<= 1000`
+
+Return specific number of trades, up to 1000
+
+**Default value:**`1000`
+
+**Example:** 2
 
 **asset_class** `string`
 
@@ -37,7 +47,7 @@ This parameter is required on requests for non-crypto pairs, i.e. use `tokenized
 
   * 200
 
-Spread data retrieved.
+Trade data retrieved.
 
   * application/json
 * Schema
@@ -46,13 +56,13 @@ Spread data retrieved.
 
 **result** `object`
 
-    ↳ **last** `integer`
+    ↳ **last** `string`
 
-ID to be used as since when polling for new spread data
+ID to be used as since when polling for new trade data
 
-**property name*** SpreadData
+**property name*** TickData
 
-Array of spread entries `[int <time>, string <bid>, string <ask>]`
+Array of trade entries `[<price>, <volume>, <time>, <buy/sell>, <market/limit>, <miscellaneous>, <trade_id>]`
 
   * Array [
 
@@ -62,11 +72,11 @@ Array of spread entries `[int <time>, string <bid>, string <ask>]`
 
 oneOf
 * string
-* integer
+* number
 
 ****string
 
-****integer
+****number
 
   * ]
 
@@ -79,7 +89,7 @@ oneOf
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Spread' \  
+    curl -L 'https://api.kraken.com/0/public/Trades' \  
     -H 'Accept: application/json'  
     
 
@@ -94,6 +104,8 @@ Parameters
 pair — queryrequired
 
 since — query
+
+count — query
 
 asset_class — query
 

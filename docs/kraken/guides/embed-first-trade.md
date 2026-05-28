@@ -2,46 +2,234 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-first-trade
 api_type: Guide
-updated_at: 2026-05-27 19:56:56.487814
+updated_at: 2026-05-28 19:47:59.973137
 ---
 
-# Embed: Your First Trade
+# Embed REST Authentication
 
-This guide walks you through executing your first trade using the Payward Embed API.
+## Authentication Parameters
 
-## Prerequisites
+For the Embed REST API, the following parameters are used for authentication:
 
-Before you begin, make sure you have:
+  * `API-Key` HTTP header parameter: your public API key.
+  * `API-Sign` HTTP header parameter: HMAC-SHA512 signature of the request.
+  * `API-Nonce` HTTP header parameter: always increasing, unsigned 64-bit integer.
 
-  * Payward Embed API credentials (see [Authentication Guide](/api/docs/guides/embed-rest-auth))
-  * A verified user with an IIBAN (Internet International Bank Account Number)
-  * Sufficient balance in the user's account
+Optionally, the following header can be included:
 
-## Trading Workflow
+  * `Kraken-Version` HTTP header parameter (optional): API version string (e.g., `2025-04-15`). If not specified, the latest version is used.
 
-The Embed API uses a quote-based trading model:
+## Setting the API-Key Parameter
+
+The value for the `API-Key` HTTP header parameter is your **public** API key.
+
+Contact your Payward account representative to obtain API credentials.
+
+caution
+
+From your API key-pair, clearly identify which key is public and which key is private.
+
+  * The **public** key is sent in the `API-Key` header parameter.
+  * The **private** key is **never** sent, it is only used to encode the signature for `API-Sign` header parameter.
+
+## Setting the API-Sign Parameter
+
+The value for the `API-Sign` HTTP header parameter is a signature generated from encoding your **private** API key, nonce, encoded payload, and URI path.
     
     
-    ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐  
-    │  Request Quote  │ ───▶ │  Execute Quote  │ ───▶ │  Monitor Status │  
-    └─────────────────┘      └─────────────────┘      └─────────────────┘  
-         POST /quotes           PUT /quotes/{id}        GET /quotes/{id}  
-1. **Request Quote** : Get a price quote for your desired trade
-  2. **Execute Quote** : Confirm and execute the quoted trade
-  3. **Monitor Status** : Poll until the trade completes or listen for the quote.executed webhook
+    HMAC-SHA512 of (URI path + SHA256(nonce + JSON body)) and base64 decoded secret API key  
+    
 
-## Step 1: Request a Quote
+### Algorithm Steps
 
-Request a quote to buy cryptocurrency with fiat currency. The quote locks in a price for a short period.
+  1. **Build the message** : Concatenate the nonce with the request body (JSON stringified)
+* For GET requests: use only the nonce
+* For POST/PUT requests: `nonce + JSON.stringify(body)`
+  2. **Hash the message** : Compute SHA256 of the encoded message
+  3. **Concatenate with path** : Combine the URL path bytes with the SHA256 hash
+  4. **Sign** : Generate HMAC-SHA512 using your base64-decoded secret
+  5. **Encode** : Base64 encode the signature
 
-### Quote Types
-
-Type| Description| Use Case  
----|---|---  
-`spend`| Specify amount to spend| "I want to spend €50 on BTC"  
-`receive`| Specify amount to receive| "I want to receive 0.001 BTC"  
-  
 ### Examples
+
+The following code snippets demonstrate how to generate the signature in Python, Go, and JavaScript.
+
+  * Python
+  * Go
+  * JavaScript
+
+    
+    
+    import json  
+    import time  
+    import hashlib  
+    import hmac  
+    import base64  
+      
+    def get_payward_signature(urlpath, data, secret, nonce):  
+        """  
+        Generate Payward Embed API signature.  
+          
+        Args:  
+            urlpath: API endpoint (e.g., '/b2b/assets')  
+            data: Request body dict (None for GET requests)  
+            secret: Base64-encoded API secret  
+            nonce: Always-increasing integer  
+          
+        Returns:  
+            Base64-encoded signature string  
+        """  
+        if data is None:  
+            encoded = str(nonce).encode('utf-8')  
+        else:  
+            encoded = (str(nonce) + json.dumps(data)).encode('utf-8')  
+          
+        message = urlpath.encode() + hashlib.sha256(encoded).digest()  
+        mac = hmac.new(base64.b64decode(secret), message, hashlib.sha512)  
+        return base64.b64encode(mac.digest()).decode()  
+      
+      
+    # Example usage  
+    api_secret = "your-api-secret-here"  
+    nonce = time.time_ns()  # Nanoseconds (recommended for high-throughput request bursts)  
+    endpoint = "/b2b/assets"  
+      
+    signature = get_payward_signature(endpoint, None, api_secret, nonce)  
+    print(f"API-Sign: {signature}")  
+    
+    
+    
+    package main  
+      
+    import (  
+        "crypto/hmac"  
+        "crypto/sha256"  
+        "crypto/sha512"  
+        "encoding/base64"  
+        "encoding/json"  
+        "fmt"  
+        "strconv"  
+        "time"  
+    )  
+      
+    // GetPaywardSignature generates the Payward Embed API signature.  
+    func GetPaywardSignature(urlpath string, data interface{}, secret string, nonce int64) (string, error) {  
+        var encoded string  
+        if data == nil {  
+            encoded = strconv.FormatInt(nonce, 10)  
+        } else {  
+            jsonData, err := json.Marshal(data)  
+            if err != nil {  
+                return "", err  
+            }  
+            encoded = strconv.FormatInt(nonce, 10) + string(jsonData)  
+        }  
+      
+        sha := sha256.New()  
+        sha.Write([]byte(encoded))  
+        shaSum := sha.Sum(nil)  
+      
+        message := append([]byte(urlpath), shaSum...)  
+      
+        secretBytes, err := base64.StdEncoding.DecodeString(secret)  
+        if err != nil {  
+            return "", err  
+        }  
+        mac := hmac.New(sha512.New, secretBytes)  
+        mac.Write(message)  
+        macSum := mac.Sum(nil)  
+      
+        return base64.StdEncoding.EncodeToString(macSum), nil  
+    }  
+      
+    func main() {  
+        apiSecret := "your-api-secret-here"  
+        nonce := time.Now().UnixNano()  // Nanoseconds (recommended for high-throughput request bursts)  
+        endpoint := "/b2b/assets"  
+      
+        signature, err := GetPaywardSignature(endpoint, nil, apiSecret, nonce)  
+        if err != nil {  
+            fmt.Println("Error:", err)  
+            return  
+        }  
+        fmt.Printf("API-Sign: %s\n", signature)  
+    }  
+    
+    
+    
+    import crypto from 'crypto';  
+      
+    /**  
+* Generate Payward Embed API signature.  
+* @param {string} urlpath - API endpoint (e.g., '/b2b/assets')  
+* @param {Object|null} data - Request body (null for GET requests)  
+* @param {string} secret - Base64-encoded API secret  
+* @param {bigint|number|string} nonce - Always-increasing integer  
+* @returns {string} Base64-encoded signature  
+ */  
+    function getPaywardSignature(urlpath, data, secret, nonce) {  
+      const encoded = data === null   
+        ? String(nonce)   
+        : String(nonce) + JSON.stringify(data);  
+      
+      const sha256Hash = crypto.createHash('sha256').update(encoded).digest();  
+      const message = Buffer.concat([Buffer.from(urlpath), sha256Hash]);  
+        
+      const secretBuffer = Buffer.from(secret, 'base64');  
+      const hmac = crypto.createHmac('sha512', secretBuffer);  
+      hmac.update(message);  
+        
+      return hmac.digest('base64');  
+    }  
+      
+    // Example usage  
+    const apiSecret = 'your-api-secret-here';  
+    const nonce = process.hrtime.bigint().toString();  // Monotonic nanoseconds (recommended for JS)  
+    const endpoint = '/b2b/assets';  
+      
+    const signature = getPaywardSignature(endpoint, null, apiSecret, nonce);  
+    console.log(`API-Sign: ${signature}`);  
+    
+
+## Setting the API-Nonce Parameter
+
+The value for the `API-Nonce` HTTP header parameter is an always increasing, unsigned 64-bit integer for each request made with a particular API key.
+
+While a simple counter would provide a valid nonce, a common method is to use a UNIX timestamp in milliseconds. For fast sequential or parallel request bursts, we recommend a higher-resolution nonce strategy (for example nanosecond-resolution values) to reduce collisions and ordering issues. Once you choose a format for an API key, keep that format consistent and ensure each new nonce is greater than the previous one. For JavaScript clients, we recommend `process.hrtime.bigint()` because it is monotonic and avoids wall-clock drift.
+
+tip
+
+Problems can arise from requests arriving out of order due to API keys being shared across processes, or from system clock drift/recalibration. If multiple workers share one API key, coordinate nonces through a shared per-key generator (for example an atomic counter in Redis or another centralized store). When configuring Domain Management API keys, use the **Custom number only used once window** setting. Increase this value if you receive `Invalid nonce` (or `EAPI:Invalid nonce`) errors due to networking delays or out-of-order delivery, since this setting adjusts nonce tolerance.
+
+### Examples
+
+  * Python
+  * Go
+  * JavaScript
+
+    
+    
+    import time  
+      
+    # Nanosecond nonce (recommended for high-throughput request bursts)  
+    nonce = time.time_ns()  
+    
+    
+    
+    import "time"  
+      
+    // Nanosecond nonce (recommended for high-throughput request bursts)  
+    nonce := time.Now().UnixNano()  
+    
+    
+    
+    // Monotonic nonce (recommended for JavaScript)  
+    const nonce = process.hrtime.bigint().toString();  
+    
+
+## Complete Request Example
+
+Here's a complete example making an authenticated GET request to list assets:
 
   * Python
   * JavaScript
@@ -54,7 +242,6 @@ Type| Description| Use Case
     import hashlib  
     import hmac  
     import base64  
-    import urllib.parse  
     import requests  
       
     API_KEY = os.environ.get("PAYWARD_API_KEY")  
@@ -62,63 +249,34 @@ Type| Description| Use Case
     BASE_URL = "https://nexus.kraken.com"  
       
       
-    def get_payward_signature(urlpath, data, secret, nonce, params=None):  
+    def get_payward_signature(urlpath, data, secret, nonce):  
         if data is None:  
             encoded = str(nonce).encode("utf-8")  
         else:  
             encoded = (str(nonce) + json.dumps(data)).encode("utf-8")  
-          
-        sign_path = urlpath  
-        if params:  
-            query = urllib.parse.urlencode(params)  
-            sign_path += f"?{query}"  
       
-        message = sign_path.encode() + hashlib.sha256(encoded).digest()  
+        message = urlpath.encode() + hashlib.sha256(encoded).digest()  
         mac = hmac.new(base64.b64decode(secret), message, hashlib.sha512)  
         return base64.b64encode(mac.digest()).decode()  
       
       
-    def request_quote(user_id):  
-        endpoint = "/b2b/quotes"  
-        nonce = int(time.time() * 1000000000)  # Nanoseconds  
-          
-        body = {  
-            "type": "spend",           # 'spend' fiat to buy crypto  
-            "amount": {  
-                "asset": "EUR",        # Currency to spend  
-                "amount": "50.00",     # Amount to spend  
-            },  
-            "fee_bps": "100",          # Fee in basis points (1%)  
-            "spread_bps": "100",       # Spread in basis points (1%)  
-            "quote": {  
-                "asset": "BTC",        # Cryptocurrency to receive  
-            },  
-        }  
-          
-        params = {"user": user_id}  
-        signature = get_payward_signature(endpoint, body, API_SECRET, nonce, params)  
-          
+    def list_assets():  
+        endpoint = "/b2b/assets"  
+        nonce = time.time_ns()  # Nanoseconds (recommended for high-throughput request bursts)  
+        signature = get_payward_signature(endpoint, None, API_SECRET, nonce)  
+      
         headers = {  
             "API-Key": API_KEY,  
             "API-Sign": signature,  
             "API-Nonce": str(nonce),  
-            "Content-Type": "application/json",  
         }  
-          
-        response = requests.post(  
-            f"{BASE_URL}{endpoint}",  
-            headers=headers,  
-            params=params,  
-            json=body,  
-        )  
+      
+        response = requests.get(BASE_URL + endpoint, headers=headers)  
         return response.json()  
       
       
-    user_id = "YOUR_USER_IIBAN"  
-    quote = request_quote(user_id)  
-    print(f"Quote ID: {quote['result']['quote_id']}")  
-    print(f"You spend: {quote['result']['spend']['total']} {quote['result']['spend']['asset']}")  
-    print(f"You receive: {quote['result']['receive']['total']} {quote['result']['receive']['asset']}")  
+    assets = list_assets()  
+    print(assets)  
     
     
     
@@ -128,18 +286,13 @@ Type| Description| Use Case
     const API_SECRET = process.env.PAYWARD_API_SECRET;  
     const BASE_URL = 'https://nexus.kraken.com';  
       
-    function getPaywardSignature(urlpath, data, secret, nonce, params = null) {  
+    function getPaywardSignature(urlpath, data, secret, nonce) {  
       const encoded = data === null   
         ? String(nonce)   
         : String(nonce) + JSON.stringify(data);  
       
-      let signPath = urlpath;  
-      if (params) {  
-        signPath += '?' + new URLSearchParams(params).toString();  
-      }  
-      
       const sha256Hash = crypto.createHash('sha256').update(encoded).digest();  
-      const message = Buffer.concat([Buffer.from(signPath), sha256Hash]);  
+      const message = Buffer.concat([Buffer.from(urlpath), sha256Hash]);  
         
       const secretBuffer = Buffer.from(secret, 'base64');  
       const hmac = crypto.createHmac('sha512', secretBuffer);  
@@ -148,212 +301,12 @@ Type| Description| Use Case
       return hmac.digest('base64');  
     }  
       
-    async function requestQuote(userId) {  
-      const endpoint = '/b2b/quotes';  
-      const nonce = Date.now() * 1000000;  // Nanoseconds  
-        
-      const body = {  
-        type: 'spend',  
-        amount: { asset: 'EUR', amount: '50.00' },  
-        fee_bps: '100',  
-        spread_bps: '100',  
-        quote: { asset: 'BTC' },  
-      };  
+    async function listAssets() {  
+      const endpoint = '/b2b/assets';  
+      const nonce = process.hrtime.bigint().toString();  // Monotonic nanoseconds (recommended for JS)  
+      const signature = getPaywardSignature(endpoint, null, API_SECRET, nonce);  
       
-      const params = { user: userId };  
-      const signature = getPaywardSignature(endpoint, body, API_SECRET, nonce, params);  
-      
-      const url = `${BASE_URL}${endpoint}?user=${userId}`;  
-      const response = await fetch(url, {  
-        method: 'POST',  
-        headers: {  
-          'API-Key': API_KEY,  
-          'API-Sign': signature,  
-          'API-Nonce': String(nonce),  
-          'Content-Type': 'application/json',  
-        },  
-        body: JSON.stringify(body),  
-      });  
-      
-      return response.json();  
-    }  
-      
-    const userId = 'YOUR_USER_IIBAN';  
-    const quote = await requestQuote(userId);  
-    console.log('Quote ID:', quote.result.quote_id);  
-    
-
-### Response Example
-    
-    
-    {  
-      "result": {  
-        "quote_id": "BQEXAMP-LE123-ABCDEF",  
-        "type": "spend",  
-        "status": "new",  
-        "expires": "2026-01-26T12:00:30Z",  
-        "spend": {  
-          "asset": "EUR",  
-          "total": "50.00",  
-          "fee": "0.50",  
-          "subtotal": "49.50"  
-        },  
-        "receive": {  
-          "asset": "BTC",  
-          "total": "0.00052341",  
-          "fee": "0.00000000",  
-          "subtotal": "0.00052341"  
-        },  
-        "unit_price": {  
-          "asset": "BTC",  
-          "unit_price": "94567.50",  
-          "denomination_asset": "EUR"  
-        }  
-      }  
-    }  
-    
-
-caution
-
-Quotes expire after **120 seconds** (2 minutes). Execute the quote promptly or request a new one if it expires. The exact expiration time is returned in the `expires` field of the quote response.
-
-## Step 2: Execute the Quote
-
-Once you have a quote, execute it by making a PUT request with the quote ID.
-
-  * Python
-  * JavaScript
-
-    
-    
-    def execute_quote(user_id, quote_id):  
-        endpoint = f"/b2b/quotes/{quote_id}"  
-        nonce = int(time.time() * 1000000000)  # Nanoseconds  
-          
-        params = {"user": user_id}  
-        signature = get_payward_signature(endpoint, None, API_SECRET, nonce, params)  
-          
-        headers = {  
-            "API-Key": API_KEY,  
-            "API-Sign": signature,  
-            "API-Nonce": str(nonce),  
-        }  
-          
-        response = requests.put(  
-            f"{BASE_URL}{endpoint}",  
-            headers=headers,  
-            params=params,  
-        )  
-        return response.json()  
-      
-      
-    result = execute_quote(user_id, quote["result"]["quote_id"])  
-    print(f"Status: {result['result']['status']}")  
-    
-    
-    
-    async function executeQuote(userId, quoteId) {  
-      const endpoint = `/b2b/quotes/${quoteId}`;  
-      const nonce = Date.now() * 1000000;  // Nanoseconds  
-        
-      const params = { user: userId };  
-      const signature = getPaywardSignature(endpoint, null, API_SECRET, nonce, params);  
-      
-      const url = `${BASE_URL}${endpoint}?user=${userId}`;  
-      const response = await fetch(url, {  
-        method: 'PUT',  
-        headers: {  
-          'API-Key': API_KEY,  
-          'API-Sign': signature,  
-          'API-Nonce': String(nonce),  
-        },  
-      });  
-      
-      return response.json();  
-    }  
-      
-    const result = await executeQuote(userId, quote.result.quote_id);  
-    console.log('Status:', result.result.status);  
-    
-
-## Step 3: Monitor Trade Status
-
-After execution, poll the quote status until the trade completes.
-
-### Status Values
-
-Status| Description  
----|---  
-`new`| Quote created, awaiting execution  
-`accepted`| Quote has been accepted for execution  
-`order_complete`| Trade order has been completed  
-`credit_transfer_complete`| Trade fully completed, funds transferred  
-`quote_cancelled`| Quote was cancelled or expired  
-`quote_execution_failed`| Trade execution failed  
-  
-### Examples
-
-  * Python
-  * JavaScript
-
-    
-    
-    import time  
-      
-    def get_quote_status(user_id, quote_id):  
-        endpoint = f"/b2b/quotes/{quote_id}"  
-        nonce = int(time.time() * 1000000000)  # Nanoseconds  
-          
-        params = {"user": user_id}  
-        signature = get_payward_signature(endpoint, None, API_SECRET, nonce, params)  
-          
-        headers = {  
-            "API-Key": API_KEY,  
-            "API-Sign": signature,  
-            "API-Nonce": str(nonce),  
-        }  
-          
-        response = requests.get(  
-            f"{BASE_URL}{endpoint}",  
-            headers=headers,  
-            params=params,  
-        )  
-        return response.json()  
-      
-      
-    def wait_for_completion(user_id, quote_id, max_attempts=60):  
-        terminal_statuses = ["credit_transfer_complete", "quote_cancelled", "quote_execution_failed"]  
-          
-        for i in range(max_attempts):  
-            status = get_quote_status(user_id, quote_id)  
-            current_status = status["result"]["status"]  
-            print(f"Status: {current_status}")  
-              
-            if current_status == "credit_transfer_complete":  
-                print("✓ Trade completed!")  
-                return status  
-              
-            if current_status in terminal_statuses:  
-                raise Exception(f"Trade ended with status: {current_status}")  
-              
-            time.sleep(1)  
-          
-        raise Exception("Trade did not complete in time")  
-      
-      
-    final = wait_for_completion(user_id, quote["result"]["quote_id"])  
-    
-    
-    
-    async function getQuoteStatus(userId, quoteId) {  
-      const endpoint = `/b2b/quotes/${quoteId}`;  
-      const nonce = Date.now() * 1000000;  // Nanoseconds  
-        
-      const params = { user: userId };  
-      const signature = getPaywardSignature(endpoint, null, API_SECRET, nonce, params);  
-      
-      const url = `${BASE_URL}${endpoint}?user=${userId}`;  
-      const response = await fetch(url, {  
+      const response = await fetch(BASE_URL + endpoint, {  
         method: 'GET',  
         headers: {  
           'API-Key': API_KEY,  
@@ -365,60 +318,37 @@ Status| Description
       return response.json();  
     }  
       
-    async function waitForCompletion(userId, quoteId, maxAttempts = 60) {  
-      const terminalStatuses = ['credit_transfer_complete', 'quote_cancelled', 'quote_execution_failed'];  
-        
-      for (let i = 0; i < maxAttempts; i++) {  
-        const status = await getQuoteStatus(userId, quoteId);  
-        const currentStatus = status.result.status;  
-        console.log(`Status: ${currentStatus}`);  
-          
-        if (currentStatus === 'credit_transfer_complete') {  
-          console.log('✓ Trade completed!');  
-          return status;  
-        }  
-          
-        if (terminalStatuses.includes(currentStatus)) {  
-          throw new Error(`Trade ended with status: ${currentStatus}`);  
-        }  
-          
-        await new Promise(resolve => setTimeout(resolve, 1000));  
-      }  
-        
-      throw new Error('Trade did not complete in time');  
-    }  
-      
-    const final = await waitForCompletion(userId, quote.result.quote_id);  
+    const assets = await listAssets();  
+    console.log(assets);  
     
 
-## Error Handling
+## Query Parameters in Signature
 
-### Common Errors
+When your request includes query parameters, they must be included in the URL path used for signature generation:
+    
+    
+    // Include query params in the signature path  
+    const params = { 'page[size]': 10, quote: 'USD' };  
+    const queryString = new URLSearchParams(params).toString();  
+    const signaturePath = `/b2b/assets?${queryString}`;  
+      
+    const signature = getPaywardSignature(signaturePath, null, API_SECRET, nonce);  
+    
+
+## Troubleshooting
 
 Error| Cause| Solution  
 ---|---|---  
-`quote_expired`| Quote timeout exceeded| Request a new quote and execute faster  
-`insufficient_balance`| User lacks funds| Check user balance before trading  
-`invalid_amount`| Amount too small/large| Check min/max limits for the asset  
-`asset_disabled`| Asset not tradable| Use List Assets to check availability  
-  
-### Best Practices
-
-  1. **Handle quote expiration** : Always be prepared to request a new quote
-  2. **Check asset availability** : Call List Assets before trading
-  3. **Verify user balance** : Ensure sufficient funds before requesting quotes
-  4. **Implement retry logic** : Network issues can cause temporary failures
-  5. **Log trace IDs** : Store the `x-trace-id` header for debugging
-* Prerequisites
-  * Trading Workflow
-  * Step 1: Request a Quote
-* Quote Types
+`Invalid signature`| Signature doesn't match| Verify secret encoding, nonce, and body format  
+`Invalid nonce`| Nonce is not increasing| Ensure nonce > previous nonce  
+`Missing API-Key`| Header not set| Check header name is exactly `API-Key`  
+* Authentication Parameters
+  * Setting the API-Key Parameter
+  * Setting the API-Sign Parameter
+* Algorithm Steps
 * Examples
-* Response Example
-  * Step 2: Execute the Quote
-  * Step 3: Monitor Trade Status
-* Status Values
+  * Setting the API-Nonce Parameter
 * Examples
-  * Error Handling
-* Common Errors
-* Best Practices
+  * Complete Request Example
+  * Query Parameters in Signature
+  * Troubleshooting

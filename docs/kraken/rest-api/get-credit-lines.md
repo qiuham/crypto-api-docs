@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-credit-lines
 api_type: REST
-updated_at: 2026-05-27 20:02:22.465600
+updated_at: 2026-05-28 19:49:14.260995
 ---
 
 # Get Credit Lines

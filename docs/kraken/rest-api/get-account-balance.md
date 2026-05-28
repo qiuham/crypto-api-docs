@@ -2,24 +2,27 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-account-balance
 api_type: REST
-updated_at: 2026-05-27 20:01:46.018130
+updated_at: 2026-05-28 19:49:05.406355
 ---
 
-# Get Account Balance
+# Get Allocation Status
 
-**POST** `https://api.kraken.com/0/private/Balance`
+**POST** `https://api.kraken.com/0/private/Earn/AllocateStatus`
 
-Retrieve all cash balances, net of pending withdrawals.
+Get the status of the last allocation request.
 
-**Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
+Requires either the `Earn Funds` or `Query Funds` API key permission.
 
-**Symbol Extensions** :
+(De)allocation operations are asynchronous and this endpoint allows client to retrieve the status of the last dispatched operation. There can be only one (de)allocation request in progress for given user and strategy.
 
-  * `.B`: balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
-  * `.F`: balances earning automatically in Kraken Rewards
-  * `.T`: tokenized assets.
+The `pending` attribute in the response indicates if the previously dispatched operation is still in progress (true) or has successfully completed (false). If the dispatched request failed with an error, then HTTP error is returned to the client as if it belonged to the original request.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+Following specific errors within `Earnings` class can be returned by this method:
+
+  * Insufficient funds: `EEarnings:Insufficient funds:Insufficient funds to complete the (de)allocation request`
+  * User cap exceeded: `EEarnings:Above max:The allocation exceeds user limit for the strategy`
+  * Total cap exceeded: `EEarnings:Above max:The allocation exceeds the total strategy limit`
+  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
 
 ## Request
 
@@ -31,36 +34,30 @@ Retrieve all cash balances, net of pending withdrawals.
 
 Nonce used in construction of `API-Sign` header
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**strategy_id** `string` *required*
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+ID of the earn strategy, call `Earn/Strategies` to list available strategies
 
 ## Responses
 
   * 200
 
-Account balances retrieved.
+Response
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object`
-
-Account Balance
-
-**property name*** string
-
-balance
-
 **error** `string[]`
+
+**result** `objectnullable`
+
+Status of async earn operation
+
+    ↳ **pending** `boolean`
+
+`true` if an operation is still in progress on the same strategy.
 * curl
   * python
   * go
@@ -69,14 +66,14 @@ balance
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Balance' \  
+    curl -L 'https://api.kraken.com/0/private/Earn/AllocateStatus' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "rebase_multiplier": "rebased"  
+      "nonce": 30295839,  
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
     }'  
     
 
@@ -96,6 +93,6 @@ Body required
     
     
     {
-      "nonce": 0,
-      "rebase_multiplier": "rebased"
+      "nonce": 30295839,
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
     }

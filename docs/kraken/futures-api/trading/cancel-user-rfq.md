@@ -2,31 +2,31 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-user-rfq
 api_type: REST
-updated_at: 2026-05-27 19:48:00.986455
+updated_at: 2026-05-28 19:45:57.561739
 ---
 
-# Cancel an open RFQ
+# Create a new RFQ
 
-**DELETE** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs/:rfqUid`
+**POST** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs`
 
-Cancel a specific open RFQ created by the authenticated account.
+Create a new RFQ for the authenticated account.
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
 ## Request
 
-### Path Parameters
+### Query Parameters
 
-**rfqUid** uuidrequired
+**json** `any` *required*
 
-Unique identifier for the RFQ to cancel
+JSON-encoded RFQ creation request.
 
 ## Responses
 
   * 200
   * 404
 
-RFQ cancellation result
+RFQ creation result
 
   * application/json
 * Schema
@@ -35,8 +35,8 @@ RFQ cancellation result
 
 **status**
 
-**Possible values:** [`cancelled`, `failed`]
-* cancelled
+**Possible values:** [`placed`, `failed`]
+* placed
 * failed
 
 **result** `string` *required*
@@ -55,7 +55,7 @@ RFQ cancellation result
 
 **reason** `string` *required*
 
-**Possible values:** [`rfqNotFound`]
+**Possible values:** [`insufficientMargin`, `maxPositionExceed`, `wouldCauseLiquidation`, `fixedLeverageTooHigh`, `orderError`, `symbolNotFound`, `invalidExpiry`, `invalidQuantity`, `marketRestricted`, `noLegsSpecified`, `accountNotFound`, `mixedCurrencyPairs`, `tooManyNonOptionLegs`, `noOptionLegs`, `tooManyOpenRfqs`, `tooManyLegs`, `expiryTooShort`]
 
 RFQ feature is not enabled.
 
@@ -120,7 +120,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X DELETE 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs/:rfqUid' \  
+    curl -L -X POST 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -140,4 +140,4 @@ authent
 
 Parameters
 
-rfqUid — pathrequired
+json — queryrequired

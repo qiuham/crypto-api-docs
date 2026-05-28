@@ -1,17 +1,27 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/liquidity-pool-stats
-api_type: REST
-updated_at: 2026-05-27 19:45:08.387497
+api_type: Market Data
+updated_at: 2026-05-28 19:45:18.943161
 ---
 
-# Get liquidity pool statistic
+# Market Analytics
 
-**GET** `https://futures.kraken.com/api/charts/v1/analytics/liquidity-pool`
+**GET** `https://futures.kraken.com/api/charts/v1/analytics/:symbol/:analytics_type`
 
-Get liquidity pool statistic including usd value
+Analytics data divided into time buckets
 
 ## Request
+
+### Path Parameters
+
+**symbol** `string` *required*
+
+Market symbol
+
+**analytics_type** `Type of analytics` *required*
+
+**Possible values:** [`open-interest`, `aggressor-differential`, `trade-volume`, `trade-count`, `liquidation-volume`, `rolling-volatility`, `long-short-ratio`, `long-short-info`, `cvd`, `top-traders`, `orderbook`, `spreads`, `liquidity`, `slippage`, `future-basis`, `funding`]
 
 ### Query Parameters
 
@@ -670,7 +680,7 @@ oneOf
 
     
     
-    curl -L 'https://futures.kraken.com/api/charts/v1/analytics/liquidity-pool' \  
+    curl -L 'https://futures.kraken.com/api/charts/v1/analytics/:symbol/:analytics_type' \  
     -H 'Accept: application/json'  
     
 
@@ -681,6 +691,12 @@ Base URL
 https://futures.kraken.com/api/charts/v1
 
 Parameters
+
+symbol — pathrequired
+
+analytics_type — pathrequired
+
+\---open-interestaggressor-differentialtrade-volumetrade-countliquidation-volumerolling-volatilitylong-short-ratiolong-short-infocvdtop-tradersorderbookspreadsliquidityslippagefuture-basisfunding
 
 since — queryrequired
 

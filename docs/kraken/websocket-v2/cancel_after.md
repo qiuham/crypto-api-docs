@@ -2,23 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_after
 api_type: WebSocket
-updated_at: 2026-05-27 20:11:40.896085
+updated_at: 2026-05-28 19:56:05.684364
 ---
 
-# Cancel on Disconnect
+# Cancel All
 
 **WebSocket Endpoint:** `wss://ws-auth.kraken.com/v2`
-**Method:** `cancel_all_orders_after` (Authentication Required)
-`cancel_all_orders_after` provides a "Dead Man's Switch" mechanism to protect from network malfunction, extreme latency or unexpected matching engine downtime.
+**Method:** `cancel_all` (Authentication Required)
+Cancels all open orders, including untriggered orders and orders resting in the book.
 
-  * The client sends request with a timeout (in seconds), that will start a countdown timer in the trading engine which will cancel all client orders when the timer expires.
-  * The client must keep sending new requests to reset the trigger time, or deactivate the mechanism by specifying a timeout of 0.
-  * If the timer expires, all orders in the account are cancelled and the feature is disabled until the next `cancel_all_orders_after` request.
-  * The recommended use is to make a call every 15 to 30 seconds, providing a timeout of 60 seconds. This allows the client to keep the orders in place in case of a brief disconnection or transient delay, while keeping them safe in case of a network breakdown.
-
-info
-
-It is recommended to disable the timer ahead of scheduled trading engine maintenance (if the timer is enabled, all orders will be cancelled when the trading engine comes back from downtime).
+Note, the details of the individual cancelled orders will also be streamed on the `executions` channel.
 
 ## Request
 
@@ -29,13 +22,9 @@ It is recommended to disable the timer ahead of scheduled trading engine mainten
 
 **method** `string` *required*
 
-**Value:** `cancel_all_orders_after`
+**Value:** `cancel_all`
 
 **params** `object`
-
-    ↳ **timeout** `integer` *required*
-
-Duration (in seconds) to set/extend the timer, it should be less than `86400` seconds.
 
     ↳ **token** `string` *required*
 
@@ -47,10 +36,9 @@ Optional client originated request identifier sent as acknowledgment in the resp
     
     
     {  
-        "method": "cancel_all_orders_after",  
+        "method": "cancel_all",  
         "params": {  
-            "timeout": 100,  
-            "token": "zwpdzWUe18Bn6h4TAMorh26+QbcMeST2B5tamfe+pgQ"  
+            "token": "weeBxllys/7kHy/zHpkATSDIS42BvDgWS2b04ZSZHZ5"  
         },  
         "req_id": 1234567890  
     }  
@@ -65,27 +53,15 @@ Optional client originated request identifier sent as acknowledgment in the resp
 
 **method** `string`
 
-**Value:** `cancel_all_orders_after`
+**Value:** `cancel_all`
 
 **result** `object` *conditional*
 
 **Condition:** On successful requests only 
 
-**currentTime** string
+    ↳ **count** `integer`
 
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The current engine time.
-
-**triggerTime** string
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The time the orders will be expired in the engine.
+Number of orders cancelled.
 
     ↳ **warnings** `array of strings`
 
@@ -125,13 +101,12 @@ The timestamp when the response was sent on the wire, just prior to transmitting
     
     
     {  
-        "method": "cancel_all_orders_after",  
+        "method": "cancel_all",  
         "req_id": 1234567890,  
         "result": {  
-            "currentTime": "2023-09-21T15:49:29Z",  
-            "triggerTime": "2023-09-21T15:51:09Z"  
+            "count": 1  
         },  
         "success": true,  
-        "time_in": "2023-09-21T15:49:28.627900Z",  
-        "time_out": "2023-09-21T15:49:28.649057Z"  
+        "time_in": "2023-09-26T13:09:48.463201Z",  
+        "time_out": "2023-09-26T13:09:48.471419Z"  
     }

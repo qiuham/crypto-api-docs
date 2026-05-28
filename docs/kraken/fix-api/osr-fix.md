@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/osr-fix
 api_type: REST
-updated_at: 2026-05-27 19:43:34.973816
+updated_at: 2026-05-28 19:44:57.566796
 ---
 
 # Order Status Request ( Spot Only )

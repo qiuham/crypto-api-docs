@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-rfq-offer
 api_type: REST
-updated_at: 2026-05-27 19:47:53.863440
+updated_at: 2026-05-28 19:45:54.953003
 ---
 
 # Cancel open offer on open RFQ

@@ -2,17 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ticker-information
 api_type: REST
-updated_at: 2026-05-27 20:05:11.490823
+updated_at: 2026-05-28 19:49:56.959992
 ---
 
-# Get Ticker Information
+# Get Tradable Asset Pairs
 
-**GET** `https://api.kraken.com/0/public/Ticker`
+**GET** `https://api.kraken.com/0/public/AssetPairs`
 
-Get ticker information for all or requested markets. To clarify usage, note that
-
-  * Today's prices start at midnight UTC
-  * Leaving the pair parameter blank will return tickers for all tradeable assets on Kraken
+Get tradable asset pairs
 
 ## Request
 
@@ -20,23 +17,70 @@ Get ticker information for all or requested markets. To clarify usage, note that
 
 **pair** `string`
 
-Asset pair to get data for (optional, default: all tradeable exchange pairs)
+Asset pairs to get data for
 
-**Example:** XBTUSD
+**Example:** BTC/USD,ETH/BTC
 
-**asset_class** `string`
+**aclass_base** `string`
 
-**Possible values:** [`tokenized_asset`, `forex`]
+**Possible values:** [`currency`, `tokenized_asset`]
 
-This parameter is required on requests for tokenized pairs, i.e. xstocks. If `asset_class` is provided without the `pair` parameter, all pairs for that asset class will be returned.
+Filters the asset class to retrieve (optional)
+* `currency` = spot currency pairs.
+* `tokenized_asset` = tokenized asset pairs, i.e. xstocks.
 
-**Default value:**`forex`
+**Default value:**`currency`
+
+**info** `string`
+
+**Possible values:** [`info`, `leverage`, `fees`, `margin`]
+
+Info to retrieve (optional)
+* `info` = all info
+* `leverage` = leverage info
+* `fees` = fees schedule
+* `margin` = margin info
+
+**Default value:**`info`
+
+**country_code** `ISO 3166-1 alpha-2`
+
+Filter for response to only include pairs available in the provided country/region.
+
+**Example:** GB
+
+**execution_venue** `string`
+
+**Possible values:** [`international`, `bitnomial_exchange`]
+
+Comma-separated list of execution venues to filter by (optional)
+* `international` = International exchange
+* `bitnomial_exchange` = Bitnomial exchange
+
+**Default value:**`international`
+
+**Examples:**
+* International only
+* Bitnomial only
+* International and Bitnomial
+
+Fetch pairs listed on International execution venue only
+
+**Example:**`international`
+
+Fetch pairs listed on Bitnomial Exchange execution venue only
+
+**Example:**`bitnomial_exchange`
+
+Fetch pairs listed on both International and Bitnomial Exchange execution venues
+
+**Example:**`international,bitnomial_exchange`
 
 ## Responses
 
   * 200
 
-Ticker info retrieved.
+Tradable asset pairs retrieved.
 
   * application/json
 * Schema
@@ -45,45 +89,113 @@ Ticker info retrieved.
 
 **result** `object`
 
-**property name*** AssetTickerInfo
+Pair names and their info
 
-Asset Ticker Info
+**property name*** AssetPair
 
-    ↳ **a** `string[]`
+Trading Asset Pair
 
-Ask `[<price>, <whole lot volume>, <lot volume>]`
+    ↳ **altname** `string`
 
-    ↳ **b** `string[]`
+Alternate pair name
 
-Bid `[<price>, <whole lot volume>, <lot volume>]`
+    ↳ **wsname** `string`
 
-    ↳ **c** `string[]`
+WebSocket pair name (if available)
 
-Last trade closed `[<price>, <lot volume>]`
+    ↳ **aclass_base** `string`
 
-    ↳ **v** `string[]`
+Asset class of base component
 
-Volume `[<today>, <last 24 hours>]`
+    ↳ **base** `string`
 
-    ↳ **p** `string[]`
+Asset ID of base component
 
-Volume weighted average price `[<today>, <last 24 hours>]`
+    ↳ **aclass_quote** `string`
 
-    ↳ **t** `integer[]`
+Asset class of quote component
 
-Number of trades `[<today>, <last 24 hours>]`
+    ↳ **quote** `string`
 
-    ↳ **l** `string[]`
+Asset ID of quote component
 
-Low `[<today>, <last 24 hours>]`
+    ↳ **execution_venue** `string`
 
-    ↳ **h** `string[]`
+Execution venue where the order book for this pair is listed
 
-High `[<today>, <last 24 hours>]`
+**Possible values:** [`international`, `bitnomial_exchange`]
 
-    ↳ **o** `string`
+    ↳ **lot** `stringdeprecated`
 
-Today's opening price
+Volume lot size
+
+    ↳ **pair_decimals** `integer`
+
+Number of decimal places for prices in this pair
+
+    ↳ **cost_decimals** `integer`
+
+Number of decimal places for cost of trades in pair (quote asset terms)
+
+    ↳ **lot_decimals** `integer`
+
+Number of decimal places for volume (base asset terms)
+
+    ↳ **lot_multiplier** `integer`
+
+Amount to multiply lot volume by to get currency volume
+
+    ↳ **leverage_buy** `integer[]`
+
+Array of leverage amounts available when buying
+
+    ↳ **leverage_sell** `integer[]`
+
+Array of leverage amounts available when selling
+
+    ↳ **fees** `array[]`
+
+Fee schedule array in `[<volume>, <percent fee>]` tuples
+
+        ↳ **fees_maker** `array[]`
+
+Maker fee schedule array in `[<volume>, <percent fee>]` tuples (if on maker/taker)
+
+            ↳ **fee_volume_currency** `string`
+
+Volume discount currency
+
+            ↳ **margin_call** `integer`
+
+Margin call level
+
+            ↳ **margin_stop** `integer`
+
+Stop-out/liquidation margin level
+
+            ↳ **ordermin** `string`
+
+Minimum order size (in terms of base currency)
+
+            ↳ **costmin** `string`
+
+Minimum order cost (in terms of quote currency)
+
+            ↳ **tick_size** `string`
+
+Minimum increment between valid price levels
+
+            ↳ **status** `string`
+
+Status of asset. Possible values: `online`, `cancel_only`, `post_only`, `limit_only`, `reduce_only`.
+
+            ↳ **long_position_limit** `integer`
+
+Maximum long margin position size (in terms of base currency)
+
+            ↳ **short_position_limit** `integer`
+
+Maximum short margin position size (in terms of base currency)
 
 **error** `string[]`
 * curl
@@ -94,7 +206,7 @@ Today's opening price
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Ticker' \  
+    curl -L 'https://api.kraken.com/0/public/AssetPairs' \  
     -H 'Accept: application/json'  
     
 
@@ -108,9 +220,19 @@ Parameters
 
 pair — query
 
-asset_class — query
+aclass_base — query
 
-\---tokenized_assetforex
+\---currencytokenized_asset
+
+info — query
+
+\---infoleveragefeesmargin
+
+country_code — query
+
+execution_venue — query
+
+\---internationalbitnomial_exchange
 
 ResponseClear
 

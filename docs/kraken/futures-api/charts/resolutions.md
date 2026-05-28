@@ -1,17 +1,17 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/resolutions
-api_type: REST
-updated_at: 2026-05-27 19:45:22.960688
+api_type: Market Data
+updated_at: 2026-05-28 19:45:22.256629
 ---
 
-# Resolutions
+# Markets
 
-**GET** `https://futures.kraken.com/api/charts/v1/:tick_type/:symbol`
+**GET** `https://futures.kraken.com/api/charts/v1/:tick_type`
 
-Candle resolutions available for specified tick type and market.
+Markets available for specified tick type.
 
-List of available tick types can be fetched from the tick types endpoint. List of available markets can be fetched from the markets endpoint.
+List of available tick types can be fetched from the tick types endpoint.
 
 ## Request
 
@@ -21,28 +21,32 @@ List of available tick types can be fetched from the tick types endpoint. List o
 
 **Possible values:** [`spot`, `mark`, `trade`]
 
-**symbol** `string` *required*
-
-Market symbol
-
 ## Responses
 
   * 200
 
-All resolutions for the given `tick_type` and `symbol`
+Markets list
 
   * application/json
 * Schema
+  * Example
 
 **Schema**
 
   * Array [
 
-****Resolution (string)
-
-**Possible values:** [`1m`, `5m`, `15m`, `30m`, `1h`, `4h`, `12h`, `1d`, `1w`]
+****string
 
   * ]
+
+    
+    
+    [  
+      "PI_XRPUSD",  
+      "FI_XRPUSD_210625",  
+      "FI_XBTUSD_210528",  
+      "PI_XBTUSD"  
+    ]  
 * curl
   * python
   * go
@@ -51,7 +55,7 @@ All resolutions for the given `tick_type` and `symbol`
 
     
     
-    curl -L 'https://futures.kraken.com/api/charts/v1/:tick_type/:symbol' \  
+    curl -L 'https://futures.kraken.com/api/charts/v1/:tick_type' \  
     -H 'Accept: application/json'  
     
 
@@ -66,8 +70,6 @@ Parameters
 tick_type — pathrequired
 
 \---spotmarktrade
-
-symbol — pathrequired
 
 ResponseClear
 

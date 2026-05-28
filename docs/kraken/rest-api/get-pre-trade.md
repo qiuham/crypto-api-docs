@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-pre-trade
 api_type: REST
-updated_at: 2026-05-27 20:04:20.102487
+updated_at: 2026-05-28 19:49:41.957609
 ---
 
 # Pre-Trade Data

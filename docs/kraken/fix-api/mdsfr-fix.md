@@ -1,73 +1,184 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/mdsfr-fix
-api_type: Market Data
-updated_at: 2026-05-27 19:42:59.344614
+api_type: REST
+updated_at: 2026-05-28 19:44:50.520426
 ---
 
-# Market Data Snapshot Full Refresh
+# New Order Single
 
+To submit a new order, the client needs to send a NewOrderSingle message. All orders are submitted from the client’s perspective to Kraken exchange to place bid/offer on the Kraken Order book. A range of order types, Time-In-Force (TIF) and order flags can be specified by the parameters below.
+
+The supported order types are:
+
+  * `market`: The full order quantity executes immediately at the best available price in the order book.
+  * `limit`: The full order quantity is placed immediately with a limit price restriction to only trade at this price or better.
+  * `stop-loss`: A market order is triggered when the reference price reaches the stop price (from an unfavourable direction).
+  * `stop-loss-limit`: A limit order is triggered when the reference price reaches the stop price (from an unfavourable direction).
+  * `take-profit`: A market order is triggered when the reference price reaches the stop price (from an favourable direction).
+  * `take-profit-limit`: A limit order is triggered when the reference price reaches the stop price (from an favourable direction).
+  * `trailing-stop`: A market order is triggered when the market reverts a specified distance from the peak price.
+  * `trailing-stop-limit`: A limit order is triggered when the market reverts a specified distance from the peak price.
 * FIX Specification
-  * Spot L2 Example
-  * Futures L3 Example
+  * Spot Example
+  * Futures Example
 
 ### MESSAGE BODY
 
 **header** `` *required*
 
-MsgType `W`
+MsgType `D`
 
-**262 - MDReqID** string required
+**11 - ClOrdID** string required
 
-Unique request identifier. 
+Unique identifier of the order. The ID can be one of the following formats:
+
+  * **Ever-Increasing Positive Numbers** : Ever-increasing positive numbers, such as microseconds timestamps, to ensure the uniqueness and sequential nature of the identifiers. (Spot only)   
+**Example** : Using the current microsecond timestamp as the ClOrdID, such as `1623448294234000` (Max 18 characters)
+  * **Timestamp-First v4 UUIDs** : A timestamp-first v4 UUID might look like `1b4e28ba-2fa1-11d2-883f-0016d3cca427`, where the initial part (`1b4e28ba-2fa1`) of the UUID represents the timestamp. The timestamp granularity to generate the first part need to be 10 microseconds maximum such as `162344829423400`. 
+
+**40 - OrderType** char required
+
+The execution model of the order.
+
+**Possible values:**
+  * `1` : market
+  * `2` : Limit
+  * `3` : Stop-loss
+  * `4` : Stop-loss-limit
+  * `R` : Take-profit
+  * `T` : Take-profit-limit
+  * `U` : Trailing-stop
+  * `V` : Trailing-stop-limit (Spot only) 
+
+**44 - Price** float conditional
+
+**Condition:** OrderType=Limit/Stop-Loss-Limit/Take-Profit-Limit/Trailing-stop-limit 
+
+Limit Price of the order to be placed in the Order Book. This field is denominated in Quote Currency.
+
+**38 - OrderQty** float required
+
+Order quantity in terms of the base asset.
+
+**1138 - DisplayQty** float
+
+Iceberg qty. This will indicate the Qty to show on the book. Only possible on Limit order. The Minimum value is 1 / 15 of order_qty. (Spot only)
+
+**54 - Side** integer required
+
+Side of the order.
+
+**Possible values:**
+  * `1` : Buy
+  * `2` : Sell
 
 **55 - Symbol** string required
 
-Asset Pair listed on the exchange. 
+Pair in the format BASE/QUOTE.
 
-**268 - NoMDEntries** integer required
+**59 - TimeInForce** string required
 
-Number of entries following.
-
-**269 - MDEntryType** integer required
+Time-in-force specifies how long an order remains in effect before being expired.
 
 **Possible values:**
-  * `0` : Bid
-  * `1` : Offer
+  * `1` : GTC (Good till canceled)
+  * `3` : IOC (Immediate or Cancel)
+  * `4` : FOK (Fill or Kill)
+  * `6` : GTD (Good till date) - (Spot only) 
 
-Trade will only be transmitted via [Market Data Incremental Refresh](./mdir-fix) messages.
+**60 - TransactTime** string required
 
-**278 - MDEntryID** string required
+**Format:** YYYYMMDD-HH:MM:SS.uuu
 
-Unique identifier for this market data entry. OrderID for the Level3 subcription
+Time of order creation expressed in UTC. 
 
-**270 - MDEntryPx** float required
+**126 - ExpireTime** string conditional
 
-Price of the market data entry. 
+**Condition:** TimeinForce=GTD 
 
-**271 - MDEntrySize** float required
+**Format:** YYYYMMDD-HH:MM:SS
 
-Volume represented by the market data entry. 
+Expiration of the Order if not fully filled before it. Expressed in UTC. GTD orders can have an expiry time up to one month in future. (Spot only) 
 
-**273 - MDEntryTime** string required
+**168 - EffectiveTime** string
 
-Time of market data entry. 
+Scheduled start time on the order expressed in UTC. the order won't be visible on the book and won't match before that time. (Spot only) 
 
-**5060 - MDEntryTimestamp** string
+**18 - ExecInst** char
 
-High-precision event time for this market data update. **Level 3 only.** When present with 5273, 5060 is the time the update was generated; 5273 is the queue entry time.   
-**Sample format:** `2026-02-03T10:24:34.650069468Z` (ISO 8601, nanosecond fractional seconds, UTC).
+If more than one instruction is applicable to an order, this field may contain multiple instructions separated by space.
 
-**5273 - MDEntryTimeQueue** string
+**Possible values:**
+  * `E` : Reduce-Only - Reduces an existing margin position without opening an opposite long or short position worth more than the current value of your leveraged assets.
+  * `P` : Post-Only - Cancels the order if it will take liquidity on arrival. Post only orders will always be posted passively in the book.
+  * `v` : viqc - Orderqty (tag 38) expressed in quote currency. (Spot Only) 
+  * `f` : Cumulative fee in base currency - base is the default for sell orders. (Spot Only)
+  * `q` : Cumulative fee in quote currency - quote is the default for buy orders. (Spot Only)
+  * `s` : Single fee - Mandatory and only supported fee option for derivatives - fee sent on the execution report are based on the trade.
 
-Queue entry time: when the order entered the book at this price level. **Level 3 only.** For L3, orders at the same price are ordered by this tag.   
-**Sample format:** `2026-02-03T10:24:29.175114502Z` (ISO 8601, nanosecond fractional seconds, UTC).
+**99 - StopPx** float conditional
+
+**Condition:** OrderType=Stop-Loss/Take-Profit/Stop-Loss-Limit/Trailing-stop/Trailing-stop-limit 
+
+Defines the trigger price of the order. This field is denominated in Quote Currency. 
+
+**388 - DiscretionInst** integer
+
+The reference price to track for triggering orders.
+
+**Possible values:**
+  * `1` :Related to index price
+  * `5` :Related to last trade price
+**Default value:`5`**
+
+**5001 - Leverage** string
+
+Use margin account for the order funding. (Spot only)
+
+**Possible values:**
+  * `0` :Margin disabled 
+  * `1` :Margin enabled
+**Default value:`0`**
+
+**7928 - SelfTradePrevention** integer
+
+Self Trade Prevention (STP) is a protection feature to prevent users from inadvertently or deliberately trading against themselves. To prevent a self-match, one of the following STP modes can be used to define which order(s) will be expired. (Spot only)
+
+**Possible values:**
+  * `0` : Cancel both - both arriving and resting orders will be canceled.
+  * `1` : Cancel Newest - arriving order will be canceled.
+  * `2` : Cancel Oldest - resting order will be canceled.
+**Default value:`1`**
+
+**78 - NoAllocs** integer
+
+Number of subaccount that are part of the order. Always 1 for the broker accounts.
+
+**79 - AllocAccount** String
+
+Account ID of the Subaccount that this order is targeted to. Only available for Broker accounts. Please contact your AM for further questions.
+
+**62 - ValidUntilTime** string
+
+**Format:** YYYYMMDD-HH:MM:SS.uuu
+
+The engine will reject any order entered into the matching engine after this time. This provides extra protection against latency on time sensitive orders. The timestamp should be at least 2 seconds and at most 60 seconds in the future.
 
 **trailer** `` *required*
     
     
-    8=FIX.4.4|9=208|35=W|34=21|49=KRAKEN-MD|52=20230707-13:49:11.245|56=MYCOMPID|55=BTC/USD|262=3|268=2|269=1|278=O30300.0|270=30300.0|271=8.44867022|273=13:49:07.307|269=0|278=B30299.9|270=30299.9|271=0.67373926|273=13:49:10.179|10=254|  
+    8=FIX.4.4|9=140|35=D|34=2|49=MYCOMPID|52=20230707-13:56:08.000|56=KRAKEN-TRD|11=1688738168|38=0.01|40=2|44=1000|54=1|55=BTC/USD|59=1|60=20230707-13:56:08.277|10=222|  
     
     
     
-    8=FIX.4.4|9=87775|35=W|34=2|49=KRAKEN-DRV-MD|52=20250304-15:25:09.911|56=MYCOMPID_DRV|55=PF_ETHUSD|262=1|268=10|269=1|278=00bf00ff-00bb-00f7-00ed-006f007f00de|270=2043.1|271=2.05|273=15:25:09.883|269=1|278=009e005a-00b9-0035-00ff-009e00ce007e|270=2043.9|271=2.05|273=15:25:09.767|269=1|278=009f00ff-00b8-0055-00f2-00bf00eb00fd|270=2043.9|271=2.05|273=15:25:09.775|269=1|278=009e00de-00bf-003d-00cf-00df005000ee|270=2044.1|271=1.712|273=15:25:09.894|269=1|278=00bf005f-0034-0035-00ab-00f500d6005d|270=2044.2|271=2.05|273=15:25:09.716|269=1|278=00bf005f-00b9-005d-00fe-00f8004f00ff|270=2044.3|271=1.883|273=15:25:09.711|269=1|278=00be00db-0072-0017-00fe-007f0057006f|270=2044.3|271=1.697|273=15:25:09.863|269=1|278=00bf007a-0030-0097-00dd-00670076007f|270=2044.4|271=3.767|273=15:25:09.844|269=1|278=00bf007a-0035-0095-00b9-007f004700cd|270=2044.4|271=1.712|273=15:25:09.881|269=1|278=009e00df-00bf-009b-00ff-00fc006f0063|270=2044.5|271=2.05|273=15:25:08.520|269=1|278=00bf00ff-0031-00fd-00fe-00f900c900fc|270=2044.5|271=22.605|273=15:25:09.885|10=000|
+    8=FIX.4.4|9=181|35=D|34=2|49=damien2_DRV|52=20250303-14:09:32.902|56=KRAKEN-DRV-TRD|11=9e58120f-182b-4dce-9609-8ca7cdd174f0|18=s|38=0.1|40=2|44=1000|54=1|55=PF_ETHUSD|59=1|60=20250303-14:09:32.896|10=148|  
+    
+
+Order Validation
+
+Kraken will validate each order it receives by checking that the user sent all the required FIX fields for the order.
+
+  * FIX field level validation will result in [session level reject](/api/docs/fix-api/reject-session_level-fix).
+  * Business rule validation failures will result in rejection in the form of an [business level reject](/api/docs/fix-api/reject-business_level-fix)
+  * Once the order is accepted and Acked, any further Business rule validations that will result in an [execution report](/api/docs/fix-api/er-fix) with an unsolicited cancel status.

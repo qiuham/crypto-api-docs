@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/wallet-transfer
 api_type: REST
-updated_at: 2026-05-27 20:08:34.590377
+updated_at: 2026-05-28 19:50:44.272312
 ---
 
-# Request Wallet Transfer
+# Withdraw Funds
 
-**POST** `https://api.kraken.com/0/private/WalletTransfer`
+**POST** `https://api.kraken.com/0/private/Withdraw`
 
-Transfer from a Kraken spot wallet to a Kraken Futures wallet. Note that a transfer in the other direction must be requested via the Kraken Futures API endpoint for [withdrawals to Spot wallets](/api/docs/futures-api/trading/withdrawal).
+Make a withdrawal request.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+**API Key Permissions Required:** `Funds permissions - Withdraw`
 
 ## Request
 
@@ -25,31 +25,47 @@ Nonce used in construction of `API-Sign` header
 
 **asset** `string` *required*
 
-Asset to transfer (asset ID or `altname`)
+Asset being withdrawn
 
-**Example:**`XBT`
+**aclass** `string`
 
-**from** `string` *required*
+Specify the asset class of the asset being withdrawn
 
-Source wallet
+**Possible values:** [`currency`, `tokenized_asset`]
 
-**Possible values:** [`Spot Wallet`]
+**Default value:**`currency`
 
-**to** `string` *required*
+**key** `string` *required*
 
-Destination wallet
+Withdrawal key name, as set up on your account
 
-**Possible values:** [`Futures Wallet`]
+**address** `string`
+
+Optional, crypto address that can be used to confirm address matches key (will return `Invalid withdrawal address` error if different)
 
 **amount** `string` *required*
 
-Amount to transfer
+Amount to be withdrawn
+
+**max_fee** `string`
+
+Optional, if the processed withdrawal fee is higher than `max_fee`, withdrawal will fail with `EFunding:Max fee exceeded`
+
+**rebase_multiplier** `stringnullable`
+
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
+
+**Possible values:** [`rebased`, `base`]
+
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Transfer created.
+Withdrawal created.
 
   * application/json
 * Schema
@@ -62,8 +78,6 @@ Transfer created.
 
 Reference ID
 
-**Example:**`FTQcuak-V6Za8qrWnhzTx67yYHz8Tg`
-
 **error** `string[]`
 * curl
   * python
@@ -73,7 +87,7 @@ Reference ID
 
     
     
-    curl -L 'https://api.kraken.com/0/private/WalletTransfer' \  
+    curl -L 'https://api.kraken.com/0/private/Withdraw' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
@@ -81,9 +95,9 @@ Reference ID
     -d '{  
       "nonce": 1695828271,  
       "asset": "XBT",  
-      "from": "Spot Wallet",  
-      "to": "Futures Wallet",  
-      "amount": "2.54"  
+      "key": "btc_2709",  
+      "amount": "0.725",  
+      "address": "bc1kar0ssrr7xf3vy5l6d3lydnwkre5og2zz3f5ldq"  
     }'  
     
 
@@ -105,7 +119,7 @@ Body required
     {
       "nonce": 1695828271,
       "asset": "XBT",
-      "from": "Spot Wallet",
-      "to": "Futures Wallet",
-      "amount": "2.54"
+      "key": "btc_2709",
+      "amount": "0.725",
+      "address": "bc1kar0ssrr7xf3vy5l6d3lydnwkre5og2zz3f5ldq"
     }

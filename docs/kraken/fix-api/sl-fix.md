@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/sl-fix
 api_type: REST
-updated_at: 2026-05-27 19:44:10.892317
+updated_at: 2026-05-28 19:45:06.143641
 ---
 
-# Instrument List
+# Instrument List Request
 
-This message provides the different parameters of each instrument that can be traded on Kraken as well as their status at the time of the request.
+The InstrumentListRequest message is used to return a list of securities from the exchange that match the criteria provided on the request. We recommend that clients send an InstrumentListRequest on any new connection or reconnection as the status of the Instrument might have changed during the disconnection.
 
   * FIX Specification
 
@@ -15,82 +15,40 @@ This message provides the different parameters of each instrument that can be tr
 
 **header** `` *required*
 
-MsgType `y`
-
-**146 - NoRelatedSym**
-
-Repeating Group describing all the Symbols available on Kraken exchange. 
-
-**55 - Symbol** string required
-
-Asset Pair listed on Kraken exchange. 
-
-**562 - minTradeVol** float required
-
-Minimum order quantity increment on an asset pair. 
-
-**5010 - QtyPrecision** float required
-
-Specifies the quantity decimal precision of the asset pair and currency. 
-
-**5011 - QtyMin** float required
-
-Minimum order quantity allowed on asset pair. 
-
-**5012 - QtyMax** float
-
-Maximum order quantity allowed on asset pair. 
-
-**5013 - MinimumCost** float
-
-Minimum cost (price * qty) for new orders. 
-
-**2349 - PricePrecision** float required
-
-Specifies the price decimal precision of the asset pair. 
-
-**5022 - TickSize** float required
-
-Specifies the price increment allowed on the asset pair. 
-
-**5032 - AssetPairStatus** integer required
-
-**Possible values:**
-  * `0` : Hidden
-  * `1` : Online
-  * `2` : Maintenance
-  * `3` : CancelOnly
-  * `4` : PostOnly
-  * `5` : LimitOnly
-  * `6` : Delisted
-  * `7` : ReduceOnly
+MsgType `x`
 
 **320 - InstrumentReqID** string required
 
-Unique request identifier. 
+Unique request identifier .
 
-**393 - TotNoRelatedSym** Integer
-
-Total number of securities. Only seen when fragmentation occurs. 
-
-**893 - LastFragment** Boolean
-
-Indicates whether this message is the last in a sequence of messages when the Security List was delivered in multiple SecurityList messages. Only seen when fragmentation occurs. 
-
-**322 - InstrumentResponseID** string required
-
-Unique response identifier. 
-
-**560 - InstrumentRequestResult** integer required
+**263 - SubscriptionRequestType** integer
 
 **Possible values:**
-  * `0` : Valid request
-  * `1` : Invalid or unsupported request
-  * `2` : No Instruments found that match criteria
-  * `4` : Instrument data temporarily unavailable
+  * `0` : Snapshot 
+  * `1` : Snapshot + Updates
+  * `2` : Disable previous snapshot + Update request
 
-**58 - Text** string
+**559 - InstrumentListRequestType** integer required
 
-Full description for rejection. 
+**Possible values:**
+  * `0` : Single asset pair definition
+  * `1` : SecurityType
+  * `4` : All Securities
+
+**167 - SecurityType** string conditional
+
+**Condition:** InstrumentListRequestType=1 
+
+**Possible values:**
+  * `CASH` : Spot only instruments
+  * `FUT` : Futures only instruments
+  * `OPT` : Options only instruments
+  * `TS` : Tokenized stocks only instruments, i.e. xStocks
+
+**55 - Symbol** string conditional
+
+**Condition:** InstrumentListRequestType=0 
+
+Format should be BASE/QUOTE. 
 
 **trailer** `` *required*

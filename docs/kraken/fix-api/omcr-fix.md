@@ -2,12 +2,12 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/omcr-fix
 api_type: REST
-updated_at: 2026-05-27 19:43:27.857027
+updated_at: 2026-05-28 19:44:56.799870
 ---
 
-# Order Mass Cancel Request
+# Order Status Request ( Spot Only )
 
-This request is used by clients to cancel all open orders including untriggered orders and orders resting in the book. As a response to this request, Kraken will confirm each order cancelation through [execution report](/api/docs/fix-api/er-fix) type canceled.
+This request is used by clients to obtain information about current order status on Kraken exchange. As a response to this request, Order Status is sent on [execution report](/api/docs/fix-api/er-fix) with ExecType = `I`. Tag 39 on this response would give away current order status.
 
   * FIX Specification
   * Example
@@ -16,7 +16,7 @@ This request is used by clients to cancel all open orders including untriggered 
 
 **header** `` *required*
 
-MsgType `q`
+MsgType `H`
 
 **11 - ClOrdID** string required
 
@@ -26,26 +26,15 @@ Unique identifier of the order. The ID can be one of the following formats:
 **Example** : Using the current microsecond timestamp as the ClOrdID, such as `1623448294234000` (Max 18 characters)
   * **Timestamp-First v4 UUIDs** : A timestamp-first v4 UUID might look like `1b4e28ba-2fa1-11d2-883f-0016d3cca427`, where the initial part (`1b4e28ba-2fa1`) of the UUID represents the timestamp. The timestamp granularity to generate the first part need to be 10 microseconds maximum such as `162344829423400`. 
 
-**60 - TransactTime** string required
+**37 - OrderID** string required
 
-**Format:** YYYYMMDD-HH:MM:SS.uuu
+OrderId needs to match the one received on the ExecutionReports. 
 
-Time of order cancellation expressed in UTC. 
+**55 - Symbol** string required
 
-**530 - MassCancelRequestType** integer required
-
-**Possible values:**
-  * `1` : Cancel all orders created or replaced during the trading Session by Symbol
-  * `6` : Cancel all orders created or replaced during the trading Session
-  * `7` : Cancel all open orders created by the SenderCompID
-
-**55 - Symbol** string conditional
-
-**Condition:** MassCancelRequestType=1 
-
-The pair in format BASE/QUOTE. 
+Pair in the format BASE/QUOTE. 
 
 **trailer** `` *required*
     
     
-    8=FIX.4.4|9=115|35=q|34=6|49=MYCOMPID|52=20230707-13:59:36.000|56=KRAKEN-TRD|11=1688738376|55=BTC/USD|60=20230707-13:59:36.422|530=1|10=193|
+    8=FIX.4.4|9=137|35=H|34=5|49=MYCOMPID|52=20230707-13:59:00.000|56=KRAKEN-TRD|11=1688738340|37=OKWUQF-YPJM2-DTAJHH|54=1|55=BTC/USD|60=20230707-13:59:00.023|10=080|
