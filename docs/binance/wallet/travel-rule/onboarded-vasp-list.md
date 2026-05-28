@@ -2,101 +2,175 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/onboarded-vasp-list
 api_type: REST
-updated_at: 2026-05-27 19:00:07.121302
+updated_at: 2026-05-28 19:05:34.645878
 ---
 
-# Withdraw (for local entities that require travel rule) (USER_DATA)
+# Withdraw History (for local entities that require travel rule) (supporting network) (USER_DATA)
 
-## API Description[​](/docs/wallet/travel-rule/withdraw#api-description "Direct link to API Description")
+## API Description[​](/docs/wallet/travel-rule/withdraw-history#api-description "Direct link to API Description")
 
-Submit a withdrawal request for local entities that required travel rule.
+Fetch withdraw history for local entities that required travel rule.
 
-## HTTP Request[​](/docs/wallet/travel-rule/withdraw#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/wallet/travel-rule/withdraw-history#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/localentity/withdraw/apply`
+GET `/sapi/v1/localentity/withdraw/history`
 
-## Request Weight(UID)[​](/docs/wallet/travel-rule/withdraw#request-weightuid "Direct link to Request Weight\(UID\)")
+## Request Weight(IP)[​](/docs/wallet/travel-rule/withdraw-history#request-weightip "Direct link to Request Weight\(IP\)")
 
-**600**
+**1**
 
-## Request Parameters[​](/docs/wallet/travel-rule/withdraw#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/travel-rule/withdraw-history#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-coin| STRING| YES|   
-withdrawOrderId| STRING| NO| withdrawID defined by the client (i.e. client's internal withdrawID)  
+trId| STRING| NO| Comma(,) separated list of travel rule record Ids.  
+txId| STRING| NO| Comma(,) separated list of transaction Ids.  
+withdrawOrderId| STRING| NO| Comma(,) separated list of withdrawID defined by the client (i.e. client's internal withdrawID).  
 network| STRING| NO|   
-address| STRING| YES|   
-addressTag| STRING| NO| Secondary address identifier for coins like XRP,XMR etc.  
-amount| DECIMAL| YES|   
-transactionFeeFlag| BOOLEAN| NO| When making internal transfer, `true` for returning the fee to the destination account; `false` for returning the fee back to the departure account. Default `false`.  
-name| STRING| NO| Description of the address. Address book cap is 200, space in name should be encoded into `%20`  
-walletType| INTEGER| NO| The wallet type for withdraw，0-spot wallet ，1-funding wallet. Default walletType is the current "selected wallet" under wallet->Fiat and Spot/Funding->Deposit  
+coin| STRING| NO|   
+travelRuleStatus| INTEGER| NO| 0:Completed,1:Pending,2:Failed  
+offset| INT| NO| Default: 0  
+limit| INT| NO| Default: 1000, Max: 1000  
+startTime| LONG| NO| Default: 90 days from current timestamp  
+endTime| LONG| NO| Default: present timestamp  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
-questionnaire| STRING| YES| JSON format questionnaire answers.  
   
->   * If `network` not send, return with default network of the coin, but if the address could not match default network, the withdraw will be rejected.
->   * You can get `network` and `isDefault` in `networkList` of a coin in the response of `Get /sapi/v1/capital/config/getall (HMAC SHA256)`.
->   * Questionnaire is different for each local entity, please refer to the `Withdraw Questionnaire Contents` page.
->   * If getting error like `Questionnaire format not valid.` or `Questionnaire must not be blank`, please try to verify the format of the questionnaire and use URL-encoded format.
+>   * `network` may not be in the response for old withdraw.
+>   * Please notice the default `startTime` and `endTime` to make sure that time interval is within 0-90 days.
+>   * If both `startTime` and `endTime`are sent, time between `startTime`and `endTime`must be less than 90 days.
 > 
 
 
-## Response Example[​](/docs/wallet/travel-rule/withdraw#response-example "Direct link to Response Example")
+## Response Example[​](/docs/wallet/travel-rule/withdraw-history#response-example "Direct link to Response Example")
     
     
-    {  
-        "trId": 123456,                         // The travel rule record Id  
-        "accpted": true,                        // Whether the withdraw request is accepted  
-        "info": "Withdraw request accepted"     // The detailed infomation of the withdrawal result.  
-    }
+    [  
+        {  
+            "id": "b6ae22b3aa844210a7041aee7589627c",                                         // Withdrawal id in Binance  
+            "trId": 1234456,                                                                  // Travel rule record id  
+            "amount": "8.91000000",                                                           // withdrawal amount  
+            "transactionFee": "0.004",                                                        // only available for sAPI requests  
+            "coin": "USDT",  
+            "withdrawalStatus": 6,                                                            // Capital withdrawal status, only available for sAPI requests  
+            "travelRuleStatus": 0,                                                            // Travel rule status.  
+            "address": "0x94df8b352de7f46f64b01d3666bf6e936e44ce60",  
+            "txId": "0xb5ef8c13b968a406cc62a93a8bd80f9e9a906ef1b3fcf20a2e48573c17659268",     // withdrawal transaction id  
+            "applyTime": "2019-10-12 11:12:02",                                               // UTC time  
+            "network": "ETH",  
+            "transferType": 0,                                                                // 1 for internal transfer, 0 for external transfer, only available for sAPI requests  
+            "withdrawOrderId": "WITHDRAWtest123",                                             // will not be returned if there's no withdrawOrderId for this withdraw, only available for sAPI requests  
+            "info": "The address is not valid. Please confirm with the recipient",            // reason for withdrawal failure, only available for sAPI requests  
+            "confirmNo": 3,                                                                   // confirm times for withdraw, only available for sAPI requests  
+            "walletType": 1,                                                                  // 1: Funding Wallet 0:Spot Wallet, only available for sAPI requests  
+            "txKey": "",                                                                      // only available for sAPI requests  
+            "questionnaire": "{\'question1\':\'answer1\',\'question2\':\'answer2\'}",         // The answers of the questionnaire  
+            "completeTime": "2023-03-23 16:52:41"                                             // complete UTC time when user's asset is deduct from withdrawing, only if status =  6(success)  
+        },  
+        {  
+            "id": "156ec387f49b41df8724fa744fa82719",  
+            "trId": 2231556234,  
+            "amount": "0.00150000",  
+            "transactionFee": "0.004",  
+            "coin": "BTC",  
+            "withdrawalStatus": 6,  
+            "travelRuleStatus": 0,  
+            "address": "1FZdVHtiBqMrWdjPyRPULCUceZPJ2WLCsB",  
+            "txId": "60fd9007ebfddc753455f95fafa808c4302c836e4d1eebc5a132c36c1d8ac354",  
+            "applyTime": "2019-09-24 12:43:45",  
+            "network": "BTC",  
+            "transferType": 0,  
+            "info": "",  
+            "confirmNo": 2,  
+            "walletType": 1,  
+            "txKey": "",  
+            "questionnaire": "{\'question1\':\'answer1\',\'question2\':\'answer2\'}",  
+            "completeTime": "2023-03-23 16:52:41"  
+        }  
+    ]
 
 ---
 
-# 提币(针对需要旅行规则的本地站)(USER_DATA)
+# 获取提币历史(针对需要旅行规则的本地站)(支持多网络)(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/wallet/travel-rule/withdraw#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/wallet/travel-rule/withdraw-history#接口描述 "接口描述的直接链接")
 
-向需要旅行规则的本地站发起提币请求
+获取需要旅行规则的本地站的提币历史记录
 
-## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/withdraw#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/withdraw-history#http请求 "HTTP请求的直接链接")
 
-POST `/sapi/v1/localentity/withdraw/apply`
+GET `/sapi/v1/localentity/withdraw/history`
 
-## 请求权重(UID)[​](/docs/zh-CN/wallet/travel-rule/withdraw#请求权重uid "请求权重\(UID\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/wallet/travel-rule/withdraw-history#请求权重ip "请求权重\(IP\)的直接链接")
 
-**600**
+**1**
 
-## 请求参数[​](/docs/zh-CN/wallet/travel-rule/withdraw#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/travel-rule/withdraw-history#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-coin| STRING| YES|   
-withdrawOrderId| STRING| NO| 客户端内部定义的提币ID.  
-network| STRING| NO| 提币网络  
-address| STRING| YES| 提币地址  
-addressTag| STRING| NO| 某些币种例如 XRP,XMR 允许填写次级地址标签  
-amount| DECIMAL| YES| 数量  
-transactionFeeFlag| BOOLEAN| NO| 当站内转账时免手续费, `true`: 手续费归资金转入方; `false`: 手续费归资金转出方; . 默认 `false`.  
-name| STRING| NO| 地址的备注，填写该参数后会加入该币种的提现地址簿。地址簿上限为200，超出后会造成提现失败。地址中的空格需要encode成`%20`  
-walletType| INTEGER| NO| 表示出金使用的钱包，0为现货钱包，1为资金钱包。默认walletType为"充币账户"是您设置在钱包->现货账户或资金账户->充值。  
+trId| STRING| NO| 旅行规则记录ID, 支持多条查询，以半角逗号(,) 分隔.  
+txId| STRING| NO| 链上TxId，支持多条查询，以半角逗号(,) 分隔.  
+withdrawOrderId| STRING| NO| 客户端内部定义的提币ID，支持多条查询，以半角逗号(,) 分隔.  
+network| STRING| NO|   
+coin| STRING| NO|   
+travelRuleStatus| INTEGER| NO| 0:处理完成,1:处理中,2:请求被拒绝  
+offset| INT| NO|   
+limit| INT| NO| 默认：1000， 最大：1000  
+startTime| LONG| NO| 默认当前时间90天前的时间戳  
+endTime| LONG| NO| 默认当前时间戳  
 recvWindow| LONG| NO|   
 timestamp| LONG| YES|   
-questionnaire| STRING| YES| JSON 格式的问卷回答。  
   
->   * 如果没有传入 `network`, 则使用对应币种的默认网络, 如果地址格式不能匹配默认网络, 提币将被拒绝。
->   * 网络、默认网络的配置列表可以通过以下接口获取 `Get /sapi/v1/capital/config/getall (HMAC SHA256)`。
->   * 每个本地站点的问卷内容都不一样，请参考`提币问卷内容`页。
->   * 如果API返回 `Questionnaire format not valid.` 或 `Questionnaire must not be blank` 错误，请尝检查Questionnaire格式并使用 `URL-encoded format`。
+>   * 支持多网络提币前的历史记录可能不会返回`network`字段。
+>   * 请注意`startTime` 与 `endTime` 的默认时间戳，保证请求时间间隔不得超过90天。
+>   * 同时提交`startTime` 与 `endTime`间隔不得超过90天。
 > 
 
 
-## 响应示例[​](/docs/zh-CN/wallet/travel-rule/withdraw#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/wallet/travel-rule/withdraw-history#响应示例 "响应示例的直接链接")
     
     
-    {  
-        "trId": 123456,                         // Travel Rule记录ID  
-        "accpted": true,                        // 提币请求是否被接受  
-        "info": "Withdraw request accepted"     // 提现结果的详细信息  
-    }
+    [  
+        {  
+            "id": "b6ae22b3aa844210a7041aee7589627c",                                         // 该笔提现在币安的id, 只在sAPI提现的记录中返回  
+            "trId": 1234456,                                                                  // 旅行规则记录Id  
+            "amount": "8.91000000",                                                           // 提现转出金额  
+            "transactionFee": "0.004",                                                        // 手续费, 只在sAPI提现的记录中返回  
+            "coin": "USDT",  
+            "withdrawalStatus": 6,                                                            // 提币状态, 只在sAPI提现的记录中返回  
+            "travelRuleStatus": 0,                                                            // 旅行规则处理状态，处理完成(0)之后才会继续提币流程  
+            "address": "0x94df8b352de7f46f64b01d3666bf6e936e44ce60",  
+            "txId": "0xb5ef8c13b968a406cc62a93a8bd80f9e9a906ef1b3fcf20a2e48573c17659268",     // 提现交易id  
+            "applyTime": "2019-10-12 11:12:02",                                               // UTC 时间  
+            "network": "ETH",  
+            "transferType": 0,                                                                // 1: 站内转账, 0: 站外转账, 只在sAPI提现的记录中返回  
+            "withdrawOrderId": "WITHDRAWtest123",                                             // 自定义ID, 如果没有则不返回该字段, 只在sAPI提现的记录中返回  
+            "info": "The address is not valid. Please confirm with the recipient",            // 提币失败原因  
+            "confirmNo": 3,                                                                   // 提现确认数, 只在sAPI提现的记录中返回  
+            "walletType": 1,                                                                  // 1: 资金钱包 0:现货钱包, 只在sAPI提现的记录中返回  
+            "txKey": "",                                                                      // 只在sAPI提现的记录中返回  
+            "questionnaire": "{\'question1\':\'answer1\',\'question2\':\'answer2\'}",         // 问卷回答  
+            "completeTime": "2023-03-23 16:52:41"                                             // 提现完成，成功下账时间(UTC)  
+        },  
+        {  
+            "id": "156ec387f49b41df8724fa744fa82719",  
+            "trId": 22334411,  
+            "amount": "0.00150000",  
+            "transactionFee": "0.004",  
+            "coin": "BTC",  
+            "withdrawalStatus": 6,  
+            "travelRuleStatus": 0,  
+            "address": "1FZdVHtiBqMrWdjPyRPULCUceZPJ2WLCsB",  
+            "txId": "60fd9007ebfddc753455f95fafa808c4302c836e4d1eebc5a132c36c1d8ac354",  
+            "applyTime": "2019-09-24 12:43:45",  
+            "network": "BTC",  
+            "transferType": 0,  
+            "info": "",  
+            "confirmNo": 2,  
+            "walletType": 1,  
+            "txKey": "",  
+            "questionnaire": "{\'question1\':\'answer1\',\'question2\':\'answer2\'}",  
+            "completeTime": "2023-03-23 16:52:41"  
+        }  
+    ]

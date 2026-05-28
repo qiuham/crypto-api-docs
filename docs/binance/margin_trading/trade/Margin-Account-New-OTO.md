@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-New-OTO
 api_type: Trading
-updated_at: 2026-05-27 18:57:36.679427
+updated_at: 2026-05-28 19:03:04.702457
 ---
 
 # Margin Account New Order (TRADE)

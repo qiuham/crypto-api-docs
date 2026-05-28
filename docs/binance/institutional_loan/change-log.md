@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/change-log
 api_type: REST
-updated_at: 2026-05-27 19:01:25.448074
+updated_at: 2026-05-28 19:06:48.202515
 ---
 
 # Error Codes
