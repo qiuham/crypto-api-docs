@@ -165,17 +165,17 @@ jobs:
           - exchange: coinbase
             concurrency: "5"
           - exchange: hyperliquid
-            concurrency: "2"
+            concurrency: "3"
           - exchange: binance
-            concurrency: "3"
+            concurrency: "5"
           - exchange: bybit
-            concurrency: "3"
+            concurrency: "5"
           - exchange: okx
-            concurrency: "3"
+            concurrency: "5"
           - exchange: kraken
-            concurrency: "1"
+            concurrency: "2"
           - exchange: gateio
-            concurrency: "1"
+            concurrency: "2"
 
     steps:
       - name: Checkout

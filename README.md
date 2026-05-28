@@ -44,7 +44,7 @@ PYTHONPATH=. python src/main.py readme
 
 默认会提交更新；如果只是用 `limit=3` 小范围测试，把 `commit_changes` 改成 `false`。Kraken 和 Gate.io 这类动态/保护较强站点优先使用 `concurrency=1`。
 
-工作流也会每天自动全量刷新一次：北京时间 02:00 触发。定时任务按交易所拆成独立 job，并通过 `max-parallel=1` 一个一个更新，避免多个 runner 同时提交造成冲突。默认并发为 Coinbase 5、Hyperliquid 2、Binance/Bybit/OKX 3、Kraken/Gate.io 1。
+工作流也会每天自动全量刷新一次：北京时间 02:00 触发。定时任务按交易所拆成独立 job，并通过 `max-parallel=1` 一个一个更新，避免多个 runner 同时提交造成冲突。默认并发为 Coinbase 5、Hyperliquid 3、Binance/Bybit/OKX 5、Kraken/Gate.io 2。
 
 ## 项目结构
 
