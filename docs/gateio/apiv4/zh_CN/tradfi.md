@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/tradfi
 api_type: Trading
-updated_at: 2026-05-27 20:18:00.045957
+updated_at: 2026-05-28 19:58:50.910974
 ---
 
 # TradFi
@@ -2702,62 +2702,6 @@ WARNING
 
 #  模型
 
-##  TradFiTicker
-
-_TradFiTicker_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
-message | string | false | none | 返回信息，请求错误时会返回  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» highest_price | string | false | none | 最高价  
-» lowest_price | string | false | none | 最低价  
-» price_change | string | false | none | 价格涨跌幅（百分比，已乘100）  
-» price_change_amount | string | false | none | 价格涨跌额  
-» today_open_price | string | false | none | 今日开盘价  
-» last_today_close_price | string | false | none | 昨日收盘价  
-» last_price | string | false | none | 最新成交价  
-» bid_price | string | false | none | 买一价（Bid）  
-» ask_price | string | false | none | 卖一价（Ask）  
-» favorite | boolean | false | none | 是否已收藏  
-» status | string | false | none | 交易状态（open=可交易，closed=不可交易）  
-» close_time | integer(int64) | false | none | 收盘时间（Unix时间戳，秒）  
-» open_time | integer(int64) | false | none | 开盘时间（Unix时间戳，秒）  
-» next_open_time | integer(int64) | false | none | 下次开盘时间（0表示无）  
-» trade_mode | string | false | none | 交易模式代码  
-» category_name | string | false | none | 分类名称  
-      
-    
-    {
-      "label": "INVALID_ARGUMENT",
-      "message": "无效参数",
-      "timestamp": 0,
-      "data": {
-        "highest_price": "5093.04",
-        "lowest_price": "5003.61",
-        "price_change": "1.32",
-        "price_change_amount": "66.13",
-        "today_open_price": "5008.06",
-        "last_today_close_price": "4989.92",
-        "last_price": "5074.19",
-        "bid_price": "5073.83",
-        "ask_price": "5074.06",
-        "favorite": false,
-        "status": "open",
-        "close_time": 1769464800,
-        "open_time": 1769378400,
-        "next_open_time": 0,
-        "trade_mode": "4",
-        "category_name": "Metals"
-      }
-    }
-    
-    
-
 ##  Symbols
 
 ###  属性
@@ -2783,42 +2727,6 @@ data | object | false | none | 返回数据
       
     
     {
-      "timestamp": 0,
-      "data": {
-        "list": [
-          {}
-        ]
-      }
-    }
-    
-    
-
-##  PositionList
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
-message | string | false | none | 返回信息，请求错误时会返回  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» list | array | false | none | 仓位信息  
-»» _None_ | object | false | none | 仓位信息  
-»»» position_id | integer | false | none | 仓位ID  
-»»» symbol | string | false | none | 交易市场代码  
-»»» symbol_desc | string | false | none | 市场描述  
-»»» margin | string | false | none | 占用保证金  
-»»» unrealized_pnl | string | false | none | 未实现盈亏  
-»»» unrealized_pnl_rate | string | false | none | 未实现收益率  
-»»» volume | string | false | none | 持仓数量  
-»»» price_open | string | false | none | 开仓均价  
-»»» position_dir | string | false | none | 仓位方向(Long=做多，Short=做空)，  
-      
-    
-    {
-      "label": "INVALID_ARGUMENT",
-      "message": "无效参数",
       "timestamp": 0,
       "data": {
         "list": [
@@ -2867,98 +2775,49 @@ side | 2
     
     
 
-##  TransactionList
+##  OrderList
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-data | object | false | none | none  
-» total | integer | false | none | 总记录数  
-» total_page | integer | false | none | 总页数  
-» list | array | false | none | 记录列表  
-»» asset | string | false | none | 资产类型  
-»» type | string | false | none | 交易类型  
-»» type_desc | string | false | none | 交易类型描述  
-»» change | string | false | none | 变动数量  
-»» balance | string | false | none | 当前余额  
-»» time | integer(int64) | false | none | 发生时间（秒级时间戳）  
-» timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» list | array | false | none | 订单列表  
+»» _None_ | object | false | none | 订单信息  
+»»» order_id | integer | false | none | 订单ID  
+»»» symbol | string | false | none | 交易对  
+»»» symbol_desc | string | false | none | 交易对描述  
+»»» price_type | string | false | none | 交易类型（market=市价，trigger=触发价）  
+»»» state | integer | false | none | 订单状态码  
+»»» state_desc | string | false | none | 订单状态描述  
+»»» finished | integer | false | none | 是否完成（0=当前订单列表展示，1=当前列表不展示）  
+»»» side | integer | false | none | 买卖方向（1=卖，2=买）  
+»»» volume | string | false | none | 委托数量  
+»»» price | string | false | none | 触发价格  
+»»» price_tp | string | false | none | 止盈价  
+»»» price_sl | string | false | none | 止损价  
+»»» time_setup | integer(int64) | false | none | 下单时间（Unix时间戳，秒）  
   
 ####  枚举值列表
 
 枚举值列表属性 | 值  
 ---|---  
-type | deposit-转入  
-type | withdraw-转出  
-type | dividend-分红结息  
-type | fill_negative-填平负余额  
+price_type | market  
+price_type | trigger  
+finished | 0  
+finished | 1  
+side | 1  
+side | 2  
       
     
     {
+      "timestamp": 0,
       "data": {
-        "total": 2,
-        "total_page": 1,
         "list": [
           {}
         ]
-      },
-      "timestamp": 1769332996590
-    }
-    
-    
-
-##  CreateTransaction
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {}
-    }
-    
-    
-
-##  UpdatePosition
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {}
-    }
-    
-    
-
-##  TradFiError
-
-_TradFiError_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
-message | string | false | none | 返回信息，请求错误时会返回  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-      
-    
-    {
-      "label": "INVALID_ARGUMENT",
-      "message": "无效参数",
-      "timestamp": 0
+      }
     }
     
     
@@ -3018,7 +2877,54 @@ side | 2
     
     
 
-##  OrderList
+##  UpdatePosition
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {}
+    }
+    
+    
+
+##  TradFiTransactionRequest
+
+_资金转入转出请求体_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+asset | string | true | none | 资产类型，例如 USDT,目前只能传入USDT  
+change | string | true | none | 变动数量，支持最多两位小数  
+type | string | true | none | 交易类型（deposit 转入，withdraw 转出）  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+type | deposit  
+type | withdraw  
+      
+    
+    {
+      "asset": "USDT",
+      "change": "10",
+      "type": "withdraw"
+    }
+    
+    
+
+##  UpdateOrder
+
+_订单修改结果_
 
 ###  属性
 
@@ -3026,32 +2932,329 @@ side | 2
 ---|---|---|---|---  
 timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
 data | object | false | none | 返回数据  
-» list | array | false | none | 订单列表  
-»» _None_ | object | false | none | 订单信息  
-»»» order_id | integer | false | none | 订单ID  
-»»» symbol | string | false | none | 交易对  
-»»» symbol_desc | string | false | none | 交易对描述  
-»»» price_type | string | false | none | 交易类型（market=市价，trigger=触发价）  
-»»» state | integer | false | none | 订单状态码  
-»»» state_desc | string | false | none | 订单状态描述  
-»»» finished | integer | false | none | 是否完成（0=当前订单列表展示，1=当前列表不展示）  
-»»» side | integer | false | none | 买卖方向（1=卖，2=买）  
-»»» volume | string | false | none | 委托数量  
-»»» price | string | false | none | 触发价格  
-»»» price_tp | string | false | none | 止盈价  
-»»» price_sl | string | false | none | 止损价  
-»»» time_setup | integer(int64) | false | none | 下单时间（Unix时间戳，秒）  
+» order_id | integer | false | none | 订单ID  
+» symbol | string | false | none | 交易对  
+» state | string | false | none | 订单状态码  
+» volume | string | false | none | 委托数量  
+» price | string | false | none | 当前价格  
+» price_tp | string | false | none | 当前止盈价  
+» price_sl | string | false | none | 当前止损价  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {
+        "order_id": 2630591,
+        "symbol": "USDCHF",
+        "state": 1,
+        "volume": "1.6",
+        "price": "5.000000",
+        "price_tp": "5.200000",
+        "price_sl": "4.800000"
+      }
+    }
+    
+    
+
+##  Mt5Account
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer | false | none | 业务状态码，非0代表业务异常，请查看message  
+message | string | false | none | 返回信息  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» mt5_uid | integer | false | none | MT5 用户ID  
+» leverage | integer | false | none | 杠杆倍数  
+» stop_out_level | string | false | none | 强平保证金比例  
+» status | integer | false | none | 账户状态（1=未开通，2=审核中，3=正常）  
+      
+    
+    {
+      "code": 0,
+      "message": "ok",
+      "timestamp": 0,
+      "data": {
+        "mt5_uid": 0,
+        "leverage": 100,
+        "stop_out_level": "50%",
+        "status": 1
+      }
+    }
+    
+    
+
+##  CreateTransaction
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {}
+    }
+    
+    
+
+##  TradFiClosePositionRequest
+
+_平仓请求参数_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+close_type | integer | true | none | 平仓类型  
+  
+说明：  
+\- 1：部分平仓（必须传 close_volume）  
+\- 2：全平（无需传 close_volume）  
+close_volume | string|null | false | none | 平仓数量  
+  
+说明：  
+\- 当 close_type = 1 时必传  
+\- 当 close_type = 2 时忽略该字段  
   
 ####  枚举值列表
 
 枚举值列表属性 | 值  
 ---|---  
-price_type | market  
-price_type | trigger  
-finished | 0  
-finished | 1  
-side | 1  
-side | 2  
+close_type | 1  
+close_type | 2  
+      
+    
+    {
+      "close_type": 1,
+      "close_volume": "1"
+    }
+    
+    
+
+##  TradFiError
+
+_TradFiError_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
+message | string | false | none | 返回信息，请求错误时会返回  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+      
+    
+    {
+      "label": "INVALID_ARGUMENT",
+      "message": "无效参数",
+      "timestamp": 0
+    }
+    
+    
+
+##  TradFiPositionUpdateRequest
+
+_修改仓位止盈止损参数_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+price_tp | string|null | false | none | 止盈价格  
+  
+说明：  
+\- 不传 或 传 "0"：将清空原有止盈价  
+\- 如不希望清空，请传接口返回的原止盈价  
+price_sl | string|null | false | none | 止损价格  
+  
+说明：  
+\- 不传 或 传 "0"：将清空原有止损价  
+\- 如不希望清空，请传接口返回的原止损价  
+      
+    
+    {
+      "price_tp": "1",
+      "price_sl": "1"
+    }
+    
+    
+
+##  TradFiTicker
+
+_TradFiTicker_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
+message | string | false | none | 返回信息，请求错误时会返回  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» highest_price | string | false | none | 最高价  
+» lowest_price | string | false | none | 最低价  
+» price_change | string | false | none | 价格涨跌幅（百分比，已乘100）  
+» price_change_amount | string | false | none | 价格涨跌额  
+» today_open_price | string | false | none | 今日开盘价  
+» last_today_close_price | string | false | none | 昨日收盘价  
+» last_price | string | false | none | 最新成交价  
+» bid_price | string | false | none | 买一价（Bid）  
+» ask_price | string | false | none | 卖一价（Ask）  
+» favorite | boolean | false | none | 是否已收藏  
+» status | string | false | none | 交易状态（open=可交易，closed=不可交易）  
+» close_time | integer(int64) | false | none | 收盘时间（Unix时间戳，秒）  
+» open_time | integer(int64) | false | none | 开盘时间（Unix时间戳，秒）  
+» next_open_time | integer(int64) | false | none | 下次开盘时间（0表示无）  
+» trade_mode | string | false | none | 交易模式代码  
+» category_name | string | false | none | 分类名称  
+      
+    
+    {
+      "label": "INVALID_ARGUMENT",
+      "message": "无效参数",
+      "timestamp": 0,
+      "data": {
+        "highest_price": "5093.04",
+        "lowest_price": "5003.61",
+        "price_change": "1.32",
+        "price_change_amount": "66.13",
+        "today_open_price": "5008.06",
+        "last_today_close_price": "4989.92",
+        "last_price": "5074.19",
+        "bid_price": "5073.83",
+        "ask_price": "5074.06",
+        "favorite": false,
+        "status": "open",
+        "close_time": 1769464800,
+        "open_time": 1769378400,
+        "next_open_time": 0,
+        "trade_mode": "4",
+        "category_name": "Metals"
+      }
+    }
+    
+    
+
+##  UserAssetResp
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» equity | string | false | none | 账户净值  
+» margin_level | string | false | none | 保证金水平（百分比）  
+» balance | string | false | none | 账户余额  
+» margin | string | false | none | 已用保证金  
+» margin_free | string | false | none | 可用保证金  
+» unrealized_pnl | string | false | none | 未实现盈亏  
+» mt5_uid | string | false | none | MT5 用户ID  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {
+        "equity": "0.00",
+        "margin_level": "0.00",
+        "balance": "0.00",
+        "margin": "0.00",
+        "margin_free": "0.00",
+        "unrealized_pnl": "0.00",
+        "mt5_uid": "10122"
+      }
+    }
+    
+    
+
+##  DeletePosition
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {}
+    }
+    
+    
+
+##  Categories
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 数据  
+» list | array | false | none | none  
+»» _None_ | object | false | none | 分类信息  
+»»» category_id | integer | false | none | 分类ID  
+»»» is_favorite | boolean | false | none | 是否是自选分类，一般不需要关注  
+»»» category_name | string | false | none | 分类名称  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {
+        "list": [
+          {}
+        ]
+      }
+    }
+    
+    
+
+##  CreateUserResp
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | none  
+» status | integer | false | none | 状态(1=未开通，2=审核中，3=已开通 )  
+» leverage | integer | false | none | 杠杆  
+» mt5_uid | string | false | none | mt5uid  
+      
+    
+    {
+      "timestamp": 0,
+      "data": {
+        "status": 0,
+        "leverage": 0,
+        "mt5_uid": "string"
+      }
+    }
+    
+    
+
+##  Klines
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» list | array | false | none | K线数据列表  
+»» _None_ | object | false | none | 单根K线数据  
+»»» o | string | false | none | 开盘价（Open）  
+»»» c | string | false | none | 收盘价（Close）  
+»»» h | string | false | none | 最高价（High）  
+»»» l | string | false | none | 最低价（Low）  
+»»» t | integer(int64) | false | none | 时间戳（Unix 秒）  
       
     
     {
@@ -3090,6 +3293,83 @@ price_sl | string|null | false | none | 止损价
       "price": "2",
       "price_tp": "1.5",
       "price_sl": "0.8"
+    }
+    
+    
+
+##  PositionList
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+label | string | false | none | 业务状态码，非空代表请求异常，请查看文档关于TradFi错误枚举  
+message | string | false | none | 返回信息，请求错误时会返回  
+timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+data | object | false | none | 返回数据  
+» list | array | false | none | 仓位信息  
+»» _None_ | object | false | none | 仓位信息  
+»»» position_id | integer | false | none | 仓位ID  
+»»» symbol | string | false | none | 交易市场代码  
+»»» symbol_desc | string | false | none | 市场描述  
+»»» margin | string | false | none | 占用保证金  
+»»» unrealized_pnl | string | false | none | 未实现盈亏  
+»»» unrealized_pnl_rate | string | false | none | 未实现收益率  
+»»» volume | string | false | none | 持仓数量  
+»»» price_open | string | false | none | 开仓均价  
+»»» position_dir | string | false | none | 仓位方向(Long=做多，Short=做空)，  
+      
+    
+    {
+      "label": "INVALID_ARGUMENT",
+      "message": "无效参数",
+      "timestamp": 0,
+      "data": {
+        "list": [
+          {}
+        ]
+      }
+    }
+    
+    
+
+##  TransactionList
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+data | object | false | none | none  
+» total | integer | false | none | 总记录数  
+» total_page | integer | false | none | 总页数  
+» list | array | false | none | 记录列表  
+»» asset | string | false | none | 资产类型  
+»» type | string | false | none | 交易类型  
+»» type_desc | string | false | none | 交易类型描述  
+»» change | string | false | none | 变动数量  
+»» balance | string | false | none | 当前余额  
+»» time | integer(int64) | false | none | 发生时间（秒级时间戳）  
+» timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+type | deposit-转入  
+type | withdraw-转出  
+type | dividend-分红结息  
+type | fill_negative-填平负余额  
+      
+    
+    {
+      "data": {
+        "total": 2,
+        "total_page": 1,
+        "list": [
+          {}
+        ]
+      },
+      "timestamp": 1769332996590
     }
     
     
@@ -3154,138 +3434,6 @@ data | object | false | none | 下单结果
     
     
 
-##  Mt5Account
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer | false | none | 业务状态码，非0代表业务异常，请查看message  
-message | string | false | none | 返回信息  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» mt5_uid | integer | false | none | MT5 用户ID  
-» leverage | integer | false | none | 杠杆倍数  
-» stop_out_level | string | false | none | 强平保证金比例  
-» status | integer | false | none | 账户状态（1=未开通，2=审核中，3=正常）  
-      
-    
-    {
-      "code": 0,
-      "message": "ok",
-      "timestamp": 0,
-      "data": {
-        "mt5_uid": 0,
-        "leverage": 100,
-        "stop_out_level": "50%",
-        "status": 1
-      }
-    }
-    
-    
-
-##  CreateUserResp
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | none  
-» status | integer | false | none | 状态(1=未开通，2=审核中，3=已开通 )  
-» leverage | integer | false | none | 杠杆  
-» mt5_uid | string | false | none | mt5uid  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {
-        "status": 0,
-        "leverage": 0,
-        "mt5_uid": "string"
-      }
-    }
-    
-    
-
-##  TradFiClosePositionRequest
-
-_平仓请求参数_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-close_type | integer | true | none | 平仓类型  
-  
-说明：  
-\- 1：部分平仓（必须传 close_volume）  
-\- 2：全平（无需传 close_volume）  
-close_volume | string|null | false | none | 平仓数量  
-  
-说明：  
-\- 当 close_type = 1 时必传  
-\- 当 close_type = 2 时忽略该字段  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-close_type | 1  
-close_type | 2  
-      
-    
-    {
-      "close_type": 1,
-      "close_volume": "1"
-    }
-    
-    
-
-##  DeletePosition
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {}
-    }
-    
-    
-
-##  TradFiPositionUpdateRequest
-
-_修改仓位止盈止损参数_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-price_tp | string|null | false | none | 止盈价格  
-  
-说明：  
-\- 不传 或 传 "0"：将清空原有止盈价  
-\- 如不希望清空，请传接口返回的原止盈价  
-price_sl | string|null | false | none | 止损价格  
-  
-说明：  
-\- 不传 或 传 "0"：将清空原有止损价  
-\- 如不希望清空，请传接口返回的原止损价  
-      
-    
-    {
-      "price_tp": "1",
-      "price_sl": "1"
-    }
-    
-    
-
 ##  PositionHistoryList
 
 ###  属性
@@ -3344,152 +3492,4 @@ position_dir | Short
           {}
         ]
       }
-    }
-    
-    
-
-##  Categories
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 数据  
-» list | array | false | none | none  
-»» _None_ | object | false | none | 分类信息  
-»»» category_id | integer | false | none | 分类ID  
-»»» is_favorite | boolean | false | none | 是否是自选分类，一般不需要关注  
-»»» category_name | string | false | none | 分类名称  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {
-        "list": [
-          {}
-        ]
-      }
-    }
-    
-    
-
-##  UpdateOrder
-
-_订单修改结果_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» order_id | integer | false | none | 订单ID  
-» symbol | string | false | none | 交易对  
-» state | string | false | none | 订单状态码  
-» volume | string | false | none | 委托数量  
-» price | string | false | none | 当前价格  
-» price_tp | string | false | none | 当前止盈价  
-» price_sl | string | false | none | 当前止损价  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {
-        "order_id": 2630591,
-        "symbol": "USDCHF",
-        "state": 1,
-        "volume": "1.6",
-        "price": "5.000000",
-        "price_tp": "5.200000",
-        "price_sl": "4.800000"
-      }
-    }
-    
-    
-
-##  UserAssetResp
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» equity | string | false | none | 账户净值  
-» margin_level | string | false | none | 保证金水平（百分比）  
-» balance | string | false | none | 账户余额  
-» margin | string | false | none | 已用保证金  
-» margin_free | string | false | none | 可用保证金  
-» unrealized_pnl | string | false | none | 未实现盈亏  
-» mt5_uid | string | false | none | MT5 用户ID  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {
-        "equity": "0.00",
-        "margin_level": "0.00",
-        "balance": "0.00",
-        "margin": "0.00",
-        "margin_free": "0.00",
-        "unrealized_pnl": "0.00",
-        "mt5_uid": "10122"
-      }
-    }
-    
-    
-
-##  Klines
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | integer(int64) | false | none | 服务器时间戳（毫秒）  
-data | object | false | none | 返回数据  
-» list | array | false | none | K线数据列表  
-»» _None_ | object | false | none | 单根K线数据  
-»»» o | string | false | none | 开盘价（Open）  
-»»» c | string | false | none | 收盘价（Close）  
-»»» h | string | false | none | 最高价（High）  
-»»» l | string | false | none | 最低价（Low）  
-»»» t | integer(int64) | false | none | 时间戳（Unix 秒）  
-      
-    
-    {
-      "timestamp": 0,
-      "data": {
-        "list": [
-          {}
-        ]
-      }
-    }
-    
-    
-
-##  TradFiTransactionRequest
-
-_资金转入转出请求体_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-asset | string | true | none | 资产类型，例如 USDT,目前只能传入USDT  
-change | string | true | none | 变动数量，支持最多两位小数  
-type | string | true | none | 交易类型（deposit 转入，withdraw 转出）  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-type | deposit  
-type | withdraw  
-      
-    
-    {
-      "asset": "USDT",
-      "change": "10",
-      "type": "withdraw"
     }

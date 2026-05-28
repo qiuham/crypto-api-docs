@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/p2p
 api_type: REST
-updated_at: 2026-05-27 20:17:40.245322
+updated_at: 2026-05-28 19:58:43.090603
 ---
 
 # P2p
@@ -2776,6 +2776,128 @@ WARNING
 
 #  模型
 
+##  ConfirmReceipt
+
+_确认收款请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+txid | string | true | none | 订单号  
+      
+    
+    {
+      "txid": "40000001"
+    }
+    
+    
+
+##  AdsUpdateStatus
+
+_广告单状态更新请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+adv_no | integer | true | none | 广告 ID  
+adv_status | integer | true | none | 广告状态，1：上架，3：下架，4：关闭  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+adv_status | 1  
+adv_status | 3  
+adv_status | 4  
+      
+    
+    {
+      "adv_no": 2124000001,
+      "adv_status": 3
+    }
+    
+    
+
+##  PlaceBizPushOrder
+
+_发布广告挂单请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currencyType | string | true | none | 加密币币种  
+exchangeType | string | true | none | 法币币种  
+type | string | true | none | 广告操作类型，0：发布卖币广告，1：发布买币广告，2：编辑卖币广告，3：编辑买币广告  
+unitPrice | string | true | none | 固定价格模式下的广告单价  
+number | string | true | none | 广告数量，按 currencyType 计价  
+payType | string | true | none | 支付方式类型，多个类型用逗号分隔；可从支付方式列表 pay_type 获取，例如 bank、alipay、wechat、paypal、swift、wu  
+pay_type_json | string | false | none | 支付方式和支付方式 ID 的 JSON 字符串，key 为支付方式类型，value 为当前用户支付方式 ID  
+rateFixed | string | false | none | 价格类型，0：浮动价格，1：固定价格  
+oid | string | false | none | 编辑广告时传广告 ID；发布新广告时不传或传空字符串  
+minAmount | string | true | none | 单笔最小交易金额，按 exchangeType 计价  
+maxAmount | string | true | none | 单笔最大交易金额，按 exchangeType 计价  
+tierLimit | string | false | none | 交易对手 VIP 等级限制，0 表示不限制  
+verifiedLimit | string | false | none | 交易对手认证等级限制，0 表示不限制  
+regTimeLimit | string | false | none | 交易对手注册天数限制，0 表示不限制  
+advertisersLimit | string | false | none | 是否限制与广告商交易，0：不限制，1：限制  
+expire_min | string | false | none | 订单付款超时时间，单位分钟  
+trade_tips | string | false | none | 广告交易条款，展示给下单用户  
+auto_reply | string | false | none | 订单创建后的自动回复内容  
+min_completed_limit | string | false | none | 交易对手已完成订单数最小值限制，-1 表示不限制  
+max_completed_limit | string | false | none | 交易对手已完成订单数最大值限制，-1 表示不限制  
+completed_rate_limit | string | false | none | 交易对手近 30 天完成率限制，-1 表示不限制  
+user_country_limit | string | false | none | KYC 国籍限制，-1 表示不限制  
+user_order_limit | string | false | none | 交易对手最大下单数限制，-1 表示不限制  
+rateReferenceId | string | false | none | 浮动价参考基准，1：平台参考价，2：Gate 参考价，3：现货参考价  
+rateOffset | string | false | none | 浮动价偏移比例的绝对值，例如 0.5 表示 0.5%  
+float_trend | string | false | none | 浮动价方向，0：上浮，1：下浮  
+team_payment_uid | string | false | none | 团队收款人 UID；非团队商家可不传  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+type | 0  
+type | 1  
+type | 2  
+type | 3  
+      
+    
+    {
+      "currencyType": "USDT",
+      "exchangeType": "USD",
+      "type": "0",
+      "unitPrice": "1.1",
+      "number": "100",
+      "payType": "bank",
+      "pay_type_json": "{\"bank\":\"10001\",\"swift\":\"10002\"}",
+      "rateFixed": "1",
+      "oid": "2124000001",
+      "minAmount": "10",
+      "maxAmount": "500",
+      "tierLimit": "0",
+      "verifiedLimit": "0",
+      "regTimeLimit": "0",
+      "advertisersLimit": "0",
+      "expire_min": "20",
+      "trade_tips": "Please pay from an account under your own name",
+      "auto_reply": "Please tap Paid after completing the transfer",
+      "min_completed_limit": "-1",
+      "max_completed_limit": "-1",
+      "completed_rate_limit": "-1",
+      "user_country_limit": "-1",
+      "user_order_limit": "-1",
+      "rateReferenceId": "3",
+      "rateOffset": "0.5",
+      "float_trend": "0",
+      "team_payment_uid": "1000001"
+    }
+    
+    
+
 ##  P2pAdDetailResponse
 
 _P2pAdDetailResponse_
@@ -2874,6 +2996,808 @@ version | string | false | none | none
         "hide_payment": 0
       },
       "version": "string"
+    }
+    
+    
+
+##  P2pMerchantUserInfoResponse
+
+_P2pMerchantUserInfoResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» is_self | boolean | false | none | 是否本人  
+» user_timest | string | false | none | 用户注册时间，格式化字符串  
+» counterparties_num | integer | false | none | 交易对手数  
+» email_verified | string | false | none | 是否验证过邮箱，1：已验证，0：未验证  
+» verified | string | false | none | 是否完成 KYC，1：已完成，0：未完成  
+» has_phone | string | false | none | 是否绑定过手机，1：已绑定，0：未绑定  
+» user_name | string | false | none | 用户名  
+» user_note | string | false | none | 用户备注信息  
+» complete_transactions | string | false | none | 总完成订单数  
+» paid_transactions | string | false | none | 已完成买单订单数量  
+» accepted_transactions | string | false | none | 已完成卖单订单数量  
+» transactions_used_time | string | false | none | 确认收款平均用时  
+» cancelled_used_time_month | string | false | none | 近30天取消用时  
+» complete_transactions_month | string | false | none | 近30天完成订单数量  
+» complete_rate_month | number | false | none | 近30天完成率  
+» orders_buy_rate_month | number | false | none | 近30天买单占比  
+» is_black | integer | false | none | 是否已拉黑该用户，1：是，0：否  
+» is_follow | integer | false | none | 是否已关注该用户，1：是，0：否  
+» have_traded | integer | false | none | 是否与本人交易过，1：是，0：否  
+» biz_uid | string | false | none | 加密uid  
+» blue_vip | integer | false | none | 蓝V皇冠神盾  
+» work_status | integer | false | none | 商家工作状态  
+» registration_days | integer | false | none | 注册天数  
+» first_trade_days | integer | false | none | 首次交易到现在的天数  
+» need_replenish | integer | false | none | 是否需要补充保证金，1：需要，0：不需要  
+» merchant_info | object | false | none | 用户可挂单的市场  
+»» type | string | false | none | none  
+»» market | string | false | none | none  
+» online_status | integer | false | none | 商家在线状态，1：在线，0：离线  
+» work_hours | object|null | false | none | 商家在线状态详情  
+» transactions_month | number | false | none | 30天交易量  
+» transactions_all | number | false | none | 总交易量  
+» trade_versatile | boolean | false | none | 单一用户还是复合用户  
+version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "is_self": true,
+        "user_timest": "string",
+        "counterparties_num": 0,
+        "email_verified": "string",
+        "verified": "string",
+        "has_phone": "string",
+        "user_name": "string",
+        "user_note": "string",
+        "complete_transactions": "string",
+        "paid_transactions": "string",
+        "accepted_transactions": "string",
+        "transactions_used_time": "string",
+        "cancelled_used_time_month": "string",
+        "complete_transactions_month": "string",
+        "complete_rate_month": 0,
+        "orders_buy_rate_month": 0,
+        "is_black": 0,
+        "is_follow": 0,
+        "have_traded": 0,
+        "biz_uid": "string",
+        "blue_vip": 0,
+        "work_status": 0,
+        "registration_days": 0,
+        "first_trade_days": 0,
+        "need_replenish": 0,
+        "merchant_info": {
+          "type": "string",
+          "market": "string"
+        },
+        "online_status": 0,
+        "work_hours": {},
+        "transactions_month": 0,
+        "transactions_all": 0,
+        "trade_versatile": true
+      },
+      "version": "string"
+    }
+    
+    
+
+##  P2pMerchantBooksPlaceBizPushOrderResponse
+
+_P2pMerchantBooksPlaceBizPushOrderResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | 响应时间戳  
+method | string | false | none | 请求方法占位字段  
+code | integer | false | none | 响应码，0 表示成功  
+message | string | false | none | 响应消息  
+data | object | false | none | 发布或编辑广告成功时为空对象  
+version | string | false | none | API 版本  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {},
+      "version": "string"
+    }
+    
+    
+
+##  P2pAdsListResponse
+
+_P2pAdsListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | array | false | none | none  
+» P2pAdsListItem | object | false | none | none  
+»» index | integer | false | none | 序号  
+»» asset | string | false | none | 加密货币  
+»» fiat_unit | string | false | none | 法币  
+»» adv_no | integer | false | none | 广告id  
+»» price | string | false | none | 价格  
+»» max_single_trans_amount | string | false | none | 单笔最大加密币交易数量  
+»» min_single_trans_amount | string | false | none | 单笔最小加密币交易数量  
+»» nick_name | string | false | none | 广告商昵称  
+» version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": [
+        {
+          "index": 0,
+          "asset": "string",
+          "fiat_unit": "string",
+          "adv_no": 0,
+          "price": "string",
+          "max_single_trans_amount": "string",
+          "min_single_trans_amount": "string",
+          "nick_name": "string"
+        }
+      ],
+      "version": "string"
+    }
+    
+    
+
+##  P2pChatListResponse
+
+_P2pChatListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» messages | array | false | none | 消息列表  
+»» P2pChatMessage | object | false | none | none  
+»»» is_sell | integer | false | none | 当前用户是否为卖家，1：是，0：否  
+»»» msg_type | integer | false | none | 消息类型，0：文本，1：文件，2：模板消息，3：挂单分享，4：支付方式分享，5：订单状态流转消息  
+»»» msg | string | false | none | 消息内容。文件消息时通常为文件 URL 或文件 key  
+»»» username | string | false | none | 消息发送用户名  
+»»» timest | integer | false | none | 消息发送时间戳  
+»»» msg_obj | object | false | none | none  
+»»»» status | string | false | none | 发送消息时的订单状态，常见值：OPEN、PAID、LOCKED、ACCEPT、BCLOSED、CANCEL、BECANCEL、SCLOSED、SCANCEL  
+»»»» text | string | false | none | 消息内容  
+»»»» payment_voucher | array | false | none | 支付凭证  
+»»»» reason_id | integer | false | none | 取消原因 ID。1：不想再买币；2：无法联系卖家；3：不会支付；4：卖家未提供真实账号；5：收款账户有问题；6：实际单价或金额与展示不一致；7：与卖家协商一致取消；8：卖家沟通不友好；9：其他；10：卖家无法放行且已退款；11：不满足广告交易条款；12：卖家收款账户被风控  
+»»»» toast_id | integer | false | none | 取消原因弹窗  
+»»»» reason_memo | string | false | none | 取消原因说明  
+»»»» cancel_time | integer | false | none | 取消时间  
+»»»» seller_confirm | integer | false | none | 卖家是否确认取消原因，0：未确认，1：已确认，2：已拒绝  
+»»»» id | string | false | none | 支付方式信息id  
+»»»» account_des | string | false | none | 支付方式描述  
+»»»» pay_type | string | false | none | 支付方式类型  
+»»»» file | string | false | none | 支付方式文件链接  
+»»»» file_key | string | false | none | 支付方式文件key  
+»»»» account | string | false | none | 支付账号或脱敏支付账号  
+»»»» memo | string | false | none | 支付方式备注  
+»»»» code | string | false | none | 支付方式code  
+»»»» memo_ext | string | false | none | 支付方式额外备注  
+»»»» trade_tips | string | false | none | 支付方式提示信息  
+»»»» real_name | string | false | none | 支付方式用户名  
+»»»» is_delete | integer | false | none | 支付方式是否已删除，1：已删除，0：未删除  
+»»»» pay_name | string | false | none | 支付方式全称  
+»»» uid | string | false | none | 消息发送方加密 UID；系统消息可能为 System 或空字符串  
+»»» type | integer | false | none | 展示类型，1：文件消息，2：系统消息  
+»»» pic | string | false | none | 文件链接  
+»»» file_key | string | false | none | 文件key  
+»»» file_type | string | false | none | 文件类型，image：图片，video：视频  
+»» memo | string | false | none | 支付提示，仅首页展示  
+»» has_history | boolean | false | none | 是否存在历史记录  
+»» txid | integer | false | none | 订单号  
+»» SRVTM | integer | false | none | 最新一条消息的时间戳  
+»» order_status | string | false | none | 订单数据库状态，常见值：OPEN、PAID、LOCKED、ACCEPT、BCLOSED、CANCEL、BECANCEL、SCLOSED、SCANCEL  
+» version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "messages": [
+          {}
+        ],
+        "memo": "string",
+        "has_history": true,
+        "txid": 0,
+        "SRVTM": 0,
+        "order_status": "string"
+      },
+      "version": "string"
+    }
+    
+    
+
+##  AdsDetailRequest
+
+_获取广告详情请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+adv_no | string | true | none | 广告 ID  
+      
+    
+    {
+      "adv_no": "2124000001"
+    }
+    
+    
+
+##  P2pTransactionListResponse
+
+_P2pTransactionListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» list | array | false | none | none  
+»» P2pTransactionListItem | object | false | none | none  
+»»» type_buy | integer | false | none | 当前用户视角的订单方向，1：买单，0：卖单  
+»»» timest | string | false | none | 订单创建时间  
+»»» timest_expire | string | false | none | 订单过期时间  
+»»» timestamp | integer | false | none | 订单创建时间戳  
+»»» rate | string | false | none | 订单价格，按法币计价  
+»»» amount | string | false | none | 订单加密币数量  
+»»» total | string | false | none | 订单法币总金额  
+»»» txid | integer | false | none | 订单号  
+»»» status | string | false | none | 订单展示状态，unpay：待付款，paid：买家已付款，unconfirmed：待卖家确认收款，locked：已锁定，finished：已完成，cancel：已取消，expired：已过期，bclosed：仲裁成交，sclosed：仲裁取消  
+»»» its_realname | string | false | none | 交易对手真实姓名或实名展示名  
+»»» its_uid | string | false | none | 交易对手加密 UID  
+»»» its_nick | string | false | none | 交易对手昵称  
+»»» seller_realname | string | false | none | 卖家真实姓名或实名展示名  
+»»» buyer_realname | string | false | none | 买家真实姓名或实名展示名  
+»»» cancelable | integer | false | none | 是否可取消订单，1：可取消，0：不可取消  
+»»» currency_type | string | false | none | 加密币币种  
+»»» want_type | string | false | none | 法币币种  
+»»» hide_payment | integer | false | none | 是否隐藏支付方式，1：隐藏，0：不隐藏  
+»»» sel_paytype | string | false | none | 当前订单选择的支付方式类型，例如 bank、alipay、wechat、paypal、swift、wu  
+»»» pay_others | array | false | none | 其他支付方式信息，历史订单可能返回  
+»»»» pay_type | string | false | none | 支付方式类型  
+»»»» pay_name | string | false | none | 支付方式名称  
+»»» cd_time | integer | false | none | 当前订单倒计时秒数  
+»»» order_type | integer | false | none | 订单类型，1：普通订单，2：三方合作订单，3：闪兑订单，4：Web3 订单  
+»»» order_tag | array | false | none | 订单标签  
+»»» convert_info | object | false | none | 闪兑订单信息  
+»»»» convert_type | string | false | none | 闪兑目标币种  
+»»»» convert_status | string | false | none | 闪兑订单状态  
+»»»» pre_rate | string | false | none | 下单时预期价格  
+»»»» rate | string | false | none | 成交时价格  
+»»»» pre_fiat_rate | string | false | none | 下单时法币预期价格  
+»»»» fiat_rate | string | false | none | 成交时法币价格  
+»»»» amount | string | false | none | 数量  
+»»»» convert_amount | string | false | none | 兑换数量  
+»»»» slippage | string | false | none | 滑点计算，滑点 =（下单预期价格-自动兑换时实时价格）/ 下单预期价格  
+»»»» status | string | false | none | 闪兑订单展示状态  
+»»» trans_time | array | false | none | 倒计时时间  
+»»»» P2pTransactionTimeMarker | object | false | none | none  
+»»»»» od_time | integer | false | none | none  
+»»»» count | integer | false | none | 订单数  
+»»»» exported_num | integer | false | none | 导出次数  
+»»» version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "list": [
+          {}
+        ],
+        "trans_time": [
+          {}
+        ],
+        "count": 0,
+        "exported_num": 0
+      },
+      "version": "string"
+    }
+    
+    
+
+##  P2pSendChatMessageResponse
+
+_P2pSendChatMessageResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» SRVTM | integer | false | none | 成功发送消息的时间（当前时间戳）  
+version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "SRVTM": 0
+      },
+      "version": "string"
+    }
+    
+    
+
+##  P2pAdsUpdateStatusResponse
+
+_P2pAdsUpdateStatusResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» status | integer | false | none | 更新成功后的广告状态，1：上架，3：下架，4：关闭  
+version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "status": 0
+      },
+      "version": "string"
+    }
+    
+    
+
+##  P2pUploadChatFileResponse
+
+_P2pUploadChatFileResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» file_key | string | false | none | 文件key  
+version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "file_key": "string"
+      },
+      "version": "string"
+    }
+    
+    
+
+##  SendChatMessageRequest
+
+_发送聊天消息请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+txid | integer | true | none | 订单号  
+type | integer | false | none | 消息类型，0：文本，1：文件（图片或视频）；不传默认为 0  
+message | string | true | none | 消息内容。type=0 时传文本，最长 500 个字符；type=1 时传 upload_chat_file 返回的 file_key  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+type | 0  
+type | 1  
+      
+    
+    {
+      "txid": 40000001,
+      "type": 0,
+      "message": "Payment completed, please check"
+    }
+    
+    
+
+##  ConfirmPayment
+
+_确认付款请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+txid | string | true | none | 订单号  
+payment_method | string | false | none | 本次付款使用的支付方式类型；可选，传入时必须是订单支持的支付方式。可从订单详情 supported_pay_types 或支付方式列表 pay_type 获取，例如 bank、alipay、wechat、paypal、swift、wu  
+      
+    
+    {
+      "txid": "40000001",
+      "payment_method": "bank"
+    }
+    
+    
+
+##  GetCounterpartyUserInfoRequest
+
+_获取对手方用户信息请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+biz_uid | string | true | none | 对手方加密 UID，可从订单列表 its_uid 或订单详情 its_uid 获取  
+      
+    
+    {
+      "biz_uid": "biz_uid_demo_9f3a7c"
+    }
+    
+    
+
+##  P2pCounterpartyUserInfoResponse
+
+_P2pCounterpartyUserInfoResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» user_timest | string | false | none | 用户注册时间，格式化字符串  
+» email_verified | string | false | none | 是否验证过邮箱，1：已验证，0：未验证  
+» verified | string | false | none | 是否完成 KYC，1：已完成，0：未完成  
+» has_phone | string | false | none | 是否绑定过手机，1：已绑定，0：未绑定  
+» user_name | string | false | none | 用户名  
+» user_note | string | false | none | 用户备注信息  
+» complete_transactions | string | false | none | 总完成订单数  
+» paid_transactions | string | false | none | 已完成买单订单数量  
+» accepted_transactions | string | false | none | 已完成卖单订单数量  
+» transactions_used_time | string | false | none | 确认收款平均用时  
+» cancelled_used_time_month | string | false | none | 近30天取消用时  
+» complete_transactions_month | string | false | none | 近30天完成订单数量  
+» complete_rate_month | number | false | none | 近30天完成率  
+» is_follow | integer | false | none | 是否已关注该用户，1：是，0：否  
+» have_traded | integer | false | none | 是否与本人交易过，1：是，0：否  
+» biz_uid | string | false | none | 加密uid  
+» registration_days | integer | false | none | 注册天数  
+» first_trade_days | integer | false | none | 首次交易到现在的天数  
+» trade_versatile | boolean | false | none | 单一用户还是复合用户  
+version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "user_timest": "string",
+        "email_verified": "string",
+        "verified": "string",
+        "has_phone": "string",
+        "user_name": "string",
+        "user_note": "string",
+        "complete_transactions": "string",
+        "paid_transactions": "string",
+        "accepted_transactions": "string",
+        "transactions_used_time": "string",
+        "cancelled_used_time_month": "string",
+        "complete_transactions_month": "string",
+        "complete_rate_month": 0,
+        "is_follow": 0,
+        "have_traded": 0,
+        "biz_uid": "string",
+        "registration_days": 0,
+        "first_trade_days": 0,
+        "trade_versatile": true
+      },
+      "version": "string"
+    }
+    
+    
+
+##  CancelOrder
+
+_取消订单请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+txid | string | true | none | 订单号  
+reason_id | string | false | none | 取消原因 ID。1：不想再买币；2：无法联系卖家；3：不会支付；4：卖家未提供真实账号；5：收款账户有问题；6：实际单价或金额与展示不一致；7：与卖家协商一致取消；8：卖家沟通不友好；9：其他；10：卖家无法放行且已退款；11：不满足广告交易条款；12：卖家收款账户被风控  
+reason_memo | string | false | none | 取消原因补充说明，reason_id 为 9 或需要补充说明时填写  
+      
+    
+    {
+      "txid": "40000001",
+      "reason_id": "1",
+      "reason_memo": "Canceled after agreement with the counterparty"
+    }
+    
+    
+
+##  P2pPaymentMethodsResponse
+
+_P2pPaymentMethodsResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | array | false | none | none  
+» P2pPaymentMethodGroup | object | false | none | none  
+»» pay_type | string | false | none | 支付方式类型  
+»» pay_name | string | false | none | 支付方式名称  
+»» ids | array | false | none | 用户当前绑定的支付方式，主键id  
+»» list | array | false | none | none  
+»»» P2pPaymentMethodAccount | object | false | none | none  
+»»»» uid | integer | false | none | 用户uid  
+»»»» bankid | string | false | none | 用户当前绑定的支付方式，主键id  
+»»»» nickname | integer | false | none | 持卡人uid  
+»»»» bankname | string | false | none | 银行名称  
+»»»» bankbranch | string | false | none | 银行支行名  
+»»»» bankcity | string | false | none | 银行所在城市  
+»»»» bankprov | string | false | none | 银行所在省  
+»»»» bankaddr | string | false | none | 银行卡号或脱敏银行卡号  
+»»»» bankdesc | string | false | none | 银行备注  
+»»»» hold_uid | integer | false | none | 持卡人uid  
+»»»» hold_username | string | false | none | 持卡人名称  
+»»»» real_name | string | false | none | 用户实名展示名  
+»»»» id | string | false | none | 用户当前绑定的支付方式，主键id  
+»»»» account_des | string | false | none | 支付方式描述  
+»»»» pay_type | string | false | none | 支付方式类型  
+»»»» file | string | false | none | 支付方式文件链接  
+»»»» file_key | string | false | none | 支付方式文件key  
+»»»» account | string | false | none | 支付账号或脱敏支付账号  
+»»»» memo | string | false | none | 支付方式备注  
+»»»» code | string | false | none | 支付方式code  
+»»»» memo_ext | string | false | none | 支付方式额外备注  
+»»»» trade_tips | string | false | none | 支付方式交易信息  
+»»» version | string | false | none | none  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": [
+        {
+          "pay_type": "string",
+          "pay_name": "string",
+          "ids": [],
+          "list": []
+        }
+      ],
+      "version": "string"
+    }
+    
+    
+
+##  GetMyselfPaymentRequest
+
+_获取支付方式列表请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+fiat | string | false | none | 法币币种。不传时返回全部可用支付方式  
+      
+    
+    {
+      "fiat": "USD"
+    }
+    
+    
+
+##  AdsListRequest
+
+_获取市场广告列表请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+asset | string | true | none | 加密币币种  
+fiat_unit | string | true | none | 法币币种  
+trade_type | string | true | none | 广告方向，buy 表示买币广告，sell 表示卖币广告  
+      
+    
+    {
+      "asset": "USDT",
+      "fiat_unit": "USD",
+      "trade_type": "sell"
+    }
+    
+    
+
+##  P2pMyAdsListResponse
+
+_P2pMyAdsListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timestamp | number | false | none | none  
+method | string | false | none | none  
+code | integer | false | none | none  
+message | string | false | none | none  
+data | object | false | none | none  
+» lists | array | false | none | none  
+»» P2pMyAd | object | false | none | none  
+»»» type | string | false | none | 广告方向，buy：买币广告，sell：卖币广告  
+»»» rate | string | false | none | 价格  
+»»» original_rate | string | false | none | 原始价格  
+»»» amount | string | false | none | 广告剩余加密币数量  
+»»» total | string | false | none | 广告剩余法币金额  
+»»» limit_total | string | false | none | 单笔限额范围-数字币  
+»»» limit_fiat | string | false | none | 单笔限额范围-法币  
+»»» min_amount | string | false | none | 单笔最小数量  
+»»» max_amount | string | false | none | 单笔最大数量  
+»»» pay_type_num | string | false | none | 支付方式 Id 列表  
+»»» pay_type_json | string | false | none | 支付方式配置详情，JSON 字符串，key 为支付方式类型，value 为支付方式 ID  
+»»» expire_min | string | false | none | 广告过期时间(分钟)  
+»»» tier_limit | string | false | none | VIP 限制  
+»»» advertisers_limit | integer | false | none | 是否限制与广告商交易，0：不限制，1：限制  
+»»» reg_time_limit | integer | false | none | 注册时间限制  
+»»» verified_limit | integer | false | none | KYC 等级限制  
+»»» min_completed_limit | integer | false | none | 交易对手已完成的订单数最小值限制  
+»»» max_completed_limit | integer | false | none | 交易对手已完成的订单数最大值限制  
+»»» user_country_limit | integer | false | none | KYC国籍限制  
+»»» completed_rate_limit | number | false | none | 30天完成率限制  
+»»» user_orders_limit | integer | false | none | 交易对方最大下单数限制  
+»»» hide_payment | string | false | none | 是否隐藏支付方式，1：隐藏，0：不隐藏  
+»»» currencyType | string | false | none | 加密币币种  
+»»» want_type | string | false | none | 法币  
+»»» trade_tips | string | false | none | 交易条款  
+»»» new_hand | integer | false | none | 特殊广告类型，0：普通单，1：新手引导单，2：新手折扣单，3：精选特惠单，4：KOL 广告单，5：卡券广告单  
+»»» id | string | false | none | 广告 ID  
+»»» status | string | false | none | 广告状态，OPEN：上架，OFFLIN：下架，CLOSED：关闭，CANCEL：取消  
+»»» locked_amount | string | false | none | 广告冻结金额  
+»»» hide_rate | string | false | none | 隐藏价格  
+»»» is_out_time | integer | false | none | 广告当前是否超时，1：已超时，0：未超时  
+»»» rate_ref_id | integer | false | none | 浮动价参考基准，1：平台参考价，2：Gate 参考价，3：现货参考价；小于等于 0 表示固定价格  
+»»» rate_offset | string | false | none | 浮动比例  
+»»» rate_fixed | integer | false | none | 价格类型，0：浮动价格，1：固定价格  
+»»» float_trend | integer | false | none | 浮动价方向，0：上浮，1：下浮  
+»»» in_dispute | integer | false | none | 广告是否存在申诉交易，1：存在，0：不存在  
+»»» auto_reply | string | false | none | 自动回复数据  
+»»» timestamp | integer | false | none | 广告创建时间  
+»»» is_hedge | integer | false | none | 是否自动委托，1：是，0：否  
+»» version | string | false | none | 版本号  
+      
+    
+    {
+      "timestamp": 0,
+      "method": "string",
+      "code": 0,
+      "message": "string",
+      "data": {
+        "lists": [
+          {}
+        ]
+      },
+      "version": "string"
+    }
+    
+    
+
+##  MyAdsListRequest
+
+_获取我的广告列表请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+asset | string | false | none | 加密币币种。不传时不按加密币筛选  
+fiat_unit | string | false | none | 法币币种。不传时不按法币筛选  
+trade_type | string | false | none | 广告方向，buy 表示买币广告，sell 表示卖币广告；不传时返回全部方向  
+      
+    
+    {
+      "asset": "USDT",
+      "fiat_unit": "USD",
+      "trade_type": "sell"
+    }
+    
+    
+
+##  UploadChatFile
+
+_上传聊天文件请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+image_content_type | string | true | none | 文件 MIME 类型，支持 image/jpeg、image/jpg、image/png、video/mp4  
+base64_img | string | true | none | 文件内容的 Base64 编码，最大 20 MB  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+image_content_type | image/jpeg  
+image_content_type | image/jpg  
+image_content_type | image/png  
+image_content_type | video/mp4  
+      
+    
+    {
+      "image_content_type": "image/png",
+      "base64_img": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB..."
     }
     
     
@@ -3015,122 +3939,6 @@ version | string | false | none | none
     
     
 
-##  GetTransactionDetailsRequest
-
-_获取订单详情请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-txid | integer | true | none | 订单号  
-channel | string | false | none | 渠道标识，普通 P2P 订单不传或传空字符串；Web3 订单传 web3  
-      
-    
-    {
-      "txid": 40000001,
-      "channel": ""
-    }
-    
-    
-
-##  SendChatMessageRequest
-
-_发送聊天消息请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-txid | integer | true | none | 订单号  
-type | integer | false | none | 消息类型，0：文本，1：文件（图片或视频）；不传默认为 0  
-message | string | true | none | 消息内容。type=0 时传文本，最长 500 个字符；type=1 时传 upload_chat_file 返回的 file_key  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-type | 0  
-type | 1  
-      
-    
-    {
-      "txid": 40000001,
-      "type": 0,
-      "message": "Payment completed, please check"
-    }
-    
-    
-
-##  CancelOrder
-
-_取消订单请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-txid | string | true | none | 订单号  
-reason_id | string | false | none | 取消原因 ID。1：不想再买币；2：无法联系卖家；3：不会支付；4：卖家未提供真实账号；5：收款账户有问题；6：实际单价或金额与展示不一致；7：与卖家协商一致取消；8：卖家沟通不友好；9：其他；10：卖家无法放行且已退款；11：不满足广告交易条款；12：卖家收款账户被风控  
-reason_memo | string | false | none | 取消原因补充说明，reason_id 为 9 或需要补充说明时填写  
-      
-    
-    {
-      "txid": "40000001",
-      "reason_id": "1",
-      "reason_memo": "Canceled after agreement with the counterparty"
-    }
-    
-    
-
-##  P2pTransactionActionResponse
-
-_P2pTransactionActionResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | 响应时间戳  
-method | string | false | none | 请求方法占位字段  
-code | integer | false | none | 响应码，0 表示成功  
-message | string | false | none | 响应消息  
-data | object | false | none | 操作成功时为空对象  
-version | string | false | none | API 版本  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {},
-      "version": "string"
-    }
-    
-    
-
-##  MyAdsListRequest
-
-_获取我的广告列表请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-asset | string | false | none | 加密币币种。不传时不按加密币筛选  
-fiat_unit | string | false | none | 法币币种。不传时不按法币筛选  
-trade_type | string | false | none | 广告方向，buy 表示买币广告，sell 表示卖币广告；不传时返回全部方向  
-      
-    
-    {
-      "asset": "USDT",
-      "fiat_unit": "USD",
-      "trade_type": "sell"
-    }
-    
-    
-
 ##  GetCompletedTransactionListRequest
 
 _获取所有/历史订单请求_
@@ -3169,6 +3977,25 @@ per_page | integer | false | none | 每页订单数，默认 10，最大 200
     
     
 
+##  GetTransactionDetailsRequest
+
+_获取订单详情请求_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+txid | integer | true | none | 订单号  
+channel | string | false | none | 渠道标识，普通 P2P 订单不传或传空字符串；Web3 订单传 web3  
+      
+    
+    {
+      "txid": 40000001,
+      "channel": ""
+    }
+    
+    
+
 ##  GetChatsListRequest
 
 _获取聊天记录请求_
@@ -3186,213 +4013,6 @@ firstreceived | integer | false | none | 已接收的第一条消息时间戳，
       "txid": 40000001,
       "lastreceived": 1767009884,
       "firstreceived": 1767009000
-    }
-    
-    
-
-##  P2pMerchantBooksPlaceBizPushOrderResponse
-
-_P2pMerchantBooksPlaceBizPushOrderResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | 响应时间戳  
-method | string | false | none | 请求方法占位字段  
-code | integer | false | none | 响应码，0 表示成功  
-message | string | false | none | 响应消息  
-data | object | false | none | 发布或编辑广告成功时为空对象  
-version | string | false | none | API 版本  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {},
-      "version": "string"
-    }
-    
-    
-
-##  UploadChatFile
-
-_上传聊天文件请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-image_content_type | string | true | none | 文件 MIME 类型，支持 image/jpeg、image/jpg、image/png、video/mp4  
-base64_img | string | true | none | 文件内容的 Base64 编码，最大 20 MB  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-image_content_type | image/jpeg  
-image_content_type | image/jpg  
-image_content_type | image/png  
-image_content_type | video/mp4  
-      
-    
-    {
-      "image_content_type": "image/png",
-      "base64_img": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB..."
-    }
-    
-    
-
-##  P2pAdsUpdateStatusResponse
-
-_P2pAdsUpdateStatusResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» status | integer | false | none | 更新成功后的广告状态，1：上架，3：下架，4：关闭  
-version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "status": 0
-      },
-      "version": "string"
-    }
-    
-    
-
-##  P2pChatListResponse
-
-_P2pChatListResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» messages | array | false | none | 消息列表  
-»» P2pChatMessage | object | false | none | none  
-»»» is_sell | integer | false | none | 当前用户是否为卖家，1：是，0：否  
-»»» msg_type | integer | false | none | 消息类型，0：文本，1：文件，2：模板消息，3：挂单分享，4：支付方式分享，5：订单状态流转消息  
-»»» msg | string | false | none | 消息内容。文件消息时通常为文件 URL 或文件 key  
-»»» username | string | false | none | 消息发送用户名  
-»»» timest | integer | false | none | 消息发送时间戳  
-»»» msg_obj | object | false | none | none  
-»»»» status | string | false | none | 发送消息时的订单状态，常见值：OPEN、PAID、LOCKED、ACCEPT、BCLOSED、CANCEL、BECANCEL、SCLOSED、SCANCEL  
-»»»» text | string | false | none | 消息内容  
-»»»» payment_voucher | array | false | none | 支付凭证  
-»»»» reason_id | integer | false | none | 取消原因 ID。1：不想再买币；2：无法联系卖家；3：不会支付；4：卖家未提供真实账号；5：收款账户有问题；6：实际单价或金额与展示不一致；7：与卖家协商一致取消；8：卖家沟通不友好；9：其他；10：卖家无法放行且已退款；11：不满足广告交易条款；12：卖家收款账户被风控  
-»»»» toast_id | integer | false | none | 取消原因弹窗  
-»»»» reason_memo | string | false | none | 取消原因说明  
-»»»» cancel_time | integer | false | none | 取消时间  
-»»»» seller_confirm | integer | false | none | 卖家是否确认取消原因，0：未确认，1：已确认，2：已拒绝  
-»»»» id | string | false | none | 支付方式信息id  
-»»»» account_des | string | false | none | 支付方式描述  
-»»»» pay_type | string | false | none | 支付方式类型  
-»»»» file | string | false | none | 支付方式文件链接  
-»»»» file_key | string | false | none | 支付方式文件key  
-»»»» account | string | false | none | 支付账号或脱敏支付账号  
-»»»» memo | string | false | none | 支付方式备注  
-»»»» code | string | false | none | 支付方式code  
-»»»» memo_ext | string | false | none | 支付方式额外备注  
-»»»» trade_tips | string | false | none | 支付方式提示信息  
-»»»» real_name | string | false | none | 支付方式用户名  
-»»»» is_delete | integer | false | none | 支付方式是否已删除，1：已删除，0：未删除  
-»»»» pay_name | string | false | none | 支付方式全称  
-»»» uid | string | false | none | 消息发送方加密 UID；系统消息可能为 System 或空字符串  
-»»» type | integer | false | none | 展示类型，1：文件消息，2：系统消息  
-»»» pic | string | false | none | 文件链接  
-»»» file_key | string | false | none | 文件key  
-»»» file_type | string | false | none | 文件类型，image：图片，video：视频  
-»» memo | string | false | none | 支付提示，仅首页展示  
-»» has_history | boolean | false | none | 是否存在历史记录  
-»» txid | integer | false | none | 订单号  
-»» SRVTM | integer | false | none | 最新一条消息的时间戳  
-»» order_status | string | false | none | 订单数据库状态，常见值：OPEN、PAID、LOCKED、ACCEPT、BCLOSED、CANCEL、BECANCEL、SCLOSED、SCANCEL  
-» version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "messages": [
-          {}
-        ],
-        "memo": "string",
-        "has_history": true,
-        "txid": 0,
-        "SRVTM": 0,
-        "order_status": "string"
-      },
-      "version": "string"
-    }
-    
-    
-
-##  P2pAdsListResponse
-
-_P2pAdsListResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | array | false | none | none  
-» P2pAdsListItem | object | false | none | none  
-»» index | integer | false | none | 序号  
-»» asset | string | false | none | 加密货币  
-»» fiat_unit | string | false | none | 法币  
-»» adv_no | integer | false | none | 广告id  
-»» price | string | false | none | 价格  
-»» max_single_trans_amount | string | false | none | 单笔最大加密币交易数量  
-»» min_single_trans_amount | string | false | none | 单笔最小加密币交易数量  
-»» nick_name | string | false | none | 广告商昵称  
-» version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": [
-        {
-          "index": 0,
-          "asset": "string",
-          "fiat_unit": "string",
-          "adv_no": 0,
-          "price": "string",
-          "max_single_trans_amount": "string",
-          "min_single_trans_amount": "string",
-          "nick_name": "string"
-        }
-      ],
-      "version": "string"
     }
     
     
@@ -3436,61 +4056,20 @@ order_tab | dispute
     
     
 
-##  P2pMyAdsListResponse
+##  P2pTransactionActionResponse
 
-_P2pMyAdsListResponse_
+_P2pTransactionActionResponse_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» lists | array | false | none | none  
-»» P2pMyAd | object | false | none | none  
-»»» type | string | false | none | 广告方向，buy：买币广告，sell：卖币广告  
-»»» rate | string | false | none | 价格  
-»»» original_rate | string | false | none | 原始价格  
-»»» amount | string | false | none | 广告剩余加密币数量  
-»»» total | string | false | none | 广告剩余法币金额  
-»»» limit_total | string | false | none | 单笔限额范围-数字币  
-»»» limit_fiat | string | false | none | 单笔限额范围-法币  
-»»» min_amount | string | false | none | 单笔最小数量  
-»»» max_amount | string | false | none | 单笔最大数量  
-»»» pay_type_num | string | false | none | 支付方式 Id 列表  
-»»» pay_type_json | string | false | none | 支付方式配置详情，JSON 字符串，key 为支付方式类型，value 为支付方式 ID  
-»»» expire_min | string | false | none | 广告过期时间(分钟)  
-»»» tier_limit | string | false | none | VIP 限制  
-»»» advertisers_limit | integer | false | none | 是否限制与广告商交易，0：不限制，1：限制  
-»»» reg_time_limit | integer | false | none | 注册时间限制  
-»»» verified_limit | integer | false | none | KYC 等级限制  
-»»» min_completed_limit | integer | false | none | 交易对手已完成的订单数最小值限制  
-»»» max_completed_limit | integer | false | none | 交易对手已完成的订单数最大值限制  
-»»» user_country_limit | integer | false | none | KYC国籍限制  
-»»» completed_rate_limit | number | false | none | 30天完成率限制  
-»»» user_orders_limit | integer | false | none | 交易对方最大下单数限制  
-»»» hide_payment | string | false | none | 是否隐藏支付方式，1：隐藏，0：不隐藏  
-»»» currencyType | string | false | none | 加密币币种  
-»»» want_type | string | false | none | 法币  
-»»» trade_tips | string | false | none | 交易条款  
-»»» new_hand | integer | false | none | 特殊广告类型，0：普通单，1：新手引导单，2：新手折扣单，3：精选特惠单，4：KOL 广告单，5：卡券广告单  
-»»» id | string | false | none | 广告 ID  
-»»» status | string | false | none | 广告状态，OPEN：上架，OFFLIN：下架，CLOSED：关闭，CANCEL：取消  
-»»» locked_amount | string | false | none | 广告冻结金额  
-»»» hide_rate | string | false | none | 隐藏价格  
-»»» is_out_time | integer | false | none | 广告当前是否超时，1：已超时，0：未超时  
-»»» rate_ref_id | integer | false | none | 浮动价参考基准，1：平台参考价，2：Gate 参考价，3：现货参考价；小于等于 0 表示固定价格  
-»»» rate_offset | string | false | none | 浮动比例  
-»»» rate_fixed | integer | false | none | 价格类型，0：浮动价格，1：固定价格  
-»»» float_trend | integer | false | none | 浮动价方向，0：上浮，1：下浮  
-»»» in_dispute | integer | false | none | 广告是否存在申诉交易，1：存在，0：不存在  
-»»» auto_reply | string | false | none | 自动回复数据  
-»»» timestamp | integer | false | none | 广告创建时间  
-»»» is_hedge | integer | false | none | 是否自动委托，1：是，0：否  
-»» version | string | false | none | 版本号  
+timestamp | number | false | none | 响应时间戳  
+method | string | false | none | 请求方法占位字段  
+code | integer | false | none | 响应码，0 表示成功  
+message | string | false | none | 响应消息  
+data | object | false | none | 操作成功时为空对象  
+version | string | false | none | API 版本  
       
     
     {
@@ -3498,585 +4077,6 @@ data | object | false | none | none
       "method": "string",
       "code": 0,
       "message": "string",
-      "data": {
-        "lists": [
-          {}
-        ]
-      },
-      "version": "string"
-    }
-    
-    
-
-##  GetCounterpartyUserInfoRequest
-
-_获取对手方用户信息请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-biz_uid | string | true | none | 对手方加密 UID，可从订单列表 its_uid 或订单详情 its_uid 获取  
-      
-    
-    {
-      "biz_uid": "biz_uid_demo_9f3a7c"
-    }
-    
-    
-
-##  ConfirmPayment
-
-_确认付款请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-txid | string | true | none | 订单号  
-payment_method | string | false | none | 本次付款使用的支付方式类型；可选，传入时必须是订单支持的支付方式。可从订单详情 supported_pay_types 或支付方式列表 pay_type 获取，例如 bank、alipay、wechat、paypal、swift、wu  
-      
-    
-    {
-      "txid": "40000001",
-      "payment_method": "bank"
-    }
-    
-    
-
-##  AdsDetailRequest
-
-_获取广告详情请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-adv_no | string | true | none | 广告 ID  
-      
-    
-    {
-      "adv_no": "2124000001"
-    }
-    
-    
-
-##  PlaceBizPushOrder
-
-_发布广告挂单请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currencyType | string | true | none | 加密币币种  
-exchangeType | string | true | none | 法币币种  
-type | string | true | none | 广告操作类型，0：发布卖币广告，1：发布买币广告，2：编辑卖币广告，3：编辑买币广告  
-unitPrice | string | true | none | 固定价格模式下的广告单价  
-number | string | true | none | 广告数量，按 currencyType 计价  
-payType | string | true | none | 支付方式类型，多个类型用逗号分隔；可从支付方式列表 pay_type 获取，例如 bank、alipay、wechat、paypal、swift、wu  
-pay_type_json | string | false | none | 支付方式和支付方式 ID 的 JSON 字符串，key 为支付方式类型，value 为当前用户支付方式 ID  
-rateFixed | string | false | none | 价格类型，0：浮动价格，1：固定价格  
-oid | string | false | none | 编辑广告时传广告 ID；发布新广告时不传或传空字符串  
-minAmount | string | true | none | 单笔最小交易金额，按 exchangeType 计价  
-maxAmount | string | true | none | 单笔最大交易金额，按 exchangeType 计价  
-tierLimit | string | false | none | 交易对手 VIP 等级限制，0 表示不限制  
-verifiedLimit | string | false | none | 交易对手认证等级限制，0 表示不限制  
-regTimeLimit | string | false | none | 交易对手注册天数限制，0 表示不限制  
-advertisersLimit | string | false | none | 是否限制与广告商交易，0：不限制，1：限制  
-expire_min | string | false | none | 订单付款超时时间，单位分钟  
-trade_tips | string | false | none | 广告交易条款，展示给下单用户  
-auto_reply | string | false | none | 订单创建后的自动回复内容  
-min_completed_limit | string | false | none | 交易对手已完成订单数最小值限制，-1 表示不限制  
-max_completed_limit | string | false | none | 交易对手已完成订单数最大值限制，-1 表示不限制  
-completed_rate_limit | string | false | none | 交易对手近 30 天完成率限制，-1 表示不限制  
-user_country_limit | string | false | none | KYC 国籍限制，-1 表示不限制  
-user_order_limit | string | false | none | 交易对手最大下单数限制，-1 表示不限制  
-rateReferenceId | string | false | none | 浮动价参考基准，1：平台参考价，2：Gate 参考价，3：现货参考价  
-rateOffset | string | false | none | 浮动价偏移比例的绝对值，例如 0.5 表示 0.5%  
-float_trend | string | false | none | 浮动价方向，0：上浮，1：下浮  
-team_payment_uid | string | false | none | 团队收款人 UID；非团队商家可不传  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-type | 0  
-type | 1  
-type | 2  
-type | 3  
-      
-    
-    {
-      "currencyType": "USDT",
-      "exchangeType": "USD",
-      "type": "0",
-      "unitPrice": "1.1",
-      "number": "100",
-      "payType": "bank",
-      "pay_type_json": "{\"bank\":\"10001\",\"swift\":\"10002\"}",
-      "rateFixed": "1",
-      "oid": "2124000001",
-      "minAmount": "10",
-      "maxAmount": "500",
-      "tierLimit": "0",
-      "verifiedLimit": "0",
-      "regTimeLimit": "0",
-      "advertisersLimit": "0",
-      "expire_min": "20",
-      "trade_tips": "Please pay from an account under your own name",
-      "auto_reply": "Please tap Paid after completing the transfer",
-      "min_completed_limit": "-1",
-      "max_completed_limit": "-1",
-      "completed_rate_limit": "-1",
-      "user_country_limit": "-1",
-      "user_order_limit": "-1",
-      "rateReferenceId": "3",
-      "rateOffset": "0.5",
-      "float_trend": "0",
-      "team_payment_uid": "1000001"
-    }
-    
-    
-
-##  GetMyselfPaymentRequest
-
-_获取支付方式列表请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-fiat | string | false | none | 法币币种。不传时返回全部可用支付方式  
-      
-    
-    {
-      "fiat": "USD"
-    }
-    
-    
-
-##  P2pUploadChatFileResponse
-
-_P2pUploadChatFileResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» file_key | string | false | none | 文件key  
-version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "file_key": "string"
-      },
-      "version": "string"
-    }
-    
-    
-
-##  P2pSendChatMessageResponse
-
-_P2pSendChatMessageResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» SRVTM | integer | false | none | 成功发送消息的时间（当前时间戳）  
-version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "SRVTM": 0
-      },
-      "version": "string"
-    }
-    
-    
-
-##  P2pTransactionListResponse
-
-_P2pTransactionListResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» list | array | false | none | none  
-»» P2pTransactionListItem | object | false | none | none  
-»»» type_buy | integer | false | none | 当前用户视角的订单方向，1：买单，0：卖单  
-»»» timest | string | false | none | 订单创建时间  
-»»» timest_expire | string | false | none | 订单过期时间  
-»»» timestamp | integer | false | none | 订单创建时间戳  
-»»» rate | string | false | none | 订单价格，按法币计价  
-»»» amount | string | false | none | 订单加密币数量  
-»»» total | string | false | none | 订单法币总金额  
-»»» txid | integer | false | none | 订单号  
-»»» status | string | false | none | 订单展示状态，unpay：待付款，paid：买家已付款，unconfirmed：待卖家确认收款，locked：已锁定，finished：已完成，cancel：已取消，expired：已过期，bclosed：仲裁成交，sclosed：仲裁取消  
-»»» its_realname | string | false | none | 交易对手真实姓名或实名展示名  
-»»» its_uid | string | false | none | 交易对手加密 UID  
-»»» its_nick | string | false | none | 交易对手昵称  
-»»» seller_realname | string | false | none | 卖家真实姓名或实名展示名  
-»»» buyer_realname | string | false | none | 买家真实姓名或实名展示名  
-»»» cancelable | integer | false | none | 是否可取消订单，1：可取消，0：不可取消  
-»»» currency_type | string | false | none | 加密币币种  
-»»» want_type | string | false | none | 法币币种  
-»»» hide_payment | integer | false | none | 是否隐藏支付方式，1：隐藏，0：不隐藏  
-»»» sel_paytype | string | false | none | 当前订单选择的支付方式类型，例如 bank、alipay、wechat、paypal、swift、wu  
-»»» pay_others | array | false | none | 其他支付方式信息，历史订单可能返回  
-»»»» pay_type | string | false | none | 支付方式类型  
-»»»» pay_name | string | false | none | 支付方式名称  
-»»» cd_time | integer | false | none | 当前订单倒计时秒数  
-»»» order_type | integer | false | none | 订单类型，1：普通订单，2：三方合作订单，3：闪兑订单，4：Web3 订单  
-»»» order_tag | array | false | none | 订单标签  
-»»» convert_info | object | false | none | 闪兑订单信息  
-»»»» convert_type | string | false | none | 闪兑目标币种  
-»»»» convert_status | string | false | none | 闪兑订单状态  
-»»»» pre_rate | string | false | none | 下单时预期价格  
-»»»» rate | string | false | none | 成交时价格  
-»»»» pre_fiat_rate | string | false | none | 下单时法币预期价格  
-»»»» fiat_rate | string | false | none | 成交时法币价格  
-»»»» amount | string | false | none | 数量  
-»»»» convert_amount | string | false | none | 兑换数量  
-»»»» slippage | string | false | none | 滑点计算，滑点 =（下单预期价格-自动兑换时实时价格）/ 下单预期价格  
-»»»» status | string | false | none | 闪兑订单展示状态  
-»»» trans_time | array | false | none | 倒计时时间  
-»»»» P2pTransactionTimeMarker | object | false | none | none  
-»»»»» od_time | integer | false | none | none  
-»»»» count | integer | false | none | 订单数  
-»»»» exported_num | integer | false | none | 导出次数  
-»»» version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "list": [
-          {}
-        ],
-        "trans_time": [
-          {}
-        ],
-        "count": 0,
-        "exported_num": 0
-      },
-      "version": "string"
-    }
-    
-    
-
-##  ConfirmReceipt
-
-_确认收款请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-txid | string | true | none | 订单号  
-      
-    
-    {
-      "txid": "40000001"
-    }
-    
-    
-
-##  P2pCounterpartyUserInfoResponse
-
-_P2pCounterpartyUserInfoResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» user_timest | string | false | none | 用户注册时间，格式化字符串  
-» email_verified | string | false | none | 是否验证过邮箱，1：已验证，0：未验证  
-» verified | string | false | none | 是否完成 KYC，1：已完成，0：未完成  
-» has_phone | string | false | none | 是否绑定过手机，1：已绑定，0：未绑定  
-» user_name | string | false | none | 用户名  
-» user_note | string | false | none | 用户备注信息  
-» complete_transactions | string | false | none | 总完成订单数  
-» paid_transactions | string | false | none | 已完成买单订单数量  
-» accepted_transactions | string | false | none | 已完成卖单订单数量  
-» transactions_used_time | string | false | none | 确认收款平均用时  
-» cancelled_used_time_month | string | false | none | 近30天取消用时  
-» complete_transactions_month | string | false | none | 近30天完成订单数量  
-» complete_rate_month | number | false | none | 近30天完成率  
-» is_follow | integer | false | none | 是否已关注该用户，1：是，0：否  
-» have_traded | integer | false | none | 是否与本人交易过，1：是，0：否  
-» biz_uid | string | false | none | 加密uid  
-» registration_days | integer | false | none | 注册天数  
-» first_trade_days | integer | false | none | 首次交易到现在的天数  
-» trade_versatile | boolean | false | none | 单一用户还是复合用户  
-version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "user_timest": "string",
-        "email_verified": "string",
-        "verified": "string",
-        "has_phone": "string",
-        "user_name": "string",
-        "user_note": "string",
-        "complete_transactions": "string",
-        "paid_transactions": "string",
-        "accepted_transactions": "string",
-        "transactions_used_time": "string",
-        "cancelled_used_time_month": "string",
-        "complete_transactions_month": "string",
-        "complete_rate_month": 0,
-        "is_follow": 0,
-        "have_traded": 0,
-        "biz_uid": "string",
-        "registration_days": 0,
-        "first_trade_days": 0,
-        "trade_versatile": true
-      },
-      "version": "string"
-    }
-    
-    
-
-##  AdsListRequest
-
-_获取市场广告列表请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-asset | string | true | none | 加密币币种  
-fiat_unit | string | true | none | 法币币种  
-trade_type | string | true | none | 广告方向，buy 表示买币广告，sell 表示卖币广告  
-      
-    
-    {
-      "asset": "USDT",
-      "fiat_unit": "USD",
-      "trade_type": "sell"
-    }
-    
-    
-
-##  P2pMerchantUserInfoResponse
-
-_P2pMerchantUserInfoResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | object | false | none | none  
-» is_self | boolean | false | none | 是否本人  
-» user_timest | string | false | none | 用户注册时间，格式化字符串  
-» counterparties_num | integer | false | none | 交易对手数  
-» email_verified | string | false | none | 是否验证过邮箱，1：已验证，0：未验证  
-» verified | string | false | none | 是否完成 KYC，1：已完成，0：未完成  
-» has_phone | string | false | none | 是否绑定过手机，1：已绑定，0：未绑定  
-» user_name | string | false | none | 用户名  
-» user_note | string | false | none | 用户备注信息  
-» complete_transactions | string | false | none | 总完成订单数  
-» paid_transactions | string | false | none | 已完成买单订单数量  
-» accepted_transactions | string | false | none | 已完成卖单订单数量  
-» transactions_used_time | string | false | none | 确认收款平均用时  
-» cancelled_used_time_month | string | false | none | 近30天取消用时  
-» complete_transactions_month | string | false | none | 近30天完成订单数量  
-» complete_rate_month | number | false | none | 近30天完成率  
-» orders_buy_rate_month | number | false | none | 近30天买单占比  
-» is_black | integer | false | none | 是否已拉黑该用户，1：是，0：否  
-» is_follow | integer | false | none | 是否已关注该用户，1：是，0：否  
-» have_traded | integer | false | none | 是否与本人交易过，1：是，0：否  
-» biz_uid | string | false | none | 加密uid  
-» blue_vip | integer | false | none | 蓝V皇冠神盾  
-» work_status | integer | false | none | 商家工作状态  
-» registration_days | integer | false | none | 注册天数  
-» first_trade_days | integer | false | none | 首次交易到现在的天数  
-» need_replenish | integer | false | none | 是否需要补充保证金，1：需要，0：不需要  
-» merchant_info | object | false | none | 用户可挂单的市场  
-»» type | string | false | none | none  
-»» market | string | false | none | none  
-» online_status | integer | false | none | 商家在线状态，1：在线，0：离线  
-» work_hours | object|null | false | none | 商家在线状态详情  
-» transactions_month | number | false | none | 30天交易量  
-» transactions_all | number | false | none | 总交易量  
-» trade_versatile | boolean | false | none | 单一用户还是复合用户  
-version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": {
-        "is_self": true,
-        "user_timest": "string",
-        "counterparties_num": 0,
-        "email_verified": "string",
-        "verified": "string",
-        "has_phone": "string",
-        "user_name": "string",
-        "user_note": "string",
-        "complete_transactions": "string",
-        "paid_transactions": "string",
-        "accepted_transactions": "string",
-        "transactions_used_time": "string",
-        "cancelled_used_time_month": "string",
-        "complete_transactions_month": "string",
-        "complete_rate_month": 0,
-        "orders_buy_rate_month": 0,
-        "is_black": 0,
-        "is_follow": 0,
-        "have_traded": 0,
-        "biz_uid": "string",
-        "blue_vip": 0,
-        "work_status": 0,
-        "registration_days": 0,
-        "first_trade_days": 0,
-        "need_replenish": 0,
-        "merchant_info": {
-          "type": "string",
-          "market": "string"
-        },
-        "online_status": 0,
-        "work_hours": {},
-        "transactions_month": 0,
-        "transactions_all": 0,
-        "trade_versatile": true
-      },
-      "version": "string"
-    }
-    
-    
-
-##  AdsUpdateStatus
-
-_广告单状态更新请求_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-adv_no | integer | true | none | 广告 ID  
-adv_status | integer | true | none | 广告状态，1：上架，3：下架，4：关闭  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-adv_status | 1  
-adv_status | 3  
-adv_status | 4  
-      
-    
-    {
-      "adv_no": 2124000001,
-      "adv_status": 3
-    }
-    
-    
-
-##  P2pPaymentMethodsResponse
-
-_P2pPaymentMethodsResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-timestamp | number | false | none | none  
-method | string | false | none | none  
-code | integer | false | none | none  
-message | string | false | none | none  
-data | array | false | none | none  
-» P2pPaymentMethodGroup | object | false | none | none  
-»» pay_type | string | false | none | 支付方式类型  
-»» pay_name | string | false | none | 支付方式名称  
-»» ids | array | false | none | 用户当前绑定的支付方式，主键id  
-»» list | array | false | none | none  
-»»» P2pPaymentMethodAccount | object | false | none | none  
-»»»» uid | integer | false | none | 用户uid  
-»»»» bankid | string | false | none | 用户当前绑定的支付方式，主键id  
-»»»» nickname | integer | false | none | 持卡人uid  
-»»»» bankname | string | false | none | 银行名称  
-»»»» bankbranch | string | false | none | 银行支行名  
-»»»» bankcity | string | false | none | 银行所在城市  
-»»»» bankprov | string | false | none | 银行所在省  
-»»»» bankaddr | string | false | none | 银行卡号或脱敏银行卡号  
-»»»» bankdesc | string | false | none | 银行备注  
-»»»» hold_uid | integer | false | none | 持卡人uid  
-»»»» hold_username | string | false | none | 持卡人名称  
-»»»» real_name | string | false | none | 用户实名展示名  
-»»»» id | string | false | none | 用户当前绑定的支付方式，主键id  
-»»»» account_des | string | false | none | 支付方式描述  
-»»»» pay_type | string | false | none | 支付方式类型  
-»»»» file | string | false | none | 支付方式文件链接  
-»»»» file_key | string | false | none | 支付方式文件key  
-»»»» account | string | false | none | 支付账号或脱敏支付账号  
-»»»» memo | string | false | none | 支付方式备注  
-»»»» code | string | false | none | 支付方式code  
-»»»» memo_ext | string | false | none | 支付方式额外备注  
-»»»» trade_tips | string | false | none | 支付方式交易信息  
-»»» version | string | false | none | none  
-      
-    
-    {
-      "timestamp": 0,
-      "method": "string",
-      "code": 0,
-      "message": "string",
-      "data": [
-        {
-          "pay_type": "string",
-          "pay_name": "string",
-          "ids": [],
-          "list": []
-        }
-      ],
+      "data": {},
       "version": "string"
     }

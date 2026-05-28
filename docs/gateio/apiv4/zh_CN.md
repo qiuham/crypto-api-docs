@@ -2,12 +2,12 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN
 api_type: REST
-updated_at: 2026-05-27 20:16:42.508670
+updated_at: 2026-05-28 19:58:19.107786
 ---
 
-# Gate API v4.106.88
+# Gate API v4.106.89
 
-v4.106.88 · Stable
+v4.106.89 · Stable
 
 
 欢迎使用 Gate API APIv4 接口提供了现货、杠杆、合约交易相关的操作，包括公共接口查询市场行情，以及需要认证的私有接口， 实现基于 API 的自动交易。
@@ -98,6 +98,17 @@ DANGER
 即使是提交问题，也切勿将API key信息提交给客服及他人，否则会有严重的资产风险。如果已经不小心泄漏，请将已有API删除并重新生成。
 
 #  Changelog
+
+**v4.106.89**
+
+2026-05-28
+
+  * OTC：移除已废弃接口 **`GET /otc/get_user_def_bank`** ，默认银行卡改为从 **`GET /otc/bank_list`** 返回项的 `is_default` 字段读取
+  * OTC：新增 **`GET /otc/bank/list`** （`getBankListInnerPath`），与 `GET /otc/bank_list` 语义一致，对应 Inner 路径
+  * OTC：新增银行卡管理接口 **`POST /otc/bank/create`** （`createOtcBank`）、**`POST /otc/bank/delete`** （`deleteOtcBank`）、**`POST /otc/bank/set_default`** （`setDefaultOtcBank`）
+  * OTC：新增 **`GET /otc/bank/bank_supplement_checklist`** （`getOtcBankSupplementChecklist`），按用户已通过的专业认证类型（个人/企业）返回银行卡待补充资料清单
+  * OTC：新增 **`POST /otc/bank/personal/bank_supplement`** （`submitOtcBankPersonalSupplement`）与 **`POST /otc/bank/enterprise/bank_supplement`** （`submitOtcBankEnterpriseSupplement`），以 `multipart/form-data` 形式上传个人/企业银行卡补充材料
+  * OTC：**`POST /otc/order/paid`** （`markOtcOrderPaid`）更新——付款回执由可选改为必填；`OtcMarkOrderPaidRequest` 新增必填字段 **`payment_receipt_file_key`** ，新增可选字段 **`client_order_id`** 、**`payment_receipt`** （网关兼容别名）
 
 **v4.106.88**
 

@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/spot
 api_type: Trading
-updated_at: 2026-05-27 20:16:00.541862
+updated_at: 2026-05-28 19:58:02.978089
 ---
 
 # Spot
@@ -5951,174 +5951,6 @@ Code samples
 
 #  Schemas
 
-##  TriggerTime
-
-_triggerTime_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-triggerTime | integer(int64) | Optional | none | Timestamp when countdown ends, in milliseconds  
-      
-    
-    {
-      "triggerTime": "1660039145000"
-    }
-    
-    
-
-##  SpotPriceTriggeredOrder
-
-_Spot price order details_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-trigger | SpotPriceTrigger | Required | none | none  
-put | SpotPricePutOrder | Required | none | none  
-id | integer(int64) | Optional | read-only | Auto order ID  
-user | integer | Optional | read-only | User ID  
-market | string | Required | none | Market  
-ctime | integer(int64) | Optional | read-only | Created time  
-ftime | integer(int64) | Optional | read-only | End time  
-fired_order_id | integer(int64) | Optional | read-only | ID of the order created after trigger  
-status | string | Optional | read-only | Status  
-  
-\- open: Running  
-\- cancelled: Manually cancelled  
-\- finish: Successfully completed  
-\- failed: Failed to execute  
-\- expired: Expired  
-reason | string | Optional | read-only | Additional description of how the order was completed  
-      
-    
-    {
-      "trigger": {
-        "price": "string",
-        "rule": ">=",
-        "expiration": 0
-      },
-      "put": {
-        "type": "limit",
-        "side": "buy",
-        "price": "string",
-        "amount": "string",
-        "account": "normal",
-        "time_in_force": "gtc",
-        "auto_borrow": false,
-        "auto_repay": false,
-        "text": "string"
-      },
-      "id": 0,
-      "user": 0,
-      "market": "string",
-      "ctime": 0,
-      "ftime": 0,
-      "fired_order_id": 0,
-      "status": "string",
-      "reason": "string"
-    }
-    
-    
-
-##  TriggerOrderResponse
-
-_TriggerOrderResponse_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | none | Auto order ID  
-id_string | string | Optional | read-only | String form of the auto order ID; the same order as numeric `id`, as the decimal string of `id` to avoid int64 precision loss in JavaScript and similar environments.  
-Prefer this field to display the order ID or when a string unique identifier is needed; one-to-one with `id`. Same meaning as the field of the same name in futures price-trigger REST APIs and in `futures.orders` / `futures.autoorders` WebSocket pushes.  
-      
-    
-    {
-      "id": 0,
-      "id_string": "string"
-    }
-    
-    
-
-##  OrderBook
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | none | Order book ID, which is updated whenever the order book is changed. Valid only when `with_id` is set to `true`  
-current | integer(int64) | Optional | none | The timestamp of the response data being generated (in milliseconds)  
-update | integer(int64) | Optional | none | The timestamp of when the orderbook last changed (in milliseconds)  
-asks | array | Required | none | Ask Depth  
-↳ None | array | Optional | none | Price and Quantity Pair  
-bids | array | Required | none | Bid Depth  
-↳ None | array | Optional | none | Price and Quantity Pair  
-      
-    
-    {
-      "id": 0,
-      "current": 0,
-      "update": 0,
-      "asks": [
-        [
-          "string",
-          "string"
-        ]
-      ],
-      "bids": [
-        [
-          "string",
-          "string"
-        ]
-      ]
-    }
-    
-    
-
-##  CountdownCancelAllSpotTask
-
-_CountdownCancelAllSpotTask_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-timeout | integer(int32) | Required | none | Countdown time in seconds  
-At least 5 seconds, 0 means cancel countdown  
-currency_pair | string | Optional | none | Currency pair  
-      
-    
-    {
-      "timeout": 0,
-      "currency_pair": "string"
-    }
-    
-    
-
-##  SpotAccount
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency detail  
-available | string | Optional | none | Available amount  
-locked | string | Optional | none | Locked amount, used in trading  
-update_id | integer(int64) | Optional | none | Version number  
-      
-    
-    {
-      "currency": "string",
-      "available": "string",
-      "locked": "string",
-      "update_id": 0
-    }
-    
-    
-
 ##  CurrencyPair
 
 _Spot currency pair_
@@ -6196,204 +6028,96 @@ trade_status | tradable
     
     
 
-##  LiquidateOrder
-
-_Spot liquidation order details_
+##  SpotInsuranceHistory
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
+currency | string | Optional | none | Currency  
+balance | string | Optional | none | Balance  
+time | integer(int64) | Optional | none | Creation time, timestamp, milliseconds  
+      
+    
+    {
+      "currency": "string",
+      "balance": "string",
+      "time": 0
+    }
+    
+    
+
+##  SystemTime
+
+_SystemTime_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+server_time | integer(int64) | Optional | none | Server current time(ms)  
+      
+    
+    {
+      "server_time": 0
+    }
+    
+    
+
+##  OrderBook
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int64) | Optional | none | Order book ID, which is updated whenever the order book is changed. Valid only when `with_id` is set to `true`  
+current | integer(int64) | Optional | none | The timestamp of the response data being generated (in milliseconds)  
+update | integer(int64) | Optional | none | The timestamp of when the orderbook last changed (in milliseconds)  
+asks | array | Required | none | Ask Depth  
+↳ None | array | Optional | none | Price and Quantity Pair  
+bids | array | Required | none | Bid Depth  
+↳ None | array | Optional | none | Price and Quantity Pair  
+      
+    
+    {
+      "id": 0,
+      "current": 0,
+      "update": 0,
+      "asks": [
+        [
+          "string",
+          "string"
+        ]
+      ],
+      "bids": [
+        [
+          "string",
+          "string"
+        ]
+      ]
+    }
+    
+    
+
+##  BatchOrder
+
+_Batch order details_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Optional | none | Order ID  
+amend_text | string | Optional | none | The custom data that the user remarked when amending the order  
 text | string | Optional | none | Order custom information. Users can set custom ID with this field. Custom fields must meet the following conditions:  
   
 1\. Must start with `t-`  
 2\. Excluding `t-`, length cannot exceed 28 bytes  
 3\. Can only contain numbers, letters, underscore(_), hyphen(-) or dot(.)  
-currency_pair | string | Required | none | Currency pair  
-amount | string | Required | none | Trade amount  
-price | string | Required | none | Order price  
-action_mode | string | Optional | none | Processing mode:  
-  
-Different fields are returned when placing an order based on action_mode. This field is only valid during the request and is not included in the response  
-`ACK`: Asynchronous mode, only returns key order fields  
-`RESULT`: No liquidation information  
-`FULL`: Full mode (default)  
-      
-    
-    {
-      "text": "string",
-      "currency_pair": "string",
-      "amount": "string",
-      "price": "string",
-      "action_mode": "string"
-    }
-    
-    
-
-##  SpotFee
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-user_id | integer(int64) | Optional | none | User ID  
-taker_fee | string | Optional | none | taker fee rate  
-maker_fee | string | Optional | none | maker fee rate  
-rpi_maker_fee | string | Optional | none | RPI MM maker fee rate  
-gt_discount | boolean | Optional | none | Whether GT deduction discount is enabled  
-gt_taker_fee | string | Optional | none | Taker fee rate if using GT deduction. It will be 0 if GT deduction is disabled  
-gt_maker_fee | string | Optional | none | Maker fee rate with GT deduction. Returns 0 if GT deduction is disabled  
-loan_fee | string | Optional | none | Loan fee rate of margin lending  
-point_type | string | Optional | none | Point card type: 0 - Original version, 1 - New version since 202009  
-currency_pair | string | Optional | none | Currency pair  
-debit_fee | integer | Optional | none | Deduction types for rates, 1 - GT deduction, 2 - Point card deduction, 3 - VIP rates  
-rpi_mm | integer | Optional | none | RPI MM Level  
-      
-    
-    {
-      "user_id": 0,
-      "taker_fee": "string",
-      "maker_fee": "string",
-      "rpi_maker_fee": "string",
-      "gt_discount": true,
-      "gt_taker_fee": "string",
-      "gt_maker_fee": "string",
-      "loan_fee": "string",
-      "point_type": "string",
-      "currency_pair": "string",
-      "debit_fee": 0,
-      "rpi_mm": 0
-    }
-    
-    
-
-##  OrderPatch
-
-_Spot order details_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency_pair | string | Optional | none | Currency pair  
-account | string | Optional | none | Specify query account  
-amount | string | Optional | none | Trading quantity. Either `amount` or `price` must be specified  
-price | string | Optional | none | Trading price. Either `amount` or `price` must be specified  
-amend_text | string | Optional | none | Custom info during order amendment  
-action_mode | string | Optional | none | Processing Mode:  
-When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
-ACK: Asynchronous mode, only returns key order fields  
-RESULT: No clearing information  
-FULL: Full mode (default)  
-stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
-↳ trigger_price | string | Optional | none | Take profit trigger price  
-When `side == "buy"`, `trigger_price` must be greater than `price`  
-When `side == "sell"`, `trigger_price` must be less than `price`  
-↳ order_price | string | Optional | none | Take profit order price  
-stop_loss | object | Optional | none | Stop loss for limit orders. Pass {} to cancel stop loss; pass null to leave stop loss unchanged.  
-↳ trigger_price | string | Optional | none | Stop loss trigger price  
-When `side == "buy"`, `trigger_price` must be less than `price`  
-When `side == "sell"`, `trigger_price` must be greater than `price`  
-↳ order_price | string | Optional | none | Stop-loss order price  
-      
-    
-    {
-      "currency_pair": "string",
-      "account": "string",
-      "amount": "string",
-      "price": "string",
-      "amend_text": "string",
-      "action_mode": "string",
-      "stop_profit": {
-        "trigger_price": "string",
-        "order_price": "string"
-      },
-      "stop_loss": {
-        "trigger_price": "string",
-        "order_price": "string"
-      }
-    }
-    
-    
-
-##  BatchAmendItem
-
-_Order information that needs to be modified_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | string | Required | none | The order ID returned upon successful creation or the custom ID specified by the user during creation (i.e., the 'text' field)  
-currency_pair | string | Required | none | Currency pair  
-account | string | Optional | none | Default spot, unified account and warehouse-by-store leverage account  
-amount | string | Optional | none | Trading Quantity. Only one of `amount` or `price` can be specified  
-price | string | Optional | none | Trading Price. Only one of `amount` or `price` can be specified  
-amend_text | string | Optional | none | Custom info during order amendment  
-action_mode | string | Optional | none | Processing Mode:  
-When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
-ACK: Asynchronous mode, only returns key order fields  
-RESULT: No clearing information  
-FULL: Full mode (default)  
-stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
-↳ trigger_price | string | Optional | none | Take profit trigger price  
-When `side == "buy"`, `trigger_price` must be greater than `price`  
-When `side == "sell"`, `trigger_price` must be less than `price`  
-↳ order_price | string | Optional | none | Take profit order price  
-stop_loss | object | Optional | none | Stop loss for limit orders. Pass {} to cancel stop loss; pass null to leave stop loss unchanged.  
-↳ trigger_price | string | Optional | none | Stop loss trigger price  
-When `side == "buy"`, `trigger_price` must be less than `price`  
-When `side == "sell"`, `trigger_price` must be greater than `price`  
-↳ order_price | string | Optional | none | Stop-loss order price  
-      
-    
-    {
-      "order_id": "string",
-      "currency_pair": "string",
-      "account": "string",
-      "amount": "string",
-      "price": "string",
-      "amend_text": "string",
-      "action_mode": "string",
-      "stop_profit": {
-        "trigger_price": "string",
-        "order_price": "string"
-      },
-      "stop_loss": {
-        "trigger_price": "string",
-        "order_price": "string"
-      }
-    }
-    
-    
-
-##  Order
-
-_Spot order details_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
+succeeded | boolean | Optional | none | Request execution result  
+label | string | Optional | none | Error label, if any, otherwise an empty string  
+message | string | Optional | none | Detailed error message, if any, otherwise an empty string  
 id | string | Optional | read-only | Order ID  
-text | string | Optional | none | User defined information. If not empty, must follow the rules below:  
-  
-1\. prefixed with `t-`  
-2\. no longer than 28 bytes without `t-` prefix  
-3\. can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)  
-  
-Besides user defined information, reserved contents are listed below, denoting how the order is created:  
-  
-\- 101: from android  
-\- 102: from IOS  
-\- 103: from IPAD  
-\- 104: from webapp  
-\- 3: from web  
-\- 2: from apiv2  
-\- apiv4: from apiv4  
-pm_liquidate, comb_margin_liquidate, and scm_liquidate represent cross-margin liquidation orders  
-liquidate represents isolated-margin liquidation orders  
-amend_text | string | Optional | read-only | The custom data that the user remarked when amending the order  
 create_time | string | Optional | read-only | Creation time of order  
 update_time | string | Optional | read-only | Last modification time of order  
 create_time_ms | integer(int64) | Optional | read-only | Creation time of order (in milliseconds)  
@@ -6403,26 +6127,21 @@ status | string | Optional | read-only | Order status
 \- `open`: to be filled  
 \- `closed`: closed order  
 \- `cancelled`: cancelled  
-currency_pair | string | Required | none | Currency pair  
+currency_pair | string | Optional | none | Currency pair  
 type | string | Optional | none | Order Type   
   
 \- limit : Limit Order  
 \- market : Market Order  
 account | string | Optional | none | Account type, spot - spot account, margin - leveraged account, unified - unified account  
-side | string | Required | none | Buy or sell order  
-amount | string | Required | none | Trade amount  
-When `type` is `limit`, this is the base currency to trade (the currency being bought or sold), e.g. `BTC` in `BTC_USDT`.  
-When `type` is `market`, the meaning depends on the side:  
-\- `side`: `buy` refers to the quote currency, e.g. `USDT` in `BTC_USDT`  
-\- `side`: `sell` refers to the base currency, e.g. `BTC` in `BTC_USDT`  
-price | string | Optional | none | Trading price, required when `type`=`limit`  
+side | string | Optional | none | Buy or sell order  
+amount | string | Optional | none | Trade amount  
+price | string | Optional | none | Order price  
 time_in_force | string | Optional | none | Time in force  
   
 \- gtc: GoodTillCancelled  
 \- ioc: ImmediateOrCancelled, taker only  
 \- poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee  
 \- fok: FillOrKill, fill either completely or none  
-Only `ioc` and `fok` are supported when `type`=`market`  
 iceberg | string | Optional | none | Amount to display for the iceberg order. Null or 0 for normal orders. Hiding all amount is not supported  
 auto_borrow | boolean | Optional | write-only | Used in margin or cross margin trading to allow automatic loan of insufficient amount if balance is not enough  
 auto_repay | boolean | Optional | none | Enable or disable automatic repayment for automatic borrow loan generated by cross margin order. Default is disabled. Note that:  
@@ -6438,8 +6157,6 @@ fee | string | Optional | read-only | Fee deducted
 fee_currency | string | Optional | read-only | Fee currency unit  
 point_fee | string | Optional | read-only | Points used to deduct fee  
 gt_fee | string | Optional | read-only | GT used to deduct fee  
-gt_maker_fee | string | Optional | read-only | GT amount used to deduct maker fee  
-gt_taker_fee | string | Optional | read-only | GT amount used to deduct taker fee  
 gt_discount | boolean | Optional | read-only | Whether GT fee deduction is enabled  
 rebated_fee | string | Optional | read-only | Rebated fee  
 rebated_fee_currency | string | Optional | read-only | Rebated fee currency unit  
@@ -6447,15 +6164,15 @@ stp_id | integer | Optional | read-only | Orders between users in the same `stp_
   
 1\. If the `stp_id` of two orders being matched is non-zero and equal, they will not be executed. Instead, the corresponding strategy will be executed based on the `stp_act` of the taker.  
 2\. `stp_id` returns `0` by default for orders that have not been set for `STP group`  
-stp_act | string | Optional | none | Self-Trading Prevention Action. Users can use this field to set self-trade prevention strategies  
+stp_act | string | Optional | none | Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies  
   
-1\. After users join the `STP Group`, they can pass `stp_act` to limit the user's self-trade prevention strategy. If `stp_act` is not passed, the default is `cn` strategy.  
-2\. When the user does not join the `STP group`, an error will be returned when passing the `stp_act` parameter.  
-3\. If the user did not use `stp_act` when placing the order, `stp_act` will return '-'  
+1\. After users join the `STP Group`, he can pass `stp_act` to limit the user's self-trade prevetion strategy. If `stp_act` is not passed, the default is `cn` strategy。  
+2\. When the user does not join the `STP group`, an error will be returned when passing the `stp_act` parameter。  
+3\. If the user did not use 'stp_act' when placing the order, 'stp_act' will return '-'  
   
-\- cn: Cancel newest, cancel new orders and keep old ones  
-\- co: Cancel oldest, cancel old orders and keep new ones  
-\- cb: Cancel both, both old and new orders will be cancelled  
+\- cn: Cancel newest, Cancel new orders and keep old ones  
+\- co: Cancel oldest, new ones  
+\- cb: Cancel both, Both old and new orders will be cancelled  
 finish_as | string | Optional | read-only | How the order finished:  
   
 \- open: Pending processing  
@@ -6471,11 +6188,6 @@ finish_as | string | Optional | read-only | How the order finished:
 \- stp: Cancelled due to self-trade prevention  
 \- price_protect_cancelled: Cancelled due to price protection  
 \- unknown: Unknown  
-action_mode | string | Optional | write-only | Processing Mode:  
-When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
-ACK: Asynchronous mode, only returns key order fields  
-RESULT: No clearing information  
-FULL: Full mode (default)  
 slippage | string | Optional | write-only | Maximum supported slippage ratio for Spot Market Order Placement, calculated based on the latest market price at the time of order placement as the benchmark (Example: 0.03 means 3%)  
 stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
 ↳ trigger_price | string | Optional | none | Take profit trigger price  
@@ -6497,6 +6209,10 @@ status | closed
 status | cancelled  
 type | limit  
 type | market  
+account | spot  
+account | margin  
+account | cross_margin  
+account | unified  
 side | buy  
 side | sell  
 time_in_force | gtc  
@@ -6523,9 +6239,13 @@ finish_as | unknown
       
     
     {
-      "id": "string",
-      "text": "string",
+      "order_id": "string",
       "amend_text": "string",
+      "text": "string",
+      "succeeded": true,
+      "label": "string",
+      "message": "string",
+      "id": "string",
       "create_time": "string",
       "update_time": "string",
       "create_time_ms": 0,
@@ -6550,15 +6270,12 @@ finish_as | unknown
       "fee_currency": "string",
       "point_fee": "string",
       "gt_fee": "string",
-      "gt_maker_fee": "string",
-      "gt_taker_fee": "string",
       "gt_discount": true,
       "rebated_fee": "string",
       "rebated_fee_currency": "string",
       "stp_id": 0,
       "stp_act": "cn",
       "finish_as": "open",
-      "action_mode": "string",
       "slippage": "string",
       "stop_profit": {
         "trigger_price": "string",
@@ -6568,53 +6285,6 @@ finish_as | unknown
         "trigger_price": "string",
         "order_price": "string"
       }
-    }
-    
-    
-
-##  Ticker
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency_pair | string | Optional | none | Currency pair  
-last | string | Optional | none | Last trading price  
-lowest_ask | string | Optional | none | Recent lowest ask  
-lowest_size | string | Optional | none | Latest seller's lowest price quantity; not available for batch queries; available for single queries, empty if no data  
-highest_bid | string | Optional | none | Recent highest bid  
-highest_size | string | Optional | none | Latest buyer's highest price quantity; not available for batch queries; available for single queries, empty if no data  
-change_percentage | string | Optional | none | 24h price change percentage (negative for decrease, e.g., -7.45)  
-change_utc0 | string | Optional | none | UTC+0 timezone, 24h price change percentage, negative for decline (e.g., -7.45)  
-change_utc8 | string | Optional | none | UTC+8 timezone, 24h price change percentage, negative for decline (e.g., -7.45)  
-base_volume | string | Optional | none | Base currency trading volume in the last 24h  
-quote_volume | string | Optional | none | Quote currency trading volume in the last 24h  
-high_24h | string | Optional | none | 24h High  
-low_24h | string | Optional | none | 24h Low  
-etf_net_value | string | Optional | none | ETF net value  
-etf_pre_net_value | string|null | Optional | none | ETF net value at previous rebalancing point  
-etf_pre_timestamp | integer(int64)|null | Optional | none | ETF previous rebalancing time  
-etf_leverage | string|null | Optional | none | ETF current leverage  
-      
-    
-    {
-      "currency_pair": "string",
-      "last": "string",
-      "lowest_ask": "string",
-      "lowest_size": "string",
-      "highest_bid": "string",
-      "highest_size": "string",
-      "change_percentage": "string",
-      "change_utc0": "string",
-      "change_utc8": "string",
-      "base_volume": "string",
-      "quote_volume": "string",
-      "high_24h": "string",
-      "low_24h": "string",
-      "etf_net_value": "string",
-      "etf_pre_net_value": "string",
-      "etf_pre_timestamp": 0,
-      "etf_leverage": "string"
     }
     
     
@@ -6792,76 +6462,39 @@ finish_as | stp
     
     
 
-##  SystemTime
+##  TriggerTime
 
-_SystemTime_
+_triggerTime_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-server_time | integer(int64) | Optional | none | Server current time(ms)  
+triggerTime | integer(int64) | Optional | none | Timestamp when countdown ends, in milliseconds  
       
     
     {
-      "server_time": 0
+      "triggerTime": "1660039145000"
     }
     
     
 
-##  CancelBatchOrder
+##  TriggerOrderResponse
 
-_Info of order to be cancelled_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency_pair | string | Required | none | Order currency pair  
-id | string | Required | none | Order ID or user custom ID.  
-Custom ID are accepted only within 30 minutes after order creation  
-account | string | Optional | none | If the canceled order is a unified account apikey, this field must be specified and set to `unified`  
-action_mode | string | Optional | none | Processing Mode:  
-When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
-ACK: Asynchronous mode, only returns key order fields  
-RESULT: No clearing information  
-FULL: Full mode (default)  
-      
-    
-    {
-      "currency_pair": "string",
-      "id": "string",
-      "account": "string",
-      "action_mode": "string"
-    }
-    
-    
-
-##  SpotPriceTrigger
+_TriggerOrderResponse_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-price | string | Required | none | Trigger price  
-rule | string | Required | none | Price trigger condition  
-  
-\- `>=`: triggered when market price is greater than or equal to `price`  
-\- `<=`: triggered when market price is less than or equal to `price`  
-expiration | integer | Optional | none | Maximum wait time for trigger condition (in seconds). Order will be cancelled if timeout  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-rule | >=  
-rule | <=  
+id | integer(int64) | Optional | none | Auto order ID  
+id_string | string | Optional | read-only | String form of the auto order ID; the same order as numeric `id`, as the decimal string of `id` to avoid int64 precision loss in JavaScript and similar environments.  
+Prefer this field to display the order ID or when a string unique identifier is needed; one-to-one with `id`. Same meaning as the field of the same name in futures price-trigger REST APIs and in `futures.orders` / `futures.autoorders` WebSocket pushes.  
       
     
     {
-      "price": "string",
-      "rule": ">=",
-      "expiration": 0
+      "id": 0,
+      "id_string": "string"
     }
     
     
@@ -6925,21 +6558,165 @@ role | maker
     
     
 
-##  SpotInsuranceHistory
+##  CancelBatchOrder
+
+_Info of order to be cancelled_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-currency | string | Optional | none | Currency  
-balance | string | Optional | none | Balance  
-time | integer(int64) | Optional | none | Creation time, timestamp, milliseconds  
+currency_pair | string | Required | none | Order currency pair  
+id | string | Required | none | Order ID or user custom ID.  
+Custom ID are accepted only within 30 minutes after order creation  
+account | string | Optional | none | If the canceled order is a unified account apikey, this field must be specified and set to `unified`  
+action_mode | string | Optional | none | Processing Mode:  
+When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
+ACK: Asynchronous mode, only returns key order fields  
+RESULT: No clearing information  
+FULL: Full mode (default)  
       
     
     {
+      "currency_pair": "string",
+      "id": "string",
+      "account": "string",
+      "action_mode": "string"
+    }
+    
+    
+
+##  BatchAmendItem
+
+_Order information that needs to be modified_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Required | none | The order ID returned upon successful creation or the custom ID specified by the user during creation (i.e., the 'text' field)  
+currency_pair | string | Required | none | Currency pair  
+account | string | Optional | none | Default spot, unified account and warehouse-by-store leverage account  
+amount | string | Optional | none | Trading Quantity. Only one of `amount` or `price` can be specified  
+price | string | Optional | none | Trading Price. Only one of `amount` or `price` can be specified  
+amend_text | string | Optional | none | Custom info during order amendment  
+action_mode | string | Optional | none | Processing Mode:  
+When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
+ACK: Asynchronous mode, only returns key order fields  
+RESULT: No clearing information  
+FULL: Full mode (default)  
+stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
+↳ trigger_price | string | Optional | none | Take profit trigger price  
+When `side == "buy"`, `trigger_price` must be greater than `price`  
+When `side == "sell"`, `trigger_price` must be less than `price`  
+↳ order_price | string | Optional | none | Take profit order price  
+stop_loss | object | Optional | none | Stop loss for limit orders. Pass {} to cancel stop loss; pass null to leave stop loss unchanged.  
+↳ trigger_price | string | Optional | none | Stop loss trigger price  
+When `side == "buy"`, `trigger_price` must be less than `price`  
+When `side == "sell"`, `trigger_price` must be greater than `price`  
+↳ order_price | string | Optional | none | Stop-loss order price  
+      
+    
+    {
+      "order_id": "string",
+      "currency_pair": "string",
+      "account": "string",
+      "amount": "string",
+      "price": "string",
+      "amend_text": "string",
+      "action_mode": "string",
+      "stop_profit": {
+        "trigger_price": "string",
+        "order_price": "string"
+      },
+      "stop_loss": {
+        "trigger_price": "string",
+        "order_price": "string"
+      }
+    }
+    
+    
+
+##  SpotAccountBook
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | string | Optional | none | Balance change record ID  
+time | integer(int64) | Optional | none | The timestamp of the change (in milliseconds)  
+currency | string | Optional | none | Currency changed  
+change | string | Optional | none | Amount changed. Positive value means transferring in, while negative out  
+balance | string | Optional | none | Balance after change  
+type | string | Optional | none | Account change type; deprecated (see `code` for account change type encoding)  
+code | string | Optional | none | Account change code, see [Asset Record Code] (Asset Record Code)  
+text | string | Optional | none | Additional information  
+      
+    
+    {
+      "id": "string",
+      "time": 0,
       "currency": "string",
+      "change": "string",
       "balance": "string",
-      "time": 0
+      "type": "string",
+      "code": "string",
+      "text": "string"
+    }
+    
+    
+
+##  SpotPriceTriggeredOrder
+
+_Spot price order details_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+trigger | SpotPriceTrigger | Required | none | none  
+put | SpotPricePutOrder | Required | none | none  
+id | integer(int64) | Optional | read-only | Auto order ID  
+user | integer | Optional | read-only | User ID  
+market | string | Required | none | Market  
+ctime | integer(int64) | Optional | read-only | Created time  
+ftime | integer(int64) | Optional | read-only | End time  
+fired_order_id | integer(int64) | Optional | read-only | ID of the order created after trigger  
+status | string | Optional | read-only | Status  
+  
+\- open: Running  
+\- cancelled: Manually cancelled  
+\- finish: Successfully completed  
+\- failed: Failed to execute  
+\- expired: Expired  
+reason | string | Optional | read-only | Additional description of how the order was completed  
+      
+    
+    {
+      "trigger": {
+        "price": "string",
+        "rule": ">=",
+        "expiration": 0
+      },
+      "put": {
+        "type": "limit",
+        "side": "buy",
+        "price": "string",
+        "amount": "string",
+        "account": "normal",
+        "time_in_force": "gtc",
+        "auto_borrow": false,
+        "auto_repay": false,
+        "text": "string"
+      },
+      "id": 0,
+      "user": 0,
+      "market": "string",
+      "ctime": 0,
+      "ftime": 0,
+      "fired_order_id": 0,
+      "status": "string",
+      "reason": "string"
     }
     
     
@@ -7151,85 +6928,143 @@ finish_as | unknown
     
     
 
-##  Currency
+##  SpotPriceTrigger
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-currency | string | Optional | none | Currency symbol  
-name | string | Optional | none | Currency name  
-delisted | boolean | Optional | none | Whether currency is de-listed  
-withdraw_disabled | boolean | Optional | none | Whether currency's withdrawal is disabled (deprecated)  
-withdraw_delayed | boolean | Optional | none | Whether currency's withdrawal is delayed (deprecated)  
-deposit_disabled | boolean | Optional | none | Whether currency's deposit is disabled (deprecated)  
-trade_disabled | boolean | Optional | none | Whether currency's trading is disabled  
-fixed_rate | string | Optional | none | Fixed fee rate. Only for fixed rate currencies, not valid for normal currencies  
-chain | string | Optional | none | The main chain corresponding to the coin  
-chains | array | Optional | none | All links corresponding to coins  
-↳ SpotCurrencyChain | object | Optional | none | none  
-↳ name | string | Optional | none | Blockchain name  
-↳ addr | string | Optional | none | token address  
-↳ withdraw_disabled | boolean | Optional | none | Whether currency's withdrawal is disabled  
-↳ withdraw_delayed | boolean | Optional | none | Whether currency's withdrawal is delayed  
-↳ deposit_disabled | boolean | Optional | none | Whether currency's deposit is disabled  
-↳ total_supply | string | Optional | none | Total supply  
-↳ market_cap | string | Optional | none | Market cap  
-↳ category | array | Optional | none | Currency categories  
-\- stocks: Stocks  
-\- metals: Metals  
-\- indices: Indices  
-\- forex: Forex  
-\- commodities: Commodities  
+price | string | Required | none | Trigger price  
+rule | string | Required | none | Price trigger condition  
+  
+\- `>=`: triggered when market price is greater than or equal to `price`  
+\- `<=`: triggered when market price is less than or equal to `price`  
+expiration | integer | Optional | none | Maximum wait time for trigger condition (in seconds). Order will be cancelled if timeout  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+rule | >=  
+rule | <=  
       
     
     {
-      "currency": "string",
-      "name": "string",
-      "delisted": true,
-      "withdraw_disabled": true,
-      "withdraw_delayed": true,
-      "deposit_disabled": true,
-      "trade_disabled": true,
-      "fixed_rate": "string",
-      "chain": "string",
-      "chains": [
-        {
-          "name": "string",
-          "addr": "string",
-          "withdraw_disabled": true,
-          "withdraw_delayed": true,
-          "deposit_disabled": true
-        }
-      ],
-      "total_supply": "string",
-      "market_cap": "string",
-      "category": [
-        "string"
-      ]
+      "price": "string",
+      "rule": ">=",
+      "expiration": 0
     }
     
     
 
-##  BatchOrder
-
-_Batch order details_
+##  Ticker
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-order_id | string | Optional | none | Order ID  
-amend_text | string | Optional | none | The custom data that the user remarked when amending the order  
+currency_pair | string | Optional | none | Currency pair  
+last | string | Optional | none | Last trading price  
+lowest_ask | string | Optional | none | Recent lowest ask  
+lowest_size | string | Optional | none | Latest seller's lowest price quantity; not available for batch queries; available for single queries, empty if no data  
+highest_bid | string | Optional | none | Recent highest bid  
+highest_size | string | Optional | none | Latest buyer's highest price quantity; not available for batch queries; available for single queries, empty if no data  
+change_percentage | string | Optional | none | 24h price change percentage (negative for decrease, e.g., -7.45)  
+change_utc0 | string | Optional | none | UTC+0 timezone, 24h price change percentage, negative for decline (e.g., -7.45)  
+change_utc8 | string | Optional | none | UTC+8 timezone, 24h price change percentage, negative for decline (e.g., -7.45)  
+base_volume | string | Optional | none | Base currency trading volume in the last 24h  
+quote_volume | string | Optional | none | Quote currency trading volume in the last 24h  
+high_24h | string | Optional | none | 24h High  
+low_24h | string | Optional | none | 24h Low  
+etf_net_value | string | Optional | none | ETF net value  
+etf_pre_net_value | string|null | Optional | none | ETF net value at previous rebalancing point  
+etf_pre_timestamp | integer(int64)|null | Optional | none | ETF previous rebalancing time  
+etf_leverage | string|null | Optional | none | ETF current leverage  
+      
+    
+    {
+      "currency_pair": "string",
+      "last": "string",
+      "lowest_ask": "string",
+      "lowest_size": "string",
+      "highest_bid": "string",
+      "highest_size": "string",
+      "change_percentage": "string",
+      "change_utc0": "string",
+      "change_utc8": "string",
+      "base_volume": "string",
+      "quote_volume": "string",
+      "high_24h": "string",
+      "low_24h": "string",
+      "etf_net_value": "string",
+      "etf_pre_net_value": "string",
+      "etf_pre_timestamp": 0,
+      "etf_leverage": "string"
+    }
+    
+    
+
+##  LiquidateOrder
+
+_Spot liquidation order details_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
 text | string | Optional | none | Order custom information. Users can set custom ID with this field. Custom fields must meet the following conditions:  
   
 1\. Must start with `t-`  
 2\. Excluding `t-`, length cannot exceed 28 bytes  
 3\. Can only contain numbers, letters, underscore(_), hyphen(-) or dot(.)  
-succeeded | boolean | Optional | none | Request execution result  
-label | string | Optional | none | Error label, if any, otherwise an empty string  
-message | string | Optional | none | Detailed error message, if any, otherwise an empty string  
+currency_pair | string | Required | none | Currency pair  
+amount | string | Required | none | Trade amount  
+price | string | Required | none | Order price  
+action_mode | string | Optional | none | Processing mode:  
+  
+Different fields are returned when placing an order based on action_mode. This field is only valid during the request and is not included in the response  
+`ACK`: Asynchronous mode, only returns key order fields  
+`RESULT`: No liquidation information  
+`FULL`: Full mode (default)  
+      
+    
+    {
+      "text": "string",
+      "currency_pair": "string",
+      "amount": "string",
+      "price": "string",
+      "action_mode": "string"
+    }
+    
+    
+
+##  Order
+
+_Spot order details_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
 id | string | Optional | read-only | Order ID  
+text | string | Optional | none | User defined information. If not empty, must follow the rules below:  
+  
+1\. prefixed with `t-`  
+2\. no longer than 28 bytes without `t-` prefix  
+3\. can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)  
+  
+Besides user defined information, reserved contents are listed below, denoting how the order is created:  
+  
+\- 101: from android  
+\- 102: from IOS  
+\- 103: from IPAD  
+\- 104: from webapp  
+\- 3: from web  
+\- 2: from apiv2  
+\- apiv4: from apiv4  
+pm_liquidate, comb_margin_liquidate, and scm_liquidate represent cross-margin liquidation orders  
+liquidate represents isolated-margin liquidation orders  
+amend_text | string | Optional | read-only | The custom data that the user remarked when amending the order  
 create_time | string | Optional | read-only | Creation time of order  
 update_time | string | Optional | read-only | Last modification time of order  
 create_time_ms | integer(int64) | Optional | read-only | Creation time of order (in milliseconds)  
@@ -7239,21 +7074,26 @@ status | string | Optional | read-only | Order status
 \- `open`: to be filled  
 \- `closed`: closed order  
 \- `cancelled`: cancelled  
-currency_pair | string | Optional | none | Currency pair  
+currency_pair | string | Required | none | Currency pair  
 type | string | Optional | none | Order Type   
   
 \- limit : Limit Order  
 \- market : Market Order  
 account | string | Optional | none | Account type, spot - spot account, margin - leveraged account, unified - unified account  
-side | string | Optional | none | Buy or sell order  
-amount | string | Optional | none | Trade amount  
-price | string | Optional | none | Order price  
+side | string | Required | none | Buy or sell order  
+amount | string | Required | none | Trade amount  
+When `type` is `limit`, this is the base currency to trade (the currency being bought or sold), e.g. `BTC` in `BTC_USDT`.  
+When `type` is `market`, the meaning depends on the side:  
+\- `side`: `buy` refers to the quote currency, e.g. `USDT` in `BTC_USDT`  
+\- `side`: `sell` refers to the base currency, e.g. `BTC` in `BTC_USDT`  
+price | string | Optional | none | Trading price, required when `type`=`limit`  
 time_in_force | string | Optional | none | Time in force  
   
 \- gtc: GoodTillCancelled  
 \- ioc: ImmediateOrCancelled, taker only  
 \- poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee  
 \- fok: FillOrKill, fill either completely or none  
+Only `ioc` and `fok` are supported when `type`=`market`  
 iceberg | string | Optional | none | Amount to display for the iceberg order. Null or 0 for normal orders. Hiding all amount is not supported  
 auto_borrow | boolean | Optional | write-only | Used in margin or cross margin trading to allow automatic loan of insufficient amount if balance is not enough  
 auto_repay | boolean | Optional | none | Enable or disable automatic repayment for automatic borrow loan generated by cross margin order. Default is disabled. Note that:  
@@ -7269,6 +7109,8 @@ fee | string | Optional | read-only | Fee deducted
 fee_currency | string | Optional | read-only | Fee currency unit  
 point_fee | string | Optional | read-only | Points used to deduct fee  
 gt_fee | string | Optional | read-only | GT used to deduct fee  
+gt_maker_fee | string | Optional | read-only | GT amount used to deduct maker fee  
+gt_taker_fee | string | Optional | read-only | GT amount used to deduct taker fee  
 gt_discount | boolean | Optional | read-only | Whether GT fee deduction is enabled  
 rebated_fee | string | Optional | read-only | Rebated fee  
 rebated_fee_currency | string | Optional | read-only | Rebated fee currency unit  
@@ -7276,15 +7118,15 @@ stp_id | integer | Optional | read-only | Orders between users in the same `stp_
   
 1\. If the `stp_id` of two orders being matched is non-zero and equal, they will not be executed. Instead, the corresponding strategy will be executed based on the `stp_act` of the taker.  
 2\. `stp_id` returns `0` by default for orders that have not been set for `STP group`  
-stp_act | string | Optional | none | Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies  
+stp_act | string | Optional | none | Self-Trading Prevention Action. Users can use this field to set self-trade prevention strategies  
   
-1\. After users join the `STP Group`, he can pass `stp_act` to limit the user's self-trade prevetion strategy. If `stp_act` is not passed, the default is `cn` strategy。  
-2\. When the user does not join the `STP group`, an error will be returned when passing the `stp_act` parameter。  
-3\. If the user did not use 'stp_act' when placing the order, 'stp_act' will return '-'  
+1\. After users join the `STP Group`, they can pass `stp_act` to limit the user's self-trade prevention strategy. If `stp_act` is not passed, the default is `cn` strategy.  
+2\. When the user does not join the `STP group`, an error will be returned when passing the `stp_act` parameter.  
+3\. If the user did not use `stp_act` when placing the order, `stp_act` will return '-'  
   
-\- cn: Cancel newest, Cancel new orders and keep old ones  
-\- co: Cancel oldest, new ones  
-\- cb: Cancel both, Both old and new orders will be cancelled  
+\- cn: Cancel newest, cancel new orders and keep old ones  
+\- co: Cancel oldest, cancel old orders and keep new ones  
+\- cb: Cancel both, both old and new orders will be cancelled  
 finish_as | string | Optional | read-only | How the order finished:  
   
 \- open: Pending processing  
@@ -7300,6 +7142,11 @@ finish_as | string | Optional | read-only | How the order finished:
 \- stp: Cancelled due to self-trade prevention  
 \- price_protect_cancelled: Cancelled due to price protection  
 \- unknown: Unknown  
+action_mode | string | Optional | write-only | Processing Mode:  
+When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
+ACK: Asynchronous mode, only returns key order fields  
+RESULT: No clearing information  
+FULL: Full mode (default)  
 slippage | string | Optional | write-only | Maximum supported slippage ratio for Spot Market Order Placement, calculated based on the latest market price at the time of order placement as the benchmark (Example: 0.03 means 3%)  
 stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
 ↳ trigger_price | string | Optional | none | Take profit trigger price  
@@ -7321,10 +7168,6 @@ status | closed
 status | cancelled  
 type | limit  
 type | market  
-account | spot  
-account | margin  
-account | cross_margin  
-account | unified  
 side | buy  
 side | sell  
 time_in_force | gtc  
@@ -7351,13 +7194,9 @@ finish_as | unknown
       
     
     {
-      "order_id": "string",
-      "amend_text": "string",
-      "text": "string",
-      "succeeded": true,
-      "label": "string",
-      "message": "string",
       "id": "string",
+      "text": "string",
+      "amend_text": "string",
       "create_time": "string",
       "update_time": "string",
       "create_time_ms": 0,
@@ -7382,12 +7221,15 @@ finish_as | unknown
       "fee_currency": "string",
       "point_fee": "string",
       "gt_fee": "string",
+      "gt_maker_fee": "string",
+      "gt_taker_fee": "string",
       "gt_discount": true,
       "rebated_fee": "string",
       "rebated_fee_currency": "string",
       "stp_id": 0,
       "stp_act": "cn",
       "finish_as": "open",
+      "action_mode": "string",
       "slippage": "string",
       "stop_profit": {
         "trigger_price": "string",
@@ -7401,31 +7243,129 @@ finish_as | unknown
     
     
 
-##  SpotAccountBook
+##  CountdownCancelAllSpotTask
+
+_CountdownCancelAllSpotTask_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-id | string | Optional | none | Balance change record ID  
-time | integer(int64) | Optional | none | The timestamp of the change (in milliseconds)  
-currency | string | Optional | none | Currency changed  
-change | string | Optional | none | Amount changed. Positive value means transferring in, while negative out  
-balance | string | Optional | none | Balance after change  
-type | string | Optional | none | Account change type; deprecated (see `code` for account change type encoding)  
-code | string | Optional | none | Account change code, see [Asset Record Code] (Asset Record Code)  
-text | string | Optional | none | Additional information  
+timeout | integer(int32) | Required | none | Countdown time in seconds  
+At least 5 seconds, 0 means cancel countdown  
+currency_pair | string | Optional | none | Currency pair  
       
     
     {
-      "id": "string",
-      "time": 0,
+      "timeout": 0,
+      "currency_pair": "string"
+    }
+    
+    
+
+##  SpotAccount
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency detail  
+available | string | Optional | none | Available amount  
+locked | string | Optional | none | Locked amount, used in trading  
+update_id | integer(int64) | Optional | none | Version number  
+      
+    
+    {
       "currency": "string",
-      "change": "string",
-      "balance": "string",
-      "type": "string",
-      "code": "string",
-      "text": "string"
+      "available": "string",
+      "locked": "string",
+      "update_id": 0
+    }
+    
+    
+
+##  SpotFee
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+user_id | integer(int64) | Optional | none | User ID  
+taker_fee | string | Optional | none | taker fee rate  
+maker_fee | string | Optional | none | maker fee rate  
+rpi_maker_fee | string | Optional | none | RPI MM maker fee rate  
+gt_discount | boolean | Optional | none | Whether GT deduction discount is enabled  
+gt_taker_fee | string | Optional | none | Taker fee rate if using GT deduction. It will be 0 if GT deduction is disabled  
+gt_maker_fee | string | Optional | none | Maker fee rate with GT deduction. Returns 0 if GT deduction is disabled  
+loan_fee | string | Optional | none | Loan fee rate of margin lending  
+point_type | string | Optional | none | Point card type: 0 - Original version, 1 - New version since 202009  
+currency_pair | string | Optional | none | Currency pair  
+debit_fee | integer | Optional | none | Deduction types for rates, 1 - GT deduction, 2 - Point card deduction, 3 - VIP rates  
+rpi_mm | integer | Optional | none | RPI MM Level  
+      
+    
+    {
+      "user_id": 0,
+      "taker_fee": "string",
+      "maker_fee": "string",
+      "rpi_maker_fee": "string",
+      "gt_discount": true,
+      "gt_taker_fee": "string",
+      "gt_maker_fee": "string",
+      "loan_fee": "string",
+      "point_type": "string",
+      "currency_pair": "string",
+      "debit_fee": 0,
+      "rpi_mm": 0
+    }
+    
+    
+
+##  OrderPatch
+
+_Spot order details_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency_pair | string | Optional | none | Currency pair  
+account | string | Optional | none | Specify query account  
+amount | string | Optional | none | Trading quantity. Either `amount` or `price` must be specified  
+price | string | Optional | none | Trading price. Either `amount` or `price` must be specified  
+amend_text | string | Optional | none | Custom info during order amendment  
+action_mode | string | Optional | none | Processing Mode:  
+When placing an order, different fields are returned based on action_mode. This field is only valid during the request and is not included in the response result  
+ACK: Asynchronous mode, only returns key order fields  
+RESULT: No clearing information  
+FULL: Full mode (default)  
+stop_profit | object | Optional | none | Take profit for limit orders. Pass {} to cancel take profit; pass null to leave take profit unchanged.  
+↳ trigger_price | string | Optional | none | Take profit trigger price  
+When `side == "buy"`, `trigger_price` must be greater than `price`  
+When `side == "sell"`, `trigger_price` must be less than `price`  
+↳ order_price | string | Optional | none | Take profit order price  
+stop_loss | object | Optional | none | Stop loss for limit orders. Pass {} to cancel stop loss; pass null to leave stop loss unchanged.  
+↳ trigger_price | string | Optional | none | Stop loss trigger price  
+When `side == "buy"`, `trigger_price` must be less than `price`  
+When `side == "sell"`, `trigger_price` must be greater than `price`  
+↳ order_price | string | Optional | none | Stop-loss order price  
+      
+    
+    {
+      "currency_pair": "string",
+      "account": "string",
+      "amount": "string",
+      "price": "string",
+      "amend_text": "string",
+      "action_mode": "string",
+      "stop_profit": {
+        "trigger_price": "string",
+        "order_price": "string"
+      },
+      "stop_loss": {
+        "trigger_price": "string",
+        "order_price": "string"
+      }
     }
     
     
@@ -7487,4 +7427,64 @@ time_in_force | ioc
       "auto_borrow": false,
       "auto_repay": false,
       "text": "string"
+    }
+    
+    
+
+##  Currency
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency symbol  
+name | string | Optional | none | Currency name  
+delisted | boolean | Optional | none | Whether currency is de-listed  
+withdraw_disabled | boolean | Optional | none | Whether currency's withdrawal is disabled (deprecated)  
+withdraw_delayed | boolean | Optional | none | Whether currency's withdrawal is delayed (deprecated)  
+deposit_disabled | boolean | Optional | none | Whether currency's deposit is disabled (deprecated)  
+trade_disabled | boolean | Optional | none | Whether currency's trading is disabled  
+fixed_rate | string | Optional | none | Fixed fee rate. Only for fixed rate currencies, not valid for normal currencies  
+chain | string | Optional | none | The main chain corresponding to the coin  
+chains | array | Optional | none | All links corresponding to coins  
+↳ SpotCurrencyChain | object | Optional | none | none  
+↳ name | string | Optional | none | Blockchain name  
+↳ addr | string | Optional | none | token address  
+↳ withdraw_disabled | boolean | Optional | none | Whether currency's withdrawal is disabled  
+↳ withdraw_delayed | boolean | Optional | none | Whether currency's withdrawal is delayed  
+↳ deposit_disabled | boolean | Optional | none | Whether currency's deposit is disabled  
+↳ total_supply | string | Optional | none | Total supply  
+↳ market_cap | string | Optional | none | Market cap  
+↳ category | array | Optional | none | Currency categories  
+\- stocks: Stocks  
+\- metals: Metals  
+\- indices: Indices  
+\- forex: Forex  
+\- commodities: Commodities  
+      
+    
+    {
+      "currency": "string",
+      "name": "string",
+      "delisted": true,
+      "withdraw_disabled": true,
+      "withdraw_delayed": true,
+      "deposit_disabled": true,
+      "trade_disabled": true,
+      "fixed_rate": "string",
+      "chain": "string",
+      "chains": [
+        {
+          "name": "string",
+          "addr": "string",
+          "withdraw_disabled": true,
+          "withdraw_delayed": true,
+          "deposit_disabled": true
+        }
+      ],
+      "total_supply": "string",
+      "market_cap": "string",
+      "category": [
+        "string"
+      ]
     }

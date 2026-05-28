@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/earnuni
 api_type: Earn
-updated_at: 2026-05-27 20:15:04.719827
+updated_at: 2026-05-28 19:57:45.771096
 ---
 
 # EarnUni
@@ -1055,41 +1055,6 @@ Code samples
 
 #  Schemas
 
-##  UniLend
-
-_Loan record_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | read-only | Currency  
-current_amount | string | Optional | read-only | Current amount  
-amount | string | Optional | read-only | Total Lending Amount  
-lent_amount | string | Optional | read-only | Lent Amount  
-frozen_amount | string | Optional | read-only | Pending Redemption Amount  
-min_rate | string | Optional | read-only | Minimum interest rate  
-interest_status | string | Optional | read-only | Interest status: interest_dividend - Normal dividend, interest_reinvest - Interest reinvestment  
-reinvest_left_amount | string | Optional | read-only | Non-reinvested Amount  
-create_time | integer(int64) | Optional | read-only | Lending Order Creation Time  
-update_time | integer(int64) | Optional | read-only | Lending Order Last Update Time  
-      
-    
-    {
-      "currency": "string",
-      "current_amount": "string",
-      "amount": "string",
-      "lent_amount": "string",
-      "frozen_amount": "string",
-      "min_rate": "string",
-      "interest_status": "string",
-      "reinvest_left_amount": "string",
-      "create_time": 0,
-      "update_time": 0
-    }
-    
-    
-
 ##  UniLendRecord
 
 _Lending Record_
@@ -1115,6 +1080,55 @@ create_time | integer(int64) | Optional | read-only | Created time
       "last_frozen_amount": "string",
       "type": "string",
       "create_time": 0
+    }
+    
+    
+
+##  CreateUniLend
+
+_Create lending or redemption_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Required | none | Currency name  
+amount | string | Required | none | Amount to deposit into lending pool  
+type | string | Required | none | Operation type: lend - Lend, redeem - Redeem  
+min_rate | string | Optional | none | Minimum interest rate. If set too high, lending may fail and no interest will be earned. Required for lending operations.  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+type | lend  
+type | redeem  
+      
+    
+    {
+      "currency": "string",
+      "amount": "string",
+      "type": "lend",
+      "min_rate": "string"
+    }
+    
+    
+
+##  PatchUniLend
+
+_PatchUniLend_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency name  
+min_rate | string | Optional | none | Minimum interest rate  
+      
+    
+    {
+      "currency": "string",
+      "min_rate": "string"
     }
     
     
@@ -1165,21 +1179,21 @@ interest | string | Optional | read-only | Interest income
     
     
 
-##  PatchUniLend
+##  UniCurrencyInterest
 
-_PatchUniLend_
+_UniCurrencyInterest_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-currency | string | Optional | none | Currency name  
-min_rate | string | Optional | none | Minimum interest rate  
+currency | string | Optional | read-only | Currency  
+interest_status | string | Optional | read-only | Interest status: interest_dividend - Normal dividend, interest_reinvest - Interest reinvestment  
       
     
     {
       "currency": "string",
-      "min_rate": "string"
+      "interest_status": "string"
     }
     
     
@@ -1209,49 +1223,35 @@ min_rate | string | Optional | read-only | Minimum rate (Hourly)
     
     
 
-##  CreateUniLend
+##  UniLend
 
-_Create lending or redemption_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Required | none | Currency name  
-amount | string | Required | none | Amount to deposit into lending pool  
-type | string | Required | none | Operation type: lend - Lend, redeem - Redeem  
-min_rate | string | Optional | none | Minimum interest rate. If set too high, lending may fail and no interest will be earned. Required for lending operations.  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-type | lend  
-type | redeem  
-      
-    
-    {
-      "currency": "string",
-      "amount": "string",
-      "type": "lend",
-      "min_rate": "string"
-    }
-    
-    
-
-##  UniCurrencyInterest
-
-_UniCurrencyInterest_
+_Loan record_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
 currency | string | Optional | read-only | Currency  
+current_amount | string | Optional | read-only | Current amount  
+amount | string | Optional | read-only | Total Lending Amount  
+lent_amount | string | Optional | read-only | Lent Amount  
+frozen_amount | string | Optional | read-only | Pending Redemption Amount  
+min_rate | string | Optional | read-only | Minimum interest rate  
 interest_status | string | Optional | read-only | Interest status: interest_dividend - Normal dividend, interest_reinvest - Interest reinvestment  
+reinvest_left_amount | string | Optional | read-only | Non-reinvested Amount  
+create_time | integer(int64) | Optional | read-only | Lending Order Creation Time  
+update_time | integer(int64) | Optional | read-only | Lending Order Last Update Time  
       
     
     {
       "currency": "string",
-      "interest_status": "string"
+      "current_amount": "string",
+      "amount": "string",
+      "lent_amount": "string",
+      "frozen_amount": "string",
+      "min_rate": "string",
+      "interest_status": "string",
+      "reinvest_left_amount": "string",
+      "create_time": 0,
+      "update_time": 0
     }

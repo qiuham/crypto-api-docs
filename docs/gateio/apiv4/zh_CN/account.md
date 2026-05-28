@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/account
 api_type: Account
-updated_at: 2026-05-27 20:16:46.153964
+updated_at: 2026-05-28 19:58:19.403336
 ---
 
 # Account
@@ -1028,24 +1028,31 @@ WARNING
 
 #  模型
 
-##  StpGroup
+##  DebitFee
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-id | integer(int64) | false | none | STP用户组ID  
-name | string | true | none | STP用户组名称  
-creator_id | integer(int64) | false | none | 创建人账户ID  
-create_time | integer(int64) | false | none | 创建时间  
+enabled | boolean | true | none | 是否开启GT抵扣  
       
     
     {
-      "id": 0,
-      "name": "string",
-      "creator_id": 0,
-      "create_time": 0
+      "enabled": true
     }
+    
+    
+
+##  AddSTPGroupUsersRequest
+
+###  属性
+
+_无_
+    
+    
+    [
+      0
+    ]
     
     
 
@@ -1151,6 +1158,25 @@ copy_trading_role | integer(int32) | false | none | 用户角色： 0 - 普通�
     
     
 
+##  StpGroupUser
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+user_id | integer(int64) | false | none | 用户ID  
+stp_id | integer(int64) | false | none | STP用户组ID  
+create_time | integer(int64) | false | none | 创建时间  
+      
+    
+    {
+      "user_id": 0,
+      "stp_id": 0,
+      "create_time": 0
+    }
+    
+    
+
 ##  AccountRateLimit
 
 ###  属性
@@ -1172,47 +1198,21 @@ updated_at | string | false | none | 更新时间
     
     
 
-##  StpGroupUser
+##  StpGroup
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-user_id | integer(int64) | false | none | 用户ID  
-stp_id | integer(int64) | false | none | STP用户组ID  
+id | integer(int64) | false | none | STP用户组ID  
+name | string | true | none | STP用户组名称  
+creator_id | integer(int64) | false | none | 创建人账户ID  
 create_time | integer(int64) | false | none | 创建时间  
       
     
     {
-      "user_id": 0,
-      "stp_id": 0,
+      "id": 0,
+      "name": "string",
+      "creator_id": 0,
       "create_time": 0
     }
-    
-    
-
-##  DebitFee
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-enabled | boolean | true | none | 是否开启GT抵扣  
-      
-    
-    {
-      "enabled": true
-    }
-    
-    
-
-##  AddSTPGroupUsersRequest
-
-###  属性
-
-_无_
-    
-    
-    [
-      0
-    ]

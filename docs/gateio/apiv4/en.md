@@ -2,12 +2,12 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en
 api_type: REST
-updated_at: 2026-05-27 20:14:38.372822
+updated_at: 2026-05-28 19:57:34.386771
 ---
 
-# Gate API v4.106.88
+# Gate API v4.106.89
 
-v4.106.88 · Stable
+v4.106.89 · Stable
 
 
 Welcome to Gate API APIv4 provides operations related to spot, margin, and contract trading, including public interfaces for querying market data and authenticated private interfaces for implementing API-based automated trading.
@@ -96,6 +96,18 @@ DANGER
 Even if you submit a problem, you should not submit the API key information to customer service or others, otherwise there will be serious asset risk. If it has been accidentally leaked, please delete the existing API and rebuild it.
 
 #  Changelog
+
+**v4.106.89**
+
+2026-05-28
+
+  * OTC: Remove deprecated **`GET /otc/get_user_def_bank`** — clients should derive the default card from the `is_default` field returned by **`GET /otc/bank_list`**
+  * OTC: Update **`GET /otc/bank_list`** description — clarifies default-card lookup via `is_default` and Inner path mapping
+  * OTC: Add **`GET /otc/bank/list`** (`getBankListInnerPath`) — synonymous Inner-aligned path of `GET /otc/bank_list`
+  * OTC: Add bank-card management endpoints — **`POST /otc/bank/create`** (`createOtcBank`), **`POST /otc/bank/delete`** (`deleteOtcBank`), **`POST /otc/bank/set_default`** (`setDefaultOtcBank`)
+  * OTC: Add **`GET /otc/bank/bank_supplement_checklist`** (`getOtcBankSupplementChecklist`) — returns the checklist of bank-card supplementary materials by user's verified type (personal/enterprise)
+  * OTC: Add **`POST /otc/bank/personal/bank_supplement`** (`submitOtcBankPersonalSupplement`) and **`POST /otc/bank/enterprise/bank_supplement`** (`submitOtcBankEnterpriseSupplement`) — `multipart/form-data` upload of personal/enterprise bank-card supplementary materials
+  * OTC: Update **`POST /otc/order/paid`** (`markOtcOrderPaid`) — payment receipt is now mandatory; `OtcMarkOrderPaidRequest` adds required field **`payment_receipt_file_key`** and optional **`client_order_id`** / **`payment_receipt`** (gateway compatibility alias)
 
 **v4.106.88**
 

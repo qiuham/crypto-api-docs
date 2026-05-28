@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/bot
 api_type: REST
-updated_at: 2026-05-27 20:14:47.724156
+updated_at: 2026-05-28 19:57:38.411714
 ---
 
 # Bot
@@ -1692,35 +1692,21 @@ Code samples
 
 #  Schemas
 
-##  AIHubDiscoverSuccessResponse
+##  AIHubPortfolioStopRequest
 
-Get`the response body when the strategy recommendation is successful.`
-
-Get `the response body when the strategy recommendation is successful.`
+_The request body to terminate a running policy._
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-code | integer(int32) | Required | none | none  
-message | string | Required | none | none  
-data | AIHubDiscoverData | Required | none | Strategy recommendation result data.  
-trace_id | string | Required | none | none  
+strategy_id | string | Required | none | none  
+strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
       
     
     {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "scene": "top1",
-        "recommendations": [
-          {}
-        ],
-        "unsupported_filters": [
-          "string"
-        ]
-      },
-      "trace_id": "string"
+      "strategy_id": "string",
+      "strategy_type": "spot_grid"
     }
     
     
@@ -1753,21 +1739,42 @@ trace_id | string | Required | none | none
     
     
 
-##  AIHubPortfolioStopRequest
+##  MarginGridCreateRequest
 
-_The request body to terminate a running policy._
+_Create the request body for the Leverage Grid strategy._
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-strategy_id | string | Required | none | none  
-strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
+strategy_type | string | Required | none | none  
+market | string | Required | none | none  
+create_params | MarginGridCreateParams | Required | none | Creation parameters for the Leverage Grid strategy.  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+strategy_type | margin_grid  
       
     
     {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid"
+      "strategy_type": "margin_grid",
+      "market": "string",
+      "create_params": {
+        "money": "string",
+        "low_price": "string",
+        "high_price": "string",
+        "grid_num": 1,
+        "price_type": 0,
+        "leverage": "string",
+        "direction": "long",
+        "trigger_price": "string",
+        "stop_profit": "string",
+        "stop_loss": "string",
+        "profit_sharing_ratio": "string",
+        "is_use_base": true
+      }
     }
     
     
@@ -1836,150 +1843,6 @@ _None_ | contract_martingale
     
     
 
-##  AIHubPortfolioRunningSuccessResponse
-
-_The response body when querying the running policy list is successful._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer(int32) | Required | none | none  
-message | string | Required | none | none  
-data | AIHubPortfolioRunningData | Required | none | Running policy list data.  
-trace_id | string | Required | none | none  
-      
-    
-    {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "items": [
-          {}
-        ],
-        "page": 0,
-        "page_size": 0,
-        "total": 0
-      },
-      "trace_id": "string"
-    }
-    
-    
-
-##  SpotGridCreateRequest
-
-_Create the request body for the spot grid policy._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_type | string | Required | none | none  
-market | string | Required | none | none  
-create_params | SpotGridCreateParams | Required | none | Creation parameters for the spot grid strategy.  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-strategy_type | spot_grid  
-      
-    
-    {
-      "strategy_type": "spot_grid",
-      "market": "string",
-      "create_params": {
-        "money": "string",
-        "low_price": "string",
-        "high_price": "string",
-        "grid_num": 1,
-        "price_type": 0,
-        "trigger_price": "string",
-        "stop_profit": "string",
-        "stop_loss": "string",
-        "profit_sharing_ratio": "string",
-        "is_use_base": true
-      }
-    }
-    
-    
-
-##  AIHubDiscoverData
-
-_Strategy recommendation result data._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-scene | DiscoverScene | Required | none | Enumeration of scenarios supported by the policy recommendation interface.  
-recommendations | [AIHubRecommendation] | Required | none | [A single piece of strategy recommendation information.]  
-unsupported_filters | array | Required | none | Filter conditions not supported in this issue  
-      
-    
-    {
-      "scene": "top1",
-      "recommendations": [
-        {
-          "recommendation_id": "string",
-          "market": "string",
-          "strategy_type": "spot_grid",
-          "strategy_name": "string",
-          "backtest_apr": "string",
-          "max_drawdown": "string",
-          "summary": "string",
-          "strategy_params_preview": "string"
-        }
-      ],
-      "unsupported_filters": [
-        "string"
-      ]
-    }
-    
-    
-
-##  InfiniteGridCreateParams
-
-_Creation parameters for infinite grid strategies._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-money | string | Required | none | none  
-price_floor | string | Required | none | price floor  
-profit_per_grid | string | Required | none | Profit per square  
-grid_num | integer(int32) | Optional | none | Optional; may be omitted like in the app.  
-price_type | integer(int32) | Optional | none | Optional. `0` arithmetic grid; `1` geometric; omit for server defaults.  
-trigger_price | string | Optional | none | none  
-stop_profit | string | Optional | none | none  
-stop_loss | string | Optional | none | none  
-profit_sharing_ratio | string | Optional | none | none  
-is_use_base | boolean | Optional | none | none  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "price_floor": "string",
-      "profit_per_grid": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
 ##  FuturesGridCreateRequest
 
 _Create the request body of the contract grid strategy._
@@ -2020,40 +1883,9 @@ strategy_type | futures_grid
     
     
 
-##  AIHubRecommendation
+##  SpotMartingaleCreateRequest
 
-_A single piece of strategy recommendation information._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-recommendation_id | string | Required | none | none  
-market | string | Required | none | none  
-strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
-strategy_name | string | Required | none | none  
-backtest_apr | string | Optional | none | none  
-max_drawdown | string | Optional | none | none  
-summary | string | Required | none | none  
-strategy_params_preview | string | Optional | none | Recommended-parameter preview as JSON text (string-encoded so clients deserialize it consistently). The value is a serialized JSON object whose structure varies by strategy type; callers or upper-layer models must parse it.  
-      
-    
-    {
-      "recommendation_id": "string",
-      "market": "string",
-      "strategy_type": "spot_grid",
-      "strategy_name": "string",
-      "backtest_apr": "string",
-      "max_drawdown": "string",
-      "summary": "string",
-      "strategy_params_preview": "string"
-    }
-    
-    
-
-##  MarginGridCreateRequest
-
-_Create the request body for the Leverage Grid strategy._
+_Create the request body of the Spot Martin strategy._
 
 ###  Properties
 
@@ -2061,78 +1893,128 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 strategy_type | string | Required | none | none  
 market | string | Required | none | none  
-create_params | MarginGridCreateParams | Required | none | Creation parameters for the Leverage Grid strategy.  
+create_params | SpotMartingaleCreateParams | Required | none | Spot martingale creation parameters (serialized fields aligned with `MartingaleBot`).  
+\- **Stop-loss** : use `stop_loss_per_cycle` (ratio per round), same as the app; **do not** use `stop_loss_price`.  
+\- Optional **`trigger_price`** : trigger price.  
+\- If `stop_loss_per_cycle` is passed and > 0, the server validates roughly between `0.001` and `0.9999` (same as `check_martingale`).  
   
 ####  Enumerated Values
 
 Enumerated ValuesProperty | Value  
 ---|---  
-strategy_type | margin_grid  
+strategy_type | spot_martingale  
       
     
     {
-      "strategy_type": "margin_grid",
+      "strategy_type": "spot_martingale",
       "market": "string",
       "create_params": {
-        "money": "string",
-        "low_price": "string",
-        "high_price": "string",
-        "grid_num": 1,
-        "price_type": 0,
-        "leverage": "string",
-        "direction": "long",
+        "invest_amount": "string",
+        "price_deviation": "string",
+        "max_orders": 1,
+        "take_profit_ratio": "string",
+        "stop_loss_per_cycle": "string",
         "trigger_price": "string",
-        "stop_profit": "string",
-        "stop_loss": "string",
-        "profit_sharing_ratio": "string",
-        "is_use_base": true
+        "profit_sharing_ratio": "string"
       }
     }
     
     
 
-##  FuturesGridCreateParams
+##  AIHubDiscoverSuccessResponse
 
-_Creation parameters for the contract grid strategy._
+Get`the response body when the strategy recommendation is successful.`
+
+Get `the response body when the strategy recommendation is successful.`
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-money | string | Required | none | none  
-low_price | string | Required | none | none  
-high_price | string | Required | none | none  
-grid_num | integer(int32) | Required | none | none  
-price_type | integer(int32) | Required | none | none  
-leverage | string | Required | none | none  
-direction | FuturesDirection | Optional | none | Direction enumeration supported by contract-based strategies.  
-trigger_price | string | Optional | none | none  
-stop_profit | string | Optional | none | none  
-stop_loss | string | Optional | none | none  
-profit_sharing_ratio | string | Optional | none | none  
-is_use_base | boolean | Optional | none | none  
+code | integer(int32) | Required | none | none  
+message | string | Required | none | none  
+data | AIHubDiscoverData | Required | none | Strategy recommendation result data.  
+trace_id | string | Required | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "scene": "top1",
+        "recommendations": [
+          {}
+        ],
+        "unsupported_filters": [
+          "string"
+        ]
+      },
+      "trace_id": "string"
+    }
+    
+    
+
+##  ContractMartingaleCreateRequest
+
+_Create the request body of the contract Martin strategy._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+strategy_type | string | Required | none | none  
+market | string | Required | none | none  
+create_params | ContractMartingaleCreateParams | Required | none | The creation parameters of the contract Martin strategy.  
   
 ####  Enumerated Values
 
 Enumerated ValuesProperty | Value  
 ---|---  
-price_type | 0  
-price_type | 1  
+strategy_type | contract_martingale  
       
     
     {
-      "money": "string",
-      "low_price": "string",
-      "high_price": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "leverage": "string",
-      "direction": "long",
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
+      "strategy_type": "contract_martingale",
+      "market": "string",
+      "create_params": {
+        "invest_amount": "string",
+        "price_deviation": "string",
+        "max_orders": 1,
+        "take_profit_ratio": "string",
+        "direction": "buy",
+        "leverage": "string",
+        "stop_loss_price": "string",
+        "profit_sharing_ratio": "string"
+      }
+    }
+    
+    
+
+##  AIHubCreateSuccessResponse
+
+_The response body when the creation strategy is successful._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer(int32) | Required | none | none  
+message | string | Required | none | none  
+data | AIHubCreateData | Required | none | Policy information returned after the policy is successfully created.  
+trace_id | string | Required | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "strategy_id": "string",
+        "strategy_type": "spot_grid",
+        "market": "string",
+        "status": "string",
+        "jump_url": "string"
+      },
+      "trace_id": "string"
     }
     
     
@@ -2197,175 +2079,6 @@ trace_id | string | Required | none | none
     
     
 
-##  AIHubCreateSuccessResponse
-
-_The response body when the creation strategy is successful._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer(int32) | Required | none | none  
-message | string | Required | none | none  
-data | AIHubCreateData | Required | none | Policy information returned after the policy is successfully created.  
-trace_id | string | Required | none | none  
-      
-    
-    {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "strategy_id": "string",
-        "strategy_type": "spot_grid",
-        "market": "string",
-        "status": "string",
-        "jump_url": "string"
-      },
-      "trace_id": "string"
-    }
-    
-    
-
-##  SpotMartingaleCreateRequest
-
-_Create the request body of the Spot Martin strategy._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_type | string | Required | none | none  
-market | string | Required | none | none  
-create_params | SpotMartingaleCreateParams | Required | none | Spot martingale creation parameters (serialized fields aligned with `MartingaleBot`).  
-\- **Stop-loss** : use `stop_loss_per_cycle` (ratio per round), same as the app; **do not** use `stop_loss_price`.  
-\- Optional **`trigger_price`** : trigger price.  
-\- If `stop_loss_per_cycle` is passed and > 0, the server validates roughly between `0.001` and `0.9999` (same as `check_martingale`).  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-strategy_type | spot_martingale  
-      
-    
-    {
-      "strategy_type": "spot_martingale",
-      "market": "string",
-      "create_params": {
-        "invest_amount": "string",
-        "price_deviation": "string",
-        "max_orders": 1,
-        "take_profit_ratio": "string",
-        "stop_loss_per_cycle": "string",
-        "trigger_price": "string",
-        "profit_sharing_ratio": "string"
-      }
-    }
-    
-    
-
-##  ContractMartingaleCreateRequest
-
-_Create the request body of the contract Martin strategy._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_type | string | Required | none | none  
-market | string | Required | none | none  
-create_params | ContractMartingaleCreateParams | Required | none | The creation parameters of the contract Martin strategy.  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-strategy_type | contract_martingale  
-      
-    
-    {
-      "strategy_type": "contract_martingale",
-      "market": "string",
-      "create_params": {
-        "invest_amount": "string",
-        "price_deviation": "string",
-        "max_orders": 1,
-        "take_profit_ratio": "string",
-        "direction": "buy",
-        "leverage": "string",
-        "stop_loss_price": "string",
-        "profit_sharing_ratio": "string"
-      }
-    }
-    
-    
-
-##  SpotGridCreateParams
-
-_Creation parameters for the spot grid strategy._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-money | string | Required | none | Amount of investment  
-low_price | string | Required | none | Range lower limit  
-high_price | string | Required | none | Range upper limit  
-grid_num | integer(int32) | Required | none | Number of grids  
-price_type | integer(int32) | Required | none | none  
-trigger_price | string | Optional | none | none  
-stop_profit | string | Optional | none | none  
-stop_loss | string | Optional | none | none  
-profit_sharing_ratio | string | Optional | none | none  
-is_use_base | boolean | Optional | none | none  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "low_price": "string",
-      "high_price": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
-##  DiscoverScene
-
-_Enumeration of scenarios supported by the policy recommendation interface._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-_None_ | string | Optional | none | Enumeration of scenarios supported by the policy recommendation interface.  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-_None_ | top1  
-_None_ | bundle  
-_None_ | filter  
-_None_ | refresh  
-      
-    
-    "top1"
-    
-    
-
 ##  MarginGridCreateParams
 
 _Creation parameters for the Leverage Grid strategy._
@@ -2409,6 +2122,29 @@ price_type | 1
       "profit_sharing_ratio": "string",
       "is_use_base": true
     }
+    
+    
+
+##  FuturesDirection
+
+_Direction enumeration supported by contract-based strategies._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+_None_ | string | Optional | none | Direction enumeration supported by contract-based strategies.  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+_None_ | long  
+_None_ | short  
+_None_ | neutral  
+      
+    
+    "long"
     
     
 
@@ -2471,210 +2207,6 @@ stop_supported | boolean | Required | none | none
     
     
 
-##  AIHubPortfolioStopData
-
-_The result information returned after the termination strategy is successful._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_id | string | Required | none | none  
-strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
-status | string | Required | none | The current implementation returns `stopping`  
-result_message | string | Required | none | none  
-      
-    
-    {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid",
-      "status": "string",
-      "result_message": "string"
-    }
-    
-    
-
-##  AIHubCreateData
-
-_Policy information returned after the policy is successfully created._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_id | string | Required | none | none  
-strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
-market | string | Required | none | none  
-status | string | Required | none | The initial state after successful creation, usually `running`  
-jump_url | string | Optional | none | none  
-      
-    
-    {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid",
-      "market": "string",
-      "status": "string",
-      "jump_url": "string"
-    }
-    
-    
-
-##  AIHubPortfolioRunningData
-
-_Running policy list data._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-items | [AIHubPortfolioRunningItem] | Required | none | [A single record in the list of running policies.]  
-page | integer(int32) | Required | none | none  
-page_size | integer(int32) | Required | none | none  
-total | integer(int32) | Required | none | none  
-      
-    
-    {
-      "items": [
-        {
-          "strategy_id": "string",
-          "strategy_type": "spot_grid",
-          "strategy_name": "string",
-          "market": "string",
-          "status": "string",
-          "pnl": "string",
-          "pnl_rate": "string",
-          "invest_amount": "string",
-          "created_at": "string"
-        }
-      ],
-      "page": 0,
-      "page_size": 0,
-      "total": 0
-    }
-    
-    
-
-##  FuturesDirection
-
-_Direction enumeration supported by contract-based strategies._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-_None_ | string | Optional | none | Direction enumeration supported by contract-based strategies.  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-_None_ | long  
-_None_ | short  
-_None_ | neutral  
-      
-    
-    "long"
-    
-    
-
-##  SpotMartingaleCreateParams
-
-*Spot martingale creation parameters (serialized fields aligned with `MartingaleBot`).
-
-  * **Stop-loss** : use `stop_loss_per_cycle` (ratio per round), same as the app; **do not** use `stop_loss_price`.
-  * Optional **`trigger_price`** : trigger price.
-  * If `stop_loss_per_cycle` is passed and > 0, the server validates roughly between `0.001` and `0.9999` (same as `check_martingale`).*
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-invest_amount | string | Required | none | none  
-price_deviation | string | Required | none | Add-position deviation ratio as a decimal string (e.g. a 2% drop is `0.02`).  
-max_orders | integer(int32) | Required | none | none  
-take_profit_ratio | string | Required | none | Take-profit ratio per round as a decimal string.  
-stop_loss_per_cycle | string | Optional | none | Stop-loss ratio per round as a decimal string; optional; aligned with app `stop_loss_per_cycle`.  
-trigger_price | string | Optional | none | Trigger price; optional.  
-profit_sharing_ratio | string | Optional | none | none  
-      
-    
-    {
-      "invest_amount": "string",
-      "price_deviation": "string",
-      "max_orders": 1,
-      "take_profit_ratio": "string",
-      "stop_loss_per_cycle": "string",
-      "trigger_price": "string",
-      "profit_sharing_ratio": "string"
-    }
-    
-    
-
-##  ContractMartingaleCreateParams
-
-_The creation parameters of the contract Martin strategy._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-invest_amount | string | Required | none | Margin allocated; the server converts it to initial contract size using live contract price, contract multiplier, and minimum lot size.  
-price_deviation | string | Required | none | none  
-max_orders | integer(int32) | Required | none | none  
-take_profit_ratio | string | Required | none | none  
-direction | ContractMartingaleDirection | Required | none | The direction enumeration supported by the contract Martin strategy is consistent with the original interface of the App.  
-leverage | string | Required | none | none  
-stop_loss_price | string | Optional | none | Legacy field name. The AIHub `contract_martingale` creation path does not map this field today;  
-follow contract martingale rules from the underlying API. MCP tooling must match bot-service behavior.  
-profit_sharing_ratio | string | Optional | none | none  
-      
-    
-    {
-      "invest_amount": "string",
-      "price_deviation": "string",
-      "max_orders": 1,
-      "take_profit_ratio": "string",
-      "direction": "buy",
-      "leverage": "string",
-      "stop_loss_price": "string",
-      "profit_sharing_ratio": "string"
-    }
-    
-    
-
-##  AIHubPortfolioRunningItem
-
-_A single record in the list of running policies._
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-strategy_id | string | Required | none | none  
-strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
-strategy_name | string | Required | none | none  
-market | string | Required | none | none  
-status | string | Required | none | none  
-pnl | string | Optional | none | none  
-pnl_rate | string | Optional | none | none  
-invest_amount | string | Optional | none | none  
-created_at | string | Optional | none | Created time  
-      
-    
-    {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid",
-      "strategy_name": "string",
-      "market": "string",
-      "status": "string",
-      "pnl": "string",
-      "pnl_rate": "string",
-      "invest_amount": "string",
-      "created_at": "string"
-    }
-    
-    
-
 ##  AIHubPortfolioMetrics
 
 _Strategy detail metrics; fields returned depend on strategy type._
@@ -2716,29 +2248,55 @@ maintenance_margin_ratio | string | Optional | none | none
     
     
 
-##  AIHubPortfolioBaseInfo
+##  AIHubPortfolioStopData
 
-_Strategy detail base info._
+_The result information returned after the termination strategy is successful._
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-strategy_name | string | Required | none | none  
-created_at | string | Required | none | Created time  
-running_duration | integer(int64) | Required | none | Runtime duration in seconds.  
-invest_amount | string | Required | none | none  
-total_profit | string | Required | none | none  
-profit_rate | string | Required | none | none  
+strategy_id | string | Required | none | none  
+strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
+status | string | Required | none | The current implementation returns `stopping`  
+result_message | string | Required | none | none  
       
     
     {
-      "strategy_name": "string",
-      "created_at": "string",
-      "running_duration": 0,
-      "invest_amount": "string",
-      "total_profit": "string",
-      "profit_rate": "string"
+      "strategy_id": "string",
+      "strategy_type": "spot_grid",
+      "status": "string",
+      "result_message": "string"
+    }
+    
+    
+
+##  AIHubPortfolioRunningSuccessResponse
+
+_The response body when querying the running policy list is successful._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer(int32) | Required | none | none  
+message | string | Required | none | none  
+data | AIHubPortfolioRunningData | Required | none | Running policy list data.  
+trace_id | string | Required | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "items": [
+          {}
+        ],
+        "page": 0,
+        "page_size": 0,
+        "total": 0
+      },
+      "trace_id": "string"
     }
     
     
@@ -2770,6 +2328,356 @@ side | string | Optional | none | none
     
     
 
+##  AIHubCreateData
+
+_Policy information returned after the policy is successfully created._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+strategy_id | string | Required | none | none  
+strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
+market | string | Required | none | none  
+status | string | Required | none | The initial state after successful creation, usually `running`  
+jump_url | string | Optional | none | none  
+      
+    
+    {
+      "strategy_id": "string",
+      "strategy_type": "spot_grid",
+      "market": "string",
+      "status": "string",
+      "jump_url": "string"
+    }
+    
+    
+
+##  SpotGridCreateRequest
+
+_Create the request body for the spot grid policy._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+strategy_type | string | Required | none | none  
+market | string | Required | none | none  
+create_params | SpotGridCreateParams | Required | none | Creation parameters for the spot grid strategy.  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+strategy_type | spot_grid  
+      
+    
+    {
+      "strategy_type": "spot_grid",
+      "market": "string",
+      "create_params": {
+        "money": "string",
+        "low_price": "string",
+        "high_price": "string",
+        "grid_num": 1,
+        "price_type": 0,
+        "trigger_price": "string",
+        "stop_profit": "string",
+        "stop_loss": "string",
+        "profit_sharing_ratio": "string",
+        "is_use_base": true
+      }
+    }
+    
+    
+
+##  InfiniteGridCreateParams
+
+_Creation parameters for infinite grid strategies._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+money | string | Required | none | none  
+price_floor | string | Required | none | price floor  
+profit_per_grid | string | Required | none | Profit per square  
+grid_num | integer(int32) | Optional | none | Optional; may be omitted like in the app.  
+price_type | integer(int32) | Optional | none | Optional. `0` arithmetic grid; `1` geometric; omit for server defaults.  
+trigger_price | string | Optional | none | none  
+stop_profit | string | Optional | none | none  
+stop_loss | string | Optional | none | none  
+profit_sharing_ratio | string | Optional | none | none  
+is_use_base | boolean | Optional | none | none  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+price_type | 0  
+price_type | 1  
+      
+    
+    {
+      "money": "string",
+      "price_floor": "string",
+      "profit_per_grid": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
+    }
+    
+    
+
+##  ContractMartingaleCreateParams
+
+_The creation parameters of the contract Martin strategy._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+invest_amount | string | Required | none | Margin allocated; the server converts it to initial contract size using live contract price, contract multiplier, and minimum lot size.  
+price_deviation | string | Required | none | none  
+max_orders | integer(int32) | Required | none | none  
+take_profit_ratio | string | Required | none | none  
+direction | ContractMartingaleDirection | Required | none | The direction enumeration supported by the contract Martin strategy is consistent with the original interface of the App.  
+leverage | string | Required | none | none  
+stop_loss_price | string | Optional | none | Legacy field name. The AIHub `contract_martingale` creation path does not map this field today;  
+follow contract martingale rules from the underlying API. MCP tooling must match bot-service behavior.  
+profit_sharing_ratio | string | Optional | none | none  
+      
+    
+    {
+      "invest_amount": "string",
+      "price_deviation": "string",
+      "max_orders": 1,
+      "take_profit_ratio": "string",
+      "direction": "buy",
+      "leverage": "string",
+      "stop_loss_price": "string",
+      "profit_sharing_ratio": "string"
+    }
+    
+    
+
+##  FuturesGridCreateParams
+
+_Creation parameters for the contract grid strategy._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+money | string | Required | none | none  
+low_price | string | Required | none | none  
+high_price | string | Required | none | none  
+grid_num | integer(int32) | Required | none | none  
+price_type | integer(int32) | Required | none | none  
+leverage | string | Required | none | none  
+direction | FuturesDirection | Optional | none | Direction enumeration supported by contract-based strategies.  
+trigger_price | string | Optional | none | none  
+stop_profit | string | Optional | none | none  
+stop_loss | string | Optional | none | none  
+profit_sharing_ratio | string | Optional | none | none  
+is_use_base | boolean | Optional | none | none  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+price_type | 0  
+price_type | 1  
+      
+    
+    {
+      "money": "string",
+      "low_price": "string",
+      "high_price": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "leverage": "string",
+      "direction": "long",
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
+    }
+    
+    
+
+##  SpotMartingaleCreateParams
+
+*Spot martingale creation parameters (serialized fields aligned with `MartingaleBot`).
+
+  * **Stop-loss** : use `stop_loss_per_cycle` (ratio per round), same as the app; **do not** use `stop_loss_price`.
+  * Optional **`trigger_price`** : trigger price.
+  * If `stop_loss_per_cycle` is passed and > 0, the server validates roughly between `0.001` and `0.9999` (same as `check_martingale`).*
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+invest_amount | string | Required | none | none  
+price_deviation | string | Required | none | Add-position deviation ratio as a decimal string (e.g. a 2% drop is `0.02`).  
+max_orders | integer(int32) | Required | none | none  
+take_profit_ratio | string | Required | none | Take-profit ratio per round as a decimal string.  
+stop_loss_per_cycle | string | Optional | none | Stop-loss ratio per round as a decimal string; optional; aligned with app `stop_loss_per_cycle`.  
+trigger_price | string | Optional | none | Trigger price; optional.  
+profit_sharing_ratio | string | Optional | none | none  
+      
+    
+    {
+      "invest_amount": "string",
+      "price_deviation": "string",
+      "max_orders": 1,
+      "take_profit_ratio": "string",
+      "stop_loss_per_cycle": "string",
+      "trigger_price": "string",
+      "profit_sharing_ratio": "string"
+    }
+    
+    
+
+##  AIHubDiscoverData
+
+_Strategy recommendation result data._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+scene | DiscoverScene | Required | none | Enumeration of scenarios supported by the policy recommendation interface.  
+recommendations | [AIHubRecommendation] | Required | none | [A single piece of strategy recommendation information.]  
+unsupported_filters | array | Required | none | Filter conditions not supported in this issue  
+      
+    
+    {
+      "scene": "top1",
+      "recommendations": [
+        {
+          "recommendation_id": "string",
+          "market": "string",
+          "strategy_type": "spot_grid",
+          "strategy_name": "string",
+          "backtest_apr": "string",
+          "max_drawdown": "string",
+          "summary": "string",
+          "strategy_params_preview": "string"
+        }
+      ],
+      "unsupported_filters": [
+        "string"
+      ]
+    }
+    
+    
+
+##  AIHubPortfolioBaseInfo
+
+_Strategy detail base info._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+strategy_name | string | Required | none | none  
+created_at | string | Required | none | Created time  
+running_duration | integer(int64) | Required | none | Runtime duration in seconds.  
+invest_amount | string | Required | none | none  
+total_profit | string | Required | none | none  
+profit_rate | string | Required | none | none  
+      
+    
+    {
+      "strategy_name": "string",
+      "created_at": "string",
+      "running_duration": 0,
+      "invest_amount": "string",
+      "total_profit": "string",
+      "profit_rate": "string"
+    }
+    
+    
+
+##  AIHubRecommendation
+
+_A single piece of strategy recommendation information._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+recommendation_id | string | Required | none | none  
+market | string | Required | none | none  
+strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
+strategy_name | string | Required | none | none  
+backtest_apr | string | Optional | none | none  
+max_drawdown | string | Optional | none | none  
+summary | string | Required | none | none  
+strategy_params_preview | string | Optional | none | Recommended-parameter preview as JSON text (string-encoded so clients deserialize it consistently). The value is a serialized JSON object whose structure varies by strategy type; callers or upper-layer models must parse it.  
+      
+    
+    {
+      "recommendation_id": "string",
+      "market": "string",
+      "strategy_type": "spot_grid",
+      "strategy_name": "string",
+      "backtest_apr": "string",
+      "max_drawdown": "string",
+      "summary": "string",
+      "strategy_params_preview": "string"
+    }
+    
+    
+
+##  SpotGridCreateParams
+
+_Creation parameters for the spot grid strategy._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+money | string | Required | none | Amount of investment  
+low_price | string | Required | none | Range lower limit  
+high_price | string | Required | none | Range upper limit  
+grid_num | integer(int32) | Required | none | Number of grids  
+price_type | integer(int32) | Required | none | none  
+trigger_price | string | Optional | none | none  
+stop_profit | string | Optional | none | none  
+stop_loss | string | Optional | none | none  
+profit_sharing_ratio | string | Optional | none | none  
+is_use_base | boolean | Optional | none | none  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+price_type | 0  
+price_type | 1  
+      
+    
+    {
+      "money": "string",
+      "low_price": "string",
+      "high_price": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
+    }
+    
+    
+
 ##  ContractMartingaleDirection
 
 _The direction enumeration supported by the contract Martin strategy is consistent with the original interface of the App._
@@ -2789,3 +2697,95 @@ _None_ | sell
       
     
     "buy"
+    
+    
+
+##  DiscoverScene
+
+_Enumeration of scenarios supported by the policy recommendation interface._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+_None_ | string | Optional | none | Enumeration of scenarios supported by the policy recommendation interface.  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+_None_ | top1  
+_None_ | bundle  
+_None_ | filter  
+_None_ | refresh  
+      
+    
+    "top1"
+    
+    
+
+##  AIHubPortfolioRunningData
+
+_Running policy list data._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+items | [AIHubPortfolioRunningItem] | Required | none | [A single record in the list of running policies.]  
+page | integer(int32) | Required | none | none  
+page_size | integer(int32) | Required | none | none  
+total | integer(int32) | Required | none | none  
+      
+    
+    {
+      "items": [
+        {
+          "strategy_id": "string",
+          "strategy_type": "spot_grid",
+          "strategy_name": "string",
+          "market": "string",
+          "status": "string",
+          "pnl": "string",
+          "pnl_rate": "string",
+          "invest_amount": "string",
+          "created_at": "string"
+        }
+      ],
+      "page": 0,
+      "page_size": 0,
+      "total": 0
+    }
+    
+    
+
+##  AIHubPortfolioRunningItem
+
+_A single record in the list of running policies._
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+strategy_id | string | Required | none | none  
+strategy_type | StrategyType | Required | none | The complete enumeration of policy types supported by AIHub.  
+strategy_name | string | Required | none | none  
+market | string | Required | none | none  
+status | string | Required | none | none  
+pnl | string | Optional | none | none  
+pnl_rate | string | Optional | none | none  
+invest_amount | string | Optional | none | none  
+created_at | string | Optional | none | Created time  
+      
+    
+    {
+      "strategy_id": "string",
+      "strategy_type": "spot_grid",
+      "strategy_name": "string",
+      "market": "string",
+      "status": "string",
+      "pnl": "string",
+      "pnl_rate": "string",
+      "invest_amount": "string",
+      "created_at": "string"
+    }

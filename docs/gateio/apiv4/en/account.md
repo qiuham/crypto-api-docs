@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/account
 api_type: Account
-updated_at: 2026-05-27 20:14:42.926225
+updated_at: 2026-05-28 19:57:34.604824
 ---
 
 # Account
@@ -1046,6 +1046,61 @@ Code samples
 
 #  Schemas
 
+##  AccountDetail
+
+_AccountDetail_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+ip_whitelist | array | Optional | none | IP Whitelist  
+currency_pairs | array | Optional | none | Trading pair whitelist  
+user_id | integer(int64) | Optional | none | User ID  
+tier | integer(int64) | Optional | none | User VIP level  
+key | object | Optional | none | API Key details  
+↳ mode | integer(int32) | Optional | none | Mode: 1 - Classic mode, 2 - Legacy unified mode  
+copy_trading_role | integer(int32) | Optional | none | User role: 0 - Normal user 1 - Copy trading leader 2 - Copy trading follower 3 - Both leader and follower  
+      
+    
+    {
+      "ip_whitelist": [
+        "string"
+      ],
+      "currency_pairs": [
+        "string"
+      ],
+      "user_id": 0,
+      "tier": 0,
+      "key": {
+        "mode": 0
+      },
+      "copy_trading_role": 0
+    }
+    
+    
+
+##  StpGroup
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int64) | Optional | none | STP Group ID  
+name | string | Required | none | STP Group name  
+creator_id | integer(int64) | Optional | none | Creator ID  
+create_time | integer(int64) | Optional | none | Created time  
+      
+    
+    {
+      "id": 0,
+      "name": "string",
+      "creator_id": 0,
+      "create_time": 0
+    }
+    
+    
+
 ##  AccountKeyInfo
 
 _AccountKeyInfo_
@@ -1112,68 +1167,17 @@ last_access | string | Optional | read-only | Last Access Time
     
     
 
-##  StpGroupUser
+##  DebitFee
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-user_id | integer(int64) | Optional | none | User ID  
-stp_id | integer(int64) | Optional | none | STP Group ID  
-create_time | integer(int64) | Optional | none | Created time  
+enabled | boolean | Required | none | Whether GT fee deduction is enabled  
       
     
     {
-      "user_id": 0,
-      "stp_id": 0,
-      "create_time": 0
-    }
-    
-    
-
-##  AddSTPGroupUsersRequest
-
-###  Properties
-
-_None_
-    
-    
-    [
-      0
-    ]
-    
-    
-
-##  AccountDetail
-
-_AccountDetail_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-ip_whitelist | array | Optional | none | IP Whitelist  
-currency_pairs | array | Optional | none | Trading pair whitelist  
-user_id | integer(int64) | Optional | none | User ID  
-tier | integer(int64) | Optional | none | User VIP level  
-key | object | Optional | none | API Key details  
-↳ mode | integer(int32) | Optional | none | Mode: 1 - Classic mode, 2 - Legacy unified mode  
-copy_trading_role | integer(int32) | Optional | none | User role: 0 - Normal user 1 - Copy trading leader 2 - Copy trading follower 3 - Both leader and follower  
-      
-    
-    {
-      "ip_whitelist": [
-        "string"
-      ],
-      "currency_pairs": [
-        "string"
-      ],
-      "user_id": 0,
-      "tier": 0,
-      "key": {
-        "mode": 0
-      },
-      "copy_trading_role": 0
+      "enabled": true
     }
     
     
@@ -1199,36 +1203,32 @@ updated_at | string | Optional | none | Update time
     
     
 
-##  DebitFee
+##  AddSTPGroupUsersRequest
+
+###  Properties
+
+_None_
+    
+    
+    [
+      0
+    ]
+    
+    
+
+##  StpGroupUser
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-enabled | boolean | Required | none | Whether GT fee deduction is enabled  
-      
-    
-    {
-      "enabled": true
-    }
-    
-    
-
-##  StpGroup
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | none | STP Group ID  
-name | string | Required | none | STP Group name  
-creator_id | integer(int64) | Optional | none | Creator ID  
+user_id | integer(int64) | Optional | none | User ID  
+stp_id | integer(int64) | Optional | none | STP Group ID  
 create_time | integer(int64) | Optional | none | Created time  
       
     
     {
-      "id": 0,
-      "name": "string",
-      "creator_id": 0,
+      "user_id": 0,
+      "stp_id": 0,
       "create_time": 0
     }

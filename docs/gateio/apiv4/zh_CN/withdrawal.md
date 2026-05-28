@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/withdrawal
 api_type: Account
-updated_at: 2026-05-27 20:18:13.971930
+updated_at: 2026-05-28 19:58:55.924674
 ---
 
 # Withdrawal
@@ -388,6 +388,61 @@ WARNING
 
 #  模型
 
+##  LedgerRecord
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+id | string | false | 只读 | 交易记录 ID  
+txid | string | false | 只读 | 区块转账哈希记录  
+withdraw_order_id | string | false | none | 提现时用户自定义的单号。 默认为空。 非空时 会查询指定用户自定义单号记录  
+timestamp | string | false | 只读 | 操作时间  
+amount | string | true | none | 币的数量  
+currency | string | true | none | 币种名称  
+address | string | false | none | 提现地址。提现操作必填  
+memo | string | false | none | 转账memo等备注信息  
+withdraw_id | string | false | none | 提现记录id， 以w开头，如： w1879219868。 当withdraw_id 不为空时，则值查询这一条提现记录，不再按照时间进行查询  
+asset_class | string | false | none | 提现记录币种类型，默认为空。即支持用户按需查询主区和创新区的提现记录。  
+取值范围：SPOT、PILOT  
+  
+SPOT ： 主区   
+PILOT： 创新区  
+status | string | false | 只读 | 交易状态  
+  
+\- DONE: 完成  
+\- CANCEL: 已取消  
+\- REQUEST: 请求中  
+\- MANUAL: 待人工审核  
+\- BCODE: 充值码操作  
+\- EXTPEND: 已经发送等待确认  
+\- FAIL: 链上失败等待确认  
+\- INVALID: 无效订单  
+\- VERIFY: 验证中  
+\- PROCES: 处理中  
+\- PEND: 处理中  
+\- DMOVE: 待人工审核  
+\- REVIEW: 审核中  
+chain | string | true | none | 提现的链名称  
+      
+    
+    {
+      "id": "string",
+      "txid": "string",
+      "withdraw_order_id": "string",
+      "timestamp": "string",
+      "amount": "string",
+      "currency": "string",
+      "address": "string",
+      "memo": "string",
+      "withdraw_id": "string",
+      "asset_class": "string",
+      "status": "string",
+      "chain": "string"
+    }
+    
+    
+
 ##  WithdrawalsDel
 
 ###  属性
@@ -450,61 +505,6 @@ amount | string | true | none | 转账数量
       "receive_uid": 0,
       "currency": "string",
       "amount": "string"
-    }
-    
-    
-
-##  LedgerRecord
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | string | false | 只读 | 交易记录 ID  
-txid | string | false | 只读 | 区块转账哈希记录  
-withdraw_order_id | string | false | none | 提现时用户自定义的单号。 默认为空。 非空时 会查询指定用户自定义单号记录  
-timestamp | string | false | 只读 | 操作时间  
-amount | string | true | none | 币的数量  
-currency | string | true | none | 币种名称  
-address | string | false | none | 提现地址。提现操作必填  
-memo | string | false | none | 转账memo等备注信息  
-withdraw_id | string | false | none | 提现记录id， 以w开头，如： w1879219868。 当withdraw_id 不为空时，则值查询这一条提现记录，不再按照时间进行查询  
-asset_class | string | false | none | 提现记录币种类型，默认为空。即支持用户按需查询主区和创新区的提现记录。  
-取值范围：SPOT、PILOT  
-  
-SPOT ： 主区   
-PILOT： 创新区  
-status | string | false | 只读 | 交易状态  
-  
-\- DONE: 完成  
-\- CANCEL: 已取消  
-\- REQUEST: 请求中  
-\- MANUAL: 待人工审核  
-\- BCODE: 充值码操作  
-\- EXTPEND: 已经发送等待确认  
-\- FAIL: 链上失败等待确认  
-\- INVALID: 无效订单  
-\- VERIFY: 验证中  
-\- PROCES: 处理中  
-\- PEND: 处理中  
-\- DMOVE: 待人工审核  
-\- REVIEW: 审核中  
-chain | string | true | none | 提现的链名称  
-      
-    
-    {
-      "id": "string",
-      "txid": "string",
-      "withdraw_order_id": "string",
-      "timestamp": "string",
-      "amount": "string",
-      "currency": "string",
-      "address": "string",
-      "memo": "string",
-      "withdraw_id": "string",
-      "asset_class": "string",
-      "status": "string",
-      "chain": "string"
     }
     
     

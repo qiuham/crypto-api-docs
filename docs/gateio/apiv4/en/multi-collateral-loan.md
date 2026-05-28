@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/multi-collateral-loan
 api_type: REST
-updated_at: 2026-05-27 20:15:26.566254
+updated_at: 2026-05-28 19:57:53.879090
 ---
 
 # Multi-collateral-loan
@@ -1432,6 +1432,82 @@ Code samples
 
 #  Schemas
 
+##  MultiCollateralCurrency
+
+_Borrowing and collateral currencies supported for Multi-Collateral_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+loan_currencies | array | Optional | none | List of supported borrowing currencies  
+↳ MultiLoanItem | object | Optional | none | none  
+↳ currency | string | Optional | none | Currency  
+↳ price | string | Optional | none | Latest price of the currency  
+↳ collateral_currencies | array | Optional | none | List of supported collateral currencies  
+↳ MultiCollateralItem | object | Optional | none | none  
+↳ currency | string | Optional | none | Currency  
+↳ index_price | string | Optional | none | Currency Index Price  
+↳ discount | string | Optional | none | Discount  
+      
+    
+    {
+      "loan_currencies": [
+        {
+          "currency": "string",
+          "price": "string"
+        }
+      ],
+      "collateral_currencies": [
+        {
+          "currency": "string",
+          "index_price": "string",
+          "discount": "string"
+        }
+      ]
+    }
+    
+    
+
+##  CreateMultiCollateralOrder
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Optional | none | Order ID  
+order_type | string | Optional | none | current - current rate, fixed - fixed rate, defaults to current if not specified  
+fixed_type | string | Optional | none | Fixed interest rate lending period: 7d - 7 days, 30d - 30 days. Required for fixed rate  
+fixed_rate | string | Optional | none | Fixed interest rate, required for fixed rate  
+auto_renew | boolean | Optional | none | Fixed interest rate, auto-renewal  
+auto_repay | boolean | Optional | none | Fixed interest rate, auto-repayment  
+borrow_currency | string | Required | none | Borrowed currency  
+borrow_amount | string | Required | none | Borrowed amount  
+collateral_currencies | array | Optional | none | Collateral currency and amount  
+↳ CollateralCurrency | object | Optional | none | none  
+↳ currency | string | Optional | none | Currency  
+↳ amount | string | Optional | none | Size  
+      
+    
+    {
+      "order_id": "string",
+      "order_type": "string",
+      "fixed_type": "string",
+      "fixed_rate": "string",
+      "auto_renew": true,
+      "auto_repay": true,
+      "borrow_currency": "string",
+      "borrow_amount": "string",
+      "collateral_currencies": [
+        {
+          "currency": "string",
+          "amount": "string"
+        }
+      ]
+    }
+    
+    
+
 ##  MultiRepayRecord
 
 _Multi-Collateral Repayment Record_
@@ -1539,6 +1615,89 @@ repaid_currencies | array | Optional | none | Repay Currency List
     
     
 
+##  OrderResp
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | integer(int64) | Optional | none | Order ID  
+      
+    
+    {
+      "order_id": 0
+    }
+    
+    
+
+##  MultiRepayResp
+
+_Multi-currency collateral repayment_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | integer(int64) | Optional | none | Order ID  
+repaid_currencies | array | Optional | none | Repay Currency List  
+↳ RepayCurrencyRes | object | Optional | none | none  
+↳ succeeded | boolean | Optional | none | Whether the repayment was successful  
+↳ label | string | Optional | none | Error identifier for failed operations; empty when successful  
+↳ message | string | Optional | none | Error description for failed operations; empty when successful  
+↳ currency | string | Optional | none | Repayment currency  
+↳ repaid_principal | string | Optional | none | Principal  
+↳ repaid_interest | string | Optional | none | Principal  
+      
+    
+    {
+      "order_id": 0,
+      "repaid_currencies": [
+        {
+          "succeeded": true,
+          "label": "string",
+          "message": "string",
+          "currency": "string",
+          "repaid_principal": "string",
+          "repaid_interest": "string"
+        }
+      ]
+    }
+    
+    
+
+##  CollateralAdjustRes
+
+_Multi-collateral adjustment result_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | integer(int64) | Optional | none | Order ID  
+collateral_currencies | array | Optional | none | Collateral currency information  
+↳ CollateralCurrencyRes | object | Optional | none | none  
+↳ succeeded | boolean | Optional | none | Update success status  
+↳ label | string | Optional | none | Error identifier for failed operations; empty when successful  
+↳ message | string | Optional | none | Error description for failed operations; empty when successful  
+↳ currency | string | Optional | none | Currency  
+↳ amount | string | Optional | none | Successfully operated collateral quantity; 0 if operation fails  
+      
+    
+    {
+      "order_id": 0,
+      "collateral_currencies": [
+        {
+          "succeeded": true,
+          "label": "string",
+          "message": "string",
+          "currency": "string",
+          "amount": "string"
+        }
+      ]
+    }
+    
+    
+
 ##  CollateralFixRate
 
 _Multi-collateral fixed interest rate_
@@ -1562,70 +1721,23 @@ update_time | integer(int64) | Optional | none | Update time, timestamp in secon
     
     
 
-##  CreateMultiCollateralOrder
+##  CollateralLtv
+
+_Multi-collateral ratio_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-order_id | string | Optional | none | Order ID  
-order_type | string | Optional | none | current - current rate, fixed - fixed rate, defaults to current if not specified  
-fixed_type | string | Optional | none | Fixed interest rate lending period: 7d - 7 days, 30d - 30 days. Required for fixed rate  
-fixed_rate | string | Optional | none | Fixed interest rate, required for fixed rate  
-auto_renew | boolean | Optional | none | Fixed interest rate, auto-renewal  
-auto_repay | boolean | Optional | none | Fixed interest rate, auto-repayment  
-borrow_currency | string | Required | none | Borrowed currency  
-borrow_amount | string | Required | none | Borrowed amount  
-collateral_currencies | array | Optional | none | Collateral currency and amount  
-↳ CollateralCurrency | object | Optional | none | none  
-↳ currency | string | Optional | none | Currency  
-↳ amount | string | Optional | none | Size  
+init_ltv | string | Optional | none | Initial collateralization rate  
+alert_ltv | string | Optional | none | Warning collateralization rate  
+liquidate_ltv | string | Optional | none | Liquidation collateralization rate  
       
     
     {
-      "order_id": "string",
-      "order_type": "string",
-      "fixed_type": "string",
-      "fixed_rate": "string",
-      "auto_renew": true,
-      "auto_repay": true,
-      "borrow_currency": "string",
-      "borrow_amount": "string",
-      "collateral_currencies": [
-        {
-          "currency": "string",
-          "amount": "string"
-        }
-      ]
-    }
-    
-    
-
-##  CurrencyQuota
-
-_Currency Quota_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency  
-index_price | string | Optional | none | Currency Index Price  
-min_quota | string | Optional | none | Minimum borrowing/collateral limit for the currency  
-left_quota | string | Optional | none | Remaining currency limit for `borrow/collateral` (when input parameter `type` is `borrow`, represents current currency)  
-left_quote_usdt | string | Optional | none | Remaining currency limit converted to USDT (when input parameter `type` is `borrow`, represents current currency)  
-left_quota_fixed | string | Optional | none | Remaining `borrow/collateral` limit for fixed-term currency  
-left_quote_usdt_fixed | string | Optional | none | Remaining currency limit for fixed-term currency converted to USDT  
-      
-    
-    {
-      "currency": "string",
-      "index_price": "string",
-      "min_quota": "string",
-      "left_quota": "string",
-      "left_quote_usdt": "string",
-      "left_quota_fixed": "string",
-      "left_quote_usdt_fixed": "string"
+      "init_ltv": "string",
+      "alert_ltv": "string",
+      "liquidate_ltv": "string"
     }
     
     
@@ -1683,6 +1795,35 @@ collateral_currencies | [MultiCollateralRecord/properties/borrow_currencies/item
     
     
 
+##  CurrencyQuota
+
+_Currency Quota_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency  
+index_price | string | Optional | none | Currency Index Price  
+min_quota | string | Optional | none | Minimum borrowing/collateral limit for the currency  
+left_quota | string | Optional | none | Remaining currency limit for `borrow/collateral` (when input parameter `type` is `borrow`, represents current currency)  
+left_quote_usdt | string | Optional | none | Remaining currency limit converted to USDT (when input parameter `type` is `borrow`, represents current currency)  
+left_quota_fixed | string | Optional | none | Remaining `borrow/collateral` limit for fixed-term currency  
+left_quote_usdt_fixed | string | Optional | none | Remaining currency limit for fixed-term currency converted to USDT  
+      
+    
+    {
+      "currency": "string",
+      "index_price": "string",
+      "min_quota": "string",
+      "left_quota": "string",
+      "left_quote_usdt": "string",
+      "left_quota_fixed": "string",
+      "left_quote_usdt_fixed": "string"
+    }
+    
+    
+
 ##  CollateralCurrentRate
 
 _Multi-collateral current interest rate_
@@ -1698,102 +1839,6 @@ current_rate | string | Optional | none | Currency current interest rate
     {
       "currency": "string",
       "current_rate": "string"
-    }
-    
-    
-
-##  CollateralAdjust
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | integer(int64) | Required | none | Order ID  
-type | string | Required | none | Operation type: append - add collateral, redeem - withdraw collateral  
-collaterals | array | Optional | none | Collateral currency list  
-↳ currency | string | Optional | none | Currency  
-↳ amount | string | Optional | none | Size  
-      
-    
-    {
-      "order_id": 0,
-      "type": "string",
-      "collaterals": [
-        {
-          "currency": "string",
-          "amount": "string"
-        }
-      ]
-    }
-    
-    
-
-##  CollateralAdjustRes
-
-_Multi-collateral adjustment result_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | integer(int64) | Optional | none | Order ID  
-collateral_currencies | array | Optional | none | Collateral currency information  
-↳ CollateralCurrencyRes | object | Optional | none | none  
-↳ succeeded | boolean | Optional | none | Update success status  
-↳ label | string | Optional | none | Error identifier for failed operations; empty when successful  
-↳ message | string | Optional | none | Error description for failed operations; empty when successful  
-↳ currency | string | Optional | none | Currency  
-↳ amount | string | Optional | none | Successfully operated collateral quantity; 0 if operation fails  
-      
-    
-    {
-      "order_id": 0,
-      "collateral_currencies": [
-        {
-          "succeeded": true,
-          "label": "string",
-          "message": "string",
-          "currency": "string",
-          "amount": "string"
-        }
-      ]
-    }
-    
-    
-
-##  MultiCollateralCurrency
-
-_Borrowing and collateral currencies supported for Multi-Collateral_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-loan_currencies | array | Optional | none | List of supported borrowing currencies  
-↳ MultiLoanItem | object | Optional | none | none  
-↳ currency | string | Optional | none | Currency  
-↳ price | string | Optional | none | Latest price of the currency  
-↳ collateral_currencies | array | Optional | none | List of supported collateral currencies  
-↳ MultiCollateralItem | object | Optional | none | none  
-↳ currency | string | Optional | none | Currency  
-↳ index_price | string | Optional | none | Currency Index Price  
-↳ discount | string | Optional | none | Discount  
-      
-    
-    {
-      "loan_currencies": [
-        {
-          "currency": "string",
-          "price": "string"
-        }
-      ],
-      "collateral_currencies": [
-        {
-          "currency": "string",
-          "index_price": "string",
-          "discount": "string"
-        }
-      ]
     }
     
     
@@ -1827,38 +1872,28 @@ repay_items | array | Required | none | Repay Currency Item
     
     
 
-##  CollateralLtv
-
-_Multi-collateral ratio_
+##  CollateralAdjust
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-init_ltv | string | Optional | none | Initial collateralization rate  
-alert_ltv | string | Optional | none | Warning collateralization rate  
-liquidate_ltv | string | Optional | none | Liquidation collateralization rate  
+order_id | integer(int64) | Required | none | Order ID  
+type | string | Required | none | Operation type: append - add collateral, redeem - withdraw collateral  
+collaterals | array | Optional | none | Collateral currency list  
+↳ currency | string | Optional | none | Currency  
+↳ amount | string | Optional | none | Size  
       
     
     {
-      "init_ltv": "string",
-      "alert_ltv": "string",
-      "liquidate_ltv": "string"
-    }
-    
-    
-
-##  OrderResp
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | integer(int64) | Optional | none | Order ID  
-      
-    
-    {
-      "order_id": 0
+      "order_id": 0,
+      "type": "string",
+      "collaterals": [
+        {
+          "currency": "string",
+          "amount": "string"
+        }
+      ]
     }
     
     
@@ -1934,41 +1969,6 @@ borrow_currencies | array | Optional | none | Borrowing Currency List
           "index_price": "string",
           "left_collateral": "string",
           "left_collateral_usdt": "string"
-        }
-      ]
-    }
-    
-    
-
-##  MultiRepayResp
-
-_Multi-currency collateral repayment_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | integer(int64) | Optional | none | Order ID  
-repaid_currencies | array | Optional | none | Repay Currency List  
-↳ RepayCurrencyRes | object | Optional | none | none  
-↳ succeeded | boolean | Optional | none | Whether the repayment was successful  
-↳ label | string | Optional | none | Error identifier for failed operations; empty when successful  
-↳ message | string | Optional | none | Error description for failed operations; empty when successful  
-↳ currency | string | Optional | none | Repayment currency  
-↳ repaid_principal | string | Optional | none | Principal  
-↳ repaid_interest | string | Optional | none | Principal  
-      
-    
-    {
-      "order_id": 0,
-      "repaid_currencies": [
-        {
-          "succeeded": true,
-          "label": "string",
-          "message": "string",
-          "currency": "string",
-          "repaid_principal": "string",
-          "repaid_interest": "string"
         }
       ]
     }

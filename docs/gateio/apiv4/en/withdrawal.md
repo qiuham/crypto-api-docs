@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/withdrawal
 api_type: Account
-updated_at: 2026-05-27 20:16:25.470738
+updated_at: 2026-05-28 19:58:11.917275
 ---
 
 # Withdrawal
@@ -441,6 +441,21 @@ chain | string | Required | none | Name of the chain used in withdrawals
     
     
 
+##  UidPushWithdrawalResp
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | string | Optional | none | Order ID  
+      
+    
+    {
+      "id": "string"
+    }
+    
+    
+
 ##  UidPushWithdrawal
 
 ###  Properties
@@ -511,19 +526,4 @@ chain | string | Required | none | Name of the chain used in withdrawals
       "asset_class": "string",
       "status": "string",
       "chain": "string"
-    }
-    
-    
-
-##  UidPushWithdrawalResp
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | string | Optional | none | Order ID  
-      
-    
-    {
-      "id": "string"
     }

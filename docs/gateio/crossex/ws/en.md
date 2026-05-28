@@ -2,13 +2,10 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/crossex/ws/en
 api_type: WebSocket
-updated_at: 2026-05-27 20:18:22.354879
+updated_at: 2026-05-28 19:58:59.495417
 ---
 
 # CrossEx WebSocket v1.0.0
-
-* Python 
-  * Shell 
 
 v1.0.0 · Stable
 
@@ -117,23 +114,6 @@ ErrorsCode | Message
 WARNING
 
 Note: The GateAPIv4 key pair you use must have at least CrossEx read permissions enabled. If IP whitelisting is enabled for the key, your outbound IP address must be in the key's IP whitelist.
-
-If the channel is private, for example, the client request needs to carry authentication information. For example: the `order` channel to retrieve user order updates.
-
-Authentication is sent through the `payload` field in the request body, formatted as follows:
-
-Name | Type | Description  
----|---|---  
-`method` | String | Authentication method: `api_key`  
-`api_key` | String | apiKey value  
-`sign` | String | Signature result  
-  
-WebSocket authentication uses the same signature calculation method as Gate APIv4 API, i.e. `HexEncode(HMAC_SHA512(secret, signature_string))`, but with the following differences:
-
-  1. Signature string concatenation method: `channel=<channel>&event=<event>&time=<time>`, where `<channel>`, `<event>`, `<time>` correspond to the request information
-  2. Authentication information is sent in the `payload` field of the request body.
-
-You can log in to your account to obtain the api_key and secret for your CrossEx account.
     
     
     # example WebSocket signature calculation implementation in Python
@@ -162,6 +142,23 @@ You can log in to your account to obtain the api_key and secret for your CrossEx
     print(json.dumps(request))
     
 
+If the channel is private, for example, the client request needs to carry authentication information. For example: the `order` channel to retrieve user order updates.
+
+Authentication is sent through the `payload` field in the request body, formatted as follows:
+
+AuthenticationName | Type | Description  
+---|---|---  
+`method` | String | Authentication method: `api_key`  
+`api_key` | String | apiKey value  
+`sign` | String | Signature result  
+  
+WebSocket authentication uses the same signature calculation method as Gate APIv4 API, i.e. `HexEncode(HMAC_SHA512(secret, signature_string))`, but with the following differences:
+
+  1. Signature string concatenation method: `channel=<channel>&event=<event>&time=<time>`, where `<channel>`, `<event>`, `<time>` correspond to the request information
+  2. Authentication information is sent in the `payload` field of the request body.
+
+You can log in to your account to obtain the api_key and secret for your CrossEx account.
+
 #  Authentication
 
 **» event** : login
@@ -179,20 +176,6 @@ Request ParametersName | Location | Type | Required | Description
 ↳ api_key | body | string | Optional | api key  
 ↳ sign | body | string | Optional | Signature  
   
-##  Response Data Structure
-
-Response Data StructureName | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ event | string | Required | none | Event  
-api  
-↳ payload | object | Required | none | none  
-↳ conn_id | string | Required | none | Connection ID  
-↳ result | object | Required | none | Login result  
-↳ code | string | Required | none | Response code  
-↳ message | string | Required | none | Response message  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Request example
     
     
@@ -207,6 +190,20 @@ Request example
     }
     
 
+##  Response Data Structure
+
+Response Data StructureName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ event | string | Required | none | Event  
+api  
+↳ payload | object | Required | none | none  
+↳ conn_id | string | Required | none | Connection ID  
+↳ result | object | Required | none | Login result  
+↳ code | string | Required | none | Response code  
+↳ message | string | Required | none | Response message  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 Response example
     
     
@@ -251,18 +248,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : last_price
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -278,18 +263,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Note  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ lp | string | Required | none | Last price | LastPrice  
-  
 Push example
     
     
@@ -331,6 +318,16 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Note  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ lp | string | Required | none | Last price | LastPrice  
+  
 #  Index Price Subscription
 
 `index_price`
@@ -358,18 +355,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : index_price
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -385,18 +370,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Note  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ ip | string | Required | none | Index price | IndexPrice  
-  
 Push example
     
     
@@ -438,6 +425,16 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Note  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ ip | string | Required | none | Index price | IndexPrice  
+  
 #  Mark Price Subscription
 
 `mark_price`
@@ -465,18 +462,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : mark_price
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -492,18 +477,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Note  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ mp | string | Required | none | Mark price | MarkPrice  
-  
 Push example
     
     
@@ -545,6 +532,16 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Note  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ mp | string | Required | none | Mark price | MarkPrice  
+  
 #  Full Limited-Level Order Book Subscription
 
 `order_book_x`
@@ -578,18 +575,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : order_book_x
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -605,20 +590,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Note  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ ts | long | Required | none | Millisecond timestamp | Timestamp  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ a | array | Required | none | Ask depth | [Price,Qty]  
-↳ b | array | Required | none | Bid depth | [Price,Qty]  
-  
 Push example
     
     
@@ -792,6 +777,18 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Note  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ ts | long | Required | none | Millisecond timestamp | Timestamp  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ a | array | Required | none | Ask depth | [Price,Qty]  
+↳ b | array | Required | none | Bid depth | [Price,Qty]  
+  
 #  Incremental Order Book Subscription
 
 `order_book_update`
@@ -819,18 +816,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : order_book_update
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -846,23 +831,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Note  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ snapshot | boolean | Required | none | Whether it is a snapshot (yes for full override, otherwise incremental update) | Snapshot  
-↳ ts | long | Required | none | Millisecond timestamp | Timestamp  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ U | string | Required | none | Start sequence number | StartIndex  
-↳ u | string | Required | none | End sequence number | EndIndex  
-↳ a | array | Required | none | Ask depth | [Price,Qty]  
-↳ b | array | Required | none | Bid depth | [Price,Qty]  
-  
 Push example
     
     
@@ -1145,6 +1127,21 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Note  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ snapshot | boolean | Required | none | Whether it is a snapshot (yes for full override, otherwise incremental update) | Snapshot  
+↳ ts | long | Required | none | Millisecond timestamp | Timestamp  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ U | string | Required | none | Start sequence number | StartIndex  
+↳ u | string | Required | none | End sequence number | EndIndex  
+↳ a | array | Required | none | Ask depth | [Price,Qty]  
+↳ b | array | Required | none | Bid depth | [Price,Qty]  
+  
 #  Ticker Subscription
 
 `ticker`
@@ -1172,18 +1169,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : ticker
 
-Format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -1196,28 +1181,20 @@ Request example
     }
     
 
+Format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Remarks  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ lp | string | Required | none | Latest trade price | LastPrice  
-↳ bp | string | Required | none | Best bid price | BidPrice  
-↳ bs | string | Required | none | Best bid size | BidSize  
-↳ ap | string | Required | none | Best ask price | AskPrice  
-↳ as | string | Required | none | Best ask size | AskSize  
-↳ o | string | Required | none | 24h open price | Open24h  
-↳ h | string | Required | none | 24h high price | High24h  
-↳ l | string | Required | none | 24h low price | Low24h  
-↳ v | string | Required | none | 24h volume (base) | Volume24h  
-↳ q | string | Optional | none | 24h volume (quote) | QuoteVolume24h  
-↳ ts | long | Required | none | Exchange timestamp (milliseconds) | Timestamp  
-  
 Push example
     
     
@@ -1243,6 +1220,26 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Remarks  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ lp | string | Required | none | Latest trade price | LastPrice  
+↳ bp | string | Required | none | Best bid price | BidPrice  
+↳ bs | string | Required | none | Best bid size | BidSize  
+↳ ap | string | Required | none | Best ask price | AskPrice  
+↳ as | string | Required | none | Best ask size | AskSize  
+↳ o | string | Required | none | 24h open price | Open24h  
+↳ h | string | Required | none | 24h high price | High24h  
+↳ l | string | Required | none | 24h low price | Low24h  
+↳ v | string | Required | none | 24h volume (base) | Volume24h  
+↳ q | string | Optional | none | 24h volume (quote) | QuoteVolume24h  
+↳ ts | long | Required | none | Exchange timestamp (milliseconds) | Timestamp  
+  
 #  Public Trade Subscription
 
 `trade`
@@ -1270,18 +1267,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : trade
 
-Format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -1294,22 +1279,20 @@ Request example
     }
     
 
+Format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Remarks  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ i | string | Required | none | Trade ID (exchange raw format) | TradeId  
-↳ p | string | Required | none | Trade price | Price  
-↳ q | string | Required | none | Trade quantity (base) | Quantity  
-↳ S | string | Required | none | Side | BUY/SELL  
-↳ ts | long | Required | none | Exchange timestamp (milliseconds) | Timestamp  
-  
 Push example
     
     
@@ -1330,6 +1313,20 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Remarks  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ i | string | Required | none | Trade ID (exchange raw format) | TradeId  
+↳ p | string | Required | none | Trade price | Price  
+↳ q | string | Required | none | Trade quantity (base) | Quantity  
+↳ S | string | Required | none | Side | BUY/SELL  
+↳ ts | long | Required | none | Exchange timestamp (milliseconds) | Timestamp  
+  
 #  Kline Subscription
 
 `kline_x`
@@ -1359,6 +1356,16 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : kline
 
+Request example
+    
+    
+    {
+      "channel": "kline_1m",
+      "event": "subscribe",
+      "payload": ["BYBIT_FUTURE_BTC_USDT", "BINANCE_FUTURE_ETH_USDT"]
+    }
+    
+
 Format:
 
 DetailsName | Type | Required | Description  
@@ -1371,35 +1378,8 @@ WARNING
 
 No authentication required
 
-Request example
-    
-    
-    {
-      "channel": "kline_1m",
-      "event": "subscribe",
-      "payload": ["BYBIT_FUTURE_BTC_USDT", "BINANCE_FUTURE_ETH_USDT"]
-    }
-    
-
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Remarks  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ o | string | Required | none | Open price | OpenPrice  
-↳ h | string | Required | none | High price | HighPrice  
-↳ l | string | Required | none | Low price | LowPrice  
-↳ c | string | Required | none | Close price | ClosePrice  
-↳ v | string | Required | none | Volume | Volume  
-↳ t | long | Required | none | Kline start time (milliseconds) | StartTime  
-↳ T | long | Required | none | Kline end time (milliseconds) | EndTime  
-↳ x | boolean | Required | none | Is kline closed (0: in progress, 1: closed) | Confirm  
-  
 Push example
     
     
@@ -1420,6 +1400,23 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Remarks  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ o | string | Required | none | Open price | OpenPrice  
+↳ h | string | Required | none | High price | HighPrice  
+↳ l | string | Required | none | Low price | LowPrice  
+↳ c | string | Required | none | Close price | ClosePrice  
+↳ v | string | Required | none | Volume | Volume  
+↳ t | long | Required | none | Kline start time (milliseconds) | StartTime  
+↳ T | long | Required | none | Kline end time (milliseconds) | EndTime  
+↳ x | boolean | Required | none | Is kline closed (0: in progress, 1: closed) | Confirm  
+  
 #  Futures Funding Rate Subscription
 
 `funding_rate`
@@ -1447,18 +1444,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : funding_rate
 
-Format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -1471,19 +1456,20 @@ Request example
     }
     
 
+Format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Remarks  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ r | string | Required | none | Current funding rate | FundingRate  
-↳ T | long | Required | none | Next funding time (milliseconds) | NextFundingTime  
-  
 Push example
     
     
@@ -1500,6 +1486,17 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Remarks  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ r | string | Required | none | Current funding rate | FundingRate  
+↳ T | long | Required | none | Next funding time (milliseconds) | NextFundingTime  
+  
 #  Futures Open Interest Subscription
 
 `open_interest`
@@ -1527,18 +1524,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : open_interest
 
-Format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-No authentication required
-
 Request example
     
     
@@ -1551,19 +1536,20 @@ Request example
     }
     
 
+Format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+No authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description | Remarks  
----|---|---|---|---|---  
-↳ channel | string | Required | none | Channel name | none  
-↳ event | string | Required | none | Event | none  
-↳ result | object | Required | none | Result | none  
-↳ s | string | Required | none | Trading pair | Symbol  
-↳ oi | string | Required | none | Open interest | OpenInterest  
-↳ oiV | string | Optional | none | Open interest value | OpenInterestValue  
-  
 Push example
     
     
@@ -1580,6 +1566,17 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description | Remarks  
+---|---|---|---|---|---  
+↳ channel | string | Required | none | Channel name | none  
+↳ event | string | Required | none | Event | none  
+↳ result | object | Required | none | Result | none  
+↳ s | string | Required | none | Trading pair | Symbol  
+↳ oi | string | Required | none | Open interest | OpenInterest  
+↳ oiV | string | Optional | none | Open interest value | OpenInterestValue  
+  
 #  Order Subscription/Unsubscription
 
 `order`
@@ -1607,18 +1604,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : order
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-Authentication required
-
 Request example
     
     
@@ -1632,48 +1617,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+Authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-↳ event | string | Required | none | Event  
-↳ payload | object | Required | none | Data set  
-↳ user_id | string | Required | none | User ID  
-↳ order_id | string | Required | none | Order ID  
-↳ text | string | Required | none | Customer order ID  
-↳ state | string | Required | none | Order state  
-↳ symbol | string | Required | none | Trading pair  
-↳ side | string | Required | none | Direction  
-↳ type | string | Required | none | Type  
-↳ attribute | string | Required | none | Attribute  
-↳ exchange_type | string | Required | none | Exchange type  
-↳ business_type | string | Required | none | Business type  
-↳ qty | string | Required | none | Base currency quantity  
-↳ quote_qty | string | Required | none | Quote currency quantity  
-↳ price | string | Required | none | Price  
-↳ time_in_force | string | Required | none | Time in force strategy  
-↳ executed_qty | string | Required | none | Executed quantity  
-↳ executed_amount | string | Required | none | Executed amount  
-↳ executed_avg_price | string | Required | none | Executed average price  
-↳ fee_coin | string | Required | none | Fee coin  
-↳ fee | string | Required | none | Fee  
-↳ reduce_only | string | Required | none | Reduce only  
-↳ leverage | string | Required | none | Leverage  
-↳ reason | string | Required | none | Reason  
-↳ last_executed_qty | string | Required | none | Last executed quantity  
-↳ last_executed_price | string | Required | none | Last executed price  
-↳ last_executed_amount | string | Required | none | Last executed amount  
-↳ position_side | string | Required | none | Position side  
-↳ create_time | string | Required | none | Create time  
-↳ update_time | string | Required | none | Update time  
-↳ result | object | Required | none | Update time  
-↳ code | string | Required | none | Return code  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Push example
     
     
@@ -1719,6 +1676,46 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+↳ event | string | Required | none | Event  
+↳ payload | object | Required | none | Data set  
+↳ user_id | string | Required | none | User ID  
+↳ order_id | string | Required | none | Order ID  
+↳ text | string | Required | none | Customer order ID  
+↳ state | string | Required | none | Order state  
+↳ symbol | string | Required | none | Trading pair  
+↳ side | string | Required | none | Direction  
+↳ type | string | Required | none | Type  
+↳ attribute | string | Required | none | Attribute  
+↳ exchange_type | string | Required | none | Exchange type  
+↳ business_type | string | Required | none | Business type  
+↳ qty | string | Required | none | Base currency quantity  
+↳ quote_qty | string | Required | none | Quote currency quantity  
+↳ price | string | Required | none | Price  
+↳ time_in_force | string | Required | none | Time in force strategy  
+↳ executed_qty | string | Required | none | Executed quantity  
+↳ executed_amount | string | Required | none | Executed amount  
+↳ executed_avg_price | string | Required | none | Executed average price  
+↳ fee_coin | string | Required | none | Fee coin  
+↳ fee | string | Required | none | Fee  
+↳ reduce_only | string | Required | none | Reduce only  
+↳ leverage | string | Required | none | Leverage  
+↳ reason | string | Required | none | Reason  
+↳ last_executed_qty | string | Required | none | Last executed quantity  
+↳ last_executed_price | string | Required | none | Last executed price  
+↳ last_executed_amount | string | Required | none | Last executed amount  
+↳ position_side | string | Required | none | Position side  
+↳ create_time | string | Required | none | Create time  
+↳ update_time | string | Required | none | Update time  
+↳ result | object | Required | none | Update time  
+↳ code | string | Required | none | Return code  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 #  Asset Subscription/Unsubscription
 
 `asset`
@@ -1746,18 +1743,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : asset
 
-Payload format:
-
-DetailsName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Coin list  
-  
-You can subscribe/unsubscribe multiple times. Coins subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-Authentication required
-
 Request example
     
     
@@ -1771,31 +1756,20 @@ Request example
     }
     
 
+Payload format:
+
+DetailsName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Coin list  
+  
+You can subscribe/unsubscribe multiple times. Coins subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+Authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-↳ event | string | Required | none | Event  
-↳ payload | object | Required | none | Data set  
-↳ user_id | string | Optional | none | User ID  
-↳ coin | string | Optional | none | Coin  
-↳ exchange_type | string | Optional | none | Exchange type  
-↳ balance | string | Optional | none | Balance  
-↳ upnl | string | Optional | none | Unrealized P&L  
-↳ equity | string | Optional | none | Equity  
-↳ futures_initial_margin | string | Optional | none | Futures initial margin  
-↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin  
-↳ borrowing_initial_margin | string | Optional | none | Borrowing initial margin for the coin  
-↳ borrowing_maintenance_margin | string | Optional | none | Borrowing maintenance margin for the coin  
-↳ available_balance | string | Optional | none | Available balance  
-↳ result | object | Required | none | Update time  
-↳ code | string | Required | none | Return code  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Push example
     
     
@@ -1825,6 +1799,29 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+↳ event | string | Required | none | Event  
+↳ payload | object | Required | none | Data set  
+↳ user_id | string | Optional | none | User ID  
+↳ coin | string | Optional | none | Coin  
+↳ exchange_type | string | Optional | none | Exchange type  
+↳ balance | string | Optional | none | Balance  
+↳ upnl | string | Optional | none | Unrealized P&L  
+↳ equity | string | Optional | none | Equity  
+↳ futures_initial_margin | string | Optional | none | Futures initial margin  
+↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin  
+↳ borrowing_initial_margin | string | Optional | none | Borrowing initial margin for the coin  
+↳ borrowing_maintenance_margin | string | Optional | none | Borrowing maintenance margin for the coin  
+↳ available_balance | string | Optional | none | Available balance  
+↳ result | object | Required | none | Update time  
+↳ code | string | Required | none | Return code  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 #  Trade Subscription/Unsubscription
 
 `usertrades`
@@ -1852,6 +1849,19 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : usertrades
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "subscribe",
+      "channel": "usertrades",
+      "payload": [
+        "GATE_FUTURE_ETH_USDT"
+      ]
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -1868,31 +1878,6 @@ unsubscribe
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Payload format:
-
-Response ResultName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-Authentication required
-
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "subscribe",
-      "channel": "usertrades",
-      "payload": [
-        "GATE_FUTURE_ETH_USDT"
-      ]
-    }
-    
-
 Response example
     
     
@@ -1911,38 +1896,20 @@ Response example
     }
     
 
+Payload format:
+
+Response ResultName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+Authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-↳ event | string | Required | none | Event  
-↳ payload | object | Required | none | Data set  
-↳ user_id | string | Optional | none | User ID  
-↳ transaction_id | string | Optional | none | Trade record ID  
-↳ order_id | string | Optional | none | Order ID  
-↳ text | string | Optional | none | User order ID  
-↳ symbol | string | Optional | none | Trading pair  
-↳ exchange_type | string | Optional | none | Exchange type  
-↳ business_type | string | Optional | none | Business type  
-↳ side | string | Optional | none | Buy/Sell direction  
-↳ qty | string | Optional | none | Trade quantity  
-↳ price | string | Optional | none | Trade price  
-↳ fee | string | Optional | none | Fee  
-↳ fee_coin | string | Optional | none | Fee coin  
-↳ fee_rate | string | Optional | none | Fee rate  
-↳ match_role | string | Optional | none | Trade role  
-↳ rpnl | string | Optional | none | Realized P&L  
-↳ position_mode | string | Optional | none | Position mode  
-↳ position_side | string | Optional | none | Position side  
-↳ create_time | string | Optional | none | Create time  
-↳ result | object | Required | none | Update time  
-↳ code | string | Required | none | Return code  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Push example
     
     
@@ -1978,6 +1945,36 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+↳ event | string | Required | none | Event  
+↳ payload | object | Required | none | Data set  
+↳ user_id | string | Optional | none | User ID  
+↳ transaction_id | string | Optional | none | Trade record ID  
+↳ order_id | string | Optional | none | Order ID  
+↳ text | string | Optional | none | User order ID  
+↳ symbol | string | Optional | none | Trading pair  
+↳ exchange_type | string | Optional | none | Exchange type  
+↳ business_type | string | Optional | none | Business type  
+↳ side | string | Optional | none | Buy/Sell direction  
+↳ qty | string | Optional | none | Trade quantity  
+↳ price | string | Optional | none | Trade price  
+↳ fee | string | Optional | none | Fee  
+↳ fee_coin | string | Optional | none | Fee coin  
+↳ fee_rate | string | Optional | none | Fee rate  
+↳ match_role | string | Optional | none | Trade role  
+↳ rpnl | string | Optional | none | Realized P&L  
+↳ position_mode | string | Optional | none | Position mode  
+↳ position_side | string | Optional | none | Position side  
+↳ create_time | string | Optional | none | Create time  
+↳ result | object | Required | none | Update time  
+↳ code | string | Required | none | Return code  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 #  Position Subscription/Unsubscription
 
 `position`
@@ -2005,6 +2002,19 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : position
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "subscribe",
+      "channel": "position",
+      "payload": [
+        "GATE_FUTURE_ETH_USDT"
+      ]
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2021,31 +2031,6 @@ unsubscribe
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Payload format:
-
-Response ResultName | Type | Required | Description  
----|---|---|---  
-`payload` | `Array[String]` | Optional | Trading pair list, `!all` means subscribe to all trading pairs  
-  
-You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
-
-WARNING
-
-Authentication required
-
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "subscribe",
-      "channel": "position",
-      "payload": [
-        "GATE_FUTURE_ETH_USDT"
-      ]
-    }
-    
-
 Response example
     
     
@@ -2064,41 +2049,20 @@ Response example
     }
     
 
+Payload format:
+
+Response ResultName | Type | Required | Description  
+---|---|---|---  
+`payload` | `Array[String]` | Optional | Trading pair list, `!all` means subscribe to all trading pairs  
+  
+You can subscribe/unsubscribe multiple times. Trading pairs subscribed earlier will not be overridden unless explicitly unsubscribed to.
+
+WARNING
+
+Authentication required
+
 ##  Server Push
 
-Push parameters:
-
-Name | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-↳ event | string | Required | none | Event  
-↳ payload | object | Required | none | Data set  
-↳ user_id | string | Optional | none | User ID  
-↳ position_id | string | Optional | none | Position ID  
-↳ symbol | string | Optional | none | Trading pair  
-↳ position_side | string | Optional | none | Position side  
-↳ initial_margin | string | Optional | none | Initial margin  
-↳ maintenance_margin | string | Optional | none | Maintenance margin  
-↳ position_qty | string | Optional | none | Position quantity  
-↳ position_value | string | Optional | none | Position value  
-↳ upnl | string | Optional | none | Unrealized P&L  
-↳ upnl_rate | string | Optional | none | Unrealized P&L rate  
-↳ entry_price | string | Optional | none | Position entry average price  
-↳ mark_price | string | Optional | none | Mark price  
-↳ leverage | string | Optional | none | Position leverage  
-↳ max_leverage | string | Optional | none | Maximum leverage  
-↳ risk_limit | string | Optional | none | Risk limit  
-↳ fee | string | Optional | none | Position fee  
-↳ funding_fee | string | Optional | none | Position funding fee  
-↳ funding_time | string | Optional | none | Position funding fee collection time  
-↳ create_time | string | Optional | none | Position create time  
-↳ update_time | string | Optional | none | Position update time  
-↳ closed_pnl | string | Optional | none | Realized P&L  
-↳ result | object | Required | none | Update time  
-↳ code | string | Required | none | Return code  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Push example
     
     
@@ -2137,6 +2101,39 @@ Push example
     }
     
 
+Push parameters:
+
+Server PushName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+↳ event | string | Required | none | Event  
+↳ payload | object | Required | none | Data set  
+↳ user_id | string | Optional | none | User ID  
+↳ position_id | string | Optional | none | Position ID  
+↳ symbol | string | Optional | none | Trading pair  
+↳ position_side | string | Optional | none | Position side  
+↳ initial_margin | string | Optional | none | Initial margin  
+↳ maintenance_margin | string | Optional | none | Maintenance margin  
+↳ position_qty | string | Optional | none | Position quantity  
+↳ position_value | string | Optional | none | Position value  
+↳ upnl | string | Optional | none | Unrealized P&L  
+↳ upnl_rate | string | Optional | none | Unrealized P&L rate  
+↳ entry_price | string | Optional | none | Position entry average price  
+↳ mark_price | string | Optional | none | Mark price  
+↳ leverage | string | Optional | none | Position leverage  
+↳ max_leverage | string | Optional | none | Maximum leverage  
+↳ risk_limit | string | Optional | none | Risk limit  
+↳ fee | string | Optional | none | Position fee  
+↳ funding_fee | string | Optional | none | Position funding fee  
+↳ funding_time | string | Optional | none | Position funding fee collection time  
+↳ create_time | string | Optional | none | Position create time  
+↳ update_time | string | Optional | none | Position update time  
+↳ closed_pnl | string | Optional | none | Realized P&L  
+↳ result | object | Required | none | Update time  
+↳ code | string | Required | none | Return code  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 #  Margin Position Subscription/Unsubscription
 
 `margin_position`
@@ -2164,6 +2161,19 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : margin_position
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "subscribe",
+      "channel": "margin_position",
+      "payload": [
+        "GATE_MARGIN_ETH_USDT"
+      ]
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2180,6 +2190,24 @@ unsubscribe
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
+Response example
+    
+    
+    {
+      "channel": "margin_position",
+      "event": "subscribe",
+      "payload": [
+        "GATE_MARGIN_ETH_USDT"
+      ],
+      "result": {
+        "code": "100000",
+        "message": "success"
+      },
+      "time": 1756434168,
+      "time_ms": 1756434168929
+    }
+    
+
 ##  Push Message Response
 
 Push Message ResponseName | Type | Required | Constraint | Description  
@@ -2213,37 +2241,6 @@ Push Message ResponseName | Type | Required | Constraint | Description
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "subscribe",
-      "channel": "margin_position",
-      "payload": [
-        "GATE_MARGIN_ETH_USDT"
-      ]
-    }
-    
-
-Response example
-    
-    
-    {
-      "channel": "margin_position",
-      "event": "subscribe",
-      "payload": [
-        "GATE_MARGIN_ETH_USDT"
-      ],
-      "result": {
-        "code": "100000",
-        "message": "success"
-      },
-      "time": 1756434168,
-      "time_ms": 1756434168929
-    }
-    
-
 Push message response example
     
     
@@ -2309,6 +2306,19 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : margin_interest
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "subscribe",
+      "channel": "margin_interest",
+      "payload": [
+        "GATE_MARGIN_ETH_USDT"
+      ]
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2325,6 +2335,24 @@ unsubscribe
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
+Response example
+    
+    
+    {
+      "channel": "margin_interest",
+      "event": "subscribe",
+      "payload": [
+        "GATE_MARGIN_ETH_USDT"
+      ],
+      "result": {
+        "code": "100000",
+        "message": "success"
+      },
+      "time": 1756434168,
+      "time_ms": 1756434168929
+    }
+    
+
 ##  Push Message Response
 
 Push Message ResponseName | Type | Required | Constraint | Description  
@@ -2350,37 +2378,6 @@ Push Message ResponseName | Type | Required | Constraint | Description
 ###  Details
 
 **» interest_type** : Interest deduction type PERIODIC_POSITION hourly position interest, PERIODIC_OPEN_ORDER hourly order interest, IMMEDIATE_OPEN_ORDER order interest
-
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "subscribe",
-      "channel": "margin_interest",
-      "payload": [
-        "GATE_MARGIN_ETH_USDT"
-      ]
-    }
-    
-
-Response example
-    
-    
-    {
-      "channel": "margin_interest",
-      "event": "subscribe",
-      "payload": [
-        "GATE_MARGIN_ETH_USDT"
-      ],
-      "result": {
-        "code": "100000",
-        "message": "success"
-      },
-      "time": 1756434168,
-      "time_ms": 1756434168929
-    }
-    
 
 Push message response example
     
@@ -2470,23 +2467,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **»» position_side** : Position side Not passed for single position. LONG, SHORT Enum values: LONG SHORT NONE
 
-##  Response Result
-
-Response ResultName | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-place_order  
-↳ event | string | Required | none | Event  
-api  
-↳ payload | object | Required | none | Place order request parameters  
-↳ order_id | string | Required | none | Order ID  
-↳ text | string | Required | none | Client ID  
-↳ result | object | Required | none | Place order result  
-↳ code | string | Required | none | none  
-↳ message | string | Required | none | none  
-↳ time | integer | Required | none | Timestamp (seconds)  
-↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
-  
 Request example
     
     
@@ -2508,6 +2488,23 @@ Request example
     }
     
 
+##  Response Result
+
+Response ResultName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+place_order  
+↳ event | string | Required | none | Event  
+api  
+↳ payload | object | Required | none | Place order request parameters  
+↳ order_id | string | Required | none | Order ID  
+↳ text | string | Required | none | Client ID  
+↳ result | object | Required | none | Place order result  
+↳ code | string | Required | none | none  
+↳ message | string | Required | none | none  
+↳ time | integer | Required | none | Timestamp (seconds)  
+↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
+  
 Response example
     
     
@@ -2552,6 +2549,17 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : cancel_order
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "api",
+      "channel": "cancel_order",
+      "payload": "2065058175870464"
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2566,17 +2574,6 @@ api
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "api",
-      "channel": "cancel_order",
-      "payload": "2065058175870464"
-    }
-    
-
 Response example
     
     
@@ -2621,6 +2618,22 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : update_order
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "api",
+      "channel": "update_order",
+      "payload": {
+        "order_id": "2065057827622656",
+        "qty": "0.01",
+        "symbol": "GATE_SPOT_BTC_USDT",
+        "price": "2801"
+      }
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2638,22 +2651,6 @@ api
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "api",
-      "channel": "update_order",
-      "payload": {
-        "order_id": "2065057827622656",
-        "qty": "0.01",
-        "symbol": "GATE_SPOT_BTC_USDT",
-        "price": "2801"
-      }
-    }
-    
-
 Response example
     
     
@@ -2700,6 +2697,20 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : set_leverage
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "api",
+      "channel": "set_leverage",
+      "payload": {
+        "symbol": "GATE_FUTURE_ETH_USDT",
+        "leverage": "5"
+      }
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2717,20 +2728,6 @@ api
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "api",
-      "channel": "set_leverage",
-      "payload": {
-        "symbol": "GATE_FUTURE_ETH_USDT",
-        "leverage": "5"
-      }
-    }
-    
-
 Response example
     
     
@@ -2777,6 +2774,20 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : set_margin_leverage
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "api",
+      "channel": "set_margin_leverage",
+      "payload": {
+        "symbol": "OKX_MARGIN_ADA_USDT",
+        "leverage": "5"
+      }
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2794,20 +2805,6 @@ api
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "api",
-      "channel": "set_margin_leverage",
-      "payload": {
-        "symbol": "OKX_MARGIN_ADA_USDT",
-        "leverage": "5"
-      }
-    }
-    
-
 Response example
     
     
@@ -2861,6 +2858,21 @@ Request ParametersName | Location | Type | Required | Description
 
 **»» exchange_type** : BINANCE/OKX/GATE/BYBIT/CROSSEX, when account mode is ISOLATED_EXCHANGE, exchange must be specified when modifying contract position mode
 
+Request example
+    
+    
+    {
+      "time": 1754272114,
+      "event": "api",
+      "channel": "update_accounts",
+      "payload": {
+        "account_mode":"ISOLATED_EXCHANGE",
+        "position_mode": "DUAL",
+        "exchange_type": "BINANCE"
+      }
+    }
+    
+
 ##  Response Result
 
 Response ResultName | Type | Required | Constraint | Description  
@@ -2879,21 +2891,6 @@ api
 ↳ time | integer | Required | none | Timestamp (seconds)  
 ↳ time_ms | integer | Required | none | Timestamp (milliseconds)  
   
-Request example
-    
-    
-    {
-      "time": 1754272114,
-      "event": "api",
-      "channel": "update_accounts",
-      "payload": {
-        "account_mode":"ISOLATED_EXCHANGE",
-        "position_mode": "DUAL",
-        "exchange_type": "BINANCE"
-      }
-    }
-    
-
 Response example
     
     
@@ -2941,18 +2938,6 @@ Request ParametersName | Location | Type | Required | Description
 
 **» channel** : close_position
 
-##  Response Result
-
-Response ResultName | Type | Required | Constraint | Description  
----|---|---|---|---  
-↳ channel | string | Required | none | Channel name  
-close_position  
-↳ event | string | Required | none | Event  
-api  
-↳ payload | object | Required | none | none  
-↳ order_id | string | Required | none | Order ID  
-↳ text | string | Required | none | Client ID  
-  
 Request example
     
     
@@ -2967,6 +2952,18 @@ Request example
     }
     
 
+##  Response Result
+
+Response ResultName | Type | Required | Constraint | Description  
+---|---|---|---|---  
+↳ channel | string | Required | none | Channel name  
+close_position  
+↳ event | string | Required | none | Event  
+api  
+↳ payload | object | Required | none | none  
+↳ order_id | string | Required | none | Order ID  
+↳ text | string | Required | none | Client ID  
+  
 Response example
     
     
@@ -2988,7 +2985,7 @@ Response example
 
 #  Response Codes
 
-Response Code | Description  
+Response CodesResponse Code | Description  
 ---|---  
 100000 | Success  
 100001 | Parameter missing or invalid  

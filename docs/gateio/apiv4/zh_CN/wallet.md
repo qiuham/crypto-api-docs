@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/wallet
 api_type: Account
-updated_at: 2026-05-27 20:18:09.322255
+updated_at: 2026-05-28 19:58:54.530342
 ---
 
 # Wallet
@@ -2642,47 +2642,42 @@ WARNING
 
 #  模型
 
-##  TradeFee
+##  DepositRecord
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-user_id | integer(int64) | false | none | 用户 ID  
-taker_fee | string | false | none | 现货 taker 费率  
-maker_fee | string | false | none | 现货 maker 费率  
-rpi_maker_fee | string | false | none | 现货 RPI MM maker 费率  
-gt_discount | boolean | false | none | 是否开启 GT 抵扣折扣  
-gt_taker_fee | string | false | none | GT 抵扣 taker 费率，未开启 GT 抵扣则为 0  
-gt_maker_fee | string | false | none | GT 抵扣 maker 费率，未开启 GT 抵扣则为 0  
-loan_fee | string | false | none | 杠杆理财的费率  
-point_type | string | false | none | 点卡类型，0 - 初版点卡，1 - 202009 启用的新点卡  
-futures_taker_fee | string | false | none | 合约 taker 费率  
-futures_maker_fee | string | false | none | 合约 maker 费率  
-futures_rpi_maker_fee | string | false | none | 合约 RPI MM maker 费率  
-delivery_taker_fee | string | false | none | 交割合约 taker 费率  
-delivery_maker_fee | string | false | none | 交割合约 maker 费率  
-debit_fee | integer | false | none | 费率抵扣类型 , 1 - GT抵扣 , 2 - 点卡抵扣 , 3 - VIP费率  
-rpi_mm | integer | false | none | RPI MM等级  
+id | string | false | 只读 | 交易记录 ID  
+txid | string | false | 只读 | 区块转账哈希记录  
+timestamp | string | false | 只读 | 操作时间  
+amount | string | true | none | 币的数量  
+currency | string | true | none | 币种名称  
+address | string | false | none | 提现地址。提现操作必填  
+memo | string | false | none | 转账memo等备注信息  
+status | string | false | 只读 | 交易状态  
+  
+\- BLOCKED: 拒绝充值  
+\- DEP_CREDITED: 充值到账，提现未解锁  
+\- DONE: 已经给账户增加资金  
+\- INVALID: 无效数据  
+\- MANUAL: 转人工审核  
+\- PEND: 处理中  
+\- REVIEW: 充值审核中(合规审查)  
+\- TRACK: 跟踪确认数，等待给用户添加资金(现货)  
+chain | string | true | none | 提现的链名称  
       
     
     {
-      "user_id": 0,
-      "taker_fee": "string",
-      "maker_fee": "string",
-      "rpi_maker_fee": "string",
-      "gt_discount": true,
-      "gt_taker_fee": "string",
-      "gt_maker_fee": "string",
-      "loan_fee": "string",
-      "point_type": "string",
-      "futures_taker_fee": "string",
-      "futures_maker_fee": "string",
-      "futures_rpi_maker_fee": "string",
-      "delivery_taker_fee": "string",
-      "delivery_maker_fee": "string",
-      "debit_fee": 0,
-      "rpi_mm": 0
+      "id": "string",
+      "txid": "string",
+      "timestamp": "string",
+      "amount": "string",
+      "currency": "string",
+      "address": "string",
+      "memo": "string",
+      "status": "string",
+      "chain": "string"
     }
     
     
@@ -2702,6 +2697,523 @@ status | string | false | none | 划转状态，PENDING - 处理中，SUCCESS - 
     {
       "tx_id": "string",
       "status": "string"
+    }
+    
+    
+
+##  SubAccountTransfer
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+sub_account | string | true | none | 子账号用户 ID  
+sub_account_type | string | false | none | 操作的子账号交易账户， spot - 现货账户， futures - 永续合约账户， delivery - 交割合约账户, options - 期权账户  
+currency | string | true | none | 转账货币名称  
+amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
+direction | string | true | none | 资金流向，to - 转入子账号, from - 转出子账号  
+client_order_id | string | false | none | 客户自定义ID，防止重复划转，字母（区分大小写）、数字、连字符'-'和下划线'_'的组合，可以是纯字母、纯数字且长度要在1-64位之间  
+      
+    
+    {
+      "sub_account": "string",
+      "sub_account_type": "spot",
+      "currency": "string",
+      "amount": "string",
+      "direction": "string",
+      "client_order_id": "string"
+    }
+    
+    
+
+##  UidPushOrder
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+id | integer(int64) | false | none | 订单 ID  
+push_uid | integer(int64) | false | none | 发起方用户ID  
+receive_uid | integer(int64) | false | none | 接收方用户ID  
+currency | string | false | none | 币种名称  
+amount | string | false | none | 转账数量  
+create_time | integer(int64) | false | none | 创建时间  
+status | string | false | none | 提现状态:  
+  
+\- CREATING: 创建中  
+\- PENDING: 等待接收 (请联系对方在 Gate 官网接受转帐)  
+\- CANCELLING: 撤销中  
+\- CANCELLED: 已撤销  
+\- REFUSING: 拒绝中  
+\- REFUSED: 已拒绝  
+\- RECEIVING: 正在接收  
+\- RECEIVED: 成功  
+message | string | false | none | PENDING原因提示  
+transaction_type | string | false | none | 订单类型  
+      
+    
+    {
+      "id": 0,
+      "push_uid": 0,
+      "receive_uid": 0,
+      "currency": "string",
+      "amount": "string",
+      "create_time": 0,
+      "status": "string",
+      "message": "string",
+      "transaction_type": "string"
+    }
+    
+    
+
+##  WithdrawalRecord
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+id | string | false | 只读 | 交易记录 ID  
+txid | string | false | 只读 | 区块转账哈希记录  
+block_number | string | false | 只读 | 区块编号  
+withdraw_order_id | string | false | none | 用户端订单编号,最长32个，输入内容只能包含数字、字母、下划线(_)、中划线(-) 或者点(.)  
+timestamp | string | false | 只读 | 操作时间  
+amount | string | true | none | 币的数量  
+fee | string | false | 只读 | 手续费  
+currency | string | true | none | 币种名称  
+address | string | false | none | 提现地址  
+type | string | false | none | 业务类型  
+fail_reason | string | false | none | 提现失败原因，当 status = CANCEL时有值，其余状态时为空  
+timestamp2 | string | false | none | 提现终态时间，即： 提现取消时间或提现成功时间  
+当 status = CANCEL 时，对应 取消时间  
+当 status = DONE 时，为提现成功时间  
+memo | string | false | none | 转账memo等备注信息  
+status | string | false | 只读 | 交易状态  
+  
+\- BCODE: 充值码操作  
+\- CANCEL: 已取消  
+\- CANCELPEND: 取消提现中  
+\- DONE: 完成  
+\- EXTPEND: 已经发送等待确认  
+\- FAIL: 链上失败等待确认  
+\- FVERIFY: 人脸审核处理中  
+\- LOCKED: 钱包侧锁单  
+\- MANUAL: 待人工审核  
+\- REJECT: 拒绝  
+\- REQUEST: 请求中  
+\- REVIEW: 审核中  
+chain | string | true | none | 提现的链名称  
+      
+    
+    {
+      "id": "string",
+      "txid": "string",
+      "block_number": "string",
+      "withdraw_order_id": "string",
+      "timestamp": "string",
+      "amount": "string",
+      "fee": "string",
+      "currency": "string",
+      "address": "string",
+      "type": "string",
+      "fail_reason": "string",
+      "timestamp2": "string",
+      "memo": "string",
+      "status": "string",
+      "chain": "string"
+    }
+    
+    
+
+##  SmallBalanceHistory
+
+_小额兑换币种_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+id | string | false | 只读 | 订单ID  
+currency | string | false | 只读 | 兑换币种  
+amount | string | false | 只读 | 兑换数量  
+gt_amount | string | false | 只读 | 被兑换到的 GT 数量  
+create_time | integer(int64) | false | 只读 | 兑换时间(秒)  
+      
+    
+    {
+      "id": "string",
+      "currency": "string",
+      "amount": "string",
+      "gt_amount": "string",
+      "create_time": 0
+    }
+    
+    
+
+##  SmallBalance
+
+_小额兑换币种_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | false | none | 币种  
+available_balance | string | false | none | 可转换金额  
+estimated_as_btc | string | false | none | 预计用 BTC 计价金额  
+convertible_to_gt | string | false | none | 预计可转换成多少 GT  
+      
+    
+    {
+      "currency": "string",
+      "available_balance": "string",
+      "estimated_as_btc": "string",
+      "convertible_to_gt": "string"
+    }
+    
+    
+
+##  TransactionID
+
+_TransactionID_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+tx_id | integer(int64) | false | none | 操作单号  
+      
+    
+    {
+      "tx_id": 0
+    }
+    
+    
+
+##  SubAccountToSubAccount
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | true | none | 转账货币名称  
+sub_account_type | string | false | none | 转出的子账号交易账户 (已弃用, 改用 `sub_account_from_type` 和 `sub_account_to_type`)  
+sub_account_from | string | true | none | 转出子账号用户 ID  
+sub_account_from_type | string | true | none | 转出的子账号交易账户, spot - 现货账户, futures - 永续合约账户, delivery - 交割合约账户  
+sub_account_to | string | true | none | 转入子账号用户 ID  
+sub_account_to_type | string | true | none | 转入的子账号交易账户, spot - 现货账户, futures - 永续合约账户, delivery - 交割合约账户  
+amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
+      
+    
+    {
+      "currency": "string",
+      "sub_account_type": "string",
+      "sub_account_from": "string",
+      "sub_account_from_type": "string",
+      "sub_account_to": "string",
+      "sub_account_to_type": "string",
+      "amount": "string"
+    }
+    
+    
+
+##  Transfer
+
+*转入转出账户列表:
+
+  * `spot`: 现货账户
+  * `margin`: 杠杆账户
+  * `futures`: 永续合约账户
+  * `delivery`: 交割合约账户
+  * `options`: 期权账户
+
+  * 
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | true | none | 转账货币名称。关联合约账户时，currency 可以设置的值为`POINT`(即点卡) 和支持的结算货币(如 `BTC`, `USDT`)  
+from | string | true | none | 转出账户  
+to | string | true | none | 转入账户  
+amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
+currency_pair | string | false | none | 杠杆交易对。转入或转出杠杆账户时必填  
+settle | string | false | none | 合约结算币种。 转入转出合约账户时必填  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+from | spot  
+from | margin  
+from | futures  
+from | delivery  
+from | options  
+to | spot  
+to | margin  
+to | futures  
+to | delivery  
+to | options  
+      
+    
+    {
+      "currency": "string",
+      "from": "spot",
+      "to": "spot",
+      "amount": "string",
+      "currency_pair": "string",
+      "settle": "string"
+    }
+    
+    
+
+##  ConvertSmallBalance
+
+_小额兑换币种_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | array | false | none | 需要被兑换的币种  
+is_all | boolean | false | none | 是否全部兑换  
+      
+    
+    {
+      "currency": [
+        "string"
+      ],
+      "is_all": true
+    }
+    
+    
+
+##  SubAccountBalance
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+uid | string | false | none | 用户 ID  
+available | object | false | none | 币种可用余额  
+» **additionalProperties** | string | false | none | none  
+locking | object | false | none | 币种锁定金额  
+» **additionalProperties** | string | false | none | none  
+      
+    
+    {
+      "uid": "string",
+      "available": {
+        "property1": "string",
+        "property2": "string"
+      },
+      "locking": {
+        "property1": "string",
+        "property2": "string"
+      }
+    }
+    
+    
+
+##  SavedAddress
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | false | none | 币种  
+chain | string | false | none | 链名称  
+address | string | false | none | 地址  
+name | string | false | none | 名称  
+tag | string | false | none | 标签  
+verified | string | false | none | 是否通过验证 0-未验证, 1-已验正  
+      
+    
+    {
+      "currency": "string",
+      "chain": "string",
+      "address": "string",
+      "name": "string",
+      "tag": "string",
+      "verified": "string"
+    }
+    
+    
+
+##  TotalBalance
+
+_用户总资产信息_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+total | object | false | none | 换算成目标币种的账户总额  
+» amount | string | false | none | 账户总额数字  
+» currency | string | false | none | 币种  
+» unrealised_pnl | string | false | none | 未实现盈亏总和,这个字段只会在futures,options,delivery,total 账户中出现  
+» borrowed | string | false | none | 杠杆借贷总和,这个字段只会在margin,cross_margin账户中出现  
+details | object | false | none | 各账户总额  
+  
+\- cross_margin: 全仓杠杆账户  
+\- spot: 现货账户  
+\- finance: 金融账户  
+\- margin: 杠杆账户  
+\- quant: 量化账户  
+\- futures: 永续合约账户  
+\- delivery: 交割合约账户  
+\- warrant: warrant 账户  
+\- cbbc: 牛熊证账户  
+\- meme_box: alpha账户  
+\- options: 期权账户  
+\- payment: 支付账户  
+» **additionalProperties** | TotalBalance/properties/total | false | none | 换算成目标币种的账户总额  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+currency | BTC  
+currency | CNY  
+currency | USD  
+currency | USDT  
+      
+    
+    {
+      "total": {
+        "amount": "string",
+        "currency": "BTC",
+        "unrealised_pnl": "string",
+        "borrowed": "string"
+      },
+      "details": {
+        "property1": {
+          "amount": "string",
+          "currency": "BTC",
+          "unrealised_pnl": "string",
+          "borrowed": "string"
+        },
+        "property2": {
+          "amount": "string",
+          "currency": "BTC",
+          "unrealised_pnl": "string",
+          "borrowed": "string"
+        }
+      }
+    }
+    
+    
+
+##  SubAccountTransferRecordItem
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+timest | string | false | 只读 | 转账时间戳  
+uid | string | false | 只读 | 主账号用户 ID  
+sub_account | string | true | none | 子账号用户 ID  
+sub_account_type | string | false | none | 操作的子账号交易账户， spot - 现货账户， futures - 永续合约账户， delivery - 交割合约账户, options - 期权账户  
+currency | string | true | none | 转账货币名称  
+amount | string | true | none | 划转金额  
+direction | string | true | none | 资金流向，to - 转入子账号, from - 转出子账号  
+source | string | false | 只读 | 转账操作来源  
+client_order_id | string | false | none | 客户自定义ID，防止重复划转，字母（区分大小写）、数字、连字符'-'和下划线'_'的组合，可以是纯字母、纯数字且长度要在1-64位之间  
+status | string | false | none | 子账户划转记录状态，目前只有success  
+      
+    
+    {
+      "timest": "string",
+      "uid": "string",
+      "sub_account": "string",
+      "sub_account_type": "spot",
+      "currency": "string",
+      "amount": "string",
+      "direction": "string",
+      "source": "string",
+      "client_order_id": "string",
+      "status": "string"
+    }
+    
+    
+
+##  DepositAddress
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | true | none | 币种信息  
+address | string | true | none | 充值地址  
+min_deposit_amount | string | false | none | 最小充值额度  
+multichain_addresses | array | false | none | none  
+» MultiChainAddressItem | object | false | none | none  
+»» chain | string | false | none | 链的名称  
+»» address | string | false | none | 充值地址  
+»» payment_id | string | false | none | 部分币种充值时必须填写的备注  
+»» payment_name | string | false | none | 备注类型, `Tag` 或 `Memo`  
+»» obtain_failed | integer | false | none | 地址是否获取成功，0 表示成功，1 表示失败，可能需要重新获取  
+»» min_confirms | integer | false | none | 最小确认数  
+      
+    
+    {
+      "currency": "string",
+      "address": "string",
+      "min_deposit_amount": "string",
+      "multichain_addresses": [
+        {
+          "chain": "string",
+          "address": "string",
+          "payment_id": "string",
+          "payment_name": "string",
+          "obtain_failed": 0,
+          "min_confirms": 0
+        }
+      ]
+    }
+    
+    
+
+##  WithdrawStatus
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+currency | string | false | none | 币种  
+name | string | false | none | 币种名称  
+name_cn | string | false | none | 币种中文名称  
+deposit | string | false | none | 充值手续费  
+withdraw_percent | string | false | none | 提现手续费率百分比  
+withdraw_fix | string | false | none | 固定提现手续费用  
+withdraw_day_limit | string | false | none | 日提现额度  
+withdraw_amount_mini | string | false | none | 最少提现额度  
+withdraw_day_limit_remain | string | false | none | 剩余日提现额度  
+withdraw_eachtime_limit | string | false | none | 单次最多提现额度  
+withdraw_fix_on_chains | object | false | none | 多链的固定提现手续费用  
+» **additionalProperties** | string | false | none | none  
+withdraw_percent_on_chains | object | false | none | 多链的百分比提现手续费用  
+» **additionalProperties** | string | false | none | none  
+      
+    
+    {
+      "currency": "string",
+      "name": "string",
+      "name_cn": "string",
+      "deposit": "string",
+      "withdraw_percent": "string",
+      "withdraw_fix": "string",
+      "withdraw_day_limit": "string",
+      "withdraw_amount_mini": "string",
+      "withdraw_day_limit_remain": "string",
+      "withdraw_eachtime_limit": "string",
+      "withdraw_fix_on_chains": {
+        "property1": "string",
+        "property2": "string"
+      },
+      "withdraw_percent_on_chains": {
+        "property1": "string",
+        "property2": "string"
+      }
     }
     
     
@@ -2824,191 +3336,75 @@ available | object | false | none | 各结算账户信息
     
     
 
-##  SubAccountTransferRecordItem
+##  CurrencyChain
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-timest | string | false | 只读 | 转账时间戳  
-uid | string | false | 只读 | 主账号用户 ID  
-sub_account | string | true | none | 子账号用户 ID  
-sub_account_type | string | false | none | 操作的子账号交易账户， spot - 现货账户， futures - 永续合约账户， delivery - 交割合约账户, options - 期权账户  
-currency | string | true | none | 转账货币名称  
-amount | string | true | none | 划转金额  
-direction | string | true | none | 资金流向，to - 转入子账号, from - 转出子账号  
-source | string | false | 只读 | 转账操作来源  
-client_order_id | string | false | none | 客户自定义ID，防止重复划转，字母（区分大小写）、数字、连字符'-'和下划线'_'的组合，可以是纯字母、纯数字且长度要在1-64位之间  
-status | string | false | none | 子账户划转记录状态，目前只有success  
+chain | string | false | none | 链名称  
+name_cn | string | false | none | 链的中文名称  
+name_en | string | false | none | 链的英文名称  
+contract_address | string | false | none | 币种智能合约地址，如果没有地址则为空字串  
+is_disabled | integer(int32) | false | none | 是否禁用，0 表示未禁用  
+is_deposit_disabled | integer(int32) | false | none | 充值是否禁用，0 表示未禁用  
+is_withdraw_disabled | integer(int32) | false | none | 提现是否禁用，0 表示未禁用  
+decimal | string | false | none | 提币精度  
+is_tag | integer | false | none | 是否包含tag  
       
     
     {
-      "timest": "string",
-      "uid": "string",
-      "sub_account": "string",
-      "sub_account_type": "spot",
-      "currency": "string",
-      "amount": "string",
-      "direction": "string",
-      "source": "string",
-      "client_order_id": "string",
-      "status": "string"
+      "chain": "string",
+      "name_cn": "string",
+      "name_en": "string",
+      "contract_address": "string",
+      "is_disabled": 0,
+      "is_deposit_disabled": 0,
+      "is_withdraw_disabled": 0,
+      "decimal": "string",
+      "is_tag": 0
     }
     
     
 
-##  DepositAddress
+##  SubAccountMarginBalance
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-currency | string | true | none | 币种信息  
-address | string | true | none | 充值地址  
-min_deposit_amount | string | false | none | 最小充值额度  
-multichain_addresses | array | false | none | none  
-» MultiChainAddressItem | object | false | none | none  
-»» chain | string | false | none | 链的名称  
-»» address | string | false | none | 充值地址  
-»» payment_id | string | false | none | 部分币种充值时必须填写的备注  
-»» payment_name | string | false | none | 备注类型, `Tag` 或 `Memo`  
-»» obtain_failed | integer | false | none | 地址是否获取成功，0 表示成功，1 表示失败，可能需要重新获取  
-»» min_confirms | integer | false | none | 最小确认数  
+uid | string | false | none | 用户 ID  
+available | array | false | none | 账户余额信息  
+» _None_ | object | false | none | 某交易对的杠杆账户信息，`base` 对应交易货币的账户信息，`quote` 对应计价货币的账户信息  
+»» currency_pair | string | false | none | 交易对  
+»» account_type | string | false | none | 账户类型。mmr-维持保证金率账户，inactive - 市场未激活  
+»» leverage | string | false | none | 用户当前市场杠杆倍数  
+»» locked | boolean | false | none | 账户是否被锁定  
+»» risk | string | false | none | 已废弃  
+»» mmr | string | false | none | 该逐仓杠杆账户当前维持保证金率  
+»» base | object | false | none | 货币账户信息  
+»»» currency | string | false | none | 货币名称  
+»»» available | string | false | none | 可用于杠杆交易的额度，available = 保证金 + borrowed  
+»»» locked | string | false | none | 冻结资金，如已经放在杠杆市场里挂单交易的数额  
+»»» borrowed | string | false | none | 借入资金  
+»»» interest | string | false | none | 未还利息  
+»» quote | SubAccountMarginBalance/properties/available/items/properties/base | false | none | 货币账户信息  
       
     
     {
-      "currency": "string",
-      "address": "string",
-      "min_deposit_amount": "string",
-      "multichain_addresses": [
+      "uid": "string",
+      "available": [
         {
-          "chain": "string",
-          "address": "string",
-          "payment_id": "string",
-          "payment_name": "string",
-          "obtain_failed": 0,
-          "min_confirms": 0
+          "currency_pair": "string",
+          "account_type": "string",
+          "leverage": "string",
+          "locked": true,
+          "risk": "string",
+          "mmr": "string",
+          "base": {},
+          "quote": {}
         }
       ]
-    }
-    
-    
-
-##  ConvertSmallBalance
-
-_小额兑换币种_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | array | false | none | 需要被兑换的币种  
-is_all | boolean | false | none | 是否全部兑换  
-      
-    
-    {
-      "currency": [
-        "string"
-      ],
-      "is_all": true
-    }
-    
-    
-
-##  WithdrawalRecord
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | string | false | 只读 | 交易记录 ID  
-txid | string | false | 只读 | 区块转账哈希记录  
-block_number | string | false | 只读 | 区块编号  
-withdraw_order_id | string | false | none | 用户端订单编号,最长32个，输入内容只能包含数字、字母、下划线(_)、中划线(-) 或者点(.)  
-timestamp | string | false | 只读 | 操作时间  
-amount | string | true | none | 币的数量  
-fee | string | false | 只读 | 手续费  
-currency | string | true | none | 币种名称  
-address | string | false | none | 提现地址  
-type | string | false | none | 业务类型  
-fail_reason | string | false | none | 提现失败原因，当 status = CANCEL时有值，其余状态时为空  
-timestamp2 | string | false | none | 提现终态时间，即： 提现取消时间或提现成功时间  
-当 status = CANCEL 时，对应 取消时间  
-当 status = DONE 时，为提现成功时间  
-memo | string | false | none | 转账memo等备注信息  
-status | string | false | 只读 | 交易状态  
-  
-\- BCODE: 充值码操作  
-\- CANCEL: 已取消  
-\- CANCELPEND: 取消提现中  
-\- DONE: 完成  
-\- EXTPEND: 已经发送等待确认  
-\- FAIL: 链上失败等待确认  
-\- FVERIFY: 人脸审核处理中  
-\- LOCKED: 钱包侧锁单  
-\- MANUAL: 待人工审核  
-\- REJECT: 拒绝  
-\- REQUEST: 请求中  
-\- REVIEW: 审核中  
-chain | string | true | none | 提现的链名称  
-      
-    
-    {
-      "id": "string",
-      "txid": "string",
-      "block_number": "string",
-      "withdraw_order_id": "string",
-      "timestamp": "string",
-      "amount": "string",
-      "fee": "string",
-      "currency": "string",
-      "address": "string",
-      "type": "string",
-      "fail_reason": "string",
-      "timestamp2": "string",
-      "memo": "string",
-      "status": "string",
-      "chain": "string"
-    }
-    
-    
-
-##  DepositRecord
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | string | false | 只读 | 交易记录 ID  
-txid | string | false | 只读 | 区块转账哈希记录  
-timestamp | string | false | 只读 | 操作时间  
-amount | string | true | none | 币的数量  
-currency | string | true | none | 币种名称  
-address | string | false | none | 提现地址。提现操作必填  
-memo | string | false | none | 转账memo等备注信息  
-status | string | false | 只读 | 交易状态  
-  
-\- BLOCKED: 拒绝充值  
-\- DEP_CREDITED: 充值到账，提现未解锁  
-\- DONE: 已经给账户增加资金  
-\- INVALID: 无效数据  
-\- MANUAL: 转人工审核  
-\- PEND: 处理中  
-\- REVIEW: 充值审核中(合规审查)  
-\- TRACK: 跟踪确认数，等待给用户添加资金(现货)  
-chain | string | true | none | 提现的链名称  
-      
-    
-    {
-      "id": "string",
-      "txid": "string",
-      "timestamp": "string",
-      "amount": "string",
-      "currency": "string",
-      "address": "string",
-      "memo": "string",
-      "status": "string",
-      "chain": "string"
     }
     
     
@@ -3071,441 +3467,45 @@ available | object | false | none | none
     
     
 
-##  TransactionID
-
-_TransactionID_
+##  TradeFee
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-tx_id | integer(int64) | false | none | 操作单号  
+user_id | integer(int64) | false | none | 用户 ID  
+taker_fee | string | false | none | 现货 taker 费率  
+maker_fee | string | false | none | 现货 maker 费率  
+rpi_maker_fee | string | false | none | 现货 RPI MM maker 费率  
+gt_discount | boolean | false | none | 是否开启 GT 抵扣折扣  
+gt_taker_fee | string | false | none | GT 抵扣 taker 费率，未开启 GT 抵扣则为 0  
+gt_maker_fee | string | false | none | GT 抵扣 maker 费率，未开启 GT 抵扣则为 0  
+loan_fee | string | false | none | 杠杆理财的费率  
+point_type | string | false | none | 点卡类型，0 - 初版点卡，1 - 202009 启用的新点卡  
+futures_taker_fee | string | false | none | 合约 taker 费率  
+futures_maker_fee | string | false | none | 合约 maker 费率  
+futures_rpi_maker_fee | string | false | none | 合约 RPI MM maker 费率  
+delivery_taker_fee | string | false | none | 交割合约 taker 费率  
+delivery_maker_fee | string | false | none | 交割合约 maker 费率  
+debit_fee | integer | false | none | 费率抵扣类型 , 1 - GT抵扣 , 2 - 点卡抵扣 , 3 - VIP费率  
+rpi_mm | integer | false | none | RPI MM等级  
       
     
     {
-      "tx_id": 0
-    }
-    
-    
-
-##  Transfer
-
-*转入转出账户列表:
-
-  * `spot`: 现货账户
-  * `margin`: 杠杆账户
-  * `futures`: 永续合约账户
-  * `delivery`: 交割合约账户
-  * `options`: 期权账户
-
-  * 
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | string | true | none | 转账货币名称。关联合约账户时，currency 可以设置的值为`POINT`(即点卡) 和支持的结算货币(如 `BTC`, `USDT`)  
-from | string | true | none | 转出账户  
-to | string | true | none | 转入账户  
-amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
-currency_pair | string | false | none | 杠杆交易对。转入或转出杠杆账户时必填  
-settle | string | false | none | 合约结算币种。 转入转出合约账户时必填  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-from | spot  
-from | margin  
-from | futures  
-from | delivery  
-from | options  
-to | spot  
-to | margin  
-to | futures  
-to | delivery  
-to | options  
-      
-    
-    {
-      "currency": "string",
-      "from": "spot",
-      "to": "spot",
-      "amount": "string",
-      "currency_pair": "string",
-      "settle": "string"
-    }
-    
-    
-
-##  WithdrawStatus
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | string | false | none | 币种  
-name | string | false | none | 币种名称  
-name_cn | string | false | none | 币种中文名称  
-deposit | string | false | none | 充值手续费  
-withdraw_percent | string | false | none | 提现手续费率百分比  
-withdraw_fix | string | false | none | 固定提现手续费用  
-withdraw_day_limit | string | false | none | 日提现额度  
-withdraw_amount_mini | string | false | none | 最少提现额度  
-withdraw_day_limit_remain | string | false | none | 剩余日提现额度  
-withdraw_eachtime_limit | string | false | none | 单次最多提现额度  
-withdraw_fix_on_chains | object | false | none | 多链的固定提现手续费用  
-» **additionalProperties** | string | false | none | none  
-withdraw_percent_on_chains | object | false | none | 多链的百分比提现手续费用  
-» **additionalProperties** | string | false | none | none  
-      
-    
-    {
-      "currency": "string",
-      "name": "string",
-      "name_cn": "string",
-      "deposit": "string",
-      "withdraw_percent": "string",
-      "withdraw_fix": "string",
-      "withdraw_day_limit": "string",
-      "withdraw_amount_mini": "string",
-      "withdraw_day_limit_remain": "string",
-      "withdraw_eachtime_limit": "string",
-      "withdraw_fix_on_chains": {
-        "property1": "string",
-        "property2": "string"
-      },
-      "withdraw_percent_on_chains": {
-        "property1": "string",
-        "property2": "string"
-      }
-    }
-    
-    
-
-##  SmallBalanceHistory
-
-_小额兑换币种_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | string | false | 只读 | 订单ID  
-currency | string | false | 只读 | 兑换币种  
-amount | string | false | 只读 | 兑换数量  
-gt_amount | string | false | 只读 | 被兑换到的 GT 数量  
-create_time | integer(int64) | false | 只读 | 兑换时间(秒)  
-      
-    
-    {
-      "id": "string",
-      "currency": "string",
-      "amount": "string",
-      "gt_amount": "string",
-      "create_time": 0
-    }
-    
-    
-
-##  SmallBalance
-
-_小额兑换币种_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | string | false | none | 币种  
-available_balance | string | false | none | 可转换金额  
-estimated_as_btc | string | false | none | 预计用 BTC 计价金额  
-convertible_to_gt | string | false | none | 预计可转换成多少 GT  
-      
-    
-    {
-      "currency": "string",
-      "available_balance": "string",
-      "estimated_as_btc": "string",
-      "convertible_to_gt": "string"
-    }
-    
-    
-
-##  TotalBalance
-
-_用户总资产信息_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-total | object | false | none | 换算成目标币种的账户总额  
-» amount | string | false | none | 账户总额数字  
-» currency | string | false | none | 币种  
-» unrealised_pnl | string | false | none | 未实现盈亏总和,这个字段只会在futures,options,delivery,total 账户中出现  
-» borrowed | string | false | none | 杠杆借贷总和,这个字段只会在margin,cross_margin账户中出现  
-details | object | false | none | 各账户总额  
-  
-\- cross_margin: 全仓杠杆账户  
-\- spot: 现货账户  
-\- finance: 金融账户  
-\- margin: 杠杆账户  
-\- quant: 量化账户  
-\- futures: 永续合约账户  
-\- delivery: 交割合约账户  
-\- warrant: warrant 账户  
-\- cbbc: 牛熊证账户  
-\- meme_box: alpha账户  
-\- options: 期权账户  
-\- payment: 支付账户  
-» **additionalProperties** | TotalBalance/properties/total | false | none | 换算成目标币种的账户总额  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-currency | BTC  
-currency | CNY  
-currency | USD  
-currency | USDT  
-      
-    
-    {
-      "total": {
-        "amount": "string",
-        "currency": "BTC",
-        "unrealised_pnl": "string",
-        "borrowed": "string"
-      },
-      "details": {
-        "property1": {
-          "amount": "string",
-          "currency": "BTC",
-          "unrealised_pnl": "string",
-          "borrowed": "string"
-        },
-        "property2": {
-          "amount": "string",
-          "currency": "BTC",
-          "unrealised_pnl": "string",
-          "borrowed": "string"
-        }
-      }
-    }
-    
-    
-
-##  SubAccountMarginBalance
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-uid | string | false | none | 用户 ID  
-available | array | false | none | 账户余额信息  
-» _None_ | object | false | none | 某交易对的杠杆账户信息，`base` 对应交易货币的账户信息，`quote` 对应计价货币的账户信息  
-»» currency_pair | string | false | none | 交易对  
-»» account_type | string | false | none | 账户类型。mmr-维持保证金率账户，inactive - 市场未激活  
-»» leverage | string | false | none | 用户当前市场杠杆倍数  
-»» locked | boolean | false | none | 账户是否被锁定  
-»» risk | string | false | none | 已废弃  
-»» mmr | string | false | none | 该逐仓杠杆账户当前维持保证金率  
-»» base | object | false | none | 货币账户信息  
-»»» currency | string | false | none | 货币名称  
-»»» available | string | false | none | 可用于杠杆交易的额度，available = 保证金 + borrowed  
-»»» locked | string | false | none | 冻结资金，如已经放在杠杆市场里挂单交易的数额  
-»»» borrowed | string | false | none | 借入资金  
-»»» interest | string | false | none | 未还利息  
-»» quote | SubAccountMarginBalance/properties/available/items/properties/base | false | none | 货币账户信息  
-      
-    
-    {
-      "uid": "string",
-      "available": [
-        {
-          "currency_pair": "string",
-          "account_type": "string",
-          "leverage": "string",
-          "locked": true,
-          "risk": "string",
-          "mmr": "string",
-          "base": {},
-          "quote": {}
-        }
-      ]
-    }
-    
-    
-
-##  UidPushOrder
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | integer(int64) | false | none | 订单 ID  
-push_uid | integer(int64) | false | none | 发起方用户ID  
-receive_uid | integer(int64) | false | none | 接收方用户ID  
-currency | string | false | none | 币种名称  
-amount | string | false | none | 转账数量  
-create_time | integer(int64) | false | none | 创建时间  
-status | string | false | none | 提现状态:  
-  
-\- CREATING: 创建中  
-\- PENDING: 等待接收 (请联系对方在 Gate 官网接受转帐)  
-\- CANCELLING: 撤销中  
-\- CANCELLED: 已撤销  
-\- REFUSING: 拒绝中  
-\- REFUSED: 已拒绝  
-\- RECEIVING: 正在接收  
-\- RECEIVED: 成功  
-message | string | false | none | PENDING原因提示  
-transaction_type | string | false | none | 订单类型  
-      
-    
-    {
-      "id": 0,
-      "push_uid": 0,
-      "receive_uid": 0,
-      "currency": "string",
-      "amount": "string",
-      "create_time": 0,
-      "status": "string",
-      "message": "string",
-      "transaction_type": "string"
-    }
-    
-    
-
-##  SubAccountBalance
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-uid | string | false | none | 用户 ID  
-available | object | false | none | 币种可用余额  
-» **additionalProperties** | string | false | none | none  
-locking | object | false | none | 币种锁定金额  
-» **additionalProperties** | string | false | none | none  
-      
-    
-    {
-      "uid": "string",
-      "available": {
-        "property1": "string",
-        "property2": "string"
-      },
-      "locking": {
-        "property1": "string",
-        "property2": "string"
-      }
-    }
-    
-    
-
-##  SubAccountTransfer
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-sub_account | string | true | none | 子账号用户 ID  
-sub_account_type | string | false | none | 操作的子账号交易账户， spot - 现货账户， futures - 永续合约账户， delivery - 交割合约账户, options - 期权账户  
-currency | string | true | none | 转账货币名称  
-amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
-direction | string | true | none | 资金流向，to - 转入子账号, from - 转出子账号  
-client_order_id | string | false | none | 客户自定义ID，防止重复划转，字母（区分大小写）、数字、连字符'-'和下划线'_'的组合，可以是纯字母、纯数字且长度要在1-64位之间  
-      
-    
-    {
-      "sub_account": "string",
-      "sub_account_type": "spot",
-      "currency": "string",
-      "amount": "string",
-      "direction": "string",
-      "client_order_id": "string"
-    }
-    
-    
-
-##  SavedAddress
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | string | false | none | 币种  
-chain | string | false | none | 链名称  
-address | string | false | none | 地址  
-name | string | false | none | 名称  
-tag | string | false | none | 标签  
-verified | string | false | none | 是否通过验证 0-未验证, 1-已验正  
-      
-    
-    {
-      "currency": "string",
-      "chain": "string",
-      "address": "string",
-      "name": "string",
-      "tag": "string",
-      "verified": "string"
-    }
-    
-    
-
-##  SubAccountToSubAccount
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency | string | true | none | 转账货币名称  
-sub_account_type | string | false | none | 转出的子账号交易账户 (已弃用, 改用 `sub_account_from_type` 和 `sub_account_to_type`)  
-sub_account_from | string | true | none | 转出子账号用户 ID  
-sub_account_from_type | string | true | none | 转出的子账号交易账户, spot - 现货账户, futures - 永续合约账户, delivery - 交割合约账户  
-sub_account_to | string | true | none | 转入子账号用户 ID  
-sub_account_to_type | string | true | none | 转入的子账号交易账户, spot - 现货账户, futures - 永续合约账户, delivery - 交割合约账户  
-amount | string | true | none | 划转金额，最多支持8位小数，必须大于0  
-      
-    
-    {
-      "currency": "string",
-      "sub_account_type": "string",
-      "sub_account_from": "string",
-      "sub_account_from_type": "string",
-      "sub_account_to": "string",
-      "sub_account_to_type": "string",
-      "amount": "string"
-    }
-    
-    
-
-##  CurrencyChain
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-chain | string | false | none | 链名称  
-name_cn | string | false | none | 链的中文名称  
-name_en | string | false | none | 链的英文名称  
-contract_address | string | false | none | 币种智能合约地址，如果没有地址则为空字串  
-is_disabled | integer(int32) | false | none | 是否禁用，0 表示未禁用  
-is_deposit_disabled | integer(int32) | false | none | 充值是否禁用，0 表示未禁用  
-is_withdraw_disabled | integer(int32) | false | none | 提现是否禁用，0 表示未禁用  
-decimal | string | false | none | 提币精度  
-is_tag | integer | false | none | 是否包含tag  
-      
-    
-    {
-      "chain": "string",
-      "name_cn": "string",
-      "name_en": "string",
-      "contract_address": "string",
-      "is_disabled": 0,
-      "is_deposit_disabled": 0,
-      "is_withdraw_disabled": 0,
-      "decimal": "string",
-      "is_tag": 0
+      "user_id": 0,
+      "taker_fee": "string",
+      "maker_fee": "string",
+      "rpi_maker_fee": "string",
+      "gt_discount": true,
+      "gt_taker_fee": "string",
+      "gt_maker_fee": "string",
+      "loan_fee": "string",
+      "point_type": "string",
+      "futures_taker_fee": "string",
+      "futures_maker_fee": "string",
+      "futures_rpi_maker_fee": "string",
+      "delivery_taker_fee": "string",
+      "delivery_maker_fee": "string",
+      "debit_fee": 0,
+      "rpi_mm": 0
     }

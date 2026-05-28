@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/unified
 api_type: Account
-updated_at: 2026-05-27 20:16:16.622605
+updated_at: 2026-05-28 19:58:08.641287
 ---
 
 # Unified
@@ -2889,283 +2889,33 @@ Code samples
 
 #  Schemas
 
-##  UnifiedLeverageConfig
+##  UnifiedLoanRecord
+
+_Borrowing Records_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-current_leverage | string | Optional | none | Current leverage ratio  
-min_leverage | string | Optional | none | Minimum adjustable leverage ratio  
-max_leverage | string | Optional | none | Maximum adjustable leverage ratio  
-debit | string | Optional | none | Current liabilities  
-available_margin | string | Optional | none | Available Margin  
-borrowable | string | Optional | none | Maximum borrowable amount at current leverage  
-except_leverage_borrowable | string | Optional | none | Maximum borrowable from margin and maximum borrowable from Earn, whichever is smaller  
+id | integer(int64) | Optional | read-only | id  
+type | string | Optional | read-only | Type: `borrow` \- borrow, `repay` \- repay  
+repayment_type | string | Optional | read-only | Repayment type: none - No repayment type, manual_repay - Manual repayment, auto_repay - Automatic repayment, cancel_auto_repay - Automatic repayment after order cancellation, different_currencies_repayment - Cross-currency repayment  
+borrow_type | string | Optional | none | Borrowing type, returned when querying loan records: manual_borrow - Manual borrowing, auto_borrow - Automatic borrowing  
+currency_pair | string | Optional | read-only | Currency pair  
+currency | string | Optional | read-only | Currency  
+amount | string | Optional | read-only | Borrow or repayment amount  
+create_time | integer(int64) | Optional | read-only | Created time  
       
     
     {
-      "current_leverage": "string",
-      "min_leverage": "string",
-      "max_leverage": "string",
-      "debit": "string",
-      "available_margin": "string",
-      "borrowable": "string",
-      "except_leverage_borrowable": "string"
-    }
-    
-    
-
-##  UnifiedCurrency
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-name | string | Optional | none | Currency name  
-prec | string | Optional | none | Currency precision  
-min_borrow_amount | string | Optional | none | Minimum borrowable limit, in currency units  
-user_max_borrow_amount | string | Optional | none | User's maximum borrowable limit, in USDT  
-total_max_borrow_amount | string | Optional | none | Platform's maximum borrowable limit, in USDT  
-loan_status | string | Optional | none | Lending status  
-\- `disable` : Lending prohibited  
-\- `enable` : Lending supported  
-      
-    
-    {
-      "name": "string",
-      "prec": "string",
-      "min_borrow_amount": "string",
-      "user_max_borrow_amount": "string",
-      "total_max_borrow_amount": "string",
-      "loan_status": "string"
-    }
-    
-    
-
-##  UnifiedTransferable
-
-_UnifiedTransferable_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency detail  
-amount | string | Optional | none | Maximum transferable amount  
-      
-    
-    {
+      "id": 0,
+      "type": "string",
+      "repayment_type": "string",
+      "borrow_type": "string",
+      "currency_pair": "string",
       "currency": "string",
-      "amount": "string"
-    }
-    
-    
-
-##  EstimateRate
-
-_Estimate current hourly lending rates, returned by currency_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-**additionalProperties** | string | Optional | none | none  
-      
-    
-    {
-      "property1": "string",
-      "property2": "string"
-    }
-    
-    
-
-##  QuickEstimatedRepayment
-
-_QuickEstimatedRepayment_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-debt_currencies | array | Optional | none | Liability currencies  
-↳ UnifiedDebtCurrencies | object | Optional | none | none  
-↳ currency | string | Optional | none | Currency name  
-↳ debt_amount | string | Optional | none | Debt Quantity  
-↳ estimated_usd | string | Optional | none | Estimated USD value  
-↳ borrowed | string | Optional | none | Borrowed amount  
-↳ neg_balance | string | Optional | none | Negative balance  
-↳ available_currencies | array | Optional | none | Currencies available for repayment  
-↳ UnifiedAvailableCurrencies | object | Optional | none | none  
-↳ currency | string | Optional | none | Currency name  
-↳ available | string | Optional | none | Available Balance  
-↳ estimated_usd | string | Optional | none | Estimated USD value  
-      
-    
-    {
-      "debt_currencies": [
-        {
-          "currency": "string",
-          "debt_amount": "string",
-          "estimated_usd": "string",
-          "borrowed": "string",
-          "neg_balance": "string"
-        }
-      ],
-      "available_currencies": [
-        {
-          "currency": "string",
-          "available": "string",
-          "estimated_usd": "string"
-        }
-      ]
-    }
-    
-    
-
-##  UnifiedLoan
-
-_Borrow or repay_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Required | none | Currency  
-type | string | Required | none | Type: `borrow` \- borrow, `repay` \- repay  
-amount | string | Required | none | Borrow or repayment amount  
-repaid_all | boolean | Optional | none | Full repayment, only used for repayment operations. When set to `true`, overrides `amount` and directly repays the full amount  
-text | string | Optional | none | User defined custom ID  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-type | borrow  
-type | repay  
-      
-    
-    {
-      "currency": "string",
-      "type": "borrow",
       "amount": "string",
-      "repaid_all": true,
-      "text": "string"
-    }
-    
-    
-
-##  UnifiedLeverageSetting
-
-_Leverage multiplier for borrowing currency_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Required | none | Currency name  
-leverage | string | Required | none | Multiplier  
-      
-    
-    {
-      "currency": "string",
-      "leverage": "string"
-    }
-    
-    
-
-##  UnifiedCollateralReq
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-collateral_type | integer | Optional | none | User-set collateral mode: 0(all)-All currencies as collateral, 1(custom)-Custom currencies as collateral. When collateral_type is 0(all), enable_list and disable_list parameters are invalid  
-enable_list | array | Optional | none | Currency list, where collateral_type=1(custom) indicates the addition logic  
-disable_list | array | Optional | none | Disable list, indicating the disable logic  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-collateral_type | 0  
-collateral_type | 1  
-      
-    
-    {
-      "collateral_type": 0,
-      "enable_list": [
-        "string"
-      ],
-      "disable_list": [
-        "string"
-      ]
-    }
-    
-    
-
-##  UnifiedBorrowable
-
-_UnifiedBorrowable_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency detail  
-amount | string | Optional | none | Max borrowable amount  
-      
-    
-    {
-      "currency": "string",
-      "amount": "string"
-    }
-    
-    
-
-##  UnifiedCollateralRes
-
-_Unified account collateral mode settings response_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-is_success | boolean | Optional | none | Whether the setting was successful  
-      
-    
-    {
-      "is_success": true
-    }
-    
-    
-
-##  UnifiedModeSet
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-mode | string | Required | none | Unified account mode:   
-\- `classic`: Classic account mode  
-\- `multi_currency`: Cross-currency margin mode  
-\- `portfolio`: Portfolio margin mode  
-\- `single_currency`: Single-currency margin mode  
-settings | object | Optional | none | none  
-↳ usdt_futures | boolean | Optional | none | USDT futures switch. In cross-currency margin mode, can only be enabled and cannot be disabled  
-↳ spot_hedge | boolean | Optional | none | Spot hedging switch  
-↳ use_funding | boolean | Optional | none | Earn switch, when mode is cross-currency margin mode, whether to use Earn funds as margin  
-↳ options | boolean | Optional | none | Options switch. In cross-currency margin mode, can only be enabled and cannot be disabled  
-      
-    
-    {
-      "mode": "string",
-      "settings": {
-        "usdt_futures": true,
-        "spot_hedge": true,
-        "use_funding": true,
-        "options": true
-      }
+      "create_time": 0
     }
     
     
@@ -3300,6 +3050,99 @@ balances | object | Optional | none | none
     
     
 
+##  QuickRepaymentResponse
+
+_QuickRepaymentResp_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Required | none | Order ID  
+repaid_infos | array | Required | none | Repaid currency details  
+↳ RepaidInfo | object | Optional | none | Repayment details  
+↳ currency | string | Required | none | Currency name  
+↳ repaid | string | Required | none | Repaid amount  
+↳ left | string | Required | none | Remaining liability amount  
+↳ used_infos | array | Required | none | Currencies used for repayment  
+↳ UsedInfo | object | Optional | none | Repayment details  
+↳ currency | string | Required | none | Currency name  
+↳ used | string | Required | none | Amount converted  
+      
+    
+    {
+      "order_id": "string",
+      "repaid_infos": [
+        {
+          "currency": "string",
+          "repaid": "string",
+          "left": "string"
+        }
+      ],
+      "used_infos": [
+        {
+          "currency": "string",
+          "used": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedCollateralRes
+
+_Unified account collateral mode settings response_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+is_success | boolean | Optional | none | Whether the setting was successful  
+      
+    
+    {
+      "is_success": true
+    }
+    
+    
+
+##  EstimateRate
+
+_Estimate current hourly lending rates, returned by currency_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+**additionalProperties** | string | Optional | none | none  
+      
+    
+    {
+      "property1": "string",
+      "property2": "string"
+    }
+    
+    
+
+##  UnifiedBorrowable
+
+_UnifiedBorrowable_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency detail  
+amount | string | Optional | none | Max borrowable amount  
+      
+    
+    {
+      "currency": "string",
+      "amount": "string"
+    }
+    
+    
+
 ##  GateErrorResponse
 
 _error response body format when status code is non-2xx_
@@ -3315,6 +3158,75 @@ message | string | Optional | none | Detailed error message
     {
       "label": "string",
       "message": "string"
+    }
+    
+    
+
+##  UnifiedTransferable
+
+_UnifiedTransferable_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency detail  
+amount | string | Optional | none | Maximum transferable amount  
+      
+    
+    {
+      "currency": "string",
+      "amount": "string"
+    }
+    
+    
+
+##  UniLoan
+
+_Borrowing_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | read-only | Currency  
+currency_pair | string | Optional | read-only | Currency pair  
+amount | string | Optional | read-only | Amount to Repay  
+type | string | Optional | read-only | Loan type: platform borrowing - platform, margin borrowing - margin  
+create_time | integer(int64) | Optional | read-only | Created time  
+update_time | integer(int64) | Optional | read-only | Last Update Time  
+      
+    
+    {
+      "currency": "string",
+      "currency_pair": "string",
+      "amount": "string",
+      "type": "string",
+      "create_time": 0,
+      "update_time": 0
+    }
+    
+    
+
+##  QuickRepaymentRequest
+
+_QuickRepaymentInfo_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+debt_currencies | array | Required | none | Liability currencies  
+available_currencies | array | Required | none | Currencies to repay with  
+      
+    
+    {
+      "debt_currencies": [
+        "string"
+      ],
+      "available_currencies": [
+        "string"
+      ]
     }
     
     
@@ -3344,6 +3256,303 @@ create_time | integer(int64) | Optional | read-only | Created time
       "status": 0,
       "type": "string",
       "create_time": 0
+    }
+    
+    
+
+##  QuickEstimatedRepayment
+
+_QuickEstimatedRepayment_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+debt_currencies | array | Optional | none | Liability currencies  
+↳ UnifiedDebtCurrencies | object | Optional | none | none  
+↳ currency | string | Optional | none | Currency name  
+↳ debt_amount | string | Optional | none | Debt Quantity  
+↳ estimated_usd | string | Optional | none | Estimated USD value  
+↳ borrowed | string | Optional | none | Borrowed amount  
+↳ neg_balance | string | Optional | none | Negative balance  
+↳ available_currencies | array | Optional | none | Currencies available for repayment  
+↳ UnifiedAvailableCurrencies | object | Optional | none | none  
+↳ currency | string | Optional | none | Currency name  
+↳ available | string | Optional | none | Available Balance  
+↳ estimated_usd | string | Optional | none | Estimated USD value  
+      
+    
+    {
+      "debt_currencies": [
+        {
+          "currency": "string",
+          "debt_amount": "string",
+          "estimated_usd": "string",
+          "borrowed": "string",
+          "neg_balance": "string"
+        }
+      ],
+      "available_currencies": [
+        {
+          "currency": "string",
+          "available": "string",
+          "estimated_usd": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedLeverageSetting
+
+_Leverage multiplier for borrowing currency_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Required | none | Currency name  
+leverage | string | Required | none | Multiplier  
+      
+    
+    {
+      "currency": "string",
+      "leverage": "string"
+    }
+    
+    
+
+##  UnifiedMarginTiers
+
+_Unified account borrowing margin tiers_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency name  
+margin_tiers | array | Optional | none | Tiered margin  
+↳ MarginTiers | object | Optional | none | none  
+↳ tier | string | Optional | none | Tier  
+↳ margin_rate | string | Optional | none | Discount  
+↳ lower_limit | string | Optional | none | Lower limit  
+↳ upper_limit | string | Optional | none | Upper limit, `` indicates greater than (the last tier)  
+↳ leverage | string | Optional | none | Position leverage  
+      
+    
+    {
+      "currency": "string",
+      "margin_tiers": [
+        {
+          "tier": "string",
+          "margin_rate": "string",
+          "lower_limit": "string",
+          "upper_limit": "string",
+          "leverage": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedRiskUnits
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+user_id | integer(int64) | Optional | none | User ID  
+spot_hedge | boolean | Optional | none | Spot hedging status: true - enabled, false - disabled  
+risk_units | array | Optional | none | Risk unit  
+↳ RiskUnits | object | Optional | none | none  
+↳ symbol | string | Optional | none | Risk unit flag  
+↳ spot_in_use | string | Optional | none | Spot hedging occupied amount  
+↳ maintain_margin | string | Optional | none | Maintenance margin for risk unit  
+↳ initial_margin | string | Optional | none | Initial margin for risk unit  
+↳ delta | string | Optional | none | Total Delta of risk unit  
+↳ gamma | string | Optional | none | Total Gamma of risk unit  
+↳ theta | string | Optional | none | Total Theta of risk unit  
+↳ vega | string | Optional | none | Total Vega of risk unit  
+      
+    
+    {
+      "user_id": 0,
+      "spot_hedge": true,
+      "risk_units": [
+        {
+          "symbol": "BTC_USDT",
+          "spot_in_use": "string",
+          "maintain_margin": "string",
+          "initial_margin": "string",
+          "delta": "string",
+          "gamma": "string",
+          "theta": "string",
+          "vega": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedLeverageConfig
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+current_leverage | string | Optional | none | Current leverage ratio  
+min_leverage | string | Optional | none | Minimum adjustable leverage ratio  
+max_leverage | string | Optional | none | Maximum adjustable leverage ratio  
+debit | string | Optional | none | Current liabilities  
+available_margin | string | Optional | none | Available Margin  
+borrowable | string | Optional | none | Maximum borrowable amount at current leverage  
+except_leverage_borrowable | string | Optional | none | Maximum borrowable from margin and maximum borrowable from Earn, whichever is smaller  
+      
+    
+    {
+      "current_leverage": "string",
+      "min_leverage": "string",
+      "max_leverage": "string",
+      "debit": "string",
+      "available_margin": "string",
+      "borrowable": "string",
+      "except_leverage_borrowable": "string"
+    }
+    
+    
+
+##  UnifiedCurrency
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+name | string | Optional | none | Currency name  
+prec | string | Optional | none | Currency precision  
+min_borrow_amount | string | Optional | none | Minimum borrowable limit, in currency units  
+user_max_borrow_amount | string | Optional | none | User's maximum borrowable limit, in USDT  
+total_max_borrow_amount | string | Optional | none | Platform's maximum borrowable limit, in USDT  
+loan_status | string | Optional | none | Lending status  
+\- `disable` : Lending prohibited  
+\- `enable` : Lending supported  
+      
+    
+    {
+      "name": "string",
+      "prec": "string",
+      "min_borrow_amount": "string",
+      "user_max_borrow_amount": "string",
+      "total_max_borrow_amount": "string",
+      "loan_status": "string"
+    }
+    
+    
+
+##  UnifiedHistoryLoanRate
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency name  
+tier | string | Optional | none | VIP level for the floating rate to be retrieved  
+tier_up_rate | string | Optional | none | Floating rate corresponding to VIP level  
+rates | array | Optional | none | Historical interest rate information, one data point per hour, array size determined by page and limit parameters from the API request, sorted by time from recent to distant  
+↳ time | integer(int64) | Optional | none | Hourly timestamp corresponding to this interest rate, in milliseconds  
+↳ rate | string | Optional | none | Historical interest rate for this hour  
+      
+    
+    {
+      "currency": "string",
+      "tier": "string",
+      "tier_up_rate": "string",
+      "rates": [
+        {
+          "time": 0,
+          "rate": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedLoan
+
+_Borrow or repay_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Required | none | Currency  
+type | string | Required | none | Type: `borrow` \- borrow, `repay` \- repay  
+amount | string | Required | none | Borrow or repayment amount  
+repaid_all | boolean | Optional | none | Full repayment, only used for repayment operations. When set to `true`, overrides `amount` and directly repays the full amount  
+text | string | Optional | none | User defined custom ID  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+type | borrow  
+type | repay  
+      
+    
+    {
+      "currency": "string",
+      "type": "borrow",
+      "amount": "string",
+      "repaid_all": true,
+      "text": "string"
+    }
+    
+    
+
+##  UnifiedDiscount
+
+_Unified account tiered discount_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency name  
+discount_tiers | array | Optional | none | Tiered discount  
+↳ tier | string | Optional | none | Tier  
+↳ discount | string | Optional | none | Discount  
+↳ lower_limit | string | Optional | none | Lower limit  
+↳ upper_limit | string | Optional | none | Upper limit, + indicates positive infinity  
+↳ leverage | string | Optional | none | Position leverage  
+      
+    
+    {
+      "currency": "string",
+      "discount_tiers": [
+        {
+          "tier": "string",
+          "discount": "string",
+          "lower_limit": "string",
+          "upper_limit": "string",
+          "leverage": "string"
+        }
+      ]
+    }
+    
+    
+
+##  UnifiedLoanResult
+
+_Unified account borrowing and repayment response result_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+tran_id | integer(int64) | Optional | none | Transaction ID  
+      
+    
+    {
+      "tran_id": 0
     }
     
     
@@ -3404,275 +3613,6 @@ risk_unit | array | Optional | none | Risk unit
           "vega": "string"
         }
       ]
-    }
-    
-    
-
-##  UnifiedDiscount
-
-_Unified account tiered discount_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency name  
-discount_tiers | array | Optional | none | Tiered discount  
-↳ tier | string | Optional | none | Tier  
-↳ discount | string | Optional | none | Discount  
-↳ lower_limit | string | Optional | none | Lower limit  
-↳ upper_limit | string | Optional | none | Upper limit, + indicates positive infinity  
-↳ leverage | string | Optional | none | Position leverage  
-      
-    
-    {
-      "currency": "string",
-      "discount_tiers": [
-        {
-          "tier": "string",
-          "discount": "string",
-          "lower_limit": "string",
-          "upper_limit": "string",
-          "leverage": "string"
-        }
-      ]
-    }
-    
-    
-
-##  QuickRepaymentResponse
-
-_QuickRepaymentResp_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | string | Required | none | Order ID  
-repaid_infos | array | Required | none | Repaid currency details  
-↳ RepaidInfo | object | Optional | none | Repayment details  
-↳ currency | string | Required | none | Currency name  
-↳ repaid | string | Required | none | Repaid amount  
-↳ left | string | Required | none | Remaining liability amount  
-↳ used_infos | array | Required | none | Currencies used for repayment  
-↳ UsedInfo | object | Optional | none | Repayment details  
-↳ currency | string | Required | none | Currency name  
-↳ used | string | Required | none | Amount converted  
-      
-    
-    {
-      "order_id": "string",
-      "repaid_infos": [
-        {
-          "currency": "string",
-          "repaid": "string",
-          "left": "string"
-        }
-      ],
-      "used_infos": [
-        {
-          "currency": "string",
-          "used": "string"
-        }
-      ]
-    }
-    
-    
-
-##  UnifiedMarginTiers
-
-_Unified account borrowing margin tiers_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency name  
-margin_tiers | array | Optional | none | Tiered margin  
-↳ MarginTiers | object | Optional | none | none  
-↳ tier | string | Optional | none | Tier  
-↳ margin_rate | string | Optional | none | Discount  
-↳ lower_limit | string | Optional | none | Lower limit  
-↳ upper_limit | string | Optional | none | Upper limit, `` indicates greater than (the last tier)  
-↳ leverage | string | Optional | none | Position leverage  
-      
-    
-    {
-      "currency": "string",
-      "margin_tiers": [
-        {
-          "tier": "string",
-          "margin_rate": "string",
-          "lower_limit": "string",
-          "upper_limit": "string",
-          "leverage": "string"
-        }
-      ]
-    }
-    
-    
-
-##  UnifiedLoanResult
-
-_Unified account borrowing and repayment response result_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-tran_id | integer(int64) | Optional | none | Transaction ID  
-      
-    
-    {
-      "tran_id": 0
-    }
-    
-    
-
-##  UnifiedRiskUnits
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-user_id | integer(int64) | Optional | none | User ID  
-spot_hedge | boolean | Optional | none | Spot hedging status: true - enabled, false - disabled  
-risk_units | array | Optional | none | Risk unit  
-↳ RiskUnits | object | Optional | none | none  
-↳ symbol | string | Optional | none | Risk unit flag  
-↳ spot_in_use | string | Optional | none | Spot hedging occupied amount  
-↳ maintain_margin | string | Optional | none | Maintenance margin for risk unit  
-↳ initial_margin | string | Optional | none | Initial margin for risk unit  
-↳ delta | string | Optional | none | Total Delta of risk unit  
-↳ gamma | string | Optional | none | Total Gamma of risk unit  
-↳ theta | string | Optional | none | Total Theta of risk unit  
-↳ vega | string | Optional | none | Total Vega of risk unit  
-      
-    
-    {
-      "user_id": 0,
-      "spot_hedge": true,
-      "risk_units": [
-        {
-          "symbol": "BTC_USDT",
-          "spot_in_use": "string",
-          "maintain_margin": "string",
-          "initial_margin": "string",
-          "delta": "string",
-          "gamma": "string",
-          "theta": "string",
-          "vega": "string"
-        }
-      ]
-    }
-    
-    
-
-##  QuickRepaymentRequest
-
-_QuickRepaymentInfo_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-debt_currencies | array | Required | none | Liability currencies  
-available_currencies | array | Required | none | Currencies to repay with  
-      
-    
-    {
-      "debt_currencies": [
-        "string"
-      ],
-      "available_currencies": [
-        "string"
-      ]
-    }
-    
-    
-
-##  UnifiedHistoryLoanRate
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | none | Currency name  
-tier | string | Optional | none | VIP level for the floating rate to be retrieved  
-tier_up_rate | string | Optional | none | Floating rate corresponding to VIP level  
-rates | array | Optional | none | Historical interest rate information, one data point per hour, array size determined by page and limit parameters from the API request, sorted by time from recent to distant  
-↳ time | integer(int64) | Optional | none | Hourly timestamp corresponding to this interest rate, in milliseconds  
-↳ rate | string | Optional | none | Historical interest rate for this hour  
-      
-    
-    {
-      "currency": "string",
-      "tier": "string",
-      "tier_up_rate": "string",
-      "rates": [
-        {
-          "time": 0,
-          "rate": "string"
-        }
-      ]
-    }
-    
-    
-
-##  UniLoan
-
-_Borrowing_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | read-only | Currency  
-currency_pair | string | Optional | read-only | Currency pair  
-amount | string | Optional | read-only | Amount to Repay  
-type | string | Optional | read-only | Loan type: platform borrowing - platform, margin borrowing - margin  
-create_time | integer(int64) | Optional | read-only | Created time  
-update_time | integer(int64) | Optional | read-only | Last Update Time  
-      
-    
-    {
-      "currency": "string",
-      "currency_pair": "string",
-      "amount": "string",
-      "type": "string",
-      "create_time": 0,
-      "update_time": 0
-    }
-    
-    
-
-##  UnifiedLoanRecord
-
-_Borrowing Records_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | read-only | id  
-type | string | Optional | read-only | Type: `borrow` \- borrow, `repay` \- repay  
-repayment_type | string | Optional | read-only | Repayment type: none - No repayment type, manual_repay - Manual repayment, auto_repay - Automatic repayment, cancel_auto_repay - Automatic repayment after order cancellation, different_currencies_repayment - Cross-currency repayment  
-borrow_type | string | Optional | none | Borrowing type, returned when querying loan records: manual_borrow - Manual borrowing, auto_borrow - Automatic borrowing  
-currency_pair | string | Optional | read-only | Currency pair  
-currency | string | Optional | read-only | Currency  
-amount | string | Optional | read-only | Borrow or repayment amount  
-create_time | integer(int64) | Optional | read-only | Created time  
-      
-    
-    {
-      "id": 0,
-      "type": "string",
-      "repayment_type": "string",
-      "borrow_type": "string",
-      "currency_pair": "string",
-      "currency": "string",
-      "amount": "string",
-      "create_time": 0
     }
     
     
@@ -3760,4 +3700,64 @@ spot_balances | array | Optional | none | Spot
         }
       ],
       "spot_hedge": true
+    }
+    
+    
+
+##  UnifiedCollateralReq
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+collateral_type | integer | Optional | none | User-set collateral mode: 0(all)-All currencies as collateral, 1(custom)-Custom currencies as collateral. When collateral_type is 0(all), enable_list and disable_list parameters are invalid  
+enable_list | array | Optional | none | Currency list, where collateral_type=1(custom) indicates the addition logic  
+disable_list | array | Optional | none | Disable list, indicating the disable logic  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+collateral_type | 0  
+collateral_type | 1  
+      
+    
+    {
+      "collateral_type": 0,
+      "enable_list": [
+        "string"
+      ],
+      "disable_list": [
+        "string"
+      ]
+    }
+    
+    
+
+##  UnifiedModeSet
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+mode | string | Required | none | Unified account mode:   
+\- `classic`: Classic account mode  
+\- `multi_currency`: Cross-currency margin mode  
+\- `portfolio`: Portfolio margin mode  
+\- `single_currency`: Single-currency margin mode  
+settings | object | Optional | none | none  
+↳ usdt_futures | boolean | Optional | none | USDT futures switch. In cross-currency margin mode, can only be enabled and cannot be disabled  
+↳ spot_hedge | boolean | Optional | none | Spot hedging switch  
+↳ use_funding | boolean | Optional | none | Earn switch, when mode is cross-currency margin mode, whether to use Earn funds as margin  
+↳ options | boolean | Optional | none | Options switch. In cross-currency margin mode, can only be enabled and cannot be disabled  
+      
+    
+    {
+      "mode": "string",
+      "settings": {
+        "usdt_futures": true,
+        "spot_hedge": true,
+        "use_funding": true,
+        "options": true
+      }
     }

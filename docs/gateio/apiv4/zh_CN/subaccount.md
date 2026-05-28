@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/subaccount
 api_type: Account
-updated_at: 2026-05-27 20:17:55.276874
+updated_at: 2026-05-28 19:58:48.912863
 ---
 
 # SubAccount

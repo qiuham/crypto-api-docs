@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/flash-swap
 api_type: REST
-updated_at: 2026-05-27 20:15:08.840394
+updated_at: 2026-05-28 19:57:46.459178
 ---
 
 # Flash_swap
@@ -602,6 +602,31 @@ Code samples
 
 #  Schemas
 
+##  FlashSwapPreviewRequest
+
+_Parameters of flash swap order creation_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+sell_currency | string | Required | none | The name of the asset being sold, as obtained from the "GET /flash_swap/currency_pairs" API, which retrieves a list of supported flash swap currency pairs  
+sell_amount | string | Optional | none | Amount to sell.  
+It is required to choose one parameter between `sell_amount` and `buy_amount`  
+buy_currency | string | Required | none | The name of the asset being purchased, as obtained from the "GET /flash_swap/currency_pairs" API, which provides a list of supported flash swap currency pairs  
+buy_amount | string | Optional | none | Amount to buy.  
+It is required to choose one parameter between `sell_amount` and `buy_amount`  
+      
+    
+    {
+      "sell_currency": "string",
+      "sell_amount": "string",
+      "buy_currency": "string",
+      "buy_amount": "string"
+    }
+    
+    
+
 ##  FlashSwapOrderPreview
 
 _Flash swap order preview_
@@ -713,31 +738,6 @@ buy_amount | string | Required | none | Amount to buy (based on the preview resu
     
     {
       "preview_id": "string",
-      "sell_currency": "string",
-      "sell_amount": "string",
-      "buy_currency": "string",
-      "buy_amount": "string"
-    }
-    
-    
-
-##  FlashSwapPreviewRequest
-
-_Parameters of flash swap order creation_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-sell_currency | string | Required | none | The name of the asset being sold, as obtained from the "GET /flash_swap/currency_pairs" API, which retrieves a list of supported flash swap currency pairs  
-sell_amount | string | Optional | none | Amount to sell.  
-It is required to choose one parameter between `sell_amount` and `buy_amount`  
-buy_currency | string | Required | none | The name of the asset being purchased, as obtained from the "GET /flash_swap/currency_pairs" API, which provides a list of supported flash swap currency pairs  
-buy_amount | string | Optional | none | Amount to buy.  
-It is required to choose one parameter between `sell_amount` and `buy_amount`  
-      
-    
-    {
       "sell_currency": "string",
       "sell_amount": "string",
       "buy_currency": "string",
