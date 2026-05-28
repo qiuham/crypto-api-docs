@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals
 api_type: REST
-updated_at: 2026-05-27 18:51:46.994830
+updated_at: 2026-05-28 18:57:13.919975
 ---
 
 # Perpetuals

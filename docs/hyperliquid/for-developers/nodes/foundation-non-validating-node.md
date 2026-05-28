@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/foundation-non-validating-node
 api_type: REST
-updated_at: 2026-05-27 18:53:10.631058
+updated_at: 2026-05-28 18:58:37.604030
 ---
 
 # Foundation non-validating node
