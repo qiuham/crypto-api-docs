@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-coin-list
 api_type: REST
-updated_at: 2026-05-28 19:20:29.050183
+updated_at: 2026-05-29 19:19:22.077051
 ---
 
 # Get Trading Pair List

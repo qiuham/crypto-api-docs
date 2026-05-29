@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/fund-subuid-list
 api_type: REST
-updated_at: 2026-05-28 19:26:49.662529
+updated_at: 2026-05-29 19:26:00.039684
 ---
 
 # Modify Master API Key

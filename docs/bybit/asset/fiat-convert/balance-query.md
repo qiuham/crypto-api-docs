@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/balance-query
 api_type: REST
-updated_at: 2026-05-28 19:20:27.801179
+updated_at: 2026-05-29 19:19:20.833355
 ---
 
 # Get Trading Pair List

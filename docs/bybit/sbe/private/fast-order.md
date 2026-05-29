@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/private/fast-order
 api_type: REST
-updated_at: 2026-05-28 19:25:51.334456
+updated_at: 2026-05-29 19:24:59.188292
 ---
 
 # Self Match Prevention

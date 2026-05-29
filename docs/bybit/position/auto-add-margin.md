@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/auto-add-margin
 api_type: Position
-updated_at: 2026-05-28 19:24:57.559944
+updated_at: 2026-05-29 19:24:03.499503
 ---
 
 # Set Leverage

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/history-apr
 api_type: REST
-updated_at: 2026-05-28 19:22:35.050314
+updated_at: 2026-05-29 19:21:36.084436
 ---
 
 # Get History APR

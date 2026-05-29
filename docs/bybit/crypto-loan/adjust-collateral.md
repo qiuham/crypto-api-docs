@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/crypto-loan/adjust-collateral
 api_type: REST
-updated_at: 2026-05-28 19:21:41.450346
+updated_at: 2026-05-29 19:20:38.539015
 ---
 
 # Get Loan LTV Adjustment History

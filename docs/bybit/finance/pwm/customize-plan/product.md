@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/customize-plan/product
 api_type: REST
-updated_at: 2026-05-28 19:23:13.524007
+updated_at: 2026-05-29 19:22:16.773353
 ---
 
 # Get All Investment Plans

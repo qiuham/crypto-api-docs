@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/invest-more
 api_type: REST
-updated_at: 2026-05-28 19:23:20.375705
+updated_at: 2026-05-29 19:22:23.992127
 ---
 
 # Invest More

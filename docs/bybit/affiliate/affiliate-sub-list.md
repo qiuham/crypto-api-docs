@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/affiliate/affiliate-sub-list
 api_type: REST
-updated_at: 2026-05-28 19:19:46.710880
+updated_at: 2026-05-29 19:18:38.524415
 ---
 
 # Get Asset List

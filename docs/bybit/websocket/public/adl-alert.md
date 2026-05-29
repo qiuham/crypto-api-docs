@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/adl-alert
 api_type: WebSocket
-updated_at: 2026-05-28 19:27:12.376077
+updated_at: 2026-05-29 19:26:23.826144
 ---
 
 # Kline

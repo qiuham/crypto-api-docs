@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/loan-coin
 api_type: REST
-updated_at: 2026-05-28 19:24:28.117608
+updated_at: 2026-05-29 19:23:33.355449
 ---
 
 # Amend Order
