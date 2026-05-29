@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/flash-swap
 api_type: REST
-updated_at: 2026-05-28 19:57:46.459178
+updated_at: 2026-05-29 19:57:29.790139
 ---
 
 # Flash_swap

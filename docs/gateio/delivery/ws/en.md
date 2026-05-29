@@ -2,13 +2,10 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/delivery/ws/en
 api_type: WebSocket
-updated_at: 2026-05-28 19:59:05.217125
+updated_at: 2026-05-29 19:58:56.552575
 ---
 
 # Gate Delivery WebSocket v4.0.0
-
-* Python 
-  * Golang 
 
 v4.0.0 · Stable
 
@@ -38,23 +35,6 @@ Base URLs:
   * TestNet Trading: `wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/btc`
 
 ##  Changelog
-
-2025-03-21
-
-  * The documentation for all private channel subscription parameters has been updated.
-
-2021-08-06
-
-  * Add BTC settled delivery contracts support
-
-2020-08-08
-
-  * Add a complete code demo(golang, python)
-
-2020-08-07
-
-  * Add auto orders subscription
-
     
     
     # !/usr/bin/env python
@@ -262,6 +242,22 @@ Base URLs:
     }
     
 
+2025-03-21
+
+  * The documentation for all private channel subscription parameters has been updated.
+
+2021-08-06
+
+  * Add BTC settled delivery contracts support
+
+2020-08-08
+
+  * Add a complete code demo(golang, python)
+
+2020-08-07
+
+  * Add auto orders subscription
+
 ##  API Overview
 
 ###  Method
@@ -332,14 +328,7 @@ WebSocket authentication uses the same signature calculation method with HTTP AP
   1. Signature string concatenation method: `channel=<channel>&event=<event>&time=<time>`, where `<channel>`, `<event>`, `<time>` are corresponding request information
   2. Authentication information are sent in request body in field `auth`.
 
-You can log into the console to retrieve delivery API key and secret.
-
-field | type | description  
----|---|---  
-`method` | String | allowed value: `api_key`  
-`KEY` | String | user key string  
-`SIGN` | String | user sign string  
-      
+    
     
     # example WebSocket signature calculation implementation in Python
     import hmac, hashlib, time
@@ -350,6 +339,14 @@ field | type | description
     print(hmac.new(secret, message, hashlib.sha512).hexdigest())  ## Generating signature
     
 
+You can log into the console to retrieve delivery API key and secret.
+
+Authenticationfield | type | description  
+---|---|---  
+`method` | String | allowed value: `api_key`  
+`KEY` | String | user key string  
+`SIGN` | String | user sign string  
+  
 #  System API
 
 **Provides system status check, such as ping-pong.**
@@ -363,13 +360,6 @@ field | type | description
 [websocket rfc ](https://tools.ietf.org/html/rfc6455)
 
 **if you want to actively detect the connection status, you can send application layer ping message and receive pong message.**
-
-###  Request
-
-  * channel
-
-`futures.ping`
-
     
     
     from websocket import create_connection
@@ -391,32 +381,17 @@ The above command returns JSON structured like this:
     }
     
 
+###  Request
+
+  * channel
+
+`futures.ping`
+
 #  Tickers API
 
 **The ticker is a high level overview of the state of the contract. It shows you the highest, lowest, last trade price. It also includes information such as daily volume and how much the price has moved over the last day.**
 
 ##  Tickers subscription
-
-Subscribe`delivery contract ticker.`
-
-Subscribe `delivery contract ticker.`
-
-###  Request
-
-  * channel
-
-`futures.tickers`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`payload` | Array | Yes | contract list  
-
     
     
     from websocket import create_connection
@@ -441,7 +416,53 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `delivery contract ticker.`
+
+###  Request
+
+  * channel
+
+`futures.tickers`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`payload` | Array | Yes | contract list  
+
 ##  Tickers notification
+    
+    
+    {
+      "time": 1541659086,
+      "channel": "futures.tickers",
+      "event": "update",
+      "error": null,
+      "result": [
+        {
+          "contract": "BTC_USDT_20230630",
+          "last": "118.4",
+          "change_percentage": "0.77",
+          "funding_rate": "-0.000114",
+          "funding_rate_indicative": "0.01875",
+          "mark_price": "118.35",
+          "index_price": "118.36",
+          "total_size": "73648",
+          "volume_24h": "745487577",
+          "volume_24h_btc": "117",
+          "volume_24h_usd": "419950",
+          "quanto_base_rate": "",
+          "volume_24h_quote": "1665006",
+          "volume_24h_settle": "178",
+          "volume_24h_base": "5526"
+        }
+      ]
+    }
+    
 
 **Notify subscribed contract ticker.**
 
@@ -478,51 +499,7 @@ field | type | description
 `volume_24h_settle` | String | watch http api  
 `volume_24h_base` | String | watch http api  
 
-    
-    
-    {
-      "time": 1541659086,
-      "channel": "futures.tickers",
-      "event": "update",
-      "error": null,
-      "result": [
-        {
-          "contract": "BTC_USDT_20230630",
-          "last": "118.4",
-          "change_percentage": "0.77",
-          "funding_rate": "-0.000114",
-          "funding_rate_indicative": "0.01875",
-          "mark_price": "118.35",
-          "index_price": "118.36",
-          "total_size": "73648",
-          "volume_24h": "745487577",
-          "volume_24h_btc": "117",
-          "volume_24h_usd": "419950",
-          "quanto_base_rate": "",
-          "volume_24h_quote": "1665006",
-          "volume_24h_settle": "178",
-          "volume_24h_base": "5526"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`contract ticker.`
-
-Unsubscribe `contract ticker.`
-
-###  Request
-
-  * channel
-
-`futures.tickers`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -553,32 +530,23 @@ The above command returns JSON structured like this:
     }
     
 
-#  Trades API
-
-**This channel sends a trade message whenever a trade occurs at Gate. It includes details of the trade, such as price, amount, time and type.**
-
-##  Trades subscription
-
-Subscribe`trades update notification.`
-
-Subscribe `trades update notification.`
+Unsubscribe `contract ticker.`
 
 ###  Request
 
   * channel
 
-`futures.trades`
+`futures.tickers`
 
   * event
 
-`subscribe`
+`unsubscribe`
 
-  * params
+#  Trades API
 
-parameter | type | required | description  
----|---|---|---  
-`payload` | Array | Yes | contract list  
+**This channel sends a trade message whenever a trade occurs at Gate. It includes details of the trade, such as price, amount, time and type.**
 
+##  Trades subscription
     
     
     from websocket import create_connection
@@ -603,7 +571,45 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `trades update notification.`
+
+###  Request
+
+  * channel
+
+`futures.trades`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`payload` | Array | Yes | contract list  
+
 ##  Trades notification
+
+Positive size means taker is buyer，negative seller
+    
+    
+    {
+      "channel": "futures.trades",
+      "event": "update",
+      "time": 1541503698,
+      "result": [
+        {
+          "size": -108,
+          "id": 27753479,
+          "create_time": 1545136464,
+          "create_time_ms": 1545136464123,
+          "price": "96.4",
+          "contract": "BTC_USDT_20230630"
+        }
+      ]
+    }
+    
 
 **Notify latest trades update.**
 
@@ -631,42 +637,7 @@ field | type | description
 `create_time_ms` | int | trades msg create time in milliseconds  
 `price` | string | trades price  
 
-Positive size means taker is buyer，negative seller
-    
-    
-    {
-      "channel": "futures.trades",
-      "event": "update",
-      "time": 1541503698,
-      "result": [
-        {
-          "size": -108,
-          "id": 27753479,
-          "create_time": 1545136464,
-          "create_time_ms": 1545136464123,
-          "price": "96.4",
-          "contract": "BTC_USDT_20230630"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`trades update notification.`
-
-Unsubscribe `trades update notification.`
-
-###  Request
-
-  * channel
-
-`futures.trades`
-
-  * event
-
-`unsubscribe`
-
     
     
     from websocket import create_connection
@@ -690,6 +661,18 @@ The above command returns JSON structured like this:
       }
     }
     
+
+Unsubscribe `trades update notification.`
+
+###  Request
+
+  * channel
+
+`futures.trades`
+
+  * event
+
+`unsubscribe`
 
 #  Order Book API
 
@@ -723,29 +706,6 @@ How to maintain local order book:
   6. If any subsequent notification which satisfy `U > baseID+1` is found, it means some updates are lost. Reconstruct local order book from step 3.
 
 ##  Legacy order book subscription
-
-Subscribe`order_book.`
-
-Subscribe `order_book.`
-
-###  Request
-
-  * channel
-
-`futures.order_book`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`contract` | String | Yes | contract name  
-`limit` | String | Yes | limit, legal limits: 100, 50, 20, 10, 5, 1  
-`interval` | String | Yes | legal intervals: "0"  
-
     
     
     from websocket import create_connection
@@ -771,11 +731,9 @@ The above command returns JSON structured like this:
     }
     
 
-##  Legacy order book notification
+Subscribe `order_book.`
 
-**Notify contract order book update information**
-
-###  Notify
+###  Request
 
   * channel
 
@@ -783,20 +741,17 @@ The above command returns JSON structured like this:
 
   * event
 
-`update/all`
+`subscribe`
 
   * params
 
-field | type | description  
----|---|---  
-`result` | Array | Array of objects  
-field | type | description  
----|---|---  
-`contract` | String | delivery contract name  
-`s` | Integer | this number is the final value, the calculated value. Positive Numbers represent long(bids), Negative number represent short(asks)  
-`p` | String | this order book price  
-`id` | Integer | this price order book id  
+parameter | type | required | description  
+---|---|---|---  
+`contract` | String | Yes | contract name  
+`limit` | String | Yes | limit, legal limits: 100, 50, 20, 10, 5, 1  
+`interval` | String | Yes | legal intervals: "0"  
 
+##  Legacy order book notification
     
     
     {
@@ -851,13 +806,9 @@ Or
     }
     
 
-##  Legacy order book unsubscription
+**Notify contract order book update information**
 
-Unsubscribe`specified contract order book.`
-
-Unsubscribe `specified contract order book.`
-
-###  Request
+###  Notify
 
   * channel
 
@@ -865,8 +816,21 @@ Unsubscribe `specified contract order book.`
 
   * event
 
-`unsubscribe`
+`update/all`
 
+  * params
+
+field | type | description  
+---|---|---  
+`result` | Array | Array of objects  
+field | type | description  
+---|---|---  
+`contract` | String | delivery contract name  
+`s` | Integer | this number is the final value, the calculated value. Positive Numbers represent long(bids), Negative number represent short(asks)  
+`p` | String | this order book price  
+`id` | Integer | this price order book id  
+
+##  Legacy order book unsubscription
     
     
     from websocket import create_connection
@@ -892,26 +856,19 @@ The above command returns JSON structured like this:
     }
     
 
-##  Best ask/bid subscription
-
-Subscribe`book_ticker.`
-
-Subscribe `book_ticker.`
+Unsubscribe `specified contract order book.`
 
 ###  Request
 
   * channel
 
-`futures.book_ticker`
+`futures.order_book`
 
   * event
 
-`subscribe`
+`unsubscribe`
 
-  * params
-
-`payload` is an array contains contracts interested.
-
+##  Best ask/bid subscription
     
     
     from websocket import create_connection
@@ -937,9 +894,44 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `book_ticker.`
+
+###  Request
+
+  * channel
+
+`futures.book_ticker`
+
+  * event
+
+`subscribe`
+
+  * params
+
+`payload` is an array contains contracts interested.
+
 ##  Best ask/bid notification
 
 If `a` is empty string, it means empty asks; if `b` is empty string, it means empty bids.
+    
+    
+    {
+      "time": 1615366379,
+      "time_ms": 1615366379123,
+      "channel": "futures.book_ticker",
+      "event": "update",
+      "error": null,
+      "result": {
+        "t": 1615366379123,
+        "u": 2517661076,
+        "s": "BTC_USDT_20230630",
+        "b": "54696.6",
+        "B": 37000,
+        "a": "54696.7",
+        "A": 47061
+      }
+    }
+    
 
 **Notify contract order book best bid and ask**
 
@@ -966,42 +958,7 @@ field | type | description
 » `a` | String | Best ask price. If no asks, it's empty string  
 » `A` | Integer | Best ask size. If no asks, it will be 0  
 
-    
-    
-    {
-      "time": 1615366379,
-      "time_ms": 1615366379123,
-      "channel": "futures.book_ticker",
-      "event": "update",
-      "error": null,
-      "result": {
-        "t": 1615366379123,
-        "u": 2517661076,
-        "s": "BTC_USDT_20230630",
-        "b": "54696.6",
-        "B": 37000,
-        "a": "54696.7",
-        "A": 47061
-      }
-    }
-    
-
 ##  Best ask/bid unsubscription
-
-Unsubscribe`specified contract order book.`
-
-Unsubscribe `specified contract order book.`
-
-###  Request
-
-  * channel
-
-`futures.book_ticker`
-
-  * event
-
-`unsubscribe`
-
     
     
     from websocket import create_connection
@@ -1027,30 +984,19 @@ The above command returns JSON structured like this:
     }
     
 
-##  Order book update subscription
-
-Subscribe`order_book_update.`
-
-Subscribe `order_book_update.`
+Unsubscribe `specified contract order book.`
 
 ###  Request
 
   * channel
 
-`futures.order_book_update`
+`futures.book_ticker`
 
   * event
 
-`subscribe`
+`unsubscribe`
 
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`contract` | String | Yes | Contract name  
-`frequency` | String | Yes | Update frequency, `100ms` or `1000ms`  
-`level` | String | No | Optional level interested. Only updates within are notified. Allowed values: "100", "50", "20", "10" or "5"  
-
+##  Order book update subscription
     
     
     from websocket import create_connection
@@ -1076,11 +1022,9 @@ The above command returns JSON structured like this:
     }
     
 
-##  Order book update notification
+Subscribe `order_book_update.`
 
-**Notify contract order book update**
-
-###  Notify
+###  Request
 
   * channel
 
@@ -1088,24 +1032,17 @@ The above command returns JSON structured like this:
 
   * event
 
-`update`
+`subscribe`
 
   * params
 
-field | type | description  
----|---|---  
-`result` | object | Changed asks and bids since last update  
-» `t` | Integer | Order book generation timestamp in milliseconds  
-» `s` | String | Contract name  
-» `U` | Integer | First order book update ID since last update  
-» `u` | Integer | Last order book update ID since last update  
-» `b` | String | Changed bids  
-»» `p` | String | Changed price  
-»» `s` | String | Absolute size value after change. If 0, remove this price from order book  
-» `a` | String | Changed asks  
-»» `p` | String | Changed price  
-»» `s` | String | Absolute size value after change. If 0, remove this price from order book  
+parameter | type | required | description  
+---|---|---|---  
+`contract` | String | Yes | Contract name  
+`frequency` | String | Yes | Update frequency, `100ms` or `1000ms`  
+`level` | String | No | Optional level interested. Only updates within are notified. Allowed values: "100", "50", "20", "10" or "5"  
 
+##  Order book update notification
     
     
     {
@@ -1143,13 +1080,9 @@ field | type | description
     }
     
 
-##  Order book update unsubscription
+**Notify contract order book update**
 
-Unsubscribe`specified contract order book.`
-
-Unsubscribe `specified contract order book.`
-
-###  Request
+###  Notify
 
   * channel
 
@@ -1157,8 +1090,25 @@ Unsubscribe `specified contract order book.`
 
   * event
 
-`unsubscribe`
+`update`
 
+  * params
+
+field | type | description  
+---|---|---  
+`result` | object | Changed asks and bids since last update  
+» `t` | Integer | Order book generation timestamp in milliseconds  
+» `s` | String | Contract name  
+» `U` | Integer | First order book update ID since last update  
+» `u` | Integer | Last order book update ID since last update  
+» `b` | String | Changed bids  
+»» `p` | String | Changed price  
+»» `s` | String | Absolute size value after change. If 0, remove this price from order book  
+» `a` | String | Changed asks  
+»» `p` | String | Changed price  
+»» `s` | String | Absolute size value after change. If 0, remove this price from order book  
+
+##  Order book update unsubscription
     
     
     from websocket import create_connection
@@ -1184,6 +1134,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `specified contract order book.`
+
+###  Request
+
+  * channel
+
+`futures.order_book_update`
+
+  * event
+
+`unsubscribe`
+
 #  Candlesticks API
 
 **Provides a way to access charting candlestick info.**
@@ -1191,24 +1153,6 @@ The above command returns JSON structured like this:
 ##  Candlesticks subscription
 
 **_If prefix`contract` with `mark_`, the contract's mark price candlesticks will be subscribed._**
-
-###  Request
-
-  * channel
-
-`futures.candlesticks`
-
-  * event
-
-`subscribe`
-
-  * params
-
-field | type | description  
----|---|---  
-`interval` | String | interval : "10s", "1m", "5m", "15m", "30m", "1h", "4h", "8h", "1d", "7d"  
-`contract` | String | delivery contract name  
-
     
     
     from websocket import create_connection
@@ -1233,11 +1177,7 @@ The above command returns JSON structured like this:
     }
     
 
-##  Candlesticks notification
-
-**Notify kline information of subscribed contract.**
-
-###  Notify
+###  Request
 
   * channel
 
@@ -1245,23 +1185,16 @@ The above command returns JSON structured like this:
 
   * event
 
-`update`
+`subscribe`
 
   * params
 
 field | type | description  
 ---|---|---  
-`result` | Array | Array of objects  
-field | type | description  
----|---|---  
-`t` | Integer | time  
-`o` | String | open  
-`c` | String | close  
-`h` | String | highest  
-`l` | String | lowest  
-`v` | Integer | volume  
-`n` | String | delivery contract name  
+`interval` | String | interval : "10s", "1m", "5m", "15m", "30m", "1h", "4h", "8h", "1d", "7d"  
+`contract` | String | delivery contract name  
 
+##  Candlesticks notification
     
     
     {
@@ -1292,13 +1225,9 @@ field | type | description
     }
     
 
-##  Cancel subscription
+**Notify kline information of subscribed contract.**
 
-Unsubscribe`specified contract kline information.`
-
-Unsubscribe `specified contract kline information.`
-
-###  Request
+###  Notify
 
   * channel
 
@@ -1306,8 +1235,24 @@ Unsubscribe `specified contract kline information.`
 
   * event
 
-`unsubscribe`
+`update`
 
+  * params
+
+field | type | description  
+---|---|---  
+`result` | Array | Array of objects  
+field | type | description  
+---|---|---  
+`t` | Integer | time  
+`o` | String | open  
+`c` | String | close  
+`h` | String | highest  
+`l` | String | lowest  
+`v` | Integer | volume  
+`n` | String | delivery contract name  
+
+##  Cancel subscription
     
     
     from websocket import create_connection
@@ -1332,6 +1277,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `specified contract kline information.`
+
+###  Request
+
+  * channel
+
+`futures.candlesticks`
+
+  * event
+
+`unsubscribe`
+
 #  Orders API
 
 **Provides a way to receive user closed orders.**
@@ -1341,28 +1298,6 @@ WARNING
 Authentication required.
 
 ##  Orders subscription
-
-Subscribe`user orders update`
-
-Subscribe `user orders update`
-
-###  Request
-
-  * channel
-
-`futures.orders`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -1398,7 +1333,60 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `user orders update`
+
+###  Request
+
+  * channel
+
+`futures.orders`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Orders notification
+    
+    
+    {
+      "channel": "futures.orders",
+      "event": "update",
+      "time": 1541505434,
+      "result": [
+        {
+          "contract": "BTC_USDT_20230630",
+          "user": "200XX",
+          "create_time": 1545141817,
+          "create_time_ms": 1545141817123,
+          "fill_price": 4120,
+          "finish_as": "filled",
+          "iceberg": 0,
+          "id": 93282759,
+          "is_reduce_only": false,
+          "status": "finished",
+          "is_close": 0,
+          "is_liq": 0,
+          "left": 0,
+          "mkfr": -0.00025,
+          "price": 4120,
+          "refu": 0,
+          "size": 10,
+          "text": "-",
+          "tif": "gtc",
+          "finish_time": 1545640868,
+          "finish_time_ms": 1545640868123,
+          "tkfr": 0.00075
+        }
+      ]
+    }
+    
 
 **Notify user orders information when an order is put, updated or finished.**
 
@@ -1444,57 +1432,7 @@ field | type | description
 `user` | String |   
 `contract` | String |   
 
-    
-    
-    {
-      "channel": "futures.orders",
-      "event": "update",
-      "time": 1541505434,
-      "result": [
-        {
-          "contract": "BTC_USDT_20230630",
-          "user": "200XX",
-          "create_time": 1545141817,
-          "create_time_ms": 1545141817123,
-          "fill_price": 4120,
-          "finish_as": "filled",
-          "iceberg": 0,
-          "id": 93282759,
-          "is_reduce_only": false,
-          "status": "finished",
-          "is_close": 0,
-          "is_liq": 0,
-          "left": 0,
-          "mkfr": -0.00025,
-          "price": 4120,
-          "refu": 0,
-          "size": 10,
-          "text": "-",
-          "tif": "gtc",
-          "finish_time": 1545640868,
-          "finish_time_ms": 1545640868123,
-          "tkfr": 0.00075
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`user orders update notification, for all contract.`
-
-Unsubscribe `user orders update notification, for all contract.`
-
-###  Request
-
-  * channel
-
-`futures.orders`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -1530,6 +1468,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `user orders update notification, for all contract.`
+
+###  Request
+
+  * channel
+
+`futures.orders`
+
+  * event
+
+`unsubscribe`
+
 #  User trades API
 
 **Provides a way to receive user trades.**
@@ -1539,28 +1489,6 @@ WARNING
 Authentication required.
 
 ##  User trades subscription
-
-Subscribe`for user trades update.`
-
-Subscribe `for user trades update.`
-
-###  Request
-
-  * channel
-
-`futures.usertrades`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -1596,7 +1524,47 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user trades update.`
+
+###  Request
+
+  * channel
+
+`futures.usertrades`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  User trades notification
+    
+    
+    {
+      "time": 1543205083,
+      "channel": "futures.usertrades",
+      "event": "update",
+      "error": null,
+      "result": [
+        {
+          "contract": "BTC_USDT_20230630",
+          "create_time": 1545140672,
+          "create_time_ms": 1545140672371,
+          "id": "12651269",
+          "order_id": "56945246",
+          "price": "113.6",
+          "size": 10,
+          "role": "maker"
+        }
+      ]
+    }
+    
 
 **Notify user trades update.**
 
@@ -1626,44 +1594,7 @@ field | type | description
 `size` | Integer | trades size  
 `role` | String | user role (maker/taker)  
 
-    
-    
-    {
-      "time": 1543205083,
-      "channel": "futures.usertrades",
-      "event": "update",
-      "error": null,
-      "result": [
-        {
-          "contract": "BTC_USDT_20230630",
-          "create_time": 1545140672,
-          "create_time_ms": 1545140672371,
-          "id": "12651269",
-          "order_id": "56945246",
-          "price": "113.6",
-          "size": 10,
-          "role": "maker"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`user trades update.`
-
-Unsubscribe `user trades update.`
-
-###  Request
-
-  * channel
-
-`futures.usertrades`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -1699,6 +1630,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `user trades update.`
+
+###  Request
+
+  * channel
+
+`futures.usertrades`
+
+  * event
+
+`unsubscribe`
+
 #  Liquidates API
 
 **Provides a way to receive user liquidates info.**
@@ -1708,28 +1651,6 @@ WARNING
 Authentication required.
 
 ##  Liquidates subscription
-
-Subscribe`for user liquidates update.`
-
-Subscribe `for user liquidates update.`
-
-###  Request
-
-  * channel
-
-`futures.liquidates`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -1765,7 +1686,52 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user liquidates update.`
+
+###  Request
+
+  * channel
+
+`futures.liquidates`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Liquidates notification
+    
+    
+    {
+      "channel": "futures.liquidates",
+      "event": "update",
+      "time": 1541505434,
+      "result": [
+        {
+          "entry_price": 209,
+          "fill_price": 215.1,
+          "left": 0,
+          "leverage": 0.0,
+          "liq_price": 213,
+          "margin": 0.007816722941,
+          "mark_price": 213,
+          "order_id": 4093362,
+          "order_price": 215.1,
+          "size": -124,
+          "time": 1541486601,
+          "time_ms": 1541486601123,
+          "contract": "BTC_USDT_20230630",
+          "user": "1040"
+        }
+      ]
+    }
+    
 
 **Notify liquidates update.**
 
@@ -1801,49 +1767,7 @@ field | type | description
 `user` | String | user id  
 `contract` | String | delivery contract name  
 
-    
-    
-    {
-      "channel": "futures.liquidates",
-      "event": "update",
-      "time": 1541505434,
-      "result": [
-        {
-          "entry_price": 209,
-          "fill_price": 215.1,
-          "left": 0,
-          "leverage": 0.0,
-          "liq_price": 213,
-          "margin": 0.007816722941,
-          "mark_price": 213,
-          "order_id": 4093362,
-          "order_price": 215.1,
-          "size": -124,
-          "time": 1541486601,
-          "time_ms": 1541486601123,
-          "contract": "BTC_USDT_20230630",
-          "user": "1040"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`liquidates update.`
-
-Unsubscribe `liquidates update.`
-
-###  Request
-
-  * channel
-
-`futures.liquidates`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -1879,6 +1803,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `liquidates update.`
+
+###  Request
+
+  * channel
+
+`futures.liquidates`
+
+  * event
+
+`unsubscribe`
+
 #  Auto_deleverages API
 
 **Provides a way to receive user auto deleverages info.**
@@ -1888,28 +1824,6 @@ WARNING
 Authentication required.
 
 ##  Auto_deleverages subscription
-
-Subscribe`for user auto_deleverages update.`
-
-Subscribe `for user auto_deleverages update.`
-
-###  Request
-
-  * channel
-
-`futures.auto_deleverages`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -1945,7 +1859,46 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user auto_deleverages update.`
+
+###  Request
+
+  * channel
+
+`futures.auto_deleverages`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Auto_deleverages notification
+    
+    
+    {
+      "channel": "futures.auto_deleverages",
+      "event": "update",
+      "time": 1541505434,
+      "result": [
+        {
+          "entry_price": 209,
+          "fill_price": 215.1,
+          "position_size": 10,
+          "trade_size": 10,
+          "time": 1541486601,
+          "time_ms": 1541486601123,
+          "contract": "BTC_USDT_20230630",
+          "user": "1040"
+        }
+      ]
+    }
+    
 
 **Notify auto_deleverages update.**
 
@@ -1975,43 +1928,7 @@ field | type | description
 `user` | String | user id  
 `contract` | String | delivery contract name  
 
-    
-    
-    {
-      "channel": "futures.auto_deleverages",
-      "event": "update",
-      "time": 1541505434,
-      "result": [
-        {
-          "entry_price": 209,
-          "fill_price": 215.1,
-          "position_size": 10,
-          "trade_size": 10,
-          "time": 1541486601,
-          "time_ms": 1541486601123,
-          "contract": "BTC_USDT_20230630",
-          "user": "1040"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`auto_deleverages update.`
-
-Unsubscribe `auto_deleverages update.`
-
-###  Request
-
-  * channel
-
-`futures.auto_deleverages`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -2047,6 +1964,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `auto_deleverages update.`
+
+###  Request
+
+  * channel
+
+`futures.auto_deleverages`
+
+  * event
+
+`unsubscribe`
+
 #  Position_closes API
 
 **Provides a way to receive user position closes info.**
@@ -2056,28 +1985,6 @@ WARNING
 Authentication required.
 
 ##  Position_closes subscription
-
-Subscribe`for user position_closes update.`
-
-Subscribe `for user position_closes update.`
-
-###  Request
-
-  * channel
-
-`futures.position_closes`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -2113,7 +2020,45 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user position_closes update.`
+
+###  Request
+
+  * channel
+
+`futures.position_closes`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Position_closes notification
+    
+    
+    {
+      "channel": "futures.position_closes",
+      "event": "update",
+      "time": 1541505434,
+      "result": [
+        {
+          "contract": "BTC_USDT_20230630",
+          "pnl": -0.000624354791,
+          "side": "long",
+          "text": "web",
+          "time": 1547198562,
+          "time_ms": 1547198562123,
+          "user": "20011"
+        }
+      ]
+    }
+    
 
 **Notify position_closes update.**
 
@@ -2142,42 +2087,7 @@ field | type | description
 `time_ms` | Integer | time in milliseconds  
 `user` | String | user id  
 
-    
-    
-    {
-      "channel": "futures.position_closes",
-      "event": "update",
-      "time": 1541505434,
-      "result": [
-        {
-          "contract": "BTC_USDT_20230630",
-          "pnl": -0.000624354791,
-          "side": "long",
-          "text": "web",
-          "time": 1547198562,
-          "time_ms": 1547198562123,
-          "user": "20011"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`position_closes update.`
-
-Unsubscribe `position_closes update.`
-
-###  Request
-
-  * channel
-
-`futures.position_closes`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -2213,6 +2123,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `position_closes update.`
+
+###  Request
+
+  * channel
+
+`futures.position_closes`
+
+  * event
+
+`unsubscribe`
+
 #  Balances API
 
 **Provides a way to receive user balances info.**
@@ -2222,27 +2144,6 @@ WARNING
 Authentication required.
 
 ##  Balances subscription
-
-Subscribe`for user balances update.`
-
-Subscribe `for user balances update.`
-
-###  Request
-
-  * channel
-
-`futures.balances`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-
     
     
     import json
@@ -2278,7 +2179,44 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user balances update.`
+
+###  Request
+
+  * channel
+
+`futures.balances`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+
 ##  balances notification
+    
+    
+    {
+      "channel": "futures.balances",
+      "event": "update",
+      "time": 1541505434,
+      "result": [
+        {
+          "balance": 9.998739899488,
+          "change": -0.000002074115,
+          "text": "BTC_USDT_20230630:3914424",
+          "time": 1547199246,
+          "time_ms": 1547199246123,
+          "type": "fee",
+          "user": "20011"
+        }
+      ]
+    }
+    
 
 **Notify balances update.**
 
@@ -2306,26 +2244,6 @@ field | type | description
 `time_ms` | Integer | time in milliseconds  
 `type` | String | type  
 `user` | String | user id  
-
-    
-    
-    {
-      "channel": "futures.balances",
-      "event": "update",
-      "time": 1541505434,
-      "result": [
-        {
-          "balance": 9.998739899488,
-          "change": -0.000002074115,
-          "text": "BTC_USDT_20230630:3914424",
-          "time": 1547199246,
-          "time_ms": 1547199246123,
-          "type": "fee",
-          "user": "20011"
-        }
-      ]
-    }
-    
 
 ##  Cancel subscription
     
@@ -2372,28 +2290,6 @@ WARNING
 Authentication required.
 
 ##  Reduce_risk_limits subscription
-
-Subscribe`for user reduce_risk_limits update.`
-
-Subscribe `for user reduce_risk_limits update.`
-
-###  Request
-
-  * channel
-
-`futures.reduce_risk_limits`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -2429,7 +2325,48 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user reduce_risk_limits update.`
+
+###  Request
+
+  * channel
+
+`futures.reduce_risk_limits`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Reduce_risk_limits notification
+    
+    
+    {
+      "time": 1551858330,
+      "channel": "futures.reduce_risk_limits",
+      "event": "update",
+      "error": null,
+      "result": [
+        {
+          "cancel_orders": 0,
+          "contract": "ETH_USD",
+          "leverage_max": 10,
+          "liq_price": 136.53,
+          "maintenance_rate": 0.09,
+          "risk_limit": 450,
+          "time": 1551858330,
+          "time_ms": 1551858330123,
+          "user": "20011"
+        }
+      ]
+    }
+    
 
 **Notify reduce risk limits update.**
 
@@ -2460,45 +2397,7 @@ field | type | description
 `time_ms` | Number | time in milliseconds  
 `user` | String | user id  
 
-    
-    
-    {
-      "time": 1551858330,
-      "channel": "futures.reduce_risk_limits",
-      "event": "update",
-      "error": null,
-      "result": [
-        {
-          "cancel_orders": 0,
-          "contract": "ETH_USD",
-          "leverage_max": 10,
-          "liq_price": 136.53,
-          "maintenance_rate": 0.09,
-          "risk_limit": 450,
-          "time": 1551858330,
-          "time_ms": 1551858330123,
-          "user": "20011"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`reduce risk limits update.`
-
-Unsubscribe `reduce risk limits update.`
-
-###  Request
-
-  * channel
-
-`futures.reduce_risk_limits`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -2520,6 +2419,18 @@ Unsubscribe `reduce risk limits update.`
     print(ws.recv())
     
 
+Unsubscribe `reduce risk limits update.`
+
+###  Request
+
+  * channel
+
+`futures.reduce_risk_limits`
+
+  * event
+
+`unsubscribe`
+
 #  Positions API
 
 **Provides a way to receive user positions info.**
@@ -2529,28 +2440,6 @@ WARNING
 Authentication required.
 
 ##  Positions subscription
-
-Subscribe`for user positions update.`
-
-Subscribe `for user positions update.`
-
-###  Request
-
-  * channel
-
-`futures.positions`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -2586,7 +2475,56 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `for user positions update.`
+
+###  Request
+
+  * channel
+
+`futures.positions`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
+
 ##  Positions notification
+    
+    
+    {
+      "time": 1588212926,
+      "channel": "futures.positions",
+      "event": "update",
+      "error": null,
+      "result": [
+        {
+          "contract": "BTC_USDT_20230630",
+          "entry_price": 5999,
+          "history_pnl": 9.99872821972,
+          "history_point": -0.02954299895,
+          "last_close_pnl": -0.00011406187,
+          "leverage": 10,
+          "leverage_max": 100,
+          "liq_price": 5508.28,
+          "maintenance_rate": 0.005,
+          "margin": 0.001112608124,
+          "realised_pnl": -0.000072631078,
+          "realised_point": 0,
+          "risk_limit": 100,
+          "size": 70,
+          "time": 1588212925,
+          "time_ms": 1588212925123,
+          "user": "10003"
+        }
+      ]
+    }
+    
 
 **Notify positions update.**
 
@@ -2625,53 +2563,7 @@ field | type | description
 `time_ms` | Number | update unix timestamp in milliseconds  
 `user` | String | user id  
 
-    
-    
-    {
-      "time": 1588212926,
-      "channel": "futures.positions",
-      "event": "update",
-      "error": null,
-      "result": [
-        {
-          "contract": "BTC_USDT_20230630",
-          "entry_price": 5999,
-          "history_pnl": 9.99872821972,
-          "history_point": -0.02954299895,
-          "last_close_pnl": -0.00011406187,
-          "leverage": 10,
-          "leverage_max": 100,
-          "liq_price": 5508.28,
-          "maintenance_rate": 0.005,
-          "margin": 0.001112608124,
-          "realised_pnl": -0.000072631078,
-          "realised_point": 0,
-          "risk_limit": 100,
-          "size": 70,
-          "time": 1588212925,
-          "time_ms": 1588212925123,
-          "user": "10003"
-        }
-      ]
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`positions update.`
-
-Unsubscribe `positions update.`
-
-###  Request
-
-  * channel
-
-`futures.positions`
-
-  * event
-
-`unsubscribe`
-
     
     
     import json
@@ -2707,6 +2599,18 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `positions update.`
+
+###  Request
+
+  * channel
+
+`futures.positions`
+
+  * event
+
+`unsubscribe`
+
 #  Auto orders API
 
 **Provides a way to receive user auto orders info.**
@@ -2716,28 +2620,6 @@ WARNING
 Authentication required.
 
 ##  Auto orders subscription
-
-Subscribe`for user auto orders update.`
-
-Subscribe `for user auto orders update.`
-
-###  Request
-
-  * channel
-
-`futures.autoorders`
-
-  * event
-
-`subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`user id` | String | no | user id  
-`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
-
     
     
     import json
@@ -2773,11 +2655,9 @@ The above command returns JSON structured like this:
     }
     
 
-##  Auto orders notification
+Subscribe `for user auto orders update.`
 
-**Notify auto orders update.**
-
-###  Notify
+###  Request
 
   * channel
 
@@ -2785,27 +2665,16 @@ The above command returns JSON structured like this:
 
   * event
 
-`update`
+`subscribe`
 
   * params
 
-field | type | description  
----|---|---  
-`result` | Array | Array of objects  
-field | type | description  
----|---|---  
-`user` | Number | user id  
-`trigger` | Object | watch http api  
-`initial` | Object | watch http api  
-`id` | Number | auto order id  
-`trade_id` | Number | trade id  
-`status` | String | order status  
-`reason` | String | change reason  
-`create_time` | Number | create time  
-`name` | String | name  
-`is_stop_order` | boolean | is stop  
-`stop_trigger` | Object | watch http api  
+parameter | type | required | description  
+---|---|---|---  
+`user id` | String | no | user id  
+`contract` | String | yes | delivery contract name. !all——Subscribe to all contracts.  
 
+##  Auto orders notification
     
     
     {
@@ -2850,13 +2719,9 @@ field | type | description
     }
     
 
-##  Cancel subscription
+**Notify auto orders update.**
 
-Unsubscribe`auto orders update.`
-
-Unsubscribe `auto orders update.`
-
-###  Request
+###  Notify
 
   * channel
 
@@ -2864,8 +2729,28 @@ Unsubscribe `auto orders update.`
 
   * event
 
-`unsubscribe`
+`update`
 
+  * params
+
+field | type | description  
+---|---|---  
+`result` | Array | Array of objects  
+field | type | description  
+---|---|---  
+`user` | Number | user id  
+`trigger` | Object | watch http api  
+`initial` | Object | watch http api  
+`id` | Number | auto order id  
+`trade_id` | Number | trade id  
+`status` | String | order status  
+`reason` | String | change reason  
+`create_time` | Number | create time  
+`name` | String | name  
+`is_stop_order` | boolean | is stop  
+`stop_trigger` | Object | watch http api  
+
+##  Cancel subscription
     
     
     import json
@@ -2899,5 +2784,17 @@ The above command returns JSON structured like this:
       }
     }
     
+
+Unsubscribe `auto orders update.`
+
+###  Request
+
+  * channel
+
+`futures.autoorders`
+
+  * event
+
+`unsubscribe`
 
 Last Updated: 4/27/2026, 10:15:14 AM
