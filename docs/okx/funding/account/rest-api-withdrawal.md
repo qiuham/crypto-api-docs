@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-withdrawal
 anchor_id: funding-account-rest-api-withdrawal
 api_type: REST
-updated_at: 2026-05-28 19:38:58.202636
+updated_at: 2026-05-29 19:38:36.032036
 ---
 
 # Withdrawal

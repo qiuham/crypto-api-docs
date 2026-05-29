@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-option-market-data
 anchor_id: public-data-rest-api-get-option-market-data
 api_type: REST
-updated_at: 2026-05-28 19:38:37.432028
+updated_at: 2026-05-29 19:38:15.248435
 ---
 
 # Get option market data
@@ -46,6 +46,8 @@ instFamily | String | Yes | Instrument family, only applicable to `OPTION`
   
 expTime | String | No | Contract expiry date, the format is "YYMMDD", e.g. "200527"  
   
+**Note** : This endpoint may not return data for all instruments listed in `/api/v5/public/instruments`. Options with insufficient market depth for implied volatility surface fitting — particularly deep out-of-the-money (OTM) options — may not have entries.
+
 > Response Example
     
     
@@ -165,6 +167,8 @@ ts | String | Data update time, Unix timestamp format in milliseconds, e.g. `159
 instFamily | String | 是 | 交易品种，仅适用于期权  
 expTime | String | 否 | 合约到期日，格式为"YYMMDD"，如 "200527"  
   
+**注意** ：本接口返回的数据可能不包含 `/api/v5/public/instruments` 中所有的期权合约。对于市场深度不足、无法进行隐含波动率曲面拟合的期权（尤其是深度虚值期权），可能不会有对应的数据。
+
 > 返回结果
     
     

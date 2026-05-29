@@ -31,7 +31,7 @@ PYTHONPATH=. python src/main.py readme
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-05-28 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-05-29 |
 | [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-28 |
-| [OKX](./docs/okx/) | ✅ | 509 | 2026-05-28 |
+| [OKX](./docs/okx/) | ✅ | 510 | 2026-05-29 |
 
 ## GitHub Actions
 
@@ -70,7 +70,7 @@ crypto-api-docs/
 │   ├── gateio/                 # 66 Markdown docs
 │   ├── hyperliquid/            # 34 Markdown docs
 │   ├── kraken/                 # 243 Markdown docs
-│   └── okx/                    # 509 Markdown docs
+│   └── okx/                    # 510 Markdown docs
 ├── index/                  # JSON 索引（供 AI 读取）
 │   ├── binance.json
 │   ├── bybit.json

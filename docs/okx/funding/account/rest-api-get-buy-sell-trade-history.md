@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-get-buy-sell-trade-history
 anchor_id: funding-account-rest-api-get-buy-sell-trade-history
 api_type: REST
-updated_at: 2026-05-28 19:39:05.690316
+updated_at: 2026-05-29 19:38:43.522009
 ---
 
 # Get buy/sell trade history
