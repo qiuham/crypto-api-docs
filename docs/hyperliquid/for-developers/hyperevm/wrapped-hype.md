@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/wrapped-hype
 api_type: REST
-updated_at: 2026-05-28 18:58:29.960743
+updated_at: 2026-05-29 18:58:34.181963
 ---
 
 # Wrapped HYPE

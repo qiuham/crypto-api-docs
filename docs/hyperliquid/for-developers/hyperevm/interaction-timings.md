@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interaction-timings
 api_type: REST
-updated_at: 2026-05-28 18:58:18.471506
+updated_at: 2026-05-29 18:58:22.809578
 ---
 
 # Interaction timings
