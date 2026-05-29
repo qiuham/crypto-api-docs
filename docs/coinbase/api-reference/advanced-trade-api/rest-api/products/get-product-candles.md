@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/products/get-product-candles
 api_type: Market Data
-updated_at: 2026-05-28 18:53:06.721707
+updated_at: 2026-05-29 18:53:06.562578
 ---
 
 # Get Product Candles
