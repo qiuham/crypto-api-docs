@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-history
 api_type: REST
-updated_at: 2026-05-28 19:05:26.773383
+updated_at: 2026-05-29 19:05:03.101419
 ---
 
 # Submit Deposit Questionnaire V2 (For local entities that require travel rule) (supporting network) (USER_DATA)

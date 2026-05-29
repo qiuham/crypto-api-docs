@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/user-assets
 api_type: REST
-updated_at: 2026-05-28 19:04:48.589647
+updated_at: 2026-05-29 19:04:28.240363
 ---
 
 # User Asset (USER_DATA)

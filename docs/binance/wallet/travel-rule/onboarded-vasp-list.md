@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/onboarded-vasp-list
 api_type: REST
-updated_at: 2026-05-28 19:05:34.645878
+updated_at: 2026-05-29 19:05:10.192740
 ---
 
 # Withdraw History (for local entities that require travel rule) (supporting network) (USER_DATA)

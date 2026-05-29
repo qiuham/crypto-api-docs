@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/account
 api_type: Account
-updated_at: 2026-05-28 19:04:16.037774
+updated_at: 2026-05-29 19:03:58.073726
 ---
 
 # Get API Key Permission (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History
 api_type: Trading
-updated_at: 2026-05-28 19:03:14.080019
+updated_at: 2026-05-29 19:03:01.065361
 ---
 
 # Query Margin Account's all OCO (USER_DATA)

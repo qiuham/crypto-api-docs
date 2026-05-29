@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Query-Current-Algo-Open-Orders
 api_type: REST
-updated_at: 2026-05-28 19:03:52.251721
+updated_at: 2026-05-29 19:03:36.072208
 ---
 
 # Time-Weighted Average Price(Twap) New Order(TRADE)

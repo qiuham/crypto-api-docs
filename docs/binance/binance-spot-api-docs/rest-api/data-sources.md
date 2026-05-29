@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/data-sources
 api_type: REST
-updated_at: 2026-05-28 18:59:47.978963
+updated_at: 2026-05-29 18:59:51.582730
 ---
 
 # Error Codes

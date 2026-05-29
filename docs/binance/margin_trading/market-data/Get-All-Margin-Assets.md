@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-All-Margin-Assets
 api_type: Market Data
-updated_at: 2026-05-28 19:02:14.604576
+updated_at: 2026-05-29 19:02:09.255783
 ---
 
 # Get list Schedule (MARKET_DATA)

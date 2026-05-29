@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream
 api_type: REST
-updated_at: 2026-05-28 19:02:33.917209
+updated_at: 2026-05-29 19:02:26.061291
 ---
 
 # Keepalive User Data Stream (USER_STREAM)
