@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/cancelall
 api_type: WebSocket
-updated_at: 2026-05-28 19:55:31.631557
+updated_at: 2026-05-29 19:55:20.039647
 ---
 
 # Cancel All
@@ -56,7 +56,7 @@ Number of orders cancelled.
 
 **status** `string`
 
-**Possible values:**[`ok`, `error`] 
+**Possible values:**[`ok`, `error`]
 
 **reqid** `integer`
 

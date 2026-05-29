@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-trades
 api_type: REST
-updated_at: 2026-05-28 19:49:45.253972
+updated_at: 2026-05-29 19:49:14.398099
 ---
 
 # Get Recent Trades

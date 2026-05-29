@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/ping
 api_type: WebSocket
-updated_at: 2026-05-28 19:55:44.458167
+updated_at: 2026-05-29 19:55:32.950711
 ---
 
 # Ping

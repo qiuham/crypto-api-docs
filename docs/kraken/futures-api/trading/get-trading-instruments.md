@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-trading-instruments
 api_type: REST
-updated_at: 2026-05-28 19:46:47.521916
+updated_at: 2026-05-29 19:46:14.594751
 ---
 
 # Get position percentile of unwind queue

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trades-info
 api_type: REST
-updated_at: 2026-05-28 19:50:08.489018
+updated_at: 2026-05-29 19:49:34.536286
 ---
 
 # Query Trades Info

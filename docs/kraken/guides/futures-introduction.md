@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-introduction
 api_type: Guide
-updated_at: 2026-05-28 19:48:07.117109
+updated_at: 2026-05-29 19:47:34.466053
 ---
 
 # Futures Introduction

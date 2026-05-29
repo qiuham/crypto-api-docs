@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-trigger-events
 api_type: Market Data
-updated_at: 2026-05-28 19:45:41.500064
+updated_at: 2026-05-29 19:45:09.692931
 ---
 
 # Market History

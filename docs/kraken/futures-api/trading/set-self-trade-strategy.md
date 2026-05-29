@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy
 api_type: REST
-updated_at: 2026-05-28 19:47:17.146688
+updated_at: 2026-05-29 19:46:43.780666
 ---
 
 # Calculate portfolio margin, pnl and greeks

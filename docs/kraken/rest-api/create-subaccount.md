@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/create-subaccount
 api_type: REST
-updated_at: 2026-05-28 19:48:58.780676
+updated_at: 2026-05-29 19:48:25.832762
 ---
 
 # Deallocate Earn Funds

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/accept-rfq-offer
 api_type: REST
-updated_at: 2026-05-28 19:45:44.719503
+updated_at: 2026-05-29 19:45:12.893760
 ---
 
 # Account Information

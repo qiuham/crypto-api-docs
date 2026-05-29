@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/resolutions
 api_type: Market Data
-updated_at: 2026-05-28 19:45:22.256629
+updated_at: 2026-05-29 19:44:50.278312
 ---
 
 # Markets

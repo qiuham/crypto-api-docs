@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-ticker
 api_type: REST
-updated_at: 2026-05-28 19:46:44.177702
+updated_at: 2026-05-29 19:46:11.277307
 ---
 
 # Get tickers

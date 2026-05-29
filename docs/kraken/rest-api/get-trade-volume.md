@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-volume
 api_type: REST
-updated_at: 2026-05-28 19:50:07.711854
+updated_at: 2026-05-29 19:49:33.759475
 ---
 
 # Query Trades Info

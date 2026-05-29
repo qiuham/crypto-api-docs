@@ -30,7 +30,7 @@ PYTHONPATH=. python src/main.py readme
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-05-29 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-05-28 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-05-29 |
-| [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-28 |
+| [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-29 |
 | [OKX](./docs/okx/) | ✅ | 510 | 2026-05-29 |
 
 ## GitHub Actions

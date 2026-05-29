@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/edit-order
 api_type: REST
-updated_at: 2026-05-28 19:49:02.072471
+updated_at: 2026-05-29 19:48:29.240132
 ---
 
 # Get Export Report Status

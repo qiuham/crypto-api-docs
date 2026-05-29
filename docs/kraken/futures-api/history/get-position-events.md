@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-position-events
 api_type: REST
-updated_at: 2026-05-28 19:45:35.056573
+updated_at: 2026-05-29 19:45:03.134826
 ---
 
 # Get public execution events

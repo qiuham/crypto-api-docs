@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/unsubscribe
 api_type: WebSocket
-updated_at: 2026-05-28 19:55:53.707511
+updated_at: 2026-05-29 19:55:41.969025
 ---
 
 # Unsubscribe

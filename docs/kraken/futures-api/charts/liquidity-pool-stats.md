@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/liquidity-pool-stats
 api_type: Market Data
-updated_at: 2026-05-28 19:45:18.943161
+updated_at: 2026-05-29 19:44:47.002683
 ---
 
 # Market Analytics

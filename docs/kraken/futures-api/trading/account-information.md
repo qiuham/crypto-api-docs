@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/account-information
 api_type: REST
-updated_at: 2026-05-28 19:45:45.485035
+updated_at: 2026-05-29 19:45:13.660407
 ---
 
 # Account Information

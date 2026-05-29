@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-l3-v2
 api_type: WebSocket
-updated_at: 2026-05-28 19:48:39.049243
+updated_at: 2026-05-29 19:48:05.188717
 ---
 
 # Account Transfer

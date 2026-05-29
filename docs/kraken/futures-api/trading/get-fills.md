@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fills
 api_type: REST
-updated_at: 2026-05-28 19:46:15.091850
+updated_at: 2026-05-29 19:45:42.719857
 ---
 
 # Get your fills

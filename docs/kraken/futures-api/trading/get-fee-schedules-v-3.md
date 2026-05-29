@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fee-schedules-v-3
 api_type: REST
-updated_at: 2026-05-28 19:46:14.309813
+updated_at: 2026-05-29 19:45:41.935369
 ---
 
 # Get your fills

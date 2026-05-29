@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/delete-assignment-program
 api_type: REST
-updated_at: 2026-05-28 19:46:01.065983
+updated_at: 2026-05-29 19:45:29.322436
 ---
 
 # Edit order

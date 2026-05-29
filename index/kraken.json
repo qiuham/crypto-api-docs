@@ -1,7 +1,7 @@
 {
   "exchange": "kraken",
   "total": 243,
-  "updated_at": "2026-05-28 19:56:23.427482",
+  "updated_at": "2026-05-29 19:56:12.573224",
   "documents_by_type": {
     "REST": [
       {
@@ -9,1043 +9,1043 @@
         "filename": "er-fix.md",
         "path": "docs/kraken/fix-api/er-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/er-fix",
-        "updated_at": "2026-05-28 19:44:41.241102"
+        "updated_at": "2026-05-29 19:44:09.266295"
       },
       {
         "title": "Logon",
         "filename": "logon-fix.md",
         "path": "docs/kraken/fix-api/logon-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/logon-fix",
-        "updated_at": "2026-05-28 19:44:42.013623"
+        "updated_at": "2026-05-29 19:44:10.041399"
       },
       {
         "title": "New Order Single",
         "filename": "mdsfr-fix.md",
         "path": "docs/kraken/fix-api/mdsfr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/mdsfr-fix",
-        "updated_at": "2026-05-28 19:44:50.520426"
+        "updated_at": "2026-05-29 19:44:18.312751"
       },
       {
         "title": "New Order Single",
         "filename": "nos-fix.md",
         "path": "docs/kraken/fix-api/nos-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/nos-fix",
-        "updated_at": "2026-05-28 19:44:51.295522"
+        "updated_at": "2026-05-29 19:44:19.088189"
       },
       {
         "title": "Order Cancel Replace Request (Spot only)",
         "filename": "ocr-fix.md",
         "path": "docs/kraken/fix-api/ocr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/ocr-fix",
-        "updated_at": "2026-05-28 19:44:53.669155"
+        "updated_at": "2026-05-29 19:44:21.467973"
       },
       {
         "title": "Order Cancel Replace Request (Spot only)",
         "filename": "ocrr-fix.md",
         "path": "docs/kraken/fix-api/ocrr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/ocrr-fix",
-        "updated_at": "2026-05-28 19:44:54.438905"
+        "updated_at": "2026-05-29 19:44:22.238861"
       },
       {
         "title": "Order Status Request ( Spot Only )",
         "filename": "omcr-fix.md",
         "path": "docs/kraken/fix-api/omcr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/omcr-fix",
-        "updated_at": "2026-05-28 19:44:56.799870"
+        "updated_at": "2026-05-29 19:44:24.498721"
       },
       {
         "title": "Order Status Request ( Spot Only )",
         "filename": "osr-fix.md",
         "path": "docs/kraken/fix-api/osr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/osr-fix",
-        "updated_at": "2026-05-28 19:44:57.566796"
+        "updated_at": "2026-05-29 19:44:25.266046"
       },
       {
         "title": "Reject - Session Level",
         "filename": "reject-business_level-fix.md",
         "path": "docs/kraken/fix-api/reject-business_level-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/reject-business_level-fix",
-        "updated_at": "2026-05-28 19:44:59.753198"
+        "updated_at": "2026-05-29 19:44:27.617396"
       },
       {
         "title": "Reject - Session Level",
         "filename": "reject-session_level-fix.md",
         "path": "docs/kraken/fix-api/reject-session_level-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/reject-session_level-fix",
-        "updated_at": "2026-05-28 19:45:00.521563"
+        "updated_at": "2026-05-29 19:44:28.384958"
       },
       {
         "title": "Header & Trailer",
         "filename": "sequence-reset-fix.md",
         "path": "docs/kraken/fix-api/sequence-reset-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/sequence-reset-fix",
-        "updated_at": "2026-05-28 19:45:02.881319"
+        "updated_at": "2026-05-29 19:44:30.752069"
       },
       {
         "title": "Header & Trailer",
         "filename": "session-fix.md",
         "path": "docs/kraken/fix-api/session-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/session-fix",
-        "updated_at": "2026-05-28 19:45:03.651093"
+        "updated_at": "2026-05-29 19:44:31.522283"
       },
       {
         "title": "Instrument List Request",
         "filename": "sl-fix.md",
         "path": "docs/kraken/fix-api/sl-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/sl-fix",
-        "updated_at": "2026-05-28 19:45:06.143641"
+        "updated_at": "2026-05-29 19:44:33.968850"
       },
       {
         "title": "Instrument List Request",
         "filename": "slr-fix.md",
         "path": "docs/kraken/fix-api/slr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/slr-fix",
-        "updated_at": "2026-05-28 19:45:06.909760"
+        "updated_at": "2026-05-29 19:44:34.737301"
       },
       {
         "title": "Trading Session Status Request (Spot only)",
         "filename": "tss-fix.md",
         "path": "docs/kraken/fix-api/tss-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/tss-fix",
-        "updated_at": "2026-05-28 19:45:09.324358"
+        "updated_at": "2026-05-29 19:44:37.046631"
       },
       {
         "title": "Trading Session Status Request (Spot only)",
         "filename": "tssr-fix.md",
         "path": "docs/kraken/fix-api/tssr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/tssr-fix",
-        "updated_at": "2026-05-28 19:45:10.095233"
+        "updated_at": "2026-05-29 19:44:37.815057"
       },
       {
         "title": "Check v3 API key",
         "filename": "api-keys.md",
         "path": "docs/kraken/futures-api/auth/api-keys.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/auth/api-keys",
-        "updated_at": "2026-05-28 19:45:12.587618"
+        "updated_at": "2026-05-29 19:44:40.717980"
       },
       {
         "title": "Check v3 API key",
         "filename": "check-v-3-api-key.md",
         "path": "docs/kraken/futures-api/auth/check-v-3-api-key.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/auth/check-v-3-api-key",
-        "updated_at": "2026-05-28 19:45:13.361120"
+        "updated_at": "2026-05-29 19:44:41.492031"
       },
       {
         "title": "Account History",
         "filename": "tick-types.md",
         "path": "docs/kraken/futures-api/charts/tick-types.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/tick-types",
-        "updated_at": "2026-05-28 19:45:25.424530"
+        "updated_at": "2026-05-29 19:44:53.165517"
       },
       {
         "title": "Account History",
         "filename": "account-history.md",
         "path": "docs/kraken/futures-api/history/account-history.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-history",
-        "updated_at": "2026-05-28 19:45:26.190703"
+        "updated_at": "2026-05-29 19:44:53.933771"
       },
       {
         "title": "Account log (CSV)",
         "filename": "account-log-csv.md",
         "path": "docs/kraken/futures-api/history/account-log-csv.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-log-csv",
-        "updated_at": "2026-05-28 19:45:29.270421"
+        "updated_at": "2026-05-29 19:44:57.229454"
       },
       {
         "title": "Account log (CSV)",
         "filename": "account-log.md",
         "path": "docs/kraken/futures-api/history/account-log.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-log",
-        "updated_at": "2026-05-28 19:45:28.500535"
+        "updated_at": "2026-05-29 19:44:56.458087"
       },
       {
         "title": "Get order events",
         "filename": "get-execution-events.md",
         "path": "docs/kraken/futures-api/history/get-execution-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-execution-events",
-        "updated_at": "2026-05-28 19:45:31.636701"
+        "updated_at": "2026-05-29 19:44:59.757931"
       },
       {
         "title": "Get order events",
         "filename": "get-order-events.md",
         "path": "docs/kraken/futures-api/history/get-order-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-order-events",
-        "updated_at": "2026-05-28 19:45:32.442876"
+        "updated_at": "2026-05-29 19:45:00.562512"
       },
       {
         "title": "Get public execution events",
         "filename": "get-position-events.md",
         "path": "docs/kraken/futures-api/history/get-position-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-position-events",
-        "updated_at": "2026-05-28 19:45:35.056573"
+        "updated_at": "2026-05-29 19:45:03.134826"
       },
       {
         "title": "Get public execution events",
         "filename": "get-public-execution-events.md",
         "path": "docs/kraken/futures-api/history/get-public-execution-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-execution-events",
-        "updated_at": "2026-05-28 19:45:35.837995"
+        "updated_at": "2026-05-29 19:45:03.915539"
       },
       {
         "title": "Get public mark price events",
         "filename": "get-public-order-events.md",
         "path": "docs/kraken/futures-api/history/get-public-order-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-order-events",
-        "updated_at": "2026-05-28 19:45:38.116537"
+        "updated_at": "2026-05-29 19:45:06.414469"
       },
       {
         "title": "Get public mark price events",
         "filename": "get-public-price-events.md",
         "path": "docs/kraken/futures-api/history/get-public-price-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-price-events",
-        "updated_at": "2026-05-28 19:45:38.889054"
+        "updated_at": "2026-05-29 19:45:07.187177"
       },
       {
         "title": "Account Information",
         "filename": "accept-rfq-offer.md",
         "path": "docs/kraken/futures-api/trading/accept-rfq-offer.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/accept-rfq-offer",
-        "updated_at": "2026-05-28 19:45:44.719503"
+        "updated_at": "2026-05-29 19:45:12.893760"
       },
       {
         "title": "Account Information",
         "filename": "account-information.md",
         "path": "docs/kraken/futures-api/trading/account-information.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/account-information",
-        "updated_at": "2026-05-28 19:45:45.485035"
+        "updated_at": "2026-05-29 19:45:13.660407"
       },
       {
         "title": "Assignment Program",
         "filename": "add-assignment-program.md",
         "path": "docs/kraken/futures-api/trading/add-assignment-program.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/add-assignment-program",
-        "updated_at": "2026-05-28 19:45:47.662864"
+        "updated_at": "2026-05-29 19:45:16.063389"
       },
       {
         "title": "Assignment Program",
         "filename": "assignment-program.md",
         "path": "docs/kraken/futures-api/trading/assignment-program.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/assignment-program",
-        "updated_at": "2026-05-28 19:45:48.427387"
+        "updated_at": "2026-05-29 19:45:16.829818"
       },
       {
         "title": "Dead man's switch",
         "filename": "cancel-all-orders-after.md",
         "path": "docs/kraken/futures-api/trading/cancel-all-orders-after.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders-after",
-        "updated_at": "2026-05-28 19:45:51.470559"
+        "updated_at": "2026-05-29 19:45:20.198448"
       },
       {
         "title": "Dead man's switch",
         "filename": "cancel-all-orders.md",
         "path": "docs/kraken/futures-api/trading/cancel-all-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders",
-        "updated_at": "2026-05-28 19:45:50.692283"
+        "updated_at": "2026-05-29 19:45:19.417952"
       },
       {
         "title": "Cancel open offer on open RFQ",
         "filename": "cancel-order.md",
         "path": "docs/kraken/futures-api/trading/cancel-order.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-order",
-        "updated_at": "2026-05-28 19:45:54.178037"
+        "updated_at": "2026-05-29 19:45:22.819486"
       },
       {
         "title": "Cancel open offer on open RFQ",
         "filename": "cancel-rfq-offer.md",
         "path": "docs/kraken/futures-api/trading/cancel-rfq-offer.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-rfq-offer",
-        "updated_at": "2026-05-28 19:45:54.953003"
+        "updated_at": "2026-05-29 19:45:23.594733"
       },
       {
         "title": "Create a new RFQ",
         "filename": "cancel-user-rfq.md",
         "path": "docs/kraken/futures-api/trading/cancel-user-rfq.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-user-rfq",
-        "updated_at": "2026-05-28 19:45:57.561739"
+        "updated_at": "2026-05-29 19:45:26.171674"
       },
       {
         "title": "Create a new RFQ",
         "filename": "create-user-rfq.md",
         "path": "docs/kraken/futures-api/trading/create-user-rfq.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq",
-        "updated_at": "2026-05-28 19:45:58.337334"
+        "updated_at": "2026-05-29 19:45:26.947641"
       },
       {
         "title": "Edit order",
         "filename": "delete-assignment-program.md",
         "path": "docs/kraken/futures-api/trading/delete-assignment-program.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/delete-assignment-program",
-        "updated_at": "2026-05-28 19:46:01.065983"
+        "updated_at": "2026-05-29 19:45:29.322436"
       },
       {
         "title": "Edit order",
         "filename": "edit-order-spring.md",
         "path": "docs/kraken/futures-api/trading/edit-order-spring.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/edit-order-spring",
-        "updated_at": "2026-05-28 19:46:01.897319"
+        "updated_at": "2026-05-29 19:45:30.145171"
       },
       {
         "title": "General",
         "filename": "fee-schedules.md",
         "path": "docs/kraken/futures-api/trading/fee-schedules.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/fee-schedules",
-        "updated_at": "2026-05-28 19:46:04.186320"
+        "updated_at": "2026-05-29 19:45:32.509310"
       },
       {
         "title": "General",
         "filename": "general.md",
         "path": "docs/kraken/futures-api/trading/general.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/general",
-        "updated_at": "2026-05-28 19:46:04.950831"
+        "updated_at": "2026-05-29 19:45:33.275446"
       },
       {
         "title": "List assignment programs",
         "filename": "get-accounts.md",
         "path": "docs/kraken/futures-api/trading/get-accounts.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-accounts",
-        "updated_at": "2026-05-28 19:46:07.848413"
+        "updated_at": "2026-05-29 19:45:35.513688"
       },
       {
         "title": "List assignment programs",
         "filename": "get-assignment-program-current.md",
         "path": "docs/kraken/futures-api/trading/get-assignment-program-current.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-current",
-        "updated_at": "2026-05-28 19:46:08.623084"
+        "updated_at": "2026-05-29 19:45:36.289469"
       },
       {
         "title": "List offers placed by the account on closed RFQs",
         "filename": "get-assignment-program-history.md",
         "path": "docs/kraken/futures-api/trading/get-assignment-program-history.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-history",
-        "updated_at": "2026-05-28 19:46:10.952577"
+        "updated_at": "2026-05-29 19:45:38.535819"
       },
       {
         "title": "List offers placed by the account on closed RFQs",
         "filename": "get-closed-rfq-offers.md",
         "path": "docs/kraken/futures-api/trading/get-closed-rfq-offers.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers",
-        "updated_at": "2026-05-28 19:46:11.783138"
+        "updated_at": "2026-05-29 19:45:39.313218"
       },
       {
         "title": "Get your fills",
         "filename": "get-fee-schedules-v-3.md",
         "path": "docs/kraken/futures-api/trading/get-fee-schedules-v-3.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-fee-schedules-v-3",
-        "updated_at": "2026-05-28 19:46:14.309813"
+        "updated_at": "2026-05-29 19:45:41.935369"
       },
       {
         "title": "Get your fills",
         "filename": "get-fills.md",
         "path": "docs/kraken/futures-api/trading/get-fills.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-fills",
-        "updated_at": "2026-05-28 19:46:15.091850"
+        "updated_at": "2026-05-29 19:45:42.719857"
       },
       {
         "title": "Get instruments",
         "filename": "get-history.md",
         "path": "docs/kraken/futures-api/trading/get-history.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-history",
-        "updated_at": "2026-05-28 19:46:17.640014"
+        "updated_at": "2026-05-29 19:45:45.134498"
       },
       {
         "title": "Get instruments",
         "filename": "get-instruments.md",
         "path": "docs/kraken/futures-api/trading/get-instruments.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-instruments",
-        "updated_at": "2026-05-28 19:46:18.460039"
+        "updated_at": "2026-05-29 19:45:46.046091"
       },
       {
         "title": "Get notifications",
         "filename": "get-leverage-setting.md",
         "path": "docs/kraken/futures-api/trading/get-leverage-setting.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-leverage-setting",
-        "updated_at": "2026-05-28 19:46:20.997073"
+        "updated_at": "2026-05-29 19:45:48.563910"
       },
       {
         "title": "Get notifications",
         "filename": "get-notifications.md",
         "path": "docs/kraken/futures-api/trading/get-notifications.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-notifications",
-        "updated_at": "2026-05-28 19:46:21.775532"
+        "updated_at": "2026-05-29 19:45:49.342731"
       },
       {
         "title": "Get open positions",
         "filename": "get-open-orders.md",
         "path": "docs/kraken/futures-api/trading/get-open-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-orders",
-        "updated_at": "2026-05-28 19:46:24.301288"
+        "updated_at": "2026-05-29 19:45:51.868419"
       },
       {
         "title": "Get open positions",
         "filename": "get-open-positions.md",
         "path": "docs/kraken/futures-api/trading/get-open-positions.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-positions",
-        "updated_at": "2026-05-28 19:46:25.082869"
+        "updated_at": "2026-05-29 19:45:52.651829"
       },
       {
         "title": "List all open RFQs",
         "filename": "get-open-rfq-offers.md",
         "path": "docs/kraken/futures-api/trading/get-open-rfq-offers.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfq-offers",
-        "updated_at": "2026-05-28 19:46:27.617664"
+        "updated_at": "2026-05-29 19:45:55.098456"
       },
       {
         "title": "Get Specific Orders' Status",
         "filename": "get-open-rfqs-for-account.md",
         "path": "docs/kraken/futures-api/trading/get-open-rfqs-for-account.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs-for-account",
-        "updated_at": "2026-05-28 19:46:30.933694"
+        "updated_at": "2026-05-29 19:45:58.365751"
       },
       {
         "title": "List all open RFQs",
         "filename": "get-open-rfqs.md",
         "path": "docs/kraken/futures-api/trading/get-open-rfqs.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs",
-        "updated_at": "2026-05-28 19:46:28.391968"
+        "updated_at": "2026-05-29 19:45:55.873974"
       },
       {
         "title": "Get Specific Orders' Status",
         "filename": "get-order-status.md",
         "path": "docs/kraken/futures-api/trading/get-order-status.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-order-status",
-        "updated_at": "2026-05-28 19:46:31.715785"
+        "updated_at": "2026-05-29 19:45:59.149984"
       },
       {
         "title": "Get PNL currency preferences",
         "filename": "get-orderbook.md",
         "path": "docs/kraken/futures-api/trading/get-orderbook.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-orderbook",
-        "updated_at": "2026-05-28 19:46:34.268183"
+        "updated_at": "2026-05-29 19:46:01.621555"
       },
       {
         "title": "Get PNL currency preferences",
         "filename": "get-pnl-currency-preference.md",
         "path": "docs/kraken/futures-api/trading/get-pnl-currency-preference.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-pnl-currency-preference",
-        "updated_at": "2026-05-28 19:46:35.042431"
+        "updated_at": "2026-05-29 19:46:02.397129"
       },
       {
         "title": "Retrieve a single RFQ (open or recently closed)",
         "filename": "get-portfolio-margining-parameters.md",
         "path": "docs/kraken/futures-api/trading/get-portfolio-margining-parameters.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-portfolio-margining-parameters",
-        "updated_at": "2026-05-28 19:46:37.556217"
+        "updated_at": "2026-05-29 19:46:04.915449"
       },
       {
         "title": "Retrieve a single RFQ (open or recently closed)",
         "filename": "get-rfq.md",
         "path": "docs/kraken/futures-api/trading/get-rfq.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-rfq",
-        "updated_at": "2026-05-28 19:46:38.331826"
+        "updated_at": "2026-05-29 19:46:05.693586"
       },
       {
         "title": "Check subaccount trading status",
         "filename": "get-self-trade-strategy.md",
         "path": "docs/kraken/futures-api/trading/get-self-trade-strategy.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-self-trade-strategy",
-        "updated_at": "2026-05-28 19:46:40.851614"
+        "updated_at": "2026-05-29 19:46:08.250006"
       },
       {
         "title": "Check subaccount trading status",
         "filename": "get-subaccount-trading-capability.md",
         "path": "docs/kraken/futures-api/trading/get-subaccount-trading-capability.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-subaccount-trading-capability",
-        "updated_at": "2026-05-28 19:46:41.624562"
+        "updated_at": "2026-05-29 19:46:09.023325"
       },
       {
         "title": "Get tickers",
         "filename": "get-ticker.md",
         "path": "docs/kraken/futures-api/trading/get-ticker.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-ticker",
-        "updated_at": "2026-05-28 19:46:44.177702"
+        "updated_at": "2026-05-29 19:46:11.277307"
       },
       {
         "title": "Get tickers",
         "filename": "get-tickers.md",
         "path": "docs/kraken/futures-api/trading/get-tickers.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-tickers",
-        "updated_at": "2026-05-28 19:46:44.969416"
+        "updated_at": "2026-05-29 19:46:12.067909"
       },
       {
         "title": "Get position percentile of unwind queue",
         "filename": "get-trading-instruments.md",
         "path": "docs/kraken/futures-api/trading/get-trading-instruments.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-trading-instruments",
-        "updated_at": "2026-05-28 19:46:47.521916"
+        "updated_at": "2026-05-29 19:46:14.594751"
       },
       {
         "title": "Get position percentile of unwind queue",
         "filename": "get-unwind-queue.md",
         "path": "docs/kraken/futures-api/trading/get-unwind-queue.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-unwind-queue",
-        "updated_at": "2026-05-28 19:46:48.298617"
+        "updated_at": "2026-05-29 19:46:15.371609"
       },
       {
         "title": "Historical Data",
         "filename": "get-user-fee-schedule-volumes-v-3.md",
         "path": "docs/kraken/futures-api/trading/get-user-fee-schedule-volumes-v-3.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-user-fee-schedule-volumes-v-3",
-        "updated_at": "2026-05-28 19:46:50.733571"
+        "updated_at": "2026-05-29 19:46:17.767463"
       },
       {
         "title": "Historical Data",
         "filename": "historical-data.md",
         "path": "docs/kraken/futures-api/trading/historical-data.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/historical-data",
-        "updated_at": "2026-05-28 19:46:51.497955"
+        "updated_at": "2026-05-29 19:46:18.533429"
       },
       {
         "title": "Instrument Details",
         "filename": "historical-funding-rates.md",
         "path": "docs/kraken/futures-api/trading/historical-funding-rates.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/historical-funding-rates",
-        "updated_at": "2026-05-28 19:46:53.932609"
+        "updated_at": "2026-05-29 19:46:20.896958"
       },
       {
         "title": "Instrument Details",
         "filename": "instrument-details.md",
         "path": "docs/kraken/futures-api/trading/instrument-details.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instrument-details",
-        "updated_at": "2026-05-28 19:46:54.697800"
+        "updated_at": "2026-05-29 19:46:21.663606"
       },
       {
         "title": "Get instrument status list",
         "filename": "instrument-status.md",
         "path": "docs/kraken/futures-api/trading/instrument-status.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instrument-status",
-        "updated_at": "2026-05-28 19:46:57.214449"
+        "updated_at": "2026-05-29 19:46:24.157342"
       },
       {
         "title": "Get instrument status list",
         "filename": "instruments-status.md",
         "path": "docs/kraken/futures-api/trading/instruments-status.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instruments-status",
-        "updated_at": "2026-05-28 19:46:57.989364"
+        "updated_at": "2026-05-29 19:46:24.933417"
       },
       {
         "title": "Order Management",
         "filename": "multi-collateral.md",
         "path": "docs/kraken/futures-api/trading/multi-collateral.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/multi-collateral",
-        "updated_at": "2026-05-28 19:47:03.677703"
+        "updated_at": "2026-05-29 19:46:30.398409"
       },
       {
         "title": "Order Management",
         "filename": "order-management.md",
         "path": "docs/kraken/futures-api/trading/order-management.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/order-management",
-        "updated_at": "2026-05-28 19:47:04.443926"
+        "updated_at": "2026-05-29 19:46:31.166297"
       },
       {
         "title": "RFQs",
         "filename": "place-rfq-offer.md",
         "path": "docs/kraken/futures-api/trading/place-rfq-offer.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/place-rfq-offer",
-        "updated_at": "2026-05-28 19:47:06.951956"
+        "updated_at": "2026-05-29 19:46:33.711754"
       },
       {
         "title": "RFQs",
         "filename": "rf-qs.md",
         "path": "docs/kraken/futures-api/trading/rf-qs.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/rf-qs",
-        "updated_at": "2026-05-28 19:47:07.719052"
+        "updated_at": "2026-05-29 19:46:34.479902"
       },
       {
         "title": "Send order",
         "filename": "send-batch-order.md",
         "path": "docs/kraken/futures-api/trading/send-batch-order.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-batch-order",
-        "updated_at": "2026-05-28 19:47:10.614879"
+        "updated_at": "2026-05-29 19:46:37.351016"
       },
       {
         "title": "Send order",
         "filename": "send-order.md",
         "path": "docs/kraken/futures-api/trading/send-order.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-order",
-        "updated_at": "2026-05-28 19:47:11.460474"
+        "updated_at": "2026-05-29 19:46:38.186480"
       },
       {
         "title": "Set PNL currency preference",
         "filename": "set-leverage-setting.md",
         "path": "docs/kraken/futures-api/trading/set-leverage-setting.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-leverage-setting",
-        "updated_at": "2026-05-28 19:47:14.043488"
+        "updated_at": "2026-05-29 19:46:40.457730"
       },
       {
         "title": "Set PNL currency preference",
         "filename": "set-pnl-currency-preference.md",
         "path": "docs/kraken/futures-api/trading/set-pnl-currency-preference.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference",
-        "updated_at": "2026-05-28 19:47:14.818623"
+        "updated_at": "2026-05-29 19:46:41.233627"
       },
       {
         "title": "Calculate portfolio margin, pnl and greeks",
         "filename": "set-self-trade-strategy.md",
         "path": "docs/kraken/futures-api/trading/set-self-trade-strategy.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy",
-        "updated_at": "2026-05-28 19:47:17.146688"
+        "updated_at": "2026-05-29 19:46:43.780666"
       },
       {
         "title": "Calculate portfolio margin, pnl and greeks",
         "filename": "simulate-portfolio.md",
         "path": "docs/kraken/futures-api/trading/simulate-portfolio.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/simulate-portfolio",
-        "updated_at": "2026-05-28 19:47:17.924044"
+        "updated_at": "2026-05-29 19:46:44.559490"
       },
       {
         "title": "Subaccounts",
         "filename": "sub-account-transfer.md",
         "path": "docs/kraken/futures-api/trading/sub-account-transfer.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/sub-account-transfer",
-        "updated_at": "2026-05-28 19:47:20.394497"
+        "updated_at": "2026-05-29 19:46:47.083136"
       },
       {
         "title": "Subaccounts",
         "filename": "subaccounts.md",
         "path": "docs/kraken/futures-api/trading/subaccounts.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/subaccounts",
-        "updated_at": "2026-05-28 19:47:21.159550"
+        "updated_at": "2026-05-29 19:46:47.849337"
       },
       {
         "title": "Initiate wallet transfer",
         "filename": "trading-settings.md",
         "path": "docs/kraken/futures-api/trading/trading-settings.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/trading-settings",
-        "updated_at": "2026-05-28 19:47:23.660802"
+        "updated_at": "2026-05-29 19:46:50.328961"
       },
       {
         "title": "Initiate wallet transfer",
         "filename": "transfer.md",
         "path": "docs/kraken/futures-api/trading/transfer.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/transfer",
-        "updated_at": "2026-05-28 19:47:24.435563"
+        "updated_at": "2026-05-29 19:46:51.105355"
       },
       {
         "title": "Update subaccount trading status",
         "filename": "transfers.md",
         "path": "docs/kraken/futures-api/trading/transfers.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/transfers",
-        "updated_at": "2026-05-28 19:47:26.982355"
+        "updated_at": "2026-05-29 19:46:53.563147"
       },
       {
         "title": "Update subaccount trading status",
         "filename": "update-subaccount-trading-capability.md",
         "path": "docs/kraken/futures-api/trading/update-subaccount-trading-capability.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/update-subaccount-trading-capability",
-        "updated_at": "2026-05-28 19:47:27.755819"
+        "updated_at": "2026-05-29 19:46:54.337987"
       },
       {
         "title": "Account Log",
         "filename": "withdrawal.md",
         "path": "docs/kraken/futures-api/trading/withdrawal.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/withdrawal",
-        "updated_at": "2026-05-28 19:47:30.167844"
+        "updated_at": "2026-05-29 19:46:56.921276"
       },
       {
         "title": "Account Transfer",
         "filename": "account-transfer.md",
         "path": "docs/kraken/rest-api/account-transfer.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/account-transfer",
-        "updated_at": "2026-05-28 19:48:39.822254"
+        "updated_at": "2026-05-29 19:48:06.009784"
       },
       {
         "title": "Add Order",
         "filename": "add-export.md",
         "path": "docs/kraken/rest-api/add-export.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/add-export",
-        "updated_at": "2026-05-28 19:48:42.399856"
+        "updated_at": "2026-05-29 19:48:09.988465"
       },
       {
         "title": "Allocate Earn Funds",
         "filename": "add-order-batch.md",
         "path": "docs/kraken/rest-api/add-order-batch.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order-batch",
-        "updated_at": "2026-05-28 19:48:45.512739"
+        "updated_at": "2026-05-29 19:48:13.102191"
       },
       {
         "title": "Add Order",
         "filename": "add-order.md",
         "path": "docs/kraken/rest-api/add-order.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order",
-        "updated_at": "2026-05-28 19:48:43.188153"
+        "updated_at": "2026-05-29 19:48:10.775856"
       },
       {
         "title": "Allocate Earn Funds",
         "filename": "allocate-strategy.md",
         "path": "docs/kraken/rest-api/allocate-strategy.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/allocate-strategy",
-        "updated_at": "2026-05-28 19:48:46.284409"
+        "updated_at": "2026-05-29 19:48:13.875390"
       },
       {
         "title": "Cancel All Orders",
         "filename": "amend-order.md",
         "path": "docs/kraken/rest-api/amend-order.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/amend-order",
-        "updated_at": "2026-05-28 19:48:48.818856"
+        "updated_at": "2026-05-29 19:48:16.463712"
       },
       {
         "title": "Cancel Order",
         "filename": "cancel-all-orders-after.md",
         "path": "docs/kraken/rest-api/cancel-all-orders-after.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-all-orders-after",
-        "updated_at": "2026-05-28 19:48:52.163751"
+        "updated_at": "2026-05-29 19:48:19.769326"
       },
       {
         "title": "Cancel All Orders",
         "filename": "cancel-all-orders.md",
         "path": "docs/kraken/rest-api/cancel-all-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-all-orders",
-        "updated_at": "2026-05-28 19:48:49.590181"
+        "updated_at": "2026-05-29 19:48:17.241629"
       },
       {
         "title": "Request Withdrawal Cancellation",
         "filename": "cancel-order-batch.md",
         "path": "docs/kraken/rest-api/cancel-order-batch.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-order-batch",
-        "updated_at": "2026-05-28 19:48:55.464040"
+        "updated_at": "2026-05-29 19:48:22.827005"
       },
       {
         "title": "Cancel Order",
         "filename": "cancel-order.md",
         "path": "docs/kraken/rest-api/cancel-order.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-order",
-        "updated_at": "2026-05-28 19:48:52.936064"
+        "updated_at": "2026-05-29 19:48:20.547678"
       },
       {
         "title": "Request Withdrawal Cancellation",
         "filename": "cancel-withdrawal.md",
         "path": "docs/kraken/rest-api/cancel-withdrawal.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-withdrawal",
-        "updated_at": "2026-05-28 19:48:56.236080"
+        "updated_at": "2026-05-29 19:48:23.598807"
       },
       {
         "title": "Deallocate Earn Funds",
         "filename": "create-subaccount.md",
         "path": "docs/kraken/rest-api/create-subaccount.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/create-subaccount",
-        "updated_at": "2026-05-28 19:48:58.780676"
+        "updated_at": "2026-05-29 19:48:25.832762"
       },
       {
         "title": "Deallocate Earn Funds",
         "filename": "deallocate-strategy.md",
         "path": "docs/kraken/rest-api/deallocate-strategy.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/deallocate-strategy",
-        "updated_at": "2026-05-28 19:48:59.553465"
+        "updated_at": "2026-05-29 19:48:26.606801"
       },
       {
         "title": "Get Export Report Status",
         "filename": "edit-order.md",
         "path": "docs/kraken/rest-api/edit-order.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/edit-order",
-        "updated_at": "2026-05-28 19:49:02.072471"
+        "updated_at": "2026-05-29 19:48:29.240132"
       },
       {
         "title": "Get Export Report Status",
         "filename": "export-status.md",
         "path": "docs/kraken/rest-api/export-status.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/export-status",
-        "updated_at": "2026-05-28 19:49:02.845535"
+        "updated_at": "2026-05-29 19:48:30.017538"
       },
       {
         "title": "Get Allocation Status",
         "filename": "get-account-balance.md",
         "path": "docs/kraken/rest-api/get-account-balance.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-account-balance",
-        "updated_at": "2026-05-28 19:49:05.406355"
+        "updated_at": "2026-05-29 19:48:32.320586"
       },
       {
         "title": "Get Allocation Status",
         "filename": "get-allocate-strategy-status.md",
         "path": "docs/kraken/rest-api/get-allocate-strategy-status.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-allocate-strategy-status",
-        "updated_at": "2026-05-28 19:49:06.178370"
+        "updated_at": "2026-05-29 19:48:33.093460"
       },
       {
         "title": "Get Asset Info",
         "filename": "get-api-key-info.md",
         "path": "docs/kraken/rest-api/get-api-key-info.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-api-key-info",
-        "updated_at": "2026-05-28 19:49:08.475326"
+        "updated_at": "2026-05-29 19:48:35.721266"
       },
       {
         "title": "Get Asset Info",
         "filename": "get-asset-info.md",
         "path": "docs/kraken/rest-api/get-asset-info.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-asset-info",
-        "updated_at": "2026-05-28 19:49:09.292308"
+        "updated_at": "2026-05-29 19:48:36.493366"
       },
       {
         "title": "Get Credit Lines",
         "filename": "get-closed-orders.md",
         "path": "docs/kraken/rest-api/get-closed-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-closed-orders",
-        "updated_at": "2026-05-28 19:49:13.485747"
+        "updated_at": "2026-05-29 19:48:39.189037"
       },
       {
         "title": "Get Credit Lines",
         "filename": "get-credit-lines.md",
         "path": "docs/kraken/rest-api/get-credit-lines.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-credit-lines",
-        "updated_at": "2026-05-28 19:49:14.260995"
+        "updated_at": "2026-05-29 19:48:39.966636"
       },
       {
         "title": "Get Deposit Addresses",
         "filename": "get-deallocate-strategy-status.md",
         "path": "docs/kraken/rest-api/get-deallocate-strategy-status.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status",
-        "updated_at": "2026-05-28 19:49:16.515871"
+        "updated_at": "2026-05-29 19:48:42.683786"
       },
       {
         "title": "Get Deposit Addresses",
         "filename": "get-deposit-addresses.md",
         "path": "docs/kraken/rest-api/get-deposit-addresses.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deposit-addresses",
-        "updated_at": "2026-05-28 19:49:17.290380"
+        "updated_at": "2026-05-29 19:48:43.508048"
       },
       {
         "title": "Get Extended Balance",
         "filename": "get-deposit-methods.md",
         "path": "docs/kraken/rest-api/get-deposit-methods.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deposit-methods",
-        "updated_at": "2026-05-28 19:49:19.864235"
+        "updated_at": "2026-05-29 19:48:47.613233"
       },
       {
         "title": "Get Extended Balance",
         "filename": "get-extended-balance.md",
         "path": "docs/kraken/rest-api/get-extended-balance.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-extended-balance",
-        "updated_at": "2026-05-28 19:49:20.637873"
+        "updated_at": "2026-05-29 19:48:48.388190"
       },
       {
         "title": "Get Ledgers Info",
         "filename": "get-grouped-order-book.md",
         "path": "docs/kraken/rest-api/get-grouped-order-book.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book",
-        "updated_at": "2026-05-28 19:49:23.219607"
+        "updated_at": "2026-05-29 19:48:51.080044"
       },
       {
         "title": "Query L3 Order Book",
         "filename": "get-ledgers-info.md",
         "path": "docs/kraken/rest-api/get-ledgers-info.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ledgers-info",
-        "updated_at": "2026-05-28 19:49:26.640808"
+        "updated_at": "2026-05-29 19:48:54.605243"
       },
       {
         "title": "Get Ledgers Info",
         "filename": "get-ledgers.md",
         "path": "docs/kraken/rest-api/get-ledgers.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ledgers",
-        "updated_at": "2026-05-28 19:49:23.997839"
+        "updated_at": "2026-05-29 19:48:51.858096"
       },
       {
         "title": "Query L3 Order Book",
         "filename": "get-level-3-order-book.md",
         "path": "docs/kraken/rest-api/get-level-3-order-book.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book",
-        "updated_at": "2026-05-28 19:49:27.420909"
+        "updated_at": "2026-05-29 19:48:55.386926"
       },
       {
         "title": "Get Open Orders",
         "filename": "get-ohlc-data.md",
         "path": "docs/kraken/rest-api/get-ohlc-data.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ohlc-data",
-        "updated_at": "2026-05-28 19:49:29.714216"
+        "updated_at": "2026-05-29 19:48:57.800905"
       },
       {
         "title": "Get Open Orders",
         "filename": "get-open-orders.md",
         "path": "docs/kraken/rest-api/get-open-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-open-orders",
-        "updated_at": "2026-05-28 19:49:30.495414"
+        "updated_at": "2026-05-29 19:48:58.580832"
       },
       {
         "title": "Get Order Amends",
         "filename": "get-open-positions.md",
         "path": "docs/kraken/rest-api/get-open-positions.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-open-positions",
-        "updated_at": "2026-05-28 19:49:33.777987"
+        "updated_at": "2026-05-29 19:49:01.210633"
       },
       {
         "title": "Get Order Amends",
         "filename": "get-order-amends.md",
         "path": "docs/kraken/rest-api/get-order-amends.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-order-amends",
-        "updated_at": "2026-05-28 19:49:34.597316"
+        "updated_at": "2026-05-29 19:49:01.985622"
       },
       {
         "title": "Query Orders Info",
         "filename": "get-order-book.md",
         "path": "docs/kraken/rest-api/get-order-book.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-order-book",
-        "updated_at": "2026-05-28 19:49:37.781929"
+        "updated_at": "2026-05-29 19:49:04.660318"
       },
       {
         "title": "Query Orders Info",
         "filename": "get-orders-info.md",
         "path": "docs/kraken/rest-api/get-orders-info.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-orders-info",
-        "updated_at": "2026-05-28 19:49:38.572072"
+        "updated_at": "2026-05-29 19:49:05.447873"
       },
       {
         "title": "Pre-Trade Data",
         "filename": "get-post-trade.md",
         "path": "docs/kraken/rest-api/get-post-trade.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-post-trade",
-        "updated_at": "2026-05-28 19:49:41.183264"
+        "updated_at": "2026-05-29 19:49:10.796883"
       },
       {
         "title": "Pre-Trade Data",
         "filename": "get-pre-trade.md",
         "path": "docs/kraken/rest-api/get-pre-trade.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-pre-trade",
-        "updated_at": "2026-05-28 19:49:41.957609"
+        "updated_at": "2026-05-29 19:49:11.571232"
       },
       {
         "title": "Get Recent Trades",
         "filename": "get-recent-spreads.md",
         "path": "docs/kraken/rest-api/get-recent-spreads.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-recent-spreads",
-        "updated_at": "2026-05-28 19:49:44.482929"
+        "updated_at": "2026-05-29 19:49:13.626040"
       },
       {
         "title": "Get Recent Trades",
         "filename": "get-recent-trades.md",
         "path": "docs/kraken/rest-api/get-recent-trades.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-recent-trades",
-        "updated_at": "2026-05-28 19:49:45.253972"
+        "updated_at": "2026-05-29 19:49:14.398099"
       },
       {
         "title": "Get Status of Recent Deposits",
         "filename": "get-server-time.md",
         "path": "docs/kraken/rest-api/get-server-time.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-server-time",
-        "updated_at": "2026-05-28 19:49:47.515404"
+        "updated_at": "2026-05-29 19:49:17.040562"
       },
       {
         "title": "Get Status of Recent Deposits",
         "filename": "get-status-recent-deposits.md",
         "path": "docs/kraken/rest-api/get-status-recent-deposits.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-status-recent-deposits",
-        "updated_at": "2026-05-28 19:49:48.292776"
+        "updated_at": "2026-05-29 19:49:17.817667"
       },
       {
         "title": "Get System Status",
         "filename": "get-status-recent-withdrawals.md",
         "path": "docs/kraken/rest-api/get-status-recent-withdrawals.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-status-recent-withdrawals",
-        "updated_at": "2026-05-28 19:49:53.615677"
+        "updated_at": "2026-05-29 19:49:20.403028"
       },
       {
         "title": "Get System Status",
         "filename": "get-system-status.md",
         "path": "docs/kraken/rest-api/get-system-status.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-system-status",
-        "updated_at": "2026-05-28 19:49:54.383800"
+        "updated_at": "2026-05-29 19:49:21.172685"
       },
       {
         "title": "Get Tradable Asset Pairs",
         "filename": "get-ticker-information.md",
         "path": "docs/kraken/rest-api/get-ticker-information.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ticker-information",
-        "updated_at": "2026-05-28 19:49:56.959992"
+        "updated_at": "2026-05-29 19:49:26.779005"
       },
       {
         "title": "Get Tradable Asset Pairs",
         "filename": "get-tradable-asset-pairs.md",
         "path": "docs/kraken/rest-api/get-tradable-asset-pairs.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs",
-        "updated_at": "2026-05-28 19:49:57.736539"
+        "updated_at": "2026-05-29 19:49:27.556198"
       },
       {
         "title": "Get Trades History",
         "filename": "get-trade-balance.md",
         "path": "docs/kraken/rest-api/get-trade-balance.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-balance",
-        "updated_at": "2026-05-28 19:50:00.507385"
+        "updated_at": "2026-05-29 19:49:30.304365"
       },
       {
         "title": "Get Trades History",
         "filename": "get-trade-history.md",
         "path": "docs/kraken/rest-api/get-trade-history.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-history",
-        "updated_at": "2026-05-28 19:50:01.287463"
+        "updated_at": "2026-05-29 19:49:31.084000"
       },
       {
         "title": "Query Trades Info",
         "filename": "get-trade-volume.md",
         "path": "docs/kraken/rest-api/get-trade-volume.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-volume",
-        "updated_at": "2026-05-28 19:50:07.711854"
+        "updated_at": "2026-05-29 19:49:33.759475"
       },
       {
         "title": "Query Trades Info",
         "filename": "get-trades-info.md",
         "path": "docs/kraken/rest-api/get-trades-info.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trades-info",
-        "updated_at": "2026-05-28 19:50:08.489018"
+        "updated_at": "2026-05-29 19:49:34.536286"
       },
       {
         "title": "Get Withdrawal Addresses",
         "filename": "get-withdrawal-addresses.md",
         "path": "docs/kraken/rest-api/get-withdrawal-addresses.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-addresses",
-        "updated_at": "2026-05-28 19:50:11.786662"
+        "updated_at": "2026-05-29 19:49:41.273594"
       },
       {
         "title": "Get Withdrawal Methods",
         "filename": "get-withdrawal-information.md",
         "path": "docs/kraken/rest-api/get-withdrawal-information.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-information",
-        "updated_at": "2026-05-28 19:50:17.624315"
+        "updated_at": "2026-05-29 19:49:43.980113"
       },
       {
         "title": "Get Withdrawal Methods",
         "filename": "get-withdrawal-methods.md",
         "path": "docs/kraken/rest-api/get-withdrawal-methods.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-methods",
-        "updated_at": "2026-05-28 19:50:18.398128"
+        "updated_at": "2026-05-29 19:49:44.755006"
       },
       {
         "title": "List Earn Strategies",
         "filename": "list-allocations.md",
         "path": "docs/kraken/rest-api/list-allocations.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/list-allocations",
-        "updated_at": "2026-05-28 19:50:24.247622"
+        "updated_at": "2026-05-29 19:49:51.229714"
       },
       {
         "title": "List Earn Strategies",
         "filename": "list-strategies.md",
         "path": "docs/kraken/rest-api/list-strategies.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/list-strategies",
-        "updated_at": "2026-05-28 19:50:25.031332"
+        "updated_at": "2026-05-29 19:49:52.018292"
       },
       {
         "title": "Retrieve Data Export",
         "filename": "remove-export.md",
         "path": "docs/kraken/rest-api/remove-export.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/remove-export",
-        "updated_at": "2026-05-28 19:50:33.901548"
+        "updated_at": "2026-05-29 19:50:02.113808"
       },
       {
         "title": "Retrieve Data Export",
         "filename": "retrieve-export.md",
         "path": "docs/kraken/rest-api/retrieve-export.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/retrieve-export",
-        "updated_at": "2026-05-28 19:50:34.672057"
+        "updated_at": "2026-05-29 19:50:02.885619"
       },
       {
         "title": "Withdraw Funds",
         "filename": "wallet-transfer.md",
         "path": "docs/kraken/rest-api/wallet-transfer.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/wallet-transfer",
-        "updated_at": "2026-05-28 19:50:44.272312"
+        "updated_at": "2026-05-29 19:50:13.278829"
       },
       {
         "title": "Withdraw Funds",
         "filename": "withdraw-funds.md",
         "path": "docs/kraken/rest-api/withdraw-funds.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/withdraw-funds",
-        "updated_at": "2026-05-28 19:50:45.101540"
+        "updated_at": "2026-05-29 19:50:14.054914"
       }
     ],
     "Market Data": [
@@ -1054,98 +1054,98 @@
         "filename": "logout-fix.md",
         "path": "docs/kraken/fix-api/logout-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/logout-fix",
-        "updated_at": "2026-05-28 19:44:44.208121"
+        "updated_at": "2026-05-29 19:44:12.324390"
       },
       {
         "title": "Market Data Incremental Refresh",
         "filename": "mdir-fix.md",
         "path": "docs/kraken/fix-api/mdir-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/mdir-fix",
-        "updated_at": "2026-05-28 19:44:44.977712"
+        "updated_at": "2026-05-29 19:44:13.095418"
       },
       {
         "title": "Market Data Request Reject",
         "filename": "mdr-fix.md",
         "path": "docs/kraken/fix-api/mdr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/mdr-fix",
-        "updated_at": "2026-05-28 19:44:47.413222"
+        "updated_at": "2026-05-29 19:44:15.241180"
       },
       {
         "title": "Market Data Request Reject",
         "filename": "mdrr-fix.md",
         "path": "docs/kraken/fix-api/mdrr-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/mdrr-fix",
-        "updated_at": "2026-05-28 19:44:48.179012"
+        "updated_at": "2026-05-29 19:44:16.009324"
       },
       {
         "title": "Market Candles",
         "filename": "analytics.md",
         "path": "docs/kraken/futures-api/charts/analytics.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/analytics",
-        "updated_at": "2026-05-28 19:45:15.567964"
+        "updated_at": "2026-05-29 19:44:43.612621"
       },
       {
         "title": "Market Candles",
         "filename": "candles.md",
         "path": "docs/kraken/futures-api/charts/candles.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/candles",
-        "updated_at": "2026-05-28 19:45:16.340994"
+        "updated_at": "2026-05-29 19:44:44.386913"
       },
       {
         "title": "Market Analytics",
         "filename": "liquidity-pool-stats.md",
         "path": "docs/kraken/futures-api/charts/liquidity-pool-stats.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/liquidity-pool-stats",
-        "updated_at": "2026-05-28 19:45:18.943161"
+        "updated_at": "2026-05-29 19:44:47.002683"
       },
       {
         "title": "Market Analytics",
         "filename": "market-analytics.md",
         "path": "docs/kraken/futures-api/charts/market-analytics.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/market-analytics",
-        "updated_at": "2026-05-28 19:45:19.771966"
+        "updated_at": "2026-05-29 19:44:47.830331"
       },
       {
         "title": "Markets",
         "filename": "resolutions.md",
         "path": "docs/kraken/futures-api/charts/resolutions.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/resolutions",
-        "updated_at": "2026-05-28 19:45:22.256629"
+        "updated_at": "2026-05-29 19:44:50.278312"
       },
       {
         "title": "Markets",
         "filename": "symbols.md",
         "path": "docs/kraken/futures-api/charts/symbols.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/symbols",
-        "updated_at": "2026-05-28 19:45:23.025984"
+        "updated_at": "2026-05-29 19:44:51.048625"
       },
       {
         "title": "Market History",
         "filename": "get-trigger-events.md",
         "path": "docs/kraken/futures-api/history/get-trigger-events.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-trigger-events",
-        "updated_at": "2026-05-28 19:45:41.500064"
+        "updated_at": "2026-05-29 19:45:09.692931"
       },
       {
         "title": "Market History",
         "filename": "market-history.md",
         "path": "docs/kraken/futures-api/history/market-history.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/history/market-history",
-        "updated_at": "2026-05-28 19:45:42.264738"
+        "updated_at": "2026-05-29 19:45:10.459055"
       },
       {
         "title": "Market Data",
         "filename": "list-subaccounts.md",
         "path": "docs/kraken/futures-api/trading/list-subaccounts.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/list-subaccounts",
-        "updated_at": "2026-05-28 19:47:00.488887"
+        "updated_at": "2026-05-29 19:46:27.407713"
       },
       {
         "title": "Market Data",
         "filename": "market-data.md",
         "path": "docs/kraken/futures-api/trading/market-data.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/market-data",
-        "updated_at": "2026-05-28 19:47:01.254112"
+        "updated_at": "2026-05-29 19:46:28.174648"
       }
     ],
     "WebSocket": [
@@ -1154,399 +1154,399 @@
         "filename": "account_log.md",
         "path": "docs/kraken/futures-api/websocket/account_log.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/account_log",
-        "updated_at": "2026-05-28 19:47:30.962678"
+        "updated_at": "2026-05-29 19:46:57.714301"
       },
       {
         "title": "Book",
         "filename": "balances.md",
         "path": "docs/kraken/futures-api/websocket/balances.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/balances",
-        "updated_at": "2026-05-28 19:47:33.269576"
+        "updated_at": "2026-05-29 19:47:00.300843"
       },
       {
         "title": "Book",
         "filename": "book.md",
         "path": "docs/kraken/futures-api/websocket/book.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/book",
-        "updated_at": "2026-05-28 19:47:34.049425"
+        "updated_at": "2026-05-29 19:47:01.080520"
       },
       {
         "title": "Fills",
         "filename": "challenge.md",
         "path": "docs/kraken/futures-api/websocket/challenge.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/challenge",
-        "updated_at": "2026-05-28 19:47:36.746815"
+        "updated_at": "2026-05-29 19:47:03.682361"
       },
       {
         "title": "Fills",
         "filename": "fills.md",
         "path": "docs/kraken/futures-api/websocket/fills.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/fills",
-        "updated_at": "2026-05-28 19:47:37.619330"
+        "updated_at": "2026-05-29 19:47:04.468910"
       },
       {
         "title": "Notification",
         "filename": "heartbeat.md",
         "path": "docs/kraken/futures-api/websocket/heartbeat.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/heartbeat",
-        "updated_at": "2026-05-28 19:47:40.288829"
+        "updated_at": "2026-05-29 19:47:06.905662"
       },
       {
         "title": "Notification",
         "filename": "notifications.md",
         "path": "docs/kraken/futures-api/websocket/notifications.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/notifications",
-        "updated_at": "2026-05-28 19:47:41.064343"
+        "updated_at": "2026-05-29 19:47:07.681741"
       },
       {
         "title": "Open Orders (verbose)",
         "filename": "open_orders.md",
         "path": "docs/kraken/futures-api/websocket/open_orders.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_orders",
-        "updated_at": "2026-05-28 19:47:43.701280"
+        "updated_at": "2026-05-29 19:47:09.954191"
       },
       {
         "title": "Open Orders (verbose)",
         "filename": "open_orders_verbose.md",
         "path": "docs/kraken/futures-api/websocket/open_orders_verbose.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_orders_verbose",
-        "updated_at": "2026-05-28 19:47:44.494596"
+        "updated_at": "2026-05-29 19:47:10.836714"
       },
       {
         "title": "Ticker",
         "filename": "open_position.md",
         "path": "docs/kraken/futures-api/websocket/open_position.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_position",
-        "updated_at": "2026-05-28 19:47:47.013684"
+        "updated_at": "2026-05-29 19:47:13.780571"
       },
       {
         "title": "Ticker",
         "filename": "ticker.md",
         "path": "docs/kraken/futures-api/websocket/ticker.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/ticker",
-        "updated_at": "2026-05-28 19:47:47.803345"
+        "updated_at": "2026-05-29 19:47:14.569788"
       },
       {
         "title": "Trade",
         "filename": "ticker_lite.md",
         "path": "docs/kraken/futures-api/websocket/ticker_lite.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/ticker_lite",
-        "updated_at": "2026-05-28 19:47:49.789267"
+        "updated_at": "2026-05-29 19:47:17.080933"
       },
       {
         "title": "Trade",
         "filename": "trade.md",
         "path": "docs/kraken/futures-api/websocket/trade.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/trade",
-        "updated_at": "2026-05-28 19:47:50.571261"
+        "updated_at": "2026-05-29 19:47:17.862575"
       },
       {
         "title": "Kraken APIs",
         "filename": "futures-websockets.md",
         "path": "docs/kraken/guides/futures-websockets.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/futures-websockets",
-        "updated_at": "2026-05-28 19:48:12.697376"
+        "updated_at": "2026-05-29 19:47:40.144314"
       },
       {
         "title": "Spot Websockets (v1) Book Checksum",
         "filename": "spot-ws-auth.md",
         "path": "docs/kraken/guides/spot-ws-auth.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-auth",
-        "updated_at": "2026-05-28 19:48:31.382939"
+        "updated_at": "2026-05-29 19:47:58.518965"
       },
       {
         "title": "Spot Websockets (v1) Book Checksum",
         "filename": "spot-ws-book-v1.md",
         "path": "docs/kraken/guides/spot-ws-book-v1.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-book-v1",
-        "updated_at": "2026-05-28 19:48:32.215765"
+        "updated_at": "2026-05-29 19:47:59.302070"
       },
       {
         "title": "Spot Websockets Introduction",
         "filename": "spot-ws-book-v2.md",
         "path": "docs/kraken/guides/spot-ws-book-v2.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-book-v2",
-        "updated_at": "2026-05-28 19:48:35.406814"
+        "updated_at": "2026-05-29 19:48:01.754996"
       },
       {
         "title": "Spot Websockets Introduction",
         "filename": "spot-ws-intro.md",
         "path": "docs/kraken/guides/spot-ws-intro.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-intro",
-        "updated_at": "2026-05-28 19:48:36.182154"
+        "updated_at": "2026-05-29 19:48:02.531521"
       },
       {
         "title": "Account Transfer",
         "filename": "spot-ws-l3-v2.md",
         "path": "docs/kraken/guides/spot-ws-l3-v2.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-l3-v2",
-        "updated_at": "2026-05-28 19:48:39.049243"
+        "updated_at": "2026-05-29 19:48:05.188717"
       },
       {
         "title": "Get Withdrawal Addresses",
         "filename": "get-websockets-token.md",
         "path": "docs/kraken/rest-api/get-websockets-token.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/get-websockets-token",
-        "updated_at": "2026-05-28 19:50:11.012591"
+        "updated_at": "2026-05-29 19:49:40.496075"
       },
       {
-        "title": "Add Order",
+        "title": "Amend Order",
         "filename": "addorder.md",
         "path": "docs/kraken/websocket-v1/addorder.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/addorder",
-        "updated_at": "2026-05-28 19:53:27.761019"
+        "updated_at": "2026-05-29 19:50:27.509169"
       },
       {
         "title": "Amend Order",
         "filename": "amendorder.md",
         "path": "docs/kraken/websocket-v1/amendorder.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/amendorder",
-        "updated_at": "2026-05-28 19:55:28.284008"
+        "updated_at": "2026-05-29 19:50:28.288276"
       },
       {
-        "title": "Cancel All",
+        "title": "Book (Level 2)",
         "filename": "book.md",
         "path": "docs/kraken/websocket-v1/book.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/book",
-        "updated_at": "2026-05-28 19:55:30.862558"
+        "updated_at": "2026-05-29 19:53:19.598864"
       },
       {
         "title": "Cancel All",
         "filename": "cancelall.md",
         "path": "docs/kraken/websocket-v1/cancelall.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelall",
-        "updated_at": "2026-05-28 19:55:31.631557"
+        "updated_at": "2026-05-29 19:55:20.039647"
       },
       {
         "title": "Cancel Order",
         "filename": "cancelallordersafter.md",
         "path": "docs/kraken/websocket-v1/cancelallordersafter.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelallordersafter",
-        "updated_at": "2026-05-28 19:55:34.072941"
+        "updated_at": "2026-05-29 19:55:22.459715"
       },
       {
         "title": "Cancel Order",
         "filename": "cancelorder.md",
         "path": "docs/kraken/websocket-v1/cancelorder.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelorder",
-        "updated_at": "2026-05-28 19:55:34.844340"
+        "updated_at": "2026-05-29 19:55:23.231769"
       },
       {
         "title": "Heartbeat",
         "filename": "editorder.md",
         "path": "docs/kraken/websocket-v1/editorder.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/editorder",
-        "updated_at": "2026-05-28 19:55:37.168924"
+        "updated_at": "2026-05-29 19:55:25.628942"
       },
       {
         "title": "Heartbeat",
         "filename": "heartbeat.md",
         "path": "docs/kraken/websocket-v1/heartbeat.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/heartbeat",
-        "updated_at": "2026-05-28 19:55:37.934741"
+        "updated_at": "2026-05-29 19:55:26.395550"
       },
       {
         "title": "Open Orders",
         "filename": "ohlc.md",
         "path": "docs/kraken/websocket-v1/ohlc.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ohlc",
-        "updated_at": "2026-05-28 19:55:40.445906"
+        "updated_at": "2026-05-29 19:55:28.888932"
       },
       {
         "title": "Open Orders",
         "filename": "openorders.md",
         "path": "docs/kraken/websocket-v1/openorders.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/openorders",
-        "updated_at": "2026-05-28 19:55:41.250525"
+        "updated_at": "2026-05-29 19:55:29.697838"
       },
       {
         "title": "Ping",
         "filename": "owntrades.md",
         "path": "docs/kraken/websocket-v1/owntrades.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/owntrades",
-        "updated_at": "2026-05-28 19:55:43.686189"
+        "updated_at": "2026-05-29 19:55:32.180144"
       },
       {
         "title": "Ping",
         "filename": "ping.md",
         "path": "docs/kraken/websocket-v1/ping.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ping",
-        "updated_at": "2026-05-28 19:55:44.458167"
+        "updated_at": "2026-05-29 19:55:32.950711"
       },
       {
         "title": "Subscription Status",
         "filename": "spread.md",
         "path": "docs/kraken/websocket-v1/spread.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/spread",
-        "updated_at": "2026-05-28 19:55:46.662649"
+        "updated_at": "2026-05-29 19:55:35.081445"
       },
       {
         "title": "Subscription Status",
         "filename": "subscriptionstatus.md",
         "path": "docs/kraken/websocket-v1/subscriptionstatus.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/subscriptionstatus",
-        "updated_at": "2026-05-28 19:55:47.440853"
+        "updated_at": "2026-05-29 19:55:35.857635"
       },
       {
         "title": "Ticker (Level 1)",
         "filename": "systemstatus.md",
         "path": "docs/kraken/websocket-v1/systemstatus.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/systemstatus",
-        "updated_at": "2026-05-28 19:55:49.983627"
+        "updated_at": "2026-05-29 19:55:37.996536"
       },
       {
         "title": "Ticker (Level 1)",
         "filename": "ticker.md",
         "path": "docs/kraken/websocket-v1/ticker.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ticker",
-        "updated_at": "2026-05-28 19:55:50.766415"
+        "updated_at": "2026-05-29 19:55:38.776282"
       },
       {
         "title": "Unsubscribe",
         "filename": "trade.md",
         "path": "docs/kraken/websocket-v1/trade.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/trade",
-        "updated_at": "2026-05-28 19:55:52.934092"
+        "updated_at": "2026-05-29 19:55:41.199209"
       },
       {
         "title": "Unsubscribe",
         "filename": "unsubscribe.md",
         "path": "docs/kraken/websocket-v1/unsubscribe.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v1/unsubscribe",
-        "updated_at": "2026-05-28 19:55:53.707511"
+        "updated_at": "2026-05-29 19:55:41.969025"
       },
       {
         "title": "Amend Order",
         "filename": "add_order.md",
         "path": "docs/kraken/websocket-v2/add_order.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/add_order",
-        "updated_at": "2026-05-28 19:55:55.886718"
+        "updated_at": "2026-05-29 19:55:44.397104"
       },
       {
         "title": "Amend Order",
         "filename": "amend_order.md",
         "path": "docs/kraken/websocket-v2/amend_order.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/amend_order",
-        "updated_at": "2026-05-28 19:55:56.671645"
+        "updated_at": "2026-05-29 19:55:45.177507"
       },
       {
         "title": "Batch Add",
         "filename": "balances.md",
         "path": "docs/kraken/websocket-v2/balances.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/balances",
-        "updated_at": "2026-05-28 19:55:59.202485"
+        "updated_at": "2026-05-29 19:55:47.445782"
       },
       {
         "title": "Batch Add",
         "filename": "batch_add.md",
         "path": "docs/kraken/websocket-v2/batch_add.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/batch_add",
-        "updated_at": "2026-05-28 19:55:59.999857"
+        "updated_at": "2026-05-29 19:55:48.237979"
       },
       {
         "title": "Book (Level 2)",
         "filename": "batch_cancel.md",
         "path": "docs/kraken/websocket-v2/batch_cancel.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/batch_cancel",
-        "updated_at": "2026-05-28 19:56:02.475023"
+        "updated_at": "2026-05-29 19:55:50.850072"
       },
       {
         "title": "Book (Level 2)",
         "filename": "book.md",
         "path": "docs/kraken/websocket-v2/book.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/book",
-        "updated_at": "2026-05-28 19:56:03.287379"
+        "updated_at": "2026-05-29 19:55:51.657822"
       },
       {
         "title": "Cancel All",
         "filename": "cancel_after.md",
         "path": "docs/kraken/websocket-v2/cancel_after.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_after",
-        "updated_at": "2026-05-28 19:56:05.684364"
+        "updated_at": "2026-05-29 19:55:54.046851"
       },
       {
         "title": "Cancel All",
         "filename": "cancel_all.md",
         "path": "docs/kraken/websocket-v2/cancel_all.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_all",
-        "updated_at": "2026-05-28 19:56:06.466940"
+        "updated_at": "2026-05-29 19:55:54.823193"
       },
       {
         "title": "Edit Order",
         "filename": "cancel_order.md",
         "path": "docs/kraken/websocket-v2/cancel_order.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_order",
-        "updated_at": "2026-05-28 19:56:08.832929"
+        "updated_at": "2026-05-29 19:55:57.175259"
       },
       {
         "title": "Edit Order",
         "filename": "edit_order.md",
         "path": "docs/kraken/websocket-v2/edit_order.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/edit_order",
-        "updated_at": "2026-05-28 19:56:09.614355"
+        "updated_at": "2026-05-29 19:55:57.956797"
       },
       {
         "title": "Heartbeat",
         "filename": "executions.md",
         "path": "docs/kraken/websocket-v2/executions.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/executions",
-        "updated_at": "2026-05-28 19:56:12.027259"
+        "updated_at": "2026-05-29 19:56:00.393108"
       },
       {
         "title": "Heartbeat",
         "filename": "heartbeat.md",
         "path": "docs/kraken/websocket-v2/heartbeat.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/heartbeat",
-        "updated_at": "2026-05-28 19:56:12.793594"
+        "updated_at": "2026-05-29 19:56:01.160245"
       },
       {
         "title": "Orders (Level 3)",
         "filename": "instrument.md",
         "path": "docs/kraken/websocket-v2/instrument.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/instrument",
-        "updated_at": "2026-05-28 19:56:14.724985"
+        "updated_at": "2026-05-29 19:56:03.720615"
       },
       {
         "title": "Orders (Level 3)",
         "filename": "level3.md",
         "path": "docs/kraken/websocket-v2/level3.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/level3",
-        "updated_at": "2026-05-28 19:56:15.539605"
+        "updated_at": "2026-05-29 19:56:04.529358"
       },
       {
         "title": "Ping",
         "filename": "ohlc.md",
         "path": "docs/kraken/websocket-v2/ohlc.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ohlc",
-        "updated_at": "2026-05-28 19:56:17.897482"
+        "updated_at": "2026-05-29 19:56:06.943124"
       },
       {
         "title": "Ping",
         "filename": "ping.md",
         "path": "docs/kraken/websocket-v2/ping.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ping",
-        "updated_at": "2026-05-28 19:56:18.667472"
+        "updated_at": "2026-05-29 19:56:07.713928"
       },
       {
         "title": "Ticker (Level 1)",
         "filename": "status.md",
         "path": "docs/kraken/websocket-v2/status.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/status",
-        "updated_at": "2026-05-28 19:56:21.051505"
+        "updated_at": "2026-05-29 19:56:10.121878"
       },
       {
         "title": "Ticker (Level 1)",
         "filename": "ticker.md",
         "path": "docs/kraken/websocket-v2/ticker.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ticker",
-        "updated_at": "2026-05-28 19:56:21.845224"
+        "updated_at": "2026-05-29 19:56:10.917913"
       },
       {
         "title": "Trades",
         "filename": "trade.md",
         "path": "docs/kraken/websocket-v2/trade.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/trade",
-        "updated_at": "2026-05-28 19:56:23.427482"
+        "updated_at": "2026-05-29 19:56:12.573224"
       }
     ],
     "Guide": [
@@ -1555,161 +1555,161 @@
         "filename": "custody-rest-auth.md",
         "path": "docs/kraken/guides/custody-rest-auth.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/custody-rest-auth",
-        "updated_at": "2026-05-28 19:47:53.033950"
+        "updated_at": "2026-05-29 19:47:20.338468"
       },
       {
         "title": "Custody Rate Limits",
         "filename": "custody-rest-ratelimits.md",
         "path": "docs/kraken/guides/custody-rest-ratelimits.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/custody-rest-ratelimits",
-        "updated_at": "2026-05-28 19:47:53.798533"
+        "updated_at": "2026-05-29 19:47:21.105498"
       },
       {
         "title": "Embed: Deposits & Withdrawals",
         "filename": "embed-custom-orders.md",
         "path": "docs/kraken/guides/embed-custom-orders.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/embed-custom-orders",
-        "updated_at": "2026-05-28 19:47:56.446612"
+        "updated_at": "2026-05-29 19:47:24.046321"
       },
       {
         "title": "Embed: Deposits & Withdrawals",
         "filename": "embed-deposits-and-withdrawals.md",
         "path": "docs/kraken/guides/embed-deposits-and-withdrawals.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/embed-deposits-and-withdrawals",
-        "updated_at": "2026-05-28 19:47:57.326911"
+        "updated_at": "2026-05-29 19:47:24.908862"
       },
       {
         "title": "Embed REST Authentication",
         "filename": "embed-first-trade.md",
         "path": "docs/kraken/guides/embed-first-trade.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/embed-first-trade",
-        "updated_at": "2026-05-28 19:47:59.973137"
+        "updated_at": "2026-05-29 19:47:27.277340"
       },
       {
         "title": "Embed REST Authentication",
         "filename": "embed-rest-auth.md",
         "path": "docs/kraken/guides/embed-rest-auth.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/embed-rest-auth",
-        "updated_at": "2026-05-28 19:48:00.794061"
+        "updated_at": "2026-05-29 19:47:28.091285"
       },
       {
         "title": "FIX Checksums",
         "filename": "fix-auth.md",
         "path": "docs/kraken/guides/fix-auth.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/fix-auth",
-        "updated_at": "2026-05-28 19:48:03.175833"
+        "updated_at": "2026-05-29 19:47:30.485781"
       },
       {
         "title": "FIX Checksums",
         "filename": "fix-checksums.md",
         "path": "docs/kraken/guides/fix-checksums.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/fix-checksums",
-        "updated_at": "2026-05-28 19:48:03.946897"
+        "updated_at": "2026-05-29 19:47:31.257523"
       },
       {
         "title": "Futures Introduction",
         "filename": "fix-intro.md",
         "path": "docs/kraken/guides/fix-intro.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/fix-intro",
-        "updated_at": "2026-05-28 19:48:06.338725"
+        "updated_at": "2026-05-29 19:47:33.687082"
       },
       {
         "title": "Futures Introduction",
         "filename": "futures-introduction.md",
         "path": "docs/kraken/guides/futures-introduction.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/futures-introduction",
-        "updated_at": "2026-05-28 19:48:07.117109"
+        "updated_at": "2026-05-29 19:47:34.466053"
       },
       {
         "title": "Futures REST",
         "filename": "futures-rate-limits.md",
         "path": "docs/kraken/guides/futures-rate-limits.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/futures-rate-limits",
-        "updated_at": "2026-05-28 19:48:09.559703"
+        "updated_at": "2026-05-29 19:47:36.923444"
       },
       {
         "title": "Futures REST",
         "filename": "futures-rest.md",
         "path": "docs/kraken/guides/futures-rest.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/futures-rest",
-        "updated_at": "2026-05-28 19:48:10.334380"
+        "updated_at": "2026-05-29 19:47:37.698599"
       },
       {
         "title": "Kraken APIs",
         "filename": "global-intro.md",
         "path": "docs/kraken/guides/global-intro.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/global-intro",
-        "updated_at": "2026-05-28 19:48:13.469777"
+        "updated_at": "2026-05-29 19:47:40.918444"
       },
       {
         "title": "Spot Client Order Identifiers",
         "filename": "spot-amends.md",
         "path": "docs/kraken/guides/spot-amends.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-amends",
-        "updated_at": "2026-05-28 19:48:15.879426"
+        "updated_at": "2026-05-29 19:47:43.380899"
       },
       {
         "title": "Spot Client Order Identifiers",
         "filename": "spot-clordid.md",
         "path": "docs/kraken/guides/spot-clordid.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-clordid",
-        "updated_at": "2026-05-28 19:48:16.652860"
+        "updated_at": "2026-05-29 19:47:44.155017"
       },
       {
         "title": "Spot Example Clients",
         "filename": "spot-errors.md",
         "path": "docs/kraken/guides/spot-errors.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-errors",
-        "updated_at": "2026-05-28 19:48:19.038028"
+        "updated_at": "2026-05-29 19:47:46.369747"
       },
       {
         "title": "Spot Example Clients",
         "filename": "spot-examples.md",
         "path": "docs/kraken/guides/spot-examples.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-examples",
-        "updated_at": "2026-05-28 19:48:19.804544"
+        "updated_at": "2026-05-29 19:47:47.139700"
       },
       {
         "title": "Spot Trading Limits",
         "filename": "spot-l3-data.md",
         "path": "docs/kraken/guides/spot-l3-data.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-l3-data",
-        "updated_at": "2026-05-28 19:48:21.709748"
+        "updated_at": "2026-05-29 19:47:49.088357"
       },
       {
         "title": "Spot Trading Limits",
         "filename": "spot-ratelimits.md",
         "path": "docs/kraken/guides/spot-ratelimits.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-ratelimits",
-        "updated_at": "2026-05-28 19:48:22.481003"
+        "updated_at": "2026-05-29 19:47:49.862053"
       },
       {
         "title": "Spot REST Earn",
         "filename": "spot-rest-auth.md",
         "path": "docs/kraken/guides/spot-rest-auth.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-auth",
-        "updated_at": "2026-05-28 19:48:24.920968"
+        "updated_at": "2026-05-29 19:47:52.338635"
       },
       {
         "title": "Spot REST Earn",
         "filename": "spot-rest-earn.md",
         "path": "docs/kraken/guides/spot-rest-earn.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-earn",
-        "updated_at": "2026-05-28 19:48:25.687417"
+        "updated_at": "2026-05-29 19:47:53.106458"
       },
       {
         "title": "Spot REST Rate Limits",
         "filename": "spot-rest-intro.md",
         "path": "docs/kraken/guides/spot-rest-intro.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-intro",
-        "updated_at": "2026-05-28 19:48:28.126681"
+        "updated_at": "2026-05-29 19:47:55.318705"
       },
       {
         "title": "Spot REST Rate Limits",
         "filename": "spot-rest-ratelimits.md",
         "path": "docs/kraken/guides/spot-rest-ratelimits.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-ratelimits",
-        "updated_at": "2026-05-28 19:48:28.892862"
+        "updated_at": "2026-05-29 19:47:56.086025"
       }
     ]
   },
@@ -1720,7 +1720,7 @@
       "path": "docs/kraken/futures-api/charts/tick-types.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/tick-types",
-      "updated_at": "2026-05-28 19:45:25.424530"
+      "updated_at": "2026-05-29 19:44:53.165517"
     },
     {
       "title": "Account History",
@@ -1728,7 +1728,7 @@
       "path": "docs/kraken/futures-api/history/account-history.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-history",
-      "updated_at": "2026-05-28 19:45:26.190703"
+      "updated_at": "2026-05-29 19:44:53.933771"
     },
     {
       "title": "Account Information",
@@ -1736,7 +1736,7 @@
       "path": "docs/kraken/futures-api/trading/accept-rfq-offer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/accept-rfq-offer",
-      "updated_at": "2026-05-28 19:45:44.719503"
+      "updated_at": "2026-05-29 19:45:12.893760"
     },
     {
       "title": "Account Information",
@@ -1744,7 +1744,7 @@
       "path": "docs/kraken/futures-api/trading/account-information.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/account-information",
-      "updated_at": "2026-05-28 19:45:45.485035"
+      "updated_at": "2026-05-29 19:45:13.660407"
     },
     {
       "title": "Account Log",
@@ -1752,7 +1752,7 @@
       "path": "docs/kraken/futures-api/trading/withdrawal.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/withdrawal",
-      "updated_at": "2026-05-28 19:47:30.167844"
+      "updated_at": "2026-05-29 19:46:56.921276"
     },
     {
       "title": "Account Log",
@@ -1760,7 +1760,7 @@
       "path": "docs/kraken/futures-api/websocket/account_log.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/account_log",
-      "updated_at": "2026-05-28 19:47:30.962678"
+      "updated_at": "2026-05-29 19:46:57.714301"
     },
     {
       "title": "Account Transfer",
@@ -1768,7 +1768,7 @@
       "path": "docs/kraken/guides/spot-ws-l3-v2.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-l3-v2",
-      "updated_at": "2026-05-28 19:48:39.049243"
+      "updated_at": "2026-05-29 19:48:05.188717"
     },
     {
       "title": "Account Transfer",
@@ -1776,7 +1776,7 @@
       "path": "docs/kraken/rest-api/account-transfer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/account-transfer",
-      "updated_at": "2026-05-28 19:48:39.822254"
+      "updated_at": "2026-05-29 19:48:06.009784"
     },
     {
       "title": "Account log (CSV)",
@@ -1784,7 +1784,7 @@
       "path": "docs/kraken/futures-api/history/account-log-csv.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-log-csv",
-      "updated_at": "2026-05-28 19:45:29.270421"
+      "updated_at": "2026-05-29 19:44:57.229454"
     },
     {
       "title": "Account log (CSV)",
@@ -1792,7 +1792,7 @@
       "path": "docs/kraken/futures-api/history/account-log.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-log",
-      "updated_at": "2026-05-28 19:45:28.500535"
+      "updated_at": "2026-05-29 19:44:56.458087"
     },
     {
       "title": "Add Order",
@@ -1800,7 +1800,7 @@
       "path": "docs/kraken/rest-api/add-export.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/add-export",
-      "updated_at": "2026-05-28 19:48:42.399856"
+      "updated_at": "2026-05-29 19:48:09.988465"
     },
     {
       "title": "Add Order",
@@ -1808,15 +1808,7 @@
       "path": "docs/kraken/rest-api/add-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order",
-      "updated_at": "2026-05-28 19:48:43.188153"
-    },
-    {
-      "title": "Add Order",
-      "filename": "addorder.md",
-      "path": "docs/kraken/websocket-v1/addorder.md",
-      "api_type": "WebSocket",
-      "source_url": "https://docs.kraken.com/api/docs/websocket-v1/addorder",
-      "updated_at": "2026-05-28 19:53:27.761019"
+      "updated_at": "2026-05-29 19:48:10.775856"
     },
     {
       "title": "Allocate Earn Funds",
@@ -1824,7 +1816,7 @@
       "path": "docs/kraken/rest-api/add-order-batch.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order-batch",
-      "updated_at": "2026-05-28 19:48:45.512739"
+      "updated_at": "2026-05-29 19:48:13.102191"
     },
     {
       "title": "Allocate Earn Funds",
@@ -1832,7 +1824,15 @@
       "path": "docs/kraken/rest-api/allocate-strategy.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/allocate-strategy",
-      "updated_at": "2026-05-28 19:48:46.284409"
+      "updated_at": "2026-05-29 19:48:13.875390"
+    },
+    {
+      "title": "Amend Order",
+      "filename": "addorder.md",
+      "path": "docs/kraken/websocket-v1/addorder.md",
+      "api_type": "WebSocket",
+      "source_url": "https://docs.kraken.com/api/docs/websocket-v1/addorder",
+      "updated_at": "2026-05-29 19:50:27.509169"
     },
     {
       "title": "Amend Order",
@@ -1840,7 +1840,7 @@
       "path": "docs/kraken/websocket-v1/amendorder.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/amendorder",
-      "updated_at": "2026-05-28 19:55:28.284008"
+      "updated_at": "2026-05-29 19:50:28.288276"
     },
     {
       "title": "Amend Order",
@@ -1848,7 +1848,7 @@
       "path": "docs/kraken/websocket-v2/add_order.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/add_order",
-      "updated_at": "2026-05-28 19:55:55.886718"
+      "updated_at": "2026-05-29 19:55:44.397104"
     },
     {
       "title": "Amend Order",
@@ -1856,7 +1856,7 @@
       "path": "docs/kraken/websocket-v2/amend_order.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/amend_order",
-      "updated_at": "2026-05-28 19:55:56.671645"
+      "updated_at": "2026-05-29 19:55:45.177507"
     },
     {
       "title": "Assignment Program",
@@ -1864,7 +1864,7 @@
       "path": "docs/kraken/futures-api/trading/add-assignment-program.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/add-assignment-program",
-      "updated_at": "2026-05-28 19:45:47.662864"
+      "updated_at": "2026-05-29 19:45:16.063389"
     },
     {
       "title": "Assignment Program",
@@ -1872,7 +1872,7 @@
       "path": "docs/kraken/futures-api/trading/assignment-program.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/assignment-program",
-      "updated_at": "2026-05-28 19:45:48.427387"
+      "updated_at": "2026-05-29 19:45:16.829818"
     },
     {
       "title": "Batch Add",
@@ -1880,7 +1880,7 @@
       "path": "docs/kraken/websocket-v2/balances.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/balances",
-      "updated_at": "2026-05-28 19:55:59.202485"
+      "updated_at": "2026-05-29 19:55:47.445782"
     },
     {
       "title": "Batch Add",
@@ -1888,7 +1888,7 @@
       "path": "docs/kraken/websocket-v2/batch_add.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/batch_add",
-      "updated_at": "2026-05-28 19:55:59.999857"
+      "updated_at": "2026-05-29 19:55:48.237979"
     },
     {
       "title": "Book",
@@ -1896,7 +1896,7 @@
       "path": "docs/kraken/futures-api/websocket/balances.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/balances",
-      "updated_at": "2026-05-28 19:47:33.269576"
+      "updated_at": "2026-05-29 19:47:00.300843"
     },
     {
       "title": "Book",
@@ -1904,7 +1904,15 @@
       "path": "docs/kraken/futures-api/websocket/book.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/book",
-      "updated_at": "2026-05-28 19:47:34.049425"
+      "updated_at": "2026-05-29 19:47:01.080520"
+    },
+    {
+      "title": "Book (Level 2)",
+      "filename": "book.md",
+      "path": "docs/kraken/websocket-v1/book.md",
+      "api_type": "WebSocket",
+      "source_url": "https://docs.kraken.com/api/docs/websocket-v1/book",
+      "updated_at": "2026-05-29 19:53:19.598864"
     },
     {
       "title": "Book (Level 2)",
@@ -1912,7 +1920,7 @@
       "path": "docs/kraken/websocket-v2/batch_cancel.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/batch_cancel",
-      "updated_at": "2026-05-28 19:56:02.475023"
+      "updated_at": "2026-05-29 19:55:50.850072"
     },
     {
       "title": "Book (Level 2)",
@@ -1920,7 +1928,7 @@
       "path": "docs/kraken/websocket-v2/book.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/book",
-      "updated_at": "2026-05-28 19:56:03.287379"
+      "updated_at": "2026-05-29 19:55:51.657822"
     },
     {
       "title": "Calculate portfolio margin, pnl and greeks",
@@ -1928,7 +1936,7 @@
       "path": "docs/kraken/futures-api/trading/set-self-trade-strategy.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy",
-      "updated_at": "2026-05-28 19:47:17.146688"
+      "updated_at": "2026-05-29 19:46:43.780666"
     },
     {
       "title": "Calculate portfolio margin, pnl and greeks",
@@ -1936,15 +1944,7 @@
       "path": "docs/kraken/futures-api/trading/simulate-portfolio.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/simulate-portfolio",
-      "updated_at": "2026-05-28 19:47:17.924044"
-    },
-    {
-      "title": "Cancel All",
-      "filename": "book.md",
-      "path": "docs/kraken/websocket-v1/book.md",
-      "api_type": "WebSocket",
-      "source_url": "https://docs.kraken.com/api/docs/websocket-v1/book",
-      "updated_at": "2026-05-28 19:55:30.862558"
+      "updated_at": "2026-05-29 19:46:44.559490"
     },
     {
       "title": "Cancel All",
@@ -1952,7 +1952,7 @@
       "path": "docs/kraken/websocket-v1/cancelall.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelall",
-      "updated_at": "2026-05-28 19:55:31.631557"
+      "updated_at": "2026-05-29 19:55:20.039647"
     },
     {
       "title": "Cancel All",
@@ -1960,7 +1960,7 @@
       "path": "docs/kraken/websocket-v2/cancel_after.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_after",
-      "updated_at": "2026-05-28 19:56:05.684364"
+      "updated_at": "2026-05-29 19:55:54.046851"
     },
     {
       "title": "Cancel All",
@@ -1968,7 +1968,7 @@
       "path": "docs/kraken/websocket-v2/cancel_all.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_all",
-      "updated_at": "2026-05-28 19:56:06.466940"
+      "updated_at": "2026-05-29 19:55:54.823193"
     },
     {
       "title": "Cancel All Orders",
@@ -1976,7 +1976,7 @@
       "path": "docs/kraken/rest-api/amend-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/amend-order",
-      "updated_at": "2026-05-28 19:48:48.818856"
+      "updated_at": "2026-05-29 19:48:16.463712"
     },
     {
       "title": "Cancel All Orders",
@@ -1984,7 +1984,7 @@
       "path": "docs/kraken/rest-api/cancel-all-orders.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-all-orders",
-      "updated_at": "2026-05-28 19:48:49.590181"
+      "updated_at": "2026-05-29 19:48:17.241629"
     },
     {
       "title": "Cancel Order",
@@ -1992,7 +1992,7 @@
       "path": "docs/kraken/rest-api/cancel-all-orders-after.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-all-orders-after",
-      "updated_at": "2026-05-28 19:48:52.163751"
+      "updated_at": "2026-05-29 19:48:19.769326"
     },
     {
       "title": "Cancel Order",
@@ -2000,7 +2000,7 @@
       "path": "docs/kraken/rest-api/cancel-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-order",
-      "updated_at": "2026-05-28 19:48:52.936064"
+      "updated_at": "2026-05-29 19:48:20.547678"
     },
     {
       "title": "Cancel Order",
@@ -2008,7 +2008,7 @@
       "path": "docs/kraken/websocket-v1/cancelallordersafter.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelallordersafter",
-      "updated_at": "2026-05-28 19:55:34.072941"
+      "updated_at": "2026-05-29 19:55:22.459715"
     },
     {
       "title": "Cancel Order",
@@ -2016,7 +2016,7 @@
       "path": "docs/kraken/websocket-v1/cancelorder.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/cancelorder",
-      "updated_at": "2026-05-28 19:55:34.844340"
+      "updated_at": "2026-05-29 19:55:23.231769"
     },
     {
       "title": "Cancel open offer on open RFQ",
@@ -2024,7 +2024,7 @@
       "path": "docs/kraken/futures-api/trading/cancel-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-order",
-      "updated_at": "2026-05-28 19:45:54.178037"
+      "updated_at": "2026-05-29 19:45:22.819486"
     },
     {
       "title": "Cancel open offer on open RFQ",
@@ -2032,7 +2032,7 @@
       "path": "docs/kraken/futures-api/trading/cancel-rfq-offer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-rfq-offer",
-      "updated_at": "2026-05-28 19:45:54.953003"
+      "updated_at": "2026-05-29 19:45:23.594733"
     },
     {
       "title": "Check subaccount trading status",
@@ -2040,7 +2040,7 @@
       "path": "docs/kraken/futures-api/trading/get-self-trade-strategy.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-self-trade-strategy",
-      "updated_at": "2026-05-28 19:46:40.851614"
+      "updated_at": "2026-05-29 19:46:08.250006"
     },
     {
       "title": "Check subaccount trading status",
@@ -2048,7 +2048,7 @@
       "path": "docs/kraken/futures-api/trading/get-subaccount-trading-capability.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-subaccount-trading-capability",
-      "updated_at": "2026-05-28 19:46:41.624562"
+      "updated_at": "2026-05-29 19:46:09.023325"
     },
     {
       "title": "Check v3 API key",
@@ -2056,7 +2056,7 @@
       "path": "docs/kraken/futures-api/auth/api-keys.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/auth/api-keys",
-      "updated_at": "2026-05-28 19:45:12.587618"
+      "updated_at": "2026-05-29 19:44:40.717980"
     },
     {
       "title": "Check v3 API key",
@@ -2064,7 +2064,7 @@
       "path": "docs/kraken/futures-api/auth/check-v-3-api-key.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/auth/check-v-3-api-key",
-      "updated_at": "2026-05-28 19:45:13.361120"
+      "updated_at": "2026-05-29 19:44:41.492031"
     },
     {
       "title": "Create a new RFQ",
@@ -2072,7 +2072,7 @@
       "path": "docs/kraken/futures-api/trading/cancel-user-rfq.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-user-rfq",
-      "updated_at": "2026-05-28 19:45:57.561739"
+      "updated_at": "2026-05-29 19:45:26.171674"
     },
     {
       "title": "Create a new RFQ",
@@ -2080,7 +2080,7 @@
       "path": "docs/kraken/futures-api/trading/create-user-rfq.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq",
-      "updated_at": "2026-05-28 19:45:58.337334"
+      "updated_at": "2026-05-29 19:45:26.947641"
     },
     {
       "title": "Custody Rate Limits",
@@ -2088,7 +2088,7 @@
       "path": "docs/kraken/guides/custody-rest-auth.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/custody-rest-auth",
-      "updated_at": "2026-05-28 19:47:53.033950"
+      "updated_at": "2026-05-29 19:47:20.338468"
     },
     {
       "title": "Custody Rate Limits",
@@ -2096,7 +2096,7 @@
       "path": "docs/kraken/guides/custody-rest-ratelimits.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/custody-rest-ratelimits",
-      "updated_at": "2026-05-28 19:47:53.798533"
+      "updated_at": "2026-05-29 19:47:21.105498"
     },
     {
       "title": "Dead man's switch",
@@ -2104,7 +2104,7 @@
       "path": "docs/kraken/futures-api/trading/cancel-all-orders-after.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders-after",
-      "updated_at": "2026-05-28 19:45:51.470559"
+      "updated_at": "2026-05-29 19:45:20.198448"
     },
     {
       "title": "Dead man's switch",
@@ -2112,7 +2112,7 @@
       "path": "docs/kraken/futures-api/trading/cancel-all-orders.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders",
-      "updated_at": "2026-05-28 19:45:50.692283"
+      "updated_at": "2026-05-29 19:45:19.417952"
     },
     {
       "title": "Deallocate Earn Funds",
@@ -2120,7 +2120,7 @@
       "path": "docs/kraken/rest-api/create-subaccount.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/create-subaccount",
-      "updated_at": "2026-05-28 19:48:58.780676"
+      "updated_at": "2026-05-29 19:48:25.832762"
     },
     {
       "title": "Deallocate Earn Funds",
@@ -2128,7 +2128,7 @@
       "path": "docs/kraken/rest-api/deallocate-strategy.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/deallocate-strategy",
-      "updated_at": "2026-05-28 19:48:59.553465"
+      "updated_at": "2026-05-29 19:48:26.606801"
     },
     {
       "title": "Edit Order",
@@ -2136,7 +2136,7 @@
       "path": "docs/kraken/websocket-v2/cancel_order.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/cancel_order",
-      "updated_at": "2026-05-28 19:56:08.832929"
+      "updated_at": "2026-05-29 19:55:57.175259"
     },
     {
       "title": "Edit Order",
@@ -2144,7 +2144,7 @@
       "path": "docs/kraken/websocket-v2/edit_order.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/edit_order",
-      "updated_at": "2026-05-28 19:56:09.614355"
+      "updated_at": "2026-05-29 19:55:57.956797"
     },
     {
       "title": "Edit order",
@@ -2152,7 +2152,7 @@
       "path": "docs/kraken/futures-api/trading/delete-assignment-program.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/delete-assignment-program",
-      "updated_at": "2026-05-28 19:46:01.065983"
+      "updated_at": "2026-05-29 19:45:29.322436"
     },
     {
       "title": "Edit order",
@@ -2160,7 +2160,7 @@
       "path": "docs/kraken/futures-api/trading/edit-order-spring.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/edit-order-spring",
-      "updated_at": "2026-05-28 19:46:01.897319"
+      "updated_at": "2026-05-29 19:45:30.145171"
     },
     {
       "title": "Embed REST Authentication",
@@ -2168,7 +2168,7 @@
       "path": "docs/kraken/guides/embed-first-trade.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/embed-first-trade",
-      "updated_at": "2026-05-28 19:47:59.973137"
+      "updated_at": "2026-05-29 19:47:27.277340"
     },
     {
       "title": "Embed REST Authentication",
@@ -2176,7 +2176,7 @@
       "path": "docs/kraken/guides/embed-rest-auth.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/embed-rest-auth",
-      "updated_at": "2026-05-28 19:48:00.794061"
+      "updated_at": "2026-05-29 19:47:28.091285"
     },
     {
       "title": "Embed: Deposits & Withdrawals",
@@ -2184,7 +2184,7 @@
       "path": "docs/kraken/guides/embed-custom-orders.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/embed-custom-orders",
-      "updated_at": "2026-05-28 19:47:56.446612"
+      "updated_at": "2026-05-29 19:47:24.046321"
     },
     {
       "title": "Embed: Deposits & Withdrawals",
@@ -2192,7 +2192,7 @@
       "path": "docs/kraken/guides/embed-deposits-and-withdrawals.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/embed-deposits-and-withdrawals",
-      "updated_at": "2026-05-28 19:47:57.326911"
+      "updated_at": "2026-05-29 19:47:24.908862"
     },
     {
       "title": "FIX Checksums",
@@ -2200,7 +2200,7 @@
       "path": "docs/kraken/guides/fix-auth.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/fix-auth",
-      "updated_at": "2026-05-28 19:48:03.175833"
+      "updated_at": "2026-05-29 19:47:30.485781"
     },
     {
       "title": "FIX Checksums",
@@ -2208,7 +2208,7 @@
       "path": "docs/kraken/guides/fix-checksums.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/fix-checksums",
-      "updated_at": "2026-05-28 19:48:03.946897"
+      "updated_at": "2026-05-29 19:47:31.257523"
     },
     {
       "title": "Fills",
@@ -2216,7 +2216,7 @@
       "path": "docs/kraken/futures-api/websocket/challenge.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/challenge",
-      "updated_at": "2026-05-28 19:47:36.746815"
+      "updated_at": "2026-05-29 19:47:03.682361"
     },
     {
       "title": "Fills",
@@ -2224,7 +2224,7 @@
       "path": "docs/kraken/futures-api/websocket/fills.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/fills",
-      "updated_at": "2026-05-28 19:47:37.619330"
+      "updated_at": "2026-05-29 19:47:04.468910"
     },
     {
       "title": "Futures Introduction",
@@ -2232,7 +2232,7 @@
       "path": "docs/kraken/guides/fix-intro.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/fix-intro",
-      "updated_at": "2026-05-28 19:48:06.338725"
+      "updated_at": "2026-05-29 19:47:33.687082"
     },
     {
       "title": "Futures Introduction",
@@ -2240,7 +2240,7 @@
       "path": "docs/kraken/guides/futures-introduction.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/futures-introduction",
-      "updated_at": "2026-05-28 19:48:07.117109"
+      "updated_at": "2026-05-29 19:47:34.466053"
     },
     {
       "title": "Futures REST",
@@ -2248,7 +2248,7 @@
       "path": "docs/kraken/guides/futures-rate-limits.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/futures-rate-limits",
-      "updated_at": "2026-05-28 19:48:09.559703"
+      "updated_at": "2026-05-29 19:47:36.923444"
     },
     {
       "title": "Futures REST",
@@ -2256,7 +2256,7 @@
       "path": "docs/kraken/guides/futures-rest.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/futures-rest",
-      "updated_at": "2026-05-28 19:48:10.334380"
+      "updated_at": "2026-05-29 19:47:37.698599"
     },
     {
       "title": "General",
@@ -2264,7 +2264,7 @@
       "path": "docs/kraken/futures-api/trading/fee-schedules.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/fee-schedules",
-      "updated_at": "2026-05-28 19:46:04.186320"
+      "updated_at": "2026-05-29 19:45:32.509310"
     },
     {
       "title": "General",
@@ -2272,7 +2272,7 @@
       "path": "docs/kraken/futures-api/trading/general.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/general",
-      "updated_at": "2026-05-28 19:46:04.950831"
+      "updated_at": "2026-05-29 19:45:33.275446"
     },
     {
       "title": "Get Allocation Status",
@@ -2280,7 +2280,7 @@
       "path": "docs/kraken/rest-api/get-account-balance.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-account-balance",
-      "updated_at": "2026-05-28 19:49:05.406355"
+      "updated_at": "2026-05-29 19:48:32.320586"
     },
     {
       "title": "Get Allocation Status",
@@ -2288,7 +2288,7 @@
       "path": "docs/kraken/rest-api/get-allocate-strategy-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-allocate-strategy-status",
-      "updated_at": "2026-05-28 19:49:06.178370"
+      "updated_at": "2026-05-29 19:48:33.093460"
     },
     {
       "title": "Get Asset Info",
@@ -2296,7 +2296,7 @@
       "path": "docs/kraken/rest-api/get-api-key-info.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-api-key-info",
-      "updated_at": "2026-05-28 19:49:08.475326"
+      "updated_at": "2026-05-29 19:48:35.721266"
     },
     {
       "title": "Get Asset Info",
@@ -2304,7 +2304,7 @@
       "path": "docs/kraken/rest-api/get-asset-info.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-asset-info",
-      "updated_at": "2026-05-28 19:49:09.292308"
+      "updated_at": "2026-05-29 19:48:36.493366"
     },
     {
       "title": "Get Credit Lines",
@@ -2312,7 +2312,7 @@
       "path": "docs/kraken/rest-api/get-closed-orders.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-closed-orders",
-      "updated_at": "2026-05-28 19:49:13.485747"
+      "updated_at": "2026-05-29 19:48:39.189037"
     },
     {
       "title": "Get Credit Lines",
@@ -2320,7 +2320,7 @@
       "path": "docs/kraken/rest-api/get-credit-lines.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-credit-lines",
-      "updated_at": "2026-05-28 19:49:14.260995"
+      "updated_at": "2026-05-29 19:48:39.966636"
     },
     {
       "title": "Get Deposit Addresses",
@@ -2328,7 +2328,7 @@
       "path": "docs/kraken/rest-api/get-deallocate-strategy-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status",
-      "updated_at": "2026-05-28 19:49:16.515871"
+      "updated_at": "2026-05-29 19:48:42.683786"
     },
     {
       "title": "Get Deposit Addresses",
@@ -2336,7 +2336,7 @@
       "path": "docs/kraken/rest-api/get-deposit-addresses.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deposit-addresses",
-      "updated_at": "2026-05-28 19:49:17.290380"
+      "updated_at": "2026-05-29 19:48:43.508048"
     },
     {
       "title": "Get Export Report Status",
@@ -2344,7 +2344,7 @@
       "path": "docs/kraken/rest-api/edit-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/edit-order",
-      "updated_at": "2026-05-28 19:49:02.072471"
+      "updated_at": "2026-05-29 19:48:29.240132"
     },
     {
       "title": "Get Export Report Status",
@@ -2352,7 +2352,7 @@
       "path": "docs/kraken/rest-api/export-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/export-status",
-      "updated_at": "2026-05-28 19:49:02.845535"
+      "updated_at": "2026-05-29 19:48:30.017538"
     },
     {
       "title": "Get Extended Balance",
@@ -2360,7 +2360,7 @@
       "path": "docs/kraken/rest-api/get-deposit-methods.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-deposit-methods",
-      "updated_at": "2026-05-28 19:49:19.864235"
+      "updated_at": "2026-05-29 19:48:47.613233"
     },
     {
       "title": "Get Extended Balance",
@@ -2368,7 +2368,7 @@
       "path": "docs/kraken/rest-api/get-extended-balance.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-extended-balance",
-      "updated_at": "2026-05-28 19:49:20.637873"
+      "updated_at": "2026-05-29 19:48:48.388190"
     },
     {
       "title": "Get Ledgers Info",
@@ -2376,7 +2376,7 @@
       "path": "docs/kraken/rest-api/get-grouped-order-book.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book",
-      "updated_at": "2026-05-28 19:49:23.219607"
+      "updated_at": "2026-05-29 19:48:51.080044"
     },
     {
       "title": "Get Ledgers Info",
@@ -2384,7 +2384,7 @@
       "path": "docs/kraken/rest-api/get-ledgers.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ledgers",
-      "updated_at": "2026-05-28 19:49:23.997839"
+      "updated_at": "2026-05-29 19:48:51.858096"
     },
     {
       "title": "Get Open Orders",
@@ -2392,7 +2392,7 @@
       "path": "docs/kraken/rest-api/get-ohlc-data.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ohlc-data",
-      "updated_at": "2026-05-28 19:49:29.714216"
+      "updated_at": "2026-05-29 19:48:57.800905"
     },
     {
       "title": "Get Open Orders",
@@ -2400,7 +2400,7 @@
       "path": "docs/kraken/rest-api/get-open-orders.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-open-orders",
-      "updated_at": "2026-05-28 19:49:30.495414"
+      "updated_at": "2026-05-29 19:48:58.580832"
     },
     {
       "title": "Get Order Amends",
@@ -2408,7 +2408,7 @@
       "path": "docs/kraken/rest-api/get-open-positions.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-open-positions",
-      "updated_at": "2026-05-28 19:49:33.777987"
+      "updated_at": "2026-05-29 19:49:01.210633"
     },
     {
       "title": "Get Order Amends",
@@ -2416,7 +2416,7 @@
       "path": "docs/kraken/rest-api/get-order-amends.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-order-amends",
-      "updated_at": "2026-05-28 19:49:34.597316"
+      "updated_at": "2026-05-29 19:49:01.985622"
     },
     {
       "title": "Get PNL currency preferences",
@@ -2424,7 +2424,7 @@
       "path": "docs/kraken/futures-api/trading/get-orderbook.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-orderbook",
-      "updated_at": "2026-05-28 19:46:34.268183"
+      "updated_at": "2026-05-29 19:46:01.621555"
     },
     {
       "title": "Get PNL currency preferences",
@@ -2432,7 +2432,7 @@
       "path": "docs/kraken/futures-api/trading/get-pnl-currency-preference.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-pnl-currency-preference",
-      "updated_at": "2026-05-28 19:46:35.042431"
+      "updated_at": "2026-05-29 19:46:02.397129"
     },
     {
       "title": "Get Recent Trades",
@@ -2440,7 +2440,7 @@
       "path": "docs/kraken/rest-api/get-recent-spreads.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-recent-spreads",
-      "updated_at": "2026-05-28 19:49:44.482929"
+      "updated_at": "2026-05-29 19:49:13.626040"
     },
     {
       "title": "Get Recent Trades",
@@ -2448,7 +2448,7 @@
       "path": "docs/kraken/rest-api/get-recent-trades.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-recent-trades",
-      "updated_at": "2026-05-28 19:49:45.253972"
+      "updated_at": "2026-05-29 19:49:14.398099"
     },
     {
       "title": "Get Specific Orders' Status",
@@ -2456,7 +2456,7 @@
       "path": "docs/kraken/futures-api/trading/get-open-rfqs-for-account.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs-for-account",
-      "updated_at": "2026-05-28 19:46:30.933694"
+      "updated_at": "2026-05-29 19:45:58.365751"
     },
     {
       "title": "Get Specific Orders' Status",
@@ -2464,7 +2464,7 @@
       "path": "docs/kraken/futures-api/trading/get-order-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-order-status",
-      "updated_at": "2026-05-28 19:46:31.715785"
+      "updated_at": "2026-05-29 19:45:59.149984"
     },
     {
       "title": "Get Status of Recent Deposits",
@@ -2472,7 +2472,7 @@
       "path": "docs/kraken/rest-api/get-server-time.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-server-time",
-      "updated_at": "2026-05-28 19:49:47.515404"
+      "updated_at": "2026-05-29 19:49:17.040562"
     },
     {
       "title": "Get Status of Recent Deposits",
@@ -2480,7 +2480,7 @@
       "path": "docs/kraken/rest-api/get-status-recent-deposits.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-status-recent-deposits",
-      "updated_at": "2026-05-28 19:49:48.292776"
+      "updated_at": "2026-05-29 19:49:17.817667"
     },
     {
       "title": "Get System Status",
@@ -2488,7 +2488,7 @@
       "path": "docs/kraken/rest-api/get-status-recent-withdrawals.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-status-recent-withdrawals",
-      "updated_at": "2026-05-28 19:49:53.615677"
+      "updated_at": "2026-05-29 19:49:20.403028"
     },
     {
       "title": "Get System Status",
@@ -2496,7 +2496,7 @@
       "path": "docs/kraken/rest-api/get-system-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-system-status",
-      "updated_at": "2026-05-28 19:49:54.383800"
+      "updated_at": "2026-05-29 19:49:21.172685"
     },
     {
       "title": "Get Tradable Asset Pairs",
@@ -2504,7 +2504,7 @@
       "path": "docs/kraken/rest-api/get-ticker-information.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ticker-information",
-      "updated_at": "2026-05-28 19:49:56.959992"
+      "updated_at": "2026-05-29 19:49:26.779005"
     },
     {
       "title": "Get Tradable Asset Pairs",
@@ -2512,7 +2512,7 @@
       "path": "docs/kraken/rest-api/get-tradable-asset-pairs.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs",
-      "updated_at": "2026-05-28 19:49:57.736539"
+      "updated_at": "2026-05-29 19:49:27.556198"
     },
     {
       "title": "Get Trades History",
@@ -2520,7 +2520,7 @@
       "path": "docs/kraken/rest-api/get-trade-balance.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-balance",
-      "updated_at": "2026-05-28 19:50:00.507385"
+      "updated_at": "2026-05-29 19:49:30.304365"
     },
     {
       "title": "Get Trades History",
@@ -2528,7 +2528,7 @@
       "path": "docs/kraken/rest-api/get-trade-history.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-history",
-      "updated_at": "2026-05-28 19:50:01.287463"
+      "updated_at": "2026-05-29 19:49:31.084000"
     },
     {
       "title": "Get Withdrawal Addresses",
@@ -2536,7 +2536,7 @@
       "path": "docs/kraken/rest-api/get-websockets-token.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-websockets-token",
-      "updated_at": "2026-05-28 19:50:11.012591"
+      "updated_at": "2026-05-29 19:49:40.496075"
     },
     {
       "title": "Get Withdrawal Addresses",
@@ -2544,7 +2544,7 @@
       "path": "docs/kraken/rest-api/get-withdrawal-addresses.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-addresses",
-      "updated_at": "2026-05-28 19:50:11.786662"
+      "updated_at": "2026-05-29 19:49:41.273594"
     },
     {
       "title": "Get Withdrawal Methods",
@@ -2552,7 +2552,7 @@
       "path": "docs/kraken/rest-api/get-withdrawal-information.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-information",
-      "updated_at": "2026-05-28 19:50:17.624315"
+      "updated_at": "2026-05-29 19:49:43.980113"
     },
     {
       "title": "Get Withdrawal Methods",
@@ -2560,7 +2560,7 @@
       "path": "docs/kraken/rest-api/get-withdrawal-methods.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-withdrawal-methods",
-      "updated_at": "2026-05-28 19:50:18.398128"
+      "updated_at": "2026-05-29 19:49:44.755006"
     },
     {
       "title": "Get instrument status list",
@@ -2568,7 +2568,7 @@
       "path": "docs/kraken/futures-api/trading/instrument-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instrument-status",
-      "updated_at": "2026-05-28 19:46:57.214449"
+      "updated_at": "2026-05-29 19:46:24.157342"
     },
     {
       "title": "Get instrument status list",
@@ -2576,7 +2576,7 @@
       "path": "docs/kraken/futures-api/trading/instruments-status.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instruments-status",
-      "updated_at": "2026-05-28 19:46:57.989364"
+      "updated_at": "2026-05-29 19:46:24.933417"
     },
     {
       "title": "Get instruments",
@@ -2584,7 +2584,7 @@
       "path": "docs/kraken/futures-api/trading/get-history.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-history",
-      "updated_at": "2026-05-28 19:46:17.640014"
+      "updated_at": "2026-05-29 19:45:45.134498"
     },
     {
       "title": "Get instruments",
@@ -2592,7 +2592,7 @@
       "path": "docs/kraken/futures-api/trading/get-instruments.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-instruments",
-      "updated_at": "2026-05-28 19:46:18.460039"
+      "updated_at": "2026-05-29 19:45:46.046091"
     },
     {
       "title": "Get notifications",
@@ -2600,7 +2600,7 @@
       "path": "docs/kraken/futures-api/trading/get-leverage-setting.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-leverage-setting",
-      "updated_at": "2026-05-28 19:46:20.997073"
+      "updated_at": "2026-05-29 19:45:48.563910"
     },
     {
       "title": "Get notifications",
@@ -2608,7 +2608,7 @@
       "path": "docs/kraken/futures-api/trading/get-notifications.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-notifications",
-      "updated_at": "2026-05-28 19:46:21.775532"
+      "updated_at": "2026-05-29 19:45:49.342731"
     },
     {
       "title": "Get open positions",
@@ -2616,7 +2616,7 @@
       "path": "docs/kraken/futures-api/trading/get-open-orders.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-orders",
-      "updated_at": "2026-05-28 19:46:24.301288"
+      "updated_at": "2026-05-29 19:45:51.868419"
     },
     {
       "title": "Get open positions",
@@ -2624,7 +2624,7 @@
       "path": "docs/kraken/futures-api/trading/get-open-positions.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-positions",
-      "updated_at": "2026-05-28 19:46:25.082869"
+      "updated_at": "2026-05-29 19:45:52.651829"
     },
     {
       "title": "Get order events",
@@ -2632,7 +2632,7 @@
       "path": "docs/kraken/futures-api/history/get-execution-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-execution-events",
-      "updated_at": "2026-05-28 19:45:31.636701"
+      "updated_at": "2026-05-29 19:44:59.757931"
     },
     {
       "title": "Get order events",
@@ -2640,7 +2640,7 @@
       "path": "docs/kraken/futures-api/history/get-order-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-order-events",
-      "updated_at": "2026-05-28 19:45:32.442876"
+      "updated_at": "2026-05-29 19:45:00.562512"
     },
     {
       "title": "Get position percentile of unwind queue",
@@ -2648,7 +2648,7 @@
       "path": "docs/kraken/futures-api/trading/get-trading-instruments.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-trading-instruments",
-      "updated_at": "2026-05-28 19:46:47.521916"
+      "updated_at": "2026-05-29 19:46:14.594751"
     },
     {
       "title": "Get position percentile of unwind queue",
@@ -2656,7 +2656,7 @@
       "path": "docs/kraken/futures-api/trading/get-unwind-queue.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-unwind-queue",
-      "updated_at": "2026-05-28 19:46:48.298617"
+      "updated_at": "2026-05-29 19:46:15.371609"
     },
     {
       "title": "Get public execution events",
@@ -2664,7 +2664,7 @@
       "path": "docs/kraken/futures-api/history/get-position-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-position-events",
-      "updated_at": "2026-05-28 19:45:35.056573"
+      "updated_at": "2026-05-29 19:45:03.134826"
     },
     {
       "title": "Get public execution events",
@@ -2672,7 +2672,7 @@
       "path": "docs/kraken/futures-api/history/get-public-execution-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-execution-events",
-      "updated_at": "2026-05-28 19:45:35.837995"
+      "updated_at": "2026-05-29 19:45:03.915539"
     },
     {
       "title": "Get public mark price events",
@@ -2680,7 +2680,7 @@
       "path": "docs/kraken/futures-api/history/get-public-order-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-order-events",
-      "updated_at": "2026-05-28 19:45:38.116537"
+      "updated_at": "2026-05-29 19:45:06.414469"
     },
     {
       "title": "Get public mark price events",
@@ -2688,7 +2688,7 @@
       "path": "docs/kraken/futures-api/history/get-public-price-events.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-public-price-events",
-      "updated_at": "2026-05-28 19:45:38.889054"
+      "updated_at": "2026-05-29 19:45:07.187177"
     },
     {
       "title": "Get tickers",
@@ -2696,7 +2696,7 @@
       "path": "docs/kraken/futures-api/trading/get-ticker.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-ticker",
-      "updated_at": "2026-05-28 19:46:44.177702"
+      "updated_at": "2026-05-29 19:46:11.277307"
     },
     {
       "title": "Get tickers",
@@ -2704,7 +2704,7 @@
       "path": "docs/kraken/futures-api/trading/get-tickers.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-tickers",
-      "updated_at": "2026-05-28 19:46:44.969416"
+      "updated_at": "2026-05-29 19:46:12.067909"
     },
     {
       "title": "Get your fills",
@@ -2712,7 +2712,7 @@
       "path": "docs/kraken/futures-api/trading/get-fee-schedules-v-3.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-fee-schedules-v-3",
-      "updated_at": "2026-05-28 19:46:14.309813"
+      "updated_at": "2026-05-29 19:45:41.935369"
     },
     {
       "title": "Get your fills",
@@ -2720,7 +2720,7 @@
       "path": "docs/kraken/futures-api/trading/get-fills.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-fills",
-      "updated_at": "2026-05-28 19:46:15.091850"
+      "updated_at": "2026-05-29 19:45:42.719857"
     },
     {
       "title": "Header & Trailer",
@@ -2728,7 +2728,7 @@
       "path": "docs/kraken/fix-api/sequence-reset-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/sequence-reset-fix",
-      "updated_at": "2026-05-28 19:45:02.881319"
+      "updated_at": "2026-05-29 19:44:30.752069"
     },
     {
       "title": "Header & Trailer",
@@ -2736,7 +2736,7 @@
       "path": "docs/kraken/fix-api/session-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/session-fix",
-      "updated_at": "2026-05-28 19:45:03.651093"
+      "updated_at": "2026-05-29 19:44:31.522283"
     },
     {
       "title": "Heartbeat",
@@ -2744,7 +2744,7 @@
       "path": "docs/kraken/websocket-v1/editorder.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/editorder",
-      "updated_at": "2026-05-28 19:55:37.168924"
+      "updated_at": "2026-05-29 19:55:25.628942"
     },
     {
       "title": "Heartbeat",
@@ -2752,7 +2752,7 @@
       "path": "docs/kraken/websocket-v1/heartbeat.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/heartbeat",
-      "updated_at": "2026-05-28 19:55:37.934741"
+      "updated_at": "2026-05-29 19:55:26.395550"
     },
     {
       "title": "Heartbeat",
@@ -2760,7 +2760,7 @@
       "path": "docs/kraken/websocket-v2/executions.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/executions",
-      "updated_at": "2026-05-28 19:56:12.027259"
+      "updated_at": "2026-05-29 19:56:00.393108"
     },
     {
       "title": "Heartbeat",
@@ -2768,7 +2768,7 @@
       "path": "docs/kraken/websocket-v2/heartbeat.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/heartbeat",
-      "updated_at": "2026-05-28 19:56:12.793594"
+      "updated_at": "2026-05-29 19:56:01.160245"
     },
     {
       "title": "Historical Data",
@@ -2776,7 +2776,7 @@
       "path": "docs/kraken/futures-api/trading/get-user-fee-schedule-volumes-v-3.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-user-fee-schedule-volumes-v-3",
-      "updated_at": "2026-05-28 19:46:50.733571"
+      "updated_at": "2026-05-29 19:46:17.767463"
     },
     {
       "title": "Historical Data",
@@ -2784,7 +2784,7 @@
       "path": "docs/kraken/futures-api/trading/historical-data.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/historical-data",
-      "updated_at": "2026-05-28 19:46:51.497955"
+      "updated_at": "2026-05-29 19:46:18.533429"
     },
     {
       "title": "Initiate wallet transfer",
@@ -2792,7 +2792,7 @@
       "path": "docs/kraken/futures-api/trading/trading-settings.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/trading-settings",
-      "updated_at": "2026-05-28 19:47:23.660802"
+      "updated_at": "2026-05-29 19:46:50.328961"
     },
     {
       "title": "Initiate wallet transfer",
@@ -2800,7 +2800,7 @@
       "path": "docs/kraken/futures-api/trading/transfer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/transfer",
-      "updated_at": "2026-05-28 19:47:24.435563"
+      "updated_at": "2026-05-29 19:46:51.105355"
     },
     {
       "title": "Instrument Details",
@@ -2808,7 +2808,7 @@
       "path": "docs/kraken/futures-api/trading/historical-funding-rates.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/historical-funding-rates",
-      "updated_at": "2026-05-28 19:46:53.932609"
+      "updated_at": "2026-05-29 19:46:20.896958"
     },
     {
       "title": "Instrument Details",
@@ -2816,7 +2816,7 @@
       "path": "docs/kraken/futures-api/trading/instrument-details.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/instrument-details",
-      "updated_at": "2026-05-28 19:46:54.697800"
+      "updated_at": "2026-05-29 19:46:21.663606"
     },
     {
       "title": "Instrument List Request",
@@ -2824,7 +2824,7 @@
       "path": "docs/kraken/fix-api/sl-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/sl-fix",
-      "updated_at": "2026-05-28 19:45:06.143641"
+      "updated_at": "2026-05-29 19:44:33.968850"
     },
     {
       "title": "Instrument List Request",
@@ -2832,7 +2832,7 @@
       "path": "docs/kraken/fix-api/slr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/slr-fix",
-      "updated_at": "2026-05-28 19:45:06.909760"
+      "updated_at": "2026-05-29 19:44:34.737301"
     },
     {
       "title": "Kraken APIs",
@@ -2840,7 +2840,7 @@
       "path": "docs/kraken/guides/futures-websockets.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/futures-websockets",
-      "updated_at": "2026-05-28 19:48:12.697376"
+      "updated_at": "2026-05-29 19:47:40.144314"
     },
     {
       "title": "Kraken APIs",
@@ -2848,7 +2848,7 @@
       "path": "docs/kraken/guides/global-intro.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/global-intro",
-      "updated_at": "2026-05-28 19:48:13.469777"
+      "updated_at": "2026-05-29 19:47:40.918444"
     },
     {
       "title": "List Earn Strategies",
@@ -2856,7 +2856,7 @@
       "path": "docs/kraken/rest-api/list-allocations.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/list-allocations",
-      "updated_at": "2026-05-28 19:50:24.247622"
+      "updated_at": "2026-05-29 19:49:51.229714"
     },
     {
       "title": "List Earn Strategies",
@@ -2864,7 +2864,7 @@
       "path": "docs/kraken/rest-api/list-strategies.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/list-strategies",
-      "updated_at": "2026-05-28 19:50:25.031332"
+      "updated_at": "2026-05-29 19:49:52.018292"
     },
     {
       "title": "List all open RFQs",
@@ -2872,7 +2872,7 @@
       "path": "docs/kraken/futures-api/trading/get-open-rfq-offers.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfq-offers",
-      "updated_at": "2026-05-28 19:46:27.617664"
+      "updated_at": "2026-05-29 19:45:55.098456"
     },
     {
       "title": "List all open RFQs",
@@ -2880,7 +2880,7 @@
       "path": "docs/kraken/futures-api/trading/get-open-rfqs.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs",
-      "updated_at": "2026-05-28 19:46:28.391968"
+      "updated_at": "2026-05-29 19:45:55.873974"
     },
     {
       "title": "List assignment programs",
@@ -2888,7 +2888,7 @@
       "path": "docs/kraken/futures-api/trading/get-accounts.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-accounts",
-      "updated_at": "2026-05-28 19:46:07.848413"
+      "updated_at": "2026-05-29 19:45:35.513688"
     },
     {
       "title": "List assignment programs",
@@ -2896,7 +2896,7 @@
       "path": "docs/kraken/futures-api/trading/get-assignment-program-current.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-current",
-      "updated_at": "2026-05-28 19:46:08.623084"
+      "updated_at": "2026-05-29 19:45:36.289469"
     },
     {
       "title": "List offers placed by the account on closed RFQs",
@@ -2904,7 +2904,7 @@
       "path": "docs/kraken/futures-api/trading/get-assignment-program-history.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-history",
-      "updated_at": "2026-05-28 19:46:10.952577"
+      "updated_at": "2026-05-29 19:45:38.535819"
     },
     {
       "title": "List offers placed by the account on closed RFQs",
@@ -2912,7 +2912,7 @@
       "path": "docs/kraken/futures-api/trading/get-closed-rfq-offers.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers",
-      "updated_at": "2026-05-28 19:46:11.783138"
+      "updated_at": "2026-05-29 19:45:39.313218"
     },
     {
       "title": "Logon",
@@ -2920,7 +2920,7 @@
       "path": "docs/kraken/fix-api/er-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/er-fix",
-      "updated_at": "2026-05-28 19:44:41.241102"
+      "updated_at": "2026-05-29 19:44:09.266295"
     },
     {
       "title": "Logon",
@@ -2928,7 +2928,7 @@
       "path": "docs/kraken/fix-api/logon-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/logon-fix",
-      "updated_at": "2026-05-28 19:44:42.013623"
+      "updated_at": "2026-05-29 19:44:10.041399"
     },
     {
       "title": "Market Analytics",
@@ -2936,7 +2936,7 @@
       "path": "docs/kraken/futures-api/charts/liquidity-pool-stats.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/liquidity-pool-stats",
-      "updated_at": "2026-05-28 19:45:18.943161"
+      "updated_at": "2026-05-29 19:44:47.002683"
     },
     {
       "title": "Market Analytics",
@@ -2944,7 +2944,7 @@
       "path": "docs/kraken/futures-api/charts/market-analytics.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/market-analytics",
-      "updated_at": "2026-05-28 19:45:19.771966"
+      "updated_at": "2026-05-29 19:44:47.830331"
     },
     {
       "title": "Market Candles",
@@ -2952,7 +2952,7 @@
       "path": "docs/kraken/futures-api/charts/analytics.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/analytics",
-      "updated_at": "2026-05-28 19:45:15.567964"
+      "updated_at": "2026-05-29 19:44:43.612621"
     },
     {
       "title": "Market Candles",
@@ -2960,7 +2960,7 @@
       "path": "docs/kraken/futures-api/charts/candles.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/candles",
-      "updated_at": "2026-05-28 19:45:16.340994"
+      "updated_at": "2026-05-29 19:44:44.386913"
     },
     {
       "title": "Market Data",
@@ -2968,7 +2968,7 @@
       "path": "docs/kraken/futures-api/trading/list-subaccounts.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/list-subaccounts",
-      "updated_at": "2026-05-28 19:47:00.488887"
+      "updated_at": "2026-05-29 19:46:27.407713"
     },
     {
       "title": "Market Data",
@@ -2976,7 +2976,7 @@
       "path": "docs/kraken/futures-api/trading/market-data.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/market-data",
-      "updated_at": "2026-05-28 19:47:01.254112"
+      "updated_at": "2026-05-29 19:46:28.174648"
     },
     {
       "title": "Market Data Incremental Refresh",
@@ -2984,7 +2984,7 @@
       "path": "docs/kraken/fix-api/logout-fix.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/logout-fix",
-      "updated_at": "2026-05-28 19:44:44.208121"
+      "updated_at": "2026-05-29 19:44:12.324390"
     },
     {
       "title": "Market Data Incremental Refresh",
@@ -2992,7 +2992,7 @@
       "path": "docs/kraken/fix-api/mdir-fix.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/mdir-fix",
-      "updated_at": "2026-05-28 19:44:44.977712"
+      "updated_at": "2026-05-29 19:44:13.095418"
     },
     {
       "title": "Market Data Request Reject",
@@ -3000,7 +3000,7 @@
       "path": "docs/kraken/fix-api/mdr-fix.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/mdr-fix",
-      "updated_at": "2026-05-28 19:44:47.413222"
+      "updated_at": "2026-05-29 19:44:15.241180"
     },
     {
       "title": "Market Data Request Reject",
@@ -3008,7 +3008,7 @@
       "path": "docs/kraken/fix-api/mdrr-fix.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/mdrr-fix",
-      "updated_at": "2026-05-28 19:44:48.179012"
+      "updated_at": "2026-05-29 19:44:16.009324"
     },
     {
       "title": "Market History",
@@ -3016,7 +3016,7 @@
       "path": "docs/kraken/futures-api/history/get-trigger-events.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/get-trigger-events",
-      "updated_at": "2026-05-28 19:45:41.500064"
+      "updated_at": "2026-05-29 19:45:09.692931"
     },
     {
       "title": "Market History",
@@ -3024,7 +3024,7 @@
       "path": "docs/kraken/futures-api/history/market-history.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/market-history",
-      "updated_at": "2026-05-28 19:45:42.264738"
+      "updated_at": "2026-05-29 19:45:10.459055"
     },
     {
       "title": "Markets",
@@ -3032,7 +3032,7 @@
       "path": "docs/kraken/futures-api/charts/resolutions.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/resolutions",
-      "updated_at": "2026-05-28 19:45:22.256629"
+      "updated_at": "2026-05-29 19:44:50.278312"
     },
     {
       "title": "Markets",
@@ -3040,7 +3040,7 @@
       "path": "docs/kraken/futures-api/charts/symbols.md",
       "api_type": "Market Data",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/charts/symbols",
-      "updated_at": "2026-05-28 19:45:23.025984"
+      "updated_at": "2026-05-29 19:44:51.048625"
     },
     {
       "title": "New Order Single",
@@ -3048,7 +3048,7 @@
       "path": "docs/kraken/fix-api/mdsfr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/mdsfr-fix",
-      "updated_at": "2026-05-28 19:44:50.520426"
+      "updated_at": "2026-05-29 19:44:18.312751"
     },
     {
       "title": "New Order Single",
@@ -3056,7 +3056,7 @@
       "path": "docs/kraken/fix-api/nos-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/nos-fix",
-      "updated_at": "2026-05-28 19:44:51.295522"
+      "updated_at": "2026-05-29 19:44:19.088189"
     },
     {
       "title": "Notification",
@@ -3064,7 +3064,7 @@
       "path": "docs/kraken/futures-api/websocket/heartbeat.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/heartbeat",
-      "updated_at": "2026-05-28 19:47:40.288829"
+      "updated_at": "2026-05-29 19:47:06.905662"
     },
     {
       "title": "Notification",
@@ -3072,7 +3072,7 @@
       "path": "docs/kraken/futures-api/websocket/notifications.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/notifications",
-      "updated_at": "2026-05-28 19:47:41.064343"
+      "updated_at": "2026-05-29 19:47:07.681741"
     },
     {
       "title": "Open Orders",
@@ -3080,7 +3080,7 @@
       "path": "docs/kraken/websocket-v1/ohlc.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ohlc",
-      "updated_at": "2026-05-28 19:55:40.445906"
+      "updated_at": "2026-05-29 19:55:28.888932"
     },
     {
       "title": "Open Orders",
@@ -3088,7 +3088,7 @@
       "path": "docs/kraken/websocket-v1/openorders.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/openorders",
-      "updated_at": "2026-05-28 19:55:41.250525"
+      "updated_at": "2026-05-29 19:55:29.697838"
     },
     {
       "title": "Open Orders (verbose)",
@@ -3096,7 +3096,7 @@
       "path": "docs/kraken/futures-api/websocket/open_orders.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_orders",
-      "updated_at": "2026-05-28 19:47:43.701280"
+      "updated_at": "2026-05-29 19:47:09.954191"
     },
     {
       "title": "Open Orders (verbose)",
@@ -3104,7 +3104,7 @@
       "path": "docs/kraken/futures-api/websocket/open_orders_verbose.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_orders_verbose",
-      "updated_at": "2026-05-28 19:47:44.494596"
+      "updated_at": "2026-05-29 19:47:10.836714"
     },
     {
       "title": "Order Cancel Replace Request (Spot only)",
@@ -3112,7 +3112,7 @@
       "path": "docs/kraken/fix-api/ocr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/ocr-fix",
-      "updated_at": "2026-05-28 19:44:53.669155"
+      "updated_at": "2026-05-29 19:44:21.467973"
     },
     {
       "title": "Order Cancel Replace Request (Spot only)",
@@ -3120,7 +3120,7 @@
       "path": "docs/kraken/fix-api/ocrr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/ocrr-fix",
-      "updated_at": "2026-05-28 19:44:54.438905"
+      "updated_at": "2026-05-29 19:44:22.238861"
     },
     {
       "title": "Order Management",
@@ -3128,7 +3128,7 @@
       "path": "docs/kraken/futures-api/trading/multi-collateral.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/multi-collateral",
-      "updated_at": "2026-05-28 19:47:03.677703"
+      "updated_at": "2026-05-29 19:46:30.398409"
     },
     {
       "title": "Order Management",
@@ -3136,7 +3136,7 @@
       "path": "docs/kraken/futures-api/trading/order-management.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/order-management",
-      "updated_at": "2026-05-28 19:47:04.443926"
+      "updated_at": "2026-05-29 19:46:31.166297"
     },
     {
       "title": "Order Status Request ( Spot Only )",
@@ -3144,7 +3144,7 @@
       "path": "docs/kraken/fix-api/omcr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/omcr-fix",
-      "updated_at": "2026-05-28 19:44:56.799870"
+      "updated_at": "2026-05-29 19:44:24.498721"
     },
     {
       "title": "Order Status Request ( Spot Only )",
@@ -3152,7 +3152,7 @@
       "path": "docs/kraken/fix-api/osr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/osr-fix",
-      "updated_at": "2026-05-28 19:44:57.566796"
+      "updated_at": "2026-05-29 19:44:25.266046"
     },
     {
       "title": "Orders (Level 3)",
@@ -3160,7 +3160,7 @@
       "path": "docs/kraken/websocket-v2/instrument.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/instrument",
-      "updated_at": "2026-05-28 19:56:14.724985"
+      "updated_at": "2026-05-29 19:56:03.720615"
     },
     {
       "title": "Orders (Level 3)",
@@ -3168,7 +3168,7 @@
       "path": "docs/kraken/websocket-v2/level3.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/level3",
-      "updated_at": "2026-05-28 19:56:15.539605"
+      "updated_at": "2026-05-29 19:56:04.529358"
     },
     {
       "title": "Ping",
@@ -3176,7 +3176,7 @@
       "path": "docs/kraken/websocket-v1/owntrades.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/owntrades",
-      "updated_at": "2026-05-28 19:55:43.686189"
+      "updated_at": "2026-05-29 19:55:32.180144"
     },
     {
       "title": "Ping",
@@ -3184,7 +3184,7 @@
       "path": "docs/kraken/websocket-v1/ping.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ping",
-      "updated_at": "2026-05-28 19:55:44.458167"
+      "updated_at": "2026-05-29 19:55:32.950711"
     },
     {
       "title": "Ping",
@@ -3192,7 +3192,7 @@
       "path": "docs/kraken/websocket-v2/ohlc.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ohlc",
-      "updated_at": "2026-05-28 19:56:17.897482"
+      "updated_at": "2026-05-29 19:56:06.943124"
     },
     {
       "title": "Ping",
@@ -3200,7 +3200,7 @@
       "path": "docs/kraken/websocket-v2/ping.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ping",
-      "updated_at": "2026-05-28 19:56:18.667472"
+      "updated_at": "2026-05-29 19:56:07.713928"
     },
     {
       "title": "Pre-Trade Data",
@@ -3208,7 +3208,7 @@
       "path": "docs/kraken/rest-api/get-post-trade.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-post-trade",
-      "updated_at": "2026-05-28 19:49:41.183264"
+      "updated_at": "2026-05-29 19:49:10.796883"
     },
     {
       "title": "Pre-Trade Data",
@@ -3216,7 +3216,7 @@
       "path": "docs/kraken/rest-api/get-pre-trade.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-pre-trade",
-      "updated_at": "2026-05-28 19:49:41.957609"
+      "updated_at": "2026-05-29 19:49:11.571232"
     },
     {
       "title": "Query L3 Order Book",
@@ -3224,7 +3224,7 @@
       "path": "docs/kraken/rest-api/get-ledgers-info.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-ledgers-info",
-      "updated_at": "2026-05-28 19:49:26.640808"
+      "updated_at": "2026-05-29 19:48:54.605243"
     },
     {
       "title": "Query L3 Order Book",
@@ -3232,7 +3232,7 @@
       "path": "docs/kraken/rest-api/get-level-3-order-book.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book",
-      "updated_at": "2026-05-28 19:49:27.420909"
+      "updated_at": "2026-05-29 19:48:55.386926"
     },
     {
       "title": "Query Orders Info",
@@ -3240,7 +3240,7 @@
       "path": "docs/kraken/rest-api/get-order-book.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-order-book",
-      "updated_at": "2026-05-28 19:49:37.781929"
+      "updated_at": "2026-05-29 19:49:04.660318"
     },
     {
       "title": "Query Orders Info",
@@ -3248,7 +3248,7 @@
       "path": "docs/kraken/rest-api/get-orders-info.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-orders-info",
-      "updated_at": "2026-05-28 19:49:38.572072"
+      "updated_at": "2026-05-29 19:49:05.447873"
     },
     {
       "title": "Query Trades Info",
@@ -3256,7 +3256,7 @@
       "path": "docs/kraken/rest-api/get-trade-volume.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trade-volume",
-      "updated_at": "2026-05-28 19:50:07.711854"
+      "updated_at": "2026-05-29 19:49:33.759475"
     },
     {
       "title": "Query Trades Info",
@@ -3264,7 +3264,7 @@
       "path": "docs/kraken/rest-api/get-trades-info.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/get-trades-info",
-      "updated_at": "2026-05-28 19:50:08.489018"
+      "updated_at": "2026-05-29 19:49:34.536286"
     },
     {
       "title": "RFQs",
@@ -3272,7 +3272,7 @@
       "path": "docs/kraken/futures-api/trading/place-rfq-offer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/place-rfq-offer",
-      "updated_at": "2026-05-28 19:47:06.951956"
+      "updated_at": "2026-05-29 19:46:33.711754"
     },
     {
       "title": "RFQs",
@@ -3280,7 +3280,7 @@
       "path": "docs/kraken/futures-api/trading/rf-qs.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/rf-qs",
-      "updated_at": "2026-05-28 19:47:07.719052"
+      "updated_at": "2026-05-29 19:46:34.479902"
     },
     {
       "title": "Reject - Session Level",
@@ -3288,7 +3288,7 @@
       "path": "docs/kraken/fix-api/reject-business_level-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/reject-business_level-fix",
-      "updated_at": "2026-05-28 19:44:59.753198"
+      "updated_at": "2026-05-29 19:44:27.617396"
     },
     {
       "title": "Reject - Session Level",
@@ -3296,7 +3296,7 @@
       "path": "docs/kraken/fix-api/reject-session_level-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/reject-session_level-fix",
-      "updated_at": "2026-05-28 19:45:00.521563"
+      "updated_at": "2026-05-29 19:44:28.384958"
     },
     {
       "title": "Request Withdrawal Cancellation",
@@ -3304,7 +3304,7 @@
       "path": "docs/kraken/rest-api/cancel-order-batch.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-order-batch",
-      "updated_at": "2026-05-28 19:48:55.464040"
+      "updated_at": "2026-05-29 19:48:22.827005"
     },
     {
       "title": "Request Withdrawal Cancellation",
@@ -3312,7 +3312,7 @@
       "path": "docs/kraken/rest-api/cancel-withdrawal.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/cancel-withdrawal",
-      "updated_at": "2026-05-28 19:48:56.236080"
+      "updated_at": "2026-05-29 19:48:23.598807"
     },
     {
       "title": "Retrieve Data Export",
@@ -3320,7 +3320,7 @@
       "path": "docs/kraken/rest-api/remove-export.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/remove-export",
-      "updated_at": "2026-05-28 19:50:33.901548"
+      "updated_at": "2026-05-29 19:50:02.113808"
     },
     {
       "title": "Retrieve Data Export",
@@ -3328,7 +3328,7 @@
       "path": "docs/kraken/rest-api/retrieve-export.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/retrieve-export",
-      "updated_at": "2026-05-28 19:50:34.672057"
+      "updated_at": "2026-05-29 19:50:02.885619"
     },
     {
       "title": "Retrieve a single RFQ (open or recently closed)",
@@ -3336,7 +3336,7 @@
       "path": "docs/kraken/futures-api/trading/get-portfolio-margining-parameters.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-portfolio-margining-parameters",
-      "updated_at": "2026-05-28 19:46:37.556217"
+      "updated_at": "2026-05-29 19:46:04.915449"
     },
     {
       "title": "Retrieve a single RFQ (open or recently closed)",
@@ -3344,7 +3344,7 @@
       "path": "docs/kraken/futures-api/trading/get-rfq.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/get-rfq",
-      "updated_at": "2026-05-28 19:46:38.331826"
+      "updated_at": "2026-05-29 19:46:05.693586"
     },
     {
       "title": "Send order",
@@ -3352,7 +3352,7 @@
       "path": "docs/kraken/futures-api/trading/send-batch-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-batch-order",
-      "updated_at": "2026-05-28 19:47:10.614879"
+      "updated_at": "2026-05-29 19:46:37.351016"
     },
     {
       "title": "Send order",
@@ -3360,7 +3360,7 @@
       "path": "docs/kraken/futures-api/trading/send-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-order",
-      "updated_at": "2026-05-28 19:47:11.460474"
+      "updated_at": "2026-05-29 19:46:38.186480"
     },
     {
       "title": "Set PNL currency preference",
@@ -3368,7 +3368,7 @@
       "path": "docs/kraken/futures-api/trading/set-leverage-setting.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-leverage-setting",
-      "updated_at": "2026-05-28 19:47:14.043488"
+      "updated_at": "2026-05-29 19:46:40.457730"
     },
     {
       "title": "Set PNL currency preference",
@@ -3376,7 +3376,7 @@
       "path": "docs/kraken/futures-api/trading/set-pnl-currency-preference.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference",
-      "updated_at": "2026-05-28 19:47:14.818623"
+      "updated_at": "2026-05-29 19:46:41.233627"
     },
     {
       "title": "Spot Client Order Identifiers",
@@ -3384,7 +3384,7 @@
       "path": "docs/kraken/guides/spot-amends.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-amends",
-      "updated_at": "2026-05-28 19:48:15.879426"
+      "updated_at": "2026-05-29 19:47:43.380899"
     },
     {
       "title": "Spot Client Order Identifiers",
@@ -3392,7 +3392,7 @@
       "path": "docs/kraken/guides/spot-clordid.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-clordid",
-      "updated_at": "2026-05-28 19:48:16.652860"
+      "updated_at": "2026-05-29 19:47:44.155017"
     },
     {
       "title": "Spot Example Clients",
@@ -3400,7 +3400,7 @@
       "path": "docs/kraken/guides/spot-errors.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-errors",
-      "updated_at": "2026-05-28 19:48:19.038028"
+      "updated_at": "2026-05-29 19:47:46.369747"
     },
     {
       "title": "Spot Example Clients",
@@ -3408,7 +3408,7 @@
       "path": "docs/kraken/guides/spot-examples.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-examples",
-      "updated_at": "2026-05-28 19:48:19.804544"
+      "updated_at": "2026-05-29 19:47:47.139700"
     },
     {
       "title": "Spot REST Earn",
@@ -3416,7 +3416,7 @@
       "path": "docs/kraken/guides/spot-rest-auth.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-auth",
-      "updated_at": "2026-05-28 19:48:24.920968"
+      "updated_at": "2026-05-29 19:47:52.338635"
     },
     {
       "title": "Spot REST Earn",
@@ -3424,7 +3424,7 @@
       "path": "docs/kraken/guides/spot-rest-earn.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-earn",
-      "updated_at": "2026-05-28 19:48:25.687417"
+      "updated_at": "2026-05-29 19:47:53.106458"
     },
     {
       "title": "Spot REST Rate Limits",
@@ -3432,7 +3432,7 @@
       "path": "docs/kraken/guides/spot-rest-intro.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-intro",
-      "updated_at": "2026-05-28 19:48:28.126681"
+      "updated_at": "2026-05-29 19:47:55.318705"
     },
     {
       "title": "Spot REST Rate Limits",
@@ -3440,7 +3440,7 @@
       "path": "docs/kraken/guides/spot-rest-ratelimits.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-rest-ratelimits",
-      "updated_at": "2026-05-28 19:48:28.892862"
+      "updated_at": "2026-05-29 19:47:56.086025"
     },
     {
       "title": "Spot Trading Limits",
@@ -3448,7 +3448,7 @@
       "path": "docs/kraken/guides/spot-l3-data.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-l3-data",
-      "updated_at": "2026-05-28 19:48:21.709748"
+      "updated_at": "2026-05-29 19:47:49.088357"
     },
     {
       "title": "Spot Trading Limits",
@@ -3456,7 +3456,7 @@
       "path": "docs/kraken/guides/spot-ratelimits.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ratelimits",
-      "updated_at": "2026-05-28 19:48:22.481003"
+      "updated_at": "2026-05-29 19:47:49.862053"
     },
     {
       "title": "Spot Websockets (v1) Book Checksum",
@@ -3464,7 +3464,7 @@
       "path": "docs/kraken/guides/spot-ws-auth.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-auth",
-      "updated_at": "2026-05-28 19:48:31.382939"
+      "updated_at": "2026-05-29 19:47:58.518965"
     },
     {
       "title": "Spot Websockets (v1) Book Checksum",
@@ -3472,7 +3472,7 @@
       "path": "docs/kraken/guides/spot-ws-book-v1.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-book-v1",
-      "updated_at": "2026-05-28 19:48:32.215765"
+      "updated_at": "2026-05-29 19:47:59.302070"
     },
     {
       "title": "Spot Websockets Introduction",
@@ -3480,7 +3480,7 @@
       "path": "docs/kraken/guides/spot-ws-book-v2.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-book-v2",
-      "updated_at": "2026-05-28 19:48:35.406814"
+      "updated_at": "2026-05-29 19:48:01.754996"
     },
     {
       "title": "Spot Websockets Introduction",
@@ -3488,7 +3488,7 @@
       "path": "docs/kraken/guides/spot-ws-intro.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/guides/spot-ws-intro",
-      "updated_at": "2026-05-28 19:48:36.182154"
+      "updated_at": "2026-05-29 19:48:02.531521"
     },
     {
       "title": "Subaccounts",
@@ -3496,7 +3496,7 @@
       "path": "docs/kraken/futures-api/trading/sub-account-transfer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/sub-account-transfer",
-      "updated_at": "2026-05-28 19:47:20.394497"
+      "updated_at": "2026-05-29 19:46:47.083136"
     },
     {
       "title": "Subaccounts",
@@ -3504,7 +3504,7 @@
       "path": "docs/kraken/futures-api/trading/subaccounts.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/subaccounts",
-      "updated_at": "2026-05-28 19:47:21.159550"
+      "updated_at": "2026-05-29 19:46:47.849337"
     },
     {
       "title": "Subscription Status",
@@ -3512,7 +3512,7 @@
       "path": "docs/kraken/websocket-v1/spread.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/spread",
-      "updated_at": "2026-05-28 19:55:46.662649"
+      "updated_at": "2026-05-29 19:55:35.081445"
     },
     {
       "title": "Subscription Status",
@@ -3520,7 +3520,7 @@
       "path": "docs/kraken/websocket-v1/subscriptionstatus.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/subscriptionstatus",
-      "updated_at": "2026-05-28 19:55:47.440853"
+      "updated_at": "2026-05-29 19:55:35.857635"
     },
     {
       "title": "Ticker",
@@ -3528,7 +3528,7 @@
       "path": "docs/kraken/futures-api/websocket/open_position.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/open_position",
-      "updated_at": "2026-05-28 19:47:47.013684"
+      "updated_at": "2026-05-29 19:47:13.780571"
     },
     {
       "title": "Ticker",
@@ -3536,7 +3536,7 @@
       "path": "docs/kraken/futures-api/websocket/ticker.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/ticker",
-      "updated_at": "2026-05-28 19:47:47.803345"
+      "updated_at": "2026-05-29 19:47:14.569788"
     },
     {
       "title": "Ticker (Level 1)",
@@ -3544,7 +3544,7 @@
       "path": "docs/kraken/websocket-v1/systemstatus.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/systemstatus",
-      "updated_at": "2026-05-28 19:55:49.983627"
+      "updated_at": "2026-05-29 19:55:37.996536"
     },
     {
       "title": "Ticker (Level 1)",
@@ -3552,7 +3552,7 @@
       "path": "docs/kraken/websocket-v1/ticker.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/ticker",
-      "updated_at": "2026-05-28 19:55:50.766415"
+      "updated_at": "2026-05-29 19:55:38.776282"
     },
     {
       "title": "Ticker (Level 1)",
@@ -3560,7 +3560,7 @@
       "path": "docs/kraken/websocket-v2/status.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/status",
-      "updated_at": "2026-05-28 19:56:21.051505"
+      "updated_at": "2026-05-29 19:56:10.121878"
     },
     {
       "title": "Ticker (Level 1)",
@@ -3568,7 +3568,7 @@
       "path": "docs/kraken/websocket-v2/ticker.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/ticker",
-      "updated_at": "2026-05-28 19:56:21.845224"
+      "updated_at": "2026-05-29 19:56:10.917913"
     },
     {
       "title": "Trade",
@@ -3576,7 +3576,7 @@
       "path": "docs/kraken/futures-api/websocket/ticker_lite.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/ticker_lite",
-      "updated_at": "2026-05-28 19:47:49.789267"
+      "updated_at": "2026-05-29 19:47:17.080933"
     },
     {
       "title": "Trade",
@@ -3584,7 +3584,7 @@
       "path": "docs/kraken/futures-api/websocket/trade.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/trade",
-      "updated_at": "2026-05-28 19:47:50.571261"
+      "updated_at": "2026-05-29 19:47:17.862575"
     },
     {
       "title": "Trades",
@@ -3592,7 +3592,7 @@
       "path": "docs/kraken/websocket-v2/trade.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v2/trade",
-      "updated_at": "2026-05-28 19:56:23.427482"
+      "updated_at": "2026-05-29 19:56:12.573224"
     },
     {
       "title": "Trading Session Status Request (Spot only)",
@@ -3600,7 +3600,7 @@
       "path": "docs/kraken/fix-api/tss-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/tss-fix",
-      "updated_at": "2026-05-28 19:45:09.324358"
+      "updated_at": "2026-05-29 19:44:37.046631"
     },
     {
       "title": "Trading Session Status Request (Spot only)",
@@ -3608,7 +3608,7 @@
       "path": "docs/kraken/fix-api/tssr-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/tssr-fix",
-      "updated_at": "2026-05-28 19:45:10.095233"
+      "updated_at": "2026-05-29 19:44:37.815057"
     },
     {
       "title": "Unsubscribe",
@@ -3616,7 +3616,7 @@
       "path": "docs/kraken/websocket-v1/trade.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/trade",
-      "updated_at": "2026-05-28 19:55:52.934092"
+      "updated_at": "2026-05-29 19:55:41.199209"
     },
     {
       "title": "Unsubscribe",
@@ -3624,7 +3624,7 @@
       "path": "docs/kraken/websocket-v1/unsubscribe.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/websocket-v1/unsubscribe",
-      "updated_at": "2026-05-28 19:55:53.707511"
+      "updated_at": "2026-05-29 19:55:41.969025"
     },
     {
       "title": "Update subaccount trading status",
@@ -3632,7 +3632,7 @@
       "path": "docs/kraken/futures-api/trading/transfers.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/transfers",
-      "updated_at": "2026-05-28 19:47:26.982355"
+      "updated_at": "2026-05-29 19:46:53.563147"
     },
     {
       "title": "Update subaccount trading status",
@@ -3640,7 +3640,7 @@
       "path": "docs/kraken/futures-api/trading/update-subaccount-trading-capability.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/update-subaccount-trading-capability",
-      "updated_at": "2026-05-28 19:47:27.755819"
+      "updated_at": "2026-05-29 19:46:54.337987"
     },
     {
       "title": "Withdraw Funds",
@@ -3648,7 +3648,7 @@
       "path": "docs/kraken/rest-api/wallet-transfer.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/wallet-transfer",
-      "updated_at": "2026-05-28 19:50:44.272312"
+      "updated_at": "2026-05-29 19:50:13.278829"
     },
     {
       "title": "Withdraw Funds",
@@ -3656,7 +3656,7 @@
       "path": "docs/kraken/rest-api/withdraw-funds.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/rest-api/withdraw-funds",
-      "updated_at": "2026-05-28 19:50:45.101540"
+      "updated_at": "2026-05-29 19:50:14.054914"
     }
   ]
 }
