@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/trading-settings
 api_type: REST
-updated_at: 2026-05-29 19:46:50.328961
+updated_at: 2026-05-30 19:16:01.842403
 ---
 
 # Initiate wallet transfer

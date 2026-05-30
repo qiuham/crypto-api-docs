@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-portfolio-margining-parameters
 api_type: REST
-updated_at: 2026-05-29 19:46:04.915449
+updated_at: 2026-05-30 19:15:17.697132
 ---
 
 # Retrieve a single RFQ (open or recently closed)

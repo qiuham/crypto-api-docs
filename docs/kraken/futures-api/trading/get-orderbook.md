@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-orderbook
 api_type: REST
-updated_at: 2026-05-29 19:46:01.621555
+updated_at: 2026-05-30 19:15:14.742432
 ---
 
 # Get PNL currency preferences

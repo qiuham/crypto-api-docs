@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-websockets-token
 api_type: WebSocket
-updated_at: 2026-05-29 19:49:40.496075
+updated_at: 2026-05-30 19:18:49.226828
 ---
 
 # Get Withdrawal Addresses

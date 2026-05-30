@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-positions
 api_type: REST
-updated_at: 2026-05-29 19:45:52.651829
+updated_at: 2026-05-30 19:15:05.933135
 ---
 
 # Get open positions

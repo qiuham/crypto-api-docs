@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-account-balance
 api_type: REST
-updated_at: 2026-05-29 19:48:32.320586
+updated_at: 2026-05-30 19:17:42.991820
 ---
 
 # Get Allocation Status

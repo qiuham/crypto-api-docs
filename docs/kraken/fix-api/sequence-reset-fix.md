@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/sequence-reset-fix
 api_type: REST
-updated_at: 2026-05-29 19:44:30.752069
+updated_at: 2026-05-30 19:13:45.129131
 ---
 
 # Header & Trailer

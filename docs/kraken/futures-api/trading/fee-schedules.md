@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/fee-schedules
 api_type: REST
-updated_at: 2026-05-29 19:45:32.509310
+updated_at: 2026-05-30 19:14:45.440621
 ---
 
 # General

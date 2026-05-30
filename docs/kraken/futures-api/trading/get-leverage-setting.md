@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-leverage-setting
 api_type: REST
-updated_at: 2026-05-29 19:45:48.563910
+updated_at: 2026-05-30 19:15:01.911420
 ---
 
 # Get notifications

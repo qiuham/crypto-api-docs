@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/add-order-batch
 api_type: REST
-updated_at: 2026-05-29 19:48:13.102191
+updated_at: 2026-05-30 19:17:23.320999
 ---
 
 # Allocate Earn Funds

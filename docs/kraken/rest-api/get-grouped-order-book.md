@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book
 api_type: REST
-updated_at: 2026-05-29 19:48:51.080044
+updated_at: 2026-05-30 19:18:00.366186
 ---
 
 # Get Ledgers Info

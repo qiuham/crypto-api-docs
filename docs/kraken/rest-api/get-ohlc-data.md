@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ohlc-data
 api_type: REST
-updated_at: 2026-05-29 19:48:57.800905
+updated_at: 2026-05-30 19:18:07.084529
 ---
 
 # Get Open Orders

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/multi-collateral
 api_type: REST
-updated_at: 2026-05-29 19:46:30.398409
+updated_at: 2026-05-30 19:15:43.335650
 ---
 
 # Order Management

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/list-subaccounts
 api_type: Market Data
-updated_at: 2026-05-29 19:46:27.407713
+updated_at: 2026-05-30 19:15:40.179614
 ---
 
 # Market Data

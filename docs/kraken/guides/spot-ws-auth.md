@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-auth
 api_type: WebSocket
-updated_at: 2026-05-29 19:47:58.518965
+updated_at: 2026-05-30 19:17:09.121917
 ---
 
 # Spot Websockets (v1) Book Checksum

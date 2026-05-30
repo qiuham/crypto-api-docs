@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ticker-information
 api_type: REST
-updated_at: 2026-05-29 19:49:26.779005
+updated_at: 2026-05-30 19:18:35.959125
 ---
 
 # Get Tradable Asset Pairs

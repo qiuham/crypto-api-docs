@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-notifications
 api_type: REST
-updated_at: 2026-05-29 19:45:49.342731
+updated_at: 2026-05-30 19:15:02.692273
 ---
 
 # Get notifications

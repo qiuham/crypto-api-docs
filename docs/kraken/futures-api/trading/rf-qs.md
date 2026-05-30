@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/rf-qs
 api_type: REST
-updated_at: 2026-05-29 19:46:34.479902
+updated_at: 2026-05-30 19:15:47.337040
 ---
 
 # RFQs

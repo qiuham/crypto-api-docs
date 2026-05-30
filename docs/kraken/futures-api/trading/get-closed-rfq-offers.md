@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers
 api_type: REST
-updated_at: 2026-05-29 19:45:39.313218
+updated_at: 2026-05-30 19:14:52.815032
 ---
 
 # List offers placed by the account on closed RFQs

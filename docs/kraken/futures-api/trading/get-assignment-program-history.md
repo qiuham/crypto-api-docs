@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-history
 api_type: REST
-updated_at: 2026-05-29 19:45:38.535819
+updated_at: 2026-05-30 19:14:52.006733
 ---
 
 # List offers placed by the account on closed RFQs

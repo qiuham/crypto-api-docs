@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-accounts
 api_type: REST
-updated_at: 2026-05-29 19:45:35.513688
+updated_at: 2026-05-30 19:14:48.731388
 ---
 
 # List assignment programs
