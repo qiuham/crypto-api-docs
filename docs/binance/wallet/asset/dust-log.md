@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/dust-log
 api_type: REST
-updated_at: 2026-05-29 19:04:18.182844
+updated_at: 2026-05-30 18:34:55.138050
 ---
 
 # Query User Delegation History(For Master Account)(USER_DATA)

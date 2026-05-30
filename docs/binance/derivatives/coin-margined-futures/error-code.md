@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/coin-margined-futures/error-code
 api_type: REST
-updated_at: 2026-05-29 19:01:01.527829
+updated_at: 2026-05-30 18:31:41.023794
 ---
 
 # General Info

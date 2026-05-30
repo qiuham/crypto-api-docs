@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/managed-sub-account/Get-Managed-Sub-account-Deposit-Address
 api_type: Account
-updated_at: 2026-05-29 19:07:50.678697
+updated_at: 2026-05-30 18:38:22.266213
 ---
 
 # Query Managed Sub-account Asset Details (For Investor Master Account) (USER_DATA)

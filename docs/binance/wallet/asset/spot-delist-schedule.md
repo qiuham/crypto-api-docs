@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/spot-delist-schedule
 api_type: REST
-updated_at: 2026-05-29 19:04:26.989239
+updated_at: 2026-05-30 18:35:03.378915
 ---
 
 # User Asset (USER_DATA)
