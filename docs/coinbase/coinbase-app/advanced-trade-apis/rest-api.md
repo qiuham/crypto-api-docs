@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/rest-api
 api_type: Trading
-updated_at: 2026-05-29 18:53:07.457229
+updated_at: 2026-05-30 18:24:03.888903
 ---
 
 # Advanced Trade API Endpoints
@@ -55,8 +55,17 @@ API| Method| Resource| API Key Permission
 [Get Perpetuals Portfolio Summary](/api-reference/advanced-trade-api/rest-api/perpetuals/get-perpetuals-portfolio-summary)| GET| `/intx/portfolio`| `view` (for intx portfolio)  
 [List Perpetuals Positions](/api-reference/advanced-trade-api/rest-api/perpetuals/list-perpetuals-positions)| GET| `/intx/positions`| `view` (for intx portfolio)  
 [Get Perpetuals Position](/api-reference/advanced-trade-api/rest-api/perpetuals/get-perpetuals-position)| GET| `/intx/positions`| `view` (for intx portfolio)  
-[Get Perpetuals Portfolio Balances](/api-reference/advanced-trade-api/rest-api/perpetuals/get-portfolio-balances)| GET| `/intx/balances`| `view` (for intx portfolio)  
-[Opt-In Multi Asset Collateral](/api-reference/advanced-trade-api/rest-api/perpetuals/opt-in-or-out)| POST| `/intx/multi_asset_collateral`| `trade` (for intx portfolio)  
+[Get Perpetuals Portfolio Balances](/api-reference/advanced-trade-api/rest-api/perpetuals/get-portfolio-balances)| GET| `/intx/balances`| `view` (for intx portfolio)Advanced Trade APIs  
+  
+# Advanced Trade API Endpoints
+
+The Advanced Trade API lets you manage orders, portfolios, products, and fees with our new `v3` endpoints.
+
+## Advanced Trade Endpoints
+
+Advanced Trade endpoint URL: **`https://api.coinbase.com/api/v3/brokerage/{resource}`**
+
+## [Opt-In Multi Asset Collateral](/api-reference/advanced-trade-api/rest-api/perpetuals/opt-in-or-out)| POST| `/intx/multi_asset_collateral`| `trade` (for intx portfolio)  
 [Allocate Portfolio](/api-reference/advanced-trade-api/rest-api/perpetuals/allocate-portfolio)| POST| `/intx/allocate`| `transfer` (for intx portfolio)  
 [List Payment Methods](/api-reference/advanced-trade-api/rest-api/payment-methods/list-payment-methods)| GET| `/payment_methods`| `view`  
 [Get Payment Method](/api-reference/advanced-trade-api/rest-api/payment-methods/get-payment-method)| GET| `/payment_methods/{payment_method_id}`| `view`  

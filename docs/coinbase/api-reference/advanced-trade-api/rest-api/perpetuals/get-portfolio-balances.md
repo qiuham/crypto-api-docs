@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/get-portfolio-balances
 api_type: Account
-updated_at: 2026-05-29 18:53:05.940509
+updated_at: 2026-05-30 18:24:02.106818
 ---
 
 # Get Portfolios Balances
