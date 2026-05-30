@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/rebate
 api_type: Earn
-updated_at: 2026-05-29 19:57:41.970878
+updated_at: 2026-05-30 19:26:47.107374
 ---
 
 # Rebate

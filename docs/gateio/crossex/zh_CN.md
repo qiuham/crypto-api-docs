@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/crossex/zh_CN
 api_type: Trading
-updated_at: 2026-05-29 19:58:56.829560
+updated_at: 2026-05-30 19:27:47.842511
 ---
 
 # Gate CrossEx API v1.0.1
