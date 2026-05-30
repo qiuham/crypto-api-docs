@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer-list
 api_type: REST
-updated_at: 2026-05-29 19:19:40.104258
+updated_at: 2026-05-30 18:49:43.647968
 ---
 
 # Get Universal Transfer Records

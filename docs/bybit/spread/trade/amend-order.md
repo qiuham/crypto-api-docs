@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/trade/amend-order
 api_type: Trading
-updated_at: 2026-05-29 19:25:30.177145
+updated_at: 2026-05-30 18:55:12.671042
 ---
 
 # Cancel All Orders

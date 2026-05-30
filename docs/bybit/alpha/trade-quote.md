@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/trade-quote
 api_type: REST
-updated_at: 2026-05-29 19:18:50.329893
+updated_at: 2026-05-30 18:48:56.831582
 ---
 
 # Get Single Coin Balance

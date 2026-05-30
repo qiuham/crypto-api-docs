@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/all-funds
 api_type: REST
-updated_at: 2026-05-29 19:22:04.877284
+updated_at: 2026-05-30 18:51:57.443435
 ---
 
 # Create Fund (Pending Subscription)

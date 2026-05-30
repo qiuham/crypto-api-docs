@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bybit-card/point/cashback-detail
 api_type: REST
-updated_at: 2026-05-29 19:20:32.564621
+updated_at: 2026-05-30 18:50:31.950915
 ---
 
 # Get Account Borrowable/Collateralizable Limit

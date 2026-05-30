@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/repay
 api_type: REST
-updated_at: 2026-05-29 19:23:58.807889
+updated_at: 2026-05-30 18:53:45.511332
 ---
 
 # Get Position Info

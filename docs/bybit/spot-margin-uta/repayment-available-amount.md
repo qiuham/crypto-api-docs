@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/repayment-available-amount
 api_type: REST
-updated_at: 2026-05-29 19:25:17.721275
+updated_at: 2026-05-30 18:55:00.704206
 ---
 
 # Set Leverage
