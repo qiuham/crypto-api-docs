@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading
 anchor_id: order-book-trading-grid-trading
 api_type: API
-updated_at: 2026-05-29 19:37:04.297605
+updated_at: 2026-05-30 19:06:14.302213
 ---
 
 # Grid Trading
