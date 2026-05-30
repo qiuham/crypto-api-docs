@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions
 api_type: REST
-updated_at: 2026-05-29 18:57:11.123410
+updated_at: 2026-05-30 18:28:00.057978
 ---
 
 # HIP-3 deployer actions

@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot
 api_type: REST
-updated_at: 2026-05-29 18:57:22.205835
+updated_at: 2026-05-30 18:28:11.831831
 ---
 
 # Spot
