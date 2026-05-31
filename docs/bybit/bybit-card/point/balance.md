@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bybit-card/point/balance
 api_type: REST
-updated_at: 2026-05-30 18:50:28.832589
+updated_at: 2026-05-31 18:53:31.316769
 ---
 
 # Query Point Balance

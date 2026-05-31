@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/spot-grid/close
 api_type: REST
-updated_at: 2026-05-30 18:50:09.428814
+updated_at: 2026-05-31 18:53:11.917301
 ---
 
 # Broker Connection

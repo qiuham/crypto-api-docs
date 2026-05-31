@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/get-auto-repay-mode
 api_type: REST
-updated_at: 2026-05-30 18:54:55.035827
+updated_at: 2026-05-31 18:57:56.992375
 ---
 
 # Get Liability Info

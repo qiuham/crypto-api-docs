@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/mark-kline
 api_type: Market Data
-updated_at: 2026-05-30 18:52:41.449676
+updated_at: 2026-05-31 18:55:44.383386
 ---
 
 # Get Orderbook

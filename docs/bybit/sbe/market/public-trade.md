@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/market/public-trade
 api_type: Market Data
-updated_at: 2026-05-30 18:54:42.288662
+updated_at: 2026-05-31 18:57:44.499494
 ---
 
 # Self Match Prevention

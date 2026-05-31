@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/apikey-info
 api_type: REST
-updated_at: 2026-05-30 18:55:35.264164
+updated_at: 2026-05-31 18:58:37.309907
 ---
 
 # Create Sub UID API Key
