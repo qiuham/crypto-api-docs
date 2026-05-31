@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-get-order-book-public
 anchor_id: spread-trading-rest-api-get-order-book-public
 api_type: REST
-updated_at: 2026-05-30 19:07:14.405042
+updated_at: 2026-05-31 19:10:14.752190
 ---
 
 # Get order book (Public)

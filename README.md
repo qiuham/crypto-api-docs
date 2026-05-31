@@ -31,7 +31,7 @@ PYTHONPATH=. python src/main.py readme
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-05-30 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-05-31 |
 | [Kraken](./docs/kraken/) | ✅ | 243 | 2026-05-30 |
-| [OKX](./docs/okx/) | ✅ | 510 | 2026-05-30 |
+| [OKX](./docs/okx/) | ✅ | 510 | 2026-05-31 |
 
 ## GitHub Actions
 

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-open-interest-channel
 anchor_id: public-data-websocket-open-interest-channel
 api_type: WebSocket
-updated_at: 2026-05-30 19:07:32.781198
+updated_at: 2026-05-31 19:10:33.187201
 ---
 
 # Open interest channel
