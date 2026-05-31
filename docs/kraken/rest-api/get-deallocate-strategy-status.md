@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status
 api_type: REST
-updated_at: 2026-05-30 19:17:53.988805
+updated_at: 2026-05-31 19:21:10.040835
 ---
 
 # Get Deposit Addresses

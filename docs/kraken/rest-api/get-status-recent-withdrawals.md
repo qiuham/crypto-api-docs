@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-withdrawals
 api_type: REST
-updated_at: 2026-05-30 19:18:32.873240
+updated_at: 2026-05-31 19:21:48.751543
 ---
 
 # Get System Status

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference
 api_type: REST
-updated_at: 2026-05-30 19:15:53.212823
+updated_at: 2026-05-31 19:19:04.232181
 ---
 
 # Set PNL currency preference

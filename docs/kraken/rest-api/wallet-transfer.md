@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/wallet-transfer
 api_type: REST
-updated_at: 2026-05-30 19:19:26.206985
+updated_at: 2026-05-31 19:22:41.245195
 ---
 
 # Withdraw Funds

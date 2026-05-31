@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/simulate-portfolio
 api_type: REST
-updated_at: 2026-05-30 19:15:56.511183
+updated_at: 2026-05-31 19:19:07.701689
 ---
 
 # Calculate portfolio margin, pnl and greeks

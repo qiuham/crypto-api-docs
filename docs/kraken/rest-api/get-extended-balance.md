@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-extended-balance
 api_type: REST
-updated_at: 2026-05-30 19:17:57.789608
+updated_at: 2026-05-31 19:21:14.273146
 ---
 
 # Get Extended Balance

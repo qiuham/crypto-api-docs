@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/withdrawal
 api_type: REST
-updated_at: 2026-05-30 19:16:08.045839
+updated_at: 2026-05-31 19:19:19.301552
 ---
 
 # Account Log

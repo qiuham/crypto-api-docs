@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-user-rfq
 api_type: REST
-updated_at: 2026-05-30 19:14:38.817441
+updated_at: 2026-05-31 19:17:45.520827
 ---
 
 # Create a new RFQ

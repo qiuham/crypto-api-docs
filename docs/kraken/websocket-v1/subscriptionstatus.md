@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/subscriptionstatus
 api_type: WebSocket
-updated_at: 2026-05-30 19:24:37.962097
+updated_at: 2026-05-31 19:27:32.401914
 ---
 
 # Subscription Status

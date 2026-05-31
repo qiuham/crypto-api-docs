@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-examples
 api_type: Guide
-updated_at: 2026-05-30 19:16:57.000167
+updated_at: 2026-05-31 19:20:10.853125
 ---
 
 # Spot Example Clients

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/batch_cancel
 api_type: WebSocket
-updated_at: 2026-05-30 19:24:53.181862
+updated_at: 2026-05-31 19:27:47.870890
 ---
 
 # Book (Level 2)

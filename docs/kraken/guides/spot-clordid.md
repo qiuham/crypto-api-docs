@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-clordid
 api_type: Guide
-updated_at: 2026-05-30 19:16:53.882699
+updated_at: 2026-05-31 19:20:07.674808
 ---
 
 # Spot Client Order Identifiers

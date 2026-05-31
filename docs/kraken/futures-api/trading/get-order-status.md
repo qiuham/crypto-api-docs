@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-order-status
 api_type: REST
-updated_at: 2026-05-30 19:15:12.340031
+updated_at: 2026-05-31 19:18:21.134533
 ---
 
 # Get Specific Orders' Status

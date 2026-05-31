@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-closed-orders
 api_type: REST
-updated_at: 2026-05-30 19:17:50.638804
+updated_at: 2026-05-31 19:21:05.775712
 ---
 
 # Get Credit Lines

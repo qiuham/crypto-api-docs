@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/owntrades
 api_type: WebSocket
-updated_at: 2026-05-30 19:24:34.079156
+updated_at: 2026-05-31 19:27:28.322438
 ---
 
 # Ping

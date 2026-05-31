@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-rest-auth
 api_type: Guide
-updated_at: 2026-05-30 19:16:38.299179
+updated_at: 2026-05-31 19:19:51.330919
 ---
 
 # Embed REST Authentication

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-leverage-setting
 api_type: REST
-updated_at: 2026-05-30 19:15:52.436066
+updated_at: 2026-05-31 19:19:03.452527
 ---
 
 # Set PNL currency preference

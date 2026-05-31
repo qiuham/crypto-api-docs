@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-rate-limits
 api_type: Guide
-updated_at: 2026-05-30 19:16:47.039271
+updated_at: 2026-05-31 19:20:00.424381
 ---
 
 # Futures REST

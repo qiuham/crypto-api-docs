@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/export-status
 api_type: REST
-updated_at: 2026-05-30 19:17:40.474841
+updated_at: 2026-05-31 19:20:56.022399
 ---
 
 # Get Export Report Status
