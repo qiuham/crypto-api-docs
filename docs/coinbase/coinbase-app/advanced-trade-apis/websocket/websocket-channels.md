@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-channels
 api_type: WebSocket
-updated_at: 2026-05-30 18:24:04.260858
+updated_at: 2026-05-31 18:25:29.391733
 ---
 
 # Advanced Trade WebSocket Channels
@@ -220,26 +220,7 @@ The `ticker` channel provides real-time price updates every time a match happens
       "sequence_num": 0,
       "events": [
         {
-          "type": "snapshot",WebSocket
-    
-    # Advanced Trade WebSocket Channels
-    
-    Use heartbeats to keep all subscriptions openMost channels close within 60-90 seconds if no updates are sent. Subscribe to heartbeats to keep all subscriptions open.
-    
-    
-    The Coinbase Advanced Trade Market Data WebSocket feed provides the following channels:
-    
-    
-    Channel| Description| Requires Authentication  
-    ---|---|---  
-    **heartbeats**| **Real-time server pings to keep all connections open**|  No  
-    candles| Real-time updates on product candles| No  
-    status| Sends all products and currencies on a preset interval| No  
-    ticker| Real-time price updates every time a match happens| No  
-    ticker_batch| Real-time price updates every 5000 milli-seconds| No  
-    level2| All updates and easiest way to keep order book snapshot| No  
-    user| Only sends messages that include the authenticated user|  _Yes_  
-    market_trades
+          "type": "snapshot",
           "tickers": [
             {
               "type": "ticker",
@@ -262,7 +243,9 @@ The `ticker` channel provides real-time price updates every time a match happens
     }
     
 
-Ticker Batch Channel The `ticker_batch` channel provides latest price updates **every 5000 milliseconds** (5 seconds) if there is a change. It has the same JSON message schema as the `ticker` channel, except the `channel` field will have a value of `ticker_batch` and it currently doesn’t provide best bid or best ask fields.
+## Ticker Batch Channel
+
+The `ticker_batch` channel provides latest price updates **every 5000 milliseconds** (5 seconds) if there is a change. It has the same JSON message schema as the `ticker` channel, except the `channel` field will have a value of `ticker_batch` and it currently doesn’t provide best bid or best ask fields.
     
     
     // Request
@@ -274,7 +257,9 @@ Ticker Batch Channel The `ticker_batch` channel provides latest price updates **
     }
     
 
-Level2 Channel The `level2` channel guarantees delivery of all updates and is the easiest way to keep a snapshot of the order book.
+## Level2 Channel
+
+The `level2` channel guarantees delivery of all updates and is the easiest way to keep a snapshot of the order book.
     
     
     // Request
@@ -286,7 +271,11 @@ Level2 Channel The `level2` channel guarantees delivery of all updates and is th
     }
     
 
-Subscribe to the `level2` channel to guarantee that messages are delivered and your order book is in sync. The level2 channel sends a message with fields, `type` (“snapshot” or “update”), `product_id`, and `updates`. The field `updates` is an array of objects of `{price_level, new_quantity, event_time, side}` to represent the entire order book. The`event_time` property is the time of the event as recorded by our trading engine. The `new_quantity` property is the updated size at that price level, not a delta. A `new_quantity` of “0” indicates the price level can be removed.
+Subscribe to the `level2` channel to guarantee that messages are delivered and your order book is in sync.
+
+The level2 channel sends a message with fields, `type` (“snapshot” or “update”), `product_id`, and `updates`. The field `updates` is an array of objects of `{price_level, new_quantity, event_time, side}` to represent the entire order book. The`event_time` property is the time of the event as recorded by our trading engine.
+
+The `new_quantity` property is the updated size at that price level, not a delta. A `new_quantity` of “0” indicates the price level can be removed.
     
     
     // Example:
@@ -318,117 +307,14 @@ Subscribe to the `level2` channel to guarantee that messages are delivered and y
     }
     
 
-User Channel The `user` channel sends updates on all of a user’s open orders and current positions, including all subsequent updates of those orders and positions. The `user` channel expects one connection per user:
+## User Channel
+
+The `user` channel sends updates on all of a user’s open orders and current positions, including all subsequent updates of those orders and positions. The `user` channel expects one connection per user:
 
   * This connection accepts multiple product IDs in a `product_ids` array. If none are provided, the WebSocket subscription is open to all product IDs.
   * To subscribe to new `product_ids`, close your previous connection by unsubscribing and open a new connection with `product_ids` added to the array.
 
-Subscribing to the User channel returns all `| Real-time updates every time a market trade happens| No  
-futures_balance_summary| Real-time updates every time a user’s futures balance changes|  _Yes_  
-  
-Refer to the documentation on [subscribing to a WebSocket channel](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#subscribing).
-
-For the most reliable connection, authenticate with a CDP API key when subscribing to any channel.
-
-Subscribing to “-USDC” based products are only available on the user channel. Other channels will return the same data as the corresponding “-USD” based products. USDT-USDC and EURC-USDC are available on all channels.
-
-## Heartbeats Channel
-
-Subscribe to the `heartbeats` channel to receive heartbeats messages every second. Heartbeats include a `heartbeat_counter` which verifies that no messages were missed.
-
-Subscribing to the heartbeats channel, alongside other channels, ensures that all subscriptions stay open when updates are sparse. This is useful, for example, when fetching market data for illiquid pairs.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "channel": "heartbeats",
-      "jwt": "XYZ"
-    }
-    
-
-A heartbeats message is of the type `heartbeats` as seen below.
-    
-    
-    // Heartbeats Message
-    {
-      "channel": "heartbeats",
-      "client_id": "",
-      "timestamp": "2023-06-23T20:31:26.122969572Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "current_time": "2023-06-23 20:31:56.121961769 +0000 UTC m=+91717.525857105",
-          "heartbeat_counter": "3049"
-        }
-      ]
-    }
-    
-
-## Candles Channel
-
-Subscribe to the `candles` channel to receive candles messages for specific products with updates every second. Candles are grouped into buckets (granularities) of five minutes.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD"],
-      "channel": "candles",
-      "jwt": "XYZ"
-    }
-    
-
-A candles message is of the type `candles` and some of its parameters include:
-
-  * `start` - string representation of the UNIX timestamp of the candle.
-  * `high` and `low` - highest and lowest prices during the bucket interval.
-  * `open` and `close` - prices of the first and last trade respectively.
-  * `volume` - base amount that has been traded during this interval.
-  * `product_id` - product identifier for this candle
-
-    
-    
-    // Candles Message
-    {
-      "channel": "candles",
-      "client_id": "",
-      "timestamp": "2023-06-09T20:19:35.39625135Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "type": "snapshot",
-          "candles": [
-            {
-              "start": "1688998200",
-              "high": "1867.72",
-              "low": "1865.63",
-              "open": "1867.38",
-              "close": "1866.81",
-              "volume": "0.20269406",
-              "product_id": "ETH-USD"
-            }
-          ]
-        }
-      ]
-    }
-    
-
-## Market Trades Channel
-
-The `market_trades` channel sends market trades for a specified product on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD", "BTC-USD"],
-      "channel": "market_trades",
-      "jwt": "XYZ"
-    }
-    
-
-A market trades message is of the type `snapshot` or `update`OPEN` orders, batched by 50, in the first few messages of the stream. For example, if you have 109 orders, you will get a snapshot containing 50 orders, followed by a patch of 50 orders, followed by a patch of 9 orders. To know when all of your open orders are returned, look for the first message with less than 50 orders.
+Subscribing to the User channel returns all `OPEN` orders, batched by 50, in the first few messages of the stream. For example, if you have 109 orders, you will get a snapshot containing 50 orders, followed by a patch of 50 orders, followed by a patch of 9 orders. To know when all of your open orders are returned, look for the first message with less than 50 orders.
     
     
     // Request
@@ -507,100 +393,7 @@ A market trades message is of the type `snapshot` or `update`OPEN` orders, batch
             ],
             "expiring_futures_positions": [
               {
-                "product_id": , and contains an array of market trades. Each market trade belongs to a side, which refers to the makers side, and can be of type BUY, or SELL. The channel collects all updates over the last 250 ms and sends them as an update — so an update can contain one or many trades, depending on the last 250 ms of trading volume.
-    
-    
-    
-    // Market Trades Message
-    {
-      "channel": "market_trades",
-      "client_id": "",
-      "timestamp": "2023-02-09T20:19:35.39625135Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "type": "snapshot",
-          "trades": [
-            {
-              "trade_id": "000000000",
-              "product_id": "ETH-USD",
-              "price": "1260.01",
-              "size": "0.3",
-              "side": "BUY",
-              "time": "2019-08-14T20:42:27.265Z"
-            }
-          ]
-        }
-      ]
-    }
-    
-
-## Status Channel
-
-The `status` channel sends all products and currencies on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions.
-
-The `status` channel, like most channels, closes within 60-90 seconds when there are no updates. For example, if you listen for `BTC-USD` updates and nothing changes within 60-90 seconds (which is common), the channel closes. To avoid this, subscribe to the heartbeats in addition to your other channels.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD", "BTC-USD"],
-      "channel": "status",
-      "jwt": "XYZ"
-    }
-    
-    
-    
-    // Status Message
-    {
-      "channel": "status",
-      "client_id": "",
-      "timestamp": "2023-02-09T20:29:49.753424311Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "type": "snapshot",
-          "products": [
-            {
-              "product_type": "SPOT",
-              "id": "BTC-USD",
-              "base_currency": "BTC",
-              "quote_currency": "USD",
-              "base_increment": "0.00000001",
-              "quote_increment": "0.01",
-              "display_name": "BTC/USD",
-              "status": "online",
-              "status_message": "",
-              "min_market_funds": "1"
-            }
-          ]
-        }
-      ]
-    }
-    
-
-## Ticker Channel
-
-The `ticker` channel provides real-time price updates every time a match happens. It batches updates in case of cascading matches, greatly reducing bandwidth requirements.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD", "BTC-USD"],
-      "channel": "ticker",
-      "jwt": "XYZ"
-    }
-    
-    
-    
-    // Ticker message
-    {
-      "channel": "ticker",
-      "client_id": "",
-      "timestamp": "2023-02-09T20:30:37.167359596Z",
-      "sequence_num": 0"BIT-28JUN24-CDE",
+                "product_id": "BIT-28JUN24-CDE",
                 "side": "Long",
                 "number_of_contracts": "1",
                 "realized_pnl": "0",
@@ -754,69 +547,7 @@ Field| Description
 
   
 `net_size`| The size of the position with positive values reflecting a long position and negative values reflecting a short position  
-`buy_order_size, "events": [ { "type": "snapshot", "tickers": [ { "type": "ticker", "product_id": "BTC-USD", "price": "21932.98", "volume_24_h": "16038.28770938", "low_24_h": "21835.29", "high_24_h": "23011.18", "low_52_w": "15460", "high_52_w": "48240", "price_percent_chg_24_h": "-4.15775596190603", "best_bid": "21931.98", "best_bid_quantity": "8000.21", "best_ask": "21933.98", "best_ask_quantity": "8038.07770938" } ] } ] } `
-
-## Ticker Batch Channel
-
-The `ticker_batch` channel provides latest price updates **every 5000 milliseconds** (5 seconds) if there is a change. It has the same JSON message schema as the `ticker` channel, except the `channel` field will have a value of `ticker_batch` and it currently doesn’t provide best bid or best ask fields.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD", "BTC-USD"],
-      "channel": "ticker_batch",
-      "jwt": "XYZ"
-    }
-    
-
-## Level2 Channel
-
-The `level2` channel guarantees delivery of all updates and is the easiest way to keep a snapshot of the order book.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "product_ids": ["ETH-USD", "BTC-USD"],
-      "channel": "level2",
-      "jwt": "XYZ"
-    }
-    
-
-Subscribe to the `level2` channel to guarantee that messages are delivered and your order book is in sync. The level2 channel sends a message with fields, `type` (“snapshot” or “update”), `product_id`, and `updates`. The field `updates` is an array of objects of `{price_level, new_quantity, event_time, side}` to represent the entire order book. The`event_time` property is the time of the event as recorded by our trading engine. The `new_quantity` property is the updated size at that price level, not a delta. A `new_quantity` of “0” indicates the price level can be removed.
-    
-    
-    // Example:
-    {
-      "channel": "l2_data",
-      "client_id": "",
-      "timestamp": "2023-02-09T20:32:50.714964855Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "type": "snapshot",
-          "product_id": "BTC-USD",
-          "updates": [
-            {
-              "side": "bid",
-              "event_time": "1970-01-01T00:00:00Z",
-              "price_level": "21921.73",
-              "new_quantity": "0.06317902"
-            },
-            {
-              "side": "bid",
-              "event_time": "1970-01-01T00:00:00Z",
-              "price_level": "21921.3",
-              "new_quantity": "0.02"
-            }
-          ]
-        }
-      ]
-    }
-    
-
-`| Cumulative size of all the open buy orders  
+`buy_order_size`| Cumulative size of all the open buy orders  
 `sell_order_size`| Cumulative size of all the open sell orders  
 `leverage`| The leverage of the position  
 `mark_price`| The current mark price value for the instrument of this position used in risk and margin calculations  
@@ -912,179 +643,58 @@ Field| Description
 `total_open_orders_hold_amount`| Your total balance on hold for spot and futures open orders  
 `unrealized_pnl`| Your current unrealized PnL across all open positions  
 `daily_realized_pnl`| Your realized PnL from the current trade date. May include profit or loss from positions you’ve closed on the current trade date  
+`initial_margin`| Margin required to initiate futures positions. Once futures orders are placed, these funds cannot be used to trade spot. The actual amount of funds necessary to support executed futures orders will be moved to your futures account  
+`available_margin`| Funds available to meet your anticipated margin requirement. This includes your CBI spot USD, CFM futures USD, and Futures PnL, less any holds for open spot or futures orders  
+`liquidation_threshold`| When your available funds for collateral drop to the liquidation threshold, some or all of your futures positions will be liquidated  
+`liquidation_buffer_amount`| Funds available in excess of the liquidation threshold, calculated as available margin minus liquidation threshold. If your liquidation buffer amount reaches 0, your futures positions and/or open orders will be liquidated as necessary  
+`liquidation_buffer_percentage`| Funds available in excess of the liquidation threshold expressed as a percentage. If your liquidation buffer percentage reaches 0%, your futures positions and/or open orders will be liquidated as necessary  
+`intraday_margin_window_measure`| The period of time used to calculate margin requirements for positions held intraday before settling overnight   
+Includes: 
+
+  * `margin_window_type`
+    * FCM_MARGIN_WINDOW_TYPE_UNSPECIFIED
+    * FCM_MARGIN_WINDOW_TYPE_OVERNIGHT
+    * FCM_MARGIN_WINDOW_TYPE_WEEKEND
+    * FCM_MARGIN_WINDOW_TYPE_INTRADAY
+    * FCM_MARGIN_WINDOW_TYPE_TRANSITION
+  * `margin_level`
+    * MARGIN_LEVEL_TYPE_UNSPECIFIED
+    * MARGIN_LEVEL_TYPE_BASE
+    * MARGIN_LEVEL_TYPE_WARNING
+    * MARGIN_LEVEL_TYPE_DANGER
+    * MARGIN_LEVEL_TYPE_LIQUIDATION
+  * `initial_margin`
+  * `maintenance_margin`
+  * `liquidation_buffer_percentage`
+  * `total_hold`
+  * `futures_buying_power`
+
   
-## User Channel
+`overnight_margin_window_measure`| The period of time used to calculate increased margin requirements for positions held and left unsettled overnight   
+Includes: 
 
-The `user` channel sends updates on all of a user’s open orders and current positions, including all subsequent updates of those orders and positions. The `user` channel expects one connection per user:
+  * `margin_window_type`
+    * FCM_MARGIN_WINDOW_TYPE_UNSPECIFIED
+    * FCM_MARGIN_WINDOW_TYPE_OVERNIGHT
+    * FCM_MARGIN_WINDOW_TYPE_WEEKEND
+    * FCM_MARGIN_WINDOW_TYPE_INTRADAY
+    * FCM_MARGIN_WINDOW_TYPE_TRANSITION
+  * `margin_level`
+    * MARGIN_LEVEL_TYPE_UNSPECIFIED
+    * MARGIN_LEVEL_TYPE_BASE
+    * MARGIN_LEVEL_TYPE_WARNING
+    * MARGIN_LEVEL_TYPE_DANGER
+    * MARGIN_LEVEL_TYPE_LIQUIDATION
+  * `initial_margin`
+  * `maintenance_margin`
+  * `liquidation_buffer_percentage`
+  * `total_hold`
+  * `futures_buying_power`
 
-  * This connection accepts multiple product IDs in a `product_ids` array. If none are provided, the WebSocket subscription is open to all product IDs.
-  * To subscribe to new `product_ids`, close your previous connection by unsubscribing and open a new connection with `product_ids` added to the array.
+  
+  
+**See Also:**
 
-Subscribing to the User channel returns all `OPEN` orders, batched by 50, in the first few messages of the stream. For example, if you have 109 orders, you will get a snapshot containing 50 orders, followed by a patch of 50 orders, followed by a patch of 9 orders. To know when all of your open orders are returned, look for the first message with less than 50 orders.
-    
-    
-    // Request
-    {
-      "type": "subscribe",
-      "channel": "user",
-      "product_ids": ["BTC-USD"],
-      "jwt": "XYZ"
-    }
-    
-    
-    
-    // User message
-    {
-      "channel": "user",
-      "client_id": "",
-      "timestamp": "2023-02-09T20:33:57.609931463Z",
-      "sequence_num": 0,
-      "events": [
-        {
-          "type": "snapshot",
-          "orders": [
-            {
-              "avg_price": "50000",
-              "cancel_reason": "",
-              "client_order_id": "XXX",
-              "completion_percentage": "100.00",
-              "contract_expiry_type": "UNKNOWN_CONTRACT_EXPIRY_TYPE",
-              "cumulative_quantity": "0.01",
-              "filled_value": "500",
-              "leaves_quantity": "0",
-              "limit_price": "50000",
-              "number_of_fills": "1",
-              "order_id": "YYY",
-              "order_side": "BUY",
-              "order_type": "Limit",
-              "outstanding_hold_amount": "0",
-              "post_only": "false",
-              "product_id": "BTC-USD",
-              "product_type": "SPOT",
-              "reject_reason": "",
-              "retail_portfolio_id": "ZZZ",
-              "risk_managed_by": "UNKNOWN_RISK_MANAGEMENT_TYPE",
-              "status": "FILLED",
-              "stop_price": "",
-              "time_in_force": "GOOD_UNTIL_CANCELLED",
-              "total_fees": "2",
-              "total_value_after_fees": "502",
-              "trigger_status": "INVALID_ORDER_TYPE",
-              "creation_time": "2024-06-21T18:29:13.909347Z",
-              "end_time": "0001-01-01T00:00:00Z",
-              "start_time": "0001-01-01T00:00:00Z"
-            }
-          ],
-          "positions": {
-            "perpetual_futures_positions": [
-              {
-                "product_id": "BTC-PERP-INTX",
-                "portfolio_uuid": "018c4b12-9f87-7c36-897d-28fb6a1ea88d",
-                "vwap": "63049.9",
-                "entry_vwap": "0",
-                "position_side": "Long",
-                "margin_type": "Cross",
-                "net_size": "0.0041",
-                "buy_order_size": "0",
-                "sell_order_size": "0",
-                "leverage": "1",
-                "mark_price": "63049.9",
-                "liquidation_price": "0",
-                "im_notional": "258.5046",
-                "mm_notional": initial_margin| Margin required to initiate futures positions. Once futures orders are placed, these funds cannot be used to trade spot. The actual amount of funds necessary to support executed futures orders will be moved to your futures account  
-    available_margin| Funds available to meet your anticipated margin requirement. This includes your CBI spot USD, CFM futures USD, and Futures PnL, less any holds for open spot or futures orders  
-    liquidation_threshold| When your available funds for collateral drop to the liquidation threshold, some or all of your futures positions will be liquidated  
-    liquidation_buffer_amount| Funds available in excess of the liquidation threshold, calculated as available margin minus liquidation threshold. If your liquidation buffer amount reaches 0, your futures positions and/or open orders will be liquidated as necessary  
-    liquidation_buffer_percentage| Funds available in excess of the liquidation threshold expressed as a percentage. If your liquidation buffer percentage reaches 0%, your futures positions and/or open orders will be liquidated as necessary  
-    intraday_margin_window_measure| The period of time used to calculate margin requirements for positions held intraday before settling overnight   
-     Includes: 
-    
-     
-        * margin_window_type  
-            * FCM_MARGIN_WINDOW_TYPE_UNSPECIFIED
-     
-            * FCM_MARGIN_WINDOW_TYPE_OVERNIGHT
-     
-            * FCM_MARGIN_WINDOW_TYPE_WEEKEND
-     
-            * FCM_MARGIN_WINDOW_TYPE_INTRADAY
-     
-            * FCM_MARGIN_WINDOW_TYPE_TRANSITION
-      
-     
-        * margin_level  
-            * MARGIN_LEVEL_TYPE_UNSPECIFIED
-     
-            * MARGIN_LEVEL_TYPE_BASE
-     
-            * MARGIN_LEVEL_TYPE_WARNING
-     
-            * MARGIN_LEVEL_TYPE_DANGER
-     
-            * MARGIN_LEVEL_TYPE_LIQUIDATION
-     
-     
-        * initial_margin
-     
-        * maintenance_margin
-     
-        * liquidation_buffer_percentage
-     
-        * total_hold
-     
-        * futures_buying_power
-     
-      
-    overnight_margin_window_measure| The period of time used to calculate increased margin requirements for positions held and left unsettled overnight   
-     Includes: 
-    
-     
-        * margin_window_type  
-            * FCM_MARGIN_WINDOW_TYPE_UNSPECIFIED
-     
-            * FCM_MARGIN_WINDOW_TYPE_OVERNIGHT
-     
-            * FCM_MARGIN_WINDOW_TYPE_WEEKEND
-     
-            * FCM_MARGIN_WINDOW_TYPE_INTRADAY
-     
-            * FCM_MARGIN_WINDOW_TYPE_TRANSITION
-      
-     
-        * margin_level  
-            * MARGIN_LEVEL_TYPE_UNSPECIFIED
-     
-            * MARGIN_LEVEL_TYPE_BASE
-     
-            * MARGIN_LEVEL_TYPE_WARNING
-     
-            * MARGIN_LEVEL_TYPE_DANGER
-     
-            * MARGIN_LEVEL_TYPE_LIQUIDATION
-     
-     
-        * initial_margin
-     
-        * maintenance_margin
-     
-        * liquidation_buffer_percentage
-     
-        * total_hold
-     
-        * futures_buying_power
-     
-      
-      
-    
-    **See Also:**
-    
-    
-    
-    
-        * [Subscribing to WebSocket Channels](/coinbase-app/advanced-trade-apis/websocket/websocket-channels)
-    
-    
-        * [WebSocket Sequence Numbers](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#sequence-numbers)
-    
-    
-        * [WebSocket Best Practices](/coinbase-app/advanced-trade-apis/guides/websocket)
+  * [Subscribing to WebSocket Channels](/coinbase-app/advanced-trade-apis/websocket/websocket-channels)
+  * [WebSocket Sequence Numbers](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#sequence-numbers)
+  * [WebSocket Best Practices](/coinbase-app/advanced-trade-apis/guides/websocket)
