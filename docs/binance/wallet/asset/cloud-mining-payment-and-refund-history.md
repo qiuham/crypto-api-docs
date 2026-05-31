@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/cloud-mining-payment-and-refund-history
 api_type: REST
-updated_at: 2026-05-30 18:34:49.261029
+updated_at: 2026-05-31 18:36:47.180557
 ---
 
 # Dust Convertible Assets (USER_DATA)

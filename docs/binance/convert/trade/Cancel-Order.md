@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Cancel-Order
 api_type: Trading
-updated_at: 2026-05-30 18:36:29.904406
+updated_at: 2026-05-31 18:38:37.564367
 ---
 
 # Query limit open orders (USER_DATA)

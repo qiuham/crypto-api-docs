@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-questionnaire
 api_type: REST
-updated_at: 2026-05-30 18:35:44.932687
+updated_at: 2026-05-31 18:37:49.490076
 ---
 
 # Withdraw History (for local entities that require travel rule) (supporting network) (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/copy_trading/error-code
 api_type: REST
-updated_at: 2026-05-30 18:36:01.854259
+updated_at: 2026-05-31 18:38:06.780201
 ---
 
 # Get Futures Lead Trader Status(TRADE)

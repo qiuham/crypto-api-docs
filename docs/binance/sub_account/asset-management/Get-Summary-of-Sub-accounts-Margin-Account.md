@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Get-Summary-of-Sub-accounts-Margin-Account
 api_type: Account
-updated_at: 2026-05-30 18:37:54.087919
+updated_at: 2026-05-31 18:40:08.844732
 ---
 
 # Query Sub-account Assets (For Master Account) (USER_DATA)
