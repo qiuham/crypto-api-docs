@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfq-offers
 api_type: REST
-updated_at: 2026-05-31 19:18:16.909671
+updated_at: 2026-06-01 20:30:50.827052
 ---
 
 # List all open RFQs

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/account-transfer
 api_type: REST
-updated_at: 2026-05-31 19:20:32.439660
+updated_at: 2026-06-01 20:33:07.754122
 ---
 
 # Account Transfer

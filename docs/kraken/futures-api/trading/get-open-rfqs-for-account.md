@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-rfqs-for-account
 api_type: REST
-updated_at: 2026-05-31 19:18:20.347374
+updated_at: 2026-06-01 20:30:54.117342
 ---
 
 # Get Specific Orders' Status

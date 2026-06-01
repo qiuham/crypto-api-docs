@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/allocate-strategy
 api_type: REST
-updated_at: 2026-05-31 19:20:39.078001
+updated_at: 2026-06-01 20:33:14.473396
 ---
 
 # Allocate Earn Funds

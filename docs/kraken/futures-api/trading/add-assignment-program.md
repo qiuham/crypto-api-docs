@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/add-assignment-program
 api_type: REST
-updated_at: 2026-05-31 19:17:35.222286
+updated_at: 2026-06-01 20:30:09.937265
 ---
 
 # Assignment Program

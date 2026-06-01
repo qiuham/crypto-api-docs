@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/omcr-fix
 api_type: REST
-updated_at: 2026-05-31 19:16:42.090219
+updated_at: 2026-06-01 20:29:16.212663
 ---
 
 # Order Status Request ( Spot Only )

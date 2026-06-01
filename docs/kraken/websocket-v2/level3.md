@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/level3
 api_type: WebSocket
-updated_at: 2026-05-31 19:28:02.077828
+updated_at: 2026-06-01 20:40:44.371461
 ---
 
 # Orders (Level 3)

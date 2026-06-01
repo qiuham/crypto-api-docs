@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/balances
 api_type: WebSocket
-updated_at: 2026-05-31 19:27:44.496090
+updated_at: 2026-06-01 20:40:26.765412
 ---
 
 # Batch Add

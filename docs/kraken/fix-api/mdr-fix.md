@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/mdr-fix
 api_type: Market Data
-updated_at: 2026-05-31 19:16:32.595250
+updated_at: 2026-06-01 20:29:06.233316
 ---
 
 # Market Data Request Reject

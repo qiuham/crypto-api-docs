@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-open-positions
 api_type: REST
-updated_at: 2026-05-31 19:21:27.402314
+updated_at: 2026-06-01 20:34:02.446666
 ---
 
 # Get Order Amends

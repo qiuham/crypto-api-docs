@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders
 api_type: REST
-updated_at: 2026-05-31 19:17:38.585757
+updated_at: 2026-06-01 20:30:13.055872
 ---
 
 # Dead man's switch

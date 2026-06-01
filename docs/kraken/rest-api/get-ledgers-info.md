@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ledgers-info
 api_type: REST
-updated_at: 2026-05-31 19:21:20.458187
+updated_at: 2026-06-01 20:33:55.609451
 ---
 
 # Query L3 Order Book

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_position
 api_type: WebSocket
-updated_at: 2026-05-31 19:19:36.419095
+updated_at: 2026-06-01 20:32:12.538332
 ---
 
 # Ticker

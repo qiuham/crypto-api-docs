@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/update-subaccount-trading-capability
 api_type: REST
-updated_at: 2026-05-31 19:19:17.283570
+updated_at: 2026-06-01 20:31:52.420829
 ---
 
 # Update subaccount trading status

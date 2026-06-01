@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-self-trade-strategy
 api_type: REST
-updated_at: 2026-05-31 19:18:30.124706
+updated_at: 2026-06-01 20:31:04.578202
 ---
 
 # Check subaccount trading status

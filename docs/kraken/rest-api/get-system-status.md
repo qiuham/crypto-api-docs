@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-system-status
 api_type: REST
-updated_at: 2026-05-31 19:21:49.526601
+updated_at: 2026-06-01 20:34:23.828827
 ---
 
 # Get System Status
