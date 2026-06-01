@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/spot-grid/validate-input
 api_type: REST
-updated_at: 2026-05-31 18:53:13.763571
+updated_at: 2026-06-01 20:05:43.584245
 ---
 
 # Broker Connection

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-collateral
 api_type: Account
-updated_at: 2026-05-31 18:51:32.132685
+updated_at: 2026-06-01 20:04:01.397779
 ---
 
 # Set Delta Neutral Mode

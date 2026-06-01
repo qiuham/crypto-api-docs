@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/futures-martingale/create
 api_type: REST
-updated_at: 2026-05-31 18:53:07.572607
+updated_at: 2026-06-01 20:05:37.349936
 ---
 
 # Get Bot Parameter Limit

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert-small-balance/small-balanc-coins
 api_type: REST
-updated_at: 2026-05-31 18:52:11.059103
+updated_at: 2026-06-01 20:04:40.708390
 ---
 
 # Confirm a Quote

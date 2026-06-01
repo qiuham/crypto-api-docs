@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/premium-index-kline
 api_type: Market Data
-updated_at: 2026-05-31 18:55:50.113889
+updated_at: 2026-06-01 20:08:21.251767
 ---
 
 # Get Tickers
