@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/websocket/en
 api_type: WebSocket
-updated_at: 2026-05-31 19:31:04.791968
+updated_at: 2026-06-01 20:43:54.725429
 ---
 
 # General
