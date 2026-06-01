@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Sub-account-Futures-Asset-Transfer
 api_type: Account
-updated_at: 2026-05-31 18:40:24.018395
+updated_at: 2026-06-01 19:53:38.426495
 ---
 
 # Universal Transfer (For Master Account) (USER_DATA)

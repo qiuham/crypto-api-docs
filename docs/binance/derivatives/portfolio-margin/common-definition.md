@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/portfolio-margin/common-definition
 api_type: REST
-updated_at: 2026-05-31 18:33:36.193567
+updated_at: 2026-06-01 19:47:24.392823
 ---
 
 # Quick Start

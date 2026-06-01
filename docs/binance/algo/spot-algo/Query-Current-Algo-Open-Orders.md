@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/spot-algo/Query-Current-Algo-Open-Orders
 api_type: REST
-updated_at: 2026-05-31 18:36:17.446077
+updated_at: 2026-06-01 19:49:51.421489
 ---
 
 # Query Current Algo Open Orders(USER_DATA)

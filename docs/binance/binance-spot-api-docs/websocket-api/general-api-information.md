@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/general-api-information
 api_type: WebSocket
-updated_at: 2026-05-31 18:32:55.936663
+updated_at: 2026-06-01 19:46:47.842720
 ---
 
 # Rate limits

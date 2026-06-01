@@ -2,79 +2,107 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-provide-info-v2
 api_type: REST
-updated_at: 2026-05-31 18:37:44.162155
+updated_at: 2026-06-01 19:51:14.205260
 ---
 
-# Submit Deposit Questionnaire V2 (For local entities that require travel rule) (supporting network) (USER_DATA)
+# Get Region List (USER_DATA)
 
-## API Description[​](/docs/wallet/travel-rule/deposit-provide-info-v2#api-description "Direct link to API Description")
+## API Description[​](/docs/wallet/travel-rule/region-list#api-description "Direct link to API Description")
 
-Submit questionnaire for local entities that require travel rule. The questionnaire is only applies to transactions from unhosted wallets or VASPs that are not yet onboarded with GTR.
+Query the active region/city list for a given country.
 
-## HTTP Request[​](/docs/wallet/travel-rule/deposit-provide-info-v2#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/wallet/travel-rule/region-list#http-request "Direct link to HTTP Request")
 
-PUT `/sapi/v2/localentity/deposit/provide-info`
+GET `/sapi/v1/localentity/region/list`
 
-## Request Weight(UID)[​](/docs/wallet/travel-rule/deposit-provide-info-v2#request-weightuid "Direct link to Request Weight\(UID\)")
+## Request Weight(IP)[​](/docs/wallet/travel-rule/region-list#request-weightip "Direct link to Request Weight\(IP\)")
 
-**600**
+**1**
 
-## Request Parameters[​](/docs/wallet/travel-rule/deposit-provide-info-v2#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/wallet/travel-rule/region-list#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-depositId| LONG| YES| Wallet deposit ID  
-questionnaire| STRING| YES| JSON format questionnaire answers.  
+countryCode| STRING| YES| ISO 2-digit country code (from `Country List` API).  
 timestamp| LONG| YES|   
   
->   * Questionnaire is different for each local entity, please refer to `Deposit Questionnaire Content` page.
->   * If getting error like `Questionnaire format not valid.` or `Questionnaire must not be blank`, please try to verify the format of the questionnaire and use URL-encoded format.
-> 
-
-
-## Response Example[​](/docs/wallet/travel-rule/deposit-provide-info-v2#response-example "Direct link to Response Example")
+## Response Example[​](/docs/wallet/travel-rule/region-list#response-example "Direct link to Response Example")
     
     
     {  
-        "trId": 765127651,  
-        "accepted": true,  
-        "info": "Deposit questionnaire accepted."  
-    }
+        "countryCode": "au",  
+        "regions": [  
+            {  
+                "regionName": "New South Wales",  
+                "blockType": "supported",  
+                "depositAllowed": true,  
+                "withdrawalAllowed": true  
+            }  
+        ],  
+        "lastUpdated": 1716300000000  
+    }  
+    
+
+## Response Fields[​](/docs/wallet/travel-rule/region-list#response-fields "Direct link to Response Fields")
+
+Name| Type| Description  
+---|---|---  
+countryCode| STRING| Echoed country code (lowercase).  
+regions| ARRAY| List of active regions for the given country.  
+regions[].regionName| STRING| Region/city display name (use this value in questionnaire answers).  
+regions[].blockType| STRING| `supported`, `limited`, or `blocked`.  
+regions[].depositAllowed| BOOLEAN| Whether deposit is allowed for this region.  
+regions[].withdrawalAllowed| BOOLEAN| Whether withdrawal is allowed for this region.  
+lastUpdated| LONG| Last data update timestamp (epoch milliseconds); 0 if empty.
 
 ---
 
-# 提交充值问卷V2(针对需要旅行规则的本地站)(支持多网络)(USER_DATA)
+# 地区列表(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/wallet/travel-rule/deposit-provide-info-v2#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/wallet/travel-rule/region-list#接口描述 "接口描述的直接链接")
 
-提交充值问卷(针对需要旅行规则的本地站)。 只有来自私有钱包或尚未接入GTR的交易所的充值交易才需要提交充值问卷。
+查询指定国家下的活跃地区/城市列表。
 
-## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/deposit-provide-info-v2#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/region-list#http请求 "HTTP请��求的直接链接")
 
-PUT `/sapi/v2/localentity/deposit/provide-info`
+GET `/sapi/v1/localentity/region/list`
 
-## 请求权重(UID)[​](/docs/zh-CN/wallet/travel-rule/deposit-provide-info-v2#请求权重uid "请求权重\(UID\)的直接链接")
+## 请求权重(IP)[​](/docs/zh-CN/wallet/travel-rule/region-list#请求权重ip "请求权重\(IP\)的直接链接")
 
-**600**
+**1**
 
-## 请求参数[​](/docs/zh-CN/wallet/travel-rule/deposit-provide-info-v2#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/wallet/travel-rule/region-list#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-depositId| LONG| YES| 充值记录ID  
-questionnaire| STRING| YES| JSON 格式问卷内容  
+countryCode| STRING| YES| ISO 2位国家代码（来自`国家列表`接口）  
 timestamp| LONG| YES|   
   
->   * 每个本地站点的问卷内容都不一样,请参考`充值问卷内容`页。
->   * 如果API返回 `Questionnaire format not valid.` 或 `Questionnaire must not be blank` 错误,请尝检查Questionnaire格式并使用 `URL-encoded format`。
-> 
-
-
-## 响应示例[​](/docs/zh-CN/wallet/travel-rule/deposit-provide-info-v2#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/wallet/travel-rule/region-list#响应示例 "响应示例的直接链接")
     
     
     {  
-        "trId": 765127651,  
-        "accepted": true,  
-        "info": "Deposit questionnaire accepted."  
-    }
+        "countryCode": "au",  
+        "regions": [  
+            {  
+                "regionName": "New South Wales",  
+                "blockType": "supported",  
+                "depositAllowed": true,  
+                "withdrawalAllowed": true  
+            }  
+        ],  
+        "lastUpdated": 1716300000000  
+    }  
+    
+
+## 响应字段[​](/docs/zh-CN/wallet/travel-rule/region-list#响应字段 "响应字段的直接链接")
+
+名称| 类型| 描述  
+---|---|---  
+countryCode| STRING| 回显查询的国家代码（小写）  
+regions| ARRAY| 该国家下的活跃地区列表  
+regions[].regionName| STRING| 地区/城市显示名称（问卷答案中使用此值）  
+regions[].blockType| STRING| `supported`、`limited` 或 `blocked`  
+regions[].depositAllowed| BOOLEAN| 该地区是否允许充值  
+regions[].withdrawalAllowed| BOOLEAN| 该地区是否允许提现  
+lastUpdated| LONG| 数据最后更新时间戳（毫秒级 epoch）；为空时返回 0

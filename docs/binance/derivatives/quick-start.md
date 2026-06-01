@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/quick-start
 api_type: REST
-updated_at: 2026-05-31 18:33:38.041200
+updated_at: 2026-06-01 19:47:26.236535
 ---
 
 # Quick Start
