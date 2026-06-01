@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee
 api_type: REST
-updated_at: 2026-05-31 18:29:03.342780
+updated_at: 2026-06-01 19:43:01.011305
 ---
 
 # Activation gas fee

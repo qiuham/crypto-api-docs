@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/notation
 api_type: REST
-updated_at: 2026-05-31 18:29:46.282973
+updated_at: 2026-06-01 19:43:43.611568
 ---
 
 # Notation

@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/tick-and-lot-size
 api_type: REST
-updated_at: 2026-05-31 18:30:05.126158
+updated_at: 2026-06-01 19:44:02.378971
 ---
 
 # Tick and lot size
