@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#affiliate-rest-api-get-link-list
 anchor_id: affiliate-rest-api-get-link-list
 api_type: REST
-updated_at: 2026-05-31 19:11:19.907990
+updated_at: 2026-06-01 20:24:02.684536
 ---
 
 # Get link list

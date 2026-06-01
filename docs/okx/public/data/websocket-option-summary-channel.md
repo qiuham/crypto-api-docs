@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-option-summary-channel
 anchor_id: public-data-websocket-option-summary-channel
 api_type: WebSocket
-updated_at: 2026-05-31 19:10:34.145547
+updated_at: 2026-06-01 20:23:17.763660
 ---
 
 # Option summary channel

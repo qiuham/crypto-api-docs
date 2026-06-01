@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-get-max-grid-quantity-public
 anchor_id: order-book-trading-grid-trading-get-max-grid-quantity-public
 api_type: API
-updated_at: 2026-05-31 19:09:20.652684
+updated_at: 2026-06-01 20:22:05.534434
 ---
 
 # GET / Max grid quantity (public)
