@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids
 api_type: REST
-updated_at: 2026-06-01 19:43:04.779790
+updated_at: 2026-06-02 19:18:44.342101
 ---
 
 # Asset IDs

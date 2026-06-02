@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits
 api_type: REST
-updated_at: 2026-06-01 19:43:54.880211
+updated_at: 2026-06-02 19:19:33.895272
 ---
 
 # Rate limits and user limits
