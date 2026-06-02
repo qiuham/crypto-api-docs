@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-transaction-timeouts-websocket
 anchor_id: overview-transaction-timeouts-websocket
 api_type: WebSocket
-updated_at: 2026-06-01 20:21:20.988210
+updated_at: 2026-06-02 20:00:26.270217
 ---
 
 # WebSocket

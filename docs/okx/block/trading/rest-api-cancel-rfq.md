@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-cancel-rfq
 anchor_id: block-trading-rest-api-cancel-rfq
 api_type: REST
-updated_at: 2026-06-01 20:22:41.765422
+updated_at: 2026-06-02 20:01:48.675332
 ---
 
 # Cancel RFQ
