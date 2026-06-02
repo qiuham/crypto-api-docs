@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/account/Query-Institution-Loan-Group_Activated
 api_type: Account
-updated_at: 2026-06-01 19:52:19.728747
+updated_at: 2026-06-02 19:28:13.882055
 ---
 
 # Risk Unit Repay (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Query-Order
 api_type: Trading
-updated_at: 2026-06-01 19:52:03.641754
+updated_at: 2026-06-02 19:27:57.446671
 ---
 
 # Query limit open orders (USER_DATA)
