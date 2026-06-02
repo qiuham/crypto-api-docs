@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/yield
 api_type: REST
-updated_at: 2026-06-01 20:07:13.148087
+updated_at: 2026-06-02 19:43:33.089647
 ---
 
 # Modify Position

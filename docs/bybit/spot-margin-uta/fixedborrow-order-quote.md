@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-order-quote
 api_type: REST
-updated_at: 2026-06-01 20:10:28.388233
+updated_at: 2026-06-02 19:46:56.705599
 ---
 
 # Get Liability Info

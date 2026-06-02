@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/liquidity-mining/add-margin
 api_type: REST
-updated_at: 2026-06-01 20:06:44.254567
+updated_at: 2026-06-02 19:43:04.135193
 ---
 
 # Get Position Info

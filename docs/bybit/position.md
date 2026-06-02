@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position
 api_type: REST
-updated_at: 2026-06-01 20:09:21.141617
+updated_at: 2026-06-02 19:45:45.511362
 ---
 
 # Get Position Info

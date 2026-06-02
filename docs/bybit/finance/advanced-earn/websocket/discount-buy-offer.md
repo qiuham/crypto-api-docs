@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/websocket/discount-buy-offer
 api_type: WebSocket
-updated_at: 2026-06-01 20:07:01.839469
+updated_at: 2026-06-02 19:43:21.491392
 ---
 
 # Get History APR

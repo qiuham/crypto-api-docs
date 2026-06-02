@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record
 api_type: REST
-updated_at: 2026-06-01 20:04:56.381988
+updated_at: 2026-06-02 19:41:12.172011
 ---
 
 # Get Trading Pair List

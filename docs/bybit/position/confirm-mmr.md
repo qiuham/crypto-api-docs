@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/confirm-mmr
 api_type: Position
-updated_at: 2026-06-01 20:09:26.253373
+updated_at: 2026-06-02 19:45:50.828291
 ---
 
 # Set Leverage

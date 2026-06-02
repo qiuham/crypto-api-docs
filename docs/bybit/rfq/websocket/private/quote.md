@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/websocket/private/quote
 api_type: WebSocket
-updated_at: 2026-06-01 20:10:10.270235
+updated_at: 2026-06-02 19:46:36.568738
 ---
 
 # SBE Level 50 Integration

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/modify-position
 api_type: REST
-updated_at: 2026-06-01 20:07:15.622045
+updated_at: 2026-06-02 19:43:35.557049
 ---
 
 # Modify Position
