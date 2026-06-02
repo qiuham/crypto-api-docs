@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/earn
 api_type: Earn
-updated_at: 2026-06-01 20:42:13.462555
+updated_at: 2026-06-02 20:21:11.036986
 ---
 
 # Earn
@@ -3844,6 +3844,362 @@ Code samples
 
 #  Schemas
 
+##  AutoInvestCoinsItem
+
+_Currency item supporting auto invest_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+key | string | Required | none | Currency code  
+value | string | Required | none | Currency name  
+asset_icon_url | string | Required | none | Currency icon URL  
+sort | integer(int64) | Optional | none | Sort  
+      
+    
+    {
+      "key": "string",
+      "value": "string",
+      "asset_icon_url": "string",
+      "sort": 0
+    }
+    
+    
+
+##  AutoInvestMinInvestAmount
+
+_QueryAvailableInvestmentMinimumAmountRequest_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+money | string | Required | none | Currency, optional: USDT or BTC  
+items | array | Required | none | none  
+↳ asset | string | Required | none | Currency  
+↳ ratio | string | Required | none | Ratio，e.g.100  
+      
+    
+    {
+      "money": "string",
+      "items": [
+        {
+          "asset": "string",
+          "ratio": "string"
+        }
+      ]
+    }
+    
+    
+
+##  CreateEarnFixedTermPreRedeemResponse
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer | Optional | none | Return code, 0 means success  
+message | string | Optional | none | Response message  
+data | object | Optional | none | Redemption result (empty object on success)  
+timestamp | integer | Optional | none | Response timestamp (in seconds)  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {},
+      "timestamp": 0
+    }
+    
+    
+
+##  DualOrderRefundPreview
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+create_timest | integer(int64) | Optional | none | Order creation timestamp  
+delivery_timest | integer(int64) | Optional | none | Order delivery timestamp  
+exercise_price | string | Optional | none | Strike price  
+invest_amount | string | Optional | none | Investment amount  
+invest_currency | string | Optional | none | Investment Token  
+name | string | Optional | none | Order name identifier  
+order_id | integer(int64) | Optional | none | Order ID  
+req_id | string | Optional | none | Request ID used for actual redemption  
+refund_service_charge | integer(int64) | Optional | none | Refund fee  
+settle_price | string | Optional | none | Settlement price  
+settlement_amount | string | Optional | none | Settlement amount  
+settlement_currency | string | Optional | none | Settlement currency  
+settlement_interest | string | Optional | none | Settlement interest  
+settlement_principle | string | Optional | none | Settlement principal  
+type | string | Optional | none | `call`: sell high; `put`: buy low  
+money_back_timest | integer(int64) | Optional | none | Redemption time  
+      
+    
+    {
+      "create_timest": 0,
+      "delivery_timest": 0,
+      "exercise_price": "string",
+      "invest_amount": "string",
+      "invest_currency": "string",
+      "name": "string",
+      "order_id": 0,
+      "req_id": "string",
+      "refund_service_charge": 0,
+      "settle_price": "string",
+      "settlement_amount": "string",
+      "settlement_currency": "string",
+      "settlement_interest": "string",
+      "settlement_principle": "string",
+      "type": "string",
+      "money_back_timest": 0
+    }
+    
+    
+
+##  AssetListStruct
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+pid | integer | Required | none | Product ID  
+mortgage_coin | string | Required | none | Staked currencies (multiple entries separated by commas)  
+mortgage_amount | string | Required | none | Position amount  
+createStamp | integer | Required | none | First timestamp  
+extra_income | string | Required | none | Additional rewards converted to USDT amount  
+freeze_amount | string | Required | none | Locked amount, used in trading  
+move_income | string | Required | none | none  
+type | integer | Required | none | Type 0-voucher 1-locked position 2-US Treasury bond  
+status | integer | Required | none | Status  
+income_total | string | Required | none | Total earnings by currency  
+yesterday_income_multi | array | Required | none | Yesterday's earnings  
+reward_coins | array | Required | none | Currency-specific reward earnings  
+↳ reward_coin | string | Required | none | Reward currency  
+↳ interest_delay_days | integer | Required | none | Interest accrual day  
+↳ reward_delay_days | integer | Required | none | Dividend day -1 indicates dividends are distributed upon redemption  
+defi_income | object | Required | none | DEIF earnings  
+↳ total | array | Required | none | none  
+↳ coin | string | Required | none | none  
+↳ amount | string | Required | none | none  
+      
+    
+    [
+      {
+        "pid": 0,
+        "mortgage_coin": "string",
+        "mortgage_amount": "string",
+        "createStamp": 0,
+        "extra_income": "string",
+        "freeze_amount": "string",
+        "move_income": "string",
+        "type": 0,
+        "status": 0,
+        "income_total": "string",
+        "yesterday_income_multi": [
+          {}
+        ],
+        "reward_coins": [
+          {}
+        ],
+        "defi_income": {
+          "total": []
+        }
+      }
+    ]
+    
+    
+
+##  AutoInvestMinInvestAmountResp
+
+_AvailableInvestmentMinimumAmountResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+min_amount | string | Required | none | MinimumAmount  
+      
+    
+    {
+      "min_amount": "string"
+    }
+    
+    
+
+##  ListEarnFixedTermProductsResponse
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer | Required | none | Return code, 0 means success  
+message | string | Required | none | Response message  
+data | object | Required | none | Product list data  
+↳ list | [FixedTermProduct] | Required | none | Product list  
+↳ total | integer | Required | none | Total Records  
+timestamp | integer | Required | none | Response timestamp (in seconds)  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {
+        "list": [
+          {}
+        ],
+        "total": 0
+      },
+      "timestamp": 0
+    }
+    
+    
+
+##  CreateEarnFixedTermLendResponse
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer | Optional | none | Return code, 0 means success  
+message | string | Optional | none | Response message  
+data | object | Optional | none | Subscription result  
+↳ order_id | integer(int64) | Optional | none | Subscription order ID  
+timestamp | integer | Optional | none | Response timestamp (in seconds)  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {
+        "order_id": 0
+      },
+      "timestamp": 0
+    }
+    
+    
+
+##  DualGetBalance
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+user_asset_usdt | string | Optional | none | User Assets in USDT Equivalent  
+user_asset_btc | string | Optional | none | User Assets in BTC Equivalent  
+user_total_interest_usdt | string | Optional | none | Total User Interest in USDT Equivalent  
+user_total_interest_btc | string | Optional | none | Total User Interest in BTC Equivalent  
+      
+    
+    {
+      "user_asset_usdt": "string",
+      "user_asset_btc": "string",
+      "user_total_interest_usdt": "string",
+      "user_total_interest_btc": "string"
+    }
+    
+    
+
+##  AutoInvestOrderItem
+
+_Auto invest order item_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int64) | Required | none | Order ID  
+type | string | Required | none | type  
+amount | string | Required | none | Size  
+plan_id | integer(int64) | Required | none | Plan ID  
+side | integer(int64) | Required | none | direction  
+asset | string | Required | none | Currency  
+record_id | integer(int64) | Required | none | Record ID  
+total_money | string | Required | none | TotalAmount  
+market | string | Required | none | Currency pair  
+price | string | Required | none | Price  
+create_time | integer(int64) | Required | none | Creation time (Unix timestamp)  
+total | string | Required | none | Total  
+fund_flow | string | Required | none | Fund Flow Direction  
+error_code | integer(int64) | Required | none | Error code  
+error_msg | string | Required | none | Error message  
+status | integer(int64) | Required | none | Status  
+      
+    
+    {
+      "id": 0,
+      "type": "string",
+      "amount": "string",
+      "plan_id": 0,
+      "side": 0,
+      "asset": "string",
+      "record_id": 0,
+      "total_money": "string",
+      "market": "string",
+      "price": "string",
+      "create_time": 0,
+      "total": "string",
+      "fund_flow": "string",
+      "error_code": 0,
+      "error_msg": "string",
+      "status": 0
+    }
+    
+    
+
+##  PlaceDualInvestmentOrder
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int32) | Optional | none | Order ID  
+plan_id | integer(int32) | Optional | none | Product ID  
+invest_amount | string | Optional | none | Investment Quantity  
+settlement_amount | string | Optional | none | Settlement Quantity  
+create_time | integer(int32) | Optional | none | Created time  
+complete_time | integer(int32) | Optional | none | Completed Time  
+status | string | Optional | none | Status:  
+  
+`INIT`-Created  
+`SETTLEMENT_SUCCESS`-Settlement Success  
+`SETTLEMENT_PROCESSING`-Settlement Processing  
+`CANCELED`-Canceled  
+`FAILED`-Failed  
+invest_currency | string | Optional | none | Investment Token  
+exercise_currency | string | Optional | none | Strike Token  
+exercise_price | string | Optional | none | Strike price  
+settlement_price | string | Optional | none | Settlement price  
+settlement_currency | string | Optional | none | Settlement currency  
+apy_display | string | Optional | none | Annual Yield  
+apy_settlement | string | Optional | none | Settlement Annual Yield  
+delivery_time | integer(int32) | Optional | none | Settlement time  
+text | string | Optional | none | Custom order information  
+      
+    
+    {
+      "id": 0,
+      "plan_id": 0,
+      "invest_amount": "string",
+      "settlement_amount": "string",
+      "create_time": 0,
+      "complete_time": 0,
+      "status": "string",
+      "invest_currency": "string",
+      "exercise_currency": "string",
+      "exercise_price": "string",
+      "settlement_price": "string",
+      "settlement_currency": "string",
+      "apy_display": "string",
+      "apy_settlement": "string",
+      "delivery_time": 0,
+      "text": "string"
+    }
+    
+    
+
 ##  DualGetOrders
 
 ###  Properties
@@ -3895,6 +4251,118 @@ text | string | Optional | none | Custom order information
     
     
 
+##  AutoInvestPlanRecordsResp
+
+_PlanExecutionRecordPaginatedResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+page | integer(int64) | Required | none | page number  
+page_size | integer(int64) | Required | none | Items per page  
+total_page | integer(int64) | Required | none | TotalPage number  
+total | integer(int64) | Required | none | Total entries  
+list | array | Required | none | none  
+↳ None | object | Optional | none | Plan execution record item  
+↳ id | integer(int64) | Required | none | Record ID  
+↳ type | string | Required | none | type  
+↳ money | string | Required | none | SourceCurrency  
+↳ user_id | integer(int64) | Required | none | User ID  
+↳ plan_id | integer(int64) | Required | none | Plan ID  
+↳ plan_version | integer(int64) | Required | none | PlanVersion  
+↳ amount | string | Required | none | Investment amount  
+↳ create_time | integer(int64) | Required | none | Investment time  
+↳ update_time | integer(int64) | Required | none | Update time  
+↳ status | string | Required | none | Status  
+↳ status_type | integer(int64) | Required | none | Status enum  
+↳ side | integer(int64) | Required | none | 2 = Buy, Other = Sell  
+↳ status_message | string | Required | none | Status description  
+↳ detail | string | Optional | none | Details  
+↳ asset | string | Optional | none | Currency  
+      
+    
+    {
+      "page": 0,
+      "page_size": 0,
+      "total_page": 0,
+      "total": 0,
+      "list": [
+        {
+          "id": 0,
+          "type": "string",
+          "money": "string",
+          "user_id": 0,
+          "plan_id": 0,
+          "plan_version": 0,
+          "amount": "string",
+          "create_time": 0,
+          "update_time": 0,
+          "status": "string",
+          "status_type": 0,
+          "side": 0,
+          "status_message": "string",
+          "detail": "string",
+          "asset": "string"
+        }
+      ]
+    }
+    
+    
+
+##  FixedTermProduct
+
+_Fixed-term earn product_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer | Optional | none | Product ID  
+name | string | Optional | none | Product name  
+asset | string | Optional | none | Currency  
+lock_up_period | integer | Optional | none | Lock-up period (in days)  
+min_lend_amount | string | Optional | none | Minimum earn amount  
+user_max_lend_amount | string | Optional | none | User maximum earn limit  
+total_lend_amount | string | Optional | none | Platform earn limit  
+year_rate | string | Optional | none | Annual interest rate  
+type | integer | Optional | none | Product type: 1 for regular, 2 for VIP  
+pre_redeem | integer | Optional | none | Whether early redemption is supported: 0 for not supported, 1 for supported  
+reinvest | integer | Optional | none | Whether auto-renewal is supported: 0 for not supported, 1 for supported  
+redeem_account | integer | Optional | none | Whether fixed-to-flexible conversion is supported: 0 for not supported, 1 for supported  
+min_vip | integer | Optional | none | Minimum VIP level requirement, 0-16, 0 means no restriction  
+max_vip | integer | Optional | none | Maximum VIP level requirement (0-16), 0 means no restriction  
+status | integer | Optional | none | Product status: 1 for unlisted, 2 for listed, 3 for delisted  
+create_time | string | Optional | none | Created time  
+user_max_lend_volume | string | Optional | none | User maximum earn amount  
+user_total_amount | string | Optional | none | Total amount the user has invested in earn products  
+sale_status | integer | Optional | none | Sale status: 1 for on sale, 2 for sold out  
+      
+    
+    {
+      "id": 0,
+      "name": "string",
+      "asset": "string",
+      "lock_up_period": 0,
+      "min_lend_amount": "string",
+      "user_max_lend_amount": "string",
+      "total_lend_amount": "string",
+      "year_rate": "string",
+      "type": 0,
+      "pre_redeem": 0,
+      "reinvest": 0,
+      "redeem_account": 0,
+      "min_vip": 0,
+      "max_vip": 0,
+      "status": 0,
+      "create_time": "string",
+      "user_max_lend_volume": "string",
+      "user_total_amount": "string",
+      "sale_status": 0
+    }
+    
+    
+
 ##  SwapCoin
 
 _Blockchain Mining_
@@ -3914,6 +4382,112 @@ pid | integer | Optional | none | DeFi-type Mining Protocol Identifier
       "side": 0,
       "amount": "string",
       "pid": 0
+    }
+    
+    
+
+##  FixedTermLendRequest
+
+_Subscription request_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+product_id | integer | Required | none | Product ID  
+amount | string | Required | none | Subscription amount  
+year_rate | string | Optional | none | Annual interest rate  
+reinvest_status | integer | Optional | none | Auto-renewal status: 0 for disabled, 1 for enabled  
+redeem_account_type | integer | Optional | none | Redemption payout account type: 1 for spot account  
+financial_rate_id | integer | Optional | none | Interest rate boost coupon ID, 0 means not used  
+sub_business | integer | Optional | none | Sub-business type  
+      
+    
+    {
+      "product_id": 0,
+      "amount": "string",
+      "year_rate": "string",
+      "reinvest_status": 0,
+      "redeem_account_type": 0,
+      "financial_rate_id": 0,
+      "sub_business": 0
+    }
+    
+    
+
+##  AutoInvestPlanCreateResp
+
+_Create auto invest planResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int64) | Required | none | Plan ID  
+amount | string | Optional | none | Per PeriodAuto InvestAmount  
+money | string | Optional | none | Quote currency  
+next_time | integer(int64) | Optional | none | Next execution time  
+period_type | string | Optional | none | Cycle type  
+period_day | integer(int64) | Optional | none | Cycle day  
+period_hour | integer(int64) | Optional | none | CycleHours  
+fund_flow | string | Optional | none | Fund Flow Direction  
+fund_source | string | Optional | none | Fund source  
+      
+    
+    {
+      "id": 0,
+      "amount": "string",
+      "money": "string",
+      "next_time": 0,
+      "period_type": "string",
+      "period_day": 0,
+      "period_hour": 0,
+      "fund_flow": "string",
+      "fund_source": "string"
+    }
+    
+    
+
+##  AutoInvestPlanCreate
+
+_Create auto invest planRequest_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+plan_name | string | Optional | none | Plan name。Length: 0-50 characters  
+plan_des | string | Optional | none | Plan description  
+plan_money | string | Required | none | Pricing currency，SupportUSDT，BTC  
+plan_amount | string | Required | none | Per PeriodAuto InvestAmount，Must > 0，and not exceedThePricing currencyConfigurationSingleMaximumAmount  
+plan_period_type | string | Required | none | Enum: daily, weekly, biweekly, monthly, hourly, 4-hourly  
+plan_period_day | integer(int64) | Required | none | Cycle day. For monthly: day of month (1-30); For weekly/biweekly: day of week (1-7, 1=Monday); For daily/hourly/4-hourly: ignored  
+plan_period_hour | integer(int64) | Required | none | Execution hourAuto Invest 0-23  
+items | array | Required | none | Investment portfolio, asset cannot be repeated; Sum of all items' ratios must be 100  
+↳ asset | string | Required | none | Investment currency, e.g., BTC; Must be enabled and market exists; Cannot be repeated within the same plan  
+↳ ratio | string | Required | none | The proportion of this currency in the portfolio，The sum of all items' ratios must be 100  
+fund_source | string | Optional | none | Fund source: spot or earn, default: spot  
+fund_flow | string | Optional | none | Fund flow direction: auto_invest or earn, default: auto_invest  
+type | integer(int64) | Optional | none | 0 Normal creation, 1 QuickInvestment  
+      
+    
+    {
+      "plan_name": "string",
+      "plan_des": "string",
+      "plan_money": "string",
+      "plan_amount": "string",
+      "plan_period_type": "string",
+      "plan_period_day": 0,
+      "plan_period_hour": 0,
+      "items": [
+        {
+          "asset": "string",
+          "ratio": "string"
+        }
+      ],
+      "fund_source": "string",
+      "fund_flow": "string",
+      "type": 0
     }
     
     
@@ -3979,66 +4553,146 @@ list | array | Required | none | PlanList
     
     
 
-##  AutoInvestMinInvestAmount
-
-_QueryAvailableInvestmentMinimumAmountRequest_
+##  DualProjectRecommend
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-money | string | Required | none | Currency, optional: USDT or BTC  
-items | array | Required | none | none  
-↳ asset | string | Required | none | Currency  
-↳ ratio | string | Required | none | Ratio，e.g.100  
+id | integer(int64) | Optional | none | Product ID  
+category | integer(int32) | Optional | none | Strategy category  
+type | string | Optional | none | `call`: sell high; `put`: buy low  
+invest_currency | string | Optional | none | Investment Token  
+exercise_currency | string | Optional | none | Strike Token  
+apy_display | string | Optional | none | Annual Yield  
+exercise_price | string | Optional | none | Strike price  
+delivery_timest | integer(int64) | Optional | none | Settlement time  
+min_amount | string | Optional | none | Minimum investment amount  
+max_amount | string | Optional | none | Maximum investment amount  
+min_copies | integer(int64) | Optional | none | Minimum Units  
+max_copies | integer(int64) | Optional | none | Maximum Units  
+invest_days | integer(int64) | Optional | none | Lock-up days  
+invest_hours | string | Optional | none | Lock-up hours  
       
     
     {
-      "money": "string",
-      "items": [
+      "id": 0,
+      "category": 0,
+      "type": "string",
+      "invest_currency": "string",
+      "exercise_currency": "string",
+      "apy_display": "string",
+      "exercise_price": "string",
+      "delivery_timest": 0,
+      "min_amount": "string",
+      "max_amount": "string",
+      "min_copies": 0,
+      "max_copies": 0,
+      "invest_days": 0,
+      "invest_hours": "string"
+    }
+    
+    
+
+##  EarnFixedTermPreRedeemRequest
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Required | none | Order ID  
+      
+    
+    {
+      "order_id": "5862476630"
+    }
+    
+    
+
+##  AutoInvestConfigItem
+
+_Investment currency configuration item_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+coin | string | Required | none | Currency  
+max_limit | string | Required | none | InvestmentLimit  
+      
+    
+    {
+      "coin": "string",
+      "max_limit": "string"
+    }
+    
+    
+
+##  AwardListStruct
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+page | integer | Required | none | Page  
+pageSize | integer | Required | none | Items per page  
+pageCount | integer | Required | none | Total pages  
+totalCount | integer | Required | none | Total entries  
+list | array | Required | none | none  
+↳ pid | integer | Required | none | Product ID  
+↳ mortgage_coin | string | Required | none | Collateral currency  
+↳ amount | string | Required | none | Amount  
+↳ reward_coin | string | Required | none | Reward currency  
+↳ interest | string | Required | none | Interest amount  
+↳ fee | string | Required | none | fee  
+↳ status | integer | Required | none | Status  
+↳ bonus_date | string | Required | none | Date  
+↳ should_bonus_stamp | integer | Required | none | Scheduled distribution timestamp  
+      
+    
+    {
+      "page": 0,
+      "pageSize": 0,
+      "pageCount": 0,
+      "totalCount": 0,
+      "list": [
         {
-          "asset": "string",
-          "ratio": "string"
+          "pid": 0,
+          "mortgage_coin": "string",
+          "amount": "string",
+          "reward_coin": "string",
+          "interest": "string",
+          "fee": "string",
+          "status": 0,
+          "bonus_date": "string",
+          "should_bonus_stamp": 0
         }
       ]
     }
     
     
 
-##  AutoInvestPlanStop
+##  PlaceDualInvestmentOrderParams
 
-_StopAuto invest planRequest_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-plan_id | integer(int64) | Required | none | Plan ID  
-      
-    
-    {
-      "plan_id": 0
-    }
-    
-    
-
-##  DualGetBalance
+_Dual Investment Order_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-user_asset_usdt | string | Optional | none | User Assets in USDT Equivalent  
-user_asset_btc | string | Optional | none | User Assets in BTC Equivalent  
-user_total_interest_usdt | string | Optional | none | Total User Interest in USDT Equivalent  
-user_total_interest_btc | string | Optional | none | Total User Interest in BTC Equivalent  
+plan_id | string | Required | none | Product ID  
+amount | string | Required | none | Subscription amount  
+text | string | Optional | none | Order custom information. Users can set custom ID with this field. Custom fields must meet the following conditions:  
+  
+1\. Must start with `t-`  
+2\. Excluding `t-`, length cannot exceed 28 bytes  
+3\. Can only contain numbers, letters, underscore(_), hyphen(-) or dot(.)  
       
     
     {
-      "user_asset_usdt": "string",
-      "user_asset_btc": "string",
-      "user_total_interest_usdt": "string",
-      "user_total_interest_btc": "string"
+      "plan_id": "string",
+      "amount": "string",
+      "text": "string"
     }
     
     
@@ -4110,7 +4764,7 @@ portfolio | array | Required | none | InvestmentPortfolio
     
     
 
-##  CreateEarnFixedTermLendResponse
+##  ListEarnFixedTermHistoryResponse
 
 ###  Properties
 
@@ -4118,130 +4772,10 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 code | integer | Optional | none | Return code, 0 means success  
 message | string | Optional | none | Response message  
-data | object | Optional | none | Subscription result  
-↳ order_id | integer(int64) | Optional | none | Subscription order ID  
+data | object | Optional | none | none  
+↳ list | [FixedTermHistoryRecord] | Optional | none | [Fixed-term earn history records]  
+↳ total | integer | Optional | none | Total Records  
 timestamp | integer | Optional | none | Response timestamp (in seconds)  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {
-        "order_id": 0
-      },
-      "timestamp": 0
-    }
-    
-    
-
-##  EarnFixedTermPreRedeemRequest
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | string | Required | none | Order ID  
-      
-    
-    {
-      "order_id": "5862476630"
-    }
-    
-    
-
-##  AutoInvestPlanRecordsResp
-
-_PlanExecutionRecordPaginatedResponse_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-page | integer(int64) | Required | none | page number  
-page_size | integer(int64) | Required | none | Items per page  
-total_page | integer(int64) | Required | none | TotalPage number  
-total | integer(int64) | Required | none | Total entries  
-list | array | Required | none | none  
-↳ None | object | Optional | none | Plan execution record item  
-↳ id | integer(int64) | Required | none | Record ID  
-↳ type | string | Required | none | type  
-↳ money | string | Required | none | SourceCurrency  
-↳ user_id | integer(int64) | Required | none | User ID  
-↳ plan_id | integer(int64) | Required | none | Plan ID  
-↳ plan_version | integer(int64) | Required | none | PlanVersion  
-↳ amount | string | Required | none | Investment amount  
-↳ create_time | integer(int64) | Required | none | Investment time  
-↳ update_time | integer(int64) | Required | none | Update time  
-↳ status | string | Required | none | Status  
-↳ status_type | integer(int64) | Required | none | Status enum  
-↳ side | integer(int64) | Required | none | 2 = Buy, Other = Sell  
-↳ status_message | string | Required | none | Status description  
-↳ detail | string | Optional | none | Details  
-↳ asset | string | Optional | none | Currency  
-      
-    
-    {
-      "page": 0,
-      "page_size": 0,
-      "total_page": 0,
-      "total": 0,
-      "list": [
-        {
-          "id": 0,
-          "type": "string",
-          "money": "string",
-          "user_id": 0,
-          "plan_id": 0,
-          "plan_version": 0,
-          "amount": "string",
-          "create_time": 0,
-          "update_time": 0,
-          "status": "string",
-          "status_type": 0,
-          "side": 0,
-          "status_message": "string",
-          "detail": "string",
-          "asset": "string"
-        }
-      ]
-    }
-    
-    
-
-##  AutoInvestCoinsItem
-
-_Currency item supporting auto invest_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-key | string | Required | none | Currency code  
-value | string | Required | none | Currency name  
-asset_icon_url | string | Required | none | Currency icon URL  
-sort | integer(int64) | Optional | none | Sort  
-      
-    
-    {
-      "key": "string",
-      "value": "string",
-      "asset_icon_url": "string",
-      "sort": 0
-    }
-    
-    
-
-##  ListEarnFixedTermProductsByAssetResponse
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer | Required | none | Return code, 0 means success  
-message | string | Required | none | Response message  
-data | object | Required | none | Product list data  
-↳ list | [FixedTermProductSimple] | Required | none | Product list  
-timestamp | integer | Required | none | Response timestamp (in seconds)  
       
     
     {
@@ -4250,114 +4784,29 @@ timestamp | integer | Required | none | Response timestamp (in seconds)
       "data": {
         "list": [
           {}
-        ]
+        ],
+        "total": 0
       },
       "timestamp": 0
     }
     
     
 
-##  AutoInvestPlanCreate
+##  DualOrderRefundParams
 
-_Create auto invest planRequest_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-plan_name | string | Optional | none | Plan name。Length: 0-50 characters  
-plan_des | string | Optional | none | Plan description  
-plan_money | string | Required | none | Pricing currency，SupportUSDT，BTC  
-plan_amount | string | Required | none | Per PeriodAuto InvestAmount，Must > 0，and not exceedThePricing currencyConfigurationSingleMaximumAmount  
-plan_period_type | string | Required | none | Enum: daily, weekly, biweekly, monthly, hourly, 4-hourly  
-plan_period_day | integer(int64) | Required | none | Cycle day. For monthly: day of month (1-30); For weekly/biweekly: day of week (1-7, 1=Monday); For daily/hourly/4-hourly: ignored  
-plan_period_hour | integer(int64) | Required | none | Execution hourAuto Invest 0-23  
-items | array | Required | none | Investment portfolio, asset cannot be repeated; Sum of all items' ratios must be 100  
-↳ asset | string | Required | none | Investment currency, e.g., BTC; Must be enabled and market exists; Cannot be repeated within the same plan  
-↳ ratio | string | Required | none | The proportion of this currency in the portfolio，The sum of all items' ratios must be 100  
-fund_source | string | Optional | none | Fund source: spot or earn, default: spot  
-fund_flow | string | Optional | none | Fund flow direction: auto_invest or earn, default: auto_invest  
-type | integer(int64) | Optional | none | 0 Normal creation, 1 QuickInvestment  
-      
-    
-    {
-      "plan_name": "string",
-      "plan_des": "string",
-      "plan_money": "string",
-      "plan_amount": "string",
-      "plan_period_type": "string",
-      "plan_period_day": 0,
-      "plan_period_hour": 0,
-      "items": [
-        {
-          "asset": "string",
-          "ratio": "string"
-        }
-      ],
-      "fund_source": "string",
-      "fund_flow": "string",
-      "type": 0
-    }
-    
-    
-
-##  AutoInvestMinInvestAmountResp
-
-_AvailableInvestmentMinimumAmountResponse_
+_Dual-currency order early redemption request_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-min_amount | string | Required | none | MinimumAmount  
+order_id | string | Required | none | Order ID  
+req_id | string | Required | none | Request ID returned by order-refund-preview  
       
     
     {
-      "min_amount": "string"
-    }
-    
-    
-
-##  AwardListStruct
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-page | integer | Required | none | Page  
-pageSize | integer | Required | none | Items per page  
-pageCount | integer | Required | none | Total pages  
-totalCount | integer | Required | none | Total entries  
-list | array | Required | none | none  
-↳ pid | integer | Required | none | Product ID  
-↳ mortgage_coin | string | Required | none | Collateral currency  
-↳ amount | string | Required | none | Amount  
-↳ reward_coin | string | Required | none | Reward currency  
-↳ interest | string | Required | none | Interest amount  
-↳ fee | string | Required | none | fee  
-↳ status | integer | Required | none | Status  
-↳ bonus_date | string | Required | none | Date  
-↳ should_bonus_stamp | integer | Required | none | Scheduled distribution timestamp  
-      
-    
-    {
-      "page": 0,
-      "pageSize": 0,
-      "pageCount": 0,
-      "totalCount": 0,
-      "list": [
-        {
-          "pid": 0,
-          "mortgage_coin": "string",
-          "amount": "string",
-          "reward_coin": "string",
-          "interest": "string",
-          "fee": "string",
-          "status": 0,
-          "bonus_date": "string",
-          "should_bonus_stamp": 0
-        }
-      ]
+      "order_id": "string",
+      "req_id": "string"
     }
     
     
@@ -4418,153 +4867,81 @@ extraInterest | array | Optional | none | Additional rewards
     
     
 
-##  AssetListStruct
+##  AutoInvestPlanAddPosition
+
+_Add position immediatelyRequest_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-pid | integer | Required | none | Product ID  
-mortgage_coin | string | Required | none | Staked currencies (multiple entries separated by commas)  
-mortgage_amount | string | Required | none | Position amount  
-createStamp | integer | Required | none | First timestamp  
-extra_income | string | Required | none | Additional rewards converted to USDT amount  
-freeze_amount | string | Required | none | Locked amount, used in trading  
-move_income | string | Required | none | none  
-type | integer | Required | none | Type 0-voucher 1-locked position 2-US Treasury bond  
-status | integer | Required | none | Status  
-income_total | string | Required | none | Total earnings by currency  
-yesterday_income_multi | array | Required | none | Yesterday's earnings  
-reward_coins | array | Required | none | Currency-specific reward earnings  
-↳ reward_coin | string | Required | none | Reward currency  
-↳ interest_delay_days | integer | Required | none | Interest accrual day  
-↳ reward_delay_days | integer | Required | none | Dividend day -1 indicates dividends are distributed upon redemption  
-defi_income | object | Required | none | DEIF earnings  
-↳ total | array | Required | none | none  
-↳ coin | string | Required | none | none  
-↳ amount | string | Required | none | none  
-      
-    
-    [
-      {
-        "pid": 0,
-        "mortgage_coin": "string",
-        "mortgage_amount": "string",
-        "createStamp": 0,
-        "extra_income": "string",
-        "freeze_amount": "string",
-        "move_income": "string",
-        "type": 0,
-        "status": 0,
-        "income_total": "string",
-        "yesterday_income_multi": [
-          {}
-        ],
-        "reward_coins": [
-          {}
-        ],
-        "defi_income": {
-          "total": []
-        }
-      }
-    ]
-    
-    
-
-##  PlaceDualInvestmentOrder
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int32) | Optional | none | Order ID  
-plan_id | integer(int32) | Optional | none | Product ID  
-invest_amount | string | Optional | none | Investment Quantity  
-settlement_amount | string | Optional | none | Settlement Quantity  
-create_time | integer(int32) | Optional | none | Created time  
-complete_time | integer(int32) | Optional | none | Completed Time  
-status | string | Optional | none | Status:  
-  
-`INIT`-Created  
-`SETTLEMENT_SUCCESS`-Settlement Success  
-`SETTLEMENT_PROCESSING`-Settlement Processing  
-`CANCELED`-Canceled  
-`FAILED`-Failed  
-invest_currency | string | Optional | none | Investment Token  
-exercise_currency | string | Optional | none | Strike Token  
-exercise_price | string | Optional | none | Strike price  
-settlement_price | string | Optional | none | Settlement price  
-settlement_currency | string | Optional | none | Settlement currency  
-apy_display | string | Optional | none | Annual Yield  
-apy_settlement | string | Optional | none | Settlement Annual Yield  
-delivery_time | integer(int32) | Optional | none | Settlement time  
-text | string | Optional | none | Custom order information  
+plan_id | integer(int64) | Required | none | Plan ID  
+amount | string | Required | none | Amount  
       
     
     {
-      "id": 0,
       "plan_id": 0,
-      "invest_amount": "string",
-      "settlement_amount": "string",
-      "create_time": 0,
-      "complete_time": 0,
-      "status": "string",
-      "invest_currency": "string",
-      "exercise_currency": "string",
-      "exercise_price": "string",
-      "settlement_price": "string",
-      "settlement_currency": "string",
-      "apy_display": "string",
-      "apy_settlement": "string",
-      "delivery_time": 0,
-      "text": "string"
+      "amount": "string"
     }
     
     
 
-##  AutoInvestOrderItem
+##  DualModifyOrderReinvestParams
 
-_Auto invest order item_
+_Dual-currency order reinvest modification request_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-id | integer(int64) | Required | none | Order ID  
-type | string | Required | none | type  
-amount | string | Required | none | Size  
-plan_id | integer(int64) | Required | none | Plan ID  
-side | integer(int64) | Required | none | direction  
-asset | string | Required | none | Currency  
-record_id | integer(int64) | Required | none | Record ID  
-total_money | string | Required | none | TotalAmount  
-market | string | Required | none | Currency pair  
-price | string | Required | none | Price  
-create_time | integer(int64) | Required | none | Creation time (Unix timestamp)  
-total | string | Required | none | Total  
-fund_flow | string | Required | none | Fund Flow Direction  
-error_code | integer(int64) | Required | none | Error code  
-error_msg | string | Required | none | Error message  
-status | integer(int64) | Required | none | Status  
+order_id | integer(int64) | Optional | none | Order ID  
+status | integer(int32) | Optional | none | `0` — off; `1` — on  
+effective_time_duration | integer(int64) | Optional | none | Effective duration in seconds; default 1 day (86400)  
+      
+    
+    {
+      "order_id": 0,
+      "status": 0,
+      "effective_time_duration": 0
+    }
+    
+    
+
+##  DualGetPlans
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer(int32) | Optional | none | Product ID  
+instrument_name | string | Optional | none | Product Name  
+invest_currency | string | Optional | none | Investment Token  
+exercise_currency | string | Optional | none | Strike Token  
+exercise_price | number(double) | Optional | none | Strike price  
+delivery_time | integer(int32) | Optional | none | Settlement time  
+apy_display | string | Optional | none | Annual Yield  
+min_amount | string | Optional | none | Minimum investment amount  
+start_time | integer(int32) | Optional | none | Start Time  
+end_time | integer(int32) | Optional | none | End time  
+status | string | Optional | none | Status:  
+  
+`NOTSTARTED` \- Not started  
+`ONGOING` \- In progress  
+`ENDED` \- Ended  
       
     
     {
       "id": 0,
-      "type": "string",
-      "amount": "string",
-      "plan_id": 0,
-      "side": 0,
-      "asset": "string",
-      "record_id": 0,
-      "total_money": "string",
-      "market": "string",
-      "price": "string",
-      "create_time": 0,
-      "total": "string",
-      "fund_flow": "string",
-      "error_code": 0,
-      "error_msg": "string",
-      "status": 0
+      "instrument_name": "string",
+      "invest_currency": "string",
+      "exercise_currency": "string",
+      "exercise_price": 0,
+      "delivery_time": 0,
+      "apy_display": "string",
+      "min_amount": "string",
+      "start_time": 0,
+      "end_time": 0,
+      "status": "string"
     }
     
     
@@ -4613,49 +4990,19 @@ list | array | Required | none | none
     
     
 
-##  ListEarnFixedTermHistoryResponse
+##  AutoInvestPlanStop
 
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer | Optional | none | Return code, 0 means success  
-message | string | Optional | none | Response message  
-data | object | Optional | none | none  
-↳ list | [FixedTermHistoryRecord] | Optional | none | [Fixed-term earn history records]  
-↳ total | integer | Optional | none | Total Records  
-timestamp | integer | Optional | none | Response timestamp (in seconds)  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {
-        "list": [
-          {}
-        ],
-        "total": 0
-      },
-      "timestamp": 0
-    }
-    
-    
-
-##  AutoInvestPlanAddPosition
-
-_Add position immediatelyRequest_
+_StopAuto invest planRequest_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
 plan_id | integer(int64) | Required | none | Plan ID  
-amount | string | Required | none | Amount  
       
     
     {
-      "plan_id": 0,
-      "amount": "string"
+      "plan_id": 0
     }
     
     
@@ -4681,72 +5028,7 @@ fund_flow | string | Optional | none | Fund Flow Direction Spotauto_invest or Fl
     
     
 
-##  AutoInvestConfigItem
-
-_Investment currency configuration item_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-coin | string | Required | none | Currency  
-max_limit | string | Required | none | InvestmentLimit  
-      
-    
-    {
-      "coin": "string",
-      "max_limit": "string"
-    }
-    
-    
-
-##  PlaceDualInvestmentOrderParams
-
-_Dual Investment Order_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-plan_id | string | Required | none | Product ID  
-amount | string | Required | none | Subscription amount  
-text | string | Optional | none | Order custom information. Users can set custom ID with this field. Custom fields must meet the following conditions:  
-  
-1\. Must start with `t-`  
-2\. Excluding `t-`, length cannot exceed 28 bytes  
-3\. Can only contain numbers, letters, underscore(_), hyphen(-) or dot(.)  
-      
-    
-    {
-      "plan_id": "string",
-      "amount": "string",
-      "text": "string"
-    }
-    
-    
-
-##  DualModifyOrderReinvestParams
-
-_Dual-currency order reinvest modification request_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | integer(int64) | Optional | none | Order ID  
-status | integer(int32) | Optional | none | `0` — off; `1` — on  
-effective_time_duration | integer(int64) | Optional | none | Effective duration in seconds; default 1 day (86400)  
-      
-    
-    {
-      "order_id": 0,
-      "status": 0,
-      "effective_time_duration": 0
-    }
-    
-    
-
-##  ListEarnFixedTermProductsResponse
+##  ListEarnFixedTermProductsByAssetResponse
 
 ###  Properties
 
@@ -4755,7 +5037,33 @@ PropertiesName | Type | Required | Restrictions | Description
 code | integer | Required | none | Return code, 0 means success  
 message | string | Required | none | Response message  
 data | object | Required | none | Product list data  
-↳ list | [FixedTermProduct] | Required | none | Product list  
+↳ list | [FixedTermProductSimple] | Required | none | Product list  
+timestamp | integer | Required | none | Response timestamp (in seconds)  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {
+        "list": [
+          {}
+        ]
+      },
+      "timestamp": 0
+    }
+    
+    
+
+##  ListEarnFixedTermLendsResponse
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+code | integer | Required | none | Return code, 0 means success  
+message | string | Required | none | Response message  
+data | object | Required | none | Subscription order list data  
+↳ list | [FixedTermLendOrder] | Required | none | Subscription order list  
 ↳ total | integer | Required | none | Total Records  
 timestamp | integer | Required | none | Response timestamp (in seconds)  
       
@@ -4770,66 +5078,6 @@ timestamp | integer | Required | none | Response timestamp (in seconds)
         "total": 0
       },
       "timestamp": 0
-    }
-    
-    
-
-##  DualProjectRecommend
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | none | Product ID  
-category | integer(int32) | Optional | none | Strategy category  
-type | string | Optional | none | `call`: sell high; `put`: buy low  
-invest_currency | string | Optional | none | Investment Token  
-exercise_currency | string | Optional | none | Strike Token  
-apy_display | string | Optional | none | Annual Yield  
-exercise_price | string | Optional | none | Strike price  
-delivery_timest | integer(int64) | Optional | none | Settlement time  
-min_amount | string | Optional | none | Minimum investment amount  
-max_amount | string | Optional | none | Maximum investment amount  
-min_copies | integer(int64) | Optional | none | Minimum Units  
-max_copies | integer(int64) | Optional | none | Maximum Units  
-invest_days | integer(int64) | Optional | none | Lock-up days  
-invest_hours | string | Optional | none | Lock-up hours  
-      
-    
-    {
-      "id": 0,
-      "category": 0,
-      "type": "string",
-      "invest_currency": "string",
-      "exercise_currency": "string",
-      "apy_display": "string",
-      "exercise_price": "string",
-      "delivery_timest": 0,
-      "min_amount": "string",
-      "max_amount": "string",
-      "min_copies": 0,
-      "max_copies": 0,
-      "invest_days": 0,
-      "invest_hours": "string"
-    }
-    
-    
-
-##  DualOrderRefundParams
-
-_Dual-currency order early redemption request_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | string | Required | none | Order ID  
-req_id | string | Required | none | Request ID returned by order-refund-preview  
-      
-    
-    {
-      "order_id": "string",
-      "req_id": "string"
     }
     
     
@@ -4873,338 +5121,6 @@ source | string | Optional | none | Order Origin
       "protocol_type": 0,
       "client_order_id": "string",
       "source": "string"
-    }
-    
-    
-
-##  ListEarnFixedTermLendsResponse
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer | Required | none | Return code, 0 means success  
-message | string | Required | none | Response message  
-data | object | Required | none | Subscription order list data  
-↳ list | [FixedTermLendOrder] | Required | none | Subscription order list  
-↳ total | integer | Required | none | Total Records  
-timestamp | integer | Required | none | Response timestamp (in seconds)  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {
-        "list": [
-          {}
-        ],
-        "total": 0
-      },
-      "timestamp": 0
-    }
-    
-    
-
-##  AutoInvestPlanCreateResp
-
-_Create auto invest planResponse_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Required | none | Plan ID  
-amount | string | Optional | none | Per PeriodAuto InvestAmount  
-money | string | Optional | none | Quote currency  
-next_time | integer(int64) | Optional | none | Next execution time  
-period_type | string | Optional | none | Cycle type  
-period_day | integer(int64) | Optional | none | Cycle day  
-period_hour | integer(int64) | Optional | none | CycleHours  
-fund_flow | string | Optional | none | Fund Flow Direction  
-fund_source | string | Optional | none | Fund source  
-      
-    
-    {
-      "id": 0,
-      "amount": "string",
-      "money": "string",
-      "next_time": 0,
-      "period_type": "string",
-      "period_day": 0,
-      "period_hour": 0,
-      "fund_flow": "string",
-      "fund_source": "string"
-    }
-    
-    
-
-##  DualOrderRefundPreview
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-create_timest | integer(int64) | Optional | none | Order creation timestamp  
-delivery_timest | integer(int64) | Optional | none | Order delivery timestamp  
-exercise_price | string | Optional | none | Strike price  
-invest_amount | string | Optional | none | Investment amount  
-invest_currency | string | Optional | none | Investment Token  
-name | string | Optional | none | Order name identifier  
-order_id | integer(int64) | Optional | none | Order ID  
-req_id | string | Optional | none | Request ID used for actual redemption  
-refund_service_charge | integer(int64) | Optional | none | Refund fee  
-settle_price | string | Optional | none | Settlement price  
-settlement_amount | string | Optional | none | Settlement amount  
-settlement_currency | string | Optional | none | Settlement currency  
-settlement_interest | string | Optional | none | Settlement interest  
-settlement_principle | string | Optional | none | Settlement principal  
-type | string | Optional | none | `call`: sell high; `put`: buy low  
-money_back_timest | integer(int64) | Optional | none | Redemption time  
-      
-    
-    {
-      "create_timest": 0,
-      "delivery_timest": 0,
-      "exercise_price": "string",
-      "invest_amount": "string",
-      "invest_currency": "string",
-      "name": "string",
-      "order_id": 0,
-      "req_id": "string",
-      "refund_service_charge": 0,
-      "settle_price": "string",
-      "settlement_amount": "string",
-      "settlement_currency": "string",
-      "settlement_interest": "string",
-      "settlement_principle": "string",
-      "type": "string",
-      "money_back_timest": 0
-    }
-    
-    
-
-##  DualGetPlans
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int32) | Optional | none | Product ID  
-instrument_name | string | Optional | none | Product Name  
-invest_currency | string | Optional | none | Investment Token  
-exercise_currency | string | Optional | none | Strike Token  
-exercise_price | number(double) | Optional | none | Strike price  
-delivery_time | integer(int32) | Optional | none | Settlement time  
-apy_display | string | Optional | none | Annual Yield  
-min_amount | string | Optional | none | Minimum investment amount  
-start_time | integer(int32) | Optional | none | Start Time  
-end_time | integer(int32) | Optional | none | End time  
-status | string | Optional | none | Status:  
-  
-`NOTSTARTED` \- Not started  
-`ONGOING` \- In progress  
-`ENDED` \- Ended  
-      
-    
-    {
-      "id": 0,
-      "instrument_name": "string",
-      "invest_currency": "string",
-      "exercise_currency": "string",
-      "exercise_price": 0,
-      "delivery_time": 0,
-      "apy_display": "string",
-      "min_amount": "string",
-      "start_time": 0,
-      "end_time": 0,
-      "status": "string"
-    }
-    
-    
-
-##  FixedTermLendRequest
-
-_Subscription request_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-product_id | integer | Required | none | Product ID  
-amount | string | Required | none | Subscription amount  
-year_rate | string | Optional | none | Annual interest rate  
-reinvest_status | integer | Optional | none | Auto-renewal status: 0 for disabled, 1 for enabled  
-redeem_account_type | integer | Optional | none | Redemption payout account type: 1 for spot account  
-financial_rate_id | integer | Optional | none | Interest rate boost coupon ID, 0 means not used  
-sub_business | integer | Optional | none | Sub-business type  
-      
-    
-    {
-      "product_id": 0,
-      "amount": "string",
-      "year_rate": "string",
-      "reinvest_status": 0,
-      "redeem_account_type": 0,
-      "financial_rate_id": 0,
-      "sub_business": 0
-    }
-    
-    
-
-##  CreateEarnFixedTermPreRedeemResponse
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-code | integer | Optional | none | Return code, 0 means success  
-message | string | Optional | none | Response message  
-data | object | Optional | none | Redemption result (empty object on success)  
-timestamp | integer | Optional | none | Response timestamp (in seconds)  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {},
-      "timestamp": 0
-    }
-    
-    
-
-##  FixedTermProductSimple
-
-_Fixed-term earn product (compact)_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer | Optional | none | Product ID  
-asset | string | Optional | none | Currency  
-lock_up_period | integer | Optional | none | Lock-up period (in days)  
-year_rate | string | Optional | none | Annual interest rate  
-type | integer | Optional | none | Product type: 1 for regular, 2 for VIP  
-pre_redeem | integer | Optional | none | Whether early redemption is supported: 0 for not supported, 1 for supported  
-reinvest | integer | Optional | none | Whether auto-renewal is supported: 0 for not supported, 1 for supported  
-simple_earn | integer | Optional | none | Whether fixed-to-flexible conversion is supported: 0 for not supported, 1 for supported  
-min_vip | integer | Optional | none | Minimum VIP level requirement, 0 means no restriction  
-max_vip | integer | Optional | none | Maximum VIP level requirement, 0 means no restriction  
-sale_status | integer | Optional | none | Sale status: 1 for on sale, 2 for sold out  
-      
-    
-    {
-      "id": 0,
-      "asset": "string",
-      "lock_up_period": 0,
-      "year_rate": "string",
-      "type": 0,
-      "pre_redeem": 0,
-      "reinvest": 0,
-      "simple_earn": 0,
-      "min_vip": 0,
-      "max_vip": 0,
-      "sale_status": 0
-    }
-    
-    
-
-##  FixedTermProduct
-
-_Fixed-term earn product_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer | Optional | none | Product ID  
-name | string | Optional | none | Product name  
-asset | string | Optional | none | Currency  
-lock_up_period | integer | Optional | none | Lock-up period (in days)  
-min_lend_amount | string | Optional | none | Minimum earn amount  
-user_max_lend_amount | string | Optional | none | User maximum earn limit  
-total_lend_amount | string | Optional | none | Platform earn limit  
-year_rate | string | Optional | none | Annual interest rate  
-type | integer | Optional | none | Product type: 1 for regular, 2 for VIP  
-pre_redeem | integer | Optional | none | Whether early redemption is supported: 0 for not supported, 1 for supported  
-reinvest | integer | Optional | none | Whether auto-renewal is supported: 0 for not supported, 1 for supported  
-redeem_account | integer | Optional | none | Whether fixed-to-flexible conversion is supported: 0 for not supported, 1 for supported  
-min_vip | integer | Optional | none | Minimum VIP level requirement, 0-16, 0 means no restriction  
-max_vip | integer | Optional | none | Maximum VIP level requirement (0-16), 0 means no restriction  
-status | integer | Optional | none | Product status: 1 for unlisted, 2 for listed, 3 for delisted  
-create_time | string | Optional | none | Created time  
-user_max_lend_volume | string | Optional | none | User maximum earn amount  
-user_total_amount | string | Optional | none | Total amount the user has invested in earn products  
-sale_status | integer | Optional | none | Sale status: 1 for on sale, 2 for sold out  
-      
-    
-    {
-      "id": 0,
-      "name": "string",
-      "asset": "string",
-      "lock_up_period": 0,
-      "min_lend_amount": "string",
-      "user_max_lend_amount": "string",
-      "total_lend_amount": "string",
-      "year_rate": "string",
-      "type": 0,
-      "pre_redeem": 0,
-      "reinvest": 0,
-      "redeem_account": 0,
-      "min_vip": 0,
-      "max_vip": 0,
-      "status": 0,
-      "create_time": "string",
-      "user_max_lend_volume": "string",
-      "user_total_amount": "string",
-      "sale_status": 0
-    }
-    
-    
-
-##  FixedTermHistoryRecord
-
-_Fixed-term earn history records_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer | Required | none | Record ID  
-order_id | integer(int64) | Optional | none | Order ID  
-user_id | integer(int64) | Required | none | User ID  
-asset | string | Required | none | Currency  
-uniq_time | string | Optional | none | Unique time identifier (date)  
-bonus_id | integer | Optional | none | Reward campaign ID  
-product_id | integer | Required | none | Product ID  
-bonus_asset | string | Optional | none | Reward currency  
-total_principal | string | Optional | none | Total principal  
-amount | string | Optional | none | Amount  
-asset_price | string | Optional | none | Currency price  
-status | integer | Required | none | Status  
-detail | string | Optional | none | Detail description  
-create_time | string | Required | none | Created time  
-create_at | integer | Required | none | Creation timestamp (in seconds)  
-lock_up_period | integer | Optional | none | Term  
-      
-    
-    {
-      "id": 0,
-      "order_id": 0,
-      "user_id": 0,
-      "asset": "string",
-      "uniq_time": "string",
-      "bonus_id": 0,
-      "product_id": 0,
-      "bonus_asset": "string",
-      "total_principal": "string",
-      "amount": "string",
-      "asset_price": "string",
-      "status": 0,
-      "detail": "string",
-      "create_time": "string",
-      "create_at": 0,
-      "lock_up_period": 0
     }
     
     
@@ -5328,61 +5244,86 @@ icon | string | Optional | none | Currency icon URL
     
     
 
-##  FixedTermBonusInfo
+##  FixedTermHistoryRecord
 
-_Bonus reward campaign information_
+_Fixed-term earn history records_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-id | integer | Optional | none | Activity ID  
-product_id | integer | Optional | none | Associated product ID  
-asset | string | Optional | none | Product currency  
+id | integer | Required | none | Record ID  
+order_id | integer(int64) | Optional | none | Order ID  
+user_id | integer(int64) | Required | none | User ID  
+asset | string | Required | none | Currency  
+uniq_time | string | Optional | none | Unique time identifier (date)  
+bonus_id | integer | Optional | none | Reward campaign ID  
+product_id | integer | Required | none | Product ID  
 bonus_asset | string | Optional | none | Reward currency  
-kyc_limit | string | Optional | none | KYC level restrictions, comma-separated  
-ladder_apr | [LadderApr] | Optional | none | Tiered annual interest rate  
-total_bonus_amount | string | Optional | none | Total reward amount  
-user_total_bonus_amount | string | Optional | none | Maximum reward per user  
-status | integer | Optional | none | Activity status: 1 for unlisted, 2 for listed, 3 for delisted  
-start_time | string | Optional | none | Activity start time  
-end_time | string | Optional | none | Activity end time  
-create_time | string | Optional | none | Created time  
-start_at | integer | Optional | none | Activity start timestamp (in seconds)  
-end_at | integer | Optional | none | Activity end timestamp (in seconds)  
-total_issued_amount | string | Optional | none | Total rewards distributed  
-user_total_issued_amount | string | Optional | none | Total rewards distributed to the user  
-bonus_asset_price | string | Optional | none | Reward currency price (denominated in USDT)  
-product_asset_price | string | Optional | none | Product currency price (denominated in USDT)  
-product_year_rate | string | Optional | none | Product base annual interest rate  
+total_principal | string | Optional | none | Total principal  
+amount | string | Optional | none | Amount  
+asset_price | string | Optional | none | Currency price  
+status | integer | Required | none | Status  
+detail | string | Optional | none | Detail description  
+create_time | string | Required | none | Created time  
+create_at | integer | Required | none | Creation timestamp (in seconds)  
+lock_up_period | integer | Optional | none | Term  
       
     
     {
       "id": 0,
-      "product_id": 0,
+      "order_id": 0,
+      "user_id": 0,
       "asset": "string",
+      "uniq_time": "string",
+      "bonus_id": 0,
+      "product_id": 0,
       "bonus_asset": "string",
-      "kyc_limit": "string",
-      "ladder_apr": [
-        {
-          "apr": "string",
-          "left": "string",
-          "right": "string"
-        }
-      ],
-      "total_bonus_amount": "string",
-      "user_total_bonus_amount": "string",
+      "total_principal": "string",
+      "amount": "string",
+      "asset_price": "string",
       "status": 0,
-      "start_time": "string",
-      "end_time": "string",
+      "detail": "string",
       "create_time": "string",
-      "start_at": 0,
-      "end_at": 0,
-      "total_issued_amount": "string",
-      "user_total_issued_amount": "string",
-      "bonus_asset_price": "string",
-      "product_asset_price": "string",
-      "product_year_rate": "string"
+      "create_at": 0,
+      "lock_up_period": 0
+    }
+    
+    
+
+##  FixedTermProductSimple
+
+_Fixed-term earn product (compact)_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer | Optional | none | Product ID  
+asset | string | Optional | none | Currency  
+lock_up_period | integer | Optional | none | Lock-up period (in days)  
+year_rate | string | Optional | none | Annual interest rate  
+type | integer | Optional | none | Product type: 1 for regular, 2 for VIP  
+pre_redeem | integer | Optional | none | Whether early redemption is supported: 0 for not supported, 1 for supported  
+reinvest | integer | Optional | none | Whether auto-renewal is supported: 0 for not supported, 1 for supported  
+simple_earn | integer | Optional | none | Whether fixed-to-flexible conversion is supported: 0 for not supported, 1 for supported  
+min_vip | integer | Optional | none | Minimum VIP level requirement, 0 means no restriction  
+max_vip | integer | Optional | none | Maximum VIP level requirement, 0 means no restriction  
+sale_status | integer | Optional | none | Sale status: 1 for on sale, 2 for sold out  
+      
+    
+    {
+      "id": 0,
+      "asset": "string",
+      "lock_up_period": 0,
+      "year_rate": "string",
+      "type": 0,
+      "pre_redeem": 0,
+      "reinvest": 0,
+      "simple_earn": 0,
+      "min_vip": 0,
+      "max_vip": 0,
+      "sale_status": 0
     }
     
     
@@ -5457,6 +5398,65 @@ create_time | string | Required | none | Created time
       "status": 0,
       "finish_time": "string",
       "create_time": "string"
+    }
+    
+    
+
+##  FixedTermBonusInfo
+
+_Bonus reward campaign information_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+id | integer | Optional | none | Activity ID  
+product_id | integer | Optional | none | Associated product ID  
+asset | string | Optional | none | Product currency  
+bonus_asset | string | Optional | none | Reward currency  
+kyc_limit | string | Optional | none | KYC level restrictions, comma-separated  
+ladder_apr | [LadderApr] | Optional | none | Tiered annual interest rate  
+total_bonus_amount | string | Optional | none | Total reward amount  
+user_total_bonus_amount | string | Optional | none | Maximum reward per user  
+status | integer | Optional | none | Activity status: 1 for unlisted, 2 for listed, 3 for delisted  
+start_time | string | Optional | none | Activity start time  
+end_time | string | Optional | none | Activity end time  
+create_time | string | Optional | none | Created time  
+start_at | integer | Optional | none | Activity start timestamp (in seconds)  
+end_at | integer | Optional | none | Activity end timestamp (in seconds)  
+total_issued_amount | string | Optional | none | Total rewards distributed  
+user_total_issued_amount | string | Optional | none | Total rewards distributed to the user  
+bonus_asset_price | string | Optional | none | Reward currency price (denominated in USDT)  
+product_asset_price | string | Optional | none | Product currency price (denominated in USDT)  
+product_year_rate | string | Optional | none | Product base annual interest rate  
+      
+    
+    {
+      "id": 0,
+      "product_id": 0,
+      "asset": "string",
+      "bonus_asset": "string",
+      "kyc_limit": "string",
+      "ladder_apr": [
+        {
+          "apr": "string",
+          "left": "string",
+          "right": "string"
+        }
+      ],
+      "total_bonus_amount": "string",
+      "user_total_bonus_amount": "string",
+      "status": 0,
+      "start_time": "string",
+      "end_time": "string",
+      "create_time": "string",
+      "start_at": 0,
+      "end_at": 0,
+      "total_issued_amount": "string",
+      "user_total_issued_amount": "string",
+      "bonus_asset_price": "string",
+      "product_asset_price": "string",
+      "product_year_rate": "string"
     }
     
     

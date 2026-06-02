@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/earnuni
 api_type: Earn
-updated_at: 2026-06-01 20:42:16.742019
+updated_at: 2026-06-02 20:21:15.582844
 ---
 
 # EarnUni
@@ -1055,6 +1055,50 @@ Code samples
 
 #  Schemas
 
+##  UniCurrencyInterest
+
+_UniCurrencyInterest_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | read-only | Currency  
+interest_status | string | Optional | read-only | Interest status: interest_dividend - Normal dividend, interest_reinvest - Interest reinvestment  
+      
+    
+    {
+      "currency": "string",
+      "interest_status": "string"
+    }
+    
+    
+
+##  UniCurrency
+
+_Currency detail_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | read-only | Currency name  
+min_lend_amount | string | Optional | read-only | The minimum lending amount, in the unit of the currency  
+max_lend_amount | string | Optional | read-only | The total maximum lending amount, in USDT  
+max_rate | string | Optional | read-only | Maximum rate (Hourly)  
+min_rate | string | Optional | read-only | Minimum rate (Hourly)  
+      
+    
+    {
+      "currency": "string",
+      "min_lend_amount": "string",
+      "max_lend_amount": "string",
+      "max_rate": "string",
+      "min_rate": "string"
+    }
+    
+    
+
 ##  UniLendRecord
 
 _Lending Record_
@@ -1175,50 +1219,6 @@ interest | string | Optional | read-only | Interest income
     {
       "currency": "string",
       "interest": "string"
-    }
-    
-    
-
-##  UniCurrencyInterest
-
-_UniCurrencyInterest_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | read-only | Currency  
-interest_status | string | Optional | read-only | Interest status: interest_dividend - Normal dividend, interest_reinvest - Interest reinvestment  
-      
-    
-    {
-      "currency": "string",
-      "interest_status": "string"
-    }
-    
-    
-
-##  UniCurrency
-
-_Currency detail_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | read-only | Currency name  
-min_lend_amount | string | Optional | read-only | The minimum lending amount, in the unit of the currency  
-max_lend_amount | string | Optional | read-only | The total maximum lending amount, in USDT  
-max_rate | string | Optional | read-only | Maximum rate (Hourly)  
-min_rate | string | Optional | read-only | Minimum rate (Hourly)  
-      
-    
-    {
-      "currency": "string",
-      "min_lend_amount": "string",
-      "max_lend_amount": "string",
-      "max_rate": "string",
-      "min_rate": "string"
     }
     
     

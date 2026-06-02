@@ -2,12 +2,12 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en
 api_type: REST
-updated_at: 2026-06-01 20:42:05.311682
+updated_at: 2026-06-02 20:21:01.897204
 ---
 
-# Gate API v4.106.89
+# Gate API v4.106.90
 
-v4.106.89 · Stable
+v4.106.90 · Stable
 
 
 Welcome to Gate API APIv4 provides operations related to spot, margin, and contract trading, including public interfaces for querying market data and authenticated private interfaces for implementing API-based automated trading.

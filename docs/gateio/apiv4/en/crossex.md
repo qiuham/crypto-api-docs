@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/crossex
 api_type: Trading
-updated_at: 2026-06-01 20:42:09.389459
+updated_at: 2026-06-02 20:21:06.656061
 ---
 
 # CrossEx
@@ -3788,23 +3788,92 @@ Code samples
 
 #  Schemas
 
-##  CrossexAccountUpdateRequest
+##  CrossexAccount
 
-_Change Account Request Body_
+_CrossexAccount_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-position_mode | string | Optional | none | Futures position mode (SINGLE/DUAL)  
-account_mode | string | Optional | none | Account mode (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
-exchange_type | string | Optional | none | Exchange (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to adjust futures position mode.  
+user_id | string | Required | none | User ID  
+available_margin | string | Required | none | Available Margin  
+margin_balance | string | Required | none | marginbalance  
+initial_margin | string | Required | none | Initial Margin  
+maintenance_margin | string | Required | none | Maintenance margin  
+initial_margin_rate | string | Required | none | Initial margin rate  
+maintenance_margin_rate | string | Required | none | Maintenance margin rate  
+position_mode | string | Required | none | Contract Position Mode  
+account_limit | string | Optional | none | Account limit  
+create_time | string | Required | none | Created time  
+update_time | string | Required | none | Update time  
+account_mode | string | Optional | none | Account Mode. CROSS_EXCHANGE: Cross-Exchange Mode; ISOLATED_EXCHANGE: Split-Exchange Mode  
+exchange_type | string | Optional | none | Exchange Type. When account_mode is CROSS_EXCHANGE, it must be CROSSEX; otherwise, it is another exchange.  
+assets | array | Required | none | Asset list: grouped by exchange and currency, returning per-account balances, margin, and PnL details  
+↳ CrossexAccountAsset | object | Optional | none | none  
+↳ user_id | string | Optional | none | User ID  
+↳ coin | string | Optional | none | Currency  
+↳ exchange_type | string | Optional | none | Exchange  
+↳ balance | string | Optional | none | Balance  
+↳ upnl | string | Optional | none | Unrealized P&L  
+↳ equity | string | Optional | none | Equity (only USDT has a value; other assets are 0)  
+↳ futures_initial_margin | string | Optional | none | Futures initial margin (only USDT has a value; other assets are 0)  
+↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin (only USDT has a value; other assets are 0)  
+↳ borrowing_initial_margin | string | Required | none | Margin trading initial margin (only USDT has a value; other assets are 0)  
+↳ borrowing_maintenance_margin | string | Required | none | Margin trading maintenance margin (only USDT has a value; other assets are 0)  
+↳ available_balance | string | Optional | none | Available Balance  
+↳ liability | string | Optional | none | Liabilities (only meaningful in isolated exchange mode; always 0 in cross-exchange mode)  
       
     
     {
+      "user_id": "string",
+      "available_margin": "string",
+      "margin_balance": "string",
+      "initial_margin": "string",
+      "maintenance_margin": "string",
+      "initial_margin_rate": "string",
+      "maintenance_margin_rate": "string",
       "position_mode": "string",
+      "account_limit": "string",
+      "create_time": "string",
+      "update_time": "string",
       "account_mode": "string",
-      "exchange_type": "string"
+      "exchange_type": "string",
+      "assets": [
+        {
+          "user_id": "string",
+          "coin": "string",
+          "exchange_type": "string",
+          "balance": "string",
+          "upnl": "string",
+          "equity": "string",
+          "futures_initial_margin": "string",
+          "futures_maintenance_margin": "string",
+          "borrowing_initial_margin": "string",
+          "borrowing_maintenance_margin": "string",
+          "available_balance": "string",
+          "liability": "string"
+        }
+      ]
+    }
+    
+    
+
+##  CrossexOrderActionResponse
+
+_CrossexOrderActionResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+order_id | string | Required | none | Order ID  
+text | string | Required | none | User-defined Order ID  
+      
+    
+    {
+      "order_id": "string",
+      "text": "string"
     }
     
     
@@ -3828,16 +3897,177 @@ price | string | Optional | none | modify price
     
     
 
-##  CrossexOrderActionResponse
+##  CrossexConvertQuoteResponse
 
-_CrossexOrderActionResponse_
+_CrossexConvertQuoteResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+quote_id | string | Required | none | Quote ID  
+valid_ms | string | Required | none | Valid time (milliseconds timestamp)  
+from_coin | string | Required | none | Asset Sold  
+to_coin | string | Required | none | Asset Bought  
+from_amount | string | Required | none | Amount to sell  
+to_amount | string | Required | none | Amount to buy  
+price | string | Required | none | Price  
+      
+    
+    {
+      "quote_id": "string",
+      "valid_ms": "string",
+      "from_coin": "string",
+      "to_coin": "string",
+      "from_amount": "string",
+      "to_amount": "string",
+      "price": "string"
+    }
+    
+    
+
+##  CrossexTransferRequest
+
+_Fund Transfer Request Body_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+coin | string | Required | none | Currency  
+amount | string | Required | none | Transfer amount  
+from | string | Required | none | `from` receiving account (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
+to | string | Required | none | `to` debit account (funds withdrawn from): `CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`  
+text | string | Optional | none | User-defined ID  
+      
+    
+    {
+      "coin": "string",
+      "amount": "string",
+      "from": "string",
+      "to": "string",
+      "text": "string"
+    }
+    
+    
+
+##  CrossexOrderRequest
+
+_Place Order Request Body_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+text | string | Optional | none | Client-defined Order ID, supports letters (a-z), numbers (0-9), symbols (-, _) only  
+symbol | string | Required | none | Unique identifier `{Exchange}_{Business}_{Base}_{Counter}`  
+Examples:  
+To send a Binance spot order on `ADA/USDT`, use `BINANCE_SPOT_ADA_USDT`;  
+For an ADA/USDT-margined USDT perpetual futures order on OKX, use `OKX_FUTURE_ADA_USDT`;  
+For ADA/USDT margin trading on Gate, use `GATE_MARGIN_ADA_USDT`;  
+For ADA/USDT spot trading on Bybit, use `BYBIT_SPOT_ADA_USDT`;  
+For ADA/USDT-linked futures routing on Kraken, use `KRAKEN_FUTURE_ADA_USD`;  
+Supports spot trades, USDT-margined perpetual futures, and spot margin templates. BYBIT omits spot margin for now; Kraken omits dedicated spot/margin legs inside CrossEx.  
+side | string | Required | none | BUY, SELL  
+type | string | Optional | none | Order type (default: `LIMIT`; supported types: `LIMIT`, `MARKET`)  
+time_in_force | string | Optional | none | Default GTC, supports enumerated types: GTC, IOC, FOK, POC  
+GTC: GoodTillCancelled  
+IOC: ImmediateOrCancelled  
+FOK: FillOrKill  
+POC: PendingOrCancelled or PostOnly  
+qty | string | Optional | none | Order quantity (required unless spot market buy)  
+price | string | Optional | none | Limit Order Price (Required for Limit Orders)  
+quote_qty | string | Optional | none | Order quote quantity; required for spot and margin market buy orders  
+reduce_only | string | Optional | none | Reduce-only: `true` or `false`  
+position_side | string | Optional | none | Position side: `NONE`, `LONG`, `SHORT`  
+Defaults to `NONE` (single position mode) if not specified  
+  
+####  Enumerated Values
+
+Enumerated ValuesProperty | Value  
+---|---  
+side | BUY  
+side | SELL  
+type | LIMIT  
+type | MARKET  
+time_in_force | GTC  
+time_in_force | IOC  
+time_in_force | FOK  
+time_in_force | POC  
+reduce_only | true  
+reduce_only | false  
+position_side | LONG  
+position_side | SHORT  
+position_side | NONE  
+      
+    
+    {
+      "text": "string",
+      "symbol": "string",
+      "side": "BUY",
+      "type": "LIMIT",
+      "time_in_force": "GTC",
+      "qty": "string",
+      "price": "string",
+      "quote_qty": "string",
+      "reduce_only": "true",
+      "position_side": "LONG"
+    }
+    
+    
+
+##  CrossexAccountUpdateResponse
+
+_CrossexAccountUpdateResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+position_mode | string | Optional | none | Requested futures position mode to modify (SINGLE/DUAL)  
+account_mode | string | Optional | none | Requested account mode to modify (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
+exchange_type | string | Optional | none | Exchange targeted by the requested change (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to change futures position mode.  
+      
+    
+    {
+      "position_mode": "string",
+      "account_mode": "string",
+      "exchange_type": "string"
+    }
+    
+    
+
+##  CrossexAccountUpdateRequest
+
+_Change Account Request Body_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+position_mode | string | Optional | none | Futures position mode (SINGLE/DUAL)  
+account_mode | string | Optional | none | Account mode (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
+exchange_type | string | Optional | none | Exchange (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to adjust futures position mode.  
+      
+    
+    {
+      "position_mode": "string",
+      "account_mode": "string",
+      "exchange_type": "string"
+    }
+    
+    
+
+##  CrossexConvertOrderResponse
+
+_CrossexConvertOrderResponse_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
 order_id | string | Required | none | Order ID  
-text | string | Required | none | User-defined Order ID  
+text | string | Required | none | Order ID (cannot be customized)  
       
     
     {
@@ -3931,16 +4161,35 @@ update_time | string | Required | none | Update time
     
     
 
-##  CrossexLeverageResponse
+##  CrossexTransferResponse
 
-_CrossexLeverageResponse_
+_CrossexTransferResponse_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+tx_id | string | Required | none | Order ID  
+text | string | Required | none | User-defined Order ID  
+      
+    
+    {
+      "tx_id": "string",
+      "text": "string"
+    }
+    
+    
+
+##  CrossexLeverageRequest
+
+_Change Leverage Request Body (for futures/margin)_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
 symbol | string | Required | none | Currency pair  
-leverage | string | Required | none | Requested Modified Leverage  
+leverage | string | Required | none | leverage  
       
     
     {
@@ -3950,31 +4199,25 @@ leverage | string | Required | none | Requested Modified Leverage
     
     
 
-##  CrossexConvertQuoteResponse
+##  CrossexClosePositionRequest
 
-_CrossexConvertQuoteResponse_
+_Full Close Position Request Body_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-quote_id | string | Required | none | Quote ID  
-valid_ms | string | Required | none | Valid time (milliseconds timestamp)  
-from_coin | string | Required | none | Asset Sold  
-to_coin | string | Required | none | Asset Bought  
-from_amount | string | Required | none | Amount to sell  
-to_amount | string | Required | none | Amount to buy  
-price | string | Required | none | Price  
+symbol | string | Required | none | Trading Pair  
+1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
+2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT  
+position_side | string | Optional | none | Position Direction  
+1\. For leveraged positions, this parameter must be passed  
+2\. For contract positions, pass selectively based on your contract holding method  
       
     
     {
-      "quote_id": "string",
-      "valid_ms": "string",
-      "from_coin": "string",
-      "to_coin": "string",
-      "from_amount": "string",
-      "to_amount": "string",
-      "price": "string"
+      "symbol": "string",
+      "position_side": "string"
     }
     
     
@@ -4043,84 +4286,21 @@ delist_time | string | Required | none | Millisecond timestamp; `0` means not de
     
     
 
-##  CrossexAccountUpdateResponse
+##  CrossexLeverageResponse
 
-_CrossexAccountUpdateResponse_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-position_mode | string | Optional | none | Requested futures position mode to modify (SINGLE/DUAL)  
-account_mode | string | Optional | none | Requested account mode to modify (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
-exchange_type | string | Optional | none | Exchange targeted by the requested change (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to change futures position mode.  
-      
-    
-    {
-      "position_mode": "string",
-      "account_mode": "string",
-      "exchange_type": "string"
-    }
-    
-    
-
-##  CrossexTransferResponse
-
-_CrossexTransferResponse_
+_CrossexLeverageResponse_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-tx_id | string | Required | none | Order ID  
-text | string | Required | none | User-defined Order ID  
-      
-    
-    {
-      "tx_id": "string",
-      "text": "string"
-    }
-    
-    
-
-##  CrossexConvertOrderResponse
-
-_CrossexConvertOrderResponse_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-order_id | string | Required | none | Order ID  
-text | string | Required | none | Order ID (cannot be customized)  
-      
-    
-    {
-      "order_id": "string",
-      "text": "string"
-    }
-    
-    
-
-##  CrossexClosePositionRequest
-
-_Full Close Position Request Body_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-symbol | string | Required | none | Trading Pair  
-1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
-2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT  
-position_side | string | Optional | none | Position Direction  
-1\. For leveraged positions, this parameter must be passed  
-2\. For contract positions, pass selectively based on your contract holding method  
+symbol | string | Required | none | Currency pair  
+leverage | string | Required | none | Requested Modified Leverage  
       
     
     {
       "symbol": "string",
-      "position_side": "string"
+      "leverage": "string"
     }
     
     
@@ -4138,184 +4318,4 @@ quote_id | string | Required | none | Inquiry ID
     
     {
       "quote_id": "string"
-    }
-    
-    
-
-##  CrossexTransferRequest
-
-_Fund Transfer Request Body_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-coin | string | Required | none | Currency  
-amount | string | Required | none | Transfer amount  
-from | string | Required | none | `from` receiving account (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
-to | string | Required | none | `to` debit account (funds withdrawn from): `CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`  
-text | string | Optional | none | User-defined ID  
-      
-    
-    {
-      "coin": "string",
-      "amount": "string",
-      "from": "string",
-      "to": "string",
-      "text": "string"
-    }
-    
-    
-
-##  CrossexLeverageRequest
-
-_Change Leverage Request Body (for futures/margin)_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-symbol | string | Required | none | Currency pair  
-leverage | string | Required | none | leverage  
-      
-    
-    {
-      "symbol": "string",
-      "leverage": "string"
-    }
-    
-    
-
-##  CrossexAccount
-
-_CrossexAccount_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-user_id | string | Required | none | User ID  
-available_margin | string | Required | none | Available Margin  
-margin_balance | string | Required | none | marginbalance  
-initial_margin | string | Required | none | Initial Margin  
-maintenance_margin | string | Required | none | Maintenance margin  
-initial_margin_rate | string | Required | none | Initial margin rate  
-maintenance_margin_rate | string | Required | none | Maintenance margin rate  
-position_mode | string | Required | none | Contract Position Mode  
-account_limit | string | Optional | none | Account limit  
-create_time | string | Required | none | Created time  
-update_time | string | Required | none | Update time  
-account_mode | string | Optional | none | Account Mode. CROSS_EXCHANGE: Cross-Exchange Mode; ISOLATED_EXCHANGE: Split-Exchange Mode  
-exchange_type | string | Optional | none | Exchange Type. When account_mode is CROSS_EXCHANGE, it must be CROSSEX; otherwise, it is another exchange.  
-assets | array | Required | none | Asset list: grouped by exchange and currency, returning per-account balances, margin, and PnL details  
-↳ CrossexAccountAsset | object | Optional | none | none  
-↳ user_id | string | Optional | none | User ID  
-↳ coin | string | Optional | none | Currency  
-↳ exchange_type | string | Optional | none | Exchange  
-↳ balance | string | Optional | none | Balance  
-↳ upnl | string | Optional | none | Unrealized P&L  
-↳ equity | string | Optional | none | Equity (only USDT has a value; other assets are 0)  
-↳ futures_initial_margin | string | Optional | none | Futures initial margin (only USDT has a value; other assets are 0)  
-↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin (only USDT has a value; other assets are 0)  
-↳ borrowing_initial_margin | string | Required | none | Margin trading initial margin (only USDT has a value; other assets are 0)  
-↳ borrowing_maintenance_margin | string | Required | none | Margin trading maintenance margin (only USDT has a value; other assets are 0)  
-↳ available_balance | string | Optional | none | Available Balance  
-↳ liability | string | Optional | none | Liabilities (only meaningful in isolated exchange mode; always 0 in cross-exchange mode)  
-      
-    
-    {
-      "user_id": "string",
-      "available_margin": "string",
-      "margin_balance": "string",
-      "initial_margin": "string",
-      "maintenance_margin": "string",
-      "initial_margin_rate": "string",
-      "maintenance_margin_rate": "string",
-      "position_mode": "string",
-      "account_limit": "string",
-      "create_time": "string",
-      "update_time": "string",
-      "account_mode": "string",
-      "exchange_type": "string",
-      "assets": [
-        {
-          "user_id": "string",
-          "coin": "string",
-          "exchange_type": "string",
-          "balance": "string",
-          "upnl": "string",
-          "equity": "string",
-          "futures_initial_margin": "string",
-          "futures_maintenance_margin": "string",
-          "borrowing_initial_margin": "string",
-          "borrowing_maintenance_margin": "string",
-          "available_balance": "string",
-          "liability": "string"
-        }
-      ]
-    }
-    
-    
-
-##  CrossexOrderRequest
-
-_Place Order Request Body_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-text | string | Optional | none | Client-defined Order ID, supports letters (a-z), numbers (0-9), symbols (-, _) only  
-symbol | string | Required | none | Unique identifier `{Exchange}_{Business}_{Base}_{Counter}`  
-Examples:  
-To send a Binance spot order on `ADA/USDT`, use `BINANCE_SPOT_ADA_USDT`;  
-For an ADA/USDT-margined USDT perpetual futures order on OKX, use `OKX_FUTURE_ADA_USDT`;  
-For ADA/USDT margin trading on Gate, use `GATE_MARGIN_ADA_USDT`;  
-For ADA/USDT spot trading on Bybit, use `BYBIT_SPOT_ADA_USDT`;  
-For ADA/USDT-linked futures routing on Kraken, use `KRAKEN_FUTURE_ADA_USD`;  
-Supports spot trades, USDT-margined perpetual futures, and spot margin templates. BYBIT omits spot margin for now; Kraken omits dedicated spot/margin legs inside CrossEx.  
-side | string | Required | none | BUY, SELL  
-type | string | Optional | none | Order type (default: `LIMIT`; supported types: `LIMIT`, `MARKET`)  
-time_in_force | string | Optional | none | Default GTC, supports enumerated types: GTC, IOC, FOK, POC  
-GTC: GoodTillCancelled  
-IOC: ImmediateOrCancelled  
-FOK: FillOrKill  
-POC: PendingOrCancelled or PostOnly  
-qty | string | Optional | none | Order quantity (required unless spot market buy)  
-price | string | Optional | none | Limit Order Price (Required for Limit Orders)  
-quote_qty | string | Optional | none | Order quote quantity; required for spot and margin market buy orders  
-reduce_only | string | Optional | none | Reduce-only: `true` or `false`  
-position_side | string | Optional | none | Position side: `NONE`, `LONG`, `SHORT`  
-Defaults to `NONE` (single position mode) if not specified  
-  
-####  Enumerated Values
-
-Enumerated ValuesProperty | Value  
----|---  
-side | BUY  
-side | SELL  
-type | LIMIT  
-type | MARKET  
-time_in_force | GTC  
-time_in_force | IOC  
-time_in_force | FOK  
-time_in_force | POC  
-reduce_only | true  
-reduce_only | false  
-position_side | LONG  
-position_side | SHORT  
-position_side | NONE  
-      
-    
-    {
-      "text": "string",
-      "symbol": "string",
-      "side": "BUY",
-      "type": "LIMIT",
-      "time_in_force": "GTC",
-      "qty": "string",
-      "price": "string",
-      "quote_qty": "string",
-      "reduce_only": "true",
-      "position_side": "LONG"
     }

@@ -2,20 +2,17 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/crossex/en
 api_type: Trading
-updated_at: 2026-06-01 20:43:29.365000
+updated_at: 2026-06-02 20:22:33.754733
 ---
 
 # Gate CrossEx API v1.0.1
 
-* Python 
-  * Shell 
-
 v1.0.1 · Stable
 
 
-The API fully supports core capabilities of cross-exchange accounts, covering full-process operations such as fund transfers, queries, trading, account information modifications, subscriptions, and push notifications.
-
 Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+The API fully supports core capabilities of cross-exchange accounts, covering full-process operations such as fund transfers, queries, trading, account information modifications, subscriptions, and push notifications.
 
 ##  Access URL
 
@@ -465,60 +462,6 @@ CrossEx is a unified multi-venue exchange surface: Binance, OKX, Gate, Bybit, an
 
 ##  Query symbol information
 
-GET`/crossex/rule/symbols`
-
-GET `/crossex/rule/symbols`
-
-_Query symbol information_
-
-Query Trading Pair Information
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbols | query | string | Optional | List of trading pairs, comma-separated.  
-Example:  
-BINANCE_FUTURE_ADA_USDT,OKX_FUTURE_ADA_USDT  
-  
-####  Detailed descriptions
-
-**symbols** : List of trading pairs, comma-separated.  
-Example:  
-BINANCE_FUTURE_ADA_USDT,OKX_FUTURE_ADA_USDT
-
-### Responses
-
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
-
-ResponsesStatus | Meaning | Description | Schema  
----|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Symbol]  
-  
-### Response Schema
-
-Status Code **200**
-
-Name | Type | Description  
----|---|---  
-_None_ | array | none  
-» symbol | string | Unique trading pair identifier in the form ExchangeType_BusinessType_Base_Counter.  
-» exchange_type | string | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
-» business_type | string | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
-» state | string | Status (`live` running / `suspend` paused).  
-» min_size | string | Minimum order size allowed by the contract  
-» min_notional | string | Minimum Order Value  
-» lot_size | string | Quantity Step  
-» tick_size | string | Price Step  
-» max_num_orders | string | maximumopen orderamount  
-» max_market_size | string | Maximum Market Order Quantity  
-» max_limit_size | string | Maximum order quantity for limit orders.  
-» contract_size | string | Contract Multiplier  
-» liquidation_fee | string | Liquidation Fee Rate  
-» delist_time | string | Millisecond timestamp; `0` means not delisted.  
-  
-This operation does not require authentication 
-
 Code samples
     
     
@@ -541,6 +484,26 @@ Code samples
       -H 'Accept: application/json'
     
     
+
+GET `/crossex/rule/symbols`
+
+_Query symbol information_
+
+Query Trading Pair Information
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbols | query | string | Optional | List of trading pairs, comma-separated.  
+Example:  
+BINANCE_FUTURE_ADA_USDT,OKX_FUTURE_ADA_USDT  
+  
+####  Detailed descriptions
+
+**symbols** : List of trading pairs, comma-separated.  
+Example:  
+BINANCE_FUTURE_ADA_USDT,OKX_FUTURE_ADA_USDT
 
 > Example responses
 
@@ -583,37 +546,13 @@ Code samples
     ]
     
 
-##  Query risk limit information
-
-GET`/crossex/rule/risk_limits`
-
-GET `/crossex/rule/risk_limits`
-
-_Query risk limit information_
-
-Query risk limit information for futures/margin trading pairs
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbols | query | string | Required | Trading Pair List, multiple separated by commas  
-Example values:  
-BINANCE_FUTURE_ADA_USDT,GATE_MARGIN_ADA_USDT  
-  
-####  Detailed descriptions
-
-**symbols** : Trading Pair List, multiple separated by commas  
-Example values:  
-BINANCE_FUTURE_ADA_USDT,GATE_MARGIN_ADA_USDT
-
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Symbol]  
   
 ### Response Schema
 
@@ -621,18 +560,25 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexRiskLimit | object | none  
-»» symbol | string | none  
-»» tiers | array | none  
-»»» CrossexRiskLimitTier | object | none  
-»»»» min_risk_limit_value | string | Minimum risk limit value  
-»»»» max_risk_limit_value | string | Maximum risk limit value  
-»»»» quick_cal_amount | string | Quick-calculation amount  
-»»»» leverage_max | string | Maximum leverage  
-»»»» maintenance_rate | string | Maintenance margin rate  
-»»»» tier | string | Tier  
+_None_ | array | none  
+» symbol | string | Unique trading pair identifier in the form ExchangeType_BusinessType_Base_Counter.  
+» exchange_type | string | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
+» business_type | string | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
+» state | string | Status (`live` running / `suspend` paused).  
+» min_size | string | Minimum order size allowed by the contract  
+» min_notional | string | Minimum Order Value  
+» lot_size | string | Quantity Step  
+» tick_size | string | Price Step  
+» max_num_orders | string | maximumopen orderamount  
+» max_market_size | string | Maximum Market Order Quantity  
+» max_limit_size | string | Maximum order quantity for limit orders.  
+» contract_size | string | Contract Multiplier  
+» liquidation_fee | string | Liquidation Fee Rate  
+» delist_time | string | Millisecond timestamp; `0` means not delisted.  
   
 This operation does not require authentication 
+
+##  Query risk limit information
 
 Code samples
     
@@ -656,6 +602,26 @@ Code samples
       -H 'Accept: application/json'
     
     
+
+GET `/crossex/rule/risk_limits`
+
+_Query risk limit information_
+
+Query risk limit information for futures/margin trading pairs
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbols | query | string | Required | Trading Pair List, multiple separated by commas  
+Example values:  
+BINANCE_FUTURE_ADA_USDT,GATE_MARGIN_ADA_USDT  
+  
+####  Detailed descriptions
+
+**symbols** : Trading Pair List, multiple separated by commas  
+Example values:  
+BINANCE_FUTURE_ADA_USDT,GATE_MARGIN_ADA_USDT
 
 > Example responses
 
@@ -687,20 +653,6 @@ Code samples
     ]
     
 
-##  Query supported transfer currencies
-
-GET`/crossex/transfers/coin`
-
-GET `/crossex/transfers/coin`
-
-_Query supported transfer currencies_
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-coin | query | string | Optional | Query by specified currency name  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -715,14 +667,20 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexTransferCoin | object | none  
-»» coin | string | Currency  
-»» min_trans_amount | number | Minimum Transfer Quantity (including estimated fees)  
-»» est_fee | number | Estimated Fee  
-»» precision | integer | Precision  
-»» is_disabled | integer | If it is disabled. 0 means NOT being disabled  
+» CrossexRiskLimit | object | none  
+»» symbol | string | none  
+»» tiers | array | none  
+»»» CrossexRiskLimitTier | object | none  
+»»»» min_risk_limit_value | string | Minimum risk limit value  
+»»»» max_risk_limit_value | string | Maximum risk limit value  
+»»»» quick_cal_amount | string | Quick-calculation amount  
+»»»» leverage_max | string | Maximum leverage  
+»»»» maintenance_rate | string | Maintenance margin rate  
+»»»» tier | string | Tier  
   
 This operation does not require authentication 
+
+##  Query supported transfer currencies
 
 Code samples
     
@@ -747,6 +705,16 @@ Code samples
     
     
 
+GET `/crossex/transfers/coin`
+
+_Query supported transfer currencies_
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+coin | query | string | Optional | Query by specified currency name  
+  
 > Example responses
 
 > 200 Response
@@ -763,54 +731,30 @@ Code samples
     ]
     
 
-##  Fund Transfer🔒 Authenticated
-
-POST`/crossex/transfers`
-
-POST `/crossex/transfers`
-
-_Fund Transfer_
-
-Rate limit: 10 requests per 10 seconds
-
-  * In cross-exchange mode, when transferring USDT, either `from` or `to` must be `SPOT`, and the other side must be `CROSSEX`. If `CROSSEX_${exchange_type}` (e.g. `CROSSEX_GATE`) is provided, it will be automatically treated as `CROSSEX`.
-  * In isolated exchange mode, when transferring USDT, either `from` or `to` must be `CROSSEX_${exchange_type}`, and the other side must be `SPOT` or `CROSSEX_${exchange_type}`. If `CROSSEX` is provided, it will be automatically treated as `CROSSEX_GATE`.
-  * When transferring non-USDT assets to or from CrossEx, neither `from` nor `to` can be `CROSSEX`; `CROSSEX_${exchange_type}` must be explicitly specified.
-  * When transferring non-USDT assets, transfers between `CROSSEX_{exchange_type}` accounts are supported, for example: from = `CROSSEX_BINANCE`, to = `CROSSEX_GATE`
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexTransferRequest | Optional | none  
-↳ coin | body | string | Required | Currency  
-↳ amount | body | string | Required | Transfer amount  
-↳ from | body | string | Required | `from` receiving account (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
-↳ to | body | string | Required | `to` debit account (funds withdrawn from): `CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`  
-↳ text | body | string | Optional | User-defined ID  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexTransferResponse  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
   
 ### Response Schema
 
 Status Code **200**
 
-_CrossexTransferResponse_
-
 Name | Type | Description  
 ---|---|---  
-» tx_id | string | Order ID  
-» text | string | User-defined Order ID  
+» CrossexTransferCoin | object | none  
+»» coin | string | Currency  
+»» min_trans_amount | number | Minimum Transfer Quantity (including estimated fees)  
+»» est_fee | number | Estimated Fee  
+»» precision | integer | Precision  
+»» is_disabled | integer | If it is disabled. 0 means NOT being disabled  
   
-WARNING
+This operation does not require authentication 
 
-To perform this operation, you must be authenticated by API key and secret
+##  Fund Transfer
 
 Code samples
     
@@ -856,6 +800,17 @@ Code samples
     
     
 
+POST `/crossex/transfers`
+
+_Fund Transfer_
+
+Rate limit: 10 requests per 10 seconds
+
+  * In cross-exchange mode, when transferring USDT, either `from` or `to` must be `SPOT`, and the other side must be `CROSSEX`. If `CROSSEX_${exchange_type}` (e.g. `CROSSEX_GATE`) is provided, it will be automatically treated as `CROSSEX`.
+  * In isolated exchange mode, when transferring USDT, either `from` or `to` must be `CROSSEX_${exchange_type}`, and the other side must be `SPOT` or `CROSSEX_${exchange_type}`. If `CROSSEX` is provided, it will be automatically treated as `CROSSEX_GATE`.
+  * When transferring non-USDT assets to or from CrossEx, neither `from` nor `to` can be `CROSSEX`; `CROSSEX_${exchange_type}` must be explicitly specified.
+  * When transferring non-USDT assets, transfers between `CROSSEX_{exchange_type}` accounts are supported, for example: from = `CROSSEX_BINANCE`, to = `CROSSEX_GATE`
+
 > Body parameter
     
     
@@ -867,6 +822,17 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexTransferRequest | Optional | none  
+↳ coin | body | string | Required | Currency  
+↳ amount | body | string | Required | Transfer amount  
+↳ from | body | string | Required | `from` receiving account (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
+↳ to | body | string | Required | `to` debit account (funds withdrawn from): `CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`  
+↳ text | body | string | Optional | User-defined ID  
+  
 > Example responses
 
 > 200 Response
@@ -878,60 +844,30 @@ Code samples
     }
     
 
-##  Query Fund Transfer History🔒 Authenticated
-
-GET`/crossex/transfers`
-
-GET `/crossex/transfers`
-
-_Query Fund Transfer History_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-coin | query | string | Optional | Query by specified currency name  
-order_id | query | string | Optional | Supports querying by the order ID returned when creating an order (tx_id), as well as a user-defined custom ID specified at creation (text)  
-from | query | integer | Optional | Start timestamp for the query  
-to | query | integer | Optional | End timestamp for the query, defaults to current time if not specified  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number returned by list, max 1000  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexTransferResponse  
   
 ### Response Schema
 
 Status Code **200**
 
+_CrossexTransferResponse_
+
 Name | Type | Description  
 ---|---|---  
-» CrossexTransferRecord | object | none  
-»» id | string | Order ID  
-»» text | string | Client Custom ID  
-»» from_account_type | string | `from` credit account touched by this operation (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
-»» to_account_type | string | `to` debit account handled by this operation (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
-»» coin | string | Currency  
-»» amount | string | Transfer amount, the amount requested for the transfer  
-»» actual_receive | string | Actual credited amount (has a value when status = SUCCESS; empty for other statuses)  
-»» status | string | Transfer Status  
-\- `FAIL`: Failed  
-\- `SUCCESS`: Successful  
-\- `PENDING`: Transfer in Progress  
-»» fail_reason | string | Failure reason (has a value when status = FAIL; empty for other statuses)  
-»» create_time | integer | Creation time of order  
-»» update_time | integer | OrderUpdateTime  
+» tx_id | string | Order ID  
+» text | string | User-defined Order ID  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Fund Transfer History
 
 Code samples
     
@@ -976,6 +912,23 @@ Code samples
     
     
 
+GET `/crossex/transfers`
+
+_Query Fund Transfer History_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+coin | query | string | Optional | Query by specified currency name  
+order_id | query | string | Optional | Supports querying by the order ID returned when creating an order (tx_id), as well as a user-defined custom ID specified at creation (text)  
+from | query | integer | Optional | Start timestamp for the query  
+to | query | integer | Optional | End timestamp for the query, defaults to current time if not specified  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number returned by list, max 1000  
+  
 > Example responses
 
 > 200 Response
@@ -1011,15 +964,102 @@ Code samples
     ]
     
 
-##  Create an order🔒 Authenticated
+### Responses
 
-POST`/crossex/orders`
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+
+ResponsesStatus | Meaning | Description | Schema  
+---|---|---|---  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+  
+### Response Schema
+
+Status Code **200**
+
+Name | Type | Description  
+---|---|---  
+» CrossexTransferRecord | object | none  
+»» id | string | Order ID  
+»» text | string | Client Custom ID  
+»» from_account_type | string | `from` credit account touched by this operation (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
+»» to_account_type | string | `to` debit account handled by this operation (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
+»» coin | string | Currency  
+»» amount | string | Transfer amount, the amount requested for the transfer  
+»» actual_receive | string | Actual credited amount (has a value when status = SUCCESS; empty for other statuses)  
+»» status | string | Transfer Status  
+\- `FAIL`: Failed  
+\- `SUCCESS`: Successful  
+\- `PENDING`: Transfer in Progress  
+»» fail_reason | string | Failure reason (has a value when status = FAIL; empty for other statuses)  
+»» create_time | integer | Creation time of order  
+»» update_time | integer | OrderUpdateTime  
+  
+WARNING
+
+To perform this operation, you must be authenticated by API key and secret
+
+##  Create an order
+
+Code samples
+    
+    
+    # coding: utf-8
+    import requests
+    import time
+    import hashlib
+    import hmac
+    
+    host = "//"
+    prefix = "//"
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    
+    url = '/crossex/orders'
+    query_param = ''
+    body='{"symbol":"BINANCE_SPOT_ADA_USDT","side":"BUY","type":"MARKET","quote_qty":"10"}'
+    # for `gen_sign` implementation, refer to section `Authentication` above
+    sign_headers = gen_sign('POST', prefix + url, query_param, body)
+    headers.update(sign_headers)
+    r = requests.request('POST', host + prefix + url, headers=headers, data=body)
+    print(r.json())
+    
+    
+    
+    
+    key="YOUR_API_KEY"
+    secret="YOUR_API_SECRET"
+    host="//"
+    prefix="//"
+    method="POST"
+    url="/crossex/orders"
+    query_param=""
+    body_param='{"symbol":"BINANCE_SPOT_ADA_USDT","side":"BUY","type":"MARKET","quote_qty":"10"}'
+    timestamp=$(date +%s)
+    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
+    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
+    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
+    
+    full_url="$host$prefix$url"
+    curl -X $method $full_url -d "$body_param" -H "Content-Type: application/json" \
+        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
+    
+    
 
 POST `/crossex/orders`
 
 _Create an order_
 
 Rate Limit: 100 requests per 10 seconds, maximum 1,000 open orders per user
+
+> Body parameter
+    
+    
+    {
+      "symbol": "BINANCE_SPOT_ADA_USDT",
+      "side": "BUY",
+      "type": "MARKET",
+      "quote_qty": "10"
+    }
+    
 
 ### Parameters
 
@@ -1087,84 +1127,6 @@ Enumerated ValuesParameter | Value
 » position_side | SHORT  
 » position_side | NONE  
   
-### Responses
-
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
-
-ResponsesStatus | Meaning | Description | Schema  
----|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexOrderActionResponse  
-  
-### Response Schema
-
-Status Code **200**
-
-_CrossexOrderActionResponse_
-
-Name | Type | Description  
----|---|---  
-» order_id | string | Order ID  
-» text | string | User-defined Order ID  
-  
-WARNING
-
-To perform this operation, you must be authenticated by API key and secret
-
-Code samples
-    
-    
-    # coding: utf-8
-    import requests
-    import time
-    import hashlib
-    import hmac
-    
-    host = "//"
-    prefix = "//"
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    
-    url = '/crossex/orders'
-    query_param = ''
-    body='{"symbol":"BINANCE_SPOT_ADA_USDT","side":"BUY","type":"MARKET","quote_qty":"10"}'
-    # for `gen_sign` implementation, refer to section `Authentication` above
-    sign_headers = gen_sign('POST', prefix + url, query_param, body)
-    headers.update(sign_headers)
-    r = requests.request('POST', host + prefix + url, headers=headers, data=body)
-    print(r.json())
-    
-    
-    
-    
-    key="YOUR_API_KEY"
-    secret="YOUR_API_SECRET"
-    host="//"
-    prefix="//"
-    method="POST"
-    url="/crossex/orders"
-    query_param=""
-    body_param='{"symbol":"BINANCE_SPOT_ADA_USDT","side":"BUY","type":"MARKET","quote_qty":"10"}'
-    timestamp=$(date +%s)
-    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
-    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
-    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
-    
-    full_url="$host$prefix$url"
-    curl -X $method $full_url -d "$body_param" -H "Content-Type: application/json" \
-        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
-    
-    
-
-> Body parameter
-    
-    
-    {
-      "symbol": "BINANCE_SPOT_ADA_USDT",
-      "side": "BUY",
-      "type": "MARKET",
-      "quote_qty": "10"
-    }
-    
-
 > Example responses
 
 > 200 Response
@@ -1176,22 +1138,6 @@ Code samples
     }
     
 
-##  Cancel Order🔒 Authenticated
-
-DELETE`/crossex/orders/{order_id}`
-
-DELETE `/crossex/orders/{order_id}`
-
-_Cancel Order_
-
-Rate Limit: 100 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-order_id | path | string | Required | Support Order ID or Text for Cancel Order  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -1214,6 +1160,8 @@ Name | Type | Description
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Cancel Order
 
 Code samples
     
@@ -1258,6 +1206,18 @@ Code samples
     
     
 
+DELETE `/crossex/orders/{order_id}`
+
+_Cancel Order_
+
+Rate Limit: 100 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+order_id | path | string | Required | Support Order ID or Text for Cancel Order  
+  
 > Example responses
 
 > 200 Response
@@ -1269,25 +1229,6 @@ Code samples
     }
     
 
-##  Modify Order🔒 Authenticated
-
-PUT`/crossex/orders/{order_id}`
-
-PUT `/crossex/orders/{order_id}`
-
-_Modify Order_
-
-Rate Limit: 100 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-order_id | path | string | Required | Support Order ID or Text for Modify Order  
-body | body | CrossexOrderUpdateRequest | Optional | none  
-↳ qty | body | string | Optional | modify amount  
-↳ price | body | string | Optional | modify price  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -1310,6 +1251,8 @@ Name | Type | Description
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Modify Order
 
 Code samples
     
@@ -1355,6 +1298,12 @@ Code samples
     
     
 
+PUT `/crossex/orders/{order_id}`
+
+_Modify Order_
+
+Rate Limit: 100 requests per 10 seconds
+
 > Body parameter
     
     
@@ -1364,6 +1313,15 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+order_id | path | string | Required | Support Order ID or Text for Modify Order  
+body | body | CrossexOrderUpdateRequest | Optional | none  
+↳ qty | body | string | Optional | modify amount  
+↳ price | body | string | Optional | modify price  
+  
 > Example responses
 
 > 200 Response
@@ -1375,9 +1333,73 @@ Code samples
     }
     
 
-##  Query order details🔒 Authenticated
+### Responses
 
-GET`/crossex/orders/{order_id}`
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+
+ResponsesStatus | Meaning | Description | Schema  
+---|---|---|---  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexOrderActionResponse  
+  
+### Response Schema
+
+Status Code **200**
+
+_CrossexOrderActionResponse_
+
+Name | Type | Description  
+---|---|---  
+» order_id | string | Order ID  
+» text | string | User-defined Order ID  
+  
+WARNING
+
+To perform this operation, you must be authenticated by API key and secret
+
+##  Query order details
+
+Code samples
+    
+    
+    # coding: utf-8
+    import requests
+    import time
+    import hashlib
+    import hmac
+    
+    host = "//"
+    prefix = "//"
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    
+    url = '/crossex/orders/2048522992198912'
+    query_param = ''
+    # for `gen_sign` implementation, refer to section `Authentication` above
+    sign_headers = gen_sign('GET', prefix + url, query_param)
+    headers.update(sign_headers)
+    r = requests.request('GET', host + prefix + url, headers=headers)
+    print(r.json())
+    
+    
+    
+    
+    key="YOUR_API_KEY"
+    secret="YOUR_API_SECRET"
+    host="//"
+    prefix="//"
+    method="GET"
+    url="/crossex/orders/2048522992198912"
+    query_param=""
+    body_param=''
+    timestamp=$(date +%s)
+    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
+    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
+    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
+    
+    full_url="$host$prefix$url"
+    curl -X $method $full_url \
+        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
+    
+    
 
 GET `/crossex/orders/{order_id}`
 
@@ -1396,6 +1418,43 @@ order_id | path | string | Required | 1\. Supports querying order IDs returned w
 
 **order_id** : 1. Supports querying order IDs returned when creating orders  
 2\. Supports custom IDs specified by users when creating orders (i.e., the text field)
+
+> Example responses
+
+> 200 Response
+    
+    
+    {
+      "user_id": "10001004",
+      "order_id": "2048522992198912",
+      "text": "2048522992198912",
+      "state": "FILLED",
+      "symbol": "BINANCE_SPOT_ADA_USDT",
+      "side": "BUY",
+      "type": "MARKET",
+      "attribute": "COMMON",
+      "exchange_type": "BINANCE",
+      "business_type": "SPOT",
+      "qty": "0",
+      "quote_qty": "7",
+      "price": "0",
+      "time_in_force": "GTC",
+      "executed_qty": "12.9",
+      "executed_amount": "6.96471",
+      "executed_avg_price": "0.5399",
+      "fee_coin": "ADA",
+      "fee": "0.0129",
+      "reduce_only": "false",
+      "leverage": "1",
+      "reason": "",
+      "last_executed_qty": "12.9",
+      "last_executed_price": "0.5399",
+      "last_executed_amount": "6.96471",
+      "position_side": "NONE",
+      "create_time": "1750681141933",
+      "update_time": "1750681142379"
+    }
+    
 
 ### Responses
 
@@ -1459,133 +1518,7 @@ WARNING
 
 To perform this operation, you must be authenticated by API key and secret
 
-Code samples
-    
-    
-    # coding: utf-8
-    import requests
-    import time
-    import hashlib
-    import hmac
-    
-    host = "//"
-    prefix = "//"
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    
-    url = '/crossex/orders/2048522992198912'
-    query_param = ''
-    # for `gen_sign` implementation, refer to section `Authentication` above
-    sign_headers = gen_sign('GET', prefix + url, query_param)
-    headers.update(sign_headers)
-    r = requests.request('GET', host + prefix + url, headers=headers)
-    print(r.json())
-    
-    
-    
-    
-    key="YOUR_API_KEY"
-    secret="YOUR_API_SECRET"
-    host="//"
-    prefix="//"
-    method="GET"
-    url="/crossex/orders/2048522992198912"
-    query_param=""
-    body_param=''
-    timestamp=$(date +%s)
-    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
-    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
-    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
-    
-    full_url="$host$prefix$url"
-    curl -X $method $full_url \
-        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
-    
-    
-
-> Example responses
-
-> 200 Response
-    
-    
-    {
-      "user_id": "10001004",
-      "order_id": "2048522992198912",
-      "text": "2048522992198912",
-      "state": "FILLED",
-      "symbol": "BINANCE_SPOT_ADA_USDT",
-      "side": "BUY",
-      "type": "MARKET",
-      "attribute": "COMMON",
-      "exchange_type": "BINANCE",
-      "business_type": "SPOT",
-      "qty": "0",
-      "quote_qty": "7",
-      "price": "0",
-      "time_in_force": "GTC",
-      "executed_qty": "12.9",
-      "executed_amount": "6.96471",
-      "executed_avg_price": "0.5399",
-      "fee_coin": "ADA",
-      "fee": "0.0129",
-      "reduce_only": "false",
-      "leverage": "1",
-      "reason": "",
-      "last_executed_qty": "12.9",
-      "last_executed_price": "0.5399",
-      "last_executed_amount": "6.96471",
-      "position_side": "NONE",
-      "create_time": "1750681141933",
-      "update_time": "1750681142379"
-    }
-    
-
-##  Flash Swap Inquiry🔒 Authenticated
-
-POST`/crossex/convert/quote`
-
-POST `/crossex/convert/quote`
-
-_Flash Swap Inquiry_
-
-Rate Limit: 100 requests per day
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexConvertQuoteRequest | Optional | none  
-↳ exchange_type | body | string | Required | Exchange Type  
-↳ from_coin | body | string | Required | Asset Sold  
-↳ to_coin | body | string | Required | Asset name to buy (OKX and GATE only allow BTC, ETH, USDT; BN only allows USDT)  
-↳ from_amount | body | string | Required | Amount to sell  
-  
-### Responses
-
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
-
-ResponsesStatus | Meaning | Description | Schema  
----|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexConvertQuoteResponse  
-  
-### Response Schema
-
-Status Code **200**
-
-_CrossexConvertQuoteResponse_
-
-Name | Type | Description  
----|---|---  
-» quote_id | string | Quote ID  
-» valid_ms | string | Valid time (milliseconds timestamp)  
-» from_coin | string | Asset Sold  
-» to_coin | string | Asset Bought  
-» from_amount | string | Amount to sell  
-» to_amount | string | Amount to buy  
-» price | string | Price  
-  
-WARNING
-
-To perform this operation, you must be authenticated by API key and secret
+##  Flash Swap Inquiry
 
 Code samples
     
@@ -1631,6 +1564,12 @@ Code samples
     
     
 
+POST `/crossex/convert/quote`
+
+_Flash Swap Inquiry_
+
+Rate Limit: 100 requests per day
+
 > Body parameter
     
     
@@ -1642,6 +1581,16 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexConvertQuoteRequest | Optional | none  
+↳ exchange_type | body | string | Required | Exchange Type  
+↳ from_coin | body | string | Required | Asset Sold  
+↳ to_coin | body | string | Required | Asset name to buy (OKX and GATE only allow BTC, ETH, USDT; BN only allows USDT)  
+↳ from_amount | body | string | Required | Amount to sell  
+  
 > Example responses
 
 > 200 Response
@@ -1658,45 +1607,35 @@ Code samples
     }
     
 
-##  Flash Swap Transaction🔒 Authenticated
-
-POST`/crossex/convert/orders`
-
-POST `/crossex/convert/orders`
-
-_Flash Swap Transaction_
-
-Rate limit: 10 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexConvertOrderRequest | Optional | none  
-↳ quote_id | body | string | Required | Inquiry ID  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexConvertOrderResponse  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexConvertQuoteResponse  
   
 ### Response Schema
 
 Status Code **200**
 
-_CrossexConvertOrderResponse_
+_CrossexConvertQuoteResponse_
 
 Name | Type | Description  
 ---|---|---  
-» order_id | string | Order ID  
-» text | string | Order ID (cannot be customized)  
+» quote_id | string | Quote ID  
+» valid_ms | string | Valid time (milliseconds timestamp)  
+» from_coin | string | Asset Sold  
+» to_coin | string | Asset Bought  
+» from_amount | string | Amount to sell  
+» to_amount | string | Amount to buy  
+» price | string | Price  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Flash Swap Transaction
 
 Code samples
     
@@ -1742,6 +1681,12 @@ Code samples
     
     
 
+POST `/crossex/convert/orders`
+
+_Flash Swap Transaction_
+
+Rate limit: 10 requests per 10 seconds
+
 > Body parameter
     
     
@@ -1750,6 +1695,13 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexConvertOrderRequest | Optional | none  
+↳ quote_id | body | string | Required | Inquiry ID  
+  
 > Example responses
 
 > 200 Response
@@ -1761,48 +1713,30 @@ Code samples
     }
     
 
-##  Modify Account Contract Position Mode and Account Mode🔒 Authenticated
-
-PUT`/crossex/accounts`
-
-PUT `/crossex/accounts`
-
-_Modify Account Contract Position Mode and Account Mode_
-
-Rate Limit: 100 requests per 60 seconds. position_mode+exchange_type modifies contract position mode (exchange_type is required when the user's account mode is split exchange); account_mode modifies the user's account mode.
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexAccountUpdateRequest | Optional | none  
-↳ position_mode | body | string | Optional | Futures position mode (SINGLE/DUAL)  
-↳ account_mode | body | string | Optional | Account mode (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
-↳ exchange_type | body | string | Optional | Exchange (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to adjust futures position mode.  
-  
 ### Responses
 
-  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexAccountUpdateResponse  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | CrossexConvertOrderResponse  
   
 ### Response Schema
 
-Status Code **202**
+Status Code **200**
 
-_CrossexAccountUpdateResponse_
+_CrossexConvertOrderResponse_
 
 Name | Type | Description  
 ---|---|---  
-» position_mode | string | Requested futures position mode to modify (SINGLE/DUAL)  
-» account_mode | string | Requested account mode to modify (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
-» exchange_type | string | Exchange targeted by the requested change (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to change futures position mode.  
+» order_id | string | Order ID  
+» text | string | Order ID (cannot be customized)  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Modify Account Contract Position Mode and Account Mode
 
 Code samples
     
@@ -1848,6 +1782,12 @@ Code samples
     
     
 
+PUT `/crossex/accounts`
+
+_Modify Account Contract Position Mode and Account Mode_
+
+Rate Limit: 100 requests per 60 seconds. position_mode+exchange_type modifies contract position mode (exchange_type is required when the user's account mode is split exchange); account_mode modifies the user's account mode.
+
 > Body parameter
     
     
@@ -1858,6 +1798,15 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexAccountUpdateRequest | Optional | none  
+↳ position_mode | body | string | Optional | Futures position mode (SINGLE/DUAL)  
+↳ account_mode | body | string | Optional | Account mode (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
+↳ exchange_type | body | string | Optional | Exchange (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to adjust futures position mode.  
+  
 > Example responses
 
 > 202 Response
@@ -1870,9 +1819,74 @@ Code samples
     }
     
 
-##  Query Account Assets🔒 Authenticated
+### Responses
 
-GET`/crossex/accounts`
+  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
+
+ResponsesStatus | Meaning | Description | Schema  
+---|---|---|---  
+202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexAccountUpdateResponse  
+  
+### Response Schema
+
+Status Code **202**
+
+_CrossexAccountUpdateResponse_
+
+Name | Type | Description  
+---|---|---  
+» position_mode | string | Requested futures position mode to modify (SINGLE/DUAL)  
+» account_mode | string | Requested account mode to modify (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
+» exchange_type | string | Exchange targeted by the requested change (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to change futures position mode.  
+  
+WARNING
+
+To perform this operation, you must be authenticated by API key and secret
+
+##  Query Account Assets
+
+Code samples
+    
+    
+    # coding: utf-8
+    import requests
+    import time
+    import hashlib
+    import hmac
+    
+    host = "//"
+    prefix = "//"
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    
+    url = '/crossex/accounts'
+    query_param = ''
+    # for `gen_sign` implementation, refer to section `Authentication` above
+    sign_headers = gen_sign('GET', prefix + url, query_param)
+    headers.update(sign_headers)
+    r = requests.request('GET', host + prefix + url, headers=headers)
+    print(r.json())
+    
+    
+    
+    
+    key="YOUR_API_KEY"
+    secret="YOUR_API_SECRET"
+    host="//"
+    prefix="//"
+    method="GET"
+    url="/crossex/accounts"
+    query_param=""
+    body_param=''
+    timestamp=$(date +%s)
+    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
+    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
+    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
+    
+    full_url="$host$prefix$url"
+    curl -X $method $full_url \
+        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
+    
+    
 
 GET `/crossex/accounts`
 
@@ -1886,6 +1900,44 @@ ParametersName | In | Type | Required | Description
 ---|---|---|---|---  
 exchange_type | query | string | Optional | Trading venue identifier. Omit in cross-exchange mode; required in isolated-per-venue mode (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
   
+> Example responses
+
+> 200 Response
+    
+    
+    {
+      "user_id": "123456789",
+      "available_margin": "1200",
+      "margin_balance": "1200",
+      "initial_margin": "500",
+      "maintenance_margin": "250",
+      "initial_margin_rate": "2.4",
+      "maintenance_margin_rate": "4.8",
+      "position_mode": "SINGLE",
+      "account_limit": "5000",
+      "create_time": "1687573845000",
+      "update_time": "1687588938000",
+      "account_mode": "CROSS_EXCHANGE",
+      "exchange_type": "CROSSEX",
+      "assets": [
+        {
+          "user_id": "123456789",
+          "coin": "USDT",
+          "exchange_type": "BINANCE",
+          "balance": "1000",
+          "upnl": "200",
+          "equity": "1200",
+          "futures_initial_margin": "400",
+          "futures_maintenance_margin": "130",
+          "borrowing_initial_margin": "100",
+          "borrowing_maintenance_margin": "120",
+          "available_balance": "1000.0",
+          "liability": "0"
+        }
+      ]
+    }
+    
+
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -1934,127 +1986,7 @@ WARNING
 
 To perform this operation, you must be authenticated by API key and secret
 
-Code samples
-    
-    
-    # coding: utf-8
-    import requests
-    import time
-    import hashlib
-    import hmac
-    
-    host = "//"
-    prefix = "//"
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    
-    url = '/crossex/accounts'
-    query_param = ''
-    # for `gen_sign` implementation, refer to section `Authentication` above
-    sign_headers = gen_sign('GET', prefix + url, query_param)
-    headers.update(sign_headers)
-    r = requests.request('GET', host + prefix + url, headers=headers)
-    print(r.json())
-    
-    
-    
-    
-    key="YOUR_API_KEY"
-    secret="YOUR_API_SECRET"
-    host="//"
-    prefix="//"
-    method="GET"
-    url="/crossex/accounts"
-    query_param=""
-    body_param=''
-    timestamp=$(date +%s)
-    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
-    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
-    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
-    
-    full_url="$host$prefix$url"
-    curl -X $method $full_url \
-        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
-    
-    
-
-> Example responses
-
-> 200 Response
-    
-    
-    {
-      "user_id": "123456789",
-      "available_margin": "1200",
-      "margin_balance": "1200",
-      "initial_margin": "500",
-      "maintenance_margin": "250",
-      "initial_margin_rate": "2.4",
-      "maintenance_margin_rate": "4.8",
-      "position_mode": "SINGLE",
-      "account_limit": "5000",
-      "create_time": "1687573845000",
-      "update_time": "1687588938000",
-      "account_mode": "CROSS_EXCHANGE",
-      "exchange_type": "CROSSEX",
-      "assets": [
-        {
-          "user_id": "123456789",
-          "coin": "USDT",
-          "exchange_type": "BINANCE",
-          "balance": "1000",
-          "upnl": "200",
-          "equity": "1200",
-          "futures_initial_margin": "400",
-          "futures_maintenance_margin": "130",
-          "borrowing_initial_margin": "100",
-          "borrowing_maintenance_margin": "120",
-          "available_balance": "1000.0",
-          "liability": "0"
-        }
-      ]
-    }
-    
-
-##  Modify Contract Trading Pair Leverage Multiplier🔒 Authenticated
-
-POST`/crossex/positions/leverage`
-
-POST `/crossex/positions/leverage`
-
-_Modify Contract Trading Pair Leverage Multiplier_
-
-Rate Limit: 100 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexLeverageRequest | Optional | none  
-↳ symbol | body | string | Required | Currency pair  
-↳ leverage | body | string | Required | leverage  
-  
-### Responses
-
-  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
-
-ResponsesStatus | Meaning | Description | Schema  
----|---|---|---  
-202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexLeverageResponse  
-  
-### Response Schema
-
-Status Code **202**
-
-_CrossexLeverageResponse_
-
-Name | Type | Description  
----|---|---  
-» symbol | string | Currency pair  
-» leverage | string | Requested Modified Leverage  
-  
-WARNING
-
-To perform this operation, you must be authenticated by API key and secret
+##  Modify Contract Trading Pair Leverage Multiplier
 
 Code samples
     
@@ -2100,6 +2032,12 @@ Code samples
     
     
 
+POST `/crossex/positions/leverage`
+
+_Modify Contract Trading Pair Leverage Multiplier_
+
+Rate Limit: 100 requests per 10 seconds
+
 > Body parameter
     
     
@@ -2109,6 +2047,14 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexLeverageRequest | Optional | none  
+↳ symbol | body | string | Required | Currency pair  
+↳ leverage | body | string | Required | leverage  
+  
 > Example responses
 
 > 202 Response
@@ -2120,43 +2066,30 @@ Code samples
     }
     
 
-##  Query Contract Trading Pair Leverage Multiplier🔒 Authenticated
-
-GET`/crossex/positions/leverage`
-
-GET `/crossex/positions/leverage`
-
-_Query Contract Trading Pair Leverage Multiplier_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbols | query | string | Optional | Trading Pair List, multiple separated by commas  
-  
 ### Responses
 
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline  
+202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexLeverageResponse  
   
 ### Response Schema
 
-Status Code **200**
+Status Code **202**
 
-_Mapping from trading pair to leverage multiplier._
+_CrossexLeverageResponse_
 
 Name | Type | Description  
 ---|---|---  
-» **additionalProperties** | string | Leverage multiplier for the corresponding trading pair  
+» symbol | string | Currency pair  
+» leverage | string | Requested Modified Leverage  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Contract Trading Pair Leverage Multiplier
 
 Code samples
     
@@ -2201,6 +2134,18 @@ Code samples
     
     
 
+GET `/crossex/positions/leverage`
+
+_Query Contract Trading Pair Leverage Multiplier_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbols | query | string | Optional | Trading Pair List, multiple separated by commas  
+  
 > Example responses
 
 > 200 Response
@@ -2213,46 +2158,29 @@ Code samples
     }
     
 
-##  Modify Leveraged Trading Pair Leverage Multiplier🔒 Authenticated
-
-POST`/crossex/margin_positions/leverage`
-
-POST `/crossex/margin_positions/leverage`
-
-_Modify Leveraged Trading Pair Leverage Multiplier_
-
-Rate Limit: 100 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexLeverageRequest | Optional | none  
-↳ symbol | body | string | Required | Currency pair  
-↳ leverage | body | string | Required | leverage  
-  
 ### Responses
 
-  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexLeverageResponse  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline  
   
 ### Response Schema
 
-Status Code **202**
+Status Code **200**
 
-_CrossexLeverageResponse_
+_Mapping from trading pair to leverage multiplier._
 
 Name | Type | Description  
 ---|---|---  
-» symbol | string | Currency pair  
-» leverage | string | Requested Modified Leverage  
+» **additionalProperties** | string | Leverage multiplier for the corresponding trading pair  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Modify Leveraged Trading Pair Leverage Multiplier
 
 Code samples
     
@@ -2298,6 +2226,12 @@ Code samples
     
     
 
+POST `/crossex/margin_positions/leverage`
+
+_Modify Leveraged Trading Pair Leverage Multiplier_
+
+Rate Limit: 100 requests per 10 seconds
+
 > Body parameter
     
     
@@ -2307,6 +2241,14 @@ Code samples
     }
     
 
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexLeverageRequest | Optional | none  
+↳ symbol | body | string | Required | Currency pair  
+↳ leverage | body | string | Required | leverage  
+  
 > Example responses
 
 > 202 Response
@@ -2318,43 +2260,30 @@ Code samples
     }
     
 
-##  Query Leveraged Trading Pair Leverage Multiplier🔒 Authenticated
-
-GET`/crossex/margin_positions/leverage`
-
-GET `/crossex/margin_positions/leverage`
-
-_Query Leveraged Trading Pair Leverage Multiplier_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbols | query | string | Optional | Trading Pair List, multiple separated by commas  
-  
 ### Responses
 
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline  
+202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexLeverageResponse  
   
 ### Response Schema
 
-Status Code **200**
+Status Code **202**
 
-_Mapping from trading pair to leverage multiplier._
+_CrossexLeverageResponse_
 
 Name | Type | Description  
 ---|---|---  
-» **additionalProperties** | string | Leverage multiplier for the corresponding trading pair  
+» symbol | string | Currency pair  
+» leverage | string | Requested Modified Leverage  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Leveraged Trading Pair Leverage Multiplier
 
 Code samples
     
@@ -2399,6 +2328,18 @@ Code samples
     
     
 
+GET `/crossex/margin_positions/leverage`
+
+_Query Leveraged Trading Pair Leverage Multiplier_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbols | query | string | Optional | Trading Pair List, multiple separated by commas  
+  
 > Example responses
 
 > 200 Response
@@ -2411,69 +2352,29 @@ Code samples
     }
     
 
-##  Full Close Position🔒 Authenticated
-
-POST`/crossex/position`
-
-POST `/crossex/position`
-
-_Full Close Position_
-
-Rate Limit: 100 requests per day. Automatic close-out rules. Supports closing FUTURE or MARGIN positions.
-
-Prerequisites before using this interface:
-
-  * No pending orders for the symbol exist in the current account.
-  * When the system detects the position meets any of the following limits while prerequisites are met:
-  * Less than or equal to the minimum notional amount (minNotional)
-  * Less than or equal to the minimum order quantity (minSize)
-
-After meeting the conditions, the system will automatically generate a close-out order and immediately fully close the position. This interface is used to avoid issues where orders are too small to be placed on the exchange, ensuring small positions can be closed smoothly when reaching the threshold.
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-body | body | CrossexClosePositionRequest | Optional | none  
-↳ symbol | body | string | Required | Trading Pair  
-1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
-2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT  
-↳ position_side | body | string | Optional | Position Direction  
-1\. For leveraged positions, this parameter must be passed  
-2\. For contract positions, pass selectively based on your contract holding method  
-  
-####  Detailed descriptions
-
-**» symbol** : Trading Pair  
-1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
-2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT
-
-**» position_side** : Position Direction  
-1\. For leveraged positions, this parameter must be passed  
-2\. For contract positions, pass selectively based on your contract holding method
-
 ### Responses
 
-  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexOrderActionResponse  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline  
   
 ### Response Schema
 
-Status Code **202**
+Status Code **200**
 
-_CrossexOrderActionResponse_
+_Mapping from trading pair to leverage multiplier._
 
 Name | Type | Description  
 ---|---|---  
-» order_id | string | Order ID  
-» text | string | User-defined Order ID  
+» **additionalProperties** | string | Leverage multiplier for the corresponding trading pair  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Full Close Position
 
 Code samples
     
@@ -2519,6 +2420,21 @@ Code samples
     
     
 
+POST `/crossex/position`
+
+_Full Close Position_
+
+Rate Limit: 100 requests per day. Automatic close-out rules. Supports closing FUTURE or MARGIN positions.
+
+Prerequisites before using this interface:
+
+  * No pending orders for the symbol exist in the current account.
+  * When the system detects the position meets any of the following limits while prerequisites are met:
+  * Less than or equal to the minimum notional amount (minNotional)
+  * Less than or equal to the minimum order quantity (minSize)
+
+After meeting the conditions, the system will automatically generate a close-out order and immediately fully close the position. This interface is used to avoid issues where orders are too small to be placed on the exchange, ensuring small positions can be closed smoothly when reaching the threshold.
+
 > Body parameter
     
     
@@ -2527,6 +2443,28 @@ Code samples
       "position_side": "LONG"
     }
     
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+body | body | CrossexClosePositionRequest | Optional | none  
+↳ symbol | body | string | Required | Trading Pair  
+1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
+2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT  
+↳ position_side | body | string | Optional | Position Direction  
+1\. For leveraged positions, this parameter must be passed  
+2\. For contract positions, pass selectively based on your contract holding method  
+  
+####  Detailed descriptions
+
+**» symbol** : Trading Pair  
+1\. Supports leveraged trading pairs, e.g., BINANCE_MARGIN_SOL_USDT  
+2\. Supports contract trading pairs, e.g., OKX_FUTURE_ETH_USDT
+
+**» position_side** : Position Direction  
+1\. For leveraged positions, this parameter must be passed  
+2\. For contract positions, pass selectively based on your contract holding method
 
 > Example responses
 
@@ -2539,46 +2477,30 @@ Code samples
     }
     
 
-##  Query margin asset interest rates🔒 Authenticated
-
-GET`/crossex/interest_rate`
-
-GET `/crossex/interest_rate`
-
-_Query margin asset interest rates_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-coin | query | string | Optional | Query by specified currency name  
-exchange_type | query | string | Optional | Exchange  
-  
 ### Responses
 
-  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+  * 202[Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+202 | [Accepted ](https://tools.ietf.org/html/rfc7231#section-6.3.3) | none | CrossexOrderActionResponse  
   
 ### Response Schema
 
-Status Code **200**
+Status Code **202**
+
+_CrossexOrderActionResponse_
 
 Name | Type | Description  
 ---|---|---  
-» CrossexInterestRate | object | none  
-»» coin | string | Currency  
-»» exchange_type | string | Exchange  
-»» hour_interest_rate | string | Hourly Interest Rate  
-»» time | string | Millisecond Timestamp  
+» order_id | string | Order ID  
+» text | string | User-defined Order ID  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query margin asset interest rates
 
 Code samples
     
@@ -2623,6 +2545,19 @@ Code samples
     
     
 
+GET `/crossex/interest_rate`
+
+_Query margin asset interest rates_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+coin | query | string | Optional | Query by specified currency name  
+exchange_type | query | string | Optional | Exchange  
+  
 > Example responses
 
 > 200 Response
@@ -2650,16 +2585,6 @@ Code samples
     ]
     
 
-##  Query User Fee Rates🔒 Authenticated
-
-GET`/crossex/fee`
-
-GET `/crossex/fee`
-
-_Query User Fee Rates_
-
-Rate Limit: 200 requests per 10 seconds
-
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -2672,25 +2597,19 @@ ResponsesStatus | Meaning | Description | Schema
 
 Status Code **200**
 
-_CrossexFee_
-
 Name | Type | Description  
 ---|---|---  
-CrossexFee | array | none  
-» exchange_type | string | Exchange  
-» spot_maker_fee | string | spotMakerfee rate  
-» spot_taker_fee | string | spotTakerfee rate  
-» future_maker_fee | string | contractMakerfee rate  
-» future_taker_fee | string | contractTakerfee rate  
-» special_fee_list | array | none  
-»» CrossexSpecialFee | object | none  
-»»» symbol | string | Currency pair  
-»»» taker_fee_rate | string | Taker fee rate  
-»»» maker_fee_rate | string | Maker fee rate  
+» CrossexInterestRate | object | none  
+»» coin | string | Currency  
+»» exchange_type | string | Exchange  
+»» hour_interest_rate | string | Hourly Interest Rate  
+»» time | string | Millisecond Timestamp  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query User Fee Rates
 
 Code samples
     
@@ -2734,6 +2653,12 @@ Code samples
         -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
     
     
+
+GET `/crossex/fee`
+
+_Query User Fee Rates_
+
+Rate Limit: 200 requests per 10 seconds
 
 > Example responses
 
@@ -2795,23 +2720,6 @@ Code samples
     ]
     
 
-##  Query Contract Positions🔒 Authenticated
-
-GET`/crossex/positions`
-
-GET `/crossex/positions`
-
-_Query Contract Positions_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbol | query | string | Optional | Trading Pair  
-exchange_type | query | string | Optional | Exchange  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -2824,34 +2732,27 @@ ResponsesStatus | Meaning | Description | Schema
 
 Status Code **200**
 
+_CrossexFee_
+
 Name | Type | Description  
 ---|---|---  
-» CrossexPosition | object | none  
-»» user_id | string | User ID  
-»» position_id | string | Position ID  
-»» symbol | string | Currency pair  
-»» position_side | string | Position Direction  
-»» initial_margin | string | Initial Margin  
-»» maintenance_margin | string | Maintenance margin  
-»» position_qty | string | Position Quantity  
-»» position_value | string | Position Value  
-»» upnl | string | Unrealized P&L  
-»» upnl_rate | string | Unrealized P&L Ratio  
-»» entry_price | string | Position Average Entry Price  
-»» mark_price | string | Mark price  
-»» leverage | string | Position Leverage  
-»» max_leverage | string | Maximum leverage  
-»» risk_limit | string | Position risk limit  
-»» fee | string | Position Fee  
-»» funding_fee | string | Position Funding Fee  
-»» funding_time | string | Position funding fee collection time (0 indicates it has not been collected yet)  
-»» create_time | string | Position Creation Time  
-»» update_time | string | Position Update Time  
-»» closed_pnl | string | Realized PnL  
+CrossexFee | array | none  
+» exchange_type | string | Exchange  
+» spot_maker_fee | string | spotMakerfee rate  
+» spot_taker_fee | string | spotTakerfee rate  
+» future_maker_fee | string | contractMakerfee rate  
+» future_taker_fee | string | contractTakerfee rate  
+» special_fee_list | array | none  
+»» CrossexSpecialFee | object | none  
+»»» symbol | string | Currency pair  
+»»» taker_fee_rate | string | Taker fee rate  
+»»» maker_fee_rate | string | Maker fee rate  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Contract Positions
 
 Code samples
     
@@ -2896,6 +2797,19 @@ Code samples
     
     
 
+GET `/crossex/positions`
+
+_Query Contract Positions_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbol | query | string | Optional | Trading Pair  
+exchange_type | query | string | Optional | Exchange  
+  
 > Example responses
 
 > 200 Response
@@ -2928,23 +2842,6 @@ Code samples
     ]
     
 
-##  Query Leveraged Positions🔒 Authenticated
-
-GET`/crossex/margin_positions`
-
-GET `/crossex/margin_positions`
-
-_Query Leveraged Positions_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbol | query | string | Optional | Currency pair  
-exchange_type | query | string | Optional | Exchange  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -2959,32 +2856,34 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexMarginPosition | object | none  
+» CrossexPosition | object | none  
 »» user_id | string | User ID  
-»» position_id | string | Leveraged Position ID  
-»» symbol | string | Trading Pair  
+»» position_id | string | Position ID  
+»» symbol | string | Currency pair  
 »» position_side | string | Position Direction  
-»» initial_margin | string | Initial position margin  
-»» maintenance_margin | string | Position maintenance margin  
-»» asset_qty | string | Position Asset Quantity  
-»» asset_coin | string | Position Asset Currency  
+»» initial_margin | string | Initial Margin  
+»» maintenance_margin | string | Maintenance margin  
+»» position_qty | string | Position Quantity  
 »» position_value | string | Position Value  
-»» liability | string | Debt Quantity  
-»» liability_coin | string | Debt Currency  
-»» interest | string | Deducted Interest  
-»» max_position_qty | string | Max Trade Size  
-»» entry_price | string | Position Cost Price (Average Opening Price)  
-»» index_price | string | Index price  
 »» upnl | string | Unrealized P&L  
 »» upnl_rate | string | Unrealized P&L Ratio  
-»» leverage | string | Opening Leverage  
+»» entry_price | string | Position Average Entry Price  
+»» mark_price | string | Mark price  
+»» leverage | string | Position Leverage  
 »» max_leverage | string | Maximum leverage  
-»» create_time | string | Created time  
-»» update_time | string | Update time  
+»» risk_limit | string | Position risk limit  
+»» fee | string | Position Fee  
+»» funding_fee | string | Position Funding Fee  
+»» funding_time | string | Position funding fee collection time (0 indicates it has not been collected yet)  
+»» create_time | string | Position Creation Time  
+»» update_time | string | Position Update Time  
+»» closed_pnl | string | Realized PnL  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Leveraged Positions
 
 Code samples
     
@@ -3029,6 +2928,19 @@ Code samples
     
     
 
+GET `/crossex/margin_positions`
+
+_Query Leveraged Positions_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbol | query | string | Optional | Currency pair  
+exchange_type | query | string | Optional | Exchange  
+  
 > Example responses
 
 > 200 Response
@@ -3061,22 +2973,6 @@ Code samples
     ]
     
 
-##  Query ADL Position Reduction Ranking🔒 Authenticated
-
-GET`/crossex/adl_rank`
-
-GET `/crossex/adl_rank`
-
-_Query ADL Position Reduction Ranking_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbol | query | string | Required | Trading Pair  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -3091,15 +2987,34 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexAdlRank | object | none  
+» CrossexMarginPosition | object | none  
 »» user_id | string | User ID  
-»» symbol | string | Currency pair  
-»» crossex_adl_rank | string | CROSSEX position-reduction indicator ranking (1–5, higher value ranks higher)  
-»» exchange_adl_rank | string | Original exchange information (BINANCE: 0–4, higher value ranks higher; OKX: 0–5, higher value ranks higher; GATE: 1–5, lower value ranks higher; BYBIT: 0–5, higher value ranks higher)  
+»» position_id | string | Leveraged Position ID  
+»» symbol | string | Trading Pair  
+»» position_side | string | Position Direction  
+»» initial_margin | string | Initial position margin  
+»» maintenance_margin | string | Position maintenance margin  
+»» asset_qty | string | Position Asset Quantity  
+»» asset_coin | string | Position Asset Currency  
+»» position_value | string | Position Value  
+»» liability | string | Debt Quantity  
+»» liability_coin | string | Debt Currency  
+»» interest | string | Deducted Interest  
+»» max_position_qty | string | Max Trade Size  
+»» entry_price | string | Position Cost Price (Average Opening Price)  
+»» index_price | string | Index price  
+»» upnl | string | Unrealized P&L  
+»» upnl_rate | string | Unrealized P&L Ratio  
+»» leverage | string | Opening Leverage  
+»» max_leverage | string | Maximum leverage  
+»» create_time | string | Created time  
+»» update_time | string | Update time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query ADL Position Reduction Ranking
 
 Code samples
     
@@ -3144,6 +3059,18 @@ Code samples
     
     
 
+GET `/crossex/adl_rank`
+
+_Query ADL Position Reduction Ranking_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbol | query | string | Required | Trading Pair  
+  
 > Example responses
 
 > 200 Response
@@ -3159,31 +3086,13 @@ Code samples
     ]
     
 
-##  Query All Current Open Orders🔒 Authenticated
-
-GET`/crossex/open_orders`
-
-GET `/crossex/open_orders`
-
-_Query All Current Open Orders_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbol | query | string | Optional | Trading Pair  
-exchange_type | query | string | Optional | Exchange  
-business_type | query | string | Optional | Business Type  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [CrossexOrder]  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
   
 ### Response Schema
 
@@ -3191,53 +3100,17 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-_None_ | array | none  
-» CrossexOrder | CrossexOrder | none  
+» CrossexAdlRank | object | none  
 »» user_id | string | User ID  
-»» order_id | string | Order ID  
-»» text | string | Client-defined order ID.  
-»» state | string | Order status:  
-  
-NEW: Validated and queued to be sent to the exchange.  
-  
-OPEN: Resting on the exchange order book.  
-  
-PARTIALLY_FILLED: Partially filled.  
-  
-FILLED: Fully filled.  
-  
-FAIL: CrossEx internal validation failed; see the `reason` field for details.  
-  
-REJECT: Rejected by the exchange; see the `reason` field for details.  
-»» symbol | string | Unique trading pair identifiers, e.g.  
-`BINANCE_SPOT_BTC_USDT`, `BINANCE_FUTURE_BTC_USDT`.  
-»» side | string | Side (`BUY` buy / `SELL` sell).  
-»» type | string | Order type (`LIMIT` limit / `MARKET` market).  
-»» attribute | string | Order attributes (`COMMON` normal / `LIQ` liquidation takeover / `REDUCE` liquidation reduction / `ADL` auto-deleverage / `SETTLEMENT` delisting settlement).  
-»» exchange_type | string | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
-»» business_type | string | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
-»» qty | string | Order quantity in the base currency.  
-»» quote_qty | string | Order quantity in the quote currency.  
-»» price | string | Order price.  
-»» time_in_force | string | Time in force (default `GTC`; enum: `GTC` / `IOC` / `FOK` / `POC`).  
-»» executed_qty | string | Filled base amount.  
-»» executed_amount | string | Filled quote amount.  
-»» executed_avg_price | string | Average Filled Price  
-»» fee_coin | string | Fee currency  
-»» fee | string | Fee amount.  
-»» reduce_only | string | Reduce-only order (`"true"` or `"false"`).  
-»» leverage | string | Order leverage multiplier.  
-»» reason | string | Failure reason description.  
-»» last_executed_qty | string | Base quantity of the latest fill.  
-»» last_executed_price | string | Price of the latest fill.  
-»» last_executed_amount | string | Quote amount of the latest fill.  
-»» position_side | string | Position side (`NONE` flat / `LONG` long / `SHORT` short).  
-»» create_time | string | Created time  
-»» update_time | string | Update time  
+»» symbol | string | Currency pair  
+»» crossex_adl_rank | string | CROSSEX position-reduction indicator ranking (1–5, higher value ranks higher)  
+»» exchange_adl_rank | string | Original exchange information (BINANCE: 0–4, higher value ranks higher; OKX: 0–5, higher value ranks higher; GATE: 1–5, lower value ranks higher; BYBIT: 0–5, higher value ranks higher)  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query All Current Open Orders
 
 Code samples
     
@@ -3282,6 +3155,20 @@ Code samples
     
     
 
+GET `/crossex/open_orders`
+
+_Query All Current Open Orders_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbol | query | string | Optional | Trading Pair  
+exchange_type | query | string | Optional | Exchange  
+business_type | query | string | Optional | Business Type  
+  
 > Example responses
 
 > 200 Response
@@ -3321,27 +3208,6 @@ Code samples
     ]
     
 
-##  queryorderhistory🔒 Authenticated
-
-GET`/crossex/history_orders`
-
-GET `/crossex/history_orders`
-
-_queryorderhistory_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number of records returned in a single list  
-symbol | query | string | Optional | Currency pair  
-from | query | integer | Optional | Start Millisecond Timestamp  
-to | query | integer | Optional | End Millisecond Timestamp  
-attributes | query | string | Optional | Order attributes (`COMMON` normal / `LIQ` liquidation takeover / `REDUCE` liquidation reduction / `ADL` auto-deleverage / `SETTLEMENT` delisting settlement). Multiple values, comma-separated.  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -3404,6 +3270,8 @@ WARNING
 
 To perform this operation, you must be authenticated by API key and secret
 
+##  queryorderhistory
+
 Code samples
     
     
@@ -3447,6 +3315,23 @@ Code samples
     
     
 
+GET `/crossex/history_orders`
+
+_queryorderhistory_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number of records returned in a single list  
+symbol | query | string | Optional | Currency pair  
+from | query | integer | Optional | Start Millisecond Timestamp  
+to | query | integer | Optional | End Millisecond Timestamp  
+attributes | query | string | Optional | Order attributes (`COMMON` normal / `LIQ` liquidation takeover / `REDUCE` liquidation reduction / `ADL` auto-deleverage / `SETTLEMENT` delisting settlement). Multiple values, comma-separated.  
+  
 > Example responses
 
 > 200 Response
@@ -3486,33 +3371,13 @@ Code samples
     ]
     
 
-##  Query Contract Position History🔒 Authenticated
-
-GET`/crossex/history_positions`
-
-GET `/crossex/history_positions`
-
-_Query Contract Position History_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number returned by list, max 1000  
-symbol | query | string | Optional | Currency pair  
-from | query | integer | Optional | Start Millisecond Timestamp  
-to | query | integer | Optional | End Millisecond Timestamp  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
 
 ResponsesStatus | Meaning | Description | Schema  
 ---|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [CrossexOrder]  
   
 ### Response Schema
 
@@ -3520,31 +3385,55 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexHistoricalPosition | object | none  
-»» position_id | string | Position ID  
+_None_ | array | none  
+» CrossexOrder | CrossexOrder | none  
 »» user_id | string | User ID  
-»» symbol | string | Currency pair  
-»» closed_type | string | Position close type (PARTIAL_CLOSED: partially closed; COMPLETE_CLOSED: fully closed)  
-»» closed_pnl | string | Close Position P&L  
-»» closed_pnl_rate | string | Close Position P&L Ratio  
-»» open_avg_price | string | Average Opening Price  
-»» closed_avg_price | string | Average Close Price  
-»» max_position_qty | string | Max Trade Size  
-»» closed_qty | string | Close Position Quantity  
-»» closed_value | string | Close Position Value  
-»» fee | string | Position Accumulated Fees  
-»» liq_fee | string | Liquidation Fee  
-»» funding_fee | string | Funding Fee  
-»» position_side | string | Position Direction Before Close  
-»» position_mode | string | Position Mode at Close  
-»» leverage | string | Leverage at Close  
-»» business_type | string | Business Type  
+»» order_id | string | Order ID  
+»» text | string | Client-defined order ID.  
+»» state | string | Order status:  
+  
+NEW: Validated and queued to be sent to the exchange.  
+  
+OPEN: Resting on the exchange order book.  
+  
+PARTIALLY_FILLED: Partially filled.  
+  
+FILLED: Fully filled.  
+  
+FAIL: CrossEx internal validation failed; see the `reason` field for details.  
+  
+REJECT: Rejected by the exchange; see the `reason` field for details.  
+»» symbol | string | Unique trading pair identifiers, e.g.  
+`BINANCE_SPOT_BTC_USDT`, `BINANCE_FUTURE_BTC_USDT`.  
+»» side | string | Side (`BUY` buy / `SELL` sell).  
+»» type | string | Order type (`LIMIT` limit / `MARKET` market).  
+»» attribute | string | Order attributes (`COMMON` normal / `LIQ` liquidation takeover / `REDUCE` liquidation reduction / `ADL` auto-deleverage / `SETTLEMENT` delisting settlement).  
+»» exchange_type | string | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
+»» business_type | string | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
+»» qty | string | Order quantity in the base currency.  
+»» quote_qty | string | Order quantity in the quote currency.  
+»» price | string | Order price.  
+»» time_in_force | string | Time in force (default `GTC`; enum: `GTC` / `IOC` / `FOK` / `POC`).  
+»» executed_qty | string | Filled base amount.  
+»» executed_amount | string | Filled quote amount.  
+»» executed_avg_price | string | Average Filled Price  
+»» fee_coin | string | Fee currency  
+»» fee | string | Fee amount.  
+»» reduce_only | string | Reduce-only order (`"true"` or `"false"`).  
+»» leverage | string | Order leverage multiplier.  
+»» reason | string | Failure reason description.  
+»» last_executed_qty | string | Base quantity of the latest fill.  
+»» last_executed_price | string | Price of the latest fill.  
+»» last_executed_amount | string | Quote amount of the latest fill.  
+»» position_side | string | Position side (`NONE` flat / `LONG` long / `SHORT` short).  
 »» create_time | string | Created time  
 »» update_time | string | Update time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Contract Position History
 
 Code samples
     
@@ -3589,6 +3478,22 @@ Code samples
     
     
 
+GET `/crossex/history_positions`
+
+_Query Contract Position History_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number returned by list, max 1000  
+symbol | query | string | Optional | Currency pair  
+from | query | integer | Optional | Start Millisecond Timestamp  
+to | query | integer | Optional | End Millisecond Timestamp  
+  
 > Example responses
 
 > 200 Response
@@ -3619,26 +3524,6 @@ Code samples
     ]
     
 
-##  Query Leveraged Position History🔒 Authenticated
-
-GET`/crossex/history_margin_positions`
-
-GET `/crossex/history_margin_positions`
-
-_Query Leveraged Position History_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number returned by list, max 1000  
-symbol | query | string | Optional | Currency pair  
-from | query | integer | Optional | Start Millisecond Timestamp  
-to | query | integer | Optional | End Millisecond Timestamp  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -3653,7 +3538,7 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexHistoricalMarginPosition | object | none  
+» CrossexHistoricalPosition | object | none  
 »» position_id | string | Position ID  
 »» user_id | string | User ID  
 »» symbol | string | Currency pair  
@@ -3665,17 +3550,21 @@ Name | Type | Description
 »» max_position_qty | string | Max Trade Size  
 »» closed_qty | string | Close Position Quantity  
 »» closed_value | string | Close Position Value  
+»» fee | string | Position Accumulated Fees  
 »» liq_fee | string | Liquidation Fee  
+»» funding_fee | string | Funding Fee  
 »» position_side | string | Position Direction Before Close  
+»» position_mode | string | Position Mode at Close  
 »» leverage | string | Leverage at Close  
-»» interest | string | Total Deducted Interest  
-»» business_type | string | Position Business Type  
+»» business_type | string | Business Type  
 »» create_time | string | Created time  
 »» update_time | string | Update time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Leveraged Position History
 
 Code samples
     
@@ -3720,6 +3609,22 @@ Code samples
     
     
 
+GET `/crossex/history_margin_positions`
+
+_Query Leveraged Position History_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number returned by list, max 1000  
+symbol | query | string | Optional | Currency pair  
+from | query | integer | Optional | Start Millisecond Timestamp  
+to | query | integer | Optional | End Millisecond Timestamp  
+  
 > Example responses
 
 > 200 Response
@@ -3749,27 +3654,6 @@ Code samples
     ]
     
 
-##  Query Leveraged Interest Deduction History🔒 Authenticated
-
-GET`/crossex/history_margin_interests`
-
-GET `/crossex/history_margin_interests`
-
-_Query Leveraged Interest Deduction History_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-symbol | query | string | Optional | Currency pair  
-from | query | integer | Optional | none  
-to | query | integer | Optional | none  
-page | query | integer | Optional | none  
-limit | query | integer | Optional | none  
-exchange_type | query | string | Optional | none  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -3784,22 +3668,31 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexMarginInterestRecord | object | none  
-»» userId | string | User ID  
-»» symbol | string | Trading Pair  
-»» interest_id | string | Interest Deduction ID  
-»» liability_id | string | Debt Source ID, can be Order ID or Position ID  
-»» liability | string | Debt Quantity  
-»» liability_coin | string | Debt Currency  
-»» interest | string | Interest  
-»» interest_rate | string | interest rate  
-»» interest_type | string | Interest deduction type (`PERIODIC_POSITION` hourly interest on position, `PERIODIC_OPEN_ORDER` hourly interest on open orders, `IMMEDIATE_OPEN_ORDER` interest charged on order placement, `PERIODIC_ISOLATED` hourly interest on debt)  
+» CrossexHistoricalMarginPosition | object | none  
+»» position_id | string | Position ID  
+»» user_id | string | User ID  
+»» symbol | string | Currency pair  
+»» closed_type | string | Position close type (PARTIAL_CLOSED: partially closed; COMPLETE_CLOSED: fully closed)  
+»» closed_pnl | string | Close Position P&L  
+»» closed_pnl_rate | string | Close Position P&L Ratio  
+»» open_avg_price | string | Average Opening Price  
+»» closed_avg_price | string | Average Close Price  
+»» max_position_qty | string | Max Trade Size  
+»» closed_qty | string | Close Position Quantity  
+»» closed_value | string | Close Position Value  
+»» liq_fee | string | Liquidation Fee  
+»» position_side | string | Position Direction Before Close  
+»» leverage | string | Leverage at Close  
+»» interest | string | Total Deducted Interest  
+»» business_type | string | Position Business Type  
 »» create_time | string | Created time  
-»» exchange_type | string | Exchange  
+»» update_time | string | Update time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Leveraged Interest Deduction History
 
 Code samples
     
@@ -3844,6 +3737,23 @@ Code samples
     
     
 
+GET `/crossex/history_margin_interests`
+
+_Query Leveraged Interest Deduction History_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+symbol | query | string | Optional | Currency pair  
+from | query | integer | Optional | none  
+to | query | integer | Optional | none  
+page | query | integer | Optional | none  
+limit | query | integer | Optional | none  
+exchange_type | query | string | Optional | none  
+  
 > Example responses
 
 > 200 Response
@@ -3879,26 +3789,6 @@ Code samples
     ]
     
 
-##  queryfilledhistory🔒 Authenticated
-
-GET`/crossex/history_trades`
-
-GET `/crossex/history_trades`
-
-_queryfilledhistory_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number returned by list, max 1000  
-symbol | query | string | Optional | Currency pair  
-from | query | integer | Optional | Start Millisecond Timestamp  
-to | query | integer | Optional | End Millisecond Timestamp  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -3913,29 +3803,24 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexTrade | object | none  
-»» user_id | string | User ID  
-»» transaction_id | string | filledrecordsID  
-»» order_id | string | Order ID  
-»» text | string | User Order ID  
-»» symbol | string | Currency pair  
-»» exchange_type | string | Exchange  
-»» business_type | string | Business Type  
-»» side | string | Buy/Sell Direction  
-»» qty | string | Trading size  
-»» price | string | Fill Price  
-»» fee | string | fee  
-»» fee_coin | string | Fee currency  
-»» fee_rate | string | Fee Rate  
-»» match_role | string | Filled Role  
-»» rpnl | string | Realized P&L  
-»» position_mode | string | Position Mode  
-»» position_side | string | Position Direction  
+» CrossexMarginInterestRecord | object | none  
+»» userId | string | User ID  
+»» symbol | string | Trading Pair  
+»» interest_id | string | Interest Deduction ID  
+»» liability_id | string | Debt Source ID, can be Order ID or Position ID  
+»» liability | string | Debt Quantity  
+»» liability_coin | string | Debt Currency  
+»» interest | string | Interest  
+»» interest_rate | string | interest rate  
+»» interest_type | string | Interest deduction type (`PERIODIC_POSITION` hourly interest on position, `PERIODIC_OPEN_ORDER` hourly interest on open orders, `IMMEDIATE_OPEN_ORDER` interest charged on order placement, `PERIODIC_ISOLATED` hourly interest on debt)  
 »» create_time | string | Created time  
+»» exchange_type | string | Exchange  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  queryfilledhistory
 
 Code samples
     
@@ -3980,6 +3865,22 @@ Code samples
     
     
 
+GET `/crossex/history_trades`
+
+_queryfilledhistory_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number returned by list, max 1000  
+symbol | query | string | Optional | Currency pair  
+from | query | integer | Optional | Start Millisecond Timestamp  
+to | query | integer | Optional | End Millisecond Timestamp  
+  
 > Example responses
 
 > 200 Response
@@ -4009,27 +3910,6 @@ Code samples
     ]
     
 
-##  Query Account Asset Change History🔒 Authenticated
-
-GET`/crossex/account_book`
-
-GET `/crossex/account_book`
-
-_Query Account Asset Change History_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-page | query | integer | Optional | Page number  
-limit | query | integer | Optional | Maximum number returned by list, max 1000  
-coin | query | string | Optional | Query by specified currency name  
-statement_type | query | string | Optional | Bill entry type.  
-from | query | integer | Optional | Start Millisecond Timestamp  
-to | query | integer | Optional | End Millisecond Timestamp  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -4044,20 +3924,31 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexAccountBookRecord | object | none  
-»» id | string | Account Change Record ID  
+» CrossexTrade | object | none  
 »» user_id | string | User ID  
-»» business_id | string | Business ID  
-»» statement_type | string | Bill entry type  
+»» transaction_id | string | filledrecordsID  
+»» order_id | string | Order ID  
+»» text | string | User Order ID  
+»» symbol | string | Currency pair  
 »» exchange_type | string | Exchange  
-»» coin | string | Currency  
-»» change | string | Change amount (positive indicates transfer in; negative indicates transfer out)  
-»» balance | string | Balance after change  
+»» business_type | string | Business Type  
+»» side | string | Buy/Sell Direction  
+»» qty | string | Trading size  
+»» price | string | Fill Price  
+»» fee | string | fee  
+»» fee_coin | string | Fee currency  
+»» fee_rate | string | Fee Rate  
+»» match_role | string | Filled Role  
+»» rpnl | string | Realized P&L  
+»» position_mode | string | Position Mode  
+»» position_side | string | Position Direction  
 »» create_time | string | Created time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Account Asset Change History
 
 Code samples
     
@@ -4102,6 +3993,23 @@ Code samples
     
     
 
+GET `/crossex/account_book`
+
+_Query Account Asset Change History_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+page | query | integer | Optional | Page number  
+limit | query | integer | Optional | Maximum number returned by list, max 1000  
+coin | query | string | Optional | Query by specified currency name  
+statement_type | query | string | Optional | Bill entry type.  
+from | query | integer | Optional | Start Millisecond Timestamp  
+to | query | integer | Optional | End Millisecond Timestamp  
+  
 > Example responses
 
 > 200 Response
@@ -4122,23 +4030,6 @@ Code samples
     ]
     
 
-##  Query Currency Discount Rate🔒 Authenticated
-
-GET`/crossex/coin_discount_rate`
-
-GET `/crossex/coin_discount_rate`
-
-_Query Currency Discount Rate_
-
-Rate Limit: 200 requests per 10 seconds
-
-### Parameters
-
-ParametersName | In | Type | Required | Description  
----|---|---|---|---  
-coin | query | string | Optional | Query by specified currency name  
-exchange_type | query | string | Optional | OKX/GATE/BINANCE/BYBIT/KRAKEN  
-  
 ### Responses
 
   * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
@@ -4153,17 +4044,22 @@ Status Code **200**
 
 Name | Type | Description  
 ---|---|---  
-» CrossexCoinDiscountRate | object | none  
-»» coin | string | Currency  
+» CrossexAccountBookRecord | object | none  
+»» id | string | Account Change Record ID  
+»» user_id | string | User ID  
+»» business_id | string | Business ID  
+»» statement_type | string | Bill entry type  
 »» exchange_type | string | Exchange  
-»» tier | string | Tier  
-»» min_value | string | Minimum value  
-»» max_value | string | Maximum value  
-»» discount_rate | string | Discount rate  
+»» coin | string | Currency  
+»» change | string | Change amount (positive indicates transfer in; negative indicates transfer out)  
+»» balance | string | Balance after change  
+»» create_time | string | Created time  
   
 WARNING
 
 To perform this operation, you must be authenticated by API key and secret
+
+##  Query Currency Discount Rate
 
 Code samples
     
@@ -4208,6 +4104,19 @@ Code samples
     
     
 
+GET `/crossex/coin_discount_rate`
+
+_Query Currency Discount Rate_
+
+Rate Limit: 200 requests per 10 seconds
+
+### Parameters
+
+ParametersName | In | Type | Required | Description  
+---|---|---|---|---  
+coin | query | string | Optional | Query by specified currency name  
+exchange_type | query | string | Optional | OKX/GATE/BINANCE/BYBIT/KRAKEN  
+  
 > Example responses
 
 > 200 Response
@@ -4241,29 +4150,36 @@ Code samples
     ]
     
 
+### Responses
+
+  * 200[OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1)none
+
+ResponsesStatus | Meaning | Description | Schema  
+---|---|---|---  
+200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [Inline]  
+  
+### Response Schema
+
+Status Code **200**
+
+Name | Type | Description  
+---|---|---  
+» CrossexCoinDiscountRate | object | none  
+»» coin | string | Currency  
+»» exchange_type | string | Exchange  
+»» tier | string | Tier  
+»» min_value | string | Minimum value  
+»» max_value | string | Maximum value  
+»» discount_rate | string | Discount rate  
+  
+WARNING
+
+To perform this operation, you must be authenticated by API key and secret
+
 #  Schemas
 
 ##  Symbol
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-symbol | string | Required | none | Unique trading pair identifier in the form ExchangeType_BusinessType_Base_Counter.  
-exchange_type | string | Required | none | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
-business_type | string | Required | none | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
-state | string | Required | none | Status (`live` running / `suspend` paused).  
-min_size | string | Required | none | Minimum order size allowed by the contract  
-min_notional | string | Required | none | Minimum Order Value  
-lot_size | string | Required | none | Quantity Step  
-tick_size | string | Required | none | Price Step  
-max_num_orders | string | Required | none | maximumopen orderamount  
-max_market_size | string | Required | none | Maximum Market Order Quantity  
-max_limit_size | string | Required | none | Maximum order quantity for limit orders.  
-contract_size | string | Required | none | Contract Multiplier  
-liquidation_fee | string | Required | none | Liquidation Fee Rate  
-delist_time | string | Required | none | Millisecond timestamp; `0` means not delisted.  
-      
+    
     
     {
       "symbol": "string",
@@ -4284,7 +4200,60 @@ delist_time | string | Required | none | Millisecond timestamp; `0` means not de
     
     
 
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+symbol | string | Required | none | Unique trading pair identifier in the form ExchangeType_BusinessType_Base_Counter.  
+exchange_type | string | Required | none | Venue bucket (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN`).  
+business_type | string | Required | none | Business type (`SPOT` Spot / `FUTURE` Futures / `MARGIN` Margin).  
+state | string | Required | none | Status (`live` running / `suspend` paused).  
+min_size | string | Required | none | Minimum order size allowed by the contract  
+min_notional | string | Required | none | Minimum Order Value  
+lot_size | string | Required | none | Quantity Step  
+tick_size | string | Required | none | Price Step  
+max_num_orders | string | Required | none | maximumopen orderamount  
+max_market_size | string | Required | none | Maximum Market Order Quantity  
+max_limit_size | string | Required | none | Maximum order quantity for limit orders.  
+contract_size | string | Required | none | Contract Multiplier  
+liquidation_fee | string | Required | none | Liquidation Fee Rate  
+delist_time | string | Required | none | Millisecond timestamp; `0` means not delisted.  
+  
 ##  CrossexOrder
+    
+    
+    {
+      "user_id": "string",
+      "order_id": "string",
+      "text": "string",
+      "state": "string",
+      "symbol": "string",
+      "side": "string",
+      "type": "string",
+      "attribute": "string",
+      "exchange_type": "string",
+      "business_type": "string",
+      "qty": "string",
+      "quote_qty": "string",
+      "price": "string",
+      "time_in_force": "string",
+      "executed_qty": "string",
+      "executed_amount": "string",
+      "executed_avg_price": "string",
+      "fee_coin": "string",
+      "fee": "string",
+      "reduce_only": "string",
+      "leverage": "string",
+      "reason": "string",
+      "last_executed_qty": "string",
+      "last_executed_price": "string",
+      "last_executed_amount": "string",
+      "position_side": "string",
+      "create_time": "string",
+      "update_time": "string"
+    }
+    
+    
 
 _CrossexOrder_
 
@@ -4333,42 +4302,16 @@ last_executed_amount | string | Required | none | Quote amount of the latest fil
 position_side | string | Required | none | Position side (`NONE` flat / `LONG` long / `SHORT` short).  
 create_time | string | Required | none | Created time  
 update_time | string | Required | none | Update time  
-      
+  
+##  CrossexOrderActionResponse
+    
     
     {
-      "user_id": "string",
       "order_id": "string",
-      "text": "string",
-      "state": "string",
-      "symbol": "string",
-      "side": "string",
-      "type": "string",
-      "attribute": "string",
-      "exchange_type": "string",
-      "business_type": "string",
-      "qty": "string",
-      "quote_qty": "string",
-      "price": "string",
-      "time_in_force": "string",
-      "executed_qty": "string",
-      "executed_amount": "string",
-      "executed_avg_price": "string",
-      "fee_coin": "string",
-      "fee": "string",
-      "reduce_only": "string",
-      "leverage": "string",
-      "reason": "string",
-      "last_executed_qty": "string",
-      "last_executed_price": "string",
-      "last_executed_amount": "string",
-      "position_side": "string",
-      "create_time": "string",
-      "update_time": "string"
+      "text": "string"
     }
     
     
-
-##  CrossexOrderActionResponse
 
 _CrossexOrderActionResponse_
 
@@ -4378,16 +4321,16 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 order_id | string | Required | none | Order ID  
 text | string | Required | none | User-defined Order ID  
-      
+  
+##  CrossexLeverageResponse
+    
     
     {
-      "order_id": "string",
-      "text": "string"
+      "symbol": "string",
+      "leverage": "string"
     }
     
     
-
-##  CrossexLeverageResponse
 
 _CrossexLeverageResponse_
 
@@ -4397,16 +4340,19 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 symbol | string | Required | none | Currency pair  
 leverage | string | Required | none | Requested Modified Leverage  
-      
+  
+##  CrossexTransferRequest
+    
     
     {
-      "symbol": "string",
-      "leverage": "string"
+      "coin": "string",
+      "amount": "string",
+      "from": "string",
+      "to": "string",
+      "text": "string"
     }
     
     
-
-##  CrossexTransferRequest
 
 _Fund Transfer Request Body_
 
@@ -4419,19 +4365,24 @@ amount | string | Required | none | Transfer amount
 from | string | Required | none | `from` receiving account (`CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`).  
 to | string | Required | none | `to` debit account (funds withdrawn from): `CROSSEX_BINANCE`, `CROSSEX_OKX`, `CROSSEX_GATE`, `CROSSEX_BYBIT`, `CROSSEX_KRAKEN`, `CROSSEX`, `SPOT`  
 text | string | Optional | none | User-defined ID  
-      
+  
+##  CrossexOrderRequest
+    
     
     {
-      "coin": "string",
-      "amount": "string",
-      "from": "string",
-      "to": "string",
-      "text": "string"
+      "text": "string",
+      "symbol": "string",
+      "side": "BUY",
+      "type": "LIMIT",
+      "time_in_force": "GTC",
+      "qty": "string",
+      "price": "string",
+      "quote_qty": "string",
+      "reduce_only": "true",
+      "position_side": "LONG"
     }
     
     
-
-##  CrossexOrderRequest
 
 _Place Order Request Body_
 
@@ -4479,24 +4430,16 @@ reduce_only | false
 position_side | LONG  
 position_side | SHORT  
 position_side | NONE  
-      
+  
+##  CrossexOrderUpdateRequest
+    
     
     {
-      "text": "string",
-      "symbol": "string",
-      "side": "BUY",
-      "type": "LIMIT",
-      "time_in_force": "GTC",
       "qty": "string",
-      "price": "string",
-      "quote_qty": "string",
-      "reduce_only": "true",
-      "position_side": "LONG"
+      "price": "string"
     }
     
     
-
-##  CrossexOrderUpdateRequest
 
 _Order Modification Request Body_
 
@@ -4506,16 +4449,18 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 qty | string | Optional | none | modify amount  
 price | string | Optional | none | modify price  
-      
+  
+##  CrossexConvertQuoteRequest
+    
     
     {
-      "qty": "string",
-      "price": "string"
+      "exchange_type": "string",
+      "from_coin": "string",
+      "to_coin": "string",
+      "from_amount": "string"
     }
     
     
-
-##  CrossexConvertQuoteRequest
 
 _Flash Swap Quote Request Body_
 
@@ -4527,18 +4472,15 @@ exchange_type | string | Required | none | Exchange Type
 from_coin | string | Required | none | Asset Sold  
 to_coin | string | Required | none | Asset name to buy (OKX and GATE only allow BTC, ETH, USDT; BN only allows USDT)  
 from_amount | string | Required | none | Amount to sell  
-      
+  
+##  CrossexConvertOrderRequest
+    
     
     {
-      "exchange_type": "string",
-      "from_coin": "string",
-      "to_coin": "string",
-      "from_amount": "string"
+      "quote_id": "string"
     }
     
     
-
-##  CrossexConvertOrderRequest
 
 _Flash Swap Transaction Request Body_
 
@@ -4547,15 +4489,17 @@ _Flash Swap Transaction Request Body_
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
 quote_id | string | Required | none | Inquiry ID  
-      
+  
+##  CrossexAccountUpdateRequest
+    
     
     {
-      "quote_id": "string"
+      "position_mode": "string",
+      "account_mode": "string",
+      "exchange_type": "string"
     }
     
     
-
-##  CrossexAccountUpdateRequest
 
 _Change Account Request Body_
 
@@ -4566,17 +4510,16 @@ PropertiesName | Type | Required | Restrictions | Description
 position_mode | string | Optional | none | Futures position mode (SINGLE/DUAL)  
 account_mode | string | Optional | none | Account mode (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
 exchange_type | string | Optional | none | Exchange (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to adjust futures position mode.  
-      
+  
+##  CrossexLeverageRequest
+    
     
     {
-      "position_mode": "string",
-      "account_mode": "string",
-      "exchange_type": "string"
+      "symbol": "string",
+      "leverage": "string"
     }
     
     
-
-##  CrossexLeverageRequest
 
 _Change Leverage Request Body (for futures/margin)_
 
@@ -4586,16 +4529,16 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 symbol | string | Required | none | Currency pair  
 leverage | string | Required | none | leverage  
-      
+  
+##  CrossexClosePositionRequest
+    
     
     {
       "symbol": "string",
-      "leverage": "string"
+      "position_side": "string"
     }
     
     
-
-##  CrossexClosePositionRequest
 
 _Full Close Position Request Body_
 
@@ -4609,16 +4552,16 @@ symbol | string | Required | none | Trading Pair
 position_side | string | Optional | none | Position Direction  
 1\. For leveraged positions, this parameter must be passed  
 2\. For contract positions, pass selectively based on your contract holding method  
-      
+  
+##  CrossexTransferResponse
+    
     
     {
-      "symbol": "string",
-      "position_side": "string"
+      "tx_id": "string",
+      "text": "string"
     }
     
     
-
-##  CrossexTransferResponse
 
 _CrossexTransferResponse_
 
@@ -4628,16 +4571,21 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 tx_id | string | Required | none | Order ID  
 text | string | Required | none | User-defined Order ID  
-      
+  
+##  CrossexConvertQuoteResponse
+    
     
     {
-      "tx_id": "string",
-      "text": "string"
+      "quote_id": "string",
+      "valid_ms": "string",
+      "from_coin": "string",
+      "to_coin": "string",
+      "from_amount": "string",
+      "to_amount": "string",
+      "price": "string"
     }
     
     
-
-##  CrossexConvertQuoteResponse
 
 _CrossexConvertQuoteResponse_
 
@@ -4652,21 +4600,16 @@ to_coin | string | Required | none | Asset Bought
 from_amount | string | Required | none | Amount to sell  
 to_amount | string | Required | none | Amount to buy  
 price | string | Required | none | Price  
-      
+  
+##  CrossexConvertOrderResponse
+    
     
     {
-      "quote_id": "string",
-      "valid_ms": "string",
-      "from_coin": "string",
-      "to_coin": "string",
-      "from_amount": "string",
-      "to_amount": "string",
-      "price": "string"
+      "order_id": "string",
+      "text": "string"
     }
     
     
-
-##  CrossexConvertOrderResponse
 
 _CrossexConvertOrderResponse_
 
@@ -4676,51 +4619,9 @@ PropertiesName | Type | Required | Restrictions | Description
 ---|---|---|---|---  
 order_id | string | Required | none | Order ID  
 text | string | Required | none | Order ID (cannot be customized)  
-      
-    
-    {
-      "order_id": "string",
-      "text": "string"
-    }
-    
-    
-
+  
 ##  CrossexAccount
-
-_CrossexAccount_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-user_id | string | Required | none | User ID  
-available_margin | string | Required | none | Available Margin  
-margin_balance | string | Required | none | marginbalance  
-initial_margin | string | Required | none | Initial Margin  
-maintenance_margin | string | Required | none | Maintenance margin  
-initial_margin_rate | string | Required | none | Initial margin rate  
-maintenance_margin_rate | string | Required | none | Maintenance margin rate  
-position_mode | string | Required | none | Contract Position Mode  
-account_limit | string | Optional | none | Account limit  
-create_time | string | Required | none | Created time  
-update_time | string | Required | none | Update time  
-account_mode | string | Optional | none | Account Mode. CROSS_EXCHANGE: Cross-Exchange Mode; ISOLATED_EXCHANGE: Split-Exchange Mode  
-exchange_type | string | Optional | none | Exchange Type. When account_mode is CROSS_EXCHANGE, it must be CROSSEX; otherwise, it is another exchange.  
-assets | array | Required | none | Asset list: grouped by exchange and currency, returning per-account balances, margin, and PnL details  
-↳ CrossexAccountAsset | object | Optional | none | none  
-↳ user_id | string | Optional | none | User ID  
-↳ coin | string | Optional | none | Currency  
-↳ exchange_type | string | Optional | none | Exchange  
-↳ balance | string | Optional | none | Balance  
-↳ upnl | string | Optional | none | Unrealized P&L  
-↳ equity | string | Optional | none | Equity (only USDT has a value; other assets are 0)  
-↳ futures_initial_margin | string | Optional | none | Futures initial margin (only USDT has a value; other assets are 0)  
-↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin (only USDT has a value; other assets are 0)  
-↳ borrowing_initial_margin | string | Required | none | Margin trading initial margin (only USDT has a value; other assets are 0)  
-↳ borrowing_maintenance_margin | string | Required | none | Margin trading maintenance margin (only USDT has a value; other assets are 0)  
-↳ available_balance | string | Optional | none | Available Balance  
-↳ liability | string | Optional | none | Liabilities (only meaningful in isolated exchange mode; always 0 in cross-exchange mode)  
-      
+    
     
     {
       "user_id": "string",
@@ -4756,7 +4657,50 @@ assets | array | Required | none | Asset list: grouped by exchange and currency,
     
     
 
+_CrossexAccount_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+user_id | string | Required | none | User ID  
+available_margin | string | Required | none | Available Margin  
+margin_balance | string | Required | none | marginbalance  
+initial_margin | string | Required | none | Initial Margin  
+maintenance_margin | string | Required | none | Maintenance margin  
+initial_margin_rate | string | Required | none | Initial margin rate  
+maintenance_margin_rate | string | Required | none | Maintenance margin rate  
+position_mode | string | Required | none | Contract Position Mode  
+account_limit | string | Optional | none | Account limit  
+create_time | string | Required | none | Created time  
+update_time | string | Required | none | Update time  
+account_mode | string | Optional | none | Account Mode. CROSS_EXCHANGE: Cross-Exchange Mode; ISOLATED_EXCHANGE: Split-Exchange Mode  
+exchange_type | string | Optional | none | Exchange Type. When account_mode is CROSS_EXCHANGE, it must be CROSSEX; otherwise, it is another exchange.  
+assets | array | Required | none | Asset list: grouped by exchange and currency, returning per-account balances, margin, and PnL details  
+↳ CrossexAccountAsset | object | Optional | none | none  
+↳ user_id | string | Optional | none | User ID  
+↳ coin | string | Optional | none | Currency  
+↳ exchange_type | string | Optional | none | Exchange  
+↳ balance | string | Optional | none | Balance  
+↳ upnl | string | Optional | none | Unrealized P&L  
+↳ equity | string | Optional | none | Equity (only USDT has a value; other assets are 0)  
+↳ futures_initial_margin | string | Optional | none | Futures initial margin (only USDT has a value; other assets are 0)  
+↳ futures_maintenance_margin | string | Optional | none | Futures maintenance margin (only USDT has a value; other assets are 0)  
+↳ borrowing_initial_margin | string | Required | none | Margin trading initial margin (only USDT has a value; other assets are 0)  
+↳ borrowing_maintenance_margin | string | Required | none | Margin trading maintenance margin (only USDT has a value; other assets are 0)  
+↳ available_balance | string | Optional | none | Available Balance  
+↳ liability | string | Optional | none | Liabilities (only meaningful in isolated exchange mode; always 0 in cross-exchange mode)  
+  
 ##  CrossexAccountUpdateResponse
+    
+    
+    {
+      "position_mode": "string",
+      "account_mode": "string",
+      "exchange_type": "string"
+    }
+    
+    
 
 _CrossexAccountUpdateResponse_
 
@@ -4767,14 +4711,5 @@ PropertiesName | Type | Required | Restrictions | Description
 position_mode | string | Optional | none | Requested futures position mode to modify (SINGLE/DUAL)  
 account_mode | string | Optional | none | Requested account mode to modify (CROSS_EXCHANGE/ISOLATED_EXCHANGE, default: CROSS_EXCHANGE)  
 exchange_type | string | Optional | none | Exchange targeted by the requested change (`BINANCE` / `OKX` / `GATE` / `BYBIT` / `KRAKEN` / `CROSSEX`). When account mode is `ISOLATED_EXCHANGE`, the exchange must be specified to change futures position mode.  
-      
-    
-    {
-      "position_mode": "string",
-      "account_mode": "string",
-      "exchange_type": "string"
-    }
-    
-    
-
+  
 Last Updated: 1/20/2026, 7:36:57 AM

@@ -2,10 +2,13 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/unified/ws/en
 api_type: WebSocket
-updated_at: 2026-06-01 20:43:51.243592
+updated_at: 2026-06-02 20:22:58.230973
 ---
 
 # Gate Unified WebSocket v1.0.0
+
+* Python 
+  * Golang 
 
 v1.0.0 · Stable
 
@@ -21,6 +24,19 @@ We have language bindings in `Python`, more in the future! You can view code exa
 `wss://ws.gate.com/v4/ws/unified`
 
 ##  Changelog
+
+2025-06-12
+
+  * Added supplementary field descriptions for the `unified.assets` and `unified.asset_detail` channels.
+
+2025-02-10
+
+  * `unified.assets` channel remove field `c`(`credit_available_margin`). This field is also returned inside the channel but field is not used. Do not use it later.
+
+2024-10-23
+
+  * init version, support `unified.assets`,`unified.asset_detail` channel
+
     
     
     # !/usr/bin/env python
@@ -213,18 +229,6 @@ We have language bindings in `Python`, more in the future! You can view code exa
     }
     
 
-2025-06-12
-
-  * Added supplementary field descriptions for the `unified.assets` and `unified.asset_detail` channels.
-
-2025-02-10
-
-  * `unified.assets` channel remove field `c`(`credit_available_margin`). This field is also returned inside the channel but field is not used. Do not use it later.
-
-2024-10-23
-
-  * init version, support `unified.assets`,`unified.asset_detail` channel
-
 ##  API Overview
 
 ###  Method
@@ -288,7 +292,14 @@ WebSocket authentication uses the same signature calculation method with HTTP AP
   1. Signature string concatenation method: `channel=<channel>&event=<event>&time=<time>`, where `<channel>`, `<event>`, `<time>` are corresponding request information
   2. Authentication information are sent in request body in field `auth`.
 
-    
+You can log into the console to retrieve futures API key and secret.
+
+field | type | description  
+---|---|---  
+`method` | String | Allowed value:`api_key`  
+`KEY` | String | User key string  
+`SIGN` | String | User sign string  
+      
     
     # example WebSocket signature calculation implementation in Python
     import hmac, hashlib, time
@@ -299,14 +310,6 @@ WebSocket authentication uses the same signature calculation method with HTTP AP
     print(hmac.new(secret, message, hashlib.sha512).hexdigest())  ## Generating signature
     
 
-You can log into the console to retrieve futures API key and secret.
-
-Authenticationfield | type | description  
----|---|---  
-`method` | String | Allowed value:`api_key`  
-`KEY` | String | User key string  
-`SIGN` | String | User sign string  
-  
 #  System API
 
 **Provides system status check, such as ping-pong.**
@@ -320,6 +323,13 @@ Authenticationfield | type | description
 [websocket rfc ](https://tools.ietf.org/html/rfc6455)
 
 **if you want to actively detect the connection status, you can send application layer ping message and receive pong message.**
+
+###  Request
+
+  * channel
+
+`unified.ping`
+
     
     
     from websocket import create_connection
@@ -344,12 +354,6 @@ The above command returns JSON structured like this:
     }
     
 
-###  Request
-
-  * channel
-
-`unified.ping`
-
 #  Assets overview API
 
 **Push asset overview information, with asset values truncated to 2 decimal places by default.**
@@ -359,6 +363,25 @@ WARNING
 Authentication required.
 
 ##  assets subscription
+
+###  Request
+
+  * channel
+
+`unified.assets`
+
+  * event
+
+`subscribe`
+
+  * params
+
+this channel do not need params
+
+parameter | type | required | description  
+---|---|---|---  
+|  |  |   
+
     
     
     import json
@@ -394,44 +417,7 @@ The above command returns JSON structured like this:
     }
     
 
-###  Request
-
-  * channel
-
-`unified.assets`
-
-  * event
-
-`subscribe`
-
-  * params
-
-this channel do not need params
-
-parameter | type | required | description  
----|---|---|---  
-|  |  |   
-
 ##  assets notification
-    
-    
-    {
-            "time": 1700625194,
-            "channel": "unified.assets",
-            "event": "update",
-            "result": {
-                    "u": 9008,
-                    "t": 1700625194,
-                    "r": "18.56",
-                    "R": "20.10",
-                    "b": "-1005719.51",
-                    "e": "-617985.29",
-                    "l": "1293939.74",
-                    "T": "675222.27",
-                    "a": "-1432719.62"
-            }
-    }
-    
 
 **Notify user assets overview information.**
 
@@ -464,7 +450,42 @@ field | type | field full name (non-push field) | description
 `T` | string | `unified_margin_total` | portfolio margin total  
 `a` | string | `total_available_margin` | total available margin  
 
+    
+    
+    {
+            "time": 1700625194,
+            "channel": "unified.assets",
+            "event": "update",
+            "result": {
+                    "u": 9008,
+                    "t": 1700625194,
+                    "r": "18.56",
+                    "R": "20.10",
+                    "b": "-1005719.51",
+                    "e": "-617985.29",
+                    "l": "1293939.74",
+                    "T": "675222.27",
+                    "a": "-1432719.62"
+            }
+    }
+    
+
 ##  Cancel subscription
+
+Unsubscribe`assets update notification`
+
+Unsubscribe `assets update notification`
+
+###  Request
+
+  * channel
+
+`unified.assets`
+
+  * event
+
+`unsubscribe`
+
     
     
     import json
@@ -500,18 +521,6 @@ The above command returns JSON structured like this:
     }
     
 
-Unsubscribe `assets update notification`
-
-###  Request
-
-  * channel
-
-`unified.assets`
-
-  * event
-
-`unsubscribe`
-
 #  Asset detail API
 
 **Push currency asset information, which includes 'spot assets, Earn, financial management, and lending.' USDT also includes contracts and options.**
@@ -521,6 +530,23 @@ WARNING
 Authentication required.
 
 ##  Asset_detail subscription
+
+###  Request
+
+  * channel
+
+`unified.asset_detail`
+
+  * event
+
+`subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`currencies` | array string | yes | asset currencies. You can specify individual currencies like `["BTC","ETH"]` or use `["!all"]` to subscribe to all currencies. Note: you cannot mix individual currencies with `!all` in the same subscription.  
+
     
     
     import json
@@ -577,7 +603,11 @@ The above command returns JSON structured like this:
     }
     
 
-###  Request
+##  asset detail notification
+
+**Notify user trades update.**
+
+###  Notify
 
   * channel
 
@@ -585,15 +615,33 @@ The above command returns JSON structured like this:
 
   * event
 
-`subscribe`
+`update`
 
   * params
 
-parameter | type | required | description  
+field | type | description  
+---|---|---  
+`result` | Array | Array of objects  
+field | type | field full name (non-push field) | description  
 ---|---|---|---  
-`currencies` | array string | yes | asset currencies. You can specify individual currencies like `["BTC","ETH"]` or use `["!all"]` to subscribe to all currencies. Note: you cannot mix individual currencies with `!all` in the same subscription.  
+`u` | integer | `user_id` | user id  
+`t` | integer | `refresh_time` | data refresh time  
+`dts` | map | `details` | assets detail map  
+`>a` | string | `available` | availabe amount  
+`>f` | string | `freeze` | locked amount  
+`>e` | string | `equity` | equity  
+`>tl` | string | `total_liab` | total liabilities  
+`>b` | string | `balance` | balance  
+The following fields: These fields are used in the single-currency margin mode and are only pushed when the currency is USDT. |  |  |   
+`>cb` | string | `cross_balance` | cross margin balance  
+`>mb` | string | `margin_balance` | cross margin collateral balance  
+`>im` | string | `initial_margin` | total initial margin (cross margin)  
+`>mm` | string | `maintenance_margin` | total maintenance margin (cross margin)  
+`>imr` | string | `initial_margin_rate` | total initial margin rate (cross margin, unit: %)  
+`>mmr` | string | `maintenance_margin_rate` | total maintenance margin rate (cross margin, unit: %)  
+`>am` | string | `available_margin` | total available margin balance  
+`>iam` | string | `iso_available_margin` | isolated margin available for opening positions  
 
-##  asset detail notification
     
     
     {
@@ -636,9 +684,13 @@ parameter | type | required | description
     }
     
 
-**Notify user trades update.**
+##  Cancel subscription
 
-###  Notify
+Unsubscribe`user trades update.`
+
+Unsubscribe `user trades update.`
+
+###  Request
 
   * channel
 
@@ -646,34 +698,8 @@ parameter | type | required | description
 
   * event
 
-`update`
+`unsubscribe`
 
-  * params
-
-field | type | description  
----|---|---  
-`result` | Array | Array of objects  
-field | type | field full name (non-push field) | description  
----|---|---|---  
-`u` | integer | `user_id` | user id  
-`t` | integer | `refresh_time` | data refresh time  
-`dts` | map | `details` | assets detail map  
-`>a` | string | `available` | availabe amount  
-`>f` | string | `freeze` | locked amount  
-`>e` | string | `equity` | equity  
-`>tl` | string | `total_liab` | total liabilities  
-`>b` | string | `balance` | balance  
-The following fields: These fields are used in the single-currency margin mode and are only pushed when the currency is USDT. |  |  |   
-`>cb` | string | `cross_balance` | cross margin balance  
-`>mb` | string | `margin_balance` | cross margin collateral balance  
-`>im` | string | `initial_margin` | total initial margin (cross margin)  
-`>mm` | string | `maintenance_margin` | total maintenance margin (cross margin)  
-`>imr` | string | `initial_margin_rate` | total initial margin rate (cross margin, unit: %)  
-`>mmr` | string | `maintenance_margin_rate` | total maintenance margin rate (cross margin, unit: %)  
-`>am` | string | `available_margin` | total available margin balance  
-`>iam` | string | `iso_available_margin` | isolated margin available for opening positions  
-
-##  Cancel subscription
     
     
     import json
@@ -729,17 +755,5 @@ The above command returns JSON structured like this:
       }
     }
     
-
-Unsubscribe `user trades update.`
-
-###  Request
-
-  * channel
-
-`unified.asset_detail`
-
-  * event
-
-`unsubscribe`
 
 Last Updated: 4/27/2026, 10:15:14 AM

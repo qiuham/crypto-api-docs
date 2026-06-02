@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/withdrawal
 api_type: Account
-updated_at: 2026-06-01 20:43:26.954897
+updated_at: 2026-06-02 20:22:29.453687
 ---
 
 # Withdrawal
@@ -443,6 +443,40 @@ chain | string | true | none | 提现的链名称
     
     
 
+##  UidPushWithdrawalResp
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+id | string | false | none | 订单ID  
+      
+    
+    {
+      "id": "string"
+    }
+    
+    
+
+##  UidPushWithdrawal
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+receive_uid | integer(int64) | true | none | 接收方uid  
+currency | string | true | none | 币种名称  
+amount | string | true | none | 转账数量  
+      
+    
+    {
+      "receive_uid": 0,
+      "currency": "string",
+      "amount": "string"
+    }
+    
+    
+
 ##  WithdrawalsDel
 
 ###  属性
@@ -486,38 +520,4 @@ chain | string | true | none | 提现的链名称
       "block_number": "string",
       "status": "string",
       "chain": "string"
-    }
-    
-    
-
-##  UidPushWithdrawal
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-receive_uid | integer(int64) | true | none | 接收方uid  
-currency | string | true | none | 币种名称  
-amount | string | true | none | 转账数量  
-      
-    
-    {
-      "receive_uid": 0,
-      "currency": "string",
-      "amount": "string"
-    }
-    
-    
-
-##  UidPushWithdrawalResp
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-id | string | false | none | 订单ID  
-      
-    
-    {
-      "id": "string"
     }

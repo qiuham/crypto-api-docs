@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/subaccount
 api_type: Account
-updated_at: 2026-06-01 20:43:19.813932
+updated_at: 2026-06-02 20:22:21.895353
 ---
 
 # SubAccount
@@ -1270,29 +1270,6 @@ WARNING
 
 #  模型
 
-##  SubUserMode
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-user_id | integer(int64) | false | none | 用户id  
-is_unified | boolean | false | none | 是否是统一账户  
-mode | string | false | none | 统一账户模式：  
-\- `classic`: 经典账户模式  
-\- `multi_currency`: 跨币种保证金模式  
-\- `portfolio`: 组合保证金模式  
-\- `single_currency`: 单币种保证金模式  
-      
-    
-    {
-      "user_id": 0,
-      "is_unified": true,
-      "mode": "string"
-    }
-    
-    
-
 ##  SubAccount
 
 ###  属性
@@ -1320,6 +1297,29 @@ create_time | integer(int64) | false | 只读 | 创建时间戳
       "type": 0,
       "user_id": 0,
       "create_time": 0
+    }
+    
+    
+
+##  SubUserMode
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+user_id | integer(int64) | false | none | 用户id  
+is_unified | boolean | false | none | 是否是统一账户  
+mode | string | false | none | 统一账户模式：  
+\- `classic`: 经典账户模式  
+\- `multi_currency`: 跨币种保证金模式  
+\- `portfolio`: 组合保证金模式  
+\- `single_currency`: 单币种保证金模式  
+      
+    
+    {
+      "user_id": 0,
+      "is_unified": true,
+      "mode": "string"
     }
     
     

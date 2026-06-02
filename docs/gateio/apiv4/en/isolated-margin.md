@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/isolated-margin
 api_type: REST
-updated_at: 2026-06-01 20:42:20.726923
+updated_at: 2026-06-02 20:21:19.629621
 ---
 
 # Isolated-Margin
@@ -1779,31 +1779,6 @@ Code samples
 
 #  Schemas
 
-##  UniLoanRecord
-
-_Borrowing Records_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-type | string | Optional | read-only | Type: `borrow` \- borrow, `repay` \- repay  
-currency_pair | string | Optional | read-only | Currency pair  
-currency | string | Optional | read-only | Currency  
-amount | string | Optional | read-only | Borrow or repayment amount  
-create_time | integer(int64) | Optional | read-only | Created time  
-      
-    
-    {
-      "type": "string",
-      "currency_pair": "string",
-      "currency": "string",
-      "amount": "string",
-      "create_time": 0
-    }
-    
-    
-
 ##  MarginAccount
 
 _Margin account information for a trading pair.`base` corresponds to base currency account information, `quote` corresponds to quote currency account information_
@@ -1852,23 +1827,23 @@ quote | MarginAccount/properties/base | Optional | none | Currency account infor
     
     
 
-##  MarginTransferable
+##  MarginLeverageTier
 
-_MarginTransferable_
+_Market gradient information_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-currency | string | Optional | none | Currency detail  
-currency_pair | string | Optional | none | Currency pair  
-amount | string | Optional | none | Max transferable amount  
+upper_limit | string | Optional | none | Maximum borrowing limit. Determined by the leverage you set; the lower the leverage, the larger the borrowing limit.  
+mmr | string | Optional | none | Maintenance margin rate.Under tiered margin requirements(https://www.gate.com/en/help/trade/margin-trading/42357), the maintenance margin rate is a composite value.  
+leverage | string | Optional | none | the maximum permissible leverage given to the current debt level; the higher the debt level, the lower the maximum leverage.  
       
     
     {
-      "currency": "string",
-      "currency_pair": "string",
-      "amount": "string"
+      "upper_limit": "string",
+      "mmr": "string",
+      "leverage": "string"
     }
     
     
@@ -1896,20 +1871,23 @@ total_lent | string | Optional | none | Amount used for lending. total_lent = le
     
     
 
-##  EstimateRate
+##  MaxUniBorrowable
 
-_Estimate current hourly lending rates, returned by currency_
+_MaxUniBorrowable_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-**additionalProperties** | string | Optional | none | none  
+currency | string | Required | read-only | Currency  
+currency_pair | string | Optional | read-only | Currency pair  
+borrowable | string | Required | read-only | Maximum borrowable  
       
     
     {
-      "property1": "string",
-      "property2": "string"
+      "currency": "string",
+      "currency_pair": "string",
+      "borrowable": "string"
     }
     
     
@@ -1946,23 +1924,31 @@ type | repay
     
     
 
-##  MaxUniBorrowable
+##  UniLoanInterestRecord
 
-_MaxUniBorrowable_
+_Interest Deduction Record_
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-currency | string | Required | read-only | Currency  
+currency | string | Optional | read-only | Currency name  
 currency_pair | string | Optional | read-only | Currency pair  
-borrowable | string | Required | read-only | Maximum borrowable  
+actual_rate | string | Optional | read-only | Actual Rate  
+interest | string | Optional | read-only | Interest  
+status | integer | Optional | read-only | Status: 0 - fail, 1 - success  
+type | string | Optional | read-only | Loan Type margin: margin borrowing  
+create_time | integer(int64) | Optional | read-only | Created time  
       
     
     {
       "currency": "string",
       "currency_pair": "string",
-      "borrowable": "string"
+      "actual_rate": "string",
+      "interest": "string",
+      "status": 0,
+      "type": "string",
+      "create_time": 0
     }
     
     
@@ -1996,6 +1982,24 @@ type | string | Optional | none | Account book type. Please refer to account boo
     
     
 
+##  EstimateRate
+
+_Estimate current hourly lending rates, returned by currency_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+**additionalProperties** | string | Optional | none | none  
+      
+    
+    {
+      "property1": "string",
+      "property2": "string"
+    }
+    
+    
+
 ##  UniLoan
 
 _Borrowing_
@@ -2019,6 +2023,52 @@ update_time | integer(int64) | Optional | read-only | Last Update Time
       "type": "string",
       "create_time": 0,
       "update_time": 0
+    }
+    
+    
+
+##  UniLoanRecord
+
+_Borrowing Records_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+type | string | Optional | read-only | Type: `borrow` \- borrow, `repay` \- repay  
+currency_pair | string | Optional | read-only | Currency pair  
+currency | string | Optional | read-only | Currency  
+amount | string | Optional | read-only | Borrow or repayment amount  
+create_time | integer(int64) | Optional | read-only | Created time  
+      
+    
+    {
+      "type": "string",
+      "currency_pair": "string",
+      "currency": "string",
+      "amount": "string",
+      "create_time": 0
+    }
+    
+    
+
+##  MarginTransferable
+
+_MarginTransferable_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+currency | string | Optional | none | Currency detail  
+currency_pair | string | Optional | none | Currency pair  
+amount | string | Optional | none | Max transferable amount  
+      
+    
+    {
+      "currency": "string",
+      "currency_pair": "string",
+      "amount": "string"
     }
     
     
@@ -2061,54 +2111,4 @@ leverage | string | Required | none | Position leverage
     {
       "currency_pair": "string",
       "leverage": "string"
-    }
-    
-    
-
-##  MarginLeverageTier
-
-_Market gradient information_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-upper_limit | string | Optional | none | Maximum borrowing limit. Determined by the leverage you set; the lower the leverage, the larger the borrowing limit.  
-mmr | string | Optional | none | Maintenance margin rate.Under tiered margin requirements(https://www.gate.com/en/help/trade/margin-trading/42357), the maintenance margin rate is a composite value.  
-leverage | string | Optional | none | the maximum permissible leverage given to the current debt level; the higher the debt level, the lower the maximum leverage.  
-      
-    
-    {
-      "upper_limit": "string",
-      "mmr": "string",
-      "leverage": "string"
-    }
-    
-    
-
-##  UniLoanInterestRecord
-
-_Interest Deduction Record_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-currency | string | Optional | read-only | Currency name  
-currency_pair | string | Optional | read-only | Currency pair  
-actual_rate | string | Optional | read-only | Actual Rate  
-interest | string | Optional | read-only | Interest  
-status | integer | Optional | read-only | Status: 0 - fail, 1 - success  
-type | string | Optional | read-only | Loan Type margin: margin borrowing  
-create_time | integer(int64) | Optional | read-only | Created time  
-      
-    
-    {
-      "currency": "string",
-      "currency_pair": "string",
-      "actual_rate": "string",
-      "interest": "string",
-      "status": 0,
-      "type": "string",
-      "create_time": 0
     }

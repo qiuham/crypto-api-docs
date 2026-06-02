@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/flash-swap
 api_type: REST
-updated_at: 2026-06-01 20:42:16.978079
+updated_at: 2026-06-02 20:21:14.641382
 ---
 
 # Flash_swap
@@ -627,35 +627,6 @@ It is required to choose one parameter between `sell_amount` and `buy_amount`
     
     
 
-##  FlashSwapOrderPreview
-
-_Flash swap order preview_
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-preview_id | string | Optional | none | Preview result ID  
-sell_currency | string | Optional | none | Name of the sold asset,  
-Refer to the interface Query the list of currencies supported for flash swap GET /flash_swap/currenciesto obtain  
-sell_amount | string | Optional | none | Amount to sell  
-buy_currency | string | Optional | none | Name of the purchased asset,  
-Refer to the interface Query the list of currencies supported for flash swap GET /flash_swap/currenciesto obtain  
-buy_amount | string | Optional | none | Amount to buy  
-price | string | Optional | none | Price  
-      
-    
-    {
-      "preview_id": "string",
-      "sell_currency": "string",
-      "sell_amount": "string",
-      "buy_currency": "string",
-      "buy_amount": "string",
-      "price": "string"
-    }
-    
-    
-
 ##  FlashSwapCurrencyPair
 
 _List all supported currencies in flash swap_
@@ -681,6 +652,35 @@ buy_max_amount | string | Optional | read-only | Maximum buy quantity
       "sell_max_amount": "100",
       "buy_min_amount": "10",
       "buy_max_amount": "10000000"
+    }
+    
+    
+
+##  FlashSwapOrderPreview
+
+_Flash swap order preview_
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+preview_id | string | Optional | none | Preview result ID  
+sell_currency | string | Optional | none | Name of the sold asset,  
+Refer to the interface Query the list of currencies supported for flash swap GET /flash_swap/currenciesto obtain  
+sell_amount | string | Optional | none | Amount to sell  
+buy_currency | string | Optional | none | Name of the purchased asset,  
+Refer to the interface Query the list of currencies supported for flash swap GET /flash_swap/currenciesto obtain  
+buy_amount | string | Optional | none | Amount to buy  
+price | string | Optional | none | Price  
+      
+    
+    {
+      "preview_id": "string",
+      "sell_currency": "string",
+      "sell_amount": "string",
+      "buy_currency": "string",
+      "buy_amount": "string",
+      "price": "string"
     }
     
     

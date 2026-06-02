@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/bot
 api_type: REST
-updated_at: 2026-06-01 20:42:53.543841
+updated_at: 2026-06-02 20:21:52.689519
 ---
 
 # Bot
@@ -1694,6 +1694,103 @@ WARNING
 
 #  模型
 
+##  AIHubDiscoverSuccessResponse
+
+_获取策略推荐成功时的响应体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer(int32) | true | none | none  
+message | string | true | none | none  
+data | AIHubDiscoverData | true | none | 策略推荐结果数据。  
+trace_id | string | true | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "scene": "top1",
+        "recommendations": [
+          {}
+        ],
+        "unsupported_filters": [
+          "string"
+        ]
+      },
+      "trace_id": "string"
+    }
+    
+    
+
+##  SpotGridCreateRequest
+
+_创建现货网格策略的请求体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+strategy_type | string | true | none | none  
+market | string | true | none | none  
+create_params | SpotGridCreateParams | true | none | 现货网格策略的创建参数。  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+strategy_type | spot_grid  
+      
+    
+    {
+      "strategy_type": "spot_grid",
+      "market": "string",
+      "create_params": {
+        "money": "string",
+        "low_price": "string",
+        "high_price": "string",
+        "grid_num": 1,
+        "price_type": 0,
+        "trigger_price": "string",
+        "stop_profit": "string",
+        "stop_loss": "string",
+        "profit_sharing_ratio": "string",
+        "is_use_base": true
+      }
+    }
+    
+    
+
+##  AIHubPortfolioStopSuccessResponse
+
+_终止策略成功时的响应体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer(int32) | true | none | none  
+message | string | true | none | none  
+data | AIHubPortfolioStopData | true | none | 终止策略成功后返回的结果信息。  
+trace_id | string | true | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "strategy_id": "string",
+        "strategy_type": "spot_grid",
+        "status": "string",
+        "result_message": "string"
+      },
+      "trace_id": "string"
+    }
+    
+    
+
 ##  MarginGridCreateRequest
 
 _创建杠杆网格策略的请求体。_
@@ -1729,45 +1826,6 @@ strategy_type | margin_grid
         "stop_loss": "string",
         "profit_sharing_ratio": "string",
         "is_use_base": true
-      }
-    }
-    
-    
-
-##  SpotMartingaleCreateRequest
-
-_创建现货马丁策略的请求体。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-strategy_type | string | true | none | none  
-market | string | true | none | none  
-create_params | SpotMartingaleCreateParams | true | none | 现货马丁策略的创建参数（对应 `MartingaleBot` 序列化字段）。  
-  
-\- **止损** ：使用 `stop_loss_per_cycle`（每轮止损比例），与 App 一致；**不使用** `stop_loss_price`。  
-\- 可选 **`trigger_price`** ：触发价。  
-\- `stop_loss_per_cycle` 若传入且大于 0，服务端校验区间约为 `0.001`～`0.9999`（与 `check_martingale` 一致）。  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-strategy_type | spot_martingale  
-      
-    
-    {
-      "strategy_type": "spot_martingale",
-      "market": "string",
-      "create_params": {
-        "invest_amount": "string",
-        "price_deviation": "string",
-        "max_orders": 1,
-        "take_profit_ratio": "string",
-        "stop_loss_per_cycle": "string",
-        "trigger_price": "string",
-        "profit_sharing_ratio": "string"
       }
     }
     
@@ -1833,38 +1891,70 @@ trace_id | string | true | none | none
     
     
 
-##  AIHubCreateSuccessResponse
+##  SpotGridCreateParams
 
-_创建策略成功时的响应体。_
+_现货网格策略的创建参数。_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-code | integer(int32) | true | none | none  
-message | string | true | none | none  
-data | AIHubCreateData | true | none | 创建策略成功后返回的策略信息。  
-trace_id | string | true | none | none  
+money | string | true | none | 投入金额  
+low_price | string | true | none | 区间下限  
+high_price | string | true | none | 区间上限  
+grid_num | integer(int32) | true | none | 网格数量  
+price_type | integer(int32) | true | none | none  
+trigger_price | string | false | none | none  
+stop_profit | string | false | none | none  
+stop_loss | string | false | none | none  
+profit_sharing_ratio | string | false | none | none  
+is_use_base | boolean | false | none | none  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+price_type | 0  
+price_type | 1  
       
     
     {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "strategy_id": "string",
-        "strategy_type": "spot_grid",
-        "market": "string",
-        "status": "string",
-        "jump_url": "string"
-      },
-      "trace_id": "string"
+      "money": "string",
+      "low_price": "string",
+      "high_price": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
     }
     
     
 
-##  SpotGridCreateRequest
+##  AIHubPortfolioStopRequest
 
-_创建现货网格策略的请求体。_
+_终止运行中策略的请求体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+strategy_id | string | true | none | none  
+strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
+      
+    
+    {
+      "strategy_id": "string",
+      "strategy_type": "spot_grid"
+    }
+    
+    
+
+##  InfiniteGridCreateRequest
+
+_创建无限网格策略的请求体。_
 
 ###  属性
 
@@ -1872,22 +1962,25 @@ _创建现货网格策略的请求体。_
 ---|---|---|---|---  
 strategy_type | string | true | none | none  
 market | string | true | none | none  
-create_params | SpotGridCreateParams | true | none | 现货网格策略的创建参数。  
+create_params | InfiniteGridCreateParams | true | none | 无限网格策略的创建参数。  
+  
+与 App 口径对齐：**仅** `money`、`price_floor`、`profit_per_grid` 为必填；  
+`grid_num`、`price_type` 可选（不传时由服务端按默认处理）。  
   
 ####  枚举值列表
 
 枚举值列表属性 | 值  
 ---|---  
-strategy_type | spot_grid  
+strategy_type | infinite_grid  
       
     
     {
-      "strategy_type": "spot_grid",
+      "strategy_type": "infinite_grid",
       "market": "string",
       "create_params": {
         "money": "string",
-        "low_price": "string",
-        "high_price": "string",
+        "price_floor": "string",
+        "profit_per_grid": "string",
         "grid_num": 1,
         "price_type": 0,
         "trigger_price": "string",
@@ -1896,37 +1989,6 @@ strategy_type | spot_grid
         "profit_sharing_ratio": "string",
         "is_use_base": true
       }
-    }
-    
-    
-
-##  AIHubDiscoverSuccessResponse
-
-_获取策略推荐成功时的响应体。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer(int32) | true | none | none  
-message | string | true | none | none  
-data | AIHubDiscoverData | true | none | 策略推荐结果数据。  
-trace_id | string | true | none | none  
-      
-    
-    {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "scene": "top1",
-        "recommendations": [
-          {}
-        ],
-        "unsupported_filters": [
-          "string"
-        ]
-      },
-      "trace_id": "string"
     }
     
     
@@ -1963,6 +2025,103 @@ strategy_type | contract_martingale
         "stop_loss_price": "string",
         "profit_sharing_ratio": "string"
       }
+    }
+    
+    
+
+##  AIHubPortfolioStopData
+
+_终止策略成功后返回的结果信息。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+strategy_id | string | true | none | none  
+strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
+status | string | true | none | 当前实现返回 `stopping`  
+result_message | string | true | none | none  
+      
+    
+    {
+      "strategy_id": "string",
+      "strategy_type": "spot_grid",
+      "status": "string",
+      "result_message": "string"
+    }
+    
+    
+
+##  InfiniteGridCreateParams
+
+*无限网格策略的创建参数。
+
+与 App 口径对齐：**仅** `money`、`price_floor`、`profit_per_grid` 为必填； `grid_num`、`price_type` 可选（不传时由服务端按默认处理）。*
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+money | string | true | none | none  
+price_floor | string | true | none | 价格地板  
+profit_per_grid | string | true | none | 每格利润  
+grid_num | integer(int32) | false | none | 可选；与 App 一致可省略。  
+price_type | integer(int32) | false | none | 可选。`0` 等差，`1` 等比；不传时按服务端默认。  
+trigger_price | string | false | none | none  
+stop_profit | string | false | none | none  
+stop_loss | string | false | none | none  
+profit_sharing_ratio | string | false | none | none  
+is_use_base | boolean | false | none | none  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+price_type | 0  
+price_type | 1  
+      
+    
+    {
+      "money": "string",
+      "price_floor": "string",
+      "profit_per_grid": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
+    }
+    
+    
+
+##  AIHubPortfolioRunningSuccessResponse
+
+_查询运行中策略列表成功时的响应体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer(int32) | true | none | none  
+message | string | true | none | none  
+data | AIHubPortfolioRunningData | true | none | 运行中策略列表数据。  
+trace_id | string | true | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "items": [
+          {}
+        ],
+        "page": 0,
+        "page_size": 0,
+        "total": 0
+      },
+      "trace_id": "string"
     }
     
     
@@ -2007,6 +2166,228 @@ strategy_type | futures_grid
     
     
 
+##  AIHubCreateSuccessResponse
+
+_创建策略成功时的响应体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer(int32) | true | none | none  
+message | string | true | none | none  
+data | AIHubCreateData | true | none | 创建策略成功后返回的策略信息。  
+trace_id | string | true | none | none  
+      
+    
+    {
+      "code": 200,
+      "message": "success",
+      "data": {
+        "strategy_id": "string",
+        "strategy_type": "spot_grid",
+        "market": "string",
+        "status": "string",
+        "jump_url": "string"
+      },
+      "trace_id": "string"
+    }
+    
+    
+
+##  AIHubDiscoverData
+
+_策略推荐结果数据。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+scene | DiscoverScene | true | none | 策略推荐接口支持的场景枚举。  
+recommendations | [AIHubRecommendation] | true | none | [单条策略推荐信息。]  
+unsupported_filters | array | true | none | 本期不支持的筛选条件  
+      
+    
+    {
+      "scene": "top1",
+      "recommendations": [
+        {
+          "recommendation_id": "string",
+          "market": "string",
+          "strategy_type": "spot_grid",
+          "strategy_name": "string",
+          "backtest_apr": "string",
+          "max_drawdown": "string",
+          "summary": "string",
+          "strategy_params_preview": "string"
+        }
+      ],
+      "unsupported_filters": [
+        "string"
+      ]
+    }
+    
+    
+
+##  DiscoverScene
+
+_策略推荐接口支持的场景枚举。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+_None_ | string | false | none | 策略推荐接口支持的场景枚举。  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+_None_ | top1  
+_None_ | bundle  
+_None_ | filter  
+_None_ | refresh  
+      
+    
+    "top1"
+    
+    
+
+##  MarginGridCreateParams
+
+_杠杆网格策略的创建参数。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+money | string | true | none | none  
+low_price | string | true | none | none  
+high_price | string | true | none | none  
+grid_num | integer(int32) | true | none | none  
+price_type | integer(int32) | true | none | none  
+leverage | string | true | none | none  
+direction | FuturesDirection | false | none | 合约类策略支持的方向枚举。  
+trigger_price | string | false | none | none  
+stop_profit | string | false | none | none  
+stop_loss | string | false | none | none  
+profit_sharing_ratio | string | false | none | none  
+is_use_base | boolean | false | none | none  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+price_type | 0  
+price_type | 1  
+      
+    
+    {
+      "money": "string",
+      "low_price": "string",
+      "high_price": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "leverage": "string",
+      "direction": "long",
+      "trigger_price": "string",
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
+    }
+    
+    
+
+##  AIHubPortfolioRunningData
+
+_运行中策略列表数据。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+items | [AIHubPortfolioRunningItem] | true | none | [运行中策略列表中的单条记录。]  
+page | integer(int32) | true | none | none  
+page_size | integer(int32) | true | none | none  
+total | integer(int32) | true | none | none  
+      
+    
+    {
+      "items": [
+        {
+          "strategy_id": "string",
+          "strategy_type": "spot_grid",
+          "strategy_name": "string",
+          "market": "string",
+          "status": "string",
+          "pnl": "string",
+          "pnl_rate": "string",
+          "invest_amount": "string",
+          "created_at": "string"
+        }
+      ],
+      "page": 0,
+      "page_size": 0,
+      "total": 0
+    }
+    
+    
+
+##  AIHubRecommendation
+
+_单条策略推荐信息。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+recommendation_id | string | true | none | none  
+market | string | true | none | none  
+strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
+strategy_name | string | true | none | none  
+backtest_apr | string | false | none | none  
+max_drawdown | string | false | none | none  
+summary | string | true | none | none  
+strategy_params_preview | string | false | none | 推荐参数预览的 JSON 文本（字符串形态传输，便于客户端统一反序列化）。 内容为按策略类型变化的 JSON 对象序列化结果；调用方或上层模型需自行解析。  
+      
+    
+    {
+      "recommendation_id": "string",
+      "market": "string",
+      "strategy_type": "spot_grid",
+      "strategy_name": "string",
+      "backtest_apr": "string",
+      "max_drawdown": "string",
+      "summary": "string",
+      "strategy_params_preview": "string"
+    }
+    
+    
+
+##  FuturesDirection
+
+_合约类策略支持的方向枚举。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+_None_ | string | false | none | 合约类策略支持的方向枚举。  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+_None_ | long  
+_None_ | short  
+_None_ | neutral  
+      
+    
+    "long"
+    
+    
+
 ##  AIHubCreateData
 
 _创建策略成功后返回的策略信息。_
@@ -2032,82 +2413,113 @@ jump_url | string | false | none | none
     
     
 
-##  AIHubPortfolioStopRequest
+##  StrategyType
 
-_终止运行中策略的请求体。_
+_AIHub 支持的完整策略类型枚举。_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-strategy_id | string | true | none | none  
-strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
+_None_ | string | false | none | AIHub 支持的完整策略类型枚举。  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+_None_ | spot_grid  
+_None_ | margin_grid  
+_None_ | infinite_grid  
+_None_ | futures_grid  
+_None_ | spot_martingale  
+_None_ | contract_martingale  
+      
+    
+    "spot_grid"
+    
+    
+
+##  SpotMartingaleCreateRequest
+
+_创建现货马丁策略的请求体。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+strategy_type | string | true | none | none  
+market | string | true | none | none  
+create_params | SpotMartingaleCreateParams | true | none | 现货马丁策略的创建参数（对应 `MartingaleBot` 序列化字段）。  
+  
+\- **止损** ：使用 `stop_loss_per_cycle`（每轮止损比例），与 App 一致；**不使用** `stop_loss_price`。  
+\- 可选 **`trigger_price`** ：触发价。  
+\- `stop_loss_per_cycle` 若传入且大于 0，服务端校验区间约为 `0.001`～`0.9999`（与 `check_martingale` 一致）。  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+strategy_type | spot_martingale  
       
     
     {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid"
+      "strategy_type": "spot_martingale",
+      "market": "string",
+      "create_params": {
+        "invest_amount": "string",
+        "price_deviation": "string",
+        "max_orders": 1,
+        "take_profit_ratio": "string",
+        "stop_loss_per_cycle": "string",
+        "trigger_price": "string",
+        "profit_sharing_ratio": "string"
+      }
     }
     
     
 
-##  AIHubPortfolioStopSuccessResponse
+##  FuturesGridCreateParams
 
-_终止策略成功时的响应体。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer(int32) | true | none | none  
-message | string | true | none | none  
-data | AIHubPortfolioStopData | true | none | 终止策略成功后返回的结果信息。  
-trace_id | string | true | none | none  
-      
-    
-    {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "strategy_id": "string",
-        "strategy_type": "spot_grid",
-        "status": "string",
-        "result_message": "string"
-      },
-      "trace_id": "string"
-    }
-    
-    
-
-##  SpotMartingaleCreateParams
-
-*现货马丁策略的创建参数（对应 `MartingaleBot` 序列化字段）。
-
-  * **止损** ：使用 `stop_loss_per_cycle`（每轮止损比例），与 App 一致；**不使用** `stop_loss_price`。
-  * 可选 **`trigger_price`** ：触发价。
-  * `stop_loss_per_cycle` 若传入且大于 0，服务端校验区间约为 `0.001`～`0.9999`（与 `check_martingale` 一致）。*
+_合约网格策略的创建参数。_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-invest_amount | string | true | none | none  
-price_deviation | string | true | none | 加仓偏离比例，小数字符串（例如跌幅 2% 为 `0.02`）。  
-max_orders | integer(int32) | true | none | none  
-take_profit_ratio | string | true | none | 每轮止盈比例，小数字符串。  
-stop_loss_per_cycle | string | false | none | 每轮止损比例，小数字符串；可选，与 App `stop_loss_per_cycle` 一致。  
-trigger_price | string | false | none | 触发价；可选。  
+money | string | true | none | none  
+low_price | string | true | none | none  
+high_price | string | true | none | none  
+grid_num | integer(int32) | true | none | none  
+price_type | integer(int32) | true | none | none  
+leverage | string | true | none | none  
+direction | FuturesDirection | false | none | 合约类策略支持的方向枚举。  
+trigger_price | string | false | none | none  
+stop_profit | string | false | none | none  
+stop_loss | string | false | none | none  
 profit_sharing_ratio | string | false | none | none  
+is_use_base | boolean | false | none | none  
+  
+####  枚举值列表
+
+枚举值列表属性 | 值  
+---|---  
+price_type | 0  
+price_type | 1  
       
     
     {
-      "invest_amount": "string",
-      "price_deviation": "string",
-      "max_orders": 1,
-      "take_profit_ratio": "string",
-      "stop_loss_per_cycle": "string",
+      "money": "string",
+      "low_price": "string",
+      "high_price": "string",
+      "grid_num": 1,
+      "price_type": 0,
+      "leverage": "string",
+      "direction": "long",
       "trigger_price": "string",
-      "profit_sharing_ratio": "string"
+      "stop_profit": "string",
+      "stop_loss": "string",
+      "profit_sharing_ratio": "string",
+      "is_use_base": true
     }
     
     
@@ -2171,115 +2583,127 @@ stop_supported | boolean | true | none | none
     
     
 
-##  SpotGridCreateParams
+##  AIHubPortfolioRunningItem
 
-_现货网格策略的创建参数。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-money | string | true | none | 投入金额  
-low_price | string | true | none | 区间下限  
-high_price | string | true | none | 区间上限  
-grid_num | integer(int32) | true | none | 网格数量  
-price_type | integer(int32) | true | none | none  
-trigger_price | string | false | none | none  
-stop_profit | string | false | none | none  
-stop_loss | string | false | none | none  
-profit_sharing_ratio | string | false | none | none  
-is_use_base | boolean | false | none | none  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "low_price": "string",
-      "high_price": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
-##  AIHubPortfolioRunningSuccessResponse
-
-_查询运行中策略列表成功时的响应体。_
+_运行中策略列表中的单条记录。_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-code | integer(int32) | true | none | none  
-message | string | true | none | none  
-data | AIHubPortfolioRunningData | true | none | 运行中策略列表数据。  
-trace_id | string | true | none | none  
-      
-    
-    {
-      "code": 200,
-      "message": "success",
-      "data": {
-        "items": [
-          {}
-        ],
-        "page": 0,
-        "page_size": 0,
-        "total": 0
-      },
-      "trace_id": "string"
-    }
-    
-    
-
-##  InfiniteGridCreateRequest
-
-_创建无限网格策略的请求体。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-strategy_type | string | true | none | none  
+strategy_id | string | true | none | none  
+strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
+strategy_name | string | true | none | none  
 market | string | true | none | none  
-create_params | InfiniteGridCreateParams | true | none | 无限网格策略的创建参数。  
-  
-与 App 口径对齐：**仅** `money`、`price_floor`、`profit_per_grid` 为必填；  
-`grid_num`、`price_type` 可选（不传时由服务端按默认处理）。  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-strategy_type | infinite_grid  
+status | string | true | none | none  
+pnl | string | false | none | none  
+pnl_rate | string | false | none | none  
+invest_amount | string | false | none | none  
+created_at | string | false | none | 创建时间  
       
     
     {
-      "strategy_type": "infinite_grid",
+      "strategy_id": "string",
+      "strategy_type": "spot_grid",
+      "strategy_name": "string",
       "market": "string",
-      "create_params": {
-        "money": "string",
-        "price_floor": "string",
-        "profit_per_grid": "string",
-        "grid_num": 1,
-        "price_type": 0,
-        "trigger_price": "string",
-        "stop_profit": "string",
-        "stop_loss": "string",
-        "profit_sharing_ratio": "string",
-        "is_use_base": true
-      }
+      "status": "string",
+      "pnl": "string",
+      "pnl_rate": "string",
+      "invest_amount": "string",
+      "created_at": "string"
+    }
+    
+    
+
+##  AIHubPortfolioBaseInfo
+
+_策略详情基础信息。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+strategy_name | string | true | none | none  
+created_at | string | true | none | 创建时间  
+running_duration | integer(int64) | true | none | 运行时长，单位秒  
+invest_amount | string | true | none | none  
+total_profit | string | true | none | none  
+profit_rate | string | true | none | none  
+      
+    
+    {
+      "strategy_name": "string",
+      "created_at": "string",
+      "running_duration": 0,
+      "invest_amount": "string",
+      "total_profit": "string",
+      "profit_rate": "string"
+    }
+    
+    
+
+##  SpotMartingaleCreateParams
+
+*现货马丁策略的创建参数（对应 `MartingaleBot` 序列化字段）。
+
+  * **止损** ：使用 `stop_loss_per_cycle`（每轮止损比例），与 App 一致；**不使用** `stop_loss_price`。
+  * 可选 **`trigger_price`** ：触发价。
+  * `stop_loss_per_cycle` 若传入且大于 0，服务端校验区间约为 `0.001`～`0.9999`（与 `check_martingale` 一致）。*
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+invest_amount | string | true | none | none  
+price_deviation | string | true | none | 加仓偏离比例，小数字符串（例如跌幅 2% 为 `0.02`）。  
+max_orders | integer(int32) | true | none | none  
+take_profit_ratio | string | true | none | 每轮止盈比例，小数字符串。  
+stop_loss_per_cycle | string | false | none | 每轮止损比例，小数字符串；可选，与 App `stop_loss_per_cycle` 一致。  
+trigger_price | string | false | none | 触发价；可选。  
+profit_sharing_ratio | string | false | none | none  
+      
+    
+    {
+      "invest_amount": "string",
+      "price_deviation": "string",
+      "max_orders": 1,
+      "take_profit_ratio": "string",
+      "stop_loss_per_cycle": "string",
+      "trigger_price": "string",
+      "profit_sharing_ratio": "string"
+    }
+    
+    
+
+##  ContractMartingaleCreateParams
+
+_合约马丁策略的创建参数。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+invest_amount | string | true | none | 投入保证金金额；服务端会按实时合约价格、合约乘数和最小下单单位自动换算首单张数。  
+price_deviation | string | true | none | none  
+max_orders | integer(int32) | true | none | none  
+take_profit_ratio | string | true | none | none  
+direction | ContractMartingaleDirection | true | none | 合约马丁策略支持的方向枚举，和 App 原始接口保持一致。  
+leverage | string | true | none | none  
+stop_loss_price | string | false | none | 历史字段名。当前 AIHub `contract_martingale` 创建路径未映射该字段；  
+合约止损规则以合约马丁底层接口为准。MCP 工具请以 bot-service 实现为准。  
+profit_sharing_ratio | string | false | none | none  
+      
+    
+    {
+      "invest_amount": "string",
+      "price_deviation": "string",
+      "max_orders": 1,
+      "take_profit_ratio": "string",
+      "direction": "buy",
+      "leverage": "string",
+      "stop_loss_price": "string",
+      "profit_sharing_ratio": "string"
     }
     
     
@@ -2325,218 +2749,6 @@ maintenance_margin_ratio | string | false | none | none
     
     
 
-##  InfiniteGridCreateParams
-
-*无限网格策略的创建参数。
-
-与 App 口径对齐：**仅** `money`、`price_floor`、`profit_per_grid` 为必填； `grid_num`、`price_type` 可选（不传时由服务端按默认处理）。*
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-money | string | true | none | none  
-price_floor | string | true | none | 价格地板  
-profit_per_grid | string | true | none | 每格利润  
-grid_num | integer(int32) | false | none | 可选；与 App 一致可省略。  
-price_type | integer(int32) | false | none | 可选。`0` 等差，`1` 等比；不传时按服务端默认。  
-trigger_price | string | false | none | none  
-stop_profit | string | false | none | none  
-stop_loss | string | false | none | none  
-profit_sharing_ratio | string | false | none | none  
-is_use_base | boolean | false | none | none  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "price_floor": "string",
-      "profit_per_grid": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
-##  StrategyType
-
-_AIHub 支持的完整策略类型枚举。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-_None_ | string | false | none | AIHub 支持的完整策略类型枚举。  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-_None_ | spot_grid  
-_None_ | margin_grid  
-_None_ | infinite_grid  
-_None_ | futures_grid  
-_None_ | spot_martingale  
-_None_ | contract_martingale  
-      
-    
-    "spot_grid"
-    
-    
-
-##  FuturesGridCreateParams
-
-_合约网格策略的创建参数。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-money | string | true | none | none  
-low_price | string | true | none | none  
-high_price | string | true | none | none  
-grid_num | integer(int32) | true | none | none  
-price_type | integer(int32) | true | none | none  
-leverage | string | true | none | none  
-direction | FuturesDirection | false | none | 合约类策略支持的方向枚举。  
-trigger_price | string | false | none | none  
-stop_profit | string | false | none | none  
-stop_loss | string | false | none | none  
-profit_sharing_ratio | string | false | none | none  
-is_use_base | boolean | false | none | none  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "low_price": "string",
-      "high_price": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "leverage": "string",
-      "direction": "long",
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
-##  AIHubPortfolioBaseInfo
-
-_策略详情基础信息。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-strategy_name | string | true | none | none  
-created_at | string | true | none | 创建时间  
-running_duration | integer(int64) | true | none | 运行时长，单位秒  
-invest_amount | string | true | none | none  
-total_profit | string | true | none | none  
-profit_rate | string | true | none | none  
-      
-    
-    {
-      "strategy_name": "string",
-      "created_at": "string",
-      "running_duration": 0,
-      "invest_amount": "string",
-      "total_profit": "string",
-      "profit_rate": "string"
-    }
-    
-    
-
-##  MarginGridCreateParams
-
-_杠杆网格策略的创建参数。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-money | string | true | none | none  
-low_price | string | true | none | none  
-high_price | string | true | none | none  
-grid_num | integer(int32) | true | none | none  
-price_type | integer(int32) | true | none | none  
-leverage | string | true | none | none  
-direction | FuturesDirection | false | none | 合约类策略支持的方向枚举。  
-trigger_price | string | false | none | none  
-stop_profit | string | false | none | none  
-stop_loss | string | false | none | none  
-profit_sharing_ratio | string | false | none | none  
-is_use_base | boolean | false | none | none  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-price_type | 0  
-price_type | 1  
-      
-    
-    {
-      "money": "string",
-      "low_price": "string",
-      "high_price": "string",
-      "grid_num": 1,
-      "price_type": 0,
-      "leverage": "string",
-      "direction": "long",
-      "trigger_price": "string",
-      "stop_profit": "string",
-      "stop_loss": "string",
-      "profit_sharing_ratio": "string",
-      "is_use_base": true
-    }
-    
-    
-
-##  AIHubPortfolioStopData
-
-_终止策略成功后返回的结果信息。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-strategy_id | string | true | none | none  
-strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
-status | string | true | none | 当前实现返回 `stopping`  
-result_message | string | true | none | none  
-      
-    
-    {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid",
-      "status": "string",
-      "result_message": "string"
-    }
-    
-    
-
 ##  AIHubPortfolioPosition
 
 _策略详情仓位信息，按策略类型返回对应字段。_
@@ -2564,130 +2776,6 @@ side | string | false | none | none
     
     
 
-##  AIHubDiscoverData
-
-_策略推荐结果数据。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-scene | DiscoverScene | true | none | 策略推荐接口支持的场景枚举。  
-recommendations | [AIHubRecommendation] | true | none | [单条策略推荐信息。]  
-unsupported_filters | array | true | none | 本期不支持的筛选条件  
-      
-    
-    {
-      "scene": "top1",
-      "recommendations": [
-        {
-          "recommendation_id": "string",
-          "market": "string",
-          "strategy_type": "spot_grid",
-          "strategy_name": "string",
-          "backtest_apr": "string",
-          "max_drawdown": "string",
-          "summary": "string",
-          "strategy_params_preview": "string"
-        }
-      ],
-      "unsupported_filters": [
-        "string"
-      ]
-    }
-    
-    
-
-##  ContractMartingaleCreateParams
-
-_合约马丁策略的创建参数。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-invest_amount | string | true | none | 投入保证金金额；服务端会按实时合约价格、合约乘数和最小下单单位自动换算首单张数。  
-price_deviation | string | true | none | none  
-max_orders | integer(int32) | true | none | none  
-take_profit_ratio | string | true | none | none  
-direction | ContractMartingaleDirection | true | none | 合约马丁策略支持的方向枚举，和 App 原始接口保持一致。  
-leverage | string | true | none | none  
-stop_loss_price | string | false | none | 历史字段名。当前 AIHub `contract_martingale` 创建路径未映射该字段；  
-合约止损规则以合约马丁底层接口为准。MCP 工具请以 bot-service 实现为准。  
-profit_sharing_ratio | string | false | none | none  
-      
-    
-    {
-      "invest_amount": "string",
-      "price_deviation": "string",
-      "max_orders": 1,
-      "take_profit_ratio": "string",
-      "direction": "buy",
-      "leverage": "string",
-      "stop_loss_price": "string",
-      "profit_sharing_ratio": "string"
-    }
-    
-    
-
-##  AIHubPortfolioRunningData
-
-_运行中策略列表数据。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-items | [AIHubPortfolioRunningItem] | true | none | [运行中策略列表中的单条记录。]  
-page | integer(int32) | true | none | none  
-page_size | integer(int32) | true | none | none  
-total | integer(int32) | true | none | none  
-      
-    
-    {
-      "items": [
-        {
-          "strategy_id": "string",
-          "strategy_type": "spot_grid",
-          "strategy_name": "string",
-          "market": "string",
-          "status": "string",
-          "pnl": "string",
-          "pnl_rate": "string",
-          "invest_amount": "string",
-          "created_at": "string"
-        }
-      ],
-      "page": 0,
-      "page_size": 0,
-      "total": 0
-    }
-    
-    
-
-##  FuturesDirection
-
-_合约类策略支持的方向枚举。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-_None_ | string | false | none | 合约类策略支持的方向枚举。  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-_None_ | long  
-_None_ | short  
-_None_ | neutral  
-      
-    
-    "long"
-    
-    
-
 ##  ContractMartingaleDirection
 
 _合约马丁策略支持的方向枚举，和 App 原始接口保持一致。_
@@ -2707,91 +2795,3 @@ _None_ | sell
       
     
     "buy"
-    
-    
-
-##  DiscoverScene
-
-_策略推荐接口支持的场景枚举。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-_None_ | string | false | none | 策略推荐接口支持的场景枚举。  
-  
-####  枚举值列表
-
-枚举值列表属性 | 值  
----|---  
-_None_ | top1  
-_None_ | bundle  
-_None_ | filter  
-_None_ | refresh  
-      
-    
-    "top1"
-    
-    
-
-##  AIHubRecommendation
-
-_单条策略推荐信息。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-recommendation_id | string | true | none | none  
-market | string | true | none | none  
-strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
-strategy_name | string | true | none | none  
-backtest_apr | string | false | none | none  
-max_drawdown | string | false | none | none  
-summary | string | true | none | none  
-strategy_params_preview | string | false | none | 推荐参数预览的 JSON 文本（字符串形态传输，便于客户端统一反序列化）。 内容为按策略类型变化的 JSON 对象序列化结果；调用方或上层模型需自行解析。  
-      
-    
-    {
-      "recommendation_id": "string",
-      "market": "string",
-      "strategy_type": "spot_grid",
-      "strategy_name": "string",
-      "backtest_apr": "string",
-      "max_drawdown": "string",
-      "summary": "string",
-      "strategy_params_preview": "string"
-    }
-    
-    
-
-##  AIHubPortfolioRunningItem
-
-_运行中策略列表中的单条记录。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-strategy_id | string | true | none | none  
-strategy_type | StrategyType | true | none | AIHub 支持的完整策略类型枚举。  
-strategy_name | string | true | none | none  
-market | string | true | none | none  
-status | string | true | none | none  
-pnl | string | false | none | none  
-pnl_rate | string | false | none | none  
-invest_amount | string | false | none | none  
-created_at | string | false | none | 创建时间  
-      
-    
-    {
-      "strategy_id": "string",
-      "strategy_type": "spot_grid",
-      "strategy_name": "string",
-      "market": "string",
-      "status": "string",
-      "pnl": "string",
-      "pnl_rate": "string",
-      "invest_amount": "string",
-      "created_at": "string"
-    }

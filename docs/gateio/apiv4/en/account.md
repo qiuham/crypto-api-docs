@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/en/account
 api_type: Account
-updated_at: 2026-06-01 20:42:05.491182
+updated_at: 2026-06-02 20:21:02.880817
 ---
 
 # Account
@@ -1046,6 +1046,34 @@ Code samples
 
 #  Schemas
 
+##  DebitFee
+
+###  Properties
+
+PropertiesName | Type | Required | Restrictions | Description  
+---|---|---|---|---  
+enabled | boolean | Required | none | Whether GT fee deduction is enabled  
+      
+    
+    {
+      "enabled": true
+    }
+    
+    
+
+##  AddSTPGroupUsersRequest
+
+###  Properties
+
+_None_
+    
+    
+    [
+      0
+    ]
+    
+    
+
 ##  AccountDetail
 
 _AccountDetail_
@@ -1076,27 +1104,6 @@ copy_trading_role | integer(int32) | Optional | none | User role: 0 - Normal use
         "mode": 0
       },
       "copy_trading_role": 0
-    }
-    
-    
-
-##  StpGroup
-
-###  Properties
-
-PropertiesName | Type | Required | Restrictions | Description  
----|---|---|---|---  
-id | integer(int64) | Optional | none | STP Group ID  
-name | string | Required | none | STP Group name  
-creator_id | integer(int64) | Optional | none | Creator ID  
-create_time | integer(int64) | Optional | none | Created time  
-      
-    
-    {
-      "id": 0,
-      "name": "string",
-      "creator_id": 0,
-      "create_time": 0
     }
     
     
@@ -1167,17 +1174,21 @@ last_access | string | Optional | read-only | Last Access Time
     
     
 
-##  DebitFee
+##  StpGroupUser
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-enabled | boolean | Required | none | Whether GT fee deduction is enabled  
+user_id | integer(int64) | Optional | none | User ID  
+stp_id | integer(int64) | Optional | none | STP Group ID  
+create_time | integer(int64) | Optional | none | Created time  
       
     
     {
-      "enabled": true
+      "user_id": 0,
+      "stp_id": 0,
+      "create_time": 0
     }
     
     
@@ -1203,32 +1214,21 @@ updated_at | string | Optional | none | Update time
     
     
 
-##  AddSTPGroupUsersRequest
-
-###  Properties
-
-_None_
-    
-    
-    [
-      0
-    ]
-    
-    
-
-##  StpGroupUser
+##  StpGroup
 
 ###  Properties
 
 PropertiesName | Type | Required | Restrictions | Description  
 ---|---|---|---|---  
-user_id | integer(int64) | Optional | none | User ID  
-stp_id | integer(int64) | Optional | none | STP Group ID  
+id | integer(int64) | Optional | none | STP Group ID  
+name | string | Required | none | STP Group name  
+creator_id | integer(int64) | Optional | none | Creator ID  
 create_time | integer(int64) | Optional | none | Created time  
       
     
     {
-      "user_id": 0,
-      "stp_id": 0,
+      "id": 0,
+      "name": "string",
+      "creator_id": 0,
       "create_time": 0
     }

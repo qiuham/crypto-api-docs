@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/flash-swap
 api_type: REST
-updated_at: 2026-06-01 20:43:01.703631
+updated_at: 2026-06-02 20:22:02.484406
 ---
 
 # Flash_swap
@@ -596,62 +596,6 @@ WARNING
 
 #  模型
 
-##  FlashSwapPreviewRequest
-
-_创建闪兑订单参数_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-sell_currency | string | true | none | 卖出的资产名称，  
-根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
-sell_amount | string | false | none | 卖出的资产数量，  
-`sell_amount`和`buy_amount`二选一必填  
-buy_currency | string | true | none | 买入的资产名称，  
-根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
-buy_amount | string | false | none | 买入的资产数量，  
-`sell_amount`和`buy_amount`二选一必填  
-      
-    
-    {
-      "sell_currency": "string",
-      "sell_amount": "string",
-      "buy_currency": "string",
-      "buy_amount": "string"
-    }
-    
-    
-
-##  FlashSwapCurrencyPair
-
-_查询闪兑的交易对列表_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-currency_pair | string | false | 只读 | 交易对 ， `BTC_USDT` 表示卖`BTC`买`USDT`  
-sell_currency | string | false | 只读 | 卖出币种  
-buy_currency | string | false | 只读 | 买入币种  
-sell_min_amount | string | false | 只读 | 卖出最小数量  
-sell_max_amount | string | false | 只读 | 卖出最大数量  
-buy_min_amount | string | false | 只读 | 买入最小数量  
-buy_max_amount | string | false | 只读 | 买入最大数量  
-      
-    
-    {
-      "currency_pair": "string",
-      "sell_currency": "BTC",
-      "buy_currency": "USDT",
-      "sell_min_amount": "0.00001",
-      "sell_max_amount": "100",
-      "buy_min_amount": "10",
-      "buy_max_amount": "10000000"
-    }
-    
-    
-
 ##  FlashSwapOrder
 
 _闪兑订单_
@@ -688,6 +632,58 @@ status | integer | false | 只读 | 闪兑订单状态
     
     
 
+##  FlashSwapPreviewRequest
+
+_创建闪兑订单参数_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+sell_currency | string | true | none | 卖出的资产名称，  
+根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
+sell_amount | string | false | none | 卖出的资产数量，  
+`sell_amount`和`buy_amount`二选一必填  
+buy_currency | string | true | none | 买入的资产名称，  
+根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
+buy_amount | string | false | none | 买入的资产数量，  
+`sell_amount`和`buy_amount`二选一必填  
+      
+    
+    {
+      "sell_currency": "string",
+      "sell_amount": "string",
+      "buy_currency": "string",
+      "buy_amount": "string"
+    }
+    
+    
+
+##  FlashSwapOrderRequest
+
+_创建闪兑订单参数_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+preview_id | string | true | none | 预览结果id  
+sell_currency | string | true | none | 卖出的资产名称，根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
+sell_amount | string | true | none | 卖出的资产数量(根据预览结果)  
+buy_currency | string | true | none | 买入的资产名称，根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
+buy_amount | string | true | none | 买入的资产数量(根据预览结果)  
+      
+    
+    {
+      "preview_id": "string",
+      "sell_currency": "string",
+      "sell_amount": "string",
+      "buy_currency": "string",
+      "buy_amount": "string"
+    }
+    
+    
+
 ##  FlashSwapOrderPreview
 
 _闪兑订单预览_
@@ -717,25 +713,29 @@ price | string | false | none | 价格
     
     
 
-##  FlashSwapOrderRequest
+##  FlashSwapCurrencyPair
 
-_创建闪兑订单参数_
+_查询闪兑的交易对列表_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-preview_id | string | true | none | 预览结果id  
-sell_currency | string | true | none | 卖出的资产名称，根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
-sell_amount | string | true | none | 卖出的资产数量(根据预览结果)  
-buy_currency | string | true | none | 买入的资产名称，根据接口`查询支持闪兑的所有交易对列表 GET /flash_swap/currency_pairs`获取  
-buy_amount | string | true | none | 买入的资产数量(根据预览结果)  
+currency_pair | string | false | 只读 | 交易对 ， `BTC_USDT` 表示卖`BTC`买`USDT`  
+sell_currency | string | false | 只读 | 卖出币种  
+buy_currency | string | false | 只读 | 买入币种  
+sell_min_amount | string | false | 只读 | 卖出最小数量  
+sell_max_amount | string | false | 只读 | 卖出最大数量  
+buy_min_amount | string | false | 只读 | 买入最小数量  
+buy_max_amount | string | false | 只读 | 买入最大数量  
       
     
     {
-      "preview_id": "string",
-      "sell_currency": "string",
-      "sell_amount": "string",
-      "buy_currency": "string",
-      "buy_amount": "string"
+      "currency_pair": "string",
+      "sell_currency": "BTC",
+      "buy_currency": "USDT",
+      "sell_min_amount": "0.00001",
+      "sell_max_amount": "100",
+      "buy_min_amount": "10",
+      "buy_max_amount": "10000000"
     }

@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/agent/zh_CN
 api_type: REST
-updated_at: 2026-06-01 20:41:54.341046
+updated_at: 2026-06-02 20:20:52.004783
 ---
 
 # Gate for AI 开发者指南

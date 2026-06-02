@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/futures/ws/en
 api_type: WebSocket
-updated_at: 2026-06-01 20:43:40.755589
+updated_at: 2026-06-02 20:22:45.707793
 ---
 
 # Gate Futures WebSocket v4.0.0

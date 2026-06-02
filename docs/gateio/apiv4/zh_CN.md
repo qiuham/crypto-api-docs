@@ -2,12 +2,12 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN
 api_type: REST
-updated_at: 2026-06-01 20:42:50.319946
+updated_at: 2026-06-02 20:21:49.095243
 ---
 
-# Gate API v4.106.89
+# Gate API v4.106.90
 
-v4.106.89 · Stable
+v4.106.90 · Stable
 
 
 欢迎使用 Gate API APIv4 接口提供了现货、杠杆、合约交易相关的操作，包括公共接口查询市场行情，以及需要认证的私有接口， 实现基于 API 的自动交易。

@@ -2,7 +2,7 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/apiv4/zh_CN/otc
 api_type: REST
-updated_at: 2026-06-01 20:43:12.520012
+updated_at: 2026-06-02 20:22:14.746554
 ---
 
 # OTC
@@ -397,149 +397,13 @@ WARNING
 
 ##  获取用户银行卡列表🔒 需要认证
 
-GET`/otc/bank_list`
-
-GET `/otc/bank_list`
-
-_获取用户银行卡列表_
-
-获取用户银行卡列表，用于下单时选择银行卡。 **默认卡** ：以列表项字段 `is_default`（1=默认）为准，无需再调用已弃用的「默认银行卡」单独接口。 对应 Inner：`GET /bank_list` 或 `GET /bank/list`。
-
-### 返回
-
-返回状态码 | 含义 | 描述 | 格式  
----|---|---|---  
-200 | [OK ](https://tools.ietf.org/html/rfc7231#section-6.3.1) | 查询成功 | OtcBankListResponse  
-  
-### 返回格式
-
-状态码 **200**
-
-_OtcBankListResponse_
-
-名称 | 类型 | 描述  
----|---|---  
-» code | integer |   
-» message | string |   
-» data | object |   
-»» lists | array | 银行卡列表  
-»»» OtcBankListItem | object |   
-»»»» id | string | 银行ID 下单时候需要  
-»»»» bank_account_name | string | 银行账户名称  
-»»»» bank_name | string | 银行名称  
-»»»» bank_country | string | 银行所在国家  
-»»»» bank_address | string | 银行地址  
-»»»» bank_code | string | 银行代码  
-»»»» branch_code | string | 支行代码  
-»»»» iban | string | IBAN号码  
-»»»» swift | string | SWIFT代码  
-»»»» remittance_line_number | string | 汇款路线号  
-»»»» agent_bank_name | string | 代理银行名称  
-»»»» agent_bank_swift | string | 代理银行SWIFT代码  
-»»»» submit_time | string | 提交时间  
-»»»» update_time | string | 更新时间  
-»»»» status | string | 状态  
-»»»» documentation_file_type | string | 文档文件类型  
-»»»» memo | string | 备注  
-»»»» is_default | integer | 是否默认银行卡 1是 0否  
-»»»» bank_id | string | 银行ID  
-»»»» documentation_file_key_url | string | 文档文件URL  
-»»» timestamp | integer |   
-  
-WARNING
-
-该请求需要 API key 和 secret 认证
-
-示例代码
-    
-    
-    # coding: utf-8
-    import requests
-    import time
-    import hashlib
-    import hmac
-    
-    host = "https://api.gateio.ws"
-    prefix = "/api/v4"
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    
-    url = '/otc/bank_list'
-    query_param = ''
-    # `gen_sign` 的实现参考认证一章
-    sign_headers = gen_sign('GET', prefix + url, query_param)
-    headers.update(sign_headers)
-    r = requests.request('GET', host + prefix + url, headers=headers)
-    print(r.json())
-    
-    
-    
-    
-    key="YOUR_API_KEY"
-    secret="YOUR_API_SECRET"
-    host="https://api.gateio.ws"
-    prefix="/api/v4"
-    method="GET"
-    url="/otc/bank_list"
-    query_param=""
-    body_param=''
-    timestamp=$(date +%s)
-    body_hash=$(printf "$body_param" | openssl sha512 | awk '{print $NF}')
-    sign_string="$method\n$prefix$url\n$query_param\n$body_hash\n$timestamp"
-    sign=$(printf "$sign_string" | openssl sha512 -hmac "$secret" | awk '{print $NF}')
-    
-    full_url="$host$prefix$url"
-    curl -X $method $full_url \
-        -H "Timestamp: $timestamp" -H "KEY: $key" -H "SIGN: $sign"
-    
-    
-
-> 返回示例
-
-> 200 返回
-    
-    
-    {
-      "code": 0,
-      "message": "success",
-      "data": {
-        "lists": [
-          {
-            "id": "762",
-            "bank_account_name": "hshsbshhh",
-            "bank_name": "jjjsjhs",
-            "bank_country": "Anguilla",
-            "bank_address": "jshhtestaddress879hao",
-            "bank_code": "",
-            "branch_code": "",
-            "iban": "1554 **** 8756",
-            "swift": "455876663",
-            "remittance_line_number": "4867645497945",
-            "agent_bank_name": "",
-            "agent_bank_swift": "",
-            "submit_time": "2026-01-21 05:56:49",
-            "update_time": "2026-01-21 05:57:09",
-            "status": "1",
-            "documentation_file_type": "",
-            "memo": "",
-            "is_default": 1,
-            "bank_id": "762",
-            "documentation_file_key_url": ""
-          }
-        ]
-      },
-      "timestamp": 1769998217
-    }
-    
-
-##  获取用户银行卡列表（与 bank_list 同义路径）🔒 需要认证
-
 GET`/otc/bank/list`
 
 GET `/otc/bank/list`
 
-_获取用户银行卡列表（与 bank_list 同义路径）_
+_获取用户银行卡列表_
 
-与 `GET /otc/bank_list` 语义一致。对应 Inner：`GET /bank/list`。 默认卡请以 `is_default` 字段为准。
+获取用户银行卡列表，用于下单时选择银行卡。 **默认卡** ：以列表项字段 `is_default`（1=默认）为准，无需再调用已弃用的「默认银行卡」单独接口。 对应 Inner：`GET /bank_list` 或 `GET /bank/list`。
 
 ### 返回
 
@@ -1950,17 +1814,21 @@ WARNING
 
 #  模型
 
-##  OtcBankIdRequest
+##  OtcStableCoinOrderCreateResponse
+
+_OtcStableCoinOrderCreateResponse_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-bank_id | string | true | none | 银行卡 ID  
+code | integer | true | none | none  
+message | string | true | none | none  
       
     
     {
-      "bank_id": "string"
+      "code": 0,
+      "message": "string"
     }
     
     
@@ -1987,6 +1855,140 @@ timestamp | integer | false | none | none
       "data": {
         "bank_id": 0,
         "status": 0
+      },
+      "timestamp": 0
+    }
+    
+    
+
+##  OtcOrderDetailResponse
+
+_OtcOrderDetailResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+message | string | true | none | none  
+code | integer | true | none | none  
+data | object | true | none | none  
+» order_id | string | true | none | 订单ID  
+» uid | string | true | none | 用户ID  
+» type | string | true | none | 订单类型  
+» fiat_currency | string | true | none | 法币类型  
+» fiat_amount | string | true | none | 法币金额  
+» crypto_currency | string | true | none | 稳定币类型  
+» crypto_amount | string | true | none | 稳定币金额  
+» rate | string | true | none | 汇率  
+» transfer_remark | string | true | none | 备注  
+» status | string | true | none | 状态  
+» db_status | string | true | none | none  
+» create_time | string | true | none | 创建时间  
+» memo | string | true | none | 取消或拒绝原因  
+» side | string | true | none | 询价方向  
+» promotion_code | string | true | none | 优惠码  
+» trade_no | string | true | none | 交易号  
+      
+    
+    {
+      "message": "string",
+      "code": 0,
+      "data": {
+        "order_id": "string",
+        "uid": "string",
+        "type": "string",
+        "fiat_currency": "string",
+        "fiat_amount": "string",
+        "crypto_currency": "string",
+        "crypto_amount": "string",
+        "rate": "string",
+        "transfer_remark": "string",
+        "status": "string",
+        "db_status": "string",
+        "create_time": "string",
+        "memo": "string",
+        "side": "string",
+        "promotion_code": "string",
+        "trade_no": "string"
+      }
+    }
+    
+    
+
+##  OtcBankEnterpriseSupplementMultipartRequest
+
+_企业补件`multipart/form-data`。文件字段名：`certificate`、`share_holders`、`passport`、`share_holding_structure`；可选 `funds_statement`、`additional`。可选字符串 `relationship_proof`（JSON）合并入参。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+uid | string | false | none | none  
+bank_id | string | true | none | none  
+certificate | string(binary) | true | none | none  
+share_holders | string(binary) | true | none | none  
+passport | string(binary) | true | none | none  
+share_holding_structure | string(binary) | true | none | none  
+funds_statement | string(binary) | false | none | none  
+additional | string(binary) | false | none | none  
+      
+    
+    {
+      "uid": "string",
+      "bank_id": "string",
+      "certificate": "string",
+      "share_holders": "string",
+      "passport": "string",
+      "share_holding_structure": "string",
+      "funds_statement": "string",
+      "additional": "string"
+    }
+    
+    
+
+##  OtcBankListResponse
+
+_OtcBankListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer | true | none | none  
+message | string | true | none | none  
+data | object | true | none | none  
+» lists | array | true | none | 银行卡列表  
+»» OtcBankListItem | object | false | none | none  
+»»» id | string | true | none | 银行ID 下单时候需要  
+»»» bank_account_name | string | true | none | 银行账户名称  
+»»» bank_name | string | true | none | 银行名称  
+»»» bank_country | string | false | none | 银行所在国家  
+»»» bank_address | string | false | none | 银行地址  
+»»» bank_code | string | false | none | 银行代码  
+»»» branch_code | string | false | none | 支行代码  
+»»» iban | string | false | none | IBAN号码  
+»»» swift | string | false | none | SWIFT代码  
+»»» remittance_line_number | string | false | none | 汇款路线号  
+»»» agent_bank_name | string | false | none | 代理银行名称  
+»»» agent_bank_swift | string | false | none | 代理银行SWIFT代码  
+»»» submit_time | string | false | none | 提交时间  
+»»» update_time | string | false | none | 更新时间  
+»»» status | string | false | none | 状态  
+»»» documentation_file_type | string | false | none | 文档文件类型  
+»»» memo | string | false | none | 备注  
+»»» is_default | integer | false | none | 是否默认银行卡 1是 0否  
+»»» bank_id | string | false | none | 银行ID  
+»»» documentation_file_key_url | string | false | none | 文档文件URL  
+»» timestamp | integer | true | none | none  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {
+        "lists": [
+          {}
+        ]
       },
       "timestamp": 0
     }
@@ -2101,6 +2103,94 @@ data | object | true | none | none
     
     
 
+##  OtcActionResponse
+
+_OtcActionResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer | true | none | none  
+message | string | true | none | none  
+timestamp | integer | true | none | none  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "timestamp": 0
+    }
+    
+    
+
+##  OtcStableCoinOrderRequest
+
+_稳定币下单请求体_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+pay_coin | string | false | none | 用户支付币种 支持币种 从otc web 稳定币询价页面查询  
+get_coin | string | false | none | 用户兑换币种 支持币种 从otc web 稳定币询价页面查询  
+pay_amount | string | false | none | 用户支付币种数量  
+get_amount | string | false | none | 用户兑换币种数量  
+side | string | false | none | 询价 接口返回的参数 side （用户下单校验）  
+promotion_code | string | false | none | promotion code  
+quote_token | string | false | none | 询价接口返回参数  
+      
+    
+    {
+      "pay_coin": "USDC",
+      "get_coin": "USDT",
+      "pay_amount": "30000",
+      "get_amount": "20000",
+      "side": "PAY",
+      "promotion_code": "",
+      "quote_token": "dsafjkdshfjdsjkfah"
+    }
+    
+    
+
+##  OtcMarkOrderPaidRequest
+
+_法币订单设置已付款（入金确认）请求体。须包含用户付款回执（与 §3.2 一致）。**`payment_receipt_file_key` 必填**；订单主键在此路径为 `order_id`。经 Pay 网关访问时若使用 `client_order_id`，以网关转写字段为准。_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+order_id | string | true | none | 订单 ID  
+client_order_id | string | false | none | 客户端订单号（部分网关/Inner Pay 路径使用，可选）  
+payment_receipt_file_key | string | true | none | 用户付款回执：**必填** 。存储用 file_key。单文件；jpg/jpeg/png/pdf；≤4MB。  
+payment_receipt | string | false | none | 与 `payment_receipt_file_key` 兼容的别名（视网关对外字段名）  
+      
+    
+    {
+      "order_id": "203",
+      "client_order_id": "",
+      "payment_receipt_file_key": "BASE64_ENCODED_FILE_KEY",
+      "payment_receipt": ""
+    }
+    
+    
+
+##  OtcBankIdRequest
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+bank_id | string | true | none | 银行卡 ID  
+      
+    
+    {
+      "bank_id": "string"
+    }
+    
+    
+
 ##  OtcQuoteResponse
 
 _OtcQuoteResponse_
@@ -2145,31 +2235,81 @@ data | object | true | none | none
     
     
 
-##  OtcStableCoinOrderRequest
+##  OtcBankPersonalSupplementMultipartRequest
 
-_稳定币下单请求体_
+_个人补件`multipart/form-data`。文件字段名固定为 `id_document_front`、`id_document_back`、`address_proof`（与 checklist `code` 一致）；可额外传字符串字段 `relationship_proof`（JSON 文本）与上传结果合并。_
 
 ###  属性
 
 属性名称 | 类型 | 必选 | 限制 | 描述  
 ---|---|---|---|---  
-pay_coin | string | false | none | 用户支付币种 支持币种 从otc web 稳定币询价页面查询  
-get_coin | string | false | none | 用户兑换币种 支持币种 从otc web 稳定币询价页面查询  
-pay_amount | string | false | none | 用户支付币种数量  
-get_amount | string | false | none | 用户兑换币种数量  
-side | string | false | none | 询价 接口返回的参数 side （用户下单校验）  
-promotion_code | string | false | none | promotion code  
-quote_token | string | false | none | 询价接口返回参数  
+bank_id | string | true | none | none  
+id_document_front | string(binary) | true | none | none  
+id_document_back | string(binary) | true | none | none  
+address_proof | string(binary) | true | none | none  
       
     
     {
-      "pay_coin": "USDC",
-      "get_coin": "USDT",
-      "pay_amount": "30000",
-      "get_amount": "20000",
-      "side": "PAY",
-      "promotion_code": "",
-      "quote_token": "dsafjkdshfjdsjkfah"
+      "bank_id": "string",
+      "id_document_front": "string",
+      "id_document_back": "string",
+      "address_proof": "string"
+    }
+    
+    
+
+##  OtcOrderListResponse
+
+_OtcOrderListResponse_
+
+###  属性
+
+属性名称 | 类型 | 必选 | 限制 | 描述  
+---|---|---|---|---  
+code | integer | true | none | none  
+message | string | true | none | none  
+data | object | true | none | none  
+» pn | integer | true | none | none  
+» ps | integer | true | none | none  
+» total_pn | integer | true | none | none  
+» count | integer | true | none | none  
+» list | array | true | none | none  
+»» OtcOrderListItem | object | false | none | none  
+»»» time | string | false | none | 当前时间  
+»»» timestamp | integer | false | none | 当前时间戳  
+»»» order_id | string | false | none | 订单Id  
+»»» trade_no | string | false | none | 交易号  
+»»» type | string | false | none | 询价方向 buy/sell/all  
+»»» status | string | false | none | 订单状态  
+»»» db_status | string | false | none | none  
+»»» fiat_currency | string | false | none | 法币类型  
+»»» fiat_currency_info | object | false | none | none  
+»»»» name | string | true | none | 名称  
+»»»» icon | string | true | none | 图片  
+»»» fiat_amount | string | false | none | 法币金额  
+»»» crypto_currency | string | false | none | 稳定币类型  
+»»» crypto_currency_info | object | false | none | none  
+»»»» name | string | true | none | none  
+»»»» icon | string | true | none | none  
+»»» crypto_amount | string | false | none | 稳定币金额  
+»»» rate | string | false | none | 汇率  
+»»» transfer_remark | string | false | none | 备注  
+»»» gate_bank_account_iban | string | false | none | 银行账户  
+»»» promotion_code | string | false | none | 优惠码  
+      
+    
+    {
+      "code": 0,
+      "message": "string",
+      "data": {
+        "pn": 0,
+        "ps": 0,
+        "total_pn": 0,
+        "count": 0,
+        "list": [
+          {}
+        ]
+      }
     }
     
     
@@ -2246,60 +2386,6 @@ user_type | enterprise
     
     
 
-##  OtcOrderDetailResponse
-
-_OtcOrderDetailResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-message | string | true | none | none  
-code | integer | true | none | none  
-data | object | true | none | none  
-» order_id | string | true | none | 订单ID  
-» uid | string | true | none | 用户ID  
-» type | string | true | none | 订单类型  
-» fiat_currency | string | true | none | 法币类型  
-» fiat_amount | string | true | none | 法币金额  
-» crypto_currency | string | true | none | 稳定币类型  
-» crypto_amount | string | true | none | 稳定币金额  
-» rate | string | true | none | 汇率  
-» transfer_remark | string | true | none | 备注  
-» status | string | true | none | 状态  
-» db_status | string | true | none | none  
-» create_time | string | true | none | 创建时间  
-» memo | string | true | none | 取消或拒绝原因  
-» side | string | true | none | 询价方向  
-» promotion_code | string | true | none | 优惠码  
-» trade_no | string | true | none | 交易号  
-      
-    
-    {
-      "message": "string",
-      "code": 0,
-      "data": {
-        "order_id": "string",
-        "uid": "string",
-        "type": "string",
-        "fiat_currency": "string",
-        "fiat_amount": "string",
-        "crypto_currency": "string",
-        "crypto_amount": "string",
-        "rate": "string",
-        "transfer_remark": "string",
-        "status": "string",
-        "db_status": "string",
-        "create_time": "string",
-        "memo": "string",
-        "side": "string",
-        "promotion_code": "string",
-        "trade_no": "string"
-      }
-    }
-    
-    
-
 ##  OtcBankSupplementChecklistItem
 
 ###  属性
@@ -2317,226 +2403,4 @@ required | boolean | true | none | 是否必填
       "zh": "string",
       "en": "string",
       "required": true
-    }
-    
-    
-
-##  OtcBankListResponse
-
-_OtcBankListResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer | true | none | none  
-message | string | true | none | none  
-data | object | true | none | none  
-» lists | array | true | none | 银行卡列表  
-»» OtcBankListItem | object | false | none | none  
-»»» id | string | true | none | 银行ID 下单时候需要  
-»»» bank_account_name | string | true | none | 银行账户名称  
-»»» bank_name | string | true | none | 银行名称  
-»»» bank_country | string | false | none | 银行所在国家  
-»»» bank_address | string | false | none | 银行地址  
-»»» bank_code | string | false | none | 银行代码  
-»»» branch_code | string | false | none | 支行代码  
-»»» iban | string | false | none | IBAN号码  
-»»» swift | string | false | none | SWIFT代码  
-»»» remittance_line_number | string | false | none | 汇款路线号  
-»»» agent_bank_name | string | false | none | 代理银行名称  
-»»» agent_bank_swift | string | false | none | 代理银行SWIFT代码  
-»»» submit_time | string | false | none | 提交时间  
-»»» update_time | string | false | none | 更新时间  
-»»» status | string | false | none | 状态  
-»»» documentation_file_type | string | false | none | 文档文件类型  
-»»» memo | string | false | none | 备注  
-»»» is_default | integer | false | none | 是否默认银行卡 1是 0否  
-»»» bank_id | string | false | none | 银行ID  
-»»» documentation_file_key_url | string | false | none | 文档文件URL  
-»» timestamp | integer | true | none | none  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {
-        "lists": [
-          {}
-        ]
-      },
-      "timestamp": 0
-    }
-    
-    
-
-##  OtcActionResponse
-
-_OtcActionResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer | true | none | none  
-message | string | true | none | none  
-timestamp | integer | true | none | none  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "timestamp": 0
-    }
-    
-    
-
-##  OtcBankPersonalSupplementMultipartRequest
-
-_个人补件`multipart/form-data`。文件字段名固定为 `id_document_front`、`id_document_back`、`address_proof`（与 checklist `code` 一致）；可额外传字符串字段 `relationship_proof`（JSON 文本）与上传结果合并。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-bank_id | string | true | none | none  
-id_document_front | string(binary) | true | none | none  
-id_document_back | string(binary) | true | none | none  
-address_proof | string(binary) | true | none | none  
-      
-    
-    {
-      "bank_id": "string",
-      "id_document_front": "string",
-      "id_document_back": "string",
-      "address_proof": "string"
-    }
-    
-    
-
-##  OtcMarkOrderPaidRequest
-
-_法币订单设置已付款（入金确认）请求体。须包含用户付款回执（与 §3.2 一致）。**`payment_receipt_file_key` 必填**；订单主键在此路径为 `order_id`。经 Pay 网关访问时若使用 `client_order_id`，以网关转写字段为准。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-order_id | string | true | none | 订单 ID  
-client_order_id | string | false | none | 客户端订单号（部分网关/Inner Pay 路径使用，可选）  
-payment_receipt_file_key | string | true | none | 用户付款回执：**必填** 。存储用 file_key。单文件；jpg/jpeg/png/pdf；≤4MB。  
-payment_receipt | string | false | none | 与 `payment_receipt_file_key` 兼容的别名（视网关对外字段名）  
-      
-    
-    {
-      "order_id": "203",
-      "client_order_id": "",
-      "payment_receipt_file_key": "BASE64_ENCODED_FILE_KEY",
-      "payment_receipt": ""
-    }
-    
-    
-
-##  OtcOrderListResponse
-
-_OtcOrderListResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer | true | none | none  
-message | string | true | none | none  
-data | object | true | none | none  
-» pn | integer | true | none | none  
-» ps | integer | true | none | none  
-» total_pn | integer | true | none | none  
-» count | integer | true | none | none  
-» list | array | true | none | none  
-»» OtcOrderListItem | object | false | none | none  
-»»» time | string | false | none | 当前时间  
-»»» timestamp | integer | false | none | 当前时间戳  
-»»» order_id | string | false | none | 订单Id  
-»»» trade_no | string | false | none | 交易号  
-»»» type | string | false | none | 询价方向 buy/sell/all  
-»»» status | string | false | none | 订单状态  
-»»» db_status | string | false | none | none  
-»»» fiat_currency | string | false | none | 法币类型  
-»»» fiat_currency_info | object | false | none | none  
-»»»» name | string | true | none | 名称  
-»»»» icon | string | true | none | 图片  
-»»» fiat_amount | string | false | none | 法币金额  
-»»» crypto_currency | string | false | none | 稳定币类型  
-»»» crypto_currency_info | object | false | none | none  
-»»»» name | string | true | none | none  
-»»»» icon | string | true | none | none  
-»»» crypto_amount | string | false | none | 稳定币金额  
-»»» rate | string | false | none | 汇率  
-»»» transfer_remark | string | false | none | 备注  
-»»» gate_bank_account_iban | string | false | none | 银行账户  
-»»» promotion_code | string | false | none | 优惠码  
-      
-    
-    {
-      "code": 0,
-      "message": "string",
-      "data": {
-        "pn": 0,
-        "ps": 0,
-        "total_pn": 0,
-        "count": 0,
-        "list": [
-          {}
-        ]
-      }
-    }
-    
-    
-
-##  OtcStableCoinOrderCreateResponse
-
-_OtcStableCoinOrderCreateResponse_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-code | integer | true | none | none  
-message | string | true | none | none  
-      
-    
-    {
-      "code": 0,
-      "message": "string"
-    }
-    
-    
-
-##  OtcBankEnterpriseSupplementMultipartRequest
-
-_企业补件`multipart/form-data`。文件字段名：`certificate`、`share_holders`、`passport`、`share_holding_structure`；可选 `funds_statement`、`additional`。可选字符串 `relationship_proof`（JSON）合并入参。_
-
-###  属性
-
-属性名称 | 类型 | 必选 | 限制 | 描述  
----|---|---|---|---  
-uid | string | false | none | none  
-bank_id | string | true | none | none  
-certificate | string(binary) | true | none | none  
-share_holders | string(binary) | true | none | none  
-passport | string(binary) | true | none | none  
-share_holding_structure | string(binary) | true | none | none  
-funds_statement | string(binary) | false | none | none  
-additional | string(binary) | false | none | none  
-      
-    
-    {
-      "uid": "string",
-      "bank_id": "string",
-      "certificate": "string",
-      "share_holders": "string",
-      "passport": "string",
-      "share_holding_structure": "string",
-      "funds_statement": "string",
-      "additional": "string"
     }

@@ -2,14 +2,10 @@
 exchange: gateio
 source_url: https://www.gate.com/docs/developers/websocket/en
 api_type: WebSocket
-updated_at: 2026-06-01 20:43:54.725429
+updated_at: 2026-06-02 20:23:02.791446
 ---
 
 # General
-
-* Python 
-  * JavaScript 
-
 
 ##  Introduction
 
@@ -145,23 +141,6 @@ User can only execute maximum to 50 requests per second for each connected chann
 **Provides system status check, such as ping-pong and server time query.**
 
 ##  Ping
-
-**Check server connectivity.**
-
-###  Request
-
-  * method
-
-`server.ping`
-
-###  Response
-
-  * result
-
-field | type | description  
----|---|---  
-`pong` | String | pong, ack of ping  
-
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -203,15 +182,13 @@ The above command returns JSON structured like this:
     }
     
 
-##  Time
-
-**Acquire server time.**
+**Check server connectivity.**
 
 ###  Request
 
   * method
 
-`server.time`
+`server.ping`
 
 ###  Response
 
@@ -219,8 +196,9 @@ The above command returns JSON structured like this:
 
 field | type | description  
 ---|---|---  
-`timestamp` | Integer | timestamp  
+`pong` | String | pong, ack of ping  
 
+##  Time
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -262,27 +240,13 @@ The above command returns JSON structured like this:
     }
     
 
-#  Ticker API
-
-**The ticker is a high level overview of the state of the market. It shows you the highest, lowest, last trade price. It also includes information such as daily volume and how much the price has moved over the last day.**
-
-##  Ticker query
-
-**Query ticker of specified market, including price, deal volume etc. in certain period.**
+**Acquire server time.**
 
 ###  Request
 
   * method
 
-`ticker.query`
-
-  * params
-
-field | type | required | description  
----|---|---|---  
-`market` | String | Yes | market name  
-`period` | Integer | Yes | ticker period, unit is second  
-e.g. 86400 equals to 24h  
+`server.time`
 
 ###  Response
 
@@ -290,32 +254,13 @@ e.g. 86400 equals to 24h
 
 field | type | description  
 ---|---|---  
-`period` | Integer | period  
-`open` | String | open  
-`close` | String | close  
-`high` | String | high  
-`low` | String | low  
-`last` | String | last  
-`change` | String | change  
-`quoteVolume` | String | quoteVolume  
-`baseVolume` | String | baseVolume  
+`timestamp` | Integer | timestamp  
 
-##  Ticker subscription
+#  Ticker API
 
-Subscribe `market ticker.`
+**The ticker is a high level overview of the state of the market. It shows you the highest, lowest, last trade price. It also includes information such as daily volume and how much the price has moved over the last day.**
 
-###  Request
-
-  * method
-
-`ticker.subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`market list` | String | Yes | market list  
-
+##  Ticker query
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -366,6 +311,40 @@ The above command returns JSON structured like this:
       "id": 12312
     }
     
+
+**Query ticker of specified market, including price, deal volume etc. in certain period.**
+
+###  Request
+
+  * method
+
+`ticker.query`
+
+  * params
+
+field | type | required | description  
+---|---|---|---  
+`market` | String | Yes | market name  
+`period` | Integer | Yes | ticker period, unit is second  
+e.g. 86400 equals to 24h  
+
+###  Response
+
+  * result
+
+field | type | description  
+---|---|---  
+`period` | Integer | period  
+`open` | String | open  
+`close` | String | close  
+`high` | String | high  
+`low` | String | low  
+`last` | String | last  
+`change` | String | change  
+`quoteVolume` | String | quoteVolume  
+`baseVolume` | String | baseVolume  
+
+##  Ticker subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -409,23 +388,21 @@ The above command returns JSON structured like this:
     }
     
 
-##  Ticker notification
+Subscribe `market ticker.`
 
-**Notify subscribed market ticker.**
-
-###  Notify
+###  Request
 
   * method
 
-`ticker.update`
+`ticker.subscribe`
 
   * params
 
 parameter | type | required | description  
 ---|---|---|---  
-`market` | String | Yes | market name  
-`ticker info` | JSON object | Yes | ticker info, refer to query response  
+`market list` | String | Yes | market list  
 
+##  Ticker notification
     
     
     {
@@ -448,18 +425,22 @@ parameter | type | required | description
     }
     
 
-##  Cancel subscription
+**Notify subscribed market ticker.**
 
-Unsubscribe`market ticker.`
-
-Unsubscribe `market ticker.`
-
-###  Request
+###  Notify
 
   * method
 
-`ticker.unsubscribe`
+`ticker.update`
 
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`market` | String | Yes | market name  
+`ticker info` | JSON object | Yes | ticker info, refer to query response  
+
+##  Cancel subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -503,40 +484,19 @@ The above command returns JSON structured like this:
     }
     
 
-#  Trade API
-
-**This channel sends a trade message whenever a trade occurs at Gate. It includes details of the trade, such as price, amount, time and type.**
-
-##  Trades query
-
-**Query latest trades information, including time, price, amount, type and so on.**
+Unsubscribe `market ticker.`
 
 ###  Request
 
   * method
 
-`trades.query`
+`ticker.unsubscribe`
 
-  * params
+#  Trade API
 
-parameter | type | required | description  
----|---|---|---  
-`market` | String | Yes | market name  
-`limit` | Integer | Yes | amount limit  
-`last_id` | Integer | Yes | last id  
+**This channel sends a trade message whenever a trade occurs at Gate. It includes details of the trade, such as price, amount, time and type.**
 
-###  Response
-
-  * result
-
-field | type | description  
----|---|---  
-`id` | Integer | id  
-`time` | Float | time  
-`price` | String | price  
-`amount` | String | amount  
-`type` | String | buy  
-
+##  Trades query
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -593,24 +553,35 @@ The above command returns JSON structured like this:
     }
     
 
-##  Trades subscription
-
-Subscribe`trades update notification.`
-
-Subscribe `trades update notification.`
+**Query latest trades information, including time, price, amount, type and so on.**
 
 ###  Request
 
   * method
 
-`trades.subscribe`
+`trades.query`
 
   * params
 
 parameter | type | required | description  
 ---|---|---|---  
-`market list` | List | Yes | market list  
+`market` | String | Yes | market name  
+`limit` | Integer | Yes | amount limit  
+`last_id` | Integer | Yes | last id  
 
+###  Response
+
+  * result
+
+field | type | description  
+---|---|---  
+`id` | Integer | id  
+`time` | Float | time  
+`price` | String | price  
+`amount` | String | amount  
+`type` | String | buy  
+
+##  Trades subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -654,23 +625,21 @@ The above command returns JSON structured like this:
     }
     
 
-##  Trades notification
+Subscribe `trades update notification.`
 
-**Notify latest trades update.**
-
-###  Notify
+###  Request
 
   * method
 
-`trades.update`
+`trades.subscribe`
 
   * params
 
 parameter | type | required | description  
 ---|---|---|---  
-`market` | String | Yes | market name  
-`trades list` | List | Yes | list of trade info object, refer to query response  
+`market list` | List | Yes | market list  
 
+##  Trades notification
     
     
     {
@@ -691,18 +660,22 @@ parameter | type | required | description
     }
     
 
-##  Cancel subscription
+**Notify latest trades update.**
 
-Unsubscribe`trades update notification.`
-
-Unsubscribe `trades update notification.`
-
-###  Request
+###  Notify
 
   * method
 
-`trades.unsubscribe`
+`trades.update`
 
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`market` | String | Yes | market name  
+`trades list` | List | Yes | list of trade info object, refer to query response  
+
+##  Cancel subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -746,49 +719,19 @@ The above command returns JSON structured like this:
     }
     
 
-#  Depth API
-
-**The depth channel allow you to keep track of the state of the Gate order book depth. It is provided on a price aggregated basis, with customizable precision.**
-
-##  Query depth
-
-**Query specified market depth.**
+Unsubscribe `trades update notification.`
 
 ###  Request
 
   * method
 
-`depth.query`
+`trades.unsubscribe`
 
-  * params
+#  Depth API
 
-parameter | type | required | description  
----|---|---|---  
-`market` | String | Yes | market name  
-`limit` | Integer | Yes | limit  
-`interval` | String | Yes | unit interval, e.g. "0.0001", "0.1"  
+**The depth channel allow you to keep track of the state of the Gate order book depth. It is provided on a price aggregated basis, with customizable precision.**
 
-###  Response
-
-  * result
-
-field | type | description  
----|---|---  
-`asks` | List | asks  
-`bids` | List | bids  
-    * asks
-
-field | type | description  
----|---|---  
-`price` | String | price  
-`amount` | String | amount  
-    * bids
-
-field | type | description  
----|---|---  
-`price` | String | price  
-`amount` | String | amount  
-
+##  Query depth
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -839,33 +782,44 @@ The above command returns JSON structured like this:
     }
     
 
-##  Depth subscription
-
-Subscribe`depth.`
-
-Subscribe `depth.`
-
-TIP
-
-Both single-market and multi-market depth subscription are supported. See Request for detail. But for multiple subscriptions in one websocket connection, only the last one takes effect.
+**Query specified market depth.**
 
 ###  Request
 
   * method
 
-`depth.subscribe`
+`depth.query`
 
-  * params(Single-market mode)
+  * params
 
 parameter | type | required | description  
 ---|---|---|---  
 `market` | String | Yes | market name  
-`limit` | Integer | Yes | limit, legal limits: 1, 5, 10, 20, 30  
-`interval` | String | Yes | legal intervals: "0", "0.00000001", "0.0000001", "0.000001", "0.00001", "0.0001", "0.001", "0.01", "0.1"  
-  * params(Multi-market mode)
+`limit` | Integer | Yes | limit  
+`interval` | String | Yes | unit interval, e.g. "0.0001", "0.1"  
 
-A list of single-market mode params, e.g. `[["EOS_USDT", 2, "0"], ["BTC_USDT", 10, "0.01"]]`. See also examples at right.
+###  Response
 
+  * result
+
+field | type | description  
+---|---|---  
+`asks` | List | asks  
+`bids` | List | bids  
+    * asks
+
+field | type | description  
+---|---|---  
+`price` | String | price  
+`amount` | String | amount  
+    * bids
+
+field | type | description  
+---|---|---  
+`price` | String | price  
+`amount` | String | amount  
+
+##  Depth subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -931,7 +885,45 @@ The above command(Both single-market and multi-market mode) returns JSON structu
     }
     
 
+Subscribe `depth.`
+
+TIP
+
+Both single-market and multi-market depth subscription are supported. See Request for detail. But for multiple subscriptions in one websocket connection, only the last one takes effect.
+
+###  Request
+
+  * method
+
+`depth.subscribe`
+
+  * params(Single-market mode)
+
+parameter | type | required | description  
+---|---|---|---  
+`market` | String | Yes | market name  
+`limit` | Integer | Yes | limit, legal limits: 1, 5, 10, 20, 30  
+`interval` | String | Yes | legal intervals: "0", "0.00000001", "0.0000001", "0.000001", "0.00001", "0.0001", "0.001", "0.01", "0.1"  
+  * params(Multi-market mode)
+
+A list of single-market mode params, e.g. `[["EOS_USDT", 2, "0"], ["BTC_USDT", 10, "0.01"]]`. See also examples at right.
+
 ##  Depth notification
+    
+    
+    {
+      "method": "depth.update",
+      "params": [
+        true,
+        {
+          "asks": [["8000.00", "9.6250"]],
+          "bids": [["8000.00", "9.6250"]]
+        },
+        "EOS_USDT"
+      ],
+      "id": null
+    }
+    
 
 **Notify market depth update information**
 
@@ -950,34 +942,7 @@ false: is last updated result
 `depth` | JSON object | depth json object, refer to query response  
 `market` | String | market name  
 
-    
-    
-    {
-      "method": "depth.update",
-      "params": [
-        true,
-        {
-          "asks": [["8000.00", "9.6250"]],
-          "bids": [["8000.00", "9.6250"]]
-        },
-        "EOS_USDT"
-      ],
-      "id": null
-    }
-    
-
 ##  Cancel subscription
-
-Unsubscribe`specified market depth.`
-
-Unsubscribe `specified market depth.`
-
-###  Request
-
-  * method
-
-`depth.unsubscribe`
-
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -1021,46 +986,19 @@ The above command returns JSON structured like this:
     }
     
 
-#  Kline API
-
-**Provides a way to access charting candlestick info.**
-
-##  Kline query
-
-**Query specified market kline information**
+Unsubscribe `specified market depth.`
 
 ###  Request
 
   * method
 
-`kline.query`
+`depth.unsubscribe`
 
-  * params
+#  Kline API
 
-parameter | type | required | description  
----|---|---|---  
-`market` | String | Yes | market name  
-`start` | Integer | Yes | start time, must be > 0  
-`end` | Integer | Yes | end time  
-`interval` | Integer | Yes | interval  
+**Provides a way to access charting candlestick info.**
 
-###  Response
-
-  * result
-
-A list of kline information. Each kline data is a list:
-
-field | type | description  
----|---|---  
-`time` | Integer | time  
-`open` | String | open  
-`close` | String | close  
-`highest` | String | highest  
-`lowest` | String | lowest  
-`volume` | String | volume  
-`amount` | String | amount  
-`market_name` | String | market name  
-
+##  Kline query
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -1115,29 +1053,41 @@ The above command returns JSON structured like this:
     }
     
 
-##  Kline subscription🔒 Authenticated
-
-Subscribe`specified market kline information.`
-
-Subscribe `specified market kline information.`
-
-WARNING
-
-Can only subscribe to one market at the same time, market list is not supported currently. For multiple subscriptions, only the last one takes effect.
+**Query specified market kline information**
 
 ###  Request
 
   * method
 
-`kline.subscribe`
+`kline.query`
 
   * params
 
+parameter | type | required | description  
+---|---|---|---  
+`market` | String | Yes | market name  
+`start` | Integer | Yes | start time, must be > 0  
+`end` | Integer | Yes | end time  
+`interval` | Integer | Yes | interval  
+
+###  Response
+
+  * result
+
+A list of kline information. Each kline data is a list:
+
 field | type | description  
 ---|---|---  
-`market` | String | market name  
-`interval` | Integer | interval  
+`time` | Integer | time  
+`open` | String | open  
+`close` | String | close  
+`highest` | String | highest  
+`lowest` | String | lowest  
+`volume` | String | volume  
+`amount` | String | amount  
+`market_name` | String | market name  
 
+##  Kline subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -1181,29 +1131,26 @@ The above command returns JSON structured like this:
     }
     
 
-##  Kline notification
+Subscribe `specified market kline information.`
 
-**Notify kline information of subscribed market.**
+WARNING
 
-###  Notify
+Can only subscribe to one market at the same time, market list is not supported currently. For multiple subscriptions, only the last one takes effect.
+
+###  Request
 
   * method
 
-`kline.update`
+`kline.subscribe`
 
   * params
 
 field | type | description  
 ---|---|---  
-`time` | Integer | time  
-`open` | String | open  
-`close` | String | close  
-`highest` | String | highest  
-`lowest` | String | lowest  
-`volume` | String | volume  
-`amount` | String | amount  
-`market name` | String | market name  
-`window_close` | Boolean | `true` means window close. `true` may be missing, but does not affect data usage  
+`market` | String | market name  
+`interval` | Integer | interval  
+
+##  Kline notification
 
 > value from left to right: time, open, close, highest, lowest, volume, amount, market
     
@@ -1227,18 +1174,29 @@ field | type | description
     }
     
 
-##  Cancel subscription
+**Notify kline information of subscribed market.**
 
-Unsubscribe`specified market kline information.`
-
-Unsubscribe `specified market kline information.`
-
-###  Request
+###  Notify
 
   * method
 
-`kline.unsubscribe`
+`kline.update`
 
+  * params
+
+field | type | description  
+---|---|---  
+`time` | Integer | time  
+`open` | String | open  
+`close` | String | close  
+`highest` | String | highest  
+`lowest` | String | lowest  
+`volume` | String | volume  
+`amount` | String | amount  
+`market name` | String | market name  
+`window_close` | Boolean | `true` means window close. `true` may be missing, but does not affect data usage  
+
+##  Cancel subscription
     
     
     function socket_send_cmd(socket, cmd, params) {
@@ -1282,17 +1240,15 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `specified market kline information.`
+
+###  Request
+
+  * method
+
+`kline.unsubscribe`
+
 #  Auth API
-
-Gate provides a signature based authorization on private channels.
-
-The algorithm can be simply described as below pseudo-code.
-    
-    
-    `base64(hmac_sha512(secret_key, nonce))`
-    
-
-You can refer to code example at the right.
     
     
     
@@ -1308,24 +1264,18 @@ You can refer to code example at the right.
         return base64.b64encode(h.digest())
     
 
+Gate provides a signature based authorization on private channels.
+
+The algorithm can be simply described as below pseudo-code.
+    
+    
+    `base64(hmac_sha512(secret_key, nonce))`
+    
+
+You can refer to code example at the right.
+
 ##  Send authentication
-
-**Signature based authorization.**
-
-###  Request
-
-  * method
-
-`server.sign`
-
-  * params
-
-Requestparameter | type | required | description  
----|---|---|---  
-`apikey` | String | yes | user apikey  
-`signature` | String | yes | user sign data  
-`nonce` | Integer | yes | timestamp, for milliseconds spent from Unix epoch to current time  
-      
+    
     
     import json
     import time
@@ -1359,6 +1309,22 @@ The above command returns JSON structured like this:
     }
     
 
+**Signature based authorization.**
+
+###  Request
+
+  * method
+
+`server.sign`
+
+  * params
+
+Requestparameter | type | required | description  
+---|---|---|---  
+`apikey` | String | yes | user apikey  
+`signature` | String | yes | user sign data  
+`nonce` | Integer | yes | timestamp, for milliseconds spent from Unix epoch to current time  
+  
 #  Order API
 
 WARNING
@@ -1366,6 +1332,48 @@ WARNING
 Authentication required before connection.
 
 ##  Order query
+    
+    
+    
+    
+    
+    from websocket import create_connection
+    
+    ws = create_connection("wss://ws.gate.io/v3/")
+    ws.send('{"id":12312, "method":"order.query", "params":["EOS_USDT", 0, 10]}')
+    print(ws.recv())
+    
+
+The above command returns JSON structured like this:
+    
+    
+    {
+      "result": {
+        "limit": 10,
+        "offset": 0,
+        "total": 1,
+        "records": [
+          {
+            "id": 796563387,
+            "market": "EOS_USDT",
+            "user": 1336974,
+            "ctime": 1527082744.51649,
+            "mtime": 1527082744.51649,
+            "price": "0.1",
+            "amount": "100",
+            "left": "100",
+            "dealFee": "0",
+            "orderType": 1,
+            "type": 2,
+            "filledAmount": "0",
+            "filledTotal": "0"
+          }
+        ]
+      },
+      "error": null,
+      "id": 12312
+    }
+    
 
 **Query user un-executed orders**
 
@@ -1411,67 +1419,7 @@ field | type | description
 `filledAmount` | String | filled amount  
 `filledTotal` | String | filled total  
 
-    
-    
-    
-    
-    
-    from websocket import create_connection
-    
-    ws = create_connection("wss://ws.gate.io/v3/")
-    ws.send('{"id":12312, "method":"order.query", "params":["EOS_USDT", 0, 10]}')
-    print(ws.recv())
-    
-
-The above command returns JSON structured like this:
-    
-    
-    {
-      "result": {
-        "limit": 10,
-        "offset": 0,
-        "total": 1,
-        "records": [
-          {
-            "id": 796563387,
-            "market": "EOS_USDT",
-            "user": 1336974,
-            "ctime": 1527082744.51649,
-            "mtime": 1527082744.51649,
-            "price": "0.1",
-            "amount": "100",
-            "left": "100",
-            "dealFee": "0",
-            "orderType": 1,
-            "type": 2,
-            "filledAmount": "0",
-            "filledTotal": "0"
-          }
-        ]
-      },
-      "error": null,
-      "id": 12312
-    }
-    
-
 ##  Order subscription
-
-Subscribe`user orders update`
-
-Subscribe `user orders update`
-
-###  Request
-
-  * method
-
-`order.subscribe`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`market list` | String | yes | market list, null to subscribe all  
-
     
     
     
@@ -1496,7 +1444,46 @@ The above command returns JSON structured like this:
     }
     
 
+Subscribe `user orders update`
+
+###  Request
+
+  * method
+
+`order.subscribe`
+
+  * params
+
+parameter | type | required | description  
+---|---|---|---  
+`market list` | String | yes | market list, null to subscribe all  
+
 ##  Order notification
+    
+    
+    {
+      "method": "order.update",
+      "params": [
+        3,
+        {
+          "id": 34628963,
+          "market": "EOS_USDT",
+          "orderType": 1,
+          "type": 2,
+          "user": 602123,
+          "ctime": 1523013969.6271579,
+          "mtime": 1523013969.6271579,
+          "price": "0.1",
+          "amount": "1000",
+          "left": "1000",
+          "filledAmount": "0",
+          "filledTotal": "0",
+          "dealFee": "0"
+        }
+      ],
+      "id": null
+    }
+    
 
 **Notify user orders information when an order is put, updated or finished.**
 
@@ -1531,44 +1518,8 @@ field | type | description
 `filledTotal` | String | filled total  
 
 ###  Response
-    
-    
-    {
-      "method": "order.update",
-      "params": [
-        3,
-        {
-          "id": 34628963,
-          "market": "EOS_USDT",
-          "orderType": 1,
-          "type": 2,
-          "user": 602123,
-          "ctime": 1523013969.6271579,
-          "mtime": 1523013969.6271579,
-          "price": "0.1",
-          "amount": "1000",
-          "left": "1000",
-          "filledAmount": "0",
-          "filledTotal": "0",
-          "dealFee": "0"
-        }
-      ],
-      "id": null
-    }
-    
 
 ##  Cancel subscription
-
-Unsubscribe`user orders update notification, for all markets.`
-
-Unsubscribe `user orders update notification, for all markets.`
-
-###  Request
-
-  * method
-
-`order.unsubscribe`
-
     
     
     from websocket import create_connection
@@ -1590,6 +1541,14 @@ The above command returns JSON structured like this:
     }
     
 
+Unsubscribe `user orders update notification, for all markets.`
+
+###  Request
+
+  * method
+
+`order.unsubscribe`
+
 #  Balance API
 
 WARNING
@@ -1597,29 +1556,6 @@ WARNING
 Authentication required before connection.
 
 ##  Balance query
-
-**Acquire user balance information of specified asset or assets.**
-
-###  Request
-
-  * method
-
-`balance.query`
-
-  * params
-
-parameter | type | required | description  
----|---|---|---  
-`asset list` | String | yes | asset list, null for inquire all  
-
-###  Response
-
-  * result
-
-field | type | description  
----|---|---  
-`balance set` | Object | set of balance information  
-
     
     
     
@@ -1647,24 +1583,29 @@ The above command returns JSON structured like this:
     }
     
 
-##  Balance subscription
-
-Subscribe`for user balance update.`
-
-Subscribe `for user balance update.`
+**Acquire user balance information of specified asset or assets.**
 
 ###  Request
 
   * method
 
-`balance.subscribe`
+`balance.query`
 
   * params
 
 parameter | type | required | description  
 ---|---|---|---  
-`asset list` | String | yes | asset list, null to subscribe all  
+`asset list` | String | yes | asset list, null for inquire all  
 
+###  Response
+
+  * result
+
+field | type | description  
+---|---|---  
+`balance set` | Object | set of balance information  
+
+##  Balance subscription
     
     
     
@@ -1689,20 +1630,21 @@ The above command returns JSON structured like this:
     }
     
 
-##  Balance notification
+Subscribe `for user balance update.`
 
-**Notify user balance update.**
-
-###  Notify
+###  Request
 
   * method
 
-`balance.update`
+`balance.subscribe`
 
   * params
 
-a list of balance information.
+parameter | type | required | description  
+---|---|---|---  
+`asset list` | String | yes | asset list, null to subscribe all  
 
+##  Balance notification
     
     
     {
@@ -1719,18 +1661,19 @@ a list of balance information.
     }
     
 
-##  Cancel subscription
+**Notify user balance update.**
 
-Unsubscribe`user balance update.`
-
-Unsubscribe `user balance update.`
-
-###  Request
+###  Notify
 
   * method
 
-`balance.unsubscribe`
+`balance.update`
 
+  * params
+
+a list of balance information.
+
+##  Cancel subscription
     
     
     
@@ -1754,5 +1697,13 @@ The above command returns JSON structured like this:
       "id": 12312
     }
     
+
+Unsubscribe `user balance update.`
+
+###  Request
+
+  * method
+
+`balance.unsubscribe`
 
 Last Updated: 4/27/2026, 1:01:38 AM
