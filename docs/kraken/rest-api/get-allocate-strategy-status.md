@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-allocate-strategy-status
 api_type: REST
-updated_at: 2026-06-01 20:33:34.876441
+updated_at: 2026-06-02 20:12:44.748450
 ---
 
 # Get Allocation Status

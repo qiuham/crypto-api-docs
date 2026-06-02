@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/list-strategies
 api_type: REST
-updated_at: 2026-06-01 20:34:59.987629
+updated_at: 2026-06-02 20:14:07.731075
 ---
 
 # List Earn Strategies

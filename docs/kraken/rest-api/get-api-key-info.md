@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-api-key-info
 api_type: REST
-updated_at: 2026-06-01 20:33:37.269447
+updated_at: 2026-06-02 20:12:47.436980
 ---
 
 # Get Asset Info

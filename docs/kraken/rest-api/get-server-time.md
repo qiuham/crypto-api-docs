@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-server-time
 api_type: REST
-updated_at: 2026-06-01 20:34:19.770059
+updated_at: 2026-06-02 20:13:30.463071
 ---
 
 # Get Status of Recent Deposits

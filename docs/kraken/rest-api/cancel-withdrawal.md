@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-withdrawal
 api_type: REST
-updated_at: 2026-06-01 20:33:24.750331
+updated_at: 2026-06-02 20:12:34.504435
 ---
 
 # Request Withdrawal Cancellation

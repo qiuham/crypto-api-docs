@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book
 api_type: REST
-updated_at: 2026-06-01 20:33:56.391754
+updated_at: 2026-06-02 20:13:06.510196
 ---
 
 # Query L3 Order Book

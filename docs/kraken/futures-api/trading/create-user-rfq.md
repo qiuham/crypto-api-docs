@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq
 api_type: REST
-updated_at: 2026-06-01 20:30:20.694961
+updated_at: 2026-06-02 20:09:34.038398
 ---
 
 # Create a new RFQ

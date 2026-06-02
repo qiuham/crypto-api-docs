@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/ohlc
 api_type: WebSocket
-updated_at: 2026-06-01 20:40:06.615717
+updated_at: 2026-06-02 20:19:10.706922
 ---
 
 # Open Orders

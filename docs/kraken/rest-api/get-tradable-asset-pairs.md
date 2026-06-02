@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs
 api_type: REST
-updated_at: 2026-06-01 20:34:31.383150
+updated_at: 2026-06-02 20:13:41.429984
 ---
 
 # Get Tradable Asset Pairs

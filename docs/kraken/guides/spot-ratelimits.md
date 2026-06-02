@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ratelimits
 api_type: Guide
-updated_at: 2026-06-01 20:32:50.657994
+updated_at: 2026-06-02 20:11:59.905381
 ---
 
 # Spot Trading Limits

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/instruments-status
 api_type: REST
-updated_at: 2026-06-01 20:31:21.509050
+updated_at: 2026-06-02 20:10:31.715768
 ---
 
 # Get instrument status list
