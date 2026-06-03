@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/dual-block-architecture
 api_type: REST
-updated_at: 2026-06-02 19:20:04.003333
+updated_at: 2026-06-03 19:25:22.882509
 ---
 
 # Dual-block architecture
