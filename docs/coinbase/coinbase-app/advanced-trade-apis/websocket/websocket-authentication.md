@@ -2,28 +2,53 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-authentication
 api_type: WebSocket
-updated_at: 2026-06-02 19:15:09.340619
+updated_at: 2026-06-03 19:20:29.761509
 ---
 
 # Advanced Trade WebSocket Authentication
 
-WebSocketAdvanced Trade WebSocket AuthenticationThis guide explains how to authenticate requests to the Advanced Trade [WebSocket API](/coinbase-app/advanced-trade-apis/websocket/websocket-channels) server channels. It assumes that you have already [created API keys](/coinbase-app/authentication-authorization/api-key-authentication). Sending Messages with API Keys Making Requests Use the code samples below to generate/export a JSON Web Token (JWT) and make an authenticated request. WebSocket JWTs (vs those for REST API) are not built with a request method or request path. Generating a JWT Regardless of which code snippet you use, follow these steps:
+This guide explains how to authenticate requests to the Advanced Trade [WebSocket API](/coinbase-app/advanced-trade-apis/websocket/websocket-channels) server channels. It assumes that you have already [created API keys](/coinbase-app/authentication-authorization/api-key-authentication).
+
+## Sending Messages with API Keys
+
+### Making Requests
+
+Use the code samples below to generate/export a JSON Web Token (JWT) and make an authenticated request.
+
+WebSocket JWTs (vs those for REST API) are not built with a request method or request path.
+
+### Generating a JWT
+
+Regardless of which code snippet you use, follow these steps:
 
   1. Replace `key name` and `key secret` with your key name and private key. `key secret` is a multi-line key and newlines must be preserved to properly parse the key. Do this on one line with `\n` escaped newlines, or with a multi-line string.
   2. Run the generation script that prints the command `export JWT=...`.
   3. Run the generated command to save your JWT.
 
-Your JWT expires after 2 minutes, after which all requests are unauthenticated. Code samples The easiest way to generate a JWT is to use the built-in functions in our Python SDK as described below. Otherwise, use the code samples below to generate/export a JWT and make an authenticated request.
+Your JWT expires after 2 minutes, after which all requests are unauthenticated.
+
+### Code samples
+
+The easiest way to generate a JWT is to use the built-in functions in our Python SDK as described below. Otherwise, use the code samples below to generate/export a JWT and make an authenticated request.
 
   * Python SDK
+
   * Python
+
   * Go
+
   * JavaScript
+
   * PHP
+
   * Java
+
   * C++
+
   * TypeScript
+
   * C#
+
   * Ruby
 
   1. Install the SDK.
@@ -724,7 +749,9 @@ This will generate a `main.js` file.
     puts token
     
 
-Sending Messages without API Keys Subscribing
+## Sending Messages without API Keys
+
+### Subscribing
     
     
     // Request
@@ -739,7 +766,7 @@ Sending Messages without API Keys Subscribing
     }
     
 
-Unsubscribing
+### Unsubscribing
     
     
     // Request
@@ -753,6 +780,14 @@ Unsubscribing
     }
     
 
-Sequence Numbers Most feed messages contain a sequence number. Sequence numbers are increasing integer values for each product, with each new message being exactly one sequence number greater than the one before it. Sequence numbers that are _greater than one integer value_ from the previous number indicate that a message has been dropped. Sequence numbers that are _less_ than the previous number can be ignored or represent a message that has arrived out of order. In either situation you may need to perform logic to make sure your system is in the correct state. Even though a WebSocket connection is over TCP, the WebSocket servers receive market data in a manner that can result in dropped messages. Your feed consumer should be designed to handle sequence gaps and out of order messages, or should use channels that guarantee delivery of messages. To guarantee that messages are delivered and your order book is in sync, consider using the [level2 channel](/coinbase-app/advanced-trade-apis/websocket/websocket-channels#level2-channel). **See Also:**
+## Sequence Numbers
+
+Most feed messages contain a sequence number. Sequence numbers are increasing integer values for each product, with each new message being exactly one sequence number greater than the one before it. Sequence numbers that are _greater than one integer value_ from the previous number indicate that a message has been dropped. Sequence numbers that are _less_ than the previous number can be ignored or represent a message that has arrived out of order. In either situation you may need to perform logic to make sure your system is in the correct state.
+
+Even though a WebSocket connection is over TCP, the WebSocket servers receive market data in a manner that can result in dropped messages. Your feed consumer should be designed to handle sequence gaps and out of order messages, or should use channels that guarantee delivery of messages.
+
+To guarantee that messages are delivered and your order book is in sync, consider using the [level2 channel](/coinbase-app/advanced-trade-apis/websocket/websocket-channels#level2-channel).
+
+**See Also:**
 
   * [WebSocket Channels](/coinbase-app/advanced-trade-apis/websocket/websocket-channels)

@@ -2,14 +2,15 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/public/get-public-market-trades
 api_type: Market Data
-updated_at: 2026-06-02 19:15:08.421405
+updated_at: 2026-06-03 19:20:28.507618
 ---
 
 # Get Public Market Trades
 
 **Endpoint:** `GET https://api.coinbase.com/api/v3/brokerage/market/products/{product_id}/ticker`
 
-PublicGet Public Market TradesGet snapshot information by product ID about the last trades (ticks) and best bid/ask.GET/api/v3/brokerage/market/products/{product_id}/tickerGet Public Market Trades
+
+Get snapshot information by product ID about the last trades (ticks) and best bid/ask.
     
     
     curl --request GET \
@@ -33,4 +34,74 @@ PublicGet Public Market TradesGet snapshot information by product ID about the l
       "best_ask": "292.40"
     }
 
-AuthorizationsAuthorizationstringheaderrequiredA JWT signed using your CDP API Key Secret, encoded in base64. Refer to the [Creating API Keys](/coinbase-app/authentication-authorization/api-key-authentication) section of our Coinbase App Authentication docs for information on how to generate your Bearer Token.Path Parametersproduct_idstringrequiredThe trading pair (e.g. 'BTC-USD').Query Parameterslimitinteger<int32>requiredThe number of trades to be returned.startstringThe UNIX timestamp indicating the start of the time interval.endstringThe UNIX timestamp indicating the end of the time interval.ResponseA successful response.tradesobject[]Show child attributesbest_bidstringThe best bid for the `product_id`, in quote currency.Example:`"291.13"`best_askstringThe best ask for the `product_id`, in quote currency.Example:`"292.40"`
+#### Authorizations
+
+Authorization
+
+string
+
+header
+
+required
+
+A JWT signed using your CDP API Key Secret, encoded in base64. Refer to the [Creating API Keys](/coinbase-app/authentication-authorization/api-key-authentication) section of our Coinbase App Authentication docs for information on how to generate your Bearer Token.
+
+#### Path Parameters
+
+product_id
+
+string
+
+required
+
+The trading pair (e.g. 'BTC-USD').
+
+#### Query Parameters
+
+limit
+
+integer<int32>
+
+required
+
+The number of trades to be returned.
+
+start
+
+string
+
+The UNIX timestamp indicating the start of the time interval.
+
+end
+
+string
+
+The UNIX timestamp indicating the end of the time interval.
+
+#### Response
+
+A successful response.
+
+trades
+
+object[]
+
+best_bid
+
+string
+
+The best bid for the `product_id`, in quote currency.
+
+Example:
+
+`"291.13"`
+
+best_ask
+
+string
+
+The best ask for the `product_id`, in quote currency.
+
+Example:
+
+`"292.40"`

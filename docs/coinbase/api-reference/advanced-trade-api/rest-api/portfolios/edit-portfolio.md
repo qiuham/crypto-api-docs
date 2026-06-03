@@ -2,19 +2,13 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/portfolios/edit-portfolio
 api_type: Account
-updated_at: 2026-06-02 19:15:08.378574
+updated_at: 2026-06-03 19:20:28.006225
 ---
 
 # Edit Portfolio
 
 **Endpoint:** `PUT https://api.coinbase.com/api/v3/brokerage/portfolios/{portfolio_uuid}`
 
-
-Edit a portfolio.
-
-PUTPortfolios
-
-# Edit Portfolio
 
 Edit a portfolio.
     
@@ -80,28 +74,3 @@ portfolio
 object
 
 Portfolio is the identifying information for a portfolio.
-
-[Get Portfolio Breakdown/api/v3/brokerage/portfolios/{portfolio_uuid}Edit Portfolio
-    
-    
-    curl --request PUT \
-      --url https://api.coinbase.com/api/v3/brokerage/portfolios/{portfolio_uuid} \
-      --header 'Authorization: Bearer <token>' \
-      --header 'Content-Type: application/json' \
-      --data '
-    {
-      "name": "<string>"
-    }
-    '
-    
-    
-    {
-      "portfolio": {
-        "name": "<string>",
-        "uuid": "<string>",
-        "type": "UNDEFINED",
-        "deleted": true
-      }
-    }
-
-AuthorizationsAuthorizationstringheaderrequiredA JWT signed using your CDP API Key Secret, encoded in base64. Refer to the [Creating API Keys](/coinbase-app/authentication-authorization/api-key-authentication) section of our Coinbase App Authentication docs for information on how to generate your Bearer Token.Path Parametersportfolio_uuidstringrequiredThe portfolio UUID.Bodyapplication/jsonnamestringThe name of the portfolio.ResponseA successful response.portfolioobjectPortfolio is the identifying information for a portfolio.Show child attributes

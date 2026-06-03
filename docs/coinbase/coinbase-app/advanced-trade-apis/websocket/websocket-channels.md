@@ -2,12 +2,16 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-channels
 api_type: WebSocket
-updated_at: 2026-06-02 19:15:09.503878
+updated_at: 2026-06-03 19:20:29.609405
 ---
 
 # Advanced Trade WebSocket Channels
 
-WebSocketAdvanced Trade WebSocket ChannelsUse heartbeats to keep all subscriptions openMost channels close within 60-90 seconds if no updates are sent. Subscribe to heartbeats to keep all subscriptions open. The Coinbase Advanced Trade Market Data WebSocket feed provides the following channels: Channel| Description| Requires Authentication  
+Use heartbeats to keep all subscriptions openMost channels close within 60-90 seconds if no updates are sent. Subscribe to heartbeats to keep all subscriptions open.
+
+The Coinbase Advanced Trade Market Data WebSocket feed provides the following channels:
+
+Channel| Description| Requires Authentication  
 ---|---|---  
 **heartbeats**| **Real-time server pings to keep all connections open**|  No  
 candles| Real-time updates on product candles| No  
@@ -18,7 +22,18 @@ level2| All updates and easiest way to keep order book snapshot| No
 user| Only sends messages that include the authenticated user|  _Yes_  
 market_trades| Real-time updates every time a market trade happens| No  
 futures_balance_summary| Real-time updates every time a user’s futures balance changes|  _Yes_  
-Refer to the documentation on [subscribing to a WebSocket channel](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#subscribing). For the most reliable connection, authenticate with a CDP API key when subscribing to any channel. Subscribing to “-USDC” based products are only available on the user channel. Other channels will return the same data as the corresponding “-USD” based products. USDT-USDC and EURC-USDC are available on all channels. Heartbeats Channel Subscribe to the `heartbeats` channel to receive heartbeats messages every second. Heartbeats include a `heartbeat_counter` which verifies that no messages were missed. Subscribing to the heartbeats channel, alongside other channels, ensures that all subscriptions stay open when updates are sparse. This is useful, for example, when fetching market data for illiquid pairs.
+  
+Refer to the documentation on [subscribing to a WebSocket channel](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#subscribing).
+
+For the most reliable connection, authenticate with a CDP API key when subscribing to any channel.
+
+Subscribing to “-USDC” based products are only available on the user channel. Other channels will return the same data as the corresponding “-USD” based products. USDT-USDC and EURC-USDC are available on all channels.
+
+## Heartbeats Channel
+
+Subscribe to the `heartbeats` channel to receive heartbeats messages every second. Heartbeats include a `heartbeat_counter` which verifies that no messages were missed.
+
+Subscribing to the heartbeats channel, alongside other channels, ensures that all subscriptions stay open when updates are sparse. This is useful, for example, when fetching market data for illiquid pairs.
     
     
     // Request
@@ -47,7 +62,9 @@ A heartbeats message is of the type `heartbeats` as seen below.
     }
     
 
-Candles Channel Subscribe to the `candles` channel to receive candles messages for specific products with updates every second. Candles are grouped into buckets (granularities) of five minutes.
+## Candles Channel
+
+Subscribe to the `candles` channel to receive candles messages for specific products with updates every second. Candles are grouped into buckets (granularities) of five minutes.
     
     
     // Request
@@ -94,7 +111,9 @@ A candles message is of the type `candles` and some of its parameters include:
     }
     
 
-Market Trades Channel The `market_trades` channel sends market trades for a specified product on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions.
+## Market Trades Channel
+
+The `market_trades` channel sends market trades for a specified product on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions.
     
     
     // Request
@@ -133,7 +152,11 @@ A market trades message is of the type `snapshot` or `update`, and contains an a
     }
     
 
-Status Channel The `status` channel sends all products and currencies on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions. The `status` channel, like most channels, closes within 60-90 seconds when there are no updates. For example, if you listen for `BTC-USD` updates and nothing changes within 60-90 seconds (which is common), the channel closes. To avoid this, subscribe to the heartbeats in addition to your other channels.
+## Status Channel
+
+The `status` channel sends all products and currencies on a preset interval. Clients should provide an array of `product_ids` for which they would like status subscriptions.
+
+The `status` channel, like most channels, closes within 60-90 seconds when there are no updates. For example, if you listen for `BTC-USD` updates and nothing changes within 60-90 seconds (which is common), the channel closes. To avoid this, subscribe to the heartbeats in addition to your other channels.
     
     
     // Request
@@ -174,7 +197,9 @@ Status Channel The `status` channel sends all products and currencies on a prese
     }
     
 
-Ticker Channel The `ticker` channel provides real-time price updates every time a match happens. It batches updates in case of cascading matches, greatly reducing bandwidth requirements.
+## Ticker Channel
+
+The `ticker` channel provides real-time price updates every time a match happens. It batches updates in case of cascading matches, greatly reducing bandwidth requirements.
     
     
     // Request
@@ -218,7 +243,9 @@ Ticker Channel The `ticker` channel provides real-time price updates every time 
     }
     
 
-Ticker Batch Channel The `ticker_batch` channel provides latest price updates **every 5000 milliseconds** (5 seconds) if there is a change. It has the same JSON message schema as the `ticker` channel, except the `channel` field will have a value of `ticker_batch` and it currently doesn’t provide best bid or best ask fields.
+## Ticker Batch Channel
+
+The `ticker_batch` channel provides latest price updates **every 5000 milliseconds** (5 seconds) if there is a change. It has the same JSON message schema as the `ticker` channel, except the `channel` field will have a value of `ticker_batch` and it currently doesn’t provide best bid or best ask fields.
     
     
     // Request
@@ -230,7 +257,9 @@ Ticker Batch Channel The `ticker_batch` channel provides latest price updates **
     }
     
 
-Level2 Channel The `level2` channel guarantees delivery of all updates and is the easiest way to keep a snapshot of the order book.
+## Level2 Channel
+
+The `level2` channel guarantees delivery of all updates and is the easiest way to keep a snapshot of the order book.
     
     
     // Request
@@ -242,7 +271,11 @@ Level2 Channel The `level2` channel guarantees delivery of all updates and is th
     }
     
 
-Subscribe to the `level2` channel to guarantee that messages are delivered and your order book is in sync. The level2 channel sends a message with fields, `type` (“snapshot” or “update”), `product_id`, and `updates`. The field `updates` is an array of objects of `{price_level, new_quantity, event_time, side}` to represent the entire order book. The`event_time` property is the time of the event as recorded by our trading engine. The `new_quantity` property is the updated size at that price level, not a delta. A `new_quantity` of “0” indicates the price level can be removed.
+Subscribe to the `level2` channel to guarantee that messages are delivered and your order book is in sync.
+
+The level2 channel sends a message with fields, `type` (“snapshot” or “update”), `product_id`, and `updates`. The field `updates` is an array of objects of `{price_level, new_quantity, event_time, side}` to represent the entire order book. The`event_time` property is the time of the event as recorded by our trading engine.
+
+The `new_quantity` property is the updated size at that price level, not a delta. A `new_quantity` of “0” indicates the price level can be removed.
     
     
     // Example:
@@ -274,7 +307,9 @@ Subscribe to the `level2` channel to guarantee that messages are delivered and y
     }
     
 
-User Channel The `user` channel sends updates on all of a user’s open orders and current positions, including all subsequent updates of those orders and positions. The `user` channel expects one connection per user:
+## User Channel
+
+The `user` channel sends updates on all of a user’s open orders and current positions, including all subsequent updates of those orders and positions. The `user` channel expects one connection per user:
 
   * This connection accepts multiple product IDs in a `product_ids` array. If none are provided, the WebSocket subscription is open to all product IDs.
   * To subscribe to new `product_ids`, close your previous connection by unsubscribing and open a new connection with `product_ids` added to the array.
@@ -372,7 +407,9 @@ Subscribing to the User channel returns all `OPEN` orders, batched by 50, in the
     }
     
 
-Orders Fields Field| Description  
+#### Orders Fields
+
+Field| Description  
 ---|---  
 `avg_price`| Average filled price of the order so far  
 `cancel_reason`| Reason for order cancellation  
@@ -482,7 +519,16 @@ Orders Fields Field| Description
   * `0001-01-01T00:00:00Z`: Start Time not applicable
 
   
-Positions Fields Numeric values are in units of USDC. The `positions` fields are in beta and is currently returned as an empty array by default. To enable access to the `positions` fields in the User WebSocket channel, please reach out to us through [Discord](https://discord.com/invite/cdp). Perpetual Futures Field| Description  
+  
+#### Positions Fields
+
+Numeric values are in units of USDC.
+
+The `positions` fields are in beta and is currently returned as an empty array by default. To enable access to the `positions` fields in the User WebSocket channel, please reach out to us through [Discord](https://discord.com/invite/cdp).
+
+##### Perpetual Futures
+
+Field| Description  
 ---|---  
 `product_id`| Name of the instrument the position is in, e.g. `BTC-PERP-INTX`  
 `portfolio_uuid`| The uuid of the portfolio this order is associated with  
@@ -511,7 +557,10 @@ Positions Fields Numeric values are in units of USDC. The `positions` fields are
 `position_notional`| The notional value of the position  
 `unrealized_pnl`| The profit or loss of this position (resets to 0 after settlement)  
 `aggregated_pnl`| The total profit or loss of this position since the initial opening of the position  
-Expiring Futures Field| Description  
+  
+#### Expiring Futures
+
+Field| Description  
 ---|---  
 `product_id`| Name of the instrument the position is in, e.g. `BTC-12Jun24-CDE`  
 `side`| The side of the position. Can be one of: 
@@ -524,7 +573,10 @@ Expiring Futures Field| Description
 `realized_pnl`| Your realized PnL for your position  
 `unrealized_pnl`| Your current unrealized PnL for your position  
 `entry_price`| The average entry price at which you entered your current position  
-Futures Balance Summary Channel The `futures_balance_summary` channel sends updates on all of a user’s futures balances, including all subsequent updates of those balances.
+  
+## Futures Balance Summary Channel
+
+The `futures_balance_summary` channel sends updates on all of a user’s futures balances, including all subsequent updates of those balances.
     
     
     // Request
@@ -639,6 +691,7 @@ Includes:
   * `total_hold`
   * `futures_buying_power`
 
+  
   
 **See Also:**
 

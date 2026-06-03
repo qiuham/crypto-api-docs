@@ -2,12 +2,22 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/rest-api
 api_type: Trading
-updated_at: 2026-06-02 19:15:09.135904
+updated_at: 2026-06-03 19:20:29.340545
 ---
 
 # Advanced Trade API Endpoints
 
-Advanced Trade APIsAdvanced Trade API EndpointsThe Advanced Trade API lets you manage orders, portfolios, products, and fees with our new `v3` endpoints. Advanced Trade Endpoints Advanced Trade endpoint URL: **`https://api.coinbase.com/api/v3/brokerage/{resource}`** Private Endpoints Consult the [Authentication guide](/coinbase-app/authentication-authorization/api-key-authentication) for more information on CDP API keys. API| Method| Resource| API Key Permission  
+The Advanced Trade API lets you manage orders, portfolios, products, and fees with our new `v3` endpoints.
+
+## Advanced Trade Endpoints
+
+Advanced Trade endpoint URL: **`https://api.coinbase.com/api/v3/brokerage/{resource}`**
+
+## Private Endpoints
+
+Consult the [Authentication guide](/coinbase-app/authentication-authorization/api-key-authentication) for more information on CDP API keys.
+
+API| Method| Resource| API Key Permission  
 ---|---|---|---  
 [List Accounts](/api-reference/advanced-trade-api/rest-api/accounts/list-accounts)| GET| `/accounts`| `view`  
 [Get Account](/api-reference/advanced-trade-api/rest-api/accounts/get-account)| GET| `/accounts/:account_id`| `view`  
@@ -51,7 +61,12 @@ Advanced Trade APIsAdvanced Trade API EndpointsThe Advanced Trade API lets you m
 [List Payment Methods](/api-reference/advanced-trade-api/rest-api/payment-methods/list-payment-methods)| GET| `/payment_methods`| `view`  
 [Get Payment Method](/api-reference/advanced-trade-api/rest-api/payment-methods/get-payment-method)| GET| `/payment_methods/{payment_method_id}`| `view`  
 [Get Api Key Permissions](/api-reference/advanced-trade-api/rest-api/data-api/get-api-key-permissions)| GET| `/key_permissions`| `view`  
-Public Endpoints Public endpoints do not require authentication. 1s cache is enabled for all public endpoints. If you need real-time data, please choose one of the following options:
+  
+## Public Endpoints
+
+Public endpoints do not require authentication.
+
+1s cache is enabled for all public endpoints. If you need real-time data, please choose one of the following options:
 
   * Use the [WebSocket](/coinbase-app/advanced-trade-apis/websocket/websocket-overview) (recommended as this will provide the fastest product and market trades updates).
   * Set `cache-control: no-cache` header on the API requests to bypass caching.
