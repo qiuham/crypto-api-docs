@@ -2,26 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-extended-balance
 api_type: REST
-updated_at: 2026-06-02 20:12:59.409075
+updated_at: 2026-06-03 20:17:14.538527
 ---
 
-# Get Extended Balance
+# Get Grouped Order Book
 
-**POST** `https://api.kraken.com/0/private/BalanceEx`
+**GET** `https://api.kraken.com/0/public/GroupedBook`
 
-Retrieve all extended account balances, including credits and held amounts. Balance available for trading is calculated as: `available balance = balance + credit - credit_used - hold_trade`
+The GroupedBook endpoint aggregates the volume in the order book over a specified tick range. It provides a summary of liquidity deep into the book, useful for user interface display.
 
-Note that held amounts only include spot non margin orders.
-
-**Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
-
-**Symbol Extensions** :
-
-  * `.B`: balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
-  * `.F`: balances earning automatically in Kraken Rewards
-  * `.T`: tokenized assets.
-
-**API Key Permissions Required:** `Funds permissions - Query`
+Bids and asks between grouped price levels are accumulated to the nearest passive level (asks rounded up, bids down).
 
 ## Request
 
@@ -29,80 +19,197 @@ Note that held amounts only include spot non margin orders.
 
 ### Body**required**
 
-**nonce** `integer<int64>` *required*
+**pair** `string` *required*
 
-Nonce used in construction of `API-Sign` header
+Asset pair to get order book for
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**Example:**`BTC/USD`
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
+**depth** `integer`
 
-**Possible values:** [`rebased`, `base`]
+The number of price levels to return per side (bids/asks).
 
-**Default value:**`rebased`
+**Possible values:** [`10`, `25`, `100`, `250`, `1000`]
+
+**Default value:**`10`
+
+**Example:**`10`
+
+**grouping** `integer<int32>nullable`
+
+Specifies how many tick levels should be within each price level. Bids and asks between grouped price levels are accumulated to the nearest passive level (asks rounded up, bids down).
+
+**Possible values:** [`1`, `5`, `10`, `25`, `50`, `100`, `250`, `500`, `1000`]
+
+**Default value:**`1`
+
+**Example:**`1000`
 
 ## Responses
 
   * 200
 
-Extended account balances retrieved.
+Grouped order book data retrieved.
 
   * application/json
 * Schema
+  * Example
 
 **Schema**
 
 **result** `object`
 
-Extended Balance
+    ↳ **pair** `string`
 
-    ↳ **asset** `object`
+Asset pair
 
-Extended Balance
+    ↳ **grouping** `integer`
 
-        ↳ **balance** `string`
+The grouping value used
 
-Total balance amount for an asset
+    ↳ **bids** `object[]`
 
-**Example:**`3.46840030`
+Aggregated bid levels
 
-        ↳ **credit** `string`
+  * Array [
 
-Total credit amount (only applicable if account has a credit line)
+        ↳ **price** `string`
 
-**Example:**`1.26844502`
+Grouped price level
 
-        ↳ **credit_used** `string`
+        ↳ **qty** `string`
 
-Used credit amount (only applicable if account has a credit line)
+Aggregated quantity at this price level
 
-**Example:**`0.10002300`
+  * ]
 
-        ↳ **hold_trade** `string`
+        ↳ **asks** `object[]`
 
-Total held amount for an asset
+Aggregated ask levels
 
-**Example:**`2.14560458`
+  * Array [
 
-**error** `string[]`
+            ↳ **price** `string`
+
+Grouped price level
+
+            ↳ **qty** `string`
+
+Aggregated quantity at this price level
+
+  * ]
+
+**error** `array[]`
+
+    
+    
+    {  
+      "error": [],  
+      "result": {  
+        "pair": "BTC/USD",  
+        "grouping": 1000,  
+        "bids": [  
+          {  
+            "price": "90400.00000",  
+            "qty": "19.83057746"  
+          },  
+          {  
+            "price": "90300.00000",  
+            "qty": "45.35073006"  
+          },  
+          {  
+            "price": "90200.00000",  
+            "qty": "35.33199856"  
+          },  
+          {  
+            "price": "90100.00000",  
+            "qty": "32.40807838"  
+          },  
+          {  
+            "price": "90000.00000",  
+            "qty": "46.00445468"  
+          },  
+          {  
+            "price": "89900.00000",  
+            "qty": "22.71486458"  
+          },  
+          {  
+            "price": "89800.00000",  
+            "qty": "11.55482018"  
+          },  
+          {  
+            "price": "89700.00000",  
+            "qty": "13.77715743"  
+          },  
+          {  
+            "price": "89600.00000",  
+            "qty": "27.72185770"  
+          },  
+          {  
+            "price": "89500.00000",  
+            "qty": "14.09383330"  
+          }  
+        ],  
+        "asks": [  
+          {  
+            "price": "90500.00000",  
+            "qty": "38.96185061"  
+          },  
+          {  
+            "price": "90600.00000",  
+            "qty": "55.96402032"  
+          },  
+          {  
+            "price": "90700.00000",  
+            "qty": "34.64783055"  
+          },  
+          {  
+            "price": "90800.00000",  
+            "qty": "25.26797469"  
+          },  
+          {  
+            "price": "90900.00000",  
+            "qty": "20.48922196"  
+          },  
+          {  
+            "price": "91000.00000",  
+            "qty": "14.87773628"  
+          },  
+          {  
+            "price": "91100.00000",  
+            "qty": "18.99740224"  
+          },  
+          {  
+            "price": "91200.00000",  
+            "qty": "19.00592802"  
+          },  
+          {  
+            "price": "91300.00000",  
+            "qty": "4.05573682"  
+          },  
+          {  
+            "price": "91400.00000",  
+            "qty": "1.60667017"  
+          }  
+        ]  
+      }  
+    }  
 * curl
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/BalanceEx' \  
+    curl -L -X GET 'https://api.kraken.com/0/public/GroupedBook' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
-    -H 'API-Key: <API-Key>' \  
-    -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "rebase_multiplier": "rebased"  
+      "pair": "BTC/USD",  
+      "depth": 10,  
+      "grouping": 1000  
     }'  
     
 
@@ -112,16 +219,16 @@ Base URL
 
 https://api.kraken.com/0
 
-Auth
-
-API-Key
-
-API-Sign
-
 Body required
     
     
     {
-      "nonce": 0,
-      "rebase_multiplier": "rebased"
+      "pair": "BTC/USD",
+      "depth": 10,
+      "grouping": 1000
     }
+    
+
+ResponseClear
+
+Click the `Send API Request` button above and see the response here!

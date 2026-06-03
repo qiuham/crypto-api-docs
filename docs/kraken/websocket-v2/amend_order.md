@@ -2,121 +2,44 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/amend_order
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:27.390485
+updated_at: 2026-06-03 20:23:50.195519
 ---
 
-# Amend Order
+# Balances
 
-**WebSocket Endpoint:** `wss://ws-auth.kraken.com/v2`
-**Method:** `amend_order` (Authentication Required)
-The amend request enables clients to modify the order parameters in-place without the need to cancel the existing order and create a new one.
+CHANNEL
+**Endpoint:** `wss://ws-auth.kraken.com/v2`
+**Method:** `balances` (Authentication Required)
+The `balances` channel streams client asset balances and transactions from the account ledger.
 
-  * The order identifiers assigned by Kraken and/or client will stay the same.
-  * Queue priority in the order book will be maintained where possible.
-  * If an amend request will reduce the order quantity below the existing filled quantity, the remaining quantity will be cancelled.
+This channel contains account specific data, an authentication token is required in the request.
 
-For more detail, see [amend transaction guide](/api/docs/guides/spot-amends).
+## Subscribe Request
 
-## Request
-
-  * Request Schema
-  * Example: Basic
-  * Example: Advanced
+  * Subscribe Schema
+  * Subscribe Ack Schema
+  * Example: Subscribe
+  * Example: Subscribe Ack
 
 ### MESSAGE BODY
 
 **method** `string` *required*
 
-**Value:** `amend_order`
+**Value:** `subscribe`
 
 **params** `object`
 
-    ↳ **order_id** `string` *required*
+    ↳ **channel** `string` *required*
 
-**Example:** OFGKYQ-FHPCQ-HUQFEK
+**Value:** `balances`
 
-The Kraken identifier for the order to be amended. Either `order_id` or `cl_ord_id` is required.
-
-    ↳ **cl_ord_id** `string`
-
-**Example:** 6d1b345e-2821-40e2-ad83-4ecb18a06876
-
-The client identifier for the order to be amended. Either `order_id` or `cl_ord_id` is required.
-
-    ↳ **order_qty** `float` *required*
-
-The new order quantity in terms of the base asset.
-
-    ↳ **display_qty** `float` *conditional*
-
-**Condition:** iceberg orders only. 
-
-Defines the new quantity to show in the book while the rest of order quantity remains hidden.   
-Minimum value is 1 / 15 of remaining order quantity.
-
-    ↳ **limit_price** `float` *conditional*
-
-**Condition:** For order types that support limit price only. 
-
-The new limit price restriction on the order, used in combination with the `limit_price_type` parameter.
-
-    ↳ **limit_price_type** `string` *conditional*
-
-**Condition:** Currently only available on trailing-stop-limit orders. 
-
-**Possible values:**[`static`, ` pct`, ` quote`] 
-
-The units for `limit_price`:
-
-  * `static`: a static market price for the asset, i.e. limit price at 29000.5 BTC/USD, use price=29000.5 and price_type=static.
-  * `pct`: a percentage offset from the reference price, i.e. limit price when market rises by 5%, use price=5 and price_type=pct.
-  * `quote`: a notional offset from the reference price in the quote currency, i.e, limit price when market drops by 150 USD, use price=-150 and price_type=quote.
-
-`static` is the default for all order types except for `trailing-stop-limit` which has the default `quote` offset.
-
-    ↳ **post_only** `boolean` *conditional*
-
-**Condition:** Optional parameter for limit price amends. 
+    ↳ **snapshot** `boolean`
 
 **Possible values:**[`true`, ` false`] 
 
-**Default value:**`false`
+**Default value:**`true`
 
-If `true`, the limit price change will be rejected if the order cannot be posted passively in the book.
-
-    ↳ **trigger_price** `float` *conditional*
-
-**Condition:** For triggered order types only 
-
-The new trigger price to activate the order, used in combination with the `trigger_price_type` parameter.
-
-    ↳ **trigger_price_type** `string` *conditional*
-
-**Condition:** For triggered order types only 
-
-**Possible values:**[`static`, ` pct`, ` quote`] 
-
-**Default value:**`static`
-
-The units for `trigger_price`:
-
-  * `static`: a static market price for the asset, i.e. to trigger at 29000.5 BTC/USD, use price=29000.5 and price_type=static.
-  * `pct`: a percentage offset from the reference price, i.e. to trigger when price rises by 5%, use price=5 and price_type=pct.
-  * `quote`: a notional offset from the reference price in the quote currency, i.e, to trigger when price drops by 150 USD, use price=-150 and price_type=quote.
-
-    ↳ **deadline** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123Z
-
-Range of valid offsets (from current time) is 500 milliseconds to 60 seconds, default is 5 seconds. The precision of this parameter is to the millisecond. The engine will prevent this order from matching after this time, it provides protection against latency on time sensitive orders.
-
-    ↳ **symbol** `string`
-
-**Example:** TSLAx/USD
-
-The `symbol` is required on amends for non-crypto pairs, i.e. provide the pair symbol for xstocks.
+Request a snapshot after subscribing.
 
     ↳ **token** `string` *required*
 
@@ -126,76 +49,45 @@ This is a authenticated channel, a session token is required. See guides on how 
 
 Optional client originated request identifier sent as acknowledgment in the response.
 
-Example: amend the limit price and the quantity on an order using a UUID client order identifier.
-    
-    
-    {  
-      "method": "amend_order",  
-      "params": {  
-          "cl_ord_id": "2c6be801-1f53-4f79-a0bb-4ea1c95dfae9",  
-          "limit_price": 490795,  
-          "order_qty": 1.2,  
-          "token": "PM5Qm0MDrS54l657aQAtb7AhrwN30e2LBg1nUYOd6vU"  
-    }  
-    
+**rebased** `boolean` *conditional*
 
-Amends the price on an order using the Kraken order identifier.
+**Condition:** Effective for viewing xstocks only. 
 
-  * `post_only` indicates the transaction will be rejected if the new limit price will take liquidity immediately.
-  * `deadline` indicates this amend request is latency sensitive, rejected the amend reject if not processed before the time.
+**Possible values:**[`true`, ` false`] 
 
-    
-    
-    {  
-        "method": "amend_order",  
-        "params": {  
-            "order_id": "OAIYAU-LGI3M-PFM5VW",  
-            "limit_price": 61031.3,  
-            "deadline": "2024-07-21T09:53:59.050Z",  
-            "post_only": true,  
-            "token": "DGB00LiKlPlLI/amQaSKUUr8niqXDb+1zwvtjp34nzk"  
-        }  
-    }  
-    
+**Default value:**`true`
 
-## Response
+If `true`, display in terms of underlying equity, otherwise display in terms of SPV tokens.
 
-  * Response Schema
-  * Example
+**users** `string` *conditional*
 
-A successful amend request will return the unique Kraken amend identifier.
+**Condition:** Available on master accounts only. 
+
+**Value:** `all`
+
+If `all`, events for master and subaccounts are streamed, otherwise only master account events are published. No snapshot is provided.
 
 ### MESSAGE BODY
 
-**method** `string`
+**method** `string` *required*
 
-**Value:** `amend_order`
+**Value:** `subscribe`
 
-**result** `object` *conditional*
+**result** `object`
 
-**Condition:** On successful requests only 
+    ↳ **channel** `string` *required*
 
-    ↳ **amend_id** `string`
+**Value:** `balances`
 
-The unique Kraken identifier generated for this amend transaction.
+    ↳ **snapshot** `boolean`
 
-    ↳ **order_id** `string`
+**Possible values:**[`true`, ` false`] 
 
-The Kraken identifier, if populated in the request.
-
-    ↳ **cl_ord_id** `string`
-
-The client identifier, if populated in the request.
+Indicates if a snapshot is requested.
 
     ↳ **warnings** `array of strings`
 
-An advisory message, highlighting deprecated fields or upcoming changes to the request.
-
-**error** `string` *conditional*
-
-**Condition:** On unsuccessful requests only 
-
-The error message for a rejected request.
+An advisory message, highlighting deprecated fields or upcoming changes to the channel.
 
 **success** `boolean`
 
@@ -203,9 +95,11 @@ The error message for a rejected request.
 
 Indicates if the request was successfully processed by the engine.
 
-**req_id** `integer`
+**error** `string` *conditional*
 
-Optional client originated request identifier sent as acknowledgment in the response.
+**Condition:** If success is false. 
+
+Error message.
 
 **time_in** `string`
 
@@ -213,7 +107,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the request was received on the wire, just prior to parsing data.
+The timestamp when the subscription was received on the wire, just prior to parsing data.
 
 **time_out** `string`
 
@@ -221,18 +115,433 @@ The timestamp when the request was received on the wire, just prior to parsing d
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the response was sent on the wire, just prior to transmitting data.
+The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
 
-Example: response for an order successfully amended with a client order identifier.
+**req_id** `integer`
+
+Optional client originated request identifier sent as acknowledgment in the response.
     
     
     {  
-        "method": "amend_order",  
+        "method": "subscribe",  
+        "params": {  
+            "channel": "balances",  
+            "token": "G38a1tGFzqGiUCmnegBcm8d4nfP3tytiNQz6tkCBYXY"  
+        }  
+    }  
+    
+    
+    
+    {  
+        "method": "subscribe",  
         "result": {  
-            "amend_id": "TTW6PD-RC36L-ZZSWNU",  
-            "cl_ord_id": "2c6be801-1f53-4f79-a0bb-4ea1c95dfae9"  
+            "channel": "balances",  
+            "snapshot": true  
         },  
         "success": true,  
-        "time_in": "2024-07-26T13:39:04.922699Z",  
-        "time_out": "2024-07-26T13:39:04.924912Z"  
+        "time_in": "2023-10-16T13:29:13.111530Z",  
+        "time_out": "2023-10-16T13:29:13.111775Z"  
+    }  
+    
+
+## Snapshot Response
+
+The snapshot provides the value of each asset held in this account.
+
+  * Snapshot Schema
+  * Example: Snapshot
+
+### MESSAGE BODY
+
+**channel** `string`
+
+**Value:** `balances`
+
+**type** `string`
+
+**Value:** `snapshot`
+
+**data** `array [`
+
+A list of assets held on account.
+
+**[many] asset** object
+
+    ↳ **asset** `string`
+
+The asset symbol code.
+
+    ↳ **asset_class** `string`
+
+**Value:** `currency`
+
+The asset class. A placeholder for future expansion.
+
+    ↳ **balance** `float`
+
+The total amount of asset held across all wallet types.
+
+    ↳ **wallets** `array [`
+
+A list of wallets for each asset.
+
+**[many] wallet** object
+
+        ↳ **balance** `float`
+
+Balance of asset in wallet.
+
+        ↳ **type** `string`
+
+**Possible values:**[`spot`, ` earn`] 
+
+Wallet type.
+
+        ↳ **id** `string`
+
+**Possible values:**[`main`, `flex`, `bonded`, `flexible`, `liquid`, `locked`, `closed`] 
+
+Wallet identifier.
+
+]
+
+]
+
+        ↳ **sequence** `integer`
+
+The subscription message sequence number.
+    
+    
+    {  
+        "channel": "balances",  
+        "data": [  
+            {  
+                "asset": "BTC",  
+                "asset_class": "currency",  
+                "balance": 1.2,  
+                "wallets": [  
+                    {  
+                        "type": "spot",  
+                        "id": "main",  
+                        "balance": 1.2  
+                    }  
+                ]  
+            },  
+            {  
+                "asset": "MATIC",  
+                "asset_class": "currency",  
+                "balance": 500,  
+                "wallets": [  
+                    {  
+                        "type": "spot",  
+                        "id": "main",  
+                        "balance": 300  
+                    },  
+                    {  
+                        "type": "earn",  
+                        "id": "flex",  
+                        "balance": 200  
+                    }  
+                ]  
+            },  
+            {  
+                "asset": "USD",  
+                "asset_class": "currency",  
+                "balance": 80595.4943,  
+                "wallets": [  
+                    {  
+                        "type": "spot",  
+                        "id": "main",  
+                        "balance": 80595.4943  
+                    }  
+                ]  
+            }  
+        ],  
+        "type": "snapshot",  
+        "sequence": 1  
+    }  
+    
+
+## Update Response
+
+An update will be streamed on each completed transaction to the client account.
+
+  * Update Schema
+  * Example: Deposit Update
+  * Example: Trade Update
+
+### MESSAGE BODY
+
+**channel** `string`
+
+**Value:** `balances`
+
+**type** `string`
+
+**Value:** `update`
+
+**data** `array [`
+
+A list of account ledger transactions for each asset.
+
+**[many] ledger_transaction** object
+
+    ↳ **asset** `string`
+
+The asset symbol code.
+
+    ↳ **asset_class** `string`
+
+**Value:** `currency`
+
+The asset class. A placeholder for future expansion.
+
+    ↳ **amount** `float`
+
+The amount of asset change in this event.
+
+    ↳ **balance** `float`
+
+The total amount of this asset held in account.
+
+    ↳ **fee** `float`
+
+The fee paid on the transaction.
+
+    ↳ **ledger_id** `string`
+
+The identifier for this account ledger entry.
+
+    ↳ **ref_id** `string`
+
+A reference identifier in the context of this balance event. For example, `ref_id` will be the `trade_id` for a trade event.
+
+    ↳ **timestamp** `string`
+
+**Format:** RFC3339
+
+**Example:** 2022-12-25T09:30:59.123456Z
+
+The time of the balance change.
+
+    ↳ **type** `string`
+
+**Possible values:**[`deposit`, ` withdrawal`, ` trade`, ` margin`, ` adjustment`, ` rollover`, ` credit`, ` transfer`, ` settled`, ` staking`, ` sale`, ` reserve`, ` conversion`, ` dividend`, ` reward`, ` creator_fee`] 
+
+The broad type of the balance event.
+
+    ↳ **subtype** `string`
+
+**Possible values:**[`spotfromfutures`, ` spottofutures`, ` stakingfromspot`, ` spotfromstaking`, ` stakingtospot`, ` spottostaking`] 
+
+The specific subtype of the balance event.
+
+    ↳ **category** `string`
+
+**Possible values:**[`deposit`, ` withdrawal`, ` trade`, ` margin-trade`, ` margin-settle`, ` margin-conversion`, ` conversion`, ` credit`, ` marginrollover`, ` staking-rewards`, ` instant`, ` equity-trade`, ` airdrop`, ` equity-dividend`, ` reward-bonus`, ` nft`, ` block-trade`] 
+
+The categorization of the balance event.
+
+    ↳ **wallet_type** `string`
+
+**Possible values:**[`spot`, ` earn`] 
+
+Wallet type.
+
+    ↳ **wallet_id** `string`
+
+**Possible values:**[`main`, `bonded`, `flexible`, `liquid`, `locked`] 
+
+The following combinations of wallet types and wallet identifiers are available:
+
+Wallet type `spot`:
+
+  * `main`: Primary spot pairs trading wallet.
+
+Wallet type `earn`:
+
+  * `bonded`: earn on-chain product with lockup period.
+  * `flexible`: earn product without lockup period.
+  * `liquid`: kraken rewards program, see [support center](https://support.kraken.com/hc/en-us/articles/overview-of-rewards-on-kraken).
+  * `locked`: earn product (may or may not have a lockup period).
+
+    ↳ **user** `string` *conditional*
+
+**Condition:** Published when request parameters have 'users=all'. 
+
+**Example:** AA96N74GCGEFN8KI
+
+The Kraken generated identifier for a user / sub-account.
+
+]
+
+    ↳ **sequence** `integer`
+
+The subscription message sequence number.
+    
+    
+    {  
+       "channel": "balances",  
+       "type": "update",  
+       "data": [  
+          {  
+             "ledger_id": "ADKKFF-WEA5A-CNUBHG",  
+             "ref_id": "AGBWUJRU-LAREZ-W3UFAN",  
+             "timestamp": "2023-09-22T10:23:42.925034Z",  
+             "type": "deposit",  
+             "asset": "BTC",  
+             "asset_class": "currency",  
+             "category": "deposit",  
+             "wallet_type": "spot",  
+             "wallet_id": "main",  
+             "amount": 0.01,  
+             "fee": 0.0,  
+             "balance": 0.02  
+          }  
+       ],  
+       "sequence": 2  
+    }  
+    
+
+An example of selling 0.005 BTC/USD, two events are streamed with a shared `ref_id`. The `ref_id` refers to the `trade_id` in this scenario:
+
+  * BTC debit of -0.005.
+  * USD credit of 132.9995.
+
+    
+    
+     {  
+        "channel": "balances",  
+        "type": "update",  
+        "data": [  
+            {  
+                "ledger_id": "AAICKV-NMQSR-ZO5IJD",  
+                "ref_id": "AGBB7L-HT5LX-J3BB4A",  
+                "timestamp": "2023-09-22T10:33:05.710082Z",  
+                "type": "trade",  
+                "asset": "BTC",  
+                "asset_class": "currency",  
+                "category": "trade",  
+                "wallet_type": "spot",  
+                "wallet_id": "main",  
+                "amount": -0.005,  
+                "fee": 0.0,  
+                "balance": 0.005  
+            }  
+        ],  
+        "sequence": 9  
+    },  
+    {  
+        "channel": "balances",  
+        "type": "update",  
+        "data": [  
+            {  
+                "ledger_id": "A5KS77-LQRMP-SMMN4B",  
+                "ref_id": "AGBB7L-HT5LX-J3BB4A",  
+                "timestamp": "2023-09-22T10:33:05.710082Z",  
+                "type": "trade",  
+                "asset": "USD",  
+                "asset_class": "currency",  
+                "category": "trade",  
+                "wallet_type": "spot",  
+                "wallet_id": "main",  
+                "amount": 132.9995,  
+                "fee": 0.3458,  
+                "balance": 500  
+            }  
+        ],  
+        "sequence": 10  
+    }  
+    
+
+## Unsubscribe Request
+
+  * Unsubscribe Schema
+  * Unsubscribe Ack Schema
+  * Example: Unsubscribe
+  * Example: Unsubscribe Ack
+
+### MESSAGE BODY
+
+**method** `string` *required*
+
+**Value:** `unsubscribe`
+
+**params** `object`
+
+    ↳ **channel** `string` *required*
+
+**Value:** `balances`
+
+    ↳ **token** `string` *required*
+
+This is a authenticated channel, a session token is required. See guides on how to generate a token via REST.
+
+**req_id** `integer`
+
+Optional client originated request identifier sent as acknowledgment in the response.
+
+### MESSAGE BODY
+
+**method** `string` *required*
+
+**Value:** `unsubscribe`
+
+**result** `object`
+
+    ↳ **channel** `string` *required*
+
+**Value:** `balances`
+
+**success** `boolean`
+
+**Possible values:**[`true`, ` false`] 
+
+Indicates if the request was successfully processed by the engine.
+
+**error** `string` *conditional*
+
+**Condition:** If success is false. 
+
+Error message.
+
+**time_in** `string`
+
+**Format:** RFC3339
+
+**Example:** 2022-12-25T09:30:59.123456Z
+
+The timestamp when the subscription was received on the wire, just prior to parsing data.
+
+**time_out** `string`
+
+**Format:** RFC3339
+
+**Example:** 2022-12-25T09:30:59.123456Z
+
+The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
+
+**req_id** `integer`
+
+Optional client originated request identifier sent as acknowledgment in the response.
+    
+    
+    {  
+        "method": "unsubscribe",  
+        "params": {  
+            "channel": "balances",  
+            "token": "G38a1tGFzqGiUCmnegBcm8d4nfP3tytiNQz6tkCBYXY"  
+        }  
+    }  
+    
+    
+    
+    {  
+        "method": "unsubscribe",  
+        "result": {  
+            "channel": "balances"  
+        },  
+        "success": true,  
+        "time_in": "2023-10-16T13:29:13.111530Z",  
+        "time_out": "2023-10-16T13:29:13.111775Z"  
     }

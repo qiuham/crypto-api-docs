@@ -2,24 +2,27 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-pnl-currency-preference
 api_type: REST
-updated_at: 2026-06-02 20:10:08.572793
+updated_at: 2026-06-03 20:14:17.142824
 ---
 
-# Get PNL currency preferences
+# Get portfolio margin parameters
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/pnlpreferences`
+**GET** `https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/parameters`
 
-The PNL currency preference is used to determine which currency to pay out when realizing PNL gains.
+Retrieve current portfolio margin calculation parameters.
+
+Also includes user specific limits related to options trading.
+
+Note: This is currently available exclusively in the Kraken pre-prod environments.
 
 ## Responses
 
   * 200
 
-OK
+Portfolio margining parameters
 
   * application/json
 * Schema
-  * success
 
 **Schema**
 
@@ -27,17 +30,51 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**preferences** `object[]` *required*
+**crossAssetNettingFactor** number<double>required
 
-  * Array [
+**Example:**`12.03532`
 
-    ↳ **symbol** `string` *required*
+**extremePriceShockMultiplier** number<double>required
 
-**pnlCurrency** stringrequired
+**Example:**`12.03532`
 
-**Example:**`USD`
+**volShockMultiplicationFactor** number<double>required
 
-  * ]
+**Example:**`12.03532`
+
+**volShockExponentFactor** number<double>required
+
+**Example:**`12.03532`
+
+**optionExpiryTimeShockHours** number<uint64>required
+
+**optionsInitialMarginFactor** number<double>required
+
+**Example:**`12.03532`
+
+**totalOptionOrdersConsideredInInitialMarginCalc** number<uint64>required
+
+**priceShockLevels** number<double>[]required
+
+**optionsUserLimits** objectrequired
+
+**maxNetPositionDelta** number<double>required
+
+**Example:**`12.03532`
+
+**limitsPerBaseCurrency** objectrequired
+
+User limits per option contract base currency
+
+**property name*** OptionsUserLimitsPerBaseCurrency
+
+**maxTotalPositionSize** number<double>required
+
+**Example:**`12.03532`
+
+**maxTotalOpenOrdersSize** number<double>required
+
+**Example:**`12.03532`
 
 **result** `string` *required*
 
@@ -90,20 +127,6 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
-    
-    
-    {  
-      "result": "success",  
-      "serverTime": "2022-06-28T15:04:06.710Z",  
-      "preferences": [  
-        {  
-          "symbol": "PF_XBTUSD",  
-          "pnlCurrency": "BTC"  
-        }  
-      ]  
-    }  
-    
-
 #### Authorization: APIKey
     
     
@@ -116,11 +139,12 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/pnlpreferences' \  
+    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/parameters' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -130,7 +154,7 @@ Request Collapse all
 
 Base URL
 
-https://futures.kraken.com/derivatives/api/v3
+https://demo-futures.kraken.com/derivatives/api/v3
 
 Auth
 

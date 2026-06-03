@@ -2,52 +2,20 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-trades
 api_type: REST
-updated_at: 2026-06-02 20:13:27.577995
+updated_at: 2026-06-03 20:17:45.120379
 ---
 
-# Get Recent Trades
+# Get Server Time
 
-**GET** `https://api.kraken.com/0/public/Trades`
+**GET** `https://api.kraken.com/0/public/Time`
 
-Returns the last 1000 trades by default
-
-## Request
-
-### Query Parameters
-
-**pair** `string` *required*
-
-Asset pair to get data for
-
-**Example:** XBTUSD
-
-**since** `string`
-
-Return trade data since given timestamp
-
-**Example:** 1616663618
-
-**count** `integer`
-
-**Possible values:** `>= 1` and `<= 1000`
-
-Return specific number of trades, up to 1000
-
-**Default value:**`1000`
-
-**Example:** 2
-
-**asset_class** `string`
-
-**Possible values:** [`tokenized_asset`]
-
-This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
+Get the server's time.
 
 ## Responses
 
   * 200
 
-Trade data retrieved.
+Success response
 
   * application/json
 * Schema
@@ -56,29 +24,13 @@ Trade data retrieved.
 
 **result** `object`
 
-    ↳ **last** `string`
+    ↳ **unixtime** `integer`
 
-ID to be used as since when polling for new trade data
+Unix timestamp
 
-**property name*** TickData
+**rfc1123** string
 
-Array of trade entries `[<price>, <volume>, <time>, <buy/sell>, <market/limit>, <miscellaneous>, <trade_id>]`
-
-  * Array [
-
-**type**
-
-    ↳ **items** `object`
-
-oneOf
-* string
-* number
-
-****string
-
-****number
-
-  * ]
+RFC 1123 time format
 
 **error** `string[]`
 * curl
@@ -89,7 +41,7 @@ oneOf
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Trades' \  
+    curl -L 'https://api.kraken.com/0/public/Time' \  
     -H 'Accept: application/json'  
     
 
@@ -98,18 +50,6 @@ Request Collapse all
 Base URL
 
 https://api.kraken.com/0
-
-Parameters
-
-pair — queryrequired
-
-since — query
-
-count — query
-
-asset_class — query
-
-\---tokenized_asset
 
 ResponseClear
 

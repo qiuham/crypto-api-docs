@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/session-fix
 api_type: REST
-updated_at: 2026-06-02 20:08:38.907239
+updated_at: 2026-06-03 20:12:36.464306
 ---
 
 # Header & Trailer

@@ -2,85 +2,48 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs
 api_type: REST
-updated_at: 2026-06-02 20:13:41.429984
+updated_at: 2026-06-03 20:17:59.714821
 ---
 
-# Get Tradable Asset Pairs
+# Get Trade Balance
 
-**GET** `https://api.kraken.com/0/public/AssetPairs`
+**POST** `https://api.kraken.com/0/private/TradeBalance`
 
-Get tradable asset pairs
+Retrieve a summary of collateral balances, margin position valuations, equity and margin level.
+
+**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
 ## Request
 
-### Query Parameters
+  * application/json
 
-**pair** `string`
+### Body**required**
 
-Asset pairs to get data for
+**nonce** `integer<int64>` *required*
 
-**Example:** BTC/USD,ETH/BTC
+Nonce used in construction of `API-Sign` header
 
-**aclass_base** `string`
+**asset** `string`
 
-**Possible values:** [`currency`, `tokenized_asset`]
+Base asset used to determine balance
 
-Filters the asset class to retrieve (optional)
-* `currency` = spot currency pairs.
-* `tokenized_asset` = tokenized asset pairs, i.e. xstocks.
+**Default value:**`ZUSD`
 
-**Default value:**`currency`
+**rebase_multiplier** `rebase_multiplier (string)nullable`
 
-**info** `string`
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
 
-**Possible values:** [`info`, `leverage`, `fees`, `margin`]
+**Possible values:** [`rebased`, `base`]
 
-Info to retrieve (optional)
-* `info` = all info
-* `leverage` = leverage info
-* `fees` = fees schedule
-* `margin` = margin info
-
-**Default value:**`info`
-
-**country_code** `ISO 3166-1 alpha-2`
-
-Filter for response to only include pairs available in the provided country/region.
-
-**Example:** GB
-
-**execution_venue** `string`
-
-**Possible values:** [`international`, `bitnomial_exchange`]
-
-Comma-separated list of execution venues to filter by (optional)
-* `international` = International exchange
-* `bitnomial_exchange` = Bitnomial exchange
-
-**Default value:**`international`
-
-**Examples:**
-* International only
-* Bitnomial only
-* International and Bitnomial
-
-Fetch pairs listed on International execution venue only
-
-**Example:**`international`
-
-Fetch pairs listed on Bitnomial Exchange execution venue only
-
-**Example:**`bitnomial_exchange`
-
-Fetch pairs listed on both International and Bitnomial Exchange execution venues
-
-**Example:**`international,bitnomial_exchange`
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Tradable asset pairs retrieved.
+Trade balances retrieved.
 
   * application/json
 * Schema
@@ -89,113 +52,67 @@ Tradable asset pairs retrieved.
 
 **result** `object`
 
-Pair names and their info
+Account Balance
 
-**property name*** AssetPair
+    ↳ **eb** `string`
 
-Trading Asset Pair
+Equivalent balance (combined balance of all currencies)
 
-    ↳ **altname** `string`
+**Example:**`3224744.0162`
 
-Alternate pair name
+    ↳ **tb** `string`
 
-    ↳ **wsname** `string`
+Trade balance (combined balance of all equity currencies)
 
-WebSocket pair name (if available)
+**Example:**`3224744.0162`
 
-    ↳ **aclass_base** `string`
+    ↳ **m** `string`
 
-Asset class of base component
+Margin amount of open positions
 
-    ↳ **base** `string`
+**Example:**`0.0000`
 
-Asset ID of base component
+    ↳ **n** `string`
 
-    ↳ **aclass_quote** `string`
+Unrealized net profit/loss of open positions
 
-Asset class of quote component
+**Example:**`0.0000`
 
-    ↳ **quote** `string`
+    ↳ **c** `string`
 
-Asset ID of quote component
+Cost basis of open positions
 
-    ↳ **execution_venue** `string`
+**Example:**`0.0000`
 
-Execution venue where the order book for this pair is listed
+    ↳ **v** `string`
 
-**Possible values:** [`international`, `bitnomial_exchange`]
+Current floating valuation of open positions
 
-    ↳ **lot** `stringdeprecated`
+**Example:**`0.0000`
 
-Volume lot size
+    ↳ **e** `string`
 
-    ↳ **pair_decimals** `integer`
+Equity: `trade balance + unrealized net profit/loss`
 
-Number of decimal places for prices in this pair
+**Example:**`3224744.0162`
 
-    ↳ **cost_decimals** `integer`
+    ↳ **mf** `string`
 
-Number of decimal places for cost of trades in pair (quote asset terms)
+Free margin: `Equity - initial margin (maximum margin available to open new positions)`
 
-    ↳ **lot_decimals** `integer`
+**Example:**`3224744.0162`
 
-Number of decimal places for volume (base asset terms)
+    ↳ **ml** `string`
 
-    ↳ **lot_multiplier** `integer`
+Margin level: `(equity / initial margin) * 100`
 
-Amount to multiply lot volume by to get currency volume
+**Example:**`0.0000`
 
-    ↳ **leverage_buy** `integer[]`
+    ↳ **uv** `string`
 
-Array of leverage amounts available when buying
+Unexecuted value: Value of unfilled and partially filled orders
 
-    ↳ **leverage_sell** `integer[]`
-
-Array of leverage amounts available when selling
-
-    ↳ **fees** `array[]`
-
-Fee schedule array in `[<volume>, <percent fee>]` tuples
-
-        ↳ **fees_maker** `array[]`
-
-Maker fee schedule array in `[<volume>, <percent fee>]` tuples (if on maker/taker)
-
-            ↳ **fee_volume_currency** `string`
-
-Volume discount currency
-
-            ↳ **margin_call** `integer`
-
-Margin call level
-
-            ↳ **margin_stop** `integer`
-
-Stop-out/liquidation margin level
-
-            ↳ **ordermin** `string`
-
-Minimum order size (in terms of base currency)
-
-            ↳ **costmin** `string`
-
-Minimum order cost (in terms of quote currency)
-
-            ↳ **tick_size** `string`
-
-Minimum increment between valid price levels
-
-            ↳ **status** `string`
-
-Status of asset. Possible values: `online`, `cancel_only`, `post_only`, `limit_only`, `reduce_only`.
-
-            ↳ **long_position_limit** `integer`
-
-Maximum long margin position size (in terms of base currency)
-
-            ↳ **short_position_limit** `integer`
-
-Maximum short margin position size (in terms of base currency)
+**Example:**`0.0000`
 
 **error** `string[]`
 * curl
@@ -206,8 +123,15 @@ Maximum short margin position size (in terms of base currency)
 
     
     
-    curl -L 'https://api.kraken.com/0/public/AssetPairs' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://api.kraken.com/0/private/TradeBalance' \  
+    -H 'Content-Type: application/json' \  
+    -H 'Accept: application/json' \  
+    -H 'API-Key: <API-Key>' \  
+    -H 'API-Sign: <API-Sign>' \  
+    -d '{  
+      "nonce": 1695828490,  
+      "asset": "ZUSD"  
+    }'  
     
 
 Request Collapse all
@@ -216,24 +140,16 @@ Base URL
 
 https://api.kraken.com/0
 
-Parameters
+Auth
 
-pair — query
+API-Key
 
-aclass_base — query
+API-Sign
 
-\---currencytokenized_asset
-
-info — query
-
-\---infoleveragefeesmargin
-
-country_code — query
-
-execution_venue — query
-
-\---internationalbitnomial_exchange
-
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!
+Body required
+    
+    
+    {
+      "nonce": 1695828490,
+      "asset": "ZUSD"
+    }

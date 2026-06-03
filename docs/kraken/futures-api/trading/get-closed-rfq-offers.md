@@ -2,113 +2,95 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers
 api_type: REST
-updated_at: 2026-06-02 20:09:46.042520
+updated_at: 2026-06-03 20:13:52.865733
 ---
 
-# List offers placed by the account on closed RFQs
+# Get fee schedules
 
-**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/closed-offers`
+**GET** `https://futures.kraken.com/derivatives/api/v3/feeschedules`
 
-Retrieve all offers the account placed on RFQs that have since closed. The `status` field on each offer indicates how the parent RFQ closed (`expired`, `cancelled`, `filled_bid_side`, or `filled_ask_side`).
+deprecated
 
-Closed RFQs are tracked in an in-memory cache only and are not persisted; offers may be evicted by the cache eviction policy or wiped on service restart.
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
 
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+**DEPRECATED** — Effective 2026-06-22, the fee values returned by this endpoint no longer reflect the fees actually charged on Futures trades. Futures fee calculation has been migrated to a centralised Kraken fee service.
+
+To determine the fee rate applied to your trades, use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key.
+
+* * *
+
+This endpoint lists all fee schedules.
 
 ## Responses
 
   * 200
-  * 404
-
-Closed Offers
-
-  * application/json
+* application/json
 * Schema
+  * success
 
 **Schema**
+
+oneOf
+* Success Response
+* ErrorResponse
+
+**feeSchedules** object[]required
+
+  * Array [
+
+**tiers** `object[]` *required*
+
+A list containing a structures for each fee tier, see below.
+
+  * Array [
+
+**makerFee** numberrequired
+
+Percentage value of maker fee in the tier.
+
+**Example:**`0.015`
+
+**takerFee** numberrequired
+
+Percentage value of taker fee in the tier.
+
+**Example:**`0.04`
+
+**usdVolume** numberrequired
+
+Minimum 30-day USD volume for fee tier to be applicable.
+
+**Example:**`100000`
+
+  * ]
+
+    ↳ **name** `string` *required*
+
+Name of schedule.
+
+**Example:**`PGTMainFees`
+
+    ↳ **uid** `string` *required*
+
+Unique identifier of fee schedule.
+
+**Example:**`7fc4d7c0-464f-4029-a9bb-55856d0c5247`
+
+  * ]
 
 **result** `string` *required*
 
 **Possible values:** [`success`]
 
+**Example:**`success`
+
 **serverTime** string<date-time>required
 
-**offers** `object[]` *required*
+Server time in Coordinated Universal Time (UTC)
 
-  * Array [
+**Example:**`2020-08-27T17:03:33.196Z`
 
-    ↳ **uid** `string<uuid>` *required*
-
-Unique identifier for the offer
-
-**rfqUid** string<uuid>required
-
-Unique identifier for the RFQ
-
-**placementDate** string<date-time>required
-
-The date and time when the offer was placed
-
-**lastUpdateDate** string<date-time>required
-
-The last update date and time of the offer
-
-    ↳ **bid** `string<decimal>`
-
-The bid price, if available
-
-    ↳ **ask** `string<decimal>`
-
-The ask price, if available
-
-**bidSide** object[]
-
-Per-leg bid pricing. Null when using package-level pricing.
-
-  * Array [
-
-    ↳ **tradeable** `string` *required*
-
-The symbol of the derivatives contract
-
-    ↳ **price** `number<double>` *required*
-
-The price for this leg
-
-  * ]
-
-**askSide** object[]
-
-Per-leg ask pricing. Null when using package-level pricing.
-
-  * Array [
-
-    ↳ **tradeable** `string` *required*
-
-The symbol of the derivatives contract
-
-    ↳ **price** `number<double>` *required*
-
-The price for this leg
-
-  * ]
-
-    ↳ **status** `string` *required*
-
-Lifecycle status of the parent RFQ at the time this offer is being read. `open` is returned from the `/open-offers` endpoint. The other values are returned from `/closed-offers`.
-
-**Possible values:** [`open`, `expired`, `cancelled`, `filled_bid_side`, `filled_ask_side`]
-
-  * ]
-
-RFQ feature is not enabled.
-
-  * application/json
-* Schema
-
-**Schema**
-
-    ↳ **errors** `Error (string)[]`
+**errors** `Error (string)[]`
 
 **Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
 
@@ -147,37 +129,124 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
-#### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
-    
-    
-    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
-
-  * curl
+    {  
+      "result": "success",  
+      "serverTime": "2022-03-31T20:38:53.677Z",  
+      "feeSchedules": [  
+        {  
+          "uid": "7fc4d7c0-464f-4029-a9bb-55856d0c5247",  
+          "name": "PGTMainFees",  
+          "tiers": [  
+            {  
+              "makerFee": 0.02,  
+              "takerFee": 0.05,  
+              "usdVolume": 0  
+            },  
+            {  
+              "makerFee": 0.015,  
+              "takerFee": 0.04,  
+              "usdVolume": 100000  
+            },  
+            {  
+              "makerFee": 0.0125,  
+              "takerFee": 0.03,  
+              "usdVolume": 1000000  
+            },  
+            {  
+              "makerFee": 0.01,  
+              "takerFee": 0.025,  
+              "usdVolume": 5000000  
+            },  
+            {  
+              "makerFee": 0.0075,  
+              "takerFee": 0.02,  
+              "usdVolume": 10000000  
+            },  
+            {  
+              "makerFee": 0.005,  
+              "takerFee": 0.015,  
+              "usdVolume": 20000000  
+            },  
+            {  
+              "makerFee": 0.0025,  
+              "takerFee": 0.0125,  
+              "usdVolume": 50000000  
+            },  
+            {  
+              "makerFee": 0,  
+              "takerFee": 0.01,  
+              "usdVolume": 100000000  
+            }  
+          ]  
+        },  
+        {  
+          "uid": "d46c2190-81e3-4370-a333-424f24387829",  
+          "name": "mainfees",  
+          "tiers": [  
+            {  
+              "makerFee": 0.02,  
+              "takerFee": 0.05,  
+              "usdVolume": 0  
+            },  
+            {  
+              "makerFee": 0.015,  
+              "takerFee": 0.04,  
+              "usdVolume": 100000  
+            },  
+            {  
+              "makerFee": 0.0125,  
+              "takerFee": 0.03,  
+              "usdVolume": 1000000  
+            },  
+            {  
+              "makerFee": 0.01,  
+              "takerFee": 0.025,  
+              "usdVolume": 5000000  
+            },  
+            {  
+              "makerFee": 0.0075,  
+              "takerFee": 0.02,  
+              "usdVolume": 10000000  
+            },  
+            {  
+              "makerFee": 0.005,  
+              "takerFee": 0.015,  
+              "usdVolume": 20000000  
+            },  
+            {  
+              "makerFee": 0.0025,  
+              "takerFee": 0.0125,  
+              "usdVolume": 50000000  
+            },  
+            {  
+              "makerFee": 0,  
+              "takerFee": 0.01,  
+              "usdVolume": 100000000  
+            }  
+          ]  
+        }  
+      ]  
+    }  
+* curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/closed-offers' \  
-    -H 'Accept: application/json' \  
-    -H 'APIKey: <APIKey>' \  
-    -H 'Authent: <Authent>'  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/feeschedules' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
-Auth
+ResponseClear
 
-general-api-key-read-only
-
-authent
+Click the `Send API Request` button above and see the response here!

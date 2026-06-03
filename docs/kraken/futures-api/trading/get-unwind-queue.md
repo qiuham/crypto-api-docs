@@ -2,14 +2,24 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-unwind-queue
 api_type: REST
-updated_at: 2026-06-02 20:10:21.698461
+updated_at: 2026-06-03 20:14:30.851474
 ---
 
-# Get position percentile of unwind queue
+# Get fee schedule volumes
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/unwindqueue`
+**GET** `https://futures.kraken.com/derivatives/api/v3/feeschedules/volumes`
 
-This endpoint returns the percentile of the open position in case of unwinding.
+deprecated
+
+This endpoint has been deprecated and may be replaced or removed in future versions of the API.
+
+**DEPRECATED** — Effective 2026-06-22, the volumes and fee schedule associations returned by this endpoint no longer reflect the fees actually charged on Futures trades. Futures fee calculation has been migrated to a centralised Kraken fee service.
+
+To determine the fee rate applied to your trades, use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key.
+
+* * *
+
+Returns your fee schedule volumes for each fee schedule.
 
 ## Responses
 
@@ -24,21 +34,11 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**queue** `object[]` *required*
+**volumesByFeeSchedule** objectrequireddeprecated
 
-A list containing structures with information on open positions' percentile rank in the unwind/termination queue.
+List containing the 30-day volume.
 
-  * Array [
-
-    ↳ **symbol** `string` *required*
-
-The symbol of the futures to which the order refers.
-
-    ↳ **percentile** `integer<int32>` *required*
-
-The percentile rank of which the trader's position is in the unwind queue (20, 40, 80, or 100).
-
-  * ]
+**property name*** number
 
 **result** `string` *required*
 
@@ -95,21 +95,10 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "serverTime": "2022-06-13T18:01:18.695Z",  
-      "queue": [  
-        {  
-          "symbol": "PF_GMTUSD",  
-          "percentile": 100  
-        },  
-        {  
-          "symbol": "FI_ETHUSD_220624",  
-          "percentile": 20  
-        },  
-        {  
-          "symbol": "PF_UNIUSD",  
-          "percentile": 80  
-        }  
-      ]  
+      "serverTime": "2016-02-25T09:45:53.818Z",  
+      "volumesByFeeSchedule": {  
+        "eef90775-995b-4596-9257-0917f6134766": 53823  
+      }  
     }  
     
 
@@ -129,7 +118,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/unwindqueue' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/feeschedules/volumes' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  

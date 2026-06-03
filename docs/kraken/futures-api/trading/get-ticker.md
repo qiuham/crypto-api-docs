@@ -2,55 +2,36 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-ticker
 api_type: REST
-updated_at: 2026-06-02 20:10:17.462301
+updated_at: 2026-06-03 20:14:25.148803
 ---
 
-# Get tickers
+# Get ticker by symbol
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/tickers`
+**GET** `https://futures.kraken.com/derivatives/api/v3/tickers/:symbol`
 
-This endpoint returns current market data for all currently listed Futures contracts and indices.
+Get market data for contract or index by symbol
 
 ## Request
 
-### Query Parameters
+### Path Parameters
 
-**contractType** string[]
-
-**Possible values:** [`futures_inverse`, `futures_vanilla`, `flexible_futures`, `options`, `all`]
-
-Contract type(s) to return statuses for.
-
-By default, includes all futures instrument types.
-
-Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
-
-**symbol** `MarketSymbol[]`
+**symbol** `MarketSymbol` *required*
 
 **Possible values:** Value must match regular expression `[A-Z0-9_.]+`
 
-Market symbol(s) to filter tickers by.
-
-Symbols are case-insensitive. Multi-value example: `?symbol=PF_BTCUSD&symbol=pf_ethusd`
+Market symbol.
 
 ## Responses
 
   * 200
+  * 404
 * application/json
 * Schema
   * success
 
 **Schema**
 
-oneOf
-* Success Response
-* ErrorResponse
-
-**tickers** `object[]` *required*
-
-A list containing a structures for each available instrument. The list is in no particular order.
-
-  * Array [
+**ticker** `object` *required*
 
 oneOf
 * Market Ticker
@@ -210,8 +191,6 @@ The last calculated value.
 
 The date and time at which `last` was observed.
 
-  * ]
-
 **result** `string` *required*
 
 **Possible values:** [`success`]
@@ -223,6 +202,44 @@ The date and time at which `last` was observed.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
+
+    
+    
+    {  
+      "result": "success",  
+      "ticker": {  
+        "tag": "perpetual",  
+        "pair": "XBT:USD",  
+        "symbol": "pi_xbtusd",  
+        "markPrice": 30209.9,  
+        "bid": 8634,  
+        "bidSize": 1000,  
+        "ask": 49289,  
+        "askSize": 139984,  
+        "vol24h": 15304,  
+        "volumeQuote": 40351.34,  
+        "change24h": 1.9974017538161748,  
+        "openInterest": 149655,  
+        "open24h": 49289,  
+        "indexPrice": 21087.8,  
+        "last": 49289,  
+        "lastTime": "2022-06-17T10:46:35.705Z",  
+        "lastSize": 100,  
+        "suspended": false,  
+        "fundingRate": 1.18588737106e-7,  
+        "fundingRatePrediction": 1.1852486794e-7,  
+        "postOnly": false  
+      },  
+      "serverTime": "2022-06-17T11:00:31.335Z"  
+    }  
+    
+
+Contract could not be found
+
+  * application/json
+* Schema
+
+**Schema**
 
 **errors** `Error (string)[]`
 
@@ -262,67 +279,6 @@ Error description.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
-
-    
-    
-    {  
-      "result": "success",  
-      "tickers": [  
-        {  
-          "tag": "perpetual",  
-          "pair": "XBT:USD",  
-          "symbol": "PI_XBTUSD",  
-          "markPrice": 30209.9,  
-          "bid": 8634,  
-          "bidSize": 1000,  
-          "ask": 49289,  
-          "askSize": 139984,  
-          "vol24h": 15304,  
-          "volumeQuote": 7305.2,  
-          "openInterest": 149655,  
-          "open24h": 49289,  
-          "indexPrice": 21087.8,  
-          "last": 49289,  
-          "lastTime": "2022-06-17T10:46:35.705Z",  
-          "lastSize": 100,  
-          "suspended": false,  
-          "fundingRate": 1.18588737106e-7,  
-          "fundingRatePrediction": 1.1852486794e-7,  
-          "postOnly": false,  
-          "change24h": 1.9974017538161748  
-        },  
-        {  
-          "tag": "month",  
-          "pair": "XBT:USD",  
-          "symbol": "FI_XBTUSD_211231",  
-          "markPrice": 20478.5,  
-          "bid": 28002,  
-          "bidSize": 900,  
-          "vol24h": 100,  
-          "volumeQuote": 843.9,  
-          "openInterest": 10087,  
-          "open24h": 28002,  
-          "indexPrice": 21087.8,  
-          "last": 28002,  
-          "lastTime": "2022-06-17T10:45:57.177Z",  
-          "lastSize": 100,  
-          "suspended": false,  
-          "postOnly": false,  
-          "change24h": 1.9974017538161748  
-        },  
-        {  
-          "symbol": "in_xbtusd",  
-          "last": 21088,  
-          "lastTime": "2022-06-17T11:00:30.000Z"  
-        },  
-        {  
-          "symbol": "rr_xbtusd",  
-          "last": 20938,  
-          "lastTime": "2022-06-16T15:00:00.000Z"  
-        }  
-      ],  
-      "serverTime": "2022-06-17T11:00:31.335Z"  
-    }  
 * curl
   * python
   * go
@@ -331,7 +287,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/tickers' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/tickers/:symbol' \  
     -H 'Accept: application/json'  
     
 
@@ -343,11 +299,7 @@ https://futures.kraken.com/derivatives/api/v3
 
 Parameters
 
-contractType — query
-
-futures_inversefutures_vanillaflexible_futuresoptionsall
-
-symbol — query
+symbol — pathrequired
 
 ResponseClear
 

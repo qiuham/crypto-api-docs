@@ -2,40 +2,36 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-api-key-info
 api_type: REST
-updated_at: 2026-06-02 20:12:47.436980
+updated_at: 2026-06-03 20:16:59.882871
 ---
 
-# Get Asset Info
+# Get API Key Info
 
-**GET** `https://api.kraken.com/0/public/Assets`
+**POST** `https://api.kraken.com/0/private/GetApiKeyInfo`
 
-Get information about the assets that are available for deposit, withdrawal, trading and earn.
+Retrieve information about the API key that is used to make the request, including its name, permissions, restrictions, and usage timestamps.
+
+**API Key Permissions Required:** `None`
 
 ## Request
 
-### Query Parameters
+  * application/json
 
-**asset** `string`
+### Body**required**
 
-Comma delimited list of assets to get info on (optional, default all available assets)
+**nonce** `integer<int64>` *required*
 
-**Example:** XBT,ETH
+Nonce used in construction of `API-Sign` header
 
-**aclass** `string`
+**otp** `string`
 
-**Possible values:** [`currency`, `tokenized_asset`]
-
-Filters the asset class to retrieve (optional)
-* `currency` = spot currency pairs.
-* `tokenized_asset` = xstocks.
-
-**Default value:**`currency`
+Two-factor authentication password (required only if 2FA is configured for the API key)
 
 ## Responses
 
   * 200
 
-Asset info retrieved.
+API key information retrieved.
 
   * application/json
 * Schema
@@ -44,33 +40,75 @@ Asset info retrieved.
 
 **result** `object`
 
-**property name*** AssetInfo
+API Key Information
 
-Asset Info
+**apiKeyName** string
 
-    ↳ **aclass** `string`
+Name/label assigned to the API key
 
-Asset Class
+**apiKey** string
 
-    ↳ **altname** `string`
+The API key string
 
-Alternate name
+    ↳ **nonce** `string`
 
-    ↳ **decimals** `integer`
+Current nonce value for the API key
 
-Number of decimal places for record keeping amounts of this asset
+**nonceWindow** integer<int64>
 
-    ↳ **display_decimals** `integer`
+Custom nonce window value (0 if not configured)
 
-Number of decimal places shown for display purposes in frontends
+    ↳ **permissions** `string[]`
 
-    ↳ **collateral_value** `number`
+List of permissions assigned to the API key. Values correspond to the API Key permission settings:
 
-Valuation as margin collateral (if applicable)
+Value| API Key Permission  
+---|---  
+`query-funds`| Funds permissions - Query  
+`add-funds`| Funds permissions - Deposit  
+`withdraw-funds`| Funds permissions - Withdraw  
+`earn-funds`| Funds permissions - Earn  
+`query-open-trades`| Orders and trades - Query open orders & trades  
+`query-closed-trades`| Orders and trades - Query closed orders & trades  
+`modify-trades`| Orders and trades - Create & modify orders  
+`close-trades`| Orders and trades - Cancel & close orders  
+`query-ledger`| Data - Query ledger entries  
+`export-data`| Data - Export data  
+`create-ws-token`| WebSocket interface - On  
+`add-withdraw-address`| Add withdrawal addresses  
+`update-withdraw-address`| Update withdrawal addresses  
+  
+    ↳ **iban** `string`
 
-    ↳ **status** `string`
+IIBAN (Internal IBAN) of the account associated with the API key
 
-Status of asset. Possible values: `enabled`, `deposit_only`, `withdrawal_only`, `funding_temporarily_disabled`.
+**validUntil** string
+
+Unix timestamp for key expiration (0 if not set)
+
+**queryFrom** string
+
+Unix timestamp for earliest allowed query date (0 if not set)
+
+**queryTo** string
+
+Unix timestamp for latest allowed query date (0 if not set)
+
+**createdTime** string
+
+Unix timestamp of when the API key was created
+
+**modifiedTime** string
+
+Unix timestamp of when the API key was last modified
+
+**ipAllowlist** string[]
+
+List of IP addresses or ranges allowed to use this API key (empty if not restricted)
+
+**lastUsed** stringnullable
+
+Unix timestamp of when the API key was last used (null if never used)
 
 **error** `string[]`
 * curl
@@ -81,8 +119,15 @@ Status of asset. Possible values: `enabled`, `deposit_only`, `withdrawal_only`, 
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Assets' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://api.kraken.com/0/private/GetApiKeyInfo' \  
+    -H 'Content-Type: application/json' \  
+    -H 'Accept: application/json' \  
+    -H 'API-Key: <API-Key>' \  
+    -H 'API-Sign: <API-Sign>' \  
+    -d '{  
+      "nonce": 0,  
+      "otp": "string"  
+    }'  
     
 
 Request Collapse all
@@ -91,14 +136,16 @@ Base URL
 
 https://api.kraken.com/0
 
-Parameters
+Auth
 
-asset — query
+API-Key
 
-aclass — query
+API-Sign
 
-\---currencytokenized_asset
-
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!
+Body required
+    
+    
+    {
+      "nonce": 0,
+      "otp": "string"
+    }

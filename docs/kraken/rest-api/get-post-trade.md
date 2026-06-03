@@ -2,43 +2,96 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-post-trade
 api_type: REST
-updated_at: 2026-06-02 20:13:23.145395
+updated_at: 2026-06-03 20:17:36.167900
 ---
 
-# Pre-Trade Data
+# Post-Trade Data
 
-**GET** `https://api.kraken.com/0/public/PreTrade`
+**GET** `https://api.kraken.com/0/public/PostTrade`
 
-Returns the price levels in the order book with aggregated order quantities at each price level. The top 10 levels are returned for each trading pair.
+Returns a list of trades on the spot exchange. If no filter parameters are specified, the last 1000 trades for all pairs are received.
 
 ## Request
 
 ### Query Parameters
 
-**symbol** `string` *required*
+**symbol** `string`
 
-**Possible values:** `>= 3 characters` and `<= 32 characters`
-
-A list of symbols for the currency pairs.
+Filter the results to the currency pair.
 
 **Example:** BTC/USD
+
+**from_ts** `ISO 8601`
+
+Filter the results to include the trades _after_ this timestamp.
+
+**Example:** 2024-05-30T12:34:56.123456789Z
+
+**to_ts** `ISO 8601`
+
+Filter the results to include the trades _before or at_ this timestamp.
+
+**Example:** 2024-05-30T12:34:56.123456789Z
+
+**count** `integer`
+
+**Possible values:** `>= 1` and `<= 1000`
+
+The maximum number of trades to return.
+
+**Default value:**`1000`
 
 ## Responses
 
   * 200
-
-The top price levels of the aggregated order book.
-
-  * application/json
+* application/json
 * Schema
 
 **Schema**
 
 **result** `object`
 
-An aggregated order book.
+    ↳ **last_ts** `string<ISO 8601>`
 
-    ↳ **symbol** `string`
+Timestamp of the latest trade in the list. This field can be used as the `from_ts` parameter when requesting the next batch of trades.
+
+**Example:**`2024-05-30T12:34:56.123456789Z`
+
+    ↳ **count** `int`
+
+The number of trades returned.
+
+**Possible values:** `>= 0` and `<= 1000`
+
+    ↳ **trades** `object<Trade>[]`
+
+A list of trades in ascending timestamp order.
+
+**Possible values:** `<= 1000`
+
+  * Array [
+
+        ↳ **trade_id** `string`
+
+Kraken unique trade identifier.
+
+**Possible values:** `<= 19 characters`
+
+**Example:**`TGBB7L-HT5LX-J3BZ4A`
+
+        ↳ **price** `string`
+
+Trade price excluding fees and commissions.
+
+**Example:**`102002.1`
+
+        ↳ **quantity** `string`
+
+Unconsolidated trade quantity from execution.
+
+**Example:**`1.24`
+
+        ↳ **symbol** `string`
 
 The symbol of the currency pair.
 
@@ -46,7 +99,7 @@ The symbol of the currency pair.
 
 **Example:**`BTC/USD`
 
-    ↳ **description** `string`
+        ↳ **description** `string`
 
 The full description of the currency pair.
 
@@ -54,109 +107,57 @@ The full description of the currency pair.
 
 **Example:**`Bitcoin / US Dollars`
 
-    ↳ **base_asset** `string<ISO 4217>`
+        ↳ **base_asset** `string<ISO 4217>`
 
 Currency code for the base asset.
 
 **Example:**`BTC`
 
-    ↳ **base_notation** `string`
+        ↳ **base_notation** `string`
 
 Indicates that the quantity is expressed in nominal value.
 
-**Possible values:** [`NOML`]
+**Possible values:** [`UNIT`]
 
-    ↳ **quote_asset** `string<ISO 4217>`
+        ↳ **quote_asset** `string<ISO 4217>`
 
 Currency in which the trading price is expressed.
 
 **Example:**`USD`
 
-    ↳ **quote_notation** `string`
+        ↳ **quote_notation** `string`
 
 Indicates that the price is expressed in monetary value.
 
 **Possible values:** [`MONE`]
 
-    ↳ **venue** `string<ISO 10383>`
+        ↳ **trade_venue** `string<ISO 10383>`
 
-Market Identifier Code (MIC) of the trading platform where the order was submitted.
+Market Identifier Code (MIC) of the trading platform where the trade was executed.
 
-**Possible values:** [`PGSL`]
+**Possible values:** `<= 12 characters`
 
-    ↳ **system** `string`
+**Example:**`PGSL`
 
-Indicates the order system is a Central Limit Order Book.
+        ↳ **trade_ts** `string<ISO 8601>`
 
-**Possible values:** [`CLOB`]
+Timestamp the trade was matched in the engine to microsecond precision.
 
-    ↳ **bids** `object[]`
+**Example:**`2024-05-30T12:34:56.123456789Z`
 
-  * Array [
+        ↳ **publication_venue** `string<ISO 10383>`
 
-        ↳ **side** `string`
+Market Identifier Code (MIC) of the trading platform where the trade was published.
 
-Indicates whether the price level is a bid (BUY) or offer (SELL).
+**Possible values:** `<= 12 characters`
 
-**Possible values:** [`BUY`]
-
-        ↳ **price** `string`
-
-Price level in the Central Limit Order Book (CLOB).
-
-**Example:**`102002.1`
-
-        ↳ **qty** `string`
-
-The aggregated quantity at the price level.
-
-**Example:**`102002.1`
-
-        ↳ **count** `int`
-
-The number of orders in the price level.
-
-**Possible values:** `non-empty`
+**Example:**`PGSL`
 
         ↳ **publication_ts** `string<ISO 8601>`
 
-Timestamp the price level was 
-**Example:**`2024-05-30T12:34:56.123456Z`
+Timestamp the trade was published to market data streams.
 
-  * ]
-
-        ↳ **asks** `object[]`
-
-  * Array [
-
-            ↳ **side** `string`
-
-Indicates whether the price level is a bid (BUY) or offer (SELL).
-
-**Possible values:** [`SELL`]
-
-            ↳ **price** `string`
-
-Price level in the Central Limit Order Book (CLOB).
-
-**Example:**`102002.1`
-
-            ↳ **qty** `string`
-
-The aggregated quantity at the price level.
-
-**Example:**`102002.1`
-
-            ↳ **count** `int`
-
-The number of orders in the price level.
-
-**Possible values:** `non-empty`
-
-            ↳ **publication_ts** `string<ISO 8601>`
-
-Timestamp the price level was 
-**Example:**`2024-05-30T12:34:56.123456Z`
+**Example:**`2024-05-30T12:34:56.123456789Z`
 
   * ]
 
@@ -170,7 +171,7 @@ Timestamp the price level was
 
     
     
-    curl -L 'https://api.kraken.com/0/public/PreTrade' \  
+    curl -L 'https://api.kraken.com/0/public/PostTrade' \  
     -H 'Accept: application/json'  
     
 
@@ -182,7 +183,13 @@ https://api.kraken.com/0
 
 Parameters
 
-symbol — queryrequired
+symbol — query
+
+from_ts — query
+
+to_ts — query
+
+count — query
 
 ResponseClear
 

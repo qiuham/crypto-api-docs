@@ -2,40 +2,90 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-asset-info
 api_type: REST
-updated_at: 2026-06-02 20:12:48.210387
+updated_at: 2026-06-03 20:17:03.590678
 ---
 
-# Get Asset Info
+# Get Closed Orders
 
-**GET** `https://api.kraken.com/0/public/Assets`
+**POST** `https://api.kraken.com/0/private/ClosedOrders`
 
-Get information about the assets that are available for deposit, withdrawal, trading and earn.
+Retrieve information about orders that have been closed (filled or cancelled). 50 results are returned at a time, the most recent by default.
+
+**Note:** If an order's tx ID is given for `start` or `end` time, the order's opening time (`opentm`) is used
+
+**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
 ## Request
 
-### Query Parameters
+  * application/json
 
-**asset** `string`
+### Body**required**
 
-Comma delimited list of assets to get info on (optional, default all available assets)
+**nonce** `integer<int64>` *required*
 
-**Example:** XBT,ETH
+Nonce used in construction of `API-Sign` header
 
-**aclass** `string`
+**trades** `boolean`
 
-**Possible values:** [`currency`, `tokenized_asset`]
+Whether or not to include trades related to position in output
 
-Filters the asset class to retrieve (optional)
-* `currency` = spot currency pairs.
-* `tokenized_asset` = xstocks.
+**Default value:**`false`
 
-**Default value:**`currency`
+**userref** `integer<int32>`
+
+Restrict results to given user reference
+
+**cl_ord_id** `string`
+
+Restrict results to given client order id
+
+**start** `integer`
+
+Starting unix timestamp or order tx ID of results (exclusive)
+
+**end** `integer`
+
+Ending unix timestamp or order tx ID of results (inclusive)
+
+**ofs** `integer`
+
+Result offset for pagination
+
+**closetime** `string`
+
+Which time to use to search
+
+**Possible values:** [`open`, `close`, `both`]
+
+**Default value:**`both`
+
+**consolidate_taker** `boolean`
+
+Whether or not to consolidate trades by individual taker trades
+
+**Default value:**`true`
+
+**without_count** `boolean`
+
+Whether or not to include page count in result (`true` is much faster for users with many closed orders)
+
+**Default value:**`false`
+
+**rebase_multiplier** `rebase_multiplier (string)nullable`
+
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
+
+**Possible values:** [`rebased`, `base`]
+
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Asset info retrieved.
+Closed orders info retrieved.
 
   * application/json
 * Schema
@@ -44,33 +94,167 @@ Asset info retrieved.
 
 **result** `object`
 
-**property name*** AssetInfo
+Closed Orders
 
-Asset Info
+    ↳ **closed** `object`
 
-    ↳ **aclass** `string`
+**property name*** txid
 
-Asset Class
+Closed Order
 
-    ↳ **altname** `string`
+        ↳ **refid** `stringnullable`
 
-Alternate name
+Referral order transaction ID that created this order
 
-    ↳ **decimals** `integer`
+        ↳ **userref** `integernullable`
 
-Number of decimal places for record keeping amounts of this asset
+Optional numeric, client identifier associated with one or more orders.
 
-    ↳ **display_decimals** `integer`
+        ↳ **cl_ord_id** `stringnullable`
 
-Number of decimal places shown for display purposes in frontends
+Optional alphanumeric, client identifier associated with the order.
 
-    ↳ **collateral_value** `number`
+        ↳ **status** `string`
 
-Valuation as margin collateral (if applicable)
+Status of order
+* pending = order pending book entry
+* open = open order
+* closed = closed order
+* canceled = order canceled
+* expired = order expired
 
-    ↳ **status** `string`
+**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
 
-Status of asset. Possible values: `enabled`, `deposit_only`, `withdrawal_only`, `funding_temporarily_disabled`.
+        ↳ **opentm** `number`
+
+Unix timestamp of when order was placed
+
+        ↳ **starttm** `number`
+
+Unix timestamp of order start time (or 0 if not set)
+
+        ↳ **expiretm** `number`
+
+Unix timestamp of order end time (or 0 if not set)
+
+        ↳ **descr** `object`
+
+Order description info
+
+            ↳ **pair** `string`
+
+Asset pair
+
+            ↳ **type** `string`
+
+Type of order (buy/sell)
+
+**Possible values:** [`buy`, `sell`]
+
+            ↳ **ordertype** `string`
+
+Order type
+
+**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `trailing-stop`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop-limit`, `settle-position`]
+
+            ↳ **price** `string`
+
+primary price
+
+**price2** string
+
+Secondary price
+
+            ↳ **leverage** `string`
+
+Amount of leverage
+
+            ↳ **order** `string`
+
+Order description
+
+            ↳ **close** `string`
+
+Conditional close order description (if conditional close set)
+
+            ↳ **vol** `string`
+
+Volume of order (base currency)
+
+            ↳ **vol_exec** `string`
+
+Volume executed (base currency)
+
+            ↳ **cost** `string`
+
+Total cost (quote currency unless)
+
+            ↳ **fee** `string`
+
+Total fee (quote currency)
+
+            ↳ **price** `string`
+
+Average price (quote currency)
+
+            ↳ **stopprice** `string`
+
+Stop price (quote currency)
+
+            ↳ **limitprice** `string`
+
+Triggered limit price (quote currency, when limit based order type triggered)
+
+            ↳ **trigger** `string`
+
+Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
+* `last` is the implied trigger if this field is not set.
+
+**Possible values:** [`last`, `index`]
+
+**Default value:**`last`
+
+            ↳ **margin** `boolean`
+
+Indicates if the order is funded on margin.
+
+            ↳ **misc** `string`
+
+Comma delimited list of miscellaneous info:
+* `stopped` triggered by stop price
+* `touched` triggered by touch price
+* `liquidated` liquidation
+* `partial` partial fill
+* `amended` order parameters modified
+
+            ↳ **oflags** `string`
+
+Comma delimited list of order flags:
+* `post` post-only order (available when ordertype = limit)
+* `fcib` prefer fee in base currency (default if selling)
+* `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
+* `nompp` disable [market price protection](https://support.kraken.com/hc/en-us/articles/201648183-Market-Price-Protection) for market orders
+* `viqc` order volumes expressed in quote currency.
+
+            ↳ **trades** `string[]`
+
+List of trade IDs related to order (if trades info requested and data available)
+
+            ↳ **sender_sub_id** `stringnullable`
+
+For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
+
+            ↳ **closetm** `number`
+
+Unix timestamp of when order was closed
+
+            ↳ **reason** `string`
+
+Additional info on status (if any)
+
+            ↳ **count** `integer`
+
+Amount of available order info matching criteria
 
 **error** `string[]`
 * curl
@@ -81,8 +265,19 @@ Status of asset. Possible values: `enabled`, `deposit_only`, `withdrawal_only`, 
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Assets' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://api.kraken.com/0/private/ClosedOrders' \  
+    -H 'Content-Type: application/json' \  
+    -H 'Accept: application/json' \  
+    -H 'API-Key: <API-Key>' \  
+    -H 'API-Sign: <API-Sign>' \  
+    -d '{  
+      "nonce": 1234567,  
+      "trades": true,  
+      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d",  
+      "start": 1695728276,  
+      "end": 1695828276,  
+      "closetime": "open"  
+    }'  
     
 
 Request Collapse all
@@ -91,14 +286,20 @@ Base URL
 
 https://api.kraken.com/0
 
-Parameters
+Auth
 
-asset — query
+API-Key
 
-aclass — query
+API-Sign
 
-\---currencytokenized_asset
-
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!
+Body required
+    
+    
+    {
+      "nonce": 1234567,
+      "trades": true,
+      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d",
+      "start": 1695728276,
+      "end": 1695828276,
+      "closetime": "open"
+    }

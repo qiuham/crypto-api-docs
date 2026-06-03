@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-volume
 api_type: REST
-updated_at: 2026-06-02 20:13:50.608358
+updated_at: 2026-06-03 20:18:04.125511
 ---
 
-# Query Trades Info
+# Get Trade Volume
 
-**POST** `https://api.kraken.com/0/private/QueryTrades`
+**POST** `https://api.kraken.com/0/private/TradeVolume`
 
-Retrieve information about specific trades/fills.
+Returns 30 day USD trading volume and resulting fee schedule for any asset pair(s) provided. Fees will not be included if `pair` is not specified as Kraken fees differ by asset pair. Note: If an asset pair is on a maker/taker fee schedule, the taker side is given in `fees` and maker side in `fees_maker`. For pairs not on maker/taker, they will only be given in `fees`.
 
-**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
+**API Key Permissions Required:** `Funds permissions - Query`
 
 ## Request
 
@@ -23,15 +23,9 @@ Retrieve information about specific trades/fills.
 
 Nonce used in construction of `API-Sign` header
 
-**txid** `string` *required*
+**pair** `string`
 
-Comma delimited list of transaction IDs to query info about (20 maximum)
-
-**trades** `boolean`
-
-Whether or not to include trades related to position in output
-
-**Default value:**`false`
+Comma delimited list of asset pairs to get fee info on (optional, but required if any fee info is desired)
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -47,7 +41,7 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Trades info retrieved.
+Trade Volume retrieved.
 
   * application/json
 * Schema
@@ -56,118 +50,81 @@ Trades info retrieved.
 
 **result** `object`
 
-Trade info
+Trade Volume
 
-**property name*** Trade
+    ↳ **currency** `string`
 
-Trade Info
+Fee volume currency (will always be USD)
 
-    ↳ **ordertxid** `string`
+    ↳ **volume** `string`
 
-Order responsible for execution of trade
+Current fee discount volume (in USD, breakdown by subaccount if applicable and logged in to master account)
 
-    ↳ **postxid** `string`
+    ↳ **fees** `object`
 
-Position responsible for execution of trade
+Taker fees that will be applied for each `pair` included in the request. Default `None` if `pair` is not requested.
 
-    ↳ **pair** `string`
+**property name*** FeeTierInfo
 
-Asset pair
+Fee Tier Info
 
-    ↳ **time** `number`
+        ↳ **fee** `string`
 
-Unix timestamp of trade
+Current fee (in percent)
 
-    ↳ **type** `string`
+        ↳ **min_fee** `string`
 
-Type of order (buy/sell)
+minimum fee for pair (if not fixed fee)
 
-    ↳ **ordertype** `string`
+        ↳ **max_fee** `string`
 
-Order type
+maximum fee for pair (if not fixed fee)
 
-    ↳ **price** `string`
+        ↳ **next_fee** `stringnullable`
 
-Average price order was executed at (quote currency)
+next tier's fee for pair (if not fixed fee, null if at lowest fee tier)
 
-    ↳ **cost** `string`
+        ↳ **tier_volume** `stringnullable`
 
-Total cost of order (quote currency)
+volume level of current tier (if not fixed fee. null if at lowest fee tier)
 
-    ↳ **fee** `string`
+        ↳ **next_volume** `stringnullable`
 
-Total fee (quote currency)
+volume level of next tier (if not fixed fee. null if at lowest fee tier)
 
-    ↳ **vol** `string`
+        ↳ **fees_maker** `object`
 
-Volume (base currency)
+Maker fees that will be applied for this each `pair` included in the request. Default `None` if `pair` is not requested.
 
-    ↳ **margin** `string`
+**property name*** FeeTierInfo
 
-Initial margin (quote currency)
+Fee Tier Info
 
-    ↳ **leverage** `string`
+            ↳ **fee** `string`
 
-Amount of leverage used in trade
+Current fee (in percent)
 
-    ↳ **misc** `string`
+            ↳ **min_fee** `string`
 
-Comma delimited list of miscellaneous info:
-* `closing` — Trade closes all or part of a position
+minimum fee for pair (if not fixed fee)
 
-    ↳ **ledgers** `string[]`
+            ↳ **max_fee** `string`
 
-List of ledger ids for entries associated with trade
+maximum fee for pair (if not fixed fee)
 
-    ↳ **trade_id** `integer`
+            ↳ **next_fee** `stringnullable`
 
-Unique identifier of trade executed
+next tier's fee for pair (if not fixed fee, null if at lowest fee tier)
 
-    ↳ **maker** `boolean`
+            ↳ **tier_volume** `stringnullable`
 
-`true` if trade was executed with user as the maker, `false` if taker
+volume level of current tier (if not fixed fee. null if at lowest fee tier)
 
-    ↳ **posstatus** `string`
+            ↳ **next_volume** `stringnullable`
 
-Position status (open/closed)   
-Only present if trade opened a position
+volume level of next tier (if not fixed fee. null if at lowest fee tier)
 
-    ↳ **cprice** `number`
-
-Average price of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **ccost** `number`
-
-Total cost of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cfee** `number`
-
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cvol** `number`
-
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cmargin** `number`
-
-Total margin freed in closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **net** `number`
-
-Net profit/loss of closed portion of position (quote currency, quote currency scale)   
-Only present if trade opened a position
-
-    ↳ **trades** `string[]`
-
-List of closing trades for position (if available)   
-Only present if trade opened a position
-
-**error** `array[]`
+**error** `string[]`
 * curl
   * python
   * go
@@ -176,15 +133,14 @@ Only present if trade opened a position
 
     
     
-    curl -L 'https://api.kraken.com/0/private/QueryTrades' \  
+    curl -L 'https://api.kraken.com/0/private/TradeVolume' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828490,  
-      "txid": "L2QE42-IGSZ3-WEVTLK, STMH53C-C54CG-4SO42I",  
-      "trades": false  
+      "pair": "XXBT/ZUSD, XETH/ZEUR"  
     }'  
     
 
@@ -205,6 +161,5 @@ Body required
     
     {
       "nonce": 1695828490,
-      "txid": "L2QE42-IGSZ3-WEVTLK, STMH53C-C54CG-4SO42I",
-      "trades": false
+      "pair": "XXBT/ZUSD, XETH/ZEUR"
     }

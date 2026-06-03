@@ -2,52 +2,49 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference
 api_type: REST
-updated_at: 2026-06-02 20:10:48.004763
+updated_at: 2026-06-03 20:14:57.861435
 ---
 
-# Set PNL currency preference
+# Update self trade strategy
 
-**PUT** `https://futures.kraken.com/derivatives/api/v3/pnlpreferences`
+**PUT** `https://futures.kraken.com/derivatives/api/v3/self-trade-strategy`
 
-The PNL currency preference is used to determine which currency to pay out when realizing PNL gains. Calling this API can result in the following error codes:
-
-87: Contract does not exist
-
-88: Contract not a multi-collateral futures contract
-
-89: Currency does not exist
-
-90: Currency is not enabled for multi-collateral futures
-
-41: Would cause liquidation
+Updates account-wide self-trade matching behavior to given strategy.
 
 ## Request
 
 ### Query Parameters
 
-**symbol** `string` *required*
+**strategy** `SelfTradeStrategy` *required*
 
-The symbol for the PnL preference.
+**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
 
-**pnlPreference** stringrequired
-
-The asset in which profit will be realised for the specific symbol.
+Defines self trade behaviour
 
 ## Responses
 
   * 200
 
-OK
+Self trade strategy was successfully updated
 
   * application/json
 * Schema
-  * success
 
 **Schema**
 
 oneOf
-* SuccessResponse
+* Success Response
 * ErrorResponse
+
+**strategy** `SelfTradeStrategy (string)` *required*
+
+Self trade matching behaviour:
+* `REJECT_TAKER` \- default behaviour, rejects the taker order that would match against a maker order from any sub-account
+* `CANCEL_MAKER_SELF` \- only cancels the maker order if it is from the same account that sent the taker order
+* `CANCEL_MAKER_CHILD` \- only allows master to cancel its own maker orders and orders from its sub-account
+* `CANCEL_MAKER_ANY` \- allows both master accounts and their subaccounts to cancel maker orders
+
+**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
 
 **result** `string` *required*
 
@@ -100,14 +97,6 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
-    
-    
-    {  
-      "result": "success",  
-      "serverTime": "2022-06-28T14:48:58.711Z"  
-    }  
-    
-
 #### Authorization: APIKey
     
     
@@ -124,7 +113,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/pnlpreferences' \  
+    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/self-trade-strategy' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -144,6 +133,6 @@ authent
 
 Parameters
 
-symbol — queryrequired
+strategy — queryrequired
 
-pnlPreference — queryrequired
+\---REJECT_TAKERCANCEL_MAKER_SELFCANCEL_MAKER_CHILDCANCEL_MAKER_ANY

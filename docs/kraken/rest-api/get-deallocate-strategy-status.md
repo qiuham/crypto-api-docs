@@ -2,16 +2,25 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status
 api_type: REST
-updated_at: 2026-06-02 20:12:54.531913
+updated_at: 2026-06-03 20:17:08.150889
 ---
 
-# Get Deposit Addresses
+# Get Deallocation Status
 
-**POST** `https://api.kraken.com/0/private/DepositAddresses`
+**POST** `https://api.kraken.com/0/private/Earn/DeallocateStatus`
 
-Retrieve (or generate a new) deposit addresses for a particular asset and method.
+Get the status of the last deallocation request.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+Requires either the `Earn Funds` or `Query Funds` API key permission.
+
+(De)allocation operations are asynchronous and this endpoint allows client to retrieve the status of the last dispatched operation. There can be only one (de)allocation request in progress for given user and strategy.
+
+The `pending` attribute in the response indicates if the previously dispatched operation is still in progress (true) or has successfully completed (false). If the dispatched request failed with an error, then HTTP error is returned to the client as if it belonged to the original request.
+
+Following specific errors within `Earnings` class can be returned by this method:
+
+  * Insufficient funds: `EEarnings:Insufficient funds:Insufficient funds to complete the (de)allocation request`
+  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
 
 ## Request
 
@@ -23,77 +32,30 @@ Retrieve (or generate a new) deposit addresses for a particular asset and method
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string` *required*
+**strategy_id** `string` *required*
 
-Asset being deposited
-
-**aclass** `string`
-
-Asset class being deposited
-
-**Possible values:** [`currency`, `tokenized_asset`]
-
-**Default value:**`currency`
-
-**method** `string` *required*
-
-Name of the deposit method
-
-**new** `boolean`
-
-Whether or not to generate a new address
-
-**Default value:**`false`
-
-**amount** `object`
-
-Amount you wish to deposit (only required for `method=Bitcoin Lightning`)
-
-oneOf
-* string
-* integer
-* number
-
-****string
-
-****integer
-
-****number
+ID of the earn strategy, call `Earn/Strategies` to list available strategies
 
 ## Responses
 
   * 200
 
-Deposit addresses retrieved.
+Response
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object[]`
-
-  * Array [
-
-    ↳ **address** `string`
-
-Deposit Address
-
-    ↳ **expiretm** `string`
-
-Expiration time in unix timestamp, or 0 if not expiring
-
-    ↳ **new** `boolean`
-
-Whether or not address has ever been used
-
-    ↳ **tag** `string`
-
-Contains tags for [XRP](https://support.kraken.com/hc/en-us/articles/360000184443-Destination-Tag-for-Ripple-XRP-deposits) deposit addresses and memos for [STX](https://support.kraken.com/hc/en-us/articles/10902306995860-Memo-for-Stacks-STX-deposits), [XLM](https://support.kraken.com/hc/en-us/articles/360000184543-Memo-for-Stellar-Lumens-XLM-deposits), and [EOS](https://support.kraken.com/hc/en-us/articles/360001099203-Memo-for-EOS-deposits) deposit addresses
-
-  * ]
-
 **error** `string[]`
+
+**result** `objectnullable`
+
+Status of async earn operation
+
+    ↳ **pending** `boolean`
+
+`true` if an operation is still in progress on the same strategy.
 * curl
   * python
   * go
@@ -102,16 +64,14 @@ Contains tags for [XRP](https://support.kraken.com/hc/en-us/articles/36000018444
 
     
     
-    curl -L 'https://api.kraken.com/0/private/DepositAddresses' \  
+    curl -L 'https://api.kraken.com/0/private/Earn/DeallocateStatus' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828271,  
-      "asset": "XBT",  
-      "method": "Bitcoin",  
-      "new": true  
+      "nonce": 30295839,  
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
     }'  
     
 
@@ -131,8 +91,6 @@ Body required
     
     
     {
-      "nonce": 1695828271,
-      "asset": "XBT",
-      "method": "Bitcoin",
-      "new": true
+      "nonce": 30295839,
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
     }

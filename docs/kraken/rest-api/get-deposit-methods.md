@@ -2,26 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deposit-methods
 api_type: REST
-updated_at: 2026-06-02 20:12:58.631236
+updated_at: 2026-06-03 20:17:11.802972
 ---
 
-# Get Extended Balance
+# Get Deposit Methods
 
-**POST** `https://api.kraken.com/0/private/BalanceEx`
+**POST** `https://api.kraken.com/0/private/DepositMethods`
 
-Retrieve all extended account balances, including credits and held amounts. Balance available for trading is calculated as: `available balance = balance + credit - credit_used - hold_trade`
+Retrieve methods available for depositing a particular asset.
 
-Note that held amounts only include spot non margin orders.
-
-**Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
-
-**Symbol Extensions** :
-
-  * `.B`: balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
-  * `.F`: balances earning automatically in Kraken Rewards
-  * `.T`: tokenized assets.
-
-**API Key Permissions Required:** `Funds permissions - Query`
+**API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Deposit`
 
 ## Request
 
@@ -33,7 +23,19 @@ Note that held amounts only include spot non margin orders.
 
 Nonce used in construction of `API-Sign` header
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**asset** `string` *required*
+
+Asset being deposited
+
+**aclass** `string`
+
+Asset class being deposited (optional)
+
+**Possible values:** [`currency`, `tokenized_asset`]
+
+**Default value:**`currency`
+
+**rebase_multiplier** `stringnullable`
 
 Optional parameter for viewing xstocks data.
 * `rebased`: Display in terms of underlying equity.
@@ -47,44 +49,42 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Extended account balances retrieved.
+Deposit methods retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object`
+**result** `object[]`
 
-Extended Balance
+  * Array [
 
-    ↳ **asset** `object`
+**method** `string`
 
-Extended Balance
+Name of deposit method
 
-        ↳ **balance** `string`
+**limit**
 
-Total balance amount for an asset
+Maximum net amount that can be deposited right now, or false if no limit
 
-**Example:**`3.46840030`
+**fee** `string`
 
-        ↳ **credit** `string`
+Amount of fees that will be paid
 
-Total credit amount (only applicable if account has a credit line)
+**address-setup-fee** string
 
-**Example:**`1.26844502`
+Whether or not method has an address setup fee
 
-        ↳ **credit_used** `string`
+**gen-address** boolean
 
-Used credit amount (only applicable if account has a credit line)
+Whether new addresses can be generated for this method.
 
-**Example:**`0.10002300`
+**minimum** `string`
 
-        ↳ **hold_trade** `string`
+Minimum net amount that can be deposited right now
 
-Total held amount for an asset
-
-**Example:**`2.14560458`
+  * ]
 
 **error** `string[]`
 * curl
@@ -95,14 +95,14 @@ Total held amount for an asset
 
     
     
-    curl -L 'https://api.kraken.com/0/private/BalanceEx' \  
+    curl -L 'https://api.kraken.com/0/private/DepositMethods' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "rebase_multiplier": "rebased"  
+      "nonce": 1695828271,  
+      "asset": "XBT"  
     }'  
     
 
@@ -122,6 +122,6 @@ Body required
     
     
     {
-      "nonce": 0,
-      "rebase_multiplier": "rebased"
+      "nonce": 1695828271,
+      "asset": "XBT"
     }

@@ -1,17 +1,17 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trades-info
-api_type: REST
-updated_at: 2026-06-02 20:13:51.390724
+api_type: WebSocket
+updated_at: 2026-06-03 20:18:10.252886
 ---
 
-# Query Trades Info
+# Get Websockets Token
 
-**POST** `https://api.kraken.com/0/private/QueryTrades`
+**POST** `https://api.kraken.com/0/private/GetWebSocketsToken`
 
-Retrieve information about specific trades/fills.
+An authentication token must be requested via this REST API endpoint in order to connect to and authenticate with our [Websockets API](/api/docs/guides/spot-ws-auth). The token should be used within 15 minutes of creation, but it does not expire once a successful Websockets connection and private subscription has been made and is maintained.
 
-**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
+**API Key Permissions Required:** `WebSocket interface - On`
 
 ## Request
 
@@ -23,31 +23,11 @@ Retrieve information about specific trades/fills.
 
 Nonce used in construction of `API-Sign` header
 
-**txid** `string` *required*
-
-Comma delimited list of transaction IDs to query info about (20 maximum)
-
-**trades** `boolean`
-
-Whether or not to include trades related to position in output
-
-**Default value:**`false`
-
-**rebase_multiplier** `rebase_multiplier (string)nullable`
-
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
-
 ## Responses
 
   * 200
 
-Trades info retrieved.
+Websockets token retrieved.
 
   * application/json
 * Schema
@@ -56,118 +36,15 @@ Trades info retrieved.
 
 **result** `object`
 
-Trade info
+    ↳ **token** `string`
 
-**property name*** Trade
+Websockets token
 
-Trade Info
+    ↳ **expires** `integer`
 
-    ↳ **ordertxid** `string`
+Time (in seconds) after which the token expires
 
-Order responsible for execution of trade
-
-    ↳ **postxid** `string`
-
-Position responsible for execution of trade
-
-    ↳ **pair** `string`
-
-Asset pair
-
-    ↳ **time** `number`
-
-Unix timestamp of trade
-
-    ↳ **type** `string`
-
-Type of order (buy/sell)
-
-    ↳ **ordertype** `string`
-
-Order type
-
-    ↳ **price** `string`
-
-Average price order was executed at (quote currency)
-
-    ↳ **cost** `string`
-
-Total cost of order (quote currency)
-
-    ↳ **fee** `string`
-
-Total fee (quote currency)
-
-    ↳ **vol** `string`
-
-Volume (base currency)
-
-    ↳ **margin** `string`
-
-Initial margin (quote currency)
-
-    ↳ **leverage** `string`
-
-Amount of leverage used in trade
-
-    ↳ **misc** `string`
-
-Comma delimited list of miscellaneous info:
-* `closing` — Trade closes all or part of a position
-
-    ↳ **ledgers** `string[]`
-
-List of ledger ids for entries associated with trade
-
-    ↳ **trade_id** `integer`
-
-Unique identifier of trade executed
-
-    ↳ **maker** `boolean`
-
-`true` if trade was executed with user as the maker, `false` if taker
-
-    ↳ **posstatus** `string`
-
-Position status (open/closed)   
-Only present if trade opened a position
-
-    ↳ **cprice** `number`
-
-Average price of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **ccost** `number`
-
-Total cost of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cfee** `number`
-
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cvol** `number`
-
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **cmargin** `number`
-
-Total margin freed in closed portion of position (quote currency)   
-Only present if trade opened a position
-
-    ↳ **net** `number`
-
-Net profit/loss of closed portion of position (quote currency, quote currency scale)   
-Only present if trade opened a position
-
-    ↳ **trades** `string[]`
-
-List of closing trades for position (if available)   
-Only present if trade opened a position
-
-**error** `array[]`
+**error** `string[]`
 * curl
   * python
   * go
@@ -176,15 +53,13 @@ Only present if trade opened a position
 
     
     
-    curl -L 'https://api.kraken.com/0/private/QueryTrades' \  
+    curl -L 'https://api.kraken.com/0/private/GetWebSocketsToken' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828490,  
-      "txid": "L2QE42-IGSZ3-WEVTLK, STMH53C-C54CG-4SO42I",  
-      "trades": false  
+      "nonce": 1695828436  
     }'  
     
 
@@ -204,7 +79,5 @@ Body required
     
     
     {
-      "nonce": 1695828490,
-      "txid": "L2QE42-IGSZ3-WEVTLK, STMH53C-C54CG-4SO42I",
-      "trades": false
+      "nonce": 1695828436
     }

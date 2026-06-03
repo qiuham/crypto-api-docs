@@ -2,32 +2,42 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-pre-trade
 api_type: REST
-updated_at: 2026-06-02 20:13:23.923442
+updated_at: 2026-06-03 20:17:38.919931
 ---
 
-# Pre-Trade Data
+# Get Recent Spreads
 
-**GET** `https://api.kraken.com/0/public/PreTrade`
+**GET** `https://api.kraken.com/0/public/Spread`
 
-Returns the price levels in the order book with aggregated order quantities at each price level. The top 10 levels are returned for each trading pair.
+Returns the last ~200 top-of-book spreads for a given pair
 
 ## Request
 
 ### Query Parameters
 
-**symbol** `string` *required*
+**pair** `string` *required*
 
-**Possible values:** `>= 3 characters` and `<= 32 characters`
+Asset pair to get data for
 
-A list of symbols for the currency pairs.
+**Example:** XBTUSD
 
-**Example:** BTC/USD
+**since** `integer`
+
+Returns spread data since given timestamp. Optional, intended for incremental updates within available dataset (does not contain all historical spreads).
+
+**Example:** 1678219570
+
+**asset_class** `string`
+
+**Possible values:** [`tokenized_asset`]
+
+This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
 ## Responses
 
   * 200
 
-The top price levels of the aggregated order book.
+Spread data retrieved.
 
   * application/json
 * Schema
@@ -36,127 +46,27 @@ The top price levels of the aggregated order book.
 
 **result** `object`
 
-An aggregated order book.
+    ↳ **last** `integer`
 
-    ↳ **symbol** `string`
+ID to be used as since when polling for new spread data
 
-The symbol of the currency pair.
+**property name*** SpreadData
 
-**Possible values:** `<= 32 characters`
-
-**Example:**`BTC/USD`
-
-    ↳ **description** `string`
-
-The full description of the currency pair.
-
-**Possible values:** `<= 350 characters`
-
-**Example:**`Bitcoin / US Dollars`
-
-    ↳ **base_asset** `string<ISO 4217>`
-
-Currency code for the base asset.
-
-**Example:**`BTC`
-
-    ↳ **base_notation** `string`
-
-Indicates that the quantity is expressed in nominal value.
-
-**Possible values:** [`NOML`]
-
-    ↳ **quote_asset** `string<ISO 4217>`
-
-Currency in which the trading price is expressed.
-
-**Example:**`USD`
-
-    ↳ **quote_notation** `string`
-
-Indicates that the price is expressed in monetary value.
-
-**Possible values:** [`MONE`]
-
-    ↳ **venue** `string<ISO 10383>`
-
-Market Identifier Code (MIC) of the trading platform where the order was submitted.
-
-**Possible values:** [`PGSL`]
-
-    ↳ **system** `string`
-
-Indicates the order system is a Central Limit Order Book.
-
-**Possible values:** [`CLOB`]
-
-    ↳ **bids** `object[]`
+Array of spread entries `[int <time>, string <bid>, string <ask>]`
 
   * Array [
 
-        ↳ **side** `string`
+**type**
 
-Indicates whether the price level is a bid (BUY) or offer (SELL).
+    ↳ **items** `object`
 
-**Possible values:** [`BUY`]
+oneOf
+* string
+* integer
 
-        ↳ **price** `string`
+****string
 
-Price level in the Central Limit Order Book (CLOB).
-
-**Example:**`102002.1`
-
-        ↳ **qty** `string`
-
-The aggregated quantity at the price level.
-
-**Example:**`102002.1`
-
-        ↳ **count** `int`
-
-The number of orders in the price level.
-
-**Possible values:** `non-empty`
-
-        ↳ **publication_ts** `string<ISO 8601>`
-
-Timestamp the price level was 
-**Example:**`2024-05-30T12:34:56.123456Z`
-
-  * ]
-
-        ↳ **asks** `object[]`
-
-  * Array [
-
-            ↳ **side** `string`
-
-Indicates whether the price level is a bid (BUY) or offer (SELL).
-
-**Possible values:** [`SELL`]
-
-            ↳ **price** `string`
-
-Price level in the Central Limit Order Book (CLOB).
-
-**Example:**`102002.1`
-
-            ↳ **qty** `string`
-
-The aggregated quantity at the price level.
-
-**Example:**`102002.1`
-
-            ↳ **count** `int`
-
-The number of orders in the price level.
-
-**Possible values:** `non-empty`
-
-            ↳ **publication_ts** `string<ISO 8601>`
-
-Timestamp the price level was 
-**Example:**`2024-05-30T12:34:56.123456Z`
+****integer
 
   * ]
 
@@ -165,12 +75,11 @@ Timestamp the price level was
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/public/PreTrade' \  
+    curl -L 'https://api.kraken.com/0/public/Spread' \  
     -H 'Accept: application/json'  
     
 
@@ -182,7 +91,13 @@ https://api.kraken.com/0
 
 Parameters
 
-symbol — queryrequired
+pair — queryrequired
+
+since — query
+
+asset_class — query
+
+\---tokenized_asset
 
 ResponseClear
 

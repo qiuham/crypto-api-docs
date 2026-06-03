@@ -2,85 +2,56 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/simulate-portfolio
 api_type: REST
-updated_at: 2026-06-02 20:10:50.995781
+updated_at: 2026-06-03 20:15:01.418965
 ---
 
-# Calculate portfolio margin, pnl and greeks
+# Initiate sub account transfer
 
-**POST** `https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/simulate`
+**POST** `https://futures.kraken.com/derivatives/api/v3/transfer/subaccount`
 
-For a given portfolio of balances and positions (futures and options), calculate the margin requirements, pnl and option greeks.
-
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+This endpoint allows you to transfer funds between the current account and a sub account, between two margin accounts with the same collateral currency, or between a margin account and your cash account.
 
 ## Request
 
 ### Query Parameters
 
-**json** `any` *required*
+**fromUser** stringrequired
 
-Request body as a JSON string
+The user account (this or a sub account) from which funds should be debited
+
+**toUser** stringrequired
+
+The user account (this or a sub account) to which funds should be credited
+
+**fromAccount** stringrequired
+
+The wallet (cash or margin account) from which funds should be debited
+
+**toAccount** stringrequired
+
+The wallet (cash or margin account) to which funds should be credited
+
+**unit** `string` *required*
+
+The currency unit to transfer
+
+**amount** `string` *required*
+
+The amount to transfer
 
 ## Responses
 
   * 200
-
-Simulated portfolio calculations
-
-  * application/json
+* application/json
 * Schema
+  * success
+  * failure
 
 **Schema**
 
 oneOf
-* Success Response
+* SuccessResponse
 * ErrorResponse
-
-**maintenanceMargin** number<double>required
-
-**initialMargin** number<double>required
-
-**pnl** `number<double>` *required*
-
-**portfolioMarginBreakdown** objectrequired
-
-Breakdown of components that make up the portfolio margin calculation.
-
-**totalCrossAssetNettedMarketRisk** number<double>required
-
-**totalMarketRisk** number<double>required
-
-**totalScenarioPnls** number<double>[]
-
-**totalAbsoluteOptionPositionDeltaNotional** number<double>required
-
-**netPortfolioDelta** number<double>required
-
-**totalPremium** number<double>required
-
-**isBuyOnly** booleanrequired
-
-**futuresMaintenanceMargin** number<double>required
-
-**greeks** `object` *required*
-
-**property name*** OptionGreeks
-
-Option Greeks
-
-    ↳ **iv** `number<double>` *required*
-
-The implied volatility. Displays an IV of -1.0 whenever the IV is impossible to calculate or outside of the bounds allowed.
-
-    ↳ **delta** `number<double>` *required*
-
-    ↳ **gamma** `number,null<double>nullable` *required*
-
-    ↳ **vega** `number,null<double>nullable` *required*
-
-    ↳ **theta** `number,null<double>nullable` *required*
-
-    ↳ **rho** `number,null<double>nullable` *required*
 
 **result** `string` *required*
 
@@ -133,10 +104,26 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
+    
+    
+    {  
+      "result": "success",  
+      "serverTime": "2022-06-28T14:48:58.711Z"  
+    }  
+    
+    
+    
+    {  
+      "result": "error",  
+      "serverTime": "2016-02-25T09:45:53.818Z",  
+      "error": "invalidUnit"  
+    }  
+    
+
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -145,12 +132,11 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L -X POST 'https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/simulate' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/transfer/subaccount' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -160,14 +146,24 @@ Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key-read-only
+general-api-key
 
 authent
 
 Parameters
 
-json — queryrequired
+fromUser — queryrequired
+
+toUser — queryrequired
+
+fromAccount — queryrequired
+
+toAccount — queryrequired
+
+unit — queryrequired
+
+amount — queryrequired

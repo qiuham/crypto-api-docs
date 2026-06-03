@@ -2,67 +2,68 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq
 api_type: REST
-updated_at: 2026-06-02 20:09:34.038398
+updated_at: 2026-06-03 20:13:38.262893
 ---
 
-# Create a new RFQ
+# Deletes assignment preference
 
-**POST** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs`
+**POST** `https://futures.kraken.com/derivatives/api/v3/assignmentprogram/delete`
 
-Create a new RFQ for the authenticated account.
-
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+This endpoint deletes an assignment program preference
 
 ## Request
 
 ### Query Parameters
 
-**json** `any` *required*
+**id** `number` *required*
 
-JSON-encoded RFQ creation request.
+Id of program to delete
 
 ## Responses
 
   * 200
-  * 404
-
-RFQ creation result
-
-  * application/json
+* application/json
 * Schema
 
 **Schema**
 
-**status**
+oneOf
+* Success Response
+* ErrorResponse
 
-**Possible values:** [`placed`, `failed`]
-* placed
-* failed
+**id** `number` *required*
+
+**participant** `object` *required*
+
+**contractType** stringrequired
+
+    ↳ **contract** `string | nullnullable`
+
+**maxSize** number,null<double>nullable
+
+**maxPosition** number,null<double>nullable
+
+**acceptLong** booleanrequired
+
+**acceptShort** booleanrequired
+
+**timeFrame** AssignmentPreferenceTimeFrame (string)required
+
+**Possible values:** [`WEEKDAYS`, `WEEKEND`, `ALL`]
+
+    ↳ **enabled** `boolean` *required*
 
 **result** `string` *required*
 
 **Possible values:** [`success`]
 
-**serverTime** string<date-time>required
-
-**rfqUid** string<uuid>required
-
-**result** `string` *required*
-
-**Possible values:** [`success`]
+**Example:**`success`
 
 **serverTime** string<date-time>required
 
-**reason** `string` *required*
+Server time in Coordinated Universal Time (UTC)
 
-**Possible values:** [`insufficientMargin`, `maxPositionExceed`, `wouldCauseLiquidation`, `fixedLeverageTooHigh`, `orderError`, `symbolNotFound`, `invalidExpiry`, `invalidQuantity`, `marketRestricted`, `noLegsSpecified`, `accountNotFound`, `mixedCurrencyPairs`, `tooManyNonOptionLegs`, `noOptionLegs`, `tooManyOpenRfqs`, `tooManyLegs`, `expiryTooShort`]
-
-RFQ feature is not enabled.
-
-  * application/json
-* Schema
-
-**Schema**
+**Example:**`2020-08-27T17:03:33.196Z`
 
 **errors** `Error (string)[]`
 
@@ -106,7 +107,7 @@ Server time in Coordinated Universal Time (UTC)
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -115,12 +116,11 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L -X POST 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/assignmentprogram/delete' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -130,14 +130,14 @@ Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key
+general-api-key-read-only
 
 authent
 
 Parameters
 
-json — queryrequired
+id — queryrequired

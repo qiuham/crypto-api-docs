@@ -2,14 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-deposits
 api_type: REST
-updated_at: 2026-06-02 20:13:31.243608
+updated_at: 2026-06-03 20:17:48.966696
 ---
 
-# Get Status of Recent Deposits
+# Get Status of Recent Withdrawals
 
-**POST** `https://api.kraken.com/0/private/DepositStatus`
+**POST** `https://api.kraken.com/0/private/WithdrawStatus`
 
-Retrieve information about recent deposits. Results are sorted by recency, use the `cursor` parameter to iterate through list of deposits (page size equal to value of `limit`) from newest to oldest. **API Key Permissions Required:** `Funds permissions - Query`
+Retrieve information about recent withdrawals. Results are sorted by recency, use the `cursor` parameter to iterate through list of withdrawals (page size equal to value of `limit`) from newest to oldest.
+
+**API Key Permissions Required:** `Funds permissions - Withdraw` or `Data - Query ledger entries`
 
 ## Request
 
@@ -23,11 +25,11 @@ Nonce used in construction of `API-Sign` header
 
 **asset** `string`
 
-Filter for specific asset being deposited
+Filter for specific asset being withdrawn
 
 **aclass** `string`
 
-Filter for specific asset class being deposited
+Filter for specific asset class being withdrawn
 
 **Possible values:** [`currency`, `tokenized_asset`]
 
@@ -35,19 +37,19 @@ Filter for specific asset class being deposited
 
 **method** `string`
 
-Filter for specific name of deposit method
+Filter for specific name of withdrawal method
 
 **start** `string`
 
-Start timestamp, deposits created strictly before will not be included in the response
+Start timestamp, withdrawals created strictly before will not be included in the response
 
 **end** `string`
 
-End timestamp, deposits created strictly after will be not be included in the response
+End timestamp, withdrawals created strictly after will be not be included in the response
 
 **cursor** `object`
 
-true/false to enable/disable paginated response (boolean) or cursor for next page of results (string)
+true/false to enable/disable paginated response (boolean) or cursor for next page of results (string), default false
 
 anyOf
 * MOD1
@@ -65,7 +67,7 @@ Cursor for next page of results
 
 Number of results to include per page
 
-**Default value:**`25`
+**Default value:**`500`
 
     ↳ **rebase_multiplier** `stringnullable`
 
@@ -81,22 +83,24 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Recent deposits retrieved.
+Recent withdrawals retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object`
+**result** `object[]`
 
-anyOf
-* deposit
-* MOD2
+  * Array [
 
 **method** `string`
 
-Name of deposit method
+Name of withdrawal method
+
+**network** `string`
+
+Network name based on the funding method used
 
 **aclass** `string`
 
@@ -120,7 +124,7 @@ Method transaction information
 
 **amount** `string`
 
-Amount deposited
+Amount withdrawn
 
 **fee**
 
@@ -132,22 +136,27 @@ Unix timestamp when request was made
 
 **status** `string`
 
-Status of deposit  
-For additional information about the status, please refer to the [IFEX financial transaction states](https://github.com/globalcitizen/ifex-protocol/blob/master/draft-ifex-00.txt#L837).
+Status of withdraw  
+For information about the status, please refer to the [IFEX financial transaction states](https://github.com/globalcitizen/ifex-protocol/blob/master/draft-ifex-00.txt#L837).
 
-**Possible values:** [`Initial`, `Pending`, `EarlyConfirmed`, `Settled`, `Success`, `Failure`]
+**Possible values:** [`Initial`, `Pending`, `Settled`, `Success`, `Failure`]
 
 **status-prop** string
 
 Addition status properties (if available)  
-* `return` A return transaction initiated by Kraken
-* `onhold` Deposit is on hold pending review
+* `cancel-pending` cancelation requested
+* `canceled` canceled
+* `cancel-denied` cancelation requested but was denied
+* `return` a return transaction initiated by Kraken; it cannot be canceled
+* `onhold` withdrawal is on hold pending review
 
-**Possible values:** [`return`, `onhold`]
+**Possible values:** [`cancel-pending`, `canceled`, `cancel-denied`, `return`, `onhold`]
 
-**originators** `string[]`
+**key** `string`
 
-Client sending transaction id(s) for deposits that credit with a sweeping transaction
+Withdrawal key name, as set up on your account
+
+  * ]
 
 **error** `string[]`
 * curl
@@ -158,7 +167,7 @@ Client sending transaction id(s) for deposits that credit with a sweeping transa
 
     
     
-    curl -L 'https://api.kraken.com/0/private/DepositStatus' \  
+    curl -L 'https://api.kraken.com/0/private/WithdrawStatus' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
@@ -166,7 +175,7 @@ Client sending transaction id(s) for deposits that credit with a sweeping transa
     -d '{  
       "nonce": 1695828271,  
       "asset": "XBT",  
-      "method": "Bitcoin"  
+      "method": "bitcoin"  
     }'  
     
 
@@ -188,5 +197,5 @@ Body required
     {
       "nonce": 1695828271,
       "asset": "XBT",
-      "method": "Bitcoin"
+      "method": "bitcoin"
     }

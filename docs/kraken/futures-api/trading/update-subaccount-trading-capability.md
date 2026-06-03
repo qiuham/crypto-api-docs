@@ -2,42 +2,64 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/update-subaccount-trading-capability
 api_type: REST
-updated_at: 2026-06-02 20:11:00.808977
+updated_at: 2026-06-03 20:15:11.782083
 ---
 
-# Update subaccount trading status
+# Initiate withdrawal to Spot wallet
 
-**PUT** `https://futures.kraken.com/derivatives/api/v3/subaccount/:subaccountUid/trading-enabled`
+**POST** `https://futures.kraken.com/derivatives/api/v3/withdrawal`
 
-Updates trading capabilities for given subaccount.
+This endpoint allows you to request to withdraw digital assets to your Kraken Spot wallet.
+
+Wallet names can be found in the 'accounts' structure in the Get Wallets /accounts response.
 
 ## Request
 
-### Path Parameters
-
-**subaccountUid** uuidrequired
-
 ### Query Parameters
 
-**tradingEnabled** booleanrequired
+**currency** `string` *required*
+
+The digital asset that shall be withdrawn back to spot wallet.
+
+**amount** `decimal` *required*
+
+**Possible values:** `> 0`
+
+The amount of currency that shall be withdrawn back to spot wallet.
+
+**sourceWallet** string
+
+The wallet from which the funds shall be withdrawn back to spot wallet. Default is "cash" wallet.
 
 ## Responses
 
   * 200
-  * 404
-
-Trading was successfully enabled/disabled.
-
-  * application/json
+* application/json
 * Schema
+  * success
+  * failure
 
 **Schema**
 
 oneOf
-* SubaccountEnabledJson
+* WithdrawalResponse
 * ErrorResponse
 
-**tradingEnabled** booleanrequired
+**uid** `string` *required*
+
+Withdrawal/transfer reference
+
+**result** `string` *required*
+
+**Possible values:** [`success`]
+
+**Example:**`success`
+
+**serverTime** string<date-time>required
+
+Server time in Coordinated Universal Time (UTC)
+
+**Example:**`2020-08-27T17:03:33.196Z`
 
 **errors** `Error (string)[]`
 
@@ -78,12 +100,28 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
-The account or subaccount could not be found
+    
+    
+    {  
+      "uid": "9053db5f-0d5e-48dd-b606-a5c92576b706",  
+      "result": "success",  
+      "serverTime": "2022-06-28T14:48:58.711Z"  
+    }  
+    
+    
+    
+    {  
+      "result": "error",  
+      "serverTime": "2019-05-15T09:24:16.968Z",  
+      "error": "Unavailable"  
+    }  
+    
 
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** **Withdrawal** API key with **full** access
+    **in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -92,11 +130,12 @@ The account or subaccount could not be found
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/subaccount/:subaccountUid/trading-enabled' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/withdrawal' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -110,14 +149,14 @@ https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key
+withdrawal-api-key
 
 authent
 
 Parameters
 
-subaccountUid — pathrequired
+currency — queryrequired
 
-tradingEnabled — queryrequired
+amount — queryrequired
 
-\---truefalse
+sourceWallet — query

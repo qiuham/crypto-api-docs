@@ -2,16 +2,18 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-closed-orders
 api_type: REST
-updated_at: 2026-06-02 20:12:51.007791
+updated_at: 2026-06-03 20:17:04.379065
 ---
 
-# Get Credit Lines
+# Get Closed Orders
 
-**POST** `https://api.kraken.com/0/private/CreditLines`
+**POST** `https://api.kraken.com/0/private/ClosedOrders`
 
-Retrieve all credit line details for VIPs with this functionality.
+Retrieve information about orders that have been closed (filled or cancelled). 50 results are returned at a time, the most recent by default.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+**Note:** If an order's tx ID is given for `start` or `end` time, the order's opening time (`opentm`) is used
+
+**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
 
 ## Request
 
@@ -22,6 +24,52 @@ Retrieve all credit line details for VIPs with this functionality.
 **nonce** `integer<int64>` *required*
 
 Nonce used in construction of `API-Sign` header
+
+**trades** `boolean`
+
+Whether or not to include trades related to position in output
+
+**Default value:**`false`
+
+**userref** `integer<int32>`
+
+Restrict results to given user reference
+
+**cl_ord_id** `string`
+
+Restrict results to given client order id
+
+**start** `integer`
+
+Starting unix timestamp or order tx ID of results (exclusive)
+
+**end** `integer`
+
+Ending unix timestamp or order tx ID of results (inclusive)
+
+**ofs** `integer`
+
+Result offset for pagination
+
+**closetime** `string`
+
+Which time to use to search
+
+**Possible values:** [`open`, `close`, `both`]
+
+**Default value:**`both`
+
+**consolidate_taker** `boolean`
+
+Whether or not to consolidate trades by individual taker trades
+
+**Default value:**`true`
+
+**without_count** `boolean`
+
+Whether or not to include page count in result (`true` is much faster for users with many closed orders)
+
+**Default value:**`false`
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -37,107 +85,198 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Credit line details retrieved.
+Closed orders info retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `objectnullable`
+**result** `object`
 
-Credit Line Details
+Closed Orders
 
-    ↳ **asset_details** `object`
+    ↳ **closed** `object`
 
-Balances by asset
+**property name*** txid
 
-**property name*** CreditLinesAsset
+Closed Order
 
-Credit line details for a specific asset
+        ↳ **refid** `stringnullable`
 
-        ↳ **balance** `string`
+Referral order transaction ID that created this order
 
-Current balance for the asset
+        ↳ **userref** `integernullable`
 
-**Example:**`1000.5000`
+Optional numeric, client identifier associated with one or more orders.
 
-        ↳ **credit_limit** `string`
+        ↳ **cl_ord_id** `stringnullable`
 
-Credit limit for the asset
+Optional alphanumeric, client identifier associated with the order.
 
-**Example:**`50000.0000`
+        ↳ **status** `string`
 
-        ↳ **credit_used** `string`
+Status of order
+* pending = order pending book entry
+* open = open order
+* closed = closed order
+* canceled = order canceled
+* expired = order expired
 
-Currently used credit for the asset
+**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
 
-**Example:**`12500.0000`
+        ↳ **opentm** `number`
 
-        ↳ **available_credit** `string`
+Unix timestamp of when order was placed
 
-Available credit for the asset
+        ↳ **starttm** `number`
 
-**Example:**`37500.0000`
+Unix timestamp of order start time (or 0 if not set)
 
-        ↳ **limits_monitor** `object`
+        ↳ **expiretm** `number`
 
-Credit monitor
+Unix timestamp of order end time (or 0 if not set)
 
-            ↳ **total_credit_usd** `stringnullable`
+        ↳ **descr** `object`
 
-Total credit across all assets represented in USD
+Order description info
 
-**Example:**`100000.0000`
+            ↳ **pair** `string`
 
-            ↳ **total_credit_used_usd** `stringnullable`
+Asset pair
 
-Total credit used across all assets represented in USD
+            ↳ **type** `string`
 
-**Example:**`25000.0000`
+Type of order (buy/sell)
 
-            ↳ **total_collateral_value_usd** `stringnullable`
+**Possible values:** [`buy`, `sell`]
 
-Sum of asset balance in USD * collateral
+            ↳ **ordertype** `string`
 
-**Example:**`150000.0000`
+Order type
 
-            ↳ **equity_usd** `stringnullable`
+**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `trailing-stop`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop-limit`, `settle-position`]
 
-Total collateral - total credit (in USD)
+            ↳ **price** `string`
 
-**Example:**`125000.0000`
+primary price
 
-            ↳ **ongoing_balance** `stringnullable`
+**price2** string
 
-Total collateral / total credit (in USD)
+Secondary price
 
-**Example:**`1.5000`
+            ↳ **leverage** `string`
 
-            ↳ **debt_to_equity** `stringnullable`
+Amount of leverage
 
-Total credit used / equity (in USD)
+            ↳ **order** `string`
 
-**Example:**`0.2000`
+Order description
+
+            ↳ **close** `string`
+
+Conditional close order description (if conditional close set)
+
+            ↳ **vol** `string`
+
+Volume of order (base currency)
+
+            ↳ **vol_exec** `string`
+
+Volume executed (base currency)
+
+            ↳ **cost** `string`
+
+Total cost (quote currency unless)
+
+            ↳ **fee** `string`
+
+Total fee (quote currency)
+
+            ↳ **price** `string`
+
+Average price (quote currency)
+
+            ↳ **stopprice** `string`
+
+Stop price (quote currency)
+
+            ↳ **limitprice** `string`
+
+Triggered limit price (quote currency, when limit based order type triggered)
+
+            ↳ **trigger** `string`
+
+Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
+* `last` is the implied trigger if this field is not set.
+
+**Possible values:** [`last`, `index`]
+
+**Default value:**`last`
+
+            ↳ **margin** `boolean`
+
+Indicates if the order is funded on margin.
+
+            ↳ **misc** `string`
+
+Comma delimited list of miscellaneous info:
+* `stopped` triggered by stop price
+* `touched` triggered by touch price
+* `liquidated` liquidation
+* `partial` partial fill
+* `amended` order parameters modified
+
+            ↳ **oflags** `string`
+
+Comma delimited list of order flags:
+* `post` post-only order (available when ordertype = limit)
+* `fcib` prefer fee in base currency (default if selling)
+* `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
+* `nompp` disable [market price protection](https://support.kraken.com/hc/en-us/articles/201648183-Market-Price-Protection) for market orders
+* `viqc` order volumes expressed in quote currency.
+
+            ↳ **trades** `string[]`
+
+List of trade IDs related to order (if trades info requested and data available)
+
+            ↳ **sender_sub_id** `stringnullable`
+
+For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
+
+            ↳ **closetm** `number`
+
+Unix timestamp of when order was closed
+
+            ↳ **reason** `string`
+
+Additional info on status (if any)
+
+            ↳ **count** `integer`
+
+Amount of available order info matching criteria
 
 **error** `string[]`
 * curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/CreditLines' \  
+    curl -L 'https://api.kraken.com/0/private/ClosedOrders' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "rebase_multiplier": "rebased"  
+      "nonce": 1234567,  
+      "trades": true,  
+      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d",  
+      "start": 1695728276,  
+      "end": 1695828276,  
+      "closetime": "open"  
     }'  
     
 
@@ -157,6 +296,10 @@ Body required
     
     
     {
-      "nonce": 0,
-      "rebase_multiplier": "rebased"
+      "nonce": 1234567,
+      "trades": true,
+      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d",
+      "start": 1695728276,
+      "end": 1695828276,
+      "closetime": "open"
     }

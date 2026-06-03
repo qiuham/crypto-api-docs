@@ -2,9 +2,13 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/fee-schedules
 api_type: REST
-updated_at: 2026-06-02 20:09:39.259272
+updated_at: 2026-06-03 20:13:42.591338
 ---
 
-# General
+# Fee Schedules
 
-## [📄️ Get notificationsThis endpoint provides the platform's notifications.](/api/docs/futures-api/trading/get-notifications)
+**DEPRECATED** — Effective 2026-06-22, the fee values returned by these endpoints no longer reflect the fees actually charged on Futures trades. Futures fee calculation has been migrated to a centralised Kraken fee service.
+
+To determine the fee rate applied to your trades, use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key.
+
+## [📄️ Get fee schedules**DEPRECATED** — Effective 2026-06-22, the fee values returned by this](/api/docs/futures-api/trading/get-fee-schedules-v-3)## [📄️ Get fee schedule volumes**DEPRECATED** — Effective 2026-06-22, the volumes and fee schedule](/api/docs/futures-api/trading/get-user-fee-schedule-volumes-v-3)

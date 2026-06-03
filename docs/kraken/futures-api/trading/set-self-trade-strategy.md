@@ -2,30 +2,30 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy
 api_type: REST
-updated_at: 2026-06-02 20:10:50.213721
+updated_at: 2026-06-03 20:14:58.640267
 ---
 
-# Calculate portfolio margin, pnl and greeks
+# Update self trade strategy
 
-**POST** `https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/simulate`
+**PUT** `https://futures.kraken.com/derivatives/api/v3/self-trade-strategy`
 
-For a given portfolio of balances and positions (futures and options), calculate the margin requirements, pnl and option greeks.
-
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+Updates account-wide self-trade matching behavior to given strategy.
 
 ## Request
 
 ### Query Parameters
 
-**json** `any` *required*
+**strategy** `SelfTradeStrategy` *required*
 
-Request body as a JSON string
+**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
+
+Defines self trade behaviour
 
 ## Responses
 
   * 200
 
-Simulated portfolio calculations
+Self trade strategy was successfully updated
 
   * application/json
 * Schema
@@ -36,51 +36,15 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**maintenanceMargin** number<double>required
+**strategy** `SelfTradeStrategy (string)` *required*
 
-**initialMargin** number<double>required
+Self trade matching behaviour:
+* `REJECT_TAKER` \- default behaviour, rejects the taker order that would match against a maker order from any sub-account
+* `CANCEL_MAKER_SELF` \- only cancels the maker order if it is from the same account that sent the taker order
+* `CANCEL_MAKER_CHILD` \- only allows master to cancel its own maker orders and orders from its sub-account
+* `CANCEL_MAKER_ANY` \- allows both master accounts and their subaccounts to cancel maker orders
 
-**pnl** `number<double>` *required*
-
-**portfolioMarginBreakdown** objectrequired
-
-Breakdown of components that make up the portfolio margin calculation.
-
-**totalCrossAssetNettedMarketRisk** number<double>required
-
-**totalMarketRisk** number<double>required
-
-**totalScenarioPnls** number<double>[]
-
-**totalAbsoluteOptionPositionDeltaNotional** number<double>required
-
-**netPortfolioDelta** number<double>required
-
-**totalPremium** number<double>required
-
-**isBuyOnly** booleanrequired
-
-**futuresMaintenanceMargin** number<double>required
-
-**greeks** `object` *required*
-
-**property name*** OptionGreeks
-
-Option Greeks
-
-    ↳ **iv** `number<double>` *required*
-
-The implied volatility. Displays an IV of -1.0 whenever the IV is impossible to calculate or outside of the bounds allowed.
-
-    ↳ **delta** `number<double>` *required*
-
-    ↳ **gamma** `number,null<double>nullable` *required*
-
-    ↳ **vega** `number,null<double>nullable` *required*
-
-    ↳ **theta** `number,null<double>nullable` *required*
-
-    ↳ **rho** `number,null<double>nullable` *required*
+**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
 
 **result** `string` *required*
 
@@ -136,7 +100,7 @@ Server time in Coordinated Universal Time (UTC)
 #### Authorization: APIKey
     
     
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
     
     
     **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
@@ -145,12 +109,11 @@ Server time in Coordinated Universal Time (UTC)
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L -X POST 'https://demo-futures.kraken.com/derivatives/api/v3/portfolio-margining/simulate' \  
+    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/self-trade-strategy' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -160,14 +123,16 @@ Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
 Auth
 
-general-api-key-read-only
+general-api-key
 
 authent
 
 Parameters
 
-json — queryrequired
+strategy — queryrequired
+
+\---REJECT_TAKERCANCEL_MAKER_SELFCANCEL_MAKER_CHILDCANCEL_MAKER_ANY

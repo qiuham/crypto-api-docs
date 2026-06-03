@@ -2,22 +2,24 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-leverage-setting
 api_type: REST
-updated_at: 2026-06-02 20:09:55.548487
+updated_at: 2026-06-03 20:14:00.260921
 ---
 
-# Get notifications
+# Get leverage settings
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/notifications`
+**GET** `https://futures.kraken.com/derivatives/api/v3/leveragepreferences`
 
-This endpoint provides the platform's notifications.
+Returns list of configured leverage preferences.
 
 ## Responses
 
   * 200
-* application/json
+
+OK
+
+  * application/json
 * Schema
   * success
-  * failure
 
 **Schema**
 
@@ -25,50 +27,13 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**notifications** `object[]` *required*
-
-A list containing the notifications.
+**leveragePreferences** object[]required
 
   * Array [
 
-**effectiveTime** stringrequired
+**symbol** `string` *required*
 
-The time that notification is taking effect.
-
-    ↳ **note** `string` *required*
-
-The notification note.
-
-A short description about the specific notification.
-
-    ↳ **priority** `string` *required*
-
-The notification priorities:
-* `low`
-* `medium`
-* `high`
-
-If priority == "high" then it implies downtime will occur at `effective_time` when type == "maintenance".
-
-**Possible values:** [`low`, `medium`, `high`]
-
-    ↳ **type** `string` *required*
-
-The notification types:
-* `market`
-* `general`
-* `new_feature`
-* `bug_fix`
-* `maintenance`
-* `settlement`
-
-If type == "maintenance" then it implies downtime will occur at `effective_time` if priority == "high".
-
-**Possible values:** [`new_feature`, `bug_fix`, `settlement`, `general`, `maintenance`, `market`]
-
-**expectedDowntimeMinutes** integer
-
-The expected downtime in minutes or absent if no downtime is expected.
+**maxLeverage** numberrequired
 
   * ]
 
@@ -127,29 +92,13 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "notifications": [  
+      "serverTime": "2022-06-28T15:01:12.762Z",  
+      "leveragePreferences": [  
         {  
-          "type": "general",  
-          "priority": "low",  
-          "note": "We've launched a new Telegram group.",  
-          "effectiveTime": "2022-03-31T20:38:52.677Z"  
-        },  
-        {  
-          "type": "settlement",  
-          "priority": "medium",  
-          "note": "Week contracts with maturity 29/Jun/2018 expire and settle.",  
-          "effectiveTime": "2018-06-29T15:00:00Z"  
+          "symbol": "PF_XBTUSD",  
+          "maxLeverage": 10  
         }  
-      ],  
-      "serverTime": "2018-06-29T15:22:05.187Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "error",  
-      "serverTime": "2016-02-25T09:45:53.818Z",  
-      "error": "apiLimitExceeded"  
+      ]  
     }  
     
 
@@ -169,7 +118,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/notifications' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/leveragepreferences' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  

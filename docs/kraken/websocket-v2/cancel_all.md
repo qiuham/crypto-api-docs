@@ -2,16 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_all
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:37.446303
+updated_at: 2026-06-03 20:24:00.280375
 ---
 
-# Cancel All
+# Cancel Order
 
 **WebSocket Endpoint:** `wss://ws-auth.kraken.com/v2`
-**Method:** `cancel_all` (Authentication Required)
-Cancels all open orders, including untriggered orders and orders resting in the book.
-
-Note, the details of the individual cancelled orders will also be streamed on the `executions` channel.
+**Method:** `cancel_order` (Authentication Required)
+The `cancel_order` request cancels one or more open orders in a single request. The orders to be cancelled can be identified by a range of client or Kraken identifiers. Note, the details of the individual cancelled orders will also be streamed on the `executions` channel.
 
 ## Request
 
@@ -22,11 +20,23 @@ Note, the details of the individual cancelled orders will also be streamed on th
 
 **method** `string` *required*
 
-**Value:** `cancel_all`
+**Value:** `cancel_order`
 
 **params** `object`
 
-    ↳ **token** `string` *required*
+    ↳ **order_id** `array of string`
+
+A list of Kraken `order_id` identifiers.
+
+        ↳ **cl_ord_id** `array of string`
+
+A list of client `cl_ord_id` identifiers.
+
+            ↳ **order_userref** `array of integer`
+
+A list of client `order_userref` identifiers.
+
+                ↳ **token** `string` *required*
 
 This is a authenticated channel, a session token is required. See guides on how to generate a token via REST.
 
@@ -36,15 +46,21 @@ Optional client originated request identifier sent as acknowledgment in the resp
     
     
     {  
-        "method": "cancel_all",  
+        "method": "cancel_order",  
         "params": {  
-            "token": "weeBxllys/7kHy/zHpkATSDIS42BvDgWS2b04ZSZHZ5"  
+            "order_id": [  
+                "OM5CRX-N2HAL-GFGWE9",  
+                "OLUMT4-UTEGU-ZYM7E9"  
+            ],  
+            "token": "zGXT1dUQQjJjy5VmGXMegdDQngXXehNo5qbMBVolwEQ"  
         },  
-        "req_id": 1234567890  
-    }  
+        "req_id": 123456789  
+    },  
     
 
 ## Response
+
+When cancelling multiple orders, there will be a stream of individual order responses.
 
   * Response Schema
   * Example
@@ -53,15 +69,19 @@ Optional client originated request identifier sent as acknowledgment in the resp
 
 **method** `string`
 
-**Value:** `cancel_all`
+**Value:** `cancel_order`
 
 **result** `object` *conditional*
 
 **Condition:** On successful requests only 
 
-    ↳ **count** `integer`
+    ↳ **order_id** `string`
 
-Number of orders cancelled.
+Kraken identifier of the cancelled order.
+
+    ↳ **cl_ord_id** `string`
+
+Optional client identifier of the cancelled order.
 
     ↳ **warnings** `array of strings`
 
@@ -101,12 +121,24 @@ The timestamp when the response was sent on the wire, just prior to transmitting
     
     
     {  
-        "method": "cancel_all",  
-        "req_id": 1234567890,  
+      {  
+        "method": "cancel_order",  
+        "req_id": 123456789,  
         "result": {  
-            "count": 1  
+            "order_id": "OLUMT4-UTEGU-ZYM7E9"  
         },  
         "success": true,  
-        "time_in": "2023-09-26T13:09:48.463201Z",  
-        "time_out": "2023-09-26T13:09:48.471419Z"  
+        "time_in": "2023-09-21T14:36:57.428972Z",  
+        "time_out": "2023-09-21T14:36:57.437952Z"  
+      },  
+      {  
+        "method": "cancel_order",  
+        "req_id": 123456789,  
+        "result": {  
+            "order_id": "OM5CRX-N2HAL-GFGWE9"  
+        },  
+        "success": true,  
+        "time_in": "2023-09-21T14:36:57.428972Z",  
+        "time_out": "2023-09-21T14:36:57.438027Z"  
+      }  
     }

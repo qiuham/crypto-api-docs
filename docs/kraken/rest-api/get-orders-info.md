@@ -2,394 +2,177 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-orders-info
 api_type: REST
-updated_at: 2026-06-02 20:13:17.167126
+updated_at: 2026-06-03 20:17:35.389061
 ---
 
-# Query Orders Info
+# Post-Trade Data
 
-**POST** `https://api.kraken.com/0/private/QueryOrders`
+**GET** `https://api.kraken.com/0/public/PostTrade`
 
-Retrieve information about specific orders.
-
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades` or `Orders and trades - Query closed orders & trades`, depending on status of order
+Returns a list of trades on the spot exchange. If no filter parameters are specified, the last 1000 trades for all pairs are received.
 
 ## Request
 
-  * application/json
+### Query Parameters
 
-### Body**required**
+**symbol** `string`
 
-**nonce** `integer<int64>` *required*
+Filter the results to the currency pair.
 
-Nonce used in construction of `API-Sign` header
+**Example:** BTC/USD
 
-**trades** `boolean`
+**from_ts** `ISO 8601`
 
-Whether or not to include trades related to position in output
+Filter the results to include the trades _after_ this timestamp.
 
-**Default value:**`false`
+**Example:** 2024-05-30T12:34:56.123456789Z
 
-**userref** `integer<int32>`
+**to_ts** `ISO 8601`
 
-Restrict results to given user reference id
+Filter the results to include the trades _before or at_ this timestamp.
 
-**txid** `string` *required*
+**Example:** 2024-05-30T12:34:56.123456789Z
 
-The Kraken order identifier. To query multiple orders, use comma delimited list of up to 50 ids.
+**count** `integer`
 
-**consolidate_taker** `boolean`
+**Possible values:** `>= 1` and `<= 1000`
 
-Whether or not to consolidate trades by individual taker trades
+The maximum number of trades to return.
 
-**Default value:**`true`
-
-**rebase_multiplier** `rebase_multiplier (string)nullable`
-
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+**Default value:**`1000`
 
 ## Responses
 
   * 200
-
-Orders info retrieved.
-
-  * application/json
+* application/json
 * Schema
 
 **Schema**
 
 **result** `object`
 
-txid of the order.
+    ↳ **last_ts** `string<ISO 8601>`
 
-oneOf
-* OpenOrder
-* txid
+Timestamp of the latest trade in the list. This field can be used as the `from_ts` parameter when requesting the next batch of trades.
 
-    ↳ **refid** `stringnullable`
+**Example:**`2024-05-30T12:34:56.123456789Z`
 
-Referral order transaction ID that created this order
+    ↳ **count** `int`
 
-    ↳ **userref** `integernullable`
+The number of trades returned.
 
-Optional numeric, client identifier associated with one or more orders.
+**Possible values:** `>= 0` and `<= 1000`
 
-    ↳ **cl_ord_id** `stringnullable`
+    ↳ **trades** `object<Trade>[]`
 
-Optional alphanumeric, client identifier associated with the order.
+A list of trades in ascending timestamp order.
 
-    ↳ **status** `string`
+**Possible values:** `<= 1000`
 
-Status of order
-* pending = order pending book entry
-* open = open order
-* closed = closed order
-* canceled = order canceled
-* expired = order expired
+  * Array [
 
-**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
+        ↳ **trade_id** `string`
 
-    ↳ **opentm** `number`
+Kraken unique trade identifier.
 
-Unix timestamp of when order was placed
+**Possible values:** `<= 19 characters`
 
-    ↳ **starttm** `number`
-
-Unix timestamp of order start time (or 0 if not set)
-
-    ↳ **expiretm** `number`
-
-Unix timestamp of order end time (or 0 if not set)
-
-    ↳ **descr** `object`
-
-Order description info
-
-        ↳ **pair** `string`
-
-Asset pair
-
-        ↳ **type** `string`
-
-Type of order (buy/sell)
-
-**Possible values:** [`buy`, `sell`]
-
-        ↳ **ordertype** `ordertype (string)`
-
-The execution model of the order.
-
-**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop`, `trailing-stop-limit`, `settle-position`]
-
-**Example:**`limit`
+**Example:**`TGBB7L-HT5LX-J3BZ4A`
 
         ↳ **price** `string`
 
-primary price
+Trade price excluding fees and commissions.
 
-**price2** string
+**Example:**`102002.1`
 
-Secondary price
+        ↳ **quantity** `string`
 
-        ↳ **leverage** `string`
+Unconsolidated trade quantity from execution.
 
-Amount of leverage
+**Example:**`1.24`
 
-        ↳ **order** `string`
+        ↳ **symbol** `string`
 
-Order description
+The symbol of the currency pair.
 
-        ↳ **close** `string`
+**Possible values:** `<= 32 characters`
 
-Conditional close order description (if conditional close set)
+**Example:**`BTC/USD`
 
-        ↳ **vol** `string`
+        ↳ **description** `string`
 
-Volume of order (base currency)
+The full description of the currency pair.
 
-        ↳ **vol_exec** `string`
+**Possible values:** `<= 350 characters`
 
-Volume executed (base currency)
+**Example:**`Bitcoin / US Dollars`
 
-        ↳ **cost** `string`
+        ↳ **base_asset** `string<ISO 4217>`
 
-Total cost (quote currency unless)
+Currency code for the base asset.
 
-        ↳ **fee** `string`
+**Example:**`BTC`
 
-Total fee (quote currency)
+        ↳ **base_notation** `string`
 
-        ↳ **price** `string`
+Indicates that the quantity is expressed in nominal value.
 
-Average price (quote currency)
+**Possible values:** [`UNIT`]
 
-        ↳ **stopprice** `string`
+        ↳ **quote_asset** `string<ISO 4217>`
 
-Stop price (quote currency)
+Currency in which the trading price is expressed.
 
-        ↳ **limitprice** `string`
+**Example:**`USD`
 
-Triggered limit price (quote currency, when limit based order type triggered)
+        ↳ **quote_notation** `string`
 
-        ↳ **trigger** `string`
+Indicates that the price is expressed in monetary value.
 
-Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
-* `last` is the implied trigger if this field is not set.
+**Possible values:** [`MONE`]
 
-**Possible values:** [`last`, `index`]
+        ↳ **trade_venue** `string<ISO 10383>`
 
-**Default value:**`last`
+Market Identifier Code (MIC) of the trading platform where the trade was executed.
 
-        ↳ **margin** `boolean`
+**Possible values:** `<= 12 characters`
 
-Indicates if the order is funded on margin.
+**Example:**`PGSL`
 
-        ↳ **misc** `string`
+        ↳ **trade_ts** `string<ISO 8601>`
 
-Comma delimited list of miscellaneous info
-* `stopped` triggered by stop price
-* `touched` triggered by touch price
-* `liquidated` liquidation
-* `partial` partial fill
-* `amended` order parameters modified
+Timestamp the trade was matched in the engine to microsecond precision.
 
-        ↳ **sender_sub_id** `stringnullable`
+**Example:**`2024-05-30T12:34:56.123456789Z`
 
-For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
+        ↳ **publication_venue** `string<ISO 10383>`
 
-        ↳ **oflags** `oflags (string)`
+Market Identifier Code (MIC) of the trading platform where the trade was published.
 
-Comma delimited list of order flags
-* • `post` post-only order (available when ordertype = limit)
-* • `fcib` prefer fee in base currency (default if selling)
-* • `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
-* • `nompp` (DEPRECATED) — disabling Market Price Protection for market orders is no longer supported. If supplied, the flag is accepted but ignored.
-* • `viqc` order volume expressed in quote currency. This option is supported only for buy market orders. Also not available on margin orders.
+**Possible values:** `<= 12 characters`
 
-**Example:**`post`
+**Example:**`PGSL`
 
-        ↳ **trades** `string[]`
+        ↳ **publication_ts** `string<ISO 8601>`
 
-List of trade IDs related to order (if trades info requested and data available)
+Timestamp the trade was published to market data streams.
 
-        ↳ **refid** `stringnullable`
+**Example:**`2024-05-30T12:34:56.123456789Z`
 
-Referral order transaction ID that created this order
-
-        ↳ **userref** `integernullable`
-
-Optional numeric, client identifier associated with one or more orders.
-
-        ↳ **cl_ord_id** `stringnullable`
-
-Optional alphanumeric, client identifier associated with the order.
-
-        ↳ **status** `string`
-
-Status of order
-* pending = order pending book entry
-* open = open order
-* closed = closed order
-* canceled = order canceled
-* expired = order expired
-
-**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
-
-        ↳ **opentm** `number`
-
-Unix timestamp of when order was placed
-
-        ↳ **starttm** `number`
-
-Unix timestamp of order start time (or 0 if not set)
-
-        ↳ **expiretm** `number`
-
-Unix timestamp of order end time (or 0 if not set)
-
-        ↳ **descr** `object`
-
-Order description info
-
-            ↳ **pair** `string`
-
-Asset pair
-
-            ↳ **type** `string`
-
-Type of order (buy/sell)
-
-**Possible values:** [`buy`, `sell`]
-
-            ↳ **ordertype** `string`
-
-Order type
-
-**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `trailing-stop`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop-limit`, `settle-position`]
-
-            ↳ **price** `string`
-
-primary price
-
-**price2** string
-
-Secondary price
-
-            ↳ **leverage** `string`
-
-Amount of leverage
-
-            ↳ **order** `string`
-
-Order description
-
-            ↳ **close** `string`
-
-Conditional close order description (if conditional close set)
-
-            ↳ **vol** `string`
-
-Volume of order (base currency)
-
-            ↳ **vol_exec** `string`
-
-Volume executed (base currency)
-
-            ↳ **cost** `string`
-
-Total cost (quote currency unless)
-
-            ↳ **fee** `string`
-
-Total fee (quote currency)
-
-            ↳ **price** `string`
-
-Average price (quote currency)
-
-            ↳ **stopprice** `string`
-
-Stop price (quote currency)
-
-            ↳ **limitprice** `string`
-
-Triggered limit price (quote currency, when limit based order type triggered)
-
-            ↳ **trigger** `string`
-
-Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
-* `last` is the implied trigger if this field is not set.
-
-**Possible values:** [`last`, `index`]
-
-**Default value:**`last`
-
-            ↳ **margin** `boolean`
-
-Indicates if the order is funded on margin.
-
-            ↳ **misc** `string`
-
-Comma delimited list of miscellaneous info:
-* `stopped` triggered by stop price
-* `touched` triggered by touch price
-* `liquidated` liquidation
-* `partial` partial fill
-* `amended` order parameters modified
-
-            ↳ **oflags** `string`
-
-Comma delimited list of order flags:
-* `post` post-only order (available when ordertype = limit)
-* `fcib` prefer fee in base currency (default if selling)
-* `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
-* `nompp` disable [market price protection](https://support.kraken.com/hc/en-us/articles/201648183-Market-Price-Protection) for market orders
-* `viqc` order volumes expressed in quote currency.
-
-            ↳ **trades** `string[]`
-
-List of trade IDs related to order (if trades info requested and data available)
-
-            ↳ **sender_sub_id** `stringnullable`
-
-For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
-
-            ↳ **closetm** `number`
-
-Unix timestamp of when order was closed
-
-            ↳ **reason** `string`
-
-Additional info on status (if any)
+  * ]
 
 **error** `string[]`
 * curl
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/QueryOrders' \  
-    -H 'Content-Type: application/json' \  
-    -H 'Accept: application/json' \  
-    -H 'API-Key: <API-Key>' \  
-    -H 'API-Sign: <API-Sign>' \  
-    -d '{  
-      "nonce": 0,  
-      "trades": false,  
-      "userref": 0,  
-      "txid": "string",  
-      "consolidate_taker": true,  
-      "rebase_multiplier": "rebased"  
-    }'  
+    curl -L 'https://api.kraken.com/0/public/PostTrade' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
@@ -398,24 +181,16 @@ Base URL
 
 https://api.kraken.com/0
 
-Auth
+Parameters
 
-API-Key
+symbol — query
 
-API-Sign
+from_ts — query
 
-Body required
+to_ts — query
 
-  * Example (from schema)
-  * Example Query 2 orders
+count — query
 
-    
-    
-    {
-      "nonce": 0,
-      "trades": false,
-      "userref": 0,
-      "txid": "string",
-      "consolidate_taker": true,
-      "rebase_multiplier": "rebased"
-    }
+ResponseClear
+
+Click the `Send API Request` button above and see the response here!

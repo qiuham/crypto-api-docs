@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-withdrawal
 api_type: REST
-updated_at: 2026-06-02 20:12:34.504435
+updated_at: 2026-06-03 20:16:48.404700
 ---
 
-# Request Withdrawal Cancellation
+# Create Subaccount
 
-**POST** `https://api.kraken.com/0/private/WithdrawCancel`
+**POST** `https://api.kraken.com/0/private/CreateSubaccount`
 
-Cancel a recently requested withdrawal, if it has not already been successfully processed.
+Create a trading subaccount. **Note:** `CreateSubaccount` must be called using an API key from the master account.
 
-**API Key Permissions Required:** `Funds permissions - Withdraw`, unless withdrawal is a `WalletTransfer`, then no permissions are required.
+**API Key Permissions Required:** `Funds permissions - Withdraw`
 
 ## Request
 
@@ -23,19 +23,19 @@ Cancel a recently requested withdrawal, if it has not already been successfully 
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string` *required*
+**username** `string` *required*
 
-Asset being withdrawn
+Username for the subaccount
 
-**refid** `string` *required*
+**email** `string` *required*
 
-Withdrawal reference ID
+Email address for the subaccount
 
 ## Responses
 
   * 200
 
-Withdrawal cancellation requested.
+Subaccount created.
 
   * application/json
 * Schema
@@ -44,7 +44,7 @@ Withdrawal cancellation requested.
 
 **result** `boolean`
 
-Whether cancellation was successful or not.
+Whether subaccount creation was successful or not.
 
 **error** `string[]`
 * curl
@@ -55,15 +55,15 @@ Whether cancellation was successful or not.
 
     
     
-    curl -L 'https://api.kraken.com/0/private/WithdrawCancel' \  
+    curl -L 'https://api.kraken.com/0/private/CreateSubaccount' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
-    -d '{  
+    --data-raw '{  
       "nonce": 1695828271,  
-      "asset": "XBT",  
-      "refid": "FTQcuak-V6Za8qrWnhzTx67yYHz8Tg"  
+      "username": "abc123",  
+      "email": "abc123@gmail.com"  
     }'  
     
 
@@ -84,6 +84,6 @@ Body required
     
     {
       "nonce": 1695828271,
-      "asset": "XBT",
-      "refid": "FTQcuak-V6Za8qrWnhzTx67yYHz8Tg"
+      "username": "abc123",
+      "email": "abc123@gmail.com"
     }

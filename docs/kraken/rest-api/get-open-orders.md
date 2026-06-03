@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-open-orders
 api_type: REST
-updated_at: 2026-06-02 20:13:10.055915
+updated_at: 2026-06-03 20:17:28.091063
 ---
 
-# Get Open Orders
+# Get Open Positions
 
-**POST** `https://api.kraken.com/0/private/OpenOrders`
+**POST** `https://api.kraken.com/0/private/OpenPositions`
 
-Retrieve information about currently open orders.
+Get information about open margin positions.
 
 **API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
@@ -23,19 +23,21 @@ Retrieve information about currently open orders.
 
 Nonce used in construction of `API-Sign` header
 
-**trades** `boolean`
+**txid** `string`
 
-Whether or not to include trades related to position in output
+Comma delimited list of txids to limit output to
+
+**docalcs** `boolean`
+
+Whether to include P&L calculations
 
 **Default value:**`false`
 
-**userref** `integer<int32>`
+**consolidation** `string`
 
-Restrict results to given user reference
+Consolidate positions by market/pair
 
-**cl_ord_id** `string`
-
-Restrict results to given client order id
+**Possible values:** [`market`]
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -51,7 +53,7 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Open orders info retrieved.
+Open positions info retrieved.
 
   * application/json
 * Schema
@@ -60,159 +62,77 @@ Open orders info retrieved.
 
 **result** `object`
 
-Open Orders
+**property name*** txid
 
-    ↳ **open** `object`
+    ↳ **ordertxid** `string`
 
-**property name*** OpenOrder
+Order ID responsible for the position
 
-Open Order
+    ↳ **posstatus** `string`
 
-        ↳ **refid** `stringnullable`
+Position status
 
-Referral order transaction ID that created this order
+**Possible values:** [`open`]
 
-        ↳ **userref** `integernullable`
-
-Optional numeric, client identifier associated with one or more orders.
-
-        ↳ **cl_ord_id** `stringnullable`
-
-Optional alphanumeric, client identifier associated with the order.
-
-        ↳ **status** `string`
-
-Status of order
-* pending = order pending book entry
-* open = open order
-* closed = closed order
-* canceled = order canceled
-* expired = order expired
-
-**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
-
-        ↳ **opentm** `number`
-
-Unix timestamp of when order was placed
-
-        ↳ **starttm** `number`
-
-Unix timestamp of order start time (or 0 if not set)
-
-        ↳ **expiretm** `number`
-
-Unix timestamp of order end time (or 0 if not set)
-
-        ↳ **descr** `object`
-
-Order description info
-
-            ↳ **pair** `string`
+    ↳ **pair** `string`
 
 Asset pair
 
-            ↳ **type** `string`
+    ↳ **time** `number`
 
-Type of order (buy/sell)
+Unix timestamp of trade
 
-**Possible values:** [`buy`, `sell`]
+    ↳ **type** `string`
 
-            ↳ **ordertype** `ordertype (string)`
+Direction (buy/sell) of position
 
-The execution model of the order.
+    ↳ **ordertype** `string`
 
-**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop`, `trailing-stop-limit`, `settle-position`]
+Order type used to open position
 
-**Example:**`limit`
+    ↳ **cost** `string`
 
-            ↳ **price** `string`
+Opening cost of position (in quote currency)
 
-primary price
+    ↳ **fee** `string`
 
-**price2** string
+Opening fee of position (in quote currency)
 
-Secondary price
+    ↳ **vol** `string`
 
-            ↳ **leverage** `string`
+Position opening size (in base currency)
 
-Amount of leverage
+    ↳ **vol_closed** `string`
 
-            ↳ **order** `string`
+Quantity closed (in base currency)
 
-Order description
+    ↳ **margin** `string`
 
-            ↳ **close** `string`
+Initial margin consumed (in quote currency)
 
-Conditional close order description (if conditional close set)
+    ↳ **value** `string`
 
-            ↳ **vol** `string`
+Current value of remaining position (if `docalcs` requested)
 
-Volume of order (base currency)
+    ↳ **net** `string`
 
-            ↳ **vol_exec** `string`
+Unrealised P&L of remaining position (if `docalcs` requested)
 
-Volume executed (base currency)
+    ↳ **terms** `string`
 
-            ↳ **cost** `string`
+Funding cost and term of position
 
-Total cost (quote currency unless)
+    ↳ **rollovertm** `string`
 
-            ↳ **fee** `string`
+Timestamp of next margin rollover fee
 
-Total fee (quote currency)
+    ↳ **misc** `string`
 
-            ↳ **price** `string`
+Comma delimited list of add'l info
 
-Average price (quote currency)
+    ↳ **oflags** `string`
 
-            ↳ **stopprice** `string`
-
-Stop price (quote currency)
-
-            ↳ **limitprice** `string`
-
-Triggered limit price (quote currency, when limit based order type triggered)
-
-            ↳ **trigger** `string`
-
-Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
-* `last` is the implied trigger if this field is not set.
-
-**Possible values:** [`last`, `index`]
-
-**Default value:**`last`
-
-            ↳ **margin** `boolean`
-
-Indicates if the order is funded on margin.
-
-            ↳ **misc** `string`
-
-Comma delimited list of miscellaneous info
-* `stopped` triggered by stop price
-* `touched` triggered by touch price
-* `liquidated` liquidation
-* `partial` partial fill
-* `amended` order parameters modified
-
-            ↳ **sender_sub_id** `stringnullable`
-
-For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
-
-            ↳ **oflags** `oflags (string)`
-
-Comma delimited list of order flags
-* • `post` post-only order (available when ordertype = limit)
-* • `fcib` prefer fee in base currency (default if selling)
-* • `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
-* • `nompp` (DEPRECATED) — disabling Market Price Protection for market orders is no longer supported. If supplied, the flag is accepted but ignored.
-* • `viqc` order volume expressed in quote currency. This option is supported only for buy market orders. Also not available on margin orders.
-
-**Example:**`post`
-
-            ↳ **trades** `string[]`
-
-List of trade IDs related to order (if trades info requested and data available)
+Comma delimited list of opening order flags
 
 **error** `string[]`
 * curl
@@ -223,15 +143,17 @@ List of trade IDs related to order (if trades info requested and data available)
 
     
     
-    curl -L 'https://api.kraken.com/0/private/OpenOrders' \  
+    curl -L 'https://api.kraken.com/0/private/OpenPositions' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1234567,  
-      "trades": true,  
-      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d"  
+      "nonce": 0,  
+      "txid": "string",  
+      "docalcs": false,  
+      "consolidation": "market",  
+      "rebase_multiplier": "rebased"  
     }'  
     
 
@@ -248,10 +170,16 @@ API-Key
 API-Sign
 
 Body required
+
+  * Example (from schema)
+  * get Open Position
+
     
     
     {
-      "nonce": 1234567,
-      "trades": true,
-      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d"
+      "nonce": 0,
+      "txid": "string",
+      "docalcs": false,
+      "consolidation": "market",
+      "rebase_multiplier": "rebased"
     }

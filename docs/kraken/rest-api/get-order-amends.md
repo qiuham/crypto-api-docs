@@ -2,46 +2,46 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-order-amends
 api_type: REST
-updated_at: 2026-06-02 20:13:13.590355
+updated_at: 2026-06-03 20:17:31.794086
 ---
 
-# Get Order Amends
+# Get Order Book
 
-**POST** `https://api.kraken.com/0/private/OrderAmends`
+**GET** `https://api.kraken.com/0/public/Depth`
 
-Retrieves an audit trail of amend transactions on the specified order. The list is ordered by ascending amend timestamp.
-
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades` or `Orders and trades - Query closed orders & trades`, depending on status of order.
+Returns level 2 (L2) order book, which describes the individual price levels in the book with aggregated order quantities at each level.
 
 ## Request
 
-  * application/json
+### Query Parameters
 
-### Body**required**
+**pair** `string` *required*
 
-**nonce** `integer<int64>` *required*
+Asset pair to get data for
 
-Nonce used in construction of `API-Sign` header
+**Example:** XBTUSD
 
-**order_id** `string`
+**count** `integer`
 
-The Kraken order identifier for the amended order.
+**Possible values:** `>= 1` and `<= 500`
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+Maximum number of asks/bids
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
+**Default value:**`100`
 
-**Possible values:** [`rebased`, `base`]
+**Example:** 2
 
-**Default value:**`rebased`
+**asset_class** `string`
+
+**Possible values:** [`tokenized_asset`]
+
+This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
 ## Responses
 
   * 200
 
-The first entry contains the original order parameters and has amend_type of `original`.
+Order book entries retrieved.
 
   * application/json
 * Schema
@@ -50,62 +50,23 @@ The first entry contains the original order parameters and has amend_type of `or
 
 **result** `object`
 
-The amend transaction history.
+**property name*** OrderBook
 
-    ↳ **count** `integer`
+Asset Pair Order Book Entries
 
-The total count of new and amend transactions (i.e. includes the original order).
+    ↳ **asks** `array[]`
 
-    ↳ **amends** `object[]`
+Ask side array of entries `[<price>, <volume>, <timestamp>]`
 
-  * Array [
+**Possible values:** `>= 3`, `<= 3`
 
-        ↳ **amend_id** `string`
+        ↳ **bids** `array[]`
 
-Kraken amend identifier
+Bid side array of entries `[<price>, <volume>, <timestamp>]`
 
-        ↳ **amend_type** `string`
+**Possible values:** `>= 3`, `<= 3`
 
-The type of amend transaction:
-* • `original`: original order values on order entry.
-* • `user`: user requested amendment.
-* • `restated`: engine order maintenance amendment.
-
-**Possible values:** [`original`, `user`, `restated`]
-
-        ↳ **order_qty** `string`
-
-Order quantity in terms of the base asset.
-
-        ↳ **display_qty** `string`
-
-The quantity show in the book for iceberg orders.
-
-        ↳ **remaining_qty** `string`
-
-Remaining un-traded quantity on the order.
-
-        ↳ **limit_price** `string`
-
-The limit price restriction on the order.
-
-        ↳ **trigger_price** `string`
-
-The trigger price on trigger order types.
-
-        ↳ **reason** `string`
-
-Description of the reason for this amend.
-
-        ↳ **post_only** `boolean`
-
-Indicates if the transaction was restricted from taking liquidity.
-
-        ↳ **timestamp** `integer`
-
-The UNIX timestamp for the amend transaction.
-
-  * ]
+**error** `string[]`
 * curl
   * python
   * go
@@ -114,15 +75,8 @@ The UNIX timestamp for the amend transaction.
 
     
     
-    curl -L 'https://api.kraken.com/0/private/OrderAmends' \  
-    -H 'Content-Type: application/json' \  
-    -H 'Accept: application/json' \  
-    -H 'API-Key: <API-Key>' \  
-    -H 'API-Sign: <API-Sign>' \  
-    -d '{  
-      "nonce": 1695828490,  
-      "order_id": "OVITN3-BFK3H-63K37C"  
-    }'  
+    curl -L 'https://api.kraken.com/0/public/Depth' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
@@ -131,16 +85,16 @@ Base URL
 
 https://api.kraken.com/0
 
-Auth
+Parameters
 
-API-Key
+pair — queryrequired
 
-API-Sign
+count — query
 
-Body required
-    
-    
-    {
-      "nonce": 1695828490,
-      "order_id": "OVITN3-BFK3H-63K37C"
-    }
+asset_class — query
+
+\---tokenized_asset
+
+ResponseClear
+
+Click the `Send API Request` button above and see the response here!

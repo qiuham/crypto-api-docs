@@ -2,41 +2,88 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-system-status
 api_type: REST
-updated_at: 2026-06-02 20:13:34.728822
+updated_at: 2026-06-03 20:17:52.511343
 ---
 
-# Get System Status
+# Get Ticker Information
 
-**GET** `https://api.kraken.com/0/public/SystemStatus`
+**GET** `https://api.kraken.com/0/public/Ticker`
 
-Get the current system status or trading mode.
+Get ticker information for all or requested markets. To clarify usage, note that
+
+  * Today's prices start at midnight UTC
+  * Leaving the pair parameter blank will return tickers for all tradeable assets on Kraken
+
+## Request
+
+### Query Parameters
+
+**pair** `string`
+
+Asset pair to get data for (optional, default: all tradeable exchange pairs)
+
+**Example:** XBTUSD
+
+**asset_class** `string`
+
+**Possible values:** [`tokenized_asset`, `forex`]
+
+This parameter is required on requests for tokenized pairs, i.e. xstocks. If `asset_class` is provided without the `pair` parameter, all pairs for that asset class will be returned.
+
+**Default value:**`forex`
 
 ## Responses
 
   * 200
 
-Success response
+Ticker info retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result**
+**result** `object`
 
-**status** `string`
+**property name*** AssetTickerInfo
 
-Current system status:
-* `online` Kraken is operating normally. All order types may be submitted and trades can occur.
-* `maintenance` The exchange is offline. No new orders or cancellations may be submitted.
-* `cancel_only` Resting (open) orders can be cancelled but no new orders may be submitted. No trades will occur.
-* `post_only` Only post-only limit orders can be submitted. Existing orders may still be cancelled. No trades will occur.
+Asset Ticker Info
 
-**Possible values:** [`online`, `maintenance`, `cancel_only`, `post_only`]
+    ↳ **a** `string[]`
 
-**timestamp** `string`
+Ask `[<price>, <whole lot volume>, <lot volume>]`
 
-Current timestamp (RFC3339)
+    ↳ **b** `string[]`
+
+Bid `[<price>, <whole lot volume>, <lot volume>]`
+
+    ↳ **c** `string[]`
+
+Last trade closed `[<price>, <lot volume>]`
+
+    ↳ **v** `string[]`
+
+Volume `[<today>, <last 24 hours>]`
+
+    ↳ **p** `string[]`
+
+Volume weighted average price `[<today>, <last 24 hours>]`
+
+    ↳ **t** `integer[]`
+
+Number of trades `[<today>, <last 24 hours>]`
+
+    ↳ **l** `string[]`
+
+Low `[<today>, <last 24 hours>]`
+
+    ↳ **h** `string[]`
+
+High `[<today>, <last 24 hours>]`
+
+    ↳ **o** `string`
+
+Today's opening price
 
 **error** `string[]`
 * curl
@@ -47,7 +94,7 @@ Current timestamp (RFC3339)
 
     
     
-    curl -L 'https://api.kraken.com/0/public/SystemStatus' \  
+    curl -L 'https://api.kraken.com/0/public/Ticker' \  
     -H 'Accept: application/json'  
     
 
@@ -56,6 +103,14 @@ Request Collapse all
 Base URL
 
 https://api.kraken.com/0
+
+Parameters
+
+pair — query
+
+asset_class — query
+
+\---tokenized_assetforex
 
 ResponseClear
 

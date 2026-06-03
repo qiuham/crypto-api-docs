@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/account-history
 api_type: REST
-updated_at: 2026-06-02 20:09:02.833016
+updated_at: 2026-06-03 20:13:01.244086
 ---
 
 # Account History

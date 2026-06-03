@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-current
 api_type: REST
-updated_at: 2026-06-02 20:09:43.187482
+updated_at: 2026-06-03 20:13:49.013661
 ---
 
-# List assignment programs
+# List assignment preferences history
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/assignmentprogram/current`
+**GET** `https://futures.kraken.com/derivatives/api/v3/assignmentprogram/history`
 
-This endpoint returns information on currently active assignment programs
+This endpoint returns information on assignment program preferences change history
 
 ## Responses
 
@@ -27,7 +27,7 @@ oneOf
 
   * Array [
 
-    ↳ **id** `number` *required*
+    ↳ **deleted** `boolean` *required*
 
     ↳ **participant** `object` *required*
 
@@ -48,6 +48,12 @@ oneOf
 **Possible values:** [`WEEKDAYS`, `WEEKEND`, `ALL`]
 
         ↳ **enabled** `boolean` *required*
+
+        ↳ **timestamp** `string<date-time>`
+
+RFC 3339 formatted date-time
+
+**Example:**`2019-08-24T14:15:22Z`
 
   * ]
 
@@ -118,7 +124,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/assignmentprogram/current' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/assignmentprogram/history' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  

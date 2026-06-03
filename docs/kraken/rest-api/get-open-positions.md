@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-open-positions
 api_type: REST
-updated_at: 2026-06-02 20:13:12.811786
+updated_at: 2026-06-03 20:17:28.872216
 ---
 
-# Get Order Amends
+# Get Open Positions
 
-**POST** `https://api.kraken.com/0/private/OrderAmends`
+**POST** `https://api.kraken.com/0/private/OpenPositions`
 
-Retrieves an audit trail of amend transactions on the specified order. The list is ordered by ascending amend timestamp.
+Get information about open margin positions.
 
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades` or `Orders and trades - Query closed orders & trades`, depending on status of order.
+**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
 
 ## Request
 
@@ -23,9 +23,21 @@ Retrieves an audit trail of amend transactions on the specified order. The list 
 
 Nonce used in construction of `API-Sign` header
 
-**order_id** `string`
+**txid** `string`
 
-The Kraken order identifier for the amended order.
+Comma delimited list of txids to limit output to
+
+**docalcs** `boolean`
+
+Whether to include P&L calculations
+
+**Default value:**`false`
+
+**consolidation** `string`
+
+Consolidate positions by market/pair
+
+**Possible values:** [`market`]
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -41,7 +53,7 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-The first entry contains the original order parameters and has amend_type of `original`.
+Open positions info retrieved.
 
   * application/json
 * Schema
@@ -50,62 +62,79 @@ The first entry contains the original order parameters and has amend_type of `or
 
 **result** `object`
 
-The amend transaction history.
+**property name*** txid
 
-    ↳ **count** `integer`
+    ↳ **ordertxid** `string`
 
-The total count of new and amend transactions (i.e. includes the original order).
+Order ID responsible for the position
 
-    ↳ **amends** `object[]`
+    ↳ **posstatus** `string`
 
-  * Array [
+Position status
 
-        ↳ **amend_id** `string`
+**Possible values:** [`open`]
 
-Kraken amend identifier
+    ↳ **pair** `string`
 
-        ↳ **amend_type** `string`
+Asset pair
 
-The type of amend transaction:
-* • `original`: original order values on order entry.
-* • `user`: user requested amendment.
-* • `restated`: engine order maintenance amendment.
+    ↳ **time** `number`
 
-**Possible values:** [`original`, `user`, `restated`]
+Unix timestamp of trade
 
-        ↳ **order_qty** `string`
+    ↳ **type** `string`
 
-Order quantity in terms of the base asset.
+Direction (buy/sell) of position
 
-        ↳ **display_qty** `string`
+    ↳ **ordertype** `string`
 
-The quantity show in the book for iceberg orders.
+Order type used to open position
 
-        ↳ **remaining_qty** `string`
+    ↳ **cost** `string`
 
-Remaining un-traded quantity on the order.
+Opening cost of position (in quote currency)
 
-        ↳ **limit_price** `string`
+    ↳ **fee** `string`
 
-The limit price restriction on the order.
+Opening fee of position (in quote currency)
 
-        ↳ **trigger_price** `string`
+    ↳ **vol** `string`
 
-The trigger price on trigger order types.
+Position opening size (in base currency)
 
-        ↳ **reason** `string`
+    ↳ **vol_closed** `string`
 
-Description of the reason for this amend.
+Quantity closed (in base currency)
 
-        ↳ **post_only** `boolean`
+    ↳ **margin** `string`
 
-Indicates if the transaction was restricted from taking liquidity.
+Initial margin consumed (in quote currency)
 
-        ↳ **timestamp** `integer`
+    ↳ **value** `string`
 
-The UNIX timestamp for the amend transaction.
+Current value of remaining position (if `docalcs` requested)
 
-  * ]
+    ↳ **net** `string`
+
+Unrealised P&L of remaining position (if `docalcs` requested)
+
+    ↳ **terms** `string`
+
+Funding cost and term of position
+
+    ↳ **rollovertm** `string`
+
+Timestamp of next margin rollover fee
+
+    ↳ **misc** `string`
+
+Comma delimited list of add'l info
+
+    ↳ **oflags** `string`
+
+Comma delimited list of opening order flags
+
+**error** `string[]`
 * curl
   * python
   * go
@@ -114,14 +143,17 @@ The UNIX timestamp for the amend transaction.
 
     
     
-    curl -L 'https://api.kraken.com/0/private/OrderAmends' \  
+    curl -L 'https://api.kraken.com/0/private/OpenPositions' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828490,  
-      "order_id": "OVITN3-BFK3H-63K37C"  
+      "nonce": 0,  
+      "txid": "string",  
+      "docalcs": false,  
+      "consolidation": "market",  
+      "rebase_multiplier": "rebased"  
     }'  
     
 
@@ -138,9 +170,16 @@ API-Key
 API-Sign
 
 Body required
+
+  * Example (from schema)
+  * get Open Position
+
     
     
     {
-      "nonce": 1695828490,
-      "order_id": "OVITN3-BFK3H-63K37C"
+      "nonce": 0,
+      "txid": "string",
+      "docalcs": false,
+      "consolidation": "market",
+      "rebase_multiplier": "rebased"
     }

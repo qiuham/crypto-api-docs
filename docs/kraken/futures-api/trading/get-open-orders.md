@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-open-orders
 api_type: REST
-updated_at: 2026-06-02 20:09:58.390958
+updated_at: 2026-06-03 20:14:03.769894
 ---
 
-# Get open positions
+# Get open orders
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/openpositions`
+**GET** `https://futures.kraken.com/derivatives/api/v3/openorders`
 
-This endpoint returns the size and average entry price of all open positions in Futures contracts. This includes Futures contracts that have matured but have not yet been settled.
+This endpoint returns information on all open orders for all Futures contracts.
 
 ## Responses
 
@@ -17,7 +17,6 @@ This endpoint returns the size and average entry price of all open positions in 
 * application/json
 * Schema
   * success
-  * failure
 
 **Schema**
 
@@ -25,49 +24,81 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**openPositions** object[]required
+**openOrders** object[]required
 
-A list containing structures with information on open positions.
-
-The list is sorted descending by fillTime.
+A list containing structures with information on open orders. The list is sorted descending by receivedTime.
 
   * Array [
 
-**symbol** `string` *required*
+**order_id** `string<uuid>` *required*
 
-The symbol of the Futures.
+The unique identifier of the order.
+
+**cliOrdId** string
+
+The unique client order identifier. This field is returned only if the order has a client order ID.
+
+**status** `string` *required*
+
+The status of the order:
+* `untouched` \- the entire size of the order is unfilled
+* `partiallyFilled` \- the size of the order is partially but not entirely filled
+
+**Possible values:** [`untouched`, `partiallyFilled`]
 
 **side** `string` *required*
 
-The direction of the position.
+The direction of the order.
 
-**Possible values:** [`long`, `short`]
+**Possible values:** [`buy`, `sell`]
 
-**size** `number<double>` *required*
+**orderType** stringrequired
 
-The size of the position.
+The order type:
+* `lmt` \- limit order
+* `stp` \- stop order
+* `take_profit` \- take profit order
 
-**price** `number<double>` *required*
+**Possible values:** [`lmt`, `stop`, `take_profit`]
 
-The average price at which the position was entered into.
+**symbol** `string` *required*
 
-**unrealizedPnl** number<double>required
+The symbol of the futures to which the order refers.
 
-Unrealised profit and loss on the position.
+**limitPrice** number
 
-**unrealizedFunding** number,null<double>nullablerequired
+The limit price associated with the order.
 
-Unrealised funding on the position.
+**stopPrice** number
 
-**pnlCurrency** string | nullnullable
+If orderType is `stp`: The stop price associated with the order
 
-Selected pnl currency for the position (default: USD)
+If orderType is `lmt`: Not returned because N/A
 
-**Possible values:** [`USD`, `EUR`, `GBP`, `USDC`, `USDT`, `BTC`, `ETH`]
+**filledSize** numberrequired
 
-**maxFixedLeverage** number,null<double>nullable
+The filled size associated with the order.
 
-Max leverage selected for isolated position.
+**unfilledSize** number
+
+The unfilled size associated with the order.
+
+**reduceOnly** booleanrequired
+
+Is the order a reduce only order or not.
+
+**triggerSignal** string
+
+The trigger signal for the stop or take profit order.
+
+**Possible values:** [`mark`, `last`, `spot`]
+
+**lastUpdateTime** string<date-time>required
+
+The date and time the order was 
+**receivedTime** string<date-time>required
+
+The date and time the order was received.
 
   * ]
 
@@ -126,42 +157,100 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "openPositions": [  
+      "openOrders": [  
         {  
-          "side": "short",  
+          "order_id": "59302619-41d2-4f0b-941f-7e7914760ad3",  
           "symbol": "PI_XBTUSD",  
-          "price": 9392.749993345933,  
-          "size": 10000,  
-          "unrealizedPnl": -607250.006654067,  
-          "unrealizedFunding": 0.00001045432180096817  
+          "side": "sell",  
+          "orderType": "lmt",  
+          "limitPrice": 10640,  
+          "unfilledSize": 304,  
+          "receivedTime": "2019-09-05T17:01:17.410Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": true,  
+          "lastUpdateTime": "2019-09-05T17:01:17.410Z"  
         },  
         {  
-          "side": "long",  
-          "symbol": "FI_XBTUSD_201225",  
-          "price": 9399.749966754434,  
-          "size": 20000,  
-          "unrealizedPnl": 1199500.664911316  
+          "order_id": "022774bc-2c4a-4f26-9317-436c8d85746d",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "orderType": "lmt",  
+          "limitPrice": 7200,  
+          "unfilledSize": 1501,  
+          "receivedTime": "2019-09-05T16:41:35.173Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": false,  
+          "lastUpdateTime": "2019-09-05T16:47:47.519Z"  
         },  
         {  
-          "side": "long",  
-          "symbol": "PF_DEFIUSD",  
-          "price": 570,  
-          "size": 1,  
-          "unrealizedPnl": 12.34,  
-          "unrealizedFunding": -0.0073428045972263895,  
-          "pnlCurrency": "BTC",  
-          "maxFixedLeverage": 5  
+          "order_id": "d08021f7-58cb-4f2c-9c86-da4c60de46bb",  
+          "symbol": "PI_XBTUSD",  
+          "side": "sell",  
+          "orderType": "lmt",  
+          "limitPrice": 10640,  
+          "unfilledSize": 10000,  
+          "receivedTime": "2019-09-05T16:38:43.651Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": true,  
+          "lastUpdateTime": "2019-09-05T16:38:43.651Z"  
+        },  
+        {  
+          "order_id": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "orderType": "lmt",  
+          "limitPrice": 9400,  
+          "unfilledSize": 10000,  
+          "receivedTime": "2019-09-05T16:33:50.734Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": false,  
+          "lastUpdateTime": "2019-09-05T16:33:50.734Z"  
+        },  
+        {  
+          "order_id": "9c2cbcc8-14f6-42fe-a020-6e395babafd1",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "orderType": "lmt",  
+          "limitPrice": 9400,  
+          "unfilledSize": 1000,  
+          "receivedTime": "2019-09-04T11:45:48.884Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": false,  
+          "lastUpdateTime": "2019-09-05T16:41:40.996Z"  
+        },  
+        {  
+          "order_id": "3deea5c8-0274-4d33-988c-9e5a3895ccf8",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "orderType": "lmt",  
+          "limitPrice": 8500,  
+          "unfilledSize": 102,  
+          "receivedTime": "2019-09-03T12:52:17.945Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": false,  
+          "lastUpdateTime": "2019-09-03T12:52:17.945Z"  
+        },  
+        {  
+          "order_id": "fcbb1459-6ed2-4b3c-a58c-67c4df7412cf",  
+          "symbol": "PI_XBTUSD",  
+          "side": "buy",  
+          "orderType": "lmt",  
+          "limitPrice": 7200,  
+          "unfilledSize": 1501,  
+          "receivedTime": "2019-09-02T12:54:34.347Z",  
+          "status": "untouched",  
+          "filledSize": 0,  
+          "reduceOnly": false,  
+          "lastUpdateTime": "2019-09-02T12:54:34.347Z"  
         }  
       ],  
-      "serverTime": "2020-07-22T14:39:12.376Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "error",  
-      "serverTime": "2016-02-25T09:45:53.818Z",  
-      "error": "apiLimitExceeded"  
+      "serverTime": "2019-09-05T17:08:18.138Z"  
     }  
     
 
@@ -181,7 +270,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/openpositions' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/openorders' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  

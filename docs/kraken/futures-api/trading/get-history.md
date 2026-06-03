@@ -2,43 +2,34 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-history
 api_type: REST
-updated_at: 2026-06-02 20:09:52.092419
+updated_at: 2026-06-03 20:13:56.814469
 ---
 
-# Get instruments
+# Get trade history
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/instruments`
+**GET** `https://futures.kraken.com/derivatives/api/v3/history`
 
-Returns specifications for all currently listed markets and indices.
+This endpoint returns the most recent 100 trades prior to the specified `lastTime` value up to past 7 days or recent trading engine restart (whichever is sooner).
+
+If no `lastTime` specified, it will return 100 most recent trades.
 
 ## Request
 
 ### Query Parameters
 
-**contractType** string[]
+**symbol** `string` *required*
 
-**Possible values:** [`futures_inverse`, `futures_vanilla`, `flexible_futures`, `options`, `all`]
+The symbol of the Futures.
 
-Contract type(s) to return statuses for.
+**lastTime** string
 
-By default, includes all futures instrument types.
-
-Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
-
-**expired** `boolean`
-
-If `true`, return only expired instruments
-
-Defaults to `false`, in which case only non-expired instruments are returned
-
-**Default value:**`false`
+Returns the last 100 trades from the specified lastTime value.
 
 ## Responses
 
   * 200
 * application/json
 * Schema
-  * success
 
 **Schema**
 
@@ -46,251 +37,70 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**instruments** `object[]` *required*
+**history** `object[]` *required*
 
-A list containing structures for each available instrument. The list is in no particular order.
+A list containing structures with historical price information. The list is sorted descending by time.
 
   * Array [
 
-    ↳ **category** `string`
+    ↳ **price** `number` *required*
 
-'Category of the contract: "Layer 1", "Layer 2", "DeFi", or "Privacy" (multi-collateral contracts only).'
+For futures: The price of a fill
 
-**contractSize** number
+For indices: The calculated value
 
-The contract size of the Futures.
+    ↳ **side** `string`
 
-**contractValueTradePrecision** number
+The classification of the taker side in the matched trade: "buy" if the taker is a buyer, "sell" if the taker is a seller.
 
-Trade precision for the contract (e.g. trade precision of 2 means trades are precise to the hundredth decimal place 0.01).
+    ↳ **size** `string`
 
-**fundingRateCoefficient** number
+For futures: The size of a fill For indices: Not returned because N/A
 
-**impactMidSize** number
+    ↳ **time** `string` *required*
 
-Amount of contract used to calculated the mid price for the mark price.
+The date and time of a trade or an index computation
+
+For futures: The date and time of a trade. Data is not aggregated For indices: The date and time of an index computation. For real-time indices, data is aggregated to the last computation of each full hour. For reference rates, data is not aggregated
+
+    ↳ **trade_id** `integer<int32>`
+
+For futures: A continuous index starting at 1 for the first fill in a Futures contract maturity For indices: Not returned because N/A
+
+    ↳ **type** `string`
+
+The classification of the matched trade in an orderbook:
+* `fill` \- it is a normal buyer and seller
+* `liquidation` \- it is a result of a user being liquidated from their position
+* `assignment` \- the fill is the result of a users position being assigned to a marketmaker
+* `termination` \- it is a result of a user being terminated
+* `block` \- it is an element of a block trade
+
+**Possible values:** [`fill`, `liquidation`, `assignment`, `termination`, `block`]
+
+    ↳ **uid** `string`
+
+    ↳ **instrument_identification_type** `string`
 
     ↳ **isin** `string`
 
-International Securities Identification Number (ISIN)
+    ↳ **execution_venue** `string`
 
-**lastTradingTime** string<date-time>
+    ↳ **price_notation** `string`
 
-**marginSchedules** object
+    ↳ **price_currency** `string`
 
-A map containing margin schedules by platform.
+    ↳ **notional_amount** `number`
 
-**property name*** MarginSchedule
+    ↳ **notional_currency** `string`
 
-    ↳ **retail** `object[]` *required*
+    ↳ **publication_time** `string`
 
-  * Array [
+    ↳ **publication_venue** `string`
 
-        ↳ **contracts** `integer,null<int64>nullable`
+    ↳ **transaction_identification_code** `string`
 
-For futures: The lower limit of the number of contracts to which this margin level applies
-
-For indices: Not returned because N/A
-
-**numNonContractUnits** number,null<double>nullable
-
-For futures: The lower limit of the number of non-contract units (i.e. quote currency units for linear futures) to which this margin level applies
-
-For indices: Not returned because N/A.
-
-**initialMargin** numberrequired
-
-For futures: The initial margin requirement for this level
-
-For indices: Not returned because N/A
-
-**maintenanceMargin** numberrequired
-
-For futures: The maintenance margin requirement for this level
-
-For indices: Not returned because N/A
-
-  * ]
-
-        ↳ **professional** `object[]` *required*
-
-  * Array [
-
-            ↳ **contracts** `integer,null<int64>nullable`
-
-For futures: The lower limit of the number of contracts to which this margin level applies
-
-For indices: Not returned because N/A
-
-**numNonContractUnits** number,null<double>nullable
-
-For futures: The lower limit of the number of non-contract units (i.e. quote currency units for linear futures) to which this margin level applies
-
-For indices: Not returned because N/A.
-
-**initialMargin** numberrequired
-
-For futures: The initial margin requirement for this level
-
-For indices: Not returned because N/A
-
-**maintenanceMargin** numberrequired
-
-For futures: The maintenance margin requirement for this level
-
-For indices: Not returned because N/A
-
-  * ]
-
-**retailMarginLevels** object[]
-
-Margin levels for retail clients.
-
-  * Array [
-
-            ↳ **contracts** `integer,null<int64>nullable`
-
-For futures: The lower limit of the number of contracts to which this margin level applies
-
-For indices: Not returned because N/A
-
-**numNonContractUnits** number,null<double>nullable
-
-For futures: The lower limit of the number of non-contract units (i.e. quote currency units for linear futures) to which this margin level applies
-
-For indices: Not returned because N/A.
-
-**initialMargin** numberrequired
-
-For futures: The initial margin requirement for this level
-
-For indices: Not returned because N/A
-
-**maintenanceMargin** numberrequired
-
-For futures: The maintenance margin requirement for this level
-
-For indices: Not returned because N/A
-
-  * ]
-
-**marginLevels** object[]
-
-Margin levels for professional clients.
-
-  * Array [
-
-            ↳ **contracts** `integer,null<int64>nullable`
-
-For futures: The lower limit of the number of contracts to which this margin level applies
-
-For indices: Not returned because N/A
-
-**numNonContractUnits** number,null<double>nullable
-
-For futures: The lower limit of the number of non-contract units (i.e. quote currency units for linear futures) to which this margin level applies
-
-For indices: Not returned because N/A.
-
-**initialMargin** numberrequired
-
-For futures: The initial margin requirement for this level
-
-For indices: Not returned because N/A
-
-**maintenanceMargin** numberrequired
-
-For futures: The maintenance margin requirement for this level
-
-For indices: Not returned because N/A
-
-  * ]
-
-**maxPositionSize** number
-
-Maximum number of contracts that one can hold in a position
-
-**maxRelativeFundingRate** number
-
-Perpetuals only: the absolute value of the maximum permissible funding rate
-
-**openingDate** string<date-time>
-
-When the contract was first available for trading
-
-**postOnly** boolean
-
-True if the instrument is in post-only mode, false otherwise.
-
-**feeScheduleUid** stringdeprecated
-
-**DEPRECATED** — Effective 2026-06-22, this field no longer corresponds to the fee schedule used for fee calculation on this instrument. Use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key to determine your fee rate.
-
-Unique identifier of fee schedule associated with the instrument
-
-            ↳ **symbol** `string` *required*
-
-Market symbol.
-
-**Example:**`PF_BTCUSD`
-
-            ↳ **pair** `string`
-
-Asset pair.
-
-**Example:**`BTC:USD`
-
-            ↳ **base** `string`
-
-Base asset.
-
-**Example:**`BTC`
-
-            ↳ **quote** `string`
-
-Quote asset.
-
-**Example:**`USD`
-
-            ↳ **tags** `string[]`
-
-Tag for the contract (currently does not return a value).
-
-**tickSize** number
-
-Tick size of the contract being traded.
-
-            ↳ **tradeable** `boolean` *required*
-
-True if this instrument is, or has ever been, a tradable instrument (i.e. a market).
-
-Always `true` for instruments returned by this endpoint — historical/expired instruments retain `tradeable=true`
-
-            ↳ **type** `string`
-
-The type of the instrument
-
-**Possible values:** [`flexible_futures`, `futures_inverse`, `futures_vanilla`, `options`]
-
-            ↳ **underlying** `string`
-
-The underlying of the Futures.
-
-**underlyingFuture** string
-
-For options: The underlying future of the option. Otherwise null.
-
-            ↳ **tradfi** `boolean` *required*
-
-True if this is a non-crypto market.
-
-            ↳ **mtf** `boolean`
-
-True if currently has MTF status.
-
-**isExpired** booleanrequired
-
-True if the instrument has expired.
+    ↳ **to_be_cleared** `boolean`
 
   * ]
 
@@ -344,209 +154,6 @@ Error description.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
-
-    
-    
-    {  
-      "instruments": [  
-        {  
-          "symbol": "PI_XBTUSD",  
-          "pair": "XBT:USD",  
-          "base": "XBT",  
-          "quote": "USD",  
-          "type": "futures_inverse",  
-          "underlying": "rr_xbtusd",  
-          "tickSize": 0.5,  
-          "contractSize": 1,  
-          "tradeable": true,  
-          "impactMidSize": 1,  
-          "maxPositionSize": 1000000,  
-          "openingDate": "2022-01-01T00:00:00.000Z",  
-          "marginLevels": [  
-            {  
-              "contracts": 0,  
-              "initialMargin": 0.02,  
-              "maintenanceMargin": 0.01  
-            },  
-            {  
-              "contracts": 500000,  
-              "initialMargin": 0.04,  
-              "maintenanceMargin": 0.02  
-            },  
-            {  
-              "contracts": 1000000,  
-              "initialMargin": 0.06,  
-              "maintenanceMargin": 0.03  
-            },  
-            {  
-              "contracts": 3000000,  
-              "initialMargin": 0.1,  
-              "maintenanceMargin": 0.05  
-            }  
-          ],  
-          "fundingRateCoefficient": 8,  
-          "maxRelativeFundingRate": 0.001,  
-          "isin": "GB00J62YGL67",  
-          "contractValueTradePrecision": 0,  
-          "postOnly": false,  
-          "feeScheduleUid": "eef90775-995b-4596-9257-0917f6134766",  
-          "retailMarginLevels": [  
-            {  
-              "contracts": 0,  
-              "initialMargin": 0.5,  
-              "maintenanceMargin": 0.25  
-            }  
-          ],  
-          "category": "",  
-          "tags": [],  
-          "tradfi": false,  
-          "mtf": true,  
-          "isExpired": false  
-        },  
-        {  
-          "symbol": "FI_XBTUSD_220930",  
-          "pair": "XBT:USD",  
-          "base": "XBT",  
-          "quote": "USD",  
-          "type": "futures_inverse",  
-          "underlying": "rr_xbtusd",  
-          "lastTradingTime": "2022-09-30T15:00:00.000Z",  
-          "tickSize": 0.5,  
-          "contractSize": 1,  
-          "tradeable": true,  
-          "impactMidSize": 1,  
-          "maxPositionSize": 1000000,  
-          "openingDate": "2022-01-01T00:00:00.000Z",  
-          "marginLevels": [  
-            {  
-              "contracts": 0,  
-              "initialMargin": 0.02,  
-              "maintenanceMargin": 0.01  
-            },  
-            {  
-              "contracts": 500000,  
-              "initialMargin": 0.04,  
-              "maintenanceMargin": 0.02  
-            },  
-            {  
-              "contracts": 1000000,  
-              "initialMargin": 0.06,  
-              "maintenanceMargin": 0.03  
-            },  
-            {  
-              "contracts": 3000000,  
-              "initialMargin": 0.1,  
-              "maintenanceMargin": 0.05  
-            }  
-          ],  
-          "isin": "GB00JVMLP260",  
-          "contractValueTradePrecision": 0,  
-          "postOnly": false,  
-          "feeScheduleUid": "eef90775-995b-4596-9257-0917f6134766",  
-          "retailMarginLevels": [  
-            {  
-              "contracts": 0,  
-              "initialMargin": 0.5,  
-              "maintenanceMargin": 0.25  
-            }  
-          ],  
-          "category": "",  
-          "tags": [],  
-          "tradfi": false,  
-          "mtf": false,  
-          "isExpired": false  
-        },  
-        {  
-          "symbol": "PF_XBTUSD",  
-          "pair": "XBT:USD",  
-          "base": "XBT",  
-          "quote": "USD",  
-          "type": "flexible_futures",  
-          "tickSize": 1,  
-          "contractSize": 1,  
-          "tradeable": true,  
-          "impactMidSize": 1,  
-          "maxPositionSize": 1000000,  
-          "openingDate": "2022-01-01T00:00:00.000Z",  
-          "marginLevels": [  
-            {  
-              "numNonContractUnits": 0,  
-              "initialMargin": 0.02,  
-              "maintenanceMargin": 0.01  
-            },  
-            {  
-              "numNonContractUnits": 500000,  
-              "initialMargin": 0.04,  
-              "maintenanceMargin": 0.02  
-            },  
-            {  
-              "numNonContractUnits": 2000000,  
-              "initialMargin": 0.1,  
-              "maintenanceMargin": 0.05  
-            },  
-            {  
-              "numNonContractUnits": 5000000,  
-              "initialMargin": 0.2,  
-              "maintenanceMargin": 0.1  
-            },  
-            {  
-              "numNonContractUnits": 10000000,  
-              "initialMargin": 0.3,  
-              "maintenanceMargin": 0.15  
-            },  
-            {  
-              "numNonContractUnits": 30000000,  
-              "initialMargin": 0.5,  
-              "maintenanceMargin": 0.25  
-            }  
-          ],  
-          "fundingRateCoefficient": 8,  
-          "maxRelativeFundingRate": 0.001,  
-          "contractValueTradePrecision": 4,  
-          "feeScheduleUid": "5b755fea-c5b0-4307-a66e-b392cd5bd931",  
-          "postOnly": false,  
-          "retailMarginLevels": [  
-            {  
-              "numNonContractUnits": 0,  
-              "initialMargin": 0.02,  
-              "maintenanceMargin": 0.01  
-            },  
-            {  
-              "numNonContractUnits": 500000,  
-              "initialMargin": 0.04,  
-              "maintenanceMargin": 0.02  
-            },  
-            {  
-              "numNonContractUnits": 2000000,  
-              "initialMargin": 0.1,  
-              "maintenanceMargin": 0.05  
-            },  
-            {  
-              "numNonContractUnits": 5000000,  
-              "initialMargin": 0.2,  
-              "maintenanceMargin": 0.1  
-            },  
-            {  
-              "numNonContractUnits": 10000000,  
-              "initialMargin": 0.3,  
-              "maintenanceMargin": 0.15  
-            },  
-            {  
-              "numNonContractUnits": 30000000,  
-              "initialMargin": 0.5,  
-              "maintenanceMargin": 0.25  
-            }  
-          ],  
-          "category": "Layer 1",  
-          "tags": [],  
-          "tradfi": false,  
-          "mtf": false,  
-          "isExpired": false  
-        }  
-      ],  
-      "result": "success",  
-      "serverTime": "2022-06-28T09:29:04.243Z"  
-    }  
 * curl
   * python
   * go
@@ -555,7 +162,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/instruments' \  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/history' \  
     -H 'Accept: application/json'  
     
 
@@ -567,13 +174,9 @@ https://futures.kraken.com/derivatives/api/v3
 
 Parameters
 
-contractType — query
+symbol — queryrequired
 
-futures_inversefutures_vanillaflexible_futuresoptionsall
-
-expired — query
-
-\---truefalse
+lastTime — query
 
 ResponseClear
 

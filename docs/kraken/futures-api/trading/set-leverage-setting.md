@@ -2,24 +2,22 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-leverage-setting
 api_type: REST
-updated_at: 2026-06-02 20:10:47.226231
+updated_at: 2026-06-03 20:14:55.147802
 ---
 
-# Set PNL currency preference
+# Set leverage settings
 
-**PUT** `https://futures.kraken.com/derivatives/api/v3/pnlpreferences`
+**PUT** `https://futures.kraken.com/derivatives/api/v3/leveragepreferences`
 
-The PNL currency preference is used to determine which currency to pay out when realizing PNL gains. Calling this API can result in the following error codes:
+Sets a contract's margin mode, either "isolated" or "cross" margin.
 
-87: Contract does not exist
+When specifying a max leverage, the contract's margin mode will be isolated.
 
-88: Contract not a multi-collateral futures contract
+Calling this endpoint can result in the following error codes:
 
-89: Currency does not exist
-
-90: Currency is not enabled for multi-collateral futures
-
-41: Would cause liquidation
+  * 87: Contract does not exist
+  * 88: Contract not a multi-collateral futures contract
+  * 41: Would cause liquidation
 
 ## Request
 
@@ -27,11 +25,13 @@ The PNL currency preference is used to determine which currency to pay out when 
 
 **symbol** `string` *required*
 
-The symbol for the PnL preference.
+Symbol for the leverage preference.
 
-**pnlPreference** stringrequired
+**maxLeverage** number
 
-The asset in which profit will be realised for the specific symbol.
+Max leverage to set.
+
+When present, the symbol's margin mode will be set to "isolated". When missing, the symbol's margin mode will be set to "cross".
 
 ## Responses
 
@@ -124,7 +124,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/pnlpreferences' \  
+    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/leveragepreferences' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -146,4 +146,4 @@ Parameters
 
 symbol — queryrequired
 
-pnlPreference — queryrequired
+maxLeverage — query

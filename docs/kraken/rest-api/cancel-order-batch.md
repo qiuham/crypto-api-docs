@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-order-batch
 api_type: REST
-updated_at: 2026-06-02 20:12:33.729476
+updated_at: 2026-06-03 20:16:45.989632
 ---
 
-# Request Withdrawal Cancellation
+# Cancel Order Batch
 
-**POST** `https://api.kraken.com/0/private/WithdrawCancel`
+**POST** `https://api.kraken.com/0/private/CancelOrderBatch`
 
-Cancel a recently requested withdrawal, if it has not already been successfully processed.
+Cancel multiple open orders by `txid`, `userref` or `cl_ord_id`(maximum 50 total unique IDs/references)
 
-**API Key Permissions Required:** `Funds permissions - Withdraw`, unless withdrawal is a `WalletTransfer`, then no permissions are required.
+**API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
 ## Request
 
@@ -23,30 +23,54 @@ Cancel a recently requested withdrawal, if it has not already been successfully 
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string` *required*
+**orders** `object[]`
 
-Asset being withdrawn
+  * Array [
 
-**refid** `string` *required*
+    ↳ **txid** `object`
 
-Withdrawal reference ID
+Open order transaction IDs (txid) or user references (userref), up to a maximum of 50 total unique IDs/references.
+
+oneOf
+* string
+* integer
+
+****string
+
+****integer
+
+  * ]
+
+        ↳ **cl_ord_ids** `object[]`
+
+  * Array [
+
+            ↳ **cl_ord_id** `string`
+
+An alphanumeric client order identifier which uniquely identifies an open order for each client. Up to a maximum of 50 total unique IDs/references.
+
+  * ]
 
 ## Responses
 
   * 200
 
-Withdrawal cancellation requested.
+Open order cancelled.
 
   * application/json
 * Schema
+  * Example
 
 **Schema**
 
-**result** `boolean`
-
-Whether cancellation was successful or not.
-
-**error** `string[]`
+    
+    
+    {  
+      "error": [],  
+      "result": {  
+        "count": 2  
+      }  
+    }  
 * curl
   * python
   * go
@@ -55,15 +79,17 @@ Whether cancellation was successful or not.
 
     
     
-    curl -L 'https://api.kraken.com/0/private/WithdrawCancel' \  
+    curl -L 'https://api.kraken.com/0/private/CancelOrderBatch' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828271,  
-      "asset": "XBT",  
-      "refid": "FTQcuak-V6Za8qrWnhzTx67yYHz8Tg"  
+      "nonce": 1695828490,  
+      "orders": [  
+        "OP5V2Y-RYKVL-ET3V3B",  
+        "OP5V2Y-7YKVL-ET3V3B"  
+      ]  
     }'  
     
 
@@ -83,7 +109,9 @@ Body required
     
     
     {
-      "nonce": 1695828271,
-      "asset": "XBT",
-      "refid": "FTQcuak-V6Za8qrWnhzTx67yYHz8Tg"
+      "nonce": 1695828490,
+      "orders": [
+        "OP5V2Y-RYKVL-ET3V3B",
+        "OP5V2Y-7YKVL-ET3V3B"
+      ]
     }

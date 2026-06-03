@@ -2,18 +2,20 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ticker
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:53.890442
+updated_at: 2026-06-03 20:24:17.305105
 ---
 
-# Ticker (Level 1)
+# Trades
 
 CHANNEL
 **Endpoint:** `wss://ws.kraken.com/v2`
-    ticker
+    trade
 
-The `ticker` channel streams level 1 market data, i.e. top of the book (best bid/offer) and recent trade data.
+The `trade` channel generates a trade event when orders are matched in the book.
 
-The feed accepts a list symbols for subscription and the updates are generated on trade events.
+Multiple trades may be batched in a single message but that does not mean that these trades resulted from a single taker order.
+
+The feed accepts a list symbols for subscription.
 
 ## Subscribe Request
 
@@ -32,7 +34,7 @@ The feed accepts a list symbols for subscription and the updates are generated o
 
     ↳ **channel** `string` *required*
 
-**Value:** `ticker`
+**Value:** `trade`
 
     ↳ **symbol** `array of strings` *required*
 
@@ -40,22 +42,11 @@ The feed accepts a list symbols for subscription and the updates are generated o
 
 A list of currency pairs.
 
-        ↳ **event_trigger** `string`
-
-**Possible values:**[`bbo`, ` trades`] 
-
-**Default value:**`trades`
-
-The book event that causes a new ticker update to be published on the channel.
-
-  * `bbo`: on a change in the best-bid-offer price levels.
-  * `trades`: on every trade.
-
         ↳ **snapshot** `boolean`
 
 **Possible values:**[`true`, ` false`] 
 
-**Default value:**`true`
+**Default value:**`false`
 
 Request a snapshot after subscribing.
 
@@ -73,7 +64,7 @@ Optional client originated request identifier sent as acknowledgment in the resp
 
     ↳ **channel** `string` *required*
 
-**Value:** `ticker`
+**Value:** `trade`
 
     ↳ **symbol** `string` *required*
 
@@ -127,10 +118,11 @@ Optional client originated request identifier sent as acknowledgment in the resp
     {  
         "method": "subscribe",  
         "params": {  
-            "channel": "ticker",  
+            "channel": "trade",  
             "symbol": [  
-                "ALGO/USD"  
-            ]  
+                "MATIC/USD"  
+            ],  
+            "snapshot": true  
         }  
     }  
     
@@ -139,21 +131,23 @@ Optional client originated request identifier sent as acknowledgment in the resp
     {  
         "method": "subscribe",  
         "result": {  
-            "channel": "ticker",  
+            "channel": "trade",  
             "snapshot": true,  
-            "symbol": "ALGO/USD"  
+            "symbol": "MATIC/USD"  
         },  
         "success": true,  
-        "time_in": "2023-09-25T09:04:31.742599Z",  
-        "time_out": "2023-09-25T09:04:31.742648Z"  
+        "time_in": "2023-09-25T09:21:10.428340Z",  
+        "time_out": "2023-09-25T09:21:10.428375Z"  
     }  
     
 
-## Snapshot / Update Response
+## Snapshot and Update Response
 
 The snapshot and update responses share the same schema. An update message is streamed on a trade event.
 
-  * Snapshot / Update Schema
+The snapshot reflects the most recent 50 trades.
+
+  * Response Schema
   * Example: Snapshot
   * Example: Update
 
@@ -161,7 +155,7 @@ The snapshot and update responses share the same schema. An update message is st
 
 **channel** `string`
 
-**Value:** `ticker`
+**Value:** `trade`
 
 **type** `string`
 
@@ -169,45 +163,9 @@ The snapshot and update responses share the same schema. An update message is st
 
 **data** `array [`
 
-**[0] ticker** object
+A list of trade events.
 
-The ticker element is always the first and only item in the data payload. 
-
-    ↳ **ask** `float`
-
-Best ask price.
-
-    ↳ **ask_qty** `float`
-
-Best ask quantity.
-
-    ↳ **bid** `float`
-
-Best bid price.
-
-    ↳ **bid_qty** `float`
-
-Best bid quantity.
-
-    ↳ **change** `float`
-
-24-hour price change (in quote currency).
-
-    ↳ **change_pct** `float`
-
-24-hour price change (in percentage points).
-
-    ↳ **high** `float`
-
-24-hour highest trade price.
-
-    ↳ **last** `float`
-
-Last traded price (only guaranteed if traded within the past 24 hours).
-
-    ↳ **low** `float`
-
-24-hour lowest trade price.
+**[many] trade** object
 
     ↳ **symbol** `string`
 
@@ -215,43 +173,60 @@ Last traded price (only guaranteed if traded within the past 24 hours).
 
 The symbol of the currency pair.
 
+    ↳ **side** `string`
+
+The side of the taker order.
+
+    ↳ **qty** `float`
+
+Size of the trade.
+
+    ↳ **price** `float`
+
+Average price of the trade.
+
+    ↳ **ord_type** `string`
+
+**Possible values:**[`limit`, ` market`] 
+
+The order type of the taker order.
+
+    ↳ **trade_id** `integer`
+
+Trade identifier is a sequence number, unique per book. 
+
     ↳ **timestamp** `string`
 
 **Format:** RFC3339
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The ticker data timestamp.
-
-    ↳ **volume** `float`
-
-24-hour traded volume (in base currency terms).
-
-    ↳ **vwap** `float`
-
-24-hour volume weighted average price.
+The book order update timestamp.
 
 ]
     
     
     {  
-        "channel": "ticker",  
+        "channel": "trade",  
         "type": "snapshot",  
         "data": [  
             {  
-                "symbol": "ALGO/USD",  
-                "bid": 0.10025,  
-                "bid_qty": 740.0,  
-                "ask": 0.10036,  
-                "ask_qty": 1361.44813783,  
-                "last": 0.10035,  
-                "volume": 997038.98383185,  
-                "vwap": 0.10148,  
-                "low": 0.09979,  
-                "high": 0.10285,  
-                "change": -0.00017,  
-                "change_pct": -0.17,  
-                "timestamp": "2023-09-25T09:04:31.742648Z"  
+                "symbol": "MATIC/USD",  
+                "side": "buy",  
+                "price": 0.5147,  
+                "qty": 6423.46326,  
+                "ord_type": "limit",  
+                "trade_id": 4665846,  
+                "timestamp": "2023-09-25T07:48:36.925533Z"  
+            },  
+            {  
+                "symbol": "MATIC/USD",  
+                "side": "buy",  
+                "price": 0.5147,  
+                "qty": 1136.19677815,  
+                "ord_type": "limit",  
+                "trade_id": 4665847,  
+                "timestamp": "2023-09-25T07:49:36.925603Z"  
             }  
         ]  
     }  
@@ -259,23 +234,17 @@ The ticker data timestamp.
     
     
     {  
-        "channel": "ticker",  
+        "channel": "trade",  
         "type": "update",  
         "data": [  
             {  
-                "symbol": "ALGO/USD",  
-                "bid": 0.10025,  
-                "bid_qty": 740.0,  
-                "ask": 0.10035,  
-                "ask_qty": 740.0,  
-                "last": 0.10035,  
-                "volume": 997038.98383185,  
-                "vwap": 0.10148,  
-                "low": 0.09979,  
-                "high": 0.10285,  
-                "change": -0.00017,  
-                "change_pct": -0.17,  
-                "timestamp": "2023-09-25T09:04:31.742648Z"  
+                "symbol": "MATIC/USD",  
+                "side": "sell",  
+                "price": 0.5117,  
+                "qty": 40.0,  
+                "ord_type": "market",  
+                "trade_id": 4665906,  
+                "timestamp": "2023-09-25T07:49:37.708706Z"  
             }  
         ]  
     }  
@@ -298,24 +267,13 @@ The ticker data timestamp.
 
     ↳ **channel** `string` *required*
 
-**Value:** `ticker`
+**Value:** `trade`
 
     ↳ **symbol** `array of strings` *required*
 
 **Example:**["BTC/USD", "MATIC/GBP"]
 
 A list of currency pairs.
-
-        ↳ **event_trigger** `string`
-
-**Possible values:**[`bbo`, ` trades`] 
-
-**Default value:**`trades`
-
-The book event that causes a new ticker update to be published on the channel.
-
-  * `bbo`: on a change in the best-bid-offer price levels.
-  * `trades`: on every trade.
 
 **req_id** `integer`
 
@@ -331,24 +289,13 @@ Optional client originated request identifier sent as acknowledgment in the resp
 
     ↳ **channel** `string` *required*
 
-**Value:** `ticker`
+**Value:** `trade`
 
     ↳ **symbol** `string` *required*
 
 **Example:** "BTC/USD"
 
 The currency pair associated with this subscription.
-
-    ↳ **event_trigger** `string`
-
-**Possible values:**[`bbo`, ` trades`] 
-
-**Default value:**`trades`
-
-The book event that causes a new ticker update to be published on the channel.
-
-  * `bbo`: on a change in the best-bid-offer price levels.
-  * `trades`: on every trade.
 
 **success** `boolean`
 
@@ -386,10 +333,11 @@ Optional client originated request identifier sent as acknowledgment in the resp
     {  
         "method": "unsubscribe",  
         "params": {  
-            "channel": "ticker",  
+            "channel": "trade",  
             "symbol": [  
-                "ALGO/USD"  
-            ]  
+                "MATIC/USD"  
+            ],  
+            "snapshot": true  
         }  
     }  
     
@@ -398,11 +346,10 @@ Optional client originated request identifier sent as acknowledgment in the resp
     {  
         "method": "unsubscribe",  
         "result": {  
-            "channel": "ticker",  
-            "event_trigger": "trades",  
-            "symbol": "ALGO/USD"  
+            "channel": "trade",  
+            "symbol": "MATIC/USD"  
         },  
         "success": true,  
-        "time_in": "2023-09-25T09:04:31.742599Z",  
-        "time_out": "2023-09-25T09:04:31.742648Z"  
+        "time_in": "2023-09-25T09:21:10.428340Z",  
+        "time_out": "2023-09-25T09:21:10.428375Z"  
     }

@@ -2,31 +2,22 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/allocate-strategy
 api_type: REST
-updated_at: 2026-06-02 20:12:24.060600
+updated_at: 2026-06-03 20:16:37.967477
 ---
 
-# Allocate Earn Funds
+# Amend Order
 
-**POST** `https://api.kraken.com/0/private/Earn/Allocate`
+**POST** `https://api.kraken.com/0/private/AmendOrder`
 
-Allocate funds to the Strategy.
+The amend request enables clients to modify the order parameters in-place without the need to cancel the existing order and create a new one.
 
-Requires the `Earn Funds` API key permission. The amount must always be defined.
+  * The order identifiers assigned by Kraken and/or client will stay the same.
+  * Queue priority in the order book will be maintained where possible.
+  * If an amend request will reduce the order quantity below the existing filled quantity, the remaining quantity will be cancelled.
 
-This method is asynchronous. A couple of preflight checks are performed synchronously on behalf of the method before it is dispatched further. The client is required to poll the result using the `/0/private/Earn/AllocateStatus` endpoint.
+For more detail, see [amend transaction guide](/api/docs/guides/spot-amends).
 
-There can be only one (de)allocation request in progress for given user and strategy at any time. While the operation is in progress:
-
-  1. `pending` attribute in `/Earn/Allocations` response for the strategy indicates that funds are being allocated,
-  2. `pending` attribute in `/Earn/AllocateStatus` response will be true.
-
-Following specific errors within `Earnings` class can be returned by this method:
-
-  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
-  * Allocation in progress: `EEarnings:Busy:Another (de)allocation for the same strategy is in progress`
-  * Service temporarily unavailable: `EEarnings:Busy`. Try again in a few minutes.
-  * User tier verification: `EEarnings:Permission denied:The user's tier is not high enough`
-  * Strategy not found: `EGeneral:Invalid arguments:Invalid strategy ID`
+**API Key Permissions Required:** `Orders and trades - Create & modify orders` or `Orders and trades - Cancel & close orders`
 
 ## Request
 
@@ -34,34 +25,74 @@ Following specific errors within `Earnings` class can be returned by this method
 
 ### Body**required**
 
+**txid** `string`
+
+The Kraken identifier for the order to be amended. Either `txid` or `cl_ord_id` is required.
+
+**cl_ord_id** `string`
+
+The client identifier for the order to be amended. Either `txid` or `cl_ord_id` is required.
+
+**order_qty** `string`
+
+The new order quantity in terms of the base asset.
+
+**display_qty** `string`
+
+For `iceberg` orders only, it defines the new quantity to show in the book while the rest of order quantity remains hidden. Minimum value is 1 / 15 of remaining order quantity.
+
+**limit_price** `string`
+
+The new limit price restriction on the order (for order types that support limit price only).
+
+The relative pricing can be set by using the `+`, `-` prefixes and/or `%` suffix.
+* • `+` adds the amount from the reference price, i.e. market rises 50 USD `"+50"`.
+* • `-` subtracts the amount from the reference price, i.e. market drops 100 USD `"-100"`.
+
+**trigger_price** `string`
+
+The new trigger price to activate the order (for triggered order types only).
+
+The relative pricing can be set by using the `+`, `-` prefixes and/or `%` suffix.
+* • `+` adds the amount from the reference price, i.e. market rises 50 USD `"+50"`.
+* • `-` subtracts the amount from the reference price, i.e. market drops 100 USD `"-100"`.
+
+**pair** `string`
+
+The `pair` is required on amends for non-crypto pairs, i.e. provide the pair symbol for xstocks.
+
+**post_only** `boolean`
+
+An optional flag for `limit_price` amends. If `true`, the limit price change will be rejected if the order cannot be posted passively in the book.
+
+**Default value:**`false`
+
+**deadline** `string`
+
+RFC3339 timestamp (e.g. 2021-04-01T00:18:45Z) after which the matching engine should reject the new order request, in presence of latency or order queueing. min now() + 2 seconds, max now() + 60 seconds.
+
 **nonce** `integer<int64>` *required*
 
 Nonce used in construction of `API-Sign` header
-
-**amount** `string` *required*
-
-The amount to allocate.
-
-**strategy_id** `string` *required*
-
-A unique identifier of the chosen earn strategy, as returned from `/0/private/Earn/Strategies`.
 
 ## Responses
 
   * 200
 
-Response
+A successful amend request will return the unique Kraken amend identifier.
 
   * application/json
 * Schema
 
 **Schema**
 
-**error** `string[]`
+**result** `object`
 
-**result** `booleannullable`
+    ↳ **amend_id** `string`
 
-Will return `true` when the operation is successful, null when an error occurred.
+The unique Kraken identifier generated for this amend transaction.
+
+**error** `array[]`
 * curl
   * python
   * go
@@ -70,15 +101,15 @@ Will return `true` when the operation is successful, null when an error occurred
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Earn/Allocate' \  
+    curl -L 'https://api.kraken.com/0/private/AmendOrder' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "amount": "4.3",  
-      "nonce": 30295839,  
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
+      "nonce": 1695828490,  
+      "cl_ord_id": "6d1b345e-2821-40e2-ad83-4ecb18a06876",  
+      "order_qty": "1.25"  
     }'  
     
 
@@ -98,7 +129,7 @@ Body required
     
     
     {
-      "amount": "4.3",
-      "nonce": 30295839,
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
+      "nonce": 1695828490,
+      "cl_ord_id": "6d1b345e-2821-40e2-ad83-4ecb18a06876",
+      "order_qty": "1.25"
     }

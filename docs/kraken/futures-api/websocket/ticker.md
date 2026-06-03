@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/ticker
 api_type: WebSocket
-updated_at: 2026-06-02 20:11:22.134435
+updated_at: 2026-06-03 20:15:32.984498
 ---
 
 # Ticker

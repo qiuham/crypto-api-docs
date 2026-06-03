@@ -2,16 +2,24 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/export-status
 api_type: REST
-updated_at: 2026-06-02 20:12:41.524479
+updated_at: 2026-06-03 20:16:55.293728
 ---
 
-# Get Export Report Status
+# Get Account Balance
 
-**POST** `https://api.kraken.com/0/private/ExportStatus`
+**POST** `https://api.kraken.com/0/private/Balance`
 
-Get status of requested data exports.
+Retrieve all cash balances, net of pending withdrawals.
 
-**API Key Permissions Required:** `Data - Export data`
+**Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
+
+**Symbol Extensions** :
+
+  * `.B`: balances in new yield-bearing products, similar to `.S` (staked) and `.M` (opt-in rewards) balances
+  * `.F`: balances earning automatically in Kraken Rewards
+  * `.T`: tokenized assets.
+
+**API Key Permissions Required:** `Funds permissions - Query`
 
 ## Request
 
@@ -23,76 +31,34 @@ Get status of requested data exports.
 
 Nonce used in construction of `API-Sign` header
 
-**report** `string` *required*
+**rebase_multiplier** `rebase_multiplier (string)nullable`
 
-Type of reports to inquire about
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
 
-**Possible values:** [`trades`, `ledgers`]
+**Possible values:** [`rebased`, `base`]
+
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Export status retrieved
+Account balances retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object[]`
+**result** `object`
 
-  * Array [
+Account Balance
 
-    ↳ **id** `string`
+**property name*** string
 
-Report ID
-
-    ↳ **descr** `string`
-
-    ↳ **format** `string`
-
-    ↳ **report** `string`
-
-    ↳ **subtype** `string`
-
-    ↳ **status** `string`
-
-Status of the report
-
-**Possible values:** [`Queued`, `Processing`, `Processed`]
-
-    ↳ **flags** `stringdeprecated`
-
-    ↳ **fields** `string`
-
-    ↳ **createdtm** `string`
-
-UNIX timestamp of report request
-
-    ↳ **expiretm** `stringdeprecated`
-
-    ↳ **starttm** `string`
-
-UNIX timestamp report processing began
-
-    ↳ **completedtm** `string`
-
-UNIX timestamp report processing finished
-
-    ↳ **datastarttm** `string`
-
-UNIX timestamp of the report data start time
-
-    ↳ **dataendtm** `string`
-
-UNIX timestamp of the report data end time
-
-    ↳ **aclass** `stringdeprecated`
-
-    ↳ **asset** `string`
-
-  * ]
+balance
 
 **error** `string[]`
 * curl
@@ -103,14 +69,14 @@ UNIX timestamp of the report data end time
 
     
     
-    curl -L 'https://api.kraken.com/0/private/ExportStatus' \  
+    curl -L 'https://api.kraken.com/0/private/Balance' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828490,  
-      "report": "trades"  
+      "nonce": 0,  
+      "rebase_multiplier": "rebased"  
     }'  
     
 
@@ -130,6 +96,6 @@ Body required
     
     
     {
-      "nonce": 1695828490,
-      "report": "trades"
+      "nonce": 0,
+      "rebase_multiplier": "rebased"
     }

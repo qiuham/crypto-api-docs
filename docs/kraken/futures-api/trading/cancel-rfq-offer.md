@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-rfq-offer
 api_type: REST
-updated_at: 2026-06-02 20:09:31.004747
+updated_at: 2026-06-03 20:13:34.793143
 ---
 
-# Cancel open offer on open RFQ
+# Cancel an open RFQ
 
-**DELETE** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/cancel-offer/:rfqUid`
+**DELETE** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs/:rfqUid`
 
-Cancel the current open offer on the specified open RFQ.
+Cancel a specific open RFQ created by the authenticated account.
 
 Note: This is currently available exclusively in the Kraken pre-prod environments.
 
@@ -19,19 +19,16 @@ Note: This is currently available exclusively in the Kraken pre-prod environment
 
 **rfqUid** uuidrequired
 
-Unique identifier for the RFQ
-
-### Query Parameters
-
-**offerUid** uuid
-
-Unique identifier for the offer to cancel
+Unique identifier for the RFQ to cancel
 
 ## Responses
 
   * 200
   * 404
-* application/json
+
+RFQ cancellation result
+
+  * application/json
 * Schema
 
 **Schema**
@@ -48,6 +45,8 @@ Unique identifier for the offer to cancel
 
 **serverTime** string<date-time>required
 
+**rfqUid** string<uuid>required
+
 **result** `string` *required*
 
 **Possible values:** [`success`]
@@ -56,7 +55,7 @@ Unique identifier for the offer to cancel
 
 **reason** `string` *required*
 
-**Possible values:** [`rfqNotFound`, `offerNotFound`]
+**Possible values:** [`rfqNotFound`]
 
 RFQ feature is not enabled.
 
@@ -121,7 +120,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X DELETE 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/cancel-offer/:rfqUid' \  
+    curl -L -X DELETE 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/open-rfqs/:rfqUid' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -142,5 +141,3 @@ authent
 Parameters
 
 rfqUid — pathrequired
-
-offerUid — query

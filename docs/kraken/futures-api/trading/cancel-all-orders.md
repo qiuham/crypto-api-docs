@@ -2,24 +2,22 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders
 api_type: REST
-updated_at: 2026-06-02 20:09:27.176409
+updated_at: 2026-06-03 20:13:28.301790
 ---
 
-# Dead man's switch
+# Cancel all orders
 
-**POST** `https://futures.kraken.com/derivatives/api/v3/cancelallordersafter`
+**POST** `https://futures.kraken.com/derivatives/api/v3/cancelallorders`
 
-This endpoint provides a Dead Man's Switch mechanism to protect the user from network malfunctions. The user can send a request with a timeout in seconds which will trigger a countdown timer that will cancel all user orders when timeout expires. The user has to keep sending request to push back the timeout expiration or they can deactivate the mechanism by specifying a timeout of zero (0).
-
-The recommended mechanism usage is making a call every 15 to 20 seconds and provide a timeout of 60 seconds. This allows the user to keep the orders in place on a brief network failure, while keeping them safe in case of a network breakdown.
+This endpoint allows cancelling orders which are associated with a future's contract or a margin account. If no arguments are specified all open orders will be cancelled.
 
 ## Request
 
 ### Query Parameters
 
-**timeout** `uint32`
+**symbol** `string`
 
-The timeout specified in seconds.
+A futures product to cancel all open orders.
 
 ## Responses
 
@@ -27,8 +25,6 @@ The timeout specified in seconds.
 * application/json
 * Schema
   * success
-  * cancel
-  * failure
 
 **Schema**
 
@@ -36,17 +32,113 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**status** `object` *required*
+**cancelStatus** objectrequired
 
-The status of the switch.
+A structure containing information on the cancellation request.
 
-**currentTime** stringrequired
+**cancelOnly** stringrequired
 
-The server date and time that server received the request.
+The symbol of the futures or all.
 
-**triggerTime** stringrequired
+**cancelledOrders** object[]required
 
-The server date and time that the switch will be activated.
+A list of structures containing all the successfully cancelled orders.
+
+  * Array [
+
+**cliOrdId** string | nullnullable
+
+Unique client order identifier.
+
+**Possible values:** `<= 100 characters`
+
+**order_id** `string<uuid>` *required*
+
+Order ID.
+
+  * ]
+
+**orderEvents** object[]required
+
+  * Array [
+
+**type** `string` *required*
+
+Always `CANCEL`.
+
+**Possible values:** [`CANCEL`]
+
+**uid** `string` *required*
+
+The UID associated with the order.
+
+**order** `object` *required*
+
+oneOf
+* OrderJson
+* MOD2
+
+**orderId** stringrequired
+
+The UID associated with the order.
+
+**cliOrdId** string | nullnullablerequired
+
+The client order id or null if order does not have one.
+
+    ↳ **type** `string` *required*
+
+The order type
+
+**Possible values:** [`lmt`, `ioc`, `post`, `liquidation`, `assignment`, `stp`, `unwind`, `block`, `fok`]
+
+    ↳ **symbol** `string` *required*
+
+The symbol of the Futures.
+
+    ↳ **side** `string` *required*
+
+The side associated with the order
+
+**Possible values:** [`buy`, `sell`]
+
+    ↳ **quantity** `number` *required*
+
+The quantity (size) associated with the order.
+
+    ↳ **filled** `number` *required*
+
+The total amount of the order that has been filled.
+
+**limitPrice** numberrequired
+
+The limit price associated with a limit order.
+
+**reduceOnly** booleanrequired
+
+Is the order a reduce only order or not.
+
+    ↳ **timestamp** `string` *required*
+
+The date and time the order was placed.
+
+**lastUpdateTimestamp** stringrequired
+
+The date and time the order was edited.
+
+  * ]
+
+**receivedTime** stringrequired
+
+The date and time the order cancellation was received.
+
+    ↳ **status** `string` *required*
+
+The status of the order cancellation:
+* `cancelled` \- successful cancellation
+* `noOrdersToCancel` \- no open orders for cancellation
+
+**Possible values:** [`noOrdersToCancel`, `cancelled`]
 
 **result** `string` *required*
 
@@ -103,30 +195,57 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "status": {  
-        "currentTime": "2018-06-19T16:51:23.839Z",  
-        "triggerTime": "2018-06-19T16:52:23.839Z"  
+      "cancelStatus": {  
+        "receivedTime": "2019-08-01T15:57:37.518Z",  
+        "cancelOnly": "all",  
+        "status": "cancelled",  
+        "cancelledOrders": [  
+          {  
+            "order_id": "6180adfa-e4b1-4a52-adac-ea5417620dbd"  
+          },  
+          {  
+            "order_id": "89e3edbe-d739-4c52-b866-6f5a8407ff6e"  
+          },  
+          {  
+            "order_id": "0cd37a77-1644-4960-a7fb-9a1f6e0e46f7"  
+          }  
+        ],  
+        "orderEvents": [  
+          {  
+            "type": "CANCEL",  
+            "uid": "89e3edbe-d739-4c52-b866-6f5a8407ff6e",  
+            "order": {  
+              "orderId": "89e3edbe-d739-4c52-b866-6f5a8407ff6e",  
+              "type": "post",  
+              "symbol": "PI_XBTUSD",  
+              "side": "buy",  
+              "quantity": 890,  
+              "filled": 0,  
+              "limitPrice": 10040,  
+              "reduceOnly": false,  
+              "timestamp": "2019-08-01T15:57:08.508Z",  
+              "lastUpdateTimestamp": "2019-08-01T15:57:08.508Z"  
+            }  
+          },  
+          {  
+            "type": "CANCEL",  
+            "uid": "0cd37a77-1644-4960-a7fb-9a1f6e0e46f7",  
+            "order": {  
+              "orderId": "0cd37a77-1644-4960-a7fb-9a1f6e0e46f7",  
+              "type": "lmt",  
+              "symbol": "PI_XBTUSD",  
+              "side": "sell",  
+              "quantity": 900,  
+              "filled": 0,  
+              "limitPrice": 10145,  
+              "reduceOnly": true,  
+              "timestamp": "2019-08-01T15:57:14.003Z",  
+              "lastUpdateTimestamp": "2019-08-01T15:57:14.003Z"  
+            }  
+          }  
+        ]  
       },  
-      "serverTime": "2018-06-19T16:51:23.839Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "success",  
-      "status": {  
-        "currentTime": "2018-06-19T16:51:23.839Z",  
-        "triggerTime": "0"  
-      },  
-      "serverTime": "2018-06-19T16:51:23.839Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "error",  
-      "serverTime": "2016-02-25T09:45:53.818Z",  
-      "error": "apiLimitExceeded"  
+      "serverTime": "2019-08-01T15:57:37.520Z"  
     }  
     
 
@@ -146,7 +265,7 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/cancelallordersafter' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/cancelallorders' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -166,4 +285,4 @@ authent
 
 Parameters
 
-timeout — query
+symbol — query

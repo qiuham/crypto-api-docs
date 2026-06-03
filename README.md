@@ -30,7 +30,7 @@ PYTHONPATH=. python src/main.py readme
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-03 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-06-03 |
-| [Kraken](./docs/kraken/) | ✅ | 243 | 2026-06-02 |
+| [Kraken](./docs/kraken/) | ✅ | 248 | 2026-06-03 |
 | [OKX](./docs/okx/) | ✅ | 510 | 2026-06-03 |
 
 ## GitHub Actions
@@ -69,7 +69,7 @@ crypto-api-docs/
 │   ├── coinbase/               # 71 Markdown docs
 │   ├── gateio/                 # 66 Markdown docs
 │   ├── hyperliquid/            # 34 Markdown docs
-│   ├── kraken/                 # 243 Markdown docs
+│   ├── kraken/                 # 248 Markdown docs
 │   └── okx/                    # 510 Markdown docs
 ├── index/                  # JSON 索引（供 AI 读取）
 │   ├── binance.json

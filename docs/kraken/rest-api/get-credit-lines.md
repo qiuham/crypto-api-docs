@@ -2,16 +2,25 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-credit-lines
 api_type: REST
-updated_at: 2026-06-02 20:12:51.787665
+updated_at: 2026-06-03 20:17:07.374469
 ---
 
-# Get Credit Lines
+# Get Deallocation Status
 
-**POST** `https://api.kraken.com/0/private/CreditLines`
+**POST** `https://api.kraken.com/0/private/Earn/DeallocateStatus`
 
-Retrieve all credit line details for VIPs with this functionality.
+Get the status of the last deallocation request.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+Requires either the `Earn Funds` or `Query Funds` API key permission.
+
+(De)allocation operations are asynchronous and this endpoint allows client to retrieve the status of the last dispatched operation. There can be only one (de)allocation request in progress for given user and strategy.
+
+The `pending` attribute in the response indicates if the previously dispatched operation is still in progress (true) or has successfully completed (false). If the dispatched request failed with an error, then HTTP error is returned to the client as if it belonged to the original request.
+
+Following specific errors within `Earnings` class can be returned by this method:
+
+  * Insufficient funds: `EEarnings:Insufficient funds:Insufficient funds to complete the (de)allocation request`
+  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
 
 ## Request
 
@@ -23,121 +32,46 @@ Retrieve all credit line details for VIPs with this functionality.
 
 Nonce used in construction of `API-Sign` header
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**strategy_id** `string` *required*
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+ID of the earn strategy, call `Earn/Strategies` to list available strategies
 
 ## Responses
 
   * 200
 
-Credit line details retrieved.
+Response
 
   * application/json
 * Schema
 
 **Schema**
 
+**error** `string[]`
+
 **result** `objectnullable`
 
-Credit Line Details
+Status of async earn operation
 
-    ↳ **asset_details** `object`
+    ↳ **pending** `boolean`
 
-Balances by asset
-
-**property name*** CreditLinesAsset
-
-Credit line details for a specific asset
-
-        ↳ **balance** `string`
-
-Current balance for the asset
-
-**Example:**`1000.5000`
-
-        ↳ **credit_limit** `string`
-
-Credit limit for the asset
-
-**Example:**`50000.0000`
-
-        ↳ **credit_used** `string`
-
-Currently used credit for the asset
-
-**Example:**`12500.0000`
-
-        ↳ **available_credit** `string`
-
-Available credit for the asset
-
-**Example:**`37500.0000`
-
-        ↳ **limits_monitor** `object`
-
-Credit monitor
-
-            ↳ **total_credit_usd** `stringnullable`
-
-Total credit across all assets represented in USD
-
-**Example:**`100000.0000`
-
-            ↳ **total_credit_used_usd** `stringnullable`
-
-Total credit used across all assets represented in USD
-
-**Example:**`25000.0000`
-
-            ↳ **total_collateral_value_usd** `stringnullable`
-
-Sum of asset balance in USD * collateral
-
-**Example:**`150000.0000`
-
-            ↳ **equity_usd** `stringnullable`
-
-Total collateral - total credit (in USD)
-
-**Example:**`125000.0000`
-
-            ↳ **ongoing_balance** `stringnullable`
-
-Total collateral / total credit (in USD)
-
-**Example:**`1.5000`
-
-            ↳ **debt_to_equity** `stringnullable`
-
-Total credit used / equity (in USD)
-
-**Example:**`0.2000`
-
-**error** `string[]`
+`true` if an operation is still in progress on the same strategy.
 * curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/CreditLines' \  
+    curl -L 'https://api.kraken.com/0/private/Earn/DeallocateStatus' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "rebase_multiplier": "rebased"  
+      "nonce": 30295839,  
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
     }'  
     
 
@@ -157,6 +91,6 @@ Body required
     
     
     {
-      "nonce": 0,
-      "rebase_multiplier": "rebased"
+      "nonce": 30295839,
+      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
     }

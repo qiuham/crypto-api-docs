@@ -2,28 +2,57 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/send-batch-order
 api_type: REST
-updated_at: 2026-06-02 20:10:44.018773
+updated_at: 2026-06-03 20:14:51.604987
 ---
 
-# Send order
+# Batch order management
 
-**POST** `https://futures.kraken.com/derivatives/api/v3/sendorder`
+**POST** `https://futures.kraken.com/derivatives/api/v3/batchorder`
 
-This endpoint allows sending a limit, stop, take profit or immediate-or-cancel order for a currently listed Futures contract.
+This endpoint allows sending limit or stop order(s) and/or cancelling open order(s) and/or editing open order(s) for a currently listed Futures contract in batch.
+
+When editing an order, if the `trailingStopMaxDeviation` and `trailingStopDeviationUnit` parameters are sent unchanged, the system will recalculate a new stop price upon successful order modification.
 
 ## Request
 
-### Query Parameters
+  * application/x-www-form-urlencoded
 
-**processBefore** date-time
+### Query Parameters**required**
+
+**ProcessBefore**
 
 The time before which the request should be processed, otherwise it is rejected.
 
-**Example:** 2023-11-08T19:56:35.441899Z
+**Example:**`2023-11-08T19:56:35.441899Z`
 
-**orderType** OrderTyperequired
+**json** `object` *required*
 
-**Possible values:** [`lmt`, `post`, `ioc`, `mkt`, `stp`, `take_profit`, `trailing_stop`, `fok`]
+note
+
+This parameter is required to be encoded as a json string.
+
+**batchOrder** object[]required
+
+A list containing structures of order sending and order cancellation instructions. The list is in no particular order.
+
+  * Array [
+
+oneOf
+* BatchOrderSend
+* BatchOrderEdit
+* BatchOrderCancel
+
+    ↳ **order** `string`
+
+Always `send`.
+
+**Possible values:** [`send`]
+
+    ↳ **order_tag** `string` *required*
+
+An arbitrary string provided client-side to tag the order for the purpose of mapping order sending instructions to the API's response.
+
+**orderType** OrderType (string)required
 
 The order type:
 * `lmt` \- a limit order
@@ -33,93 +62,140 @@ The order type:
 * `take_profit` \- a take profit order
 * `ioc` \- an immediate-or-cancel order
 * `trailing_stop` \- a trailing stop order
-* `fok` \- fill or kill order
+* `fok` \- fill-or-kill order
 
-**symbol** `string` *required*
+**Possible values:** [`lmt`, `post`, `ioc`, `mkt`, `stp`, `take_profit`, `trailing_stop`, `fok`]
 
-The symbol of the Futures
+    ↳ **symbol** `string` *required*
 
-**side** `OrderDirection` *required*
+The symbol of the Futures.
 
-**Possible values:** [`buy`, `sell`]
+    ↳ **side** `OrderDirection (string)` *required*
 
 The direction of the order.
 
-**size** `number` *required*
+**Possible values:** [`buy`, `sell`]
 
-The size associated with the order. Note that different Futures have different contract sizes.
+    ↳ **size** `number` *required*
+
+The size associated with the order.
 
 **limitPrice** number
 
-The limit price associated with the order. Note that for stop orders, limitPrice denotes the worst price at which the `stp` or `take_profit` order can get filled at. If no `limitPrice` is provided the `stp` or `take_profit` order will trigger a market order. If placing a `trailing_stop` order then leave undefined.
+The limit price associated with the order. If placing a `trailing_stop` order then leave undefined.
 
 **stopPrice** number
 
-The stop price associated with a stop or take profit order.
-
-Required if orderType is `stp` or `take_profit`, but if placing a `trailing_stop` then leave undefined. Note that for stop orders, limitPrice denotes the worst price at which the `stp` or `take_profit` order can get filled at. If no `limitPrice` is provided the `stp` or `take_profit` order will trigger a market order.
+The stop price associated with a stop order. Required if `orderType` is `stp`. Note that for `stp` orders, `limitPrice` is also required and denotes the worst price at which the `stp` order can get filled
 
 **cliOrdId** string
 
-**Possible values:** `<= 100 characters`
-
 The order identity that is specified from the user. It must be globally unique.
+
+**Possible values:** `<= 100 characters`
 
 **triggerSignal** string
 
 **Possible values:** [`mark`, `index`, `last`]
 
-If placing a `stp`, `take_profit` or `trailing_stop`, the signal used for trigger.
-* `mark` \- the mark price
-* `index` \- the index price
-* `last` \- the last executed trade
-
 **reduceOnly** boolean
 
-Set as true if you wish the order to only reduce an existing position.
+Set as 'true' if you wish the order to only reduce an existing position. Any order which increases an existing position will be rejected. Default 'false'.
 
-Any order which increases an existing position will be rejected. Default false.
+**Default value:**`false`
 
 **trailingStopMaxDeviation** number
 
-**Possible values:** `>= 0.1` and `<= 50`
-
-Required if the order type is `trailing_stop`. Maximum value of 50%, minimum value of 0.1% for 'PERCENT' 'maxDeviationUnit'.
+Required if the order type is `trailing_stop`.
 
 Is the maximum distance the trailing stop's trigger price may trail behind the requested trigger signal. It defines the threshold at which the trigger price updates.
 
 **trailingStopDeviationUnit** string
 
-**Possible values:** [`PERCENT`, `QUOTE_CURRENCY`]
-
 Required if the order type is `trailing_stop`.
 
 This defines how the trailing trigger price is calculated from the requested trigger signal. For example, if the max deviation is set to 10, the unit is 'PERCENT', and the underlying order is a sell, then the trigger price will never be more then 10% below the trigger signal. Similarly, if the deviation is 100, the unit is 'QUOTE_CURRENCY', the underlying order is a sell, and the contract is quoted in USD, then the trigger price will never be more than $100 below the trigger signal.
 
-**limitPriceOffsetValue** number
+**Possible values:** [`PERCENT`, `QUOTE_CURRENCY`]
 
-Can only be set for triggers, e.g. order types `take_profit`, `stop` and `trailing_stop`. If set, `limitPriceOffsetUnit` must be set as well. This defines a relative limit price depending on the trigger `stopPrice`. The price is determined when the trigger is activated by the `triggerSignal`. The offset can be positive or negative, there might be restrictions on the value depending on the `limitPriceOffsetUnit`.
+**cliOrdId** string | nullnullable
 
-**limitPriceOffsetUnit** string
+Unique client order identifier.
 
-**Possible values:** [`QUOTE_CURRENCY`, `PERCENT`]
+**Possible values:** `<= 100 characters`
 
-Can only be set together with `limitPriceOffsetValue`. This defines the unit for the relative limit price distance from the trigger's `stopPrice`.
+    ↳ **order_id** `string<uuid>` *required*
 
-**broker** `iiban`
+Order ID.
 
-Valid Broker IIBAN on whose behalf the order is sent. The format must follow the usual IIBAN pattern `XXXX YYYY ZZZZ WWWW` or machine pattern `XXXXYYYYZZZZWWWW`.
+    ↳ **order** `string`
 
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+Always `edit`.
+
+**Possible values:** [`edit`]
+
+    ↳ **size** `number`
+
+The size associated with the order.
+
+**limitPrice** number
+
+The limit price associated with the order.
+
+**stopPrice** number
+
+The stop price associated with a stop order. Required if old orderType is stp.
+
+Note that for `stp` orders, `limitPrice` is also required and denotes the worst price at which the stp order can get filled.
+
+**trailingStopMaxDeviation** number
+
+Only relevant for trailing stop orders. Maximum value of 50%, minimum value of 0.1% for 'PERCENT' 'maxDeviationUnit'.
+
+Is the maximum distance the trailing stop's trigger price may trail behind the requested trigger signal. It defines the threshold at which the trigger price updates.
+
+**Possible values:** `>= 0.1` and `<= 50`
+
+**trailingStopDeviationUnit** string
+
+Only relevant for trailing stop orders.
+
+This defines how the trailing trigger price is calculated from the requested trigger signal. For example, if the max deviation is set to 10, the unit is 'PERCENT', and the underlying order is a sell, then the trigger price will never be more then 10% below the trigger signal. Similarly, if the deviation is 100, the unit is 'QUOTE_CURRENCY', the underlying order is a sell, and the contract is quoted in USD, then the trigger price will never be more than $100 below the trigger signal.
+
+**Possible values:** [`PERCENT`, `QUOTE_CURRENCY`]
+
+**qtyMode** string
+
+Determines how the updated size is interpreted, defaulting to 'RELATIVE'.
+
+'ABSOLUTE' means that the total order size, including past fills, is set to `size`. 'RELATIVE' means that the current open order size is set to `size`.
+
+**Possible values:** [`ABSOLUTE`, `RELATIVE`]
+
+    ↳ **order** `string` *required*
+
+Always `cancel`.
+
+**Possible values:** [`cancel`]
+
+    ↳ **order_id** `string<uuid>`
+
+Order ID.
+
+**cliOrdId** string
+
+Unique client order identifier.
+
+**Possible values:** `<= 100 characters`
+
+  * ]
 
 ## Responses
 
   * 200
 * application/json
 * Schema
-  * placed
-  * rejected
-  * executed
+  * success
 
 **Schema**
 
@@ -127,17 +203,21 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**sendStatus** objectrequired
+**batchStatus** object[]required
 
 A structure containing information on the send order request.
 
+  * Array [
+
 **cliOrdId** string
 
-The unique client order identifier.
+The unique client order identifier. This field is returned only if the order has a client order ID.
 
-This field is returned only if the order has a client order ID.
+**dateTimeReceived** string | nullnullable
 
-**orderEvents** object[]
+The date and time the order was received.
+
+**orderEvents** object[]required
 
   * Array [
 
@@ -801,17 +881,17 @@ The date and time the order was edited.
 
   * ]
 
-                    ↳ **order_id** `string<uuid>`
+                    ↳ **order_id** `string | nullnullable`
 
-The unique identifier of the order
+The unique identifier of the order.
 
-**receivedTime** string<date-time>
+                    ↳ **order_tag** `string | nullnullable`
 
-The date and time the order was received.
+The arbitrary string provided client-side when the order was sent for the purpose of mapping order sending instructions to the API's response.
 
                     ↳ **status** `string` *required*
 
-The status of the order, either of:
+The status of the order:
 * `placed` \- the order was placed successfully
 * `cancelled` \- the order was cancelled successfully
 * `invalidOrderType` \- the order was not placed because orderType is invalid
@@ -821,19 +901,17 @@ The status of the order, either of:
 * `insufficientAvailableFunds` \- the order was not placed because available funds are insufficient
 * `selfFill` \- the order was not placed because it would be filled against an existing order belonging to the same account
 * `tooManySmallOrders` \- the order was not placed because the number of small open orders would exceed the permissible limit
-* `maxPositionViolation` \- Order would cause you to exceed your maximum position in this contract.
 * `marketSuspended` \- the order was not placed because the market is suspended
 * `marketInactive` \- the order was not placed because the market is inactive
-* `clientOrderIdAlreadyExist` \- the specified client id already exist
-* `clientOrderIdTooLong` \- the client id is longer than the permissible limit
-* `outsidePriceCollar` \- the order would have executed outside of the price collar for its order type
+* `clientOrderIdAlreadyExist` \- the specified client ID already exist
+* `clientOrderIdTooLong` \- the client ID is longer than the permissible limit
+* `outsidePriceCollar` \- the limit order crosses the spread but is an order of magnitude away from the mark price - fat finger control
 * `postWouldExecute` \- the post-only order would be filled upon placement, thus is cancelled
-* `iocWouldNotExecute` \- the immediate-or-cancel order would not execute.
-* `wouldCauseLiquidation` \- returned when a new order would fill at a worse price than the mark price, causing the portfolio value to fall below maintenance margin and triggering a liquidation.
-* `wouldNotReducePosition` \- the reduce only order would not reduce position.
-* `wouldProcessAfterSpecifiedTime` \- order would be processed after the time specified in `processBefore` parameter.
+* `iocWouldNotExecute` \- the immediate-or-cancel order would not execute
 
-**Possible values:** [`placed`, `partiallyFilled`, `filled`, `cancelled`, `edited`, `marketSuspended`, `marketInactive`, `invalidPrice`, `invalidSize`, `tooManySmallOrders`, `insufficientAvailableFunds`, `wouldCauseLiquidation`, `clientOrderIdAlreadyExist`, `clientOrderIdTooBig`, `maxPositionViolation`, `outsidePriceCollar`, `wouldIncreasePriceDislocation`, `notFound`, `orderForEditNotAStop`, `orderForEditNotFound`, `postWouldExecute`, `iocWouldNotExecute`, `selfFill`, `wouldNotReducePosition`, `marketIsPostOnly`, `tooManyOrders`, `fixedLeverageTooHigh`, `clientOrderIdInvalid`, `cannotEditTriggerPriceOfTrailingStop`, `cannotEditLimitPriceOfTrailingStop`, `wouldProcessAfterSpecifiedTime`]
+**Possible values:** [`placed`, `edited`, `cancelled`, `invalidOrderType`, `invalidSide`, `invalidSize`, `invalidPrice`, `insufficientAvailableFunds`, `selfFill`, `tooManySmallOrders`, `marketSuspended`, `marketInactive`, `clientOrderIdAlreadyExist`, `clientOrderIdTooLong`, `outsidePriceCollar`, `postWouldExecute`, `iocWouldNotExecute`]
+
+  * ]
 
 **result** `string` *required*
 
@@ -890,92 +968,87 @@ Server time in Coordinated Universal Time (UTC)
     
     {  
       "result": "success",  
-      "sendStatus": {  
-        "order_id": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",  
-        "status": "placed",  
-        "receivedTime": "2019-09-05T16:33:50.734Z",  
-        "orderEvents": [  
-          {  
-            "type": "PLACE",  
-            "order": {  
-              "orderId": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",  
-              "type": "lmt",  
-              "symbol": "PI_XBTUSD",  
-              "side": "buy",  
-              "quantity": 10000,  
-              "filled": 0,  
-              "limitPrice": 9400,  
-              "reduceOnly": false,  
-              "timestamp": "2019-09-05T16:33:50.734Z",  
-              "lastUpdateTimestamp": "2019-09-05T16:33:50.734Z"  
+      "batchStatus": [  
+        {  
+          "status": "placed",  
+          "order_tag": "1",  
+          "order_id": "022774bc-2c4a-4f26-9317-436c8d85746d",  
+          "dateTimeReceived": "2019-09-05T16:41:35.173Z",  
+          "orderEvents": [  
+            {  
+              "type": "PLACE",  
+              "order": {  
+                "orderId": "022774bc-2c4a-4f26-9317-436c8d85746d",  
+                "type": "lmt",  
+                "symbol": "PI_XBTUSD",  
+                "side": "buy",  
+                "quantity": 1000,  
+                "filled": 0,  
+                "limitPrice": 9400,  
+                "reduceOnly": false,  
+                "timestamp": "2019-09-05T16:41:35.173Z",  
+                "lastUpdateTimestamp": "2019-09-05T16:41:35.173Z"  
+              }  
             }  
-          }  
-        ]  
-      },  
-      "serverTime": "2019-09-05T16:33:50.734Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "success",  
-      "sendStatus": {  
-        "order_id": "614a5298-0071-450f-83c6-0617ce8c6bc4",  
-        "status": "iocWouldNotExecute",  
-        "receivedTime": "2019-09-05T16:32:54.076Z",  
-        "orderEvents": [  
-          {  
-            "type": "REJECT",  
-            "uid": "614a5298-0071-450f-83c6-0617ce8c6bc4",  
-            "reason": "IOC_WOULD_NOT_EXECUTE",  
-            "order": {  
-              "orderId": "614a5298-0071-450f-83c6-0617ce8c6bc4",  
-              "type": "lmt",  
-              "symbol": "PI_XBTUSD",  
-              "side": "buy",  
-              "quantity": 10000,  
-              "filled": 0,  
-              "limitPrice": 9400,  
-              "reduceOnly": true,  
-              "timestamp": "2019-09-05T16:32:54.076Z",  
-              "lastUpdateTimestamp": "2019-09-05T16:32:54.076Z"  
+          ]  
+        },  
+        {  
+          "status": "edited",  
+          "order_id": "9c2cbcc8-14f6-42fe-a020-6e395babafd1",  
+          "orderEvents": [  
+            {  
+              "type": "EDIT",  
+              "old": {  
+                "orderId": "9c2cbcc8-14f6-42fe-a020-6e395babafd1",  
+                "type": "lmt",  
+                "symbol": "PI_XBTUSD",  
+                "side": "buy",  
+                "quantity": 102,  
+                "filled": 0,  
+                "limitPrice": 8500,  
+                "reduceOnly": false,  
+                "timestamp": "2019-09-04T11:45:48.884Z",  
+                "lastUpdateTimestamp": "2019-09-04T11:45:48.884Z"  
+              },  
+              "new": {  
+                "orderId": "9c2cbcc8-14f6-42fe-a020-6e395babafd1",  
+                "type": "lmt",  
+                "symbol": "PI_XBTUSD",  
+                "side": "buy",  
+                "quantity": 1000,  
+                "filled": 0,  
+                "limitPrice": 9400,  
+                "reduceOnly": false,  
+                "timestamp": "2019-09-04T11:45:48.884Z",  
+                "lastUpdateTimestamp": "2019-09-05T16:41:40.996Z"  
+              }  
             }  
-          }  
-        ]  
-      },  
-      "serverTime": "2019-09-05T16:32:54.077Z"  
-    }  
-    
-    
-    
-    {  
-      "result": "success",  
-      "sendStatus": {  
-        "order_id": "61ca5732-3478-42fe-8362-abbfd9465294",  
-        "status": "placed",  
-        "receivedTime": "2019-12-11T17:17:33.888Z",  
-        "orderEvents": [  
-          {  
-            "type": "EXECUTION",  
-            "executionId": "e1ec9f63-2338-4c44-b40a-43486c6732d7",  
-            "price": 7244.5,  
-            "amount": 10,  
-            "orderPriorExecution": {  
-              "orderId": "61ca5732-3478-42fe-8362-abbfd9465294",  
-              "type": "lmt",  
-              "symbol": "PI_XBTUSD",  
-              "side": "buy",  
-              "quantity": 10,  
-              "filled": 0,  
-              "limitPrice": 7500,  
-              "reduceOnly": false,  
-              "timestamp": "2019-12-11T17:17:33.888Z",  
-              "lastUpdateTimestamp": "2019-12-11T17:17:33.888Z"  
+          ]  
+        },  
+        {  
+          "status": "cancelled",  
+          "order_id": "566942c8-a3b5-4184-a451-622b09493129",  
+          "orderEvents": [  
+            {  
+              "type": "CANCEL",  
+              "uid": "566942c8-a3b5-4184-a451-622b09493129",  
+              "order": {  
+                "orderId": "566942c8-a3b5-4184-a451-622b09493129",  
+                "type": "lmt",  
+                "symbol": "PI_XBTUSD",  
+                "side": "buy",  
+                "quantity": 100,  
+                "filled": 0,  
+                "limitPrice": 8500,  
+                "reduceOnly": false,  
+                "timestamp": "2019-09-02T12:54:08.005Z",  
+                "lastUpdateTimestamp": "2019-09-02T12:54:08.005Z"  
+              }  
             }  
-          }  
-        ]  
-      },  
-      "serverTime": "2019-12-11T17:17:33.888Z"  
+          ]  
+        }  
+      ],  
+      "serverTime": "2019-09-05T16:41:40.996Z"  
     }  
     
 
@@ -995,7 +1068,8 @@ Server time in Coordinated Universal Time (UTC)
 
     
     
-    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/sendorder' \  
+    curl -L -X POST 'https://futures.kraken.com/derivatives/api/v3/batchorder' \  
+    -H 'Content-Type: application/x-www-form-urlencoded' \  
     -H 'Accept: application/json' \  
     -H 'APIKey: <APIKey>' \  
     -H 'Authent: <Authent>'  
@@ -1013,46 +1087,8 @@ general-api-key
 
 authent
 
-Parameters
+Body required
 
-orderType — queryrequired
+ProcessBefore
 
-\---lmtpostiocmktstptake_profittrailing_stopfok
-
-symbol — queryrequired
-
-side — queryrequired
-
-\---buysell
-
-size — queryrequired
-
-processBefore — query
-
-limitPrice — query
-
-stopPrice — query
-
-cliOrdId — query
-
-triggerSignal — query
-
-\---markindexlast
-
-reduceOnly — query
-
-\---truefalse
-
-trailingStopMaxDeviation — query
-
-trailingStopDeviationUnit — query
-
-\---PERCENTQUOTE_CURRENCY
-
-limitPriceOffsetValue — query
-
-limitPriceOffsetUnit — query
-
-\---QUOTE_CURRENCYPERCENT
-
-broker — query
+jsonrequired

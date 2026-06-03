@@ -2,16 +2,35 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-withdrawal-methods
 api_type: REST
-updated_at: 2026-06-02 20:14:01.427138
+updated_at: 2026-06-03 20:18:23.019041
 ---
 
-# Get Withdrawal Methods
+# List Earn Allocations
 
-**POST** `https://api.kraken.com/0/private/WithdrawMethods`
+**POST** `https://api.kraken.com/0/private/Earn/Allocations`
 
-Retrieve a list of withdrawal methods available for the user.
+List all allocations for the user.
 
-**API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Withdraw`
+Requires the `Query Funds` API key permission.
+
+By default all allocations are returned, even for strategies that have been used in the past and have zero balance now. That is so that the user can see how much was earned with given strategy in the past. `hide_zero_allocations` parameter can be used to remove zero balance entries from the output. Paging hasn't been implemented for this method as we don't expect the result for a particular user to be overwhelmingly large.
+
+All amounts in the output can be denominated in a currency of user's choice (the `converted_asset` parameter).
+
+Information about when the next reward will be paid to the client is also provided in the output.
+
+Allocated funds can be in up to 4 states:
+
+  * bonding
+  * allocated
+  * exit_queue (ETH only)
+  * unbonding
+
+Any funds in `total` not in `bonding`/`unbonding` are simply allocated and earning rewards. Depending on the strategy funds in the other 3 states can also be earning rewards. Consult the output of `/Earn/Strategies` to know whether `bonding`/`unbonding` earn rewards. `ETH` in `exit_queue` still earns rewards.
+
+Note that for `ETH`, when the funds are in the `exit_queue` state, the `expires` time given is the time when the funds will have finished unbonding, not when they go from exit queue to unbonding.
+
+(Un)bonding time estimate can be inaccurate right after having (de)allocated the funds. Wait 1-2 minutes after (de)allocating to get an accurate result.
 
 ## Request
 
@@ -23,68 +42,258 @@ Retrieve a list of withdrawal methods available for the user.
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string`
+**ascending** `booleannullable`
 
-Filter methods for specific asset
+`true` to sort ascending, `false` (the default) for descending.
 
-**aclass** `string`
+**converted_asset** `stringnullable`
 
-Filter methods for specific asset class
+A secondary currency to express the value of your allocations (the default is USD).
 
-**Possible values:** [`currency`, `tokenized_asset`]
+**hide_zero_allocations** `booleannullable`
 
-**Default value:**`currency`
-
-**network** `string`
-
-Filter methods for specific network
-
-**rebase_multiplier** `stringnullable`
-
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+Omit entries for strategies that were used in the past but now they don't hold any allocation (the default is `false`)
 
 ## Responses
 
   * 200
 
-Withdrawal methods retrieved.
+Response
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object[]`
+**error** `string[]`
 
-Withdrawal Methods
+**result** `objectnullable`
+
+Page response
+
+    ↳ **converted_asset** `string`
+
+A secondary asset to show the value of allocations. (Eg. you also want to see the value of your allocations in USD). Choose this in the request parameters.
+
+    ↳ **items** `object[]`
 
   * Array [
 
-    ↳ **asset** `string`
+        ↳ **amount_allocated** `object`
 
-Name of asset being withdrawn
+Amounts allocated to this Earn strategy
 
-**method** `string`
+            ↳ **bonding** `objectnullable`
 
-Name of the withdrawal method
+Amount allocated in bonding status. Only present when there are bonding allocations.
 
-**network** `string`
+                ↳ **allocation_count** `integer<uint>`
 
-Name of the blockchain or network being withdrawn on
+The total number of allocations in this state for this asset
 
-**minimum** `string`
+                ↳ **allocations** `object[]`
 
-Minimum net amount that can be withdrawn right now
+Details about when each allocation will expire and move to the next state
+
+  * Array [
+
+                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                    ↳ **created_at** `string<date-time>`
+
+The date and time which a request to either allocate was received and the funds started bonding.
+
+                    ↳ **expires** `string<date-time>`
+
+The date at which the `Bonded` allocation will move to the `Earning` state.
+
+                    ↳ **native** `string`
+
+Amount in the native asset
 
   * ]
 
-**error** `string[]`
+                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                    ↳ **native** `string`
+
+Amount in the native asset
+
+                    ↳ **exit_queue** `objectnullable`
+
+Amount allocated in the exit-queue status. Only present when there are exit_queue allocations.
+
+                        ↳ **allocation_count** `integer<uint>`
+
+The total number of allocations in this state for this asset
+
+                        ↳ **allocations** `object[]`
+
+Details about when each allocation will expire and move to the next state
+
+  * Array [
+
+                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                            ↳ **created_at** `string<date-time>`
+
+The date and time which a request to deallocate was received and processed. For a deallocation request to a strategy with an `exit-queue`, this will be the time the funds joined the exit queue.
+
+                            ↳ **expires** `string<date-time>`
+
+The date/time when the funds will be unbonded.
+
+                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                            ↳ **native** `string`
+
+Amount in the native asset
+
+                            ↳ **pending** `objectnullable`
+
+Pending allocation amount - can be negative if the pending operation is deallocation. Only present when there are pending allocations.
+
+                                ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                ↳ **native** `string`
+
+Amount in the native asset
+
+                                ↳ **total** `object`
+
+Total amount allocated to this Earn strategy
+
+                                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                    ↳ **native** `string`
+
+Amount in the native asset
+
+                                    ↳ **unbonding** `objectnullable`
+
+Amount allocated in unbonding status. Only present when there are unbonding allocations.
+
+                                        ↳ **allocation_count** `integer<uint>`
+
+The total number of allocations in this state for this asset
+
+                                        ↳ **allocations** `object[]`
+
+Details about when each allocation will expire and move to the next state
+
+  * Array [
+
+                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                            ↳ **created_at** `string<date-time>`
+
+The date and time which a request to either allocate or deallocate was received and processed.
+
+For a deallocation request to a strategy with an `exit-queue`, this will be the time the funds joined the exit queue. For a deallocation request to a strategy without exit queue, this will be the time the funds started unbonding
+
+                                            ↳ **expires** `string<date-time>`
+
+The date/time the funds will be unbonded.
+
+                                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                            ↳ **native** `string`
+
+Amount in the native asset
+
+                                            ↳ **native_asset** `string`
+
+The asset of the native currency of this allocation
+
+                                            ↳ **payout** `objectnullable`
+
+Information about the current payout period, absent if when there is no current payout period.
+
+                                                ↳ **accumulated_reward** `object`
+
+Reward accumulated in the payout period until now
+
+                                                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                    ↳ **native** `string`
+
+Amount in the native asset
+
+                                                    ↳ **estimated_reward** `object`
+
+Estimated reward from now until the payout
+
+                                                        ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                        ↳ **native** `string`
+
+Amount in the native asset
+
+                                                        ↳ **period_end** `string<date-time>`
+
+Tentative date of the next reward payout.
+
+                                                        ↳ **period_start** `string<date-time>`
+
+When the current payout period started. Either the date of the last payout or when it was enabled.
+
+                                                        ↳ **strategy_id** `string`
+
+Unique ID for Earn Strategy
+
+                                                        ↳ **total_rewarded** `object`
+
+Amount earned using the strategy during the whole lifetime of user account
+
+                                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                                                            ↳ **total_allocated** `string`
+
+The total amount allocated across all strategies, denominated in the `converted_asset` currency
+
+                                                            ↳ **total_rewarded** `string`
+
+Amount earned across all strategies during the whole lifetime of user account, denominated in `converted_asset` currency
 * curl
   * python
   * go
@@ -93,17 +302,15 @@ Minimum net amount that can be withdrawn right now
 
     
     
-    curl -L 'https://api.kraken.com/0/private/WithdrawMethods' \  
+    curl -L 'https://api.kraken.com/0/private/Earn/Allocations' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "asset": "string",  
-      "aclass": "currency",  
-      "network": "string",  
-      "rebase_multiplier": "rebased"  
+      "nonce": 30295839,  
+      "converted_asset": "EUR",  
+      "hide_zero_allocations": true  
     }'  
     
 
@@ -123,9 +330,7 @@ Body required
     
     
     {
-      "nonce": 0,
-      "asset": "string",
-      "aclass": "currency",
-      "network": "string",
-      "rebase_multiplier": "rebased"
+      "nonce": 30295839,
+      "converted_asset": "EUR",
+      "hide_zero_allocations": true
     }

@@ -2,29 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/create-subaccount
 api_type: REST
-updated_at: 2026-06-02 20:12:37.248249
+updated_at: 2026-06-03 20:16:49.179908
 ---
 
-# Deallocate Earn Funds
+# Create Subaccount
 
-**POST** `https://api.kraken.com/0/private/Earn/Deallocate`
+**POST** `https://api.kraken.com/0/private/CreateSubaccount`
 
-Deallocate funds from a strategy.
+Create a trading subaccount. **Note:** `CreateSubaccount` must be called using an API key from the master account.
 
-Requires the `Earn Funds` API key permission. The amount must always be defined.
-
-This method is asynchronous. A couple of preflight checks are performed synchronously on behalf of the method before it is dispatched further. If the method returns HTTP 202 code, the client is required to poll the result using the `/Earn/DeallocateStatus` endpoint.
-
-There can be only one (de)allocation request in progress for given user and strategy. While the operation is in progress:
-
-  1. `pending` attribute in `Allocations` response for the strategy will hold the amount that is being deallocated (negative amount)
-  2. `pending` attribute in `DeallocateStatus` response will be true.
-
-Following specific errors within `Earnings` class can be returned by this method:
-
-  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum` allowed
-  * Allocation in progress: `EEarnings:Busy:Another (de)allocation for the same strategy is in progress`
-  * Strategy not found: `EGeneral:Invalid arguments:Invalid strategy ID`
+**API Key Permissions Required:** `Funds permissions - Withdraw`
 
 ## Request
 
@@ -36,30 +23,30 @@ Following specific errors within `Earnings` class can be returned by this method
 
 Nonce used in construction of `API-Sign` header
 
-**amount** `string` *required*
+**username** `string` *required*
 
-The amount to deallocate. This field is required.
+Username for the subaccount
 
-**strategy_id** `string` *required*
+**email** `string` *required*
 
-A unique identifier per earn strategy.
+Email address for the subaccount
 
 ## Responses
 
   * 200
 
-Response
+Subaccount created.
 
   * application/json
 * Schema
 
 **Schema**
 
+**result** `boolean`
+
+Whether subaccount creation was successful or not.
+
 **error** `string[]`
-
-**result** `booleannullable`
-
-Will return `true` when the operation is successful, null when an error occurred.
 * curl
   * python
   * go
@@ -68,15 +55,15 @@ Will return `true` when the operation is successful, null when an error occurred
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Earn/Deallocate' \  
+    curl -L 'https://api.kraken.com/0/private/CreateSubaccount' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
-    -d '{  
-      "amount": "4.3",  
-      "nonce": 30295839,  
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
+    --data-raw '{  
+      "nonce": 1695828271,  
+      "username": "abc123",  
+      "email": "abc123@gmail.com"  
     }'  
     
 
@@ -96,7 +83,7 @@ Body required
     
     
     {
-      "amount": "4.3",
-      "nonce": 30295839,
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
+      "nonce": 1695828271,
+      "username": "abc123",
+      "email": "abc123@gmail.com"
     }

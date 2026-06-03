@@ -2,101 +2,100 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/book
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:34.420652
+updated_at: 2026-06-03 20:23:56.969833
 ---
 
-# Book (Level 2)
+# Cancel on Disconnect
 
-CHANNEL
-**Endpoint:** `wss://ws.kraken.com/v2`
-    book
+**WebSocket Endpoint:** `wss://ws-auth.kraken.com/v2`
+**Method:** `cancel_all_orders_after` (Authentication Required)
+`cancel_all_orders_after` provides a "Dead Man's Switch" mechanism to protect from network malfunction, extreme latency or unexpected matching engine downtime.
 
-The `book` channel streams level 2 (L2) order book. It describes the individual price levels in the book with aggregated order quantities at each level.
+  * The client sends request with a timeout (in seconds), that will start a countdown timer in the trading engine which will cancel all client orders when the timer expires.
+  * The client must keep sending new requests to reset the trigger time, or deactivate the mechanism by specifying a timeout of 0.
+  * If the timer expires, all orders in the account are cancelled and the feature is disabled until the next `cancel_all_orders_after` request.
+  * The recommended use is to make a call every 15 to 30 seconds, providing a timeout of 60 seconds. This allows the client to keep the orders in place in case of a brief disconnection or transient delay, while keeping them safe in case of a network breakdown.
 
-Subscriptions to this channel can be made for multiple symbols at once by specifying a list of pairs in the `symbol`.
+info
 
-For more detail on maintaining the order book and generating a checksum, see [guide](/api/docs/guides/spot-ws-book-v2).
+It is recommended to disable the timer ahead of scheduled trading engine maintenance (if the timer is enabled, all orders will be cancelled when the trading engine comes back from downtime).
 
-## Subscribe Request
+## Request
 
-  * Subscribe Schema
-  * Subscribe Ack Schema
-  * Example: Subscribe
-  * Example: Subscribe Ack
+  * Request Schema
+  * Example
 
 ### MESSAGE BODY
 
 **method** `string` *required*
 
-**Value:** `subscribe`
+**Value:** `cancel_all_orders_after`
 
 **params** `object`
 
-    ↳ **channel** `string` *required*
+    ↳ **timeout** `integer` *required*
 
-**Value:** `book`
+Duration (in seconds) to set/extend the timer, it should be less than `86400` seconds.
 
-    ↳ **symbol** `array of strings` *required*
+    ↳ **token** `string` *required*
 
-**Example:**["BTC/USD", "MATIC/GBP"]
-
-A list of currency pairs.
-
-        ↳ **depth** `integer`
-
-**Possible values:**[`10`, ` 25`, ` 100`, ` 500`, ` 1000`] 
-
-**Default value:**`10`
-
-The number of price levels to be received.
-
-        ↳ **snapshot** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-**Default value:**`true`
-
-Request a snapshot after subscribing.
+This is a authenticated channel, a session token is required. See guides on how to generate a token via REST.
 
 **req_id** `integer`
 
 Optional client originated request identifier sent as acknowledgment in the response.
+    
+    
+    {  
+        "method": "cancel_all_orders_after",  
+        "params": {  
+            "timeout": 100,  
+            "token": "zwpdzWUe18Bn6h4TAMorh26+QbcMeST2B5tamfe+pgQ"  
+        },  
+        "req_id": 1234567890  
+    }  
+    
 
-There is an separate acknowledgement response for each symbol in the subscription list.
+## Response
+
+  * Response Schema
+  * Example
 
 ### MESSAGE BODY
 
-**method** `string` *required*
+**method** `string`
 
-**Value:** `subscribe`
+**Value:** `cancel_all_orders_after`
 
-**result** `object`
+**result** `object` *conditional*
 
-    ↳ **channel** `string` *required*
+**Condition:** On successful requests only 
 
-**Value:** `book`
+**currentTime** string
 
-    ↳ **symbol** `string` *required*
+**Format:** RFC3339
 
-**Example:** "BTC/USD"
+**Example:** 2022-12-25T09:30:59.123456Z
 
-The currency pair associated with this subscription.
+The current engine time.
 
-    ↳ **depth** `integer`
+**triggerTime** string
 
-**Possible values:**[`10`, ` 25`, ` 100`, ` 500`, ` 1000`] 
+**Format:** RFC3339
 
-Specifies the number of price levels (in each side of the book) to be received.
+**Example:** 2022-12-25T09:30:59.123456Z
 
-    ↳ **snapshot** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-Indicates if a snapshot is requested.
+The time the orders will be expired in the engine.
 
     ↳ **warnings** `array of strings`
 
-An advisory message, highlighting deprecated fields or upcoming changes to the channel.
+An advisory message, highlighting deprecated fields or upcoming changes to the request.
+
+**error** `string` *conditional*
+
+**Condition:** On unsuccessful requests only 
+
+The error message for a rejected request.
 
 **success** `boolean`
 
@@ -104,11 +103,9 @@ An advisory message, highlighting deprecated fields or upcoming changes to the c
 
 Indicates if the request was successfully processed by the engine.
 
-**error** `string` *conditional*
+**req_id** `integer`
 
-**Condition:** If success is false. 
-
-Error message.
+Optional client originated request identifier sent as acknowledgment in the response.
 
 **time_in** `string`
 
@@ -116,7 +113,7 @@ Error message.
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the subscription was received on the wire, just prior to parsing data.
+The timestamp when the request was received on the wire, just prior to parsing data.
 
 **time_out** `string`
 
@@ -124,445 +121,17 @@ The timestamp when the subscription was received on the wire, just prior to pars
 
 **Example:** 2022-12-25T09:30:59.123456Z
 
-The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
+The timestamp when the response was sent on the wire, just prior to transmitting data.
     
     
     {  
-        "method": "subscribe",  
-        "params": {  
-            "channel": "book",  
-            "symbol": [  
-                "ALGO/USD",  
-                "MATIC/USD"  
-            ]  
-        }  
-    }  
-    
-    
-    
-    {  
-        "method": "subscribe",  
+        "method": "cancel_all_orders_after",  
+        "req_id": 1234567890,  
         "result": {  
-            "channel": "book",  
-            "depth": 10,  
-            "snapshot": true,  
-            "symbol": "ALGO/USD"  
+            "currentTime": "2023-09-21T15:49:29Z",  
+            "triggerTime": "2023-09-21T15:51:09Z"  
         },  
         "success": true,  
-        "time_in": "2023-10-06T17:35:55.219022Z",  
-        "time_out": "2023-10-06T17:35:55.219067Z"  
-    }  
-      
-    {  
-        "method": "subscribe",  
-        "result": {  
-            "channel": "book",  
-            "depth": 10,  
-            "snapshot": true,  
-            "symbol": "MATIC/USD"  
-        },  
-        "success": true,  
-        "time_in": "2023-10-06T17:35:55.219022Z",  
-        "time_out": "2023-10-06T17:35:55.219067Z"  
-    }  
-    
-
-## Snapshot Response
-
-  * Snapshot Schema
-  * Example
-
-The returned snapshot data contains the specified number of bids and asks for the symbol including a CRC32 checksum of the top 10 bids and asks.
-
-### MESSAGE BODY
-
-**channel** `string`
-
-**Value:** `book`
-
-**type** `string`
-
-**Value:** `snapshot`
-
-**data** `array [`
-
-**[0] book** object
-
-The book element is always the first and only item in the data payload.
-
-    ↳ **asks** `array [`
-
-**[many] level** object
-
-        ↳ **price** `float`
-
-The ask price.
-
-        ↳ **qty** `float`
-
-The ask quantity.
-
-]
-
-        ↳ **bids** `array [`
-
-**[many] level** object
-
-            ↳ **price** `float`
-
-The bid price.
-
-            ↳ **qty** `float`
-
-The bid quantity.
-
-]
-
-            ↳ **checksum** `integer`
-
-CRC32 checksum for the top 10 bids and asks.
-
-            ↳ **symbol** `string`
-
-**Example:** "BTC/USD"
-
-The symbol of the currency pair.
-
-            ↳ **timestamp** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp of the order book snapshot.
-
-]
-    
-    
-    {  
-        "channel": "book",  
-        "type": "snapshot",  
-        "data": [  
-            {  
-                "symbol": "MATIC/USD",  
-                "bids": [  
-                    {  
-                        "price": 0.5666,  
-                        "qty": 4831.75496356  
-                    },  
-                    {  
-                        "price": 0.5665,  
-                        "qty": 6658.22734739  
-                    },  
-                    {  
-                        "price": 0.5664,  
-                        "qty": 18724.91513344  
-                    },  
-                    {  
-                        "price": 0.5663,  
-                        "qty": 11563.92544914  
-                    },  
-                    {  
-                        "price": 0.5662,  
-                        "qty": 14006.65365711  
-                    },  
-                    {  
-                        "price": 0.5661,  
-                        "qty": 17454.85679807  
-                    },  
-                    {  
-                        "price": 0.566,  
-                        "qty": 18097.1547  
-                    },  
-                    {  
-                        "price": 0.5659,  
-                        "qty": 33644.89175666  
-                    },  
-                    {  
-                        "price": 0.5658,  
-                        "qty": 148.3464  
-                    },  
-                    {  
-                        "price": 0.5657,  
-                        "qty": 606.70854372  
-                    }  
-                ],  
-                "asks": [  
-                    {  
-                        "price": 0.5668,  
-                        "qty": 4410.79769741  
-                    },  
-                    {  
-                        "price": 0.5669,  
-                        "qty": 4655.40412487  
-                    },  
-                    {  
-                        "price": 0.567,  
-                        "qty": 49844.89424998  
-                    },  
-                    {  
-                        "price": 0.5671,  
-                        "qty": 24306.41678  
-                    },  
-                    {  
-                        "price": 0.5672,  
-                        "qty": 29783.25223475  
-                    },  
-                    {  
-                        "price": 0.5673,  
-                        "qty": 57234.71239278  
-                    },  
-                    {  
-                        "price": 0.5674,  
-                        "qty": 45065.04744  
-                    },  
-                    {  
-                        "price": 0.5675,  
-                        "qty": 5912.76380354  
-                    },  
-                    {  
-                        "price": 0.5676,  
-                        "qty": 42514.92434778  
-                    },  
-                    {  
-                        "price": 0.5677,  
-                        "qty": 36304.0847022  
-                    }  
-                ],  
-                "checksum": 2439117997,  
-                "timestamp": "2023-10-06T17:35:55.440295Z"  
-            }  
-        ]  
-    }  
-    
-
-## Update Response
-
-The data contains the updates of the bids and asks for the relevant symbol including a CRC32 checksum of the top 10 bids and asks.
-
-Note, it is possible to have multiple updates to the same price level in a single update message. Updates should always be processed in sequence.
-
-  * Update Schema
-  * Example
-
-### MESSAGE BODY
-
-**channel** `string`
-
-**Value:** `book`
-
-**type** `string`
-
-**Value:** `update`
-
-**data** `array [`
-
-**[0] book** object
-
-The book element is always the first and only item in the data payload.
-
-    ↳ **asks** `array [`
-
-**[many] level** object
-
-        ↳ **price** `float`
-
-The ask price.
-
-        ↳ **qty** `float`
-
-The ask quantity.
-
-]
-
-        ↳ **bids** `array [`
-
-**[many] level** object
-
-            ↳ **price** `float`
-
-The bid price.
-
-            ↳ **qty** `float`
-
-The bid quantity.
-
-]
-
-            ↳ **checksum** `integer`
-
-CRC32 checksum for the top 10 bids and asks.
-
-            ↳ **symbol** `string`
-
-**Example:** "BTC/USD"
-
-The symbol of the currency pair.
-
-            ↳ **timestamp** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The book order update timestamp.
-
-]
-    
-    
-    {  
-        "channel": "book",  
-        "type": "update",  
-        "data": [  
-            {  
-                "symbol": "MATIC/USD",  
-                "bids": [  
-                    {  
-                        "price": 0.5657,  
-                        "qty": 1098.3947558  
-                    }  
-                ],  
-                "asks": [],  
-                "checksum": 2114181697,  
-                "timestamp": "2023-10-06T17:35:55.440295Z"  
-            }  
-        ]  
-    }  
-    
-
-## Unsubscribe Request
-
-  * Unsubscribe Schema
-  * Unsubscribe Ack Schema
-  * Example: Unsubscribe
-  * Example: Unsubscribe Ack
-
-### MESSAGE BODY
-
-**method** `string` *required*
-
-**Value:** `unsubscribe`
-
-**params** `object`
-
-    ↳ **channel** `string` *required*
-
-**Value:** `book`
-
-    ↳ **symbol** `array of strings` *required*
-
-**Example:**["BTC/USD", "MATIC/GBP"]
-
-A list of currency pairs.
-
-        ↳ **depth** `integer`
-
-**Possible values:**[`10`, ` 25`, ` 100`, ` 500`, ` 1000`] 
-
-The number of price levels to be unsubscribed.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-
-There is an separate acknowledgement response for each symbol in the unsubscription list.
-
-### MESSAGE BODY
-
-**method** `string` *required*
-
-**Value:** `unsubscribe`
-
-**result** `object`
-
-    ↳ **channel** `string` *required*
-
-**Value:** `book`
-
-    ↳ **symbol** `string` *required*
-
-**Example:** "BTC/USD"
-
-The currency pair associated with this subscription.
-
-    ↳ **depth** `integer`
-
-**Possible values:**[`10`, ` 25`, ` 100`, ` 500`, ` 1000`] 
-
-Specifies the number of price levels (in each side of the book) to be unsubscribed.
-
-**success** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-Indicates if the request was successfully processed by the engine.
-
-**error** `string` *conditional*
-
-**Condition:** If success is false. 
-
-Error message.
-
-**time_in** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the subscription was received on the wire, just prior to parsing data.
-
-**time_out** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the acknowledgement was sent on the wire, just prior to transmitting data.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-    
-    
-    {  
-        "method": "unsubscribe",  
-        "params": {  
-            "channel": "book",  
-            "symbol": [  
-                "ALGO/USD",  
-                "MATIC/USD"  
-            ]  
-        }  
-    }  
-    
-    
-    
-    {  
-        "method": "unsubscribe",  
-        "result": {  
-            "channel": "book",  
-            "depth": 10,  
-            "snapshot": true,  
-            "symbol": "ALGO/USD"  
-        },  
-        "success": true,  
-        "time_in": "2023-10-06T17:35:55.219022Z",  
-        "time_out": "2023-10-06T17:35:55.219067Z"  
-    }  
-      
-    {  
-        "method": "unsubscribe",  
-        "result": {  
-            "channel": "book",  
-            "depth": 10,  
-            "snapshot": true,  
-            "symbol": "MATIC/USD"  
-        },  
-        "success": true,  
-        "time_in": "2023-10-06T17:35:55.219022Z",  
-        "time_out": "2023-10-06T17:35:55.219067Z"  
+        "time_in": "2023-09-21T15:49:28.627900Z",  
+        "time_out": "2023-09-21T15:49:28.649057Z"  
     }

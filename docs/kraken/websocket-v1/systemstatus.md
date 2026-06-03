@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/systemstatus
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:20.459917
+updated_at: 2026-06-03 20:23:40.133546
 ---
 
 # Ticker (Level 1)

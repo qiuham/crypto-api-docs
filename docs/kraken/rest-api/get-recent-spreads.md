@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-spreads
 api_type: REST
-updated_at: 2026-06-02 20:13:26.802714
+updated_at: 2026-06-03 20:17:39.695393
 ---
 
-# Get Recent Trades
+# Get Recent Spreads
 
-**GET** `https://api.kraken.com/0/public/Trades`
+**GET** `https://api.kraken.com/0/public/Spread`
 
-Returns the last 1000 trades by default
+Returns the last ~200 top-of-book spreads for a given pair
 
 ## Request
 
@@ -21,21 +21,11 @@ Asset pair to get data for
 
 **Example:** XBTUSD
 
-**since** `string`
+**since** `integer`
 
-Return trade data since given timestamp
+Returns spread data since given timestamp. Optional, intended for incremental updates within available dataset (does not contain all historical spreads).
 
-**Example:** 1616663618
-
-**count** `integer`
-
-**Possible values:** `>= 1` and `<= 1000`
-
-Return specific number of trades, up to 1000
-
-**Default value:**`1000`
-
-**Example:** 2
+**Example:** 1678219570
 
 **asset_class** `string`
 
@@ -47,7 +37,7 @@ This parameter is required on requests for non-crypto pairs, i.e. use `tokenized
 
   * 200
 
-Trade data retrieved.
+Spread data retrieved.
 
   * application/json
 * Schema
@@ -56,13 +46,13 @@ Trade data retrieved.
 
 **result** `object`
 
-    ↳ **last** `string`
+    ↳ **last** `integer`
 
-ID to be used as since when polling for new trade data
+ID to be used as since when polling for new spread data
 
-**property name*** TickData
+**property name*** SpreadData
 
-Array of trade entries `[<price>, <volume>, <time>, <buy/sell>, <market/limit>, <miscellaneous>, <trade_id>]`
+Array of spread entries `[int <time>, string <bid>, string <ask>]`
 
   * Array [
 
@@ -72,11 +62,11 @@ Array of trade entries `[<price>, <volume>, <time>, <buy/sell>, <market/limit>, 
 
 oneOf
 * string
-* number
+* integer
 
 ****string
 
-****number
+****integer
 
   * ]
 
@@ -89,7 +79,7 @@ oneOf
 
     
     
-    curl -L 'https://api.kraken.com/0/public/Trades' \  
+    curl -L 'https://api.kraken.com/0/public/Spread' \  
     -H 'Accept: application/json'  
     
 
@@ -104,8 +94,6 @@ Parameters
 pair — queryrequired
 
 since — query
-
-count — query
 
 asset_class — query
 

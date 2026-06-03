@@ -2,96 +2,77 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ping
 api_type: WebSocket
-updated_at: 2026-06-02 20:19:50.532416
+updated_at: 2026-06-03 20:24:13.849994
 ---
 
-# Ping
+# Status
 
-**WebSocket Endpoint:** `wss://ws.kraken.com/v2`
-    
-    ping
+CHANNEL
+**Endpoint:** `wss://ws.kraken.com/v2`
+    status
 
-Clients can ping the server to verify connection is alive and the server will respond with a `pong`.
+The `status` channel provides a mechanism to verify exchange status and successful initial connection.
 
-This is an application level ping, distinct from the protocol-level ping in the WebSockets standard.
+There is no option to directly request a `status` update, a status will be automatically generated on successful websocket connection and when the trading engine status changes.
 
-## Request
+## Update Response
 
-  * Request Schema
+  * Update Schema
   * Example
 
 ### MESSAGE BODY
 
-**method** `string` *required*
+**channel** `string`
 
-**Value:** `ping`
+**Value:** `status`
 
-**req_id** `integer`
+**type** `string`
 
-Optional client originated request identifier sent as acknowledgment in the response.
+**Value:** `update`
+
+**data** `array [`
+
+**[0] status** object
+
+The status element is always the first and only item in the data payload.
+
+    ↳ **system** `string`
+
+**Possible values:**[`online`, ` cancel_only`, ` maintenance`, ` post_only`] 
+
+The status of the trading engine.
+
+  * `online`: Markets are operating normally - all order types may be submitted and order matching can occur.
+  * `maintenance`: Markets are offline for scheduled maintenance - new orders cannot be placed and existing orders cannot be cancelled.
+  * `cancel_only`: Orders can be cancelled but new orders cannot be placed. No order matching will occur.
+  * `post_only`: Only limit orders using the `post_only` option can be submitted. Orders can be cancelled. No order matching will occur.
+
+    ↳ **api_version** `string`
+
+**Value:** `v2`
+
+The version of the websockets API.
+
+    ↳ **connection_id** `integer`
+
+A unique connection identifier (for debugging).
+
+    ↳ **version** `string`
+
+The version of the websockets service.
+
+]
     
     
     {  
-        "method": "ping",  
-        "req_id": 101  
-    }  
-    
-
-## Response
-
-  * Response Schema
-  * Response Schema
-
-### MESSAGE BODY
-
-**method** `string`
-
-**Value:** `pong`
-
-**result** `object` *conditional*
-
-**Condition:** On successful requests only 
-
-    ↳ **warnings** `array of strings`
-
-An advisory message, highlighting deprecated fields or upcoming changes to the request.
-
-**error** `string` *conditional*
-
-**Condition:** On unsuccessful requests only 
-
-The error message for a rejected request.
-
-**success** `boolean`
-
-**Possible values:**[`true`, ` false`] 
-
-Indicates if the request was successfully processed by the engine.
-
-**req_id** `integer`
-
-Optional client originated request identifier sent as acknowledgment in the response.
-
-**time_in** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the request was received on the wire, just prior to parsing data.
-
-**time_out** `string`
-
-**Format:** RFC3339
-
-**Example:** 2022-12-25T09:30:59.123456Z
-
-The timestamp when the response was sent on the wire, just prior to transmitting data.
-    
-    
-    {  
-        "method": "pong",  
-        "req_id": 101,  
-        "time_in": "2023-09-24T14:10:23.799685Z",  
-        "time_out": "2023-09-24T14:10:23.799703Z"  
+        "channel": "status",  
+        "data": [  
+            {  
+                "api_version": "v2",  
+                "connection_id": 13834774380200032777,  
+                "system": "online",  
+                "version": "2.0.0"  
+            }  
+        ],  
+        "type": "update"  
     }

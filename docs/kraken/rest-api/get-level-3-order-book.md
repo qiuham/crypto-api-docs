@@ -2,168 +2,99 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book
 api_type: REST
-updated_at: 2026-06-02 20:13:06.510196
+updated_at: 2026-06-03 20:17:21.312682
 ---
 
-# Query L3 Order Book
+# Get OHLC Data
 
-**POST** `https://api.kraken.com/0/private/Level3`
+**GET** `https://api.kraken.com/0/public/OHLC`
 
-Retrieve Level3 order book data, which provides individual order information at each price level. This includes order IDs and timestamps for each order in the book.
-
-The Level3 endpoint requires authentication.
-
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
+Retrieve OHLC market data. The last entry in the OHLC array is for the current, not-yet-committed timeframe, and will always be present, regardless of the value of `since`. Returns up to 720 of the most recent entries (older data cannot be retrieved, regardless of the value of `since`).
 
 ## Request
 
-  * application/json
-
-### Body**required**
-
-**nonce** `integer<int64>` *required*
-
-Nonce used in construction of `API-Sign` header
+### Query Parameters
 
 **pair** `string` *required*
 
-Asset pair to get order book for
+Asset pair to get data for
 
-**Example:**`YFI/EUR`
+**Example:** XBTUSD
 
-**depth** `integer`
+**interval** `integer`
 
-Number of price levels to return per side (bids/asks). Use 0 to return the full book.
+**Possible values:** [`1`, `5`, `15`, `30`, `60`, `240`, `1440`, `10080`, `21600`]
 
-**Possible values:** [`0`, `10`, `25`, `100`, `250`, `1000`]
+Time frame interval in minutes
 
-**Default value:**`100`
+**Default value:**`1`
 
-**Example:**`10`
+**Example:** 60
+
+**since** `integer`
+
+Return OHLC entries since the given timestamp (intended for incremental updates)
+
+**Example:** 1688671200
+
+**asset_class** `string`
+
+**Possible values:** [`tokenized_asset`]
+
+This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
 ## Responses
 
   * 200
 
-Level 3 order book data retrieved.
+OHLC data retrieved.
 
   * application/json
 * Schema
-  * Example
 
 **Schema**
 
 **result** `object`
 
-    ↳ **pair** `string`
+    ↳ **last** `integer`
 
-Asset pair
+ID to be used as since when polling for new, committed OHLC data
 
-    ↳ **bids** `object[]`
+**property name*** TickData
 
-Bid orders
+Array of tick data arrays `[int <time>, string <open>, string <high>, string <low>, string <close>, string <vwap>, string <volume>, int <count>]`
 
-  * Array [
-
-        ↳ **price** `string`
-
-Bid price
-
-        ↳ **qty** `string`
-
-Bid quantity
-
-        ↳ **order_id** `string`
-
-Order ID
-
-        ↳ **timestamp** `integer`
-
-Order timestamp (nanoseconds)
-
-  * ]
-
-        ↳ **asks** `object[]`
-
-Ask orders
+**Possible values:** `>= 8`, `<= 8`
 
   * Array [
 
-            ↳ **price** `string`
+**type**
 
-Ask price
+    ↳ **items** `object`
 
-            ↳ **qty** `string`
+**Possible values:** `>= 8`, `<= 8`
 
-Ask quantity
+oneOf
+* string
+* integer
 
-            ↳ **order_id** `string`
+****string
 
-Order ID
-
-            ↳ **timestamp** `integer`
-
-Order timestamp (nanoseconds)
+****integer
 
   * ]
 
-**error** `array[]`
-
-    
-    
-    {  
-      "error": [],  
-      "result": {  
-        "pair": "YFI/EUR",  
-        "bids": [  
-          {  
-            "price": "3062.00000",  
-            "qty": "0.29665800",  
-            "order_id": "O5KJU4-IEQTM-NDMS6W",  
-            "timestamp": 1765622008594292000  
-          },  
-          {  
-            "price": "3062.00000",  
-            "qty": "0.13917400",  
-            "order_id": "OERRY6-MXYER-6EQKNY",  
-            "timestamp": 1765622011396903000  
-          }  
-        ],  
-        "asks": [  
-          {  
-            "price": "3066.00000",  
-            "qty": "0.00278335",  
-            "order_id": "ORAWGV-N5L4J-LBA3WH",  
-            "timestamp": 1765622008499456000  
-          },  
-          {  
-            "price": "3067.00000",  
-            "qty": "0.13902210",  
-            "order_id": "OZWNZS-QE3G6-ZPKZUT",  
-            "timestamp": 1765622021013826600  
-          }  
-        ]  
-      }  
-    }  
+**error** `string[]`
 * curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Level3' \  
-    -H 'Content-Type: application/json' \  
-    -H 'Accept: application/json' \  
-    -H 'API-Key: <API-Key>' \  
-    -H 'API-Sign: <API-Sign>' \  
-    -d '{  
-      "nonce": 0,  
-      "pair": "YFI/EUR",  
-      "depth": 10  
-    }'  
+    curl -L 'https://api.kraken.com/0/public/OHLC' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
@@ -172,17 +103,20 @@ Base URL
 
 https://api.kraken.com/0
 
-Auth
+Parameters
 
-API-Key
+pair — queryrequired
 
-API-Sign
+interval — query
 
-Body required
-    
-    
-    {
-      "nonce": 0,
-      "pair": "YFI/EUR",
-      "depth": 10
-    }
+\---1515306024014401008021600
+
+since — query
+
+asset_class — query
+
+\---tokenized_asset
+
+ResponseClear
+
+Click the `Send API Request` button above and see the response here!

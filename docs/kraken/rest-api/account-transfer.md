@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/account-transfer
 api_type: REST
-updated_at: 2026-06-02 20:12:16.397303
+updated_at: 2026-06-03 20:16:31.089845
 ---
 
-# Account Transfer
+# Request Export Report
 
-**POST** `https://api.kraken.com/0/private/AccountTransfer`
+**POST** `https://api.kraken.com/0/private/AddExport`
 
-Transfer funds to and from master and subaccounts. **Note:** `AccountTransfer` must be called using an API key from the master account.
+Request export of trades or ledgers.
 
-**API Key Permissions Required:** `Funds permissions - Withdraw`
+**API Key Permissions Required:** `Data - Export data`
 
 ## Request
 
@@ -23,35 +23,45 @@ Transfer funds to and from master and subaccounts. **Note:** `AccountTransfer` m
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string` *required*
+**report** `string` *required*
 
-Asset being transferred
+Type of data to export
 
-**asset_class** `string`
+**Possible values:** [`trades`, `ledgers`]
 
-Specify the asset class of the asset being transferred
+**format** `string`
 
-**Possible values:** [`currency`, `tokenized_asset`]
+File format to export
 
-**Default value:**`currency`
+**Possible values:** [`CSV`, `TSV`]
 
-**amount** `string` *required*
+**Default value:**`CSV`
 
-Amount of asset to transfer
+**description** `string` *required*
 
-**from** `string` *required*
+Description for the export
 
-Public account ID of the source account (Example ABCD 1234 EFGH 5678)
+**fields** `string`
 
-**to** `string` *required*
+Comma-delimited list of fields to include
+* `trades`: `ordertxid`, `time`, `ordertype`, `price`, `cost`, `fee`, `vol`, `margin`, `misc`, `ledgers`
+* `ledgers`: `refid`, `time`, `type`, `subtype`, `aclass`, `asset`, `amount`, `fee`, `balance`, `wallet`
 
-Public account ID of the destination account (Example ABCD 1234 EFGH 5678)
+**Default value:**`all`
+
+**starttm** `integer`
+
+UNIX timestamp for report start time (default 1st of the current month)
+
+**endtm** `integer`
+
+UNIX timestamp for report end time (default now)
 
 ## Responses
 
   * 200
 
-Funds transferred between accounts.
+Export request made
 
   * application/json
 * Schema
@@ -60,13 +70,9 @@ Funds transferred between accounts.
 
 **result** `object`
 
-    ↳ **transfer_id** `string`
+    ↳ **id** `string`
 
-Transfer ID
-
-    ↳ **status** `string`
-
-Transfer status, either `"pending"` or `"complete"`
+Report ID
 
 **error** `string[]`
 * curl
@@ -77,17 +83,18 @@ Transfer status, either `"pending"` or `"complete"`
 
     
     
-    curl -L 'https://api.kraken.com/0/private/AccountTransfer' \  
+    curl -L 'https://api.kraken.com/0/private/AddExport' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 1695828271,  
-      "asset": "XBT",  
-      "from": "ABCD 1234 EFGH 5678",  
-      "to": "IJKL 0987 MNOP 6543",  
-      "amount": "2.54"  
+      "nonce": 1695828490,  
+      "report": "trades",  
+      "description": "yearly report",  
+      "format": "CSV",  
+      "starttm": 1695728276,  
+      "endtm": 1695828276  
     }'  
     
 
@@ -107,9 +114,10 @@ Body required
     
     
     {
-      "nonce": 1695828271,
-      "asset": "XBT",
-      "from": "ABCD 1234 EFGH 5678",
-      "to": "IJKL 0987 MNOP 6543",
-      "amount": "2.54"
+      "nonce": 1695828490,
+      "report": "trades",
+      "description": "yearly report",
+      "format": "CSV",
+      "starttm": 1695728276,
+      "endtm": 1695828276
     }

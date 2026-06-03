@@ -2,9 +2,9 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/subaccounts
 api_type: REST
-updated_at: 2026-06-02 20:10:54.048716
+updated_at: 2026-06-03 20:15:04.888040
 ---
 
-# Subaccounts
+# Trading Settings
 
-## [📄️ Check subaccount trading statusReturns trading capability info for given subaccount.](/api/docs/futures-api/trading/get-subaccount-trading-capability)## [📄️ Update subaccount trading statusUpdates trading capabilities for given subaccount.](/api/docs/futures-api/trading/update-subaccount-trading-capability)## [📄️ Get subaccountsReturn information about subaccounts, including balances and UIDs.](/api/docs/futures-api/trading/list-subaccounts)
+## [📄️ Get self trade strategyReturns account-wide self-trade matching strategy.](/api/docs/futures-api/trading/get-self-trade-strategy)## [📄️ Update self trade strategyUpdates account-wide self-trade matching behavior to given strategy.](/api/docs/futures-api/trading/set-self-trade-strategy)

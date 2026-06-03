@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-tickers
 api_type: REST
-updated_at: 2026-06-02 20:10:18.259051
+updated_at: 2026-06-03 20:14:27.576074
 ---
 
-# Get tickers
+# Get trading instruments
 
-**GET** `https://futures.kraken.com/derivatives/api/v3/tickers`
+**GET** `https://futures.kraken.com/derivatives/api/v3/trading/instruments`
 
-This endpoint returns current market data for all currently listed Futures contracts and indices.
+Returns specifications for all currently accessible markets and indices.
 
 ## Request
 
@@ -25,20 +25,11 @@ By default, includes all futures instrument types.
 
 Multi-value example: `?contractType=futures_inverse&contractType=futures_vanilla`
 
-**symbol** `MarketSymbol[]`
-
-**Possible values:** Value must match regular expression `[A-Z0-9_.]+`
-
-Market symbol(s) to filter tickers by.
-
-Symbols are case-insensitive. Multi-value example: `?symbol=PF_BTCUSD&symbol=pf_ethusd`
-
 ## Responses
 
   * 200
 * application/json
 * Schema
-  * success
 
 **Schema**
 
@@ -46,15 +37,93 @@ oneOf
 * Success Response
 * ErrorResponse
 
-**tickers** `object[]` *required*
+**instruments** `object[]` *required*
 
-A list containing a structures for each available instrument. The list is in no particular order.
+A list containing structures for each available instrument. The list is in no particular order.
 
   * Array [
 
-oneOf
-* Market Ticker
-* Index Ticker
+**fundingRateCoefficient** number<double>
+
+Funding rate coefficient.
+
+Only present for perpetual markets.
+
+**Example:**`12.03532`
+
+**lastTradingTime** string<date-time>
+
+Market expiry date-time (UTC).
+
+Only present for fixed maturity markets.
+
+**minimumTradeSize** number<double>required
+
+TODO: Not populated for any markets (at time of writing in Apr 2025).
+
+**Example:**`12.03532`
+
+**impactMidSize** number<double>required
+
+Book depth used to calculate (impact) mid prices.
+
+**Example:**`12.03532`
+
+**maxPositionSize** number<double>required
+
+Market-wide position size limit.
+
+**Example:**`12.03532`
+
+**openingDate** string<date-time>required
+
+Date-time (UTC) that market was created.
+
+**marginLevels** object[]
+
+Margin schedule applicable to logged-in account.
+
+Only present for futures markets.
+
+  * Array [
+
+    ↳ **contracts** `integer<uint64>`
+
+Position size/level to apply IM/MM rules within a single-collateral margin schedule.
+
+**numNonContractUnits** number<double>
+
+Position size/level to apply IM/MM rules within a multi-collateral margin schedule.
+
+**Possible values:** `>= 0`
+
+**Example:**`12.03532`
+
+**initialMargin** number<double>required
+
+Initial margin (IM) rate.
+
+**Possible values:** `>= 0`
+
+**Example:**`12.03532`
+
+**maintenanceMargin** number<double>required
+
+Maintenance margin (MM) rate.
+
+**Possible values:** `>= 0`
+
+**Example:**`12.03532`
+
+  * ]
+
+**maxRelativeFundingRate** number<double>
+
+Maximum relative funding rate.
+
+Only present for perpetual markets.
+
+**Example:**`12.03532`
 
     ↳ **symbol** `MarketSymbol (string)` *required*
 
@@ -64,151 +133,111 @@ Market symbol
 
 **Example:**`PF_BTCUSD`
 
-    ↳ **last** `number<double>`
-
-The price of the last fill.
-
-**Example:**`12.03532`
-
-**lastTime** string
-
-The date and time at which `last` was observed.
-
-**lastSize** number
-
-The size of the last fill.
-
-    ↳ **tag** `string` *required*
-
-Expiry-related grouping.
-
-Currently can be 'perpetual', 'month', 'quarter', or 'semiannual'. Other tags may be added without notice.
-
-**Possible values:** [`perpetual`, `month`, `quarter`, `semiannual`]
-
     ↳ **pair** `string` *required*
 
-The currency pair of the instrument.
+Asset pair (uppercase, colon separated).
 
 **Example:**`BTC:USD`
 
-**markPrice** numberrequired
+    ↳ **base** `string` *required*
 
-The price to which Kraken Futures currently marks the Futures for margining purposes.
+Base asset (uppercase).
 
-    ↳ **bid** `number`
+**Example:**`BTC`
 
-The price of the current best bid.
+    ↳ **quote** `string` *required*
 
-**bidSize** number
+Quote asset (uppercase).
 
-The size of the current best bid.
+**Example:**`USD`
 
-    ↳ **ask** `number`
+**tickSize** number<double>required
 
-The price of the current best ask.
+Minimum order price increment.
 
-**askSize** number
+**Example:**`12.03532`
 
-The size of the current best ask.
+    ↳ **type** `string` *required*
 
-**vol24h** numberrequired
+Market type.
 
-The sum of the sizes of all fills observed in the last 24 hours.
+**Possible values:** [`futures_inverse`, `futures_vanilla`, `flexible_futures`, `options`]
 
-**volumeQuote** numberrequired
+    ↳ **underlying** `string`
 
-The sum of the `size * price` of all fills observed in the last 24 hours.
+Underlying index code.
 
-**openInterest** numberrequired
+Only present for single-collateral markets.
 
-The current open interest of the market.
+    ↳ **isin** `string | nullnullable` *required*
 
-**open24h** number
+International Securities Identification Number (ISIN).
 
-The price of the fill observed 24 hours ago.
+**contractValueTradePrecision** integerrequired
 
-**high24h** number
+Minimum order quantity increment.
 
-The highest fill price observed in the last 24 hours.
+E.g., a trade precision of 2 means order quantities are not allowed to be more precise than the hundredth decimal place (0.01).
 
-**low24h** number
-
-The lowest fill price observed in the last 24 hours.
-
-**extrinsicValue** number
-
-The mark price less the how much the option would be worth if exercised now, i.e.:
-* For a call: `markPrice - ( max ( Underlying - StrikePrice , 0) )`
-* For a put: `markPrice - ( max ( StrikePrice - Underlying , 0) )`
-
-Only returned for options markets.
-
-**fundingRate** number
-
-The current absolute funding rate.
-
-Only returned for perpetual markets.
-
-**fundingRatePrediction** number
-
-The estimated next absolute funding rate.
-
-Only returned for perpetual markets.
-
-    ↳ **suspended** `boolean` *required*
-
-True if the market is suspended.
-
-**indexPrice** numberrequired
+These values can be negative to specify quantity increments of 10 (-1), 100 (-2), etc.
 
 **postOnly** booleanrequired
 
-**change24h** numberrequired
+True if market is in post-only mode.
 
-The 24h change in price (%).
+**feeScheduleUid** string<uuid>requireddeprecated
 
-    ↳ **greeks** `object`
+**DEPRECATED** — Effective 2026-06-22, this field no longer corresponds to the fee schedule used for fee calculation. Use the Spot [`GetTradeVolume`](https://docs.kraken.com/api/docs/rest-api/get-trade-volume) endpoint authenticated with a Spot API key to determine your fee rate.
 
-Current greeks.
+Fee schedule UID.
 
-Only returned for options markets.
+**optionType** string
 
-Note: This is currently available exclusively in the Kraken pre-prod environments.
+Option type.
 
-        ↳ **iv** `number<double>` *required*
+Only present for options markets.
 
-The implied volatility. Displays an IV of -1.0 whenever the IV is impossible to calculate or outside of the bounds allowed.
+**Possible values:** [`call`, `put`]
 
-        ↳ **delta** `number<double>` *required*
+**strikePrice** number<double>
 
-        ↳ **gamma** `number,null<double>nullable` *required*
+Strike price.
 
-        ↳ **vega** `number,null<double>nullable` *required*
+Only present for options markets.
 
-        ↳ **theta** `number,null<double>nullable` *required*
+**Example:**`12.03532`
 
-        ↳ **rho** `number,null<double>nullable` *required*
+**underlyingFuture** string
 
-**isUnderlyingMarketClosed** boolean
+Underlying futures market.
 
-True if the underlying market/index is closed.
+Only present for options markets.
 
-Only returned for tradfi markets.
+**rebateLevels** objectrequired
 
-        ↳ **symbol** `string` *required*
+Maps market share percentage levels to rebate percentages.
 
-The symbol of the index.
+Keys and values are decimal strings.
 
-**Example:**`rr_ethusd`
+**property name*** number<double>
 
-        ↳ **last** `number`
+**Example:**`12.03532`
 
-The last calculated value.
+    ↳ **mtf** `boolean` *required*
 
-**lastTime** string<date-time>
+True if this market is provided under the MTF license.
 
-The date and time at which `last` was observed.
+    ↳ **tradfi** `boolean` *required*
+
+True if this is a non-crypto market.
+
+    ↳ **restricted** `boolean` *required*
+
+True if the account is restricted (to position-reducing orders) on this market.
+
+**isExpired** booleanrequired
+
+True if the instrument has expired
 
   * ]
 
@@ -263,76 +292,27 @@ Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
 
+#### Authorization: APIKey
     
     
-    {  
-      "result": "success",  
-      "tickers": [  
-        {  
-          "tag": "perpetual",  
-          "pair": "XBT:USD",  
-          "symbol": "PI_XBTUSD",  
-          "markPrice": 30209.9,  
-          "bid": 8634,  
-          "bidSize": 1000,  
-          "ask": 49289,  
-          "askSize": 139984,  
-          "vol24h": 15304,  
-          "volumeQuote": 7305.2,  
-          "openInterest": 149655,  
-          "open24h": 49289,  
-          "indexPrice": 21087.8,  
-          "last": 49289,  
-          "lastTime": "2022-06-17T10:46:35.705Z",  
-          "lastSize": 100,  
-          "suspended": false,  
-          "fundingRate": 1.18588737106e-7,  
-          "fundingRatePrediction": 1.1852486794e-7,  
-          "postOnly": false,  
-          "change24h": 1.9974017538161748  
-        },  
-        {  
-          "tag": "month",  
-          "pair": "XBT:USD",  
-          "symbol": "FI_XBTUSD_211231",  
-          "markPrice": 20478.5,  
-          "bid": 28002,  
-          "bidSize": 900,  
-          "vol24h": 100,  
-          "volumeQuote": 843.9,  
-          "openInterest": 10087,  
-          "open24h": 28002,  
-          "indexPrice": 21087.8,  
-          "last": 28002,  
-          "lastTime": "2022-06-17T10:45:57.177Z",  
-          "lastSize": 100,  
-          "suspended": false,  
-          "postOnly": false,  
-          "change24h": 1.9974017538161748  
-        },  
-        {  
-          "symbol": "in_xbtusd",  
-          "last": 21088,  
-          "lastTime": "2022-06-17T11:00:30.000Z"  
-        },  
-        {  
-          "symbol": "rr_xbtusd",  
-          "last": 20938,  
-          "lastTime": "2022-06-16T15:00:00.000Z"  
-        }  
-      ],  
-      "serverTime": "2022-06-17T11:00:31.335Z"  
-    }  
-* curl
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    
+    
+    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
+
+  * curl
   * python
   * go
   * nodejs
+  * php
 * CURL
 
     
     
-    curl -L 'https://futures.kraken.com/derivatives/api/v3/tickers' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/trading/instruments' \  
+    -H 'Accept: application/json' \  
+    -H 'APIKey: <APIKey>' \  
+    -H 'Authent: <Authent>'  
     
 
 Request Collapse all
@@ -341,14 +321,14 @@ Base URL
 
 https://futures.kraken.com/derivatives/api/v3
 
+Auth
+
+general-api-key-read-only
+
+authent
+
 Parameters
 
 contractType — query
 
 futures_inversefutures_vanillaflexible_futuresoptionsall
-
-symbol — query
-
-ResponseClear
-
-Click the `Send API Request` button above and see the response here!

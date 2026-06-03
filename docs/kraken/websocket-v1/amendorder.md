@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/amendorder
 api_type: WebSocket
-updated_at: 2026-06-02 20:18:58.458931
+updated_at: 2026-06-03 20:23:17.573210
 ---
 
 # Amend Order
@@ -49,14 +49,14 @@ The new order quantity in terms of the base asset.
 
 **display_volume** `string` *conditional*
 
-**Condition:** iceberg orders only.
+**Condition:** iceberg orders only. 
 
 Defines the new quantity to show in the book while the rest of order quantity remains hidden.   
 Minimum value is 1 / 15 of remaining order quantity.
 
 **limit_price** `string` *conditional*
 
-**Condition:** For order types that support limit price only.
+**Condition:** For order types that support limit price only. 
 
 The new limit price restriction on the order.
 
@@ -68,9 +68,9 @@ To specify a relative price, this field can be prefixed by + or - to specify the
 
 **post_only** `boolean` *conditional*
 
-**Condition:** Optional parameter for limit price changes.
+**Condition:** Optional parameter for limit price changes. 
 
-**Possible values:**[`true`, ` false`]
+**Possible values:**[`true`, ` false`] 
 
 **Default value:**`false`
 
@@ -78,7 +78,7 @@ Applies to `limit_price` changes in this amend transaction. If `true`, the limit
 
 **trigger_price** `string` *conditional*
 
-**Condition:** For triggered order types only
+**Condition:** For triggered order types only 
 
 The new trigger price to activate the order.
 
@@ -158,7 +158,7 @@ The client identifier, if populated in the request.
 
 **status** `string`
 
-**Possible values:**[`ok`, `error`]
+**Possible values:**[`ok`, `error`] 
 
 **reqid** `integer`
 

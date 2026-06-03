@@ -2,101 +2,53 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-rfq
 api_type: REST
-updated_at: 2026-06-02 20:10:11.817782
+updated_at: 2026-06-03 20:14:20.795347
 ---
 
-# Retrieve a single RFQ (open or recently closed)
+# Get self trade strategy
 
-**GET** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/:rfqUid`
+**GET** `https://futures.kraken.com/derivatives/api/v3/self-trade-strategy`
 
-Retrieve a specific RFQ by its unique identifier. Returns currently open RFQs as well as recently closed RFQs that are still held in the in-memory closed-RFQ cache. The `status` field on the response distinguishes the lifecycle state (`open`, `expired`, `cancelled`, `filled_bid_side`, or `filled_ask_side`).
-
-Closed RFQs are kept in memory only and are not persisted; entries may be evicted by the cache eviction policy or wiped on service restart.
-
-Note: This is currently available exclusively in the Kraken pre-prod environments.
-
-## Request
-
-### Path Parameters
-
-**rfqUid** uuidrequired
-
-Unique identifier for the RFQ
+Returns account-wide self-trade matching strategy.
 
 ## Responses
 
   * 200
-  * 404
 
-A single open RFQ
+Get current self trade strategy
 
   * application/json
 * Schema
 
 **Schema**
+
+oneOf
+* Success Response
+* ErrorResponse
+
+**strategy** `SelfTradeStrategy (string)` *required*
+
+Self trade matching behaviour:
+* `REJECT_TAKER` \- default behaviour, rejects the taker order that would match against a maker order from any sub-account
+* `CANCEL_MAKER_SELF` \- only cancels the maker order if it is from the same account that sent the taker order
+* `CANCEL_MAKER_CHILD` \- only allows master to cancel its own maker orders and orders from its sub-account
+* `CANCEL_MAKER_ANY` \- allows both master accounts and their subaccounts to cancel maker orders
+
+**Possible values:** [`REJECT_TAKER`, `CANCEL_MAKER_SELF`, `CANCEL_MAKER_CHILD`, `CANCEL_MAKER_ANY`]
 
 **result** `string` *required*
 
 **Possible values:** [`success`]
 
+**Example:**`success`
+
 **serverTime** string<date-time>required
 
-**rfq** `object` *required*
+Server time in Coordinated Universal Time (UTC)
 
-    ↳ **uid** `string<uuid>` *required*
+**Example:**`2020-08-27T17:03:33.196Z`
 
-The unique identifier for this RFQ
-
-    ↳ **expiry** `string<date-time>` *required*
-
-The time at which this RFQ expires
-
-**markPrice** number<double>required
-
-The reference price of the RFQ
-
-    ↳ **legs** `object[]` *required*
-
-The positions associated with the RFQ
-
-  * Array [
-
-        ↳ **symbol** `string` *required*
-
-The symbol of the derivatives contract
-
-        ↳ **size** `number<double>` *required*
-
-The size of the position
-
-**markPrice** number<double>required
-
-The current mark price of the market
-
-**bestBid** number<double>
-
-The best per-leg bid price across all offers
-
-**bestAsk** number<double>
-
-The best per-leg ask price across all offers
-
-  * ]
-
-        ↳ **status** `string` *required*
-
-Lifecycle status of the RFQ. `open` means the RFQ is still accepting offers. `expired` and `cancelled` indicate it closed without a trade. `filled_bid_side` and `filled_ask_side` indicate the requestor accepted an offer on the corresponding side.
-
-**Possible values:** [`open`, `expired`, `cancelled`, `filled_bid_side`, `filled_ask_side`]
-
-RFQ feature is not enabled.
-
-  * application/json
-* Schema
-
-**Schema**
-
-        ↳ **errors** `Error (string)[]`
+**errors** `Error (string)[]`
 
 **Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
 
@@ -134,25 +86,37 @@ Error description.
 Server time in Coordinated Universal Time (UTC)
 
 **Example:**`2020-08-27T17:03:33.196Z`
-* curl
+
+#### Authorization: APIKey
+    
+    
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with at least **read-only** access**in:** header**x-inlineDescription:** true
+    
+    
+    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
+
+  * curl
   * python
   * go
   * nodejs
-  * php
 * CURL
 
     
     
-    curl -L 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/:rfqUid' \  
-    -H 'Accept: application/json'  
+    curl -L 'https://futures.kraken.com/derivatives/api/v3/self-trade-strategy' \  
+    -H 'Accept: application/json' \  
+    -H 'APIKey: <APIKey>' \  
+    -H 'Authent: <Authent>'  
     
 
 Request Collapse all
 
 Base URL
 
-https://demo-futures.kraken.com/derivatives/api/v3
+https://futures.kraken.com/derivatives/api/v3
 
-Parameters
+Auth
 
-rfqUid — pathrequired
+general-api-key-read-only
+
+authent

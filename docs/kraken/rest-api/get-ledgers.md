@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ledgers
 api_type: REST
-updated_at: 2026-06-02 20:13:02.931900
+updated_at: 2026-06-03 20:17:18.117084
 ---
 
-# Get Ledgers Info
+# Query Ledgers
 
-**POST** `https://api.kraken.com/0/private/Ledgers`
+**POST** `https://api.kraken.com/0/private/QueryLedgers`
 
-Retrieve information about ledger entries. 50 results are returned at a time, the most recent by default.
+Retrieve information about specific ledger entries.
 
 > **Note on Staking/Earn assets:** We have begun to migrate assets from our legacy Staking system over to a new Earn system. As such, the following assets may appear in your balances and ledger. Please see our [Support article](https://support.kraken.com/hc/en-us/articles/360039879471-What-is-Asset-S-and-Asset-M-) for more details. Note that these assets are "read-only", to interact with your balances in them please use the base asset (e.g. `USDT` to transact with your `USDT` and `USDT.F` balances).
 > 
@@ -29,41 +29,13 @@ Retrieve information about ledger entries. 50 results are returned at a time, th
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string`
+**id** `string` *required*
 
-Filter output by asset or comma delimited list of assets
+Comma delimited list of ledger IDs to query info about (20 maximum)
 
-**Default value:**`all`
+**trades** `boolean`
 
-**aclass** `string`
-
-Filter output by asset class
-
-**Default value:**`currency`
-
-**type** `string`
-
-Type of ledger to retrieve
-
-**Possible values:** [`all`, `trade`, `deposit`, `withdrawal`, `transfer`, `margin`, `adjustment`, `rollover`, `credit`, `settled`, `staking`, `dividend`, `sale`, `nft_rebate`]
-
-**Default value:**`all`
-
-**start** `integer`
-
-Starting unix timestamp or ledger ID of results (exclusive)
-
-**end** `integer`
-
-Ending unix timestamp or ledger ID of results (inclusive)
-
-**ofs** `integer`
-
-Result offset for pagination
-
-**without_count** `boolean`
-
-If true, does not retrieve count of ledger entries. Request can be noticeably faster for users with many ledger entries as this avoids an extra database query.
+Whether or not to include trades related to position in output
 
 **Default value:**`false`
 
@@ -90,55 +62,47 @@ Ledgers info retrieved.
 
 **result** `object`
 
-Ledgers Info
-
-    ↳ **ledger** `object`
-
 **property name*** LedgerEntry
 
 Ledger Entry
 
-        ↳ **refid** `string`
+    ↳ **refid** `string`
 
 Reference Id of the parent transaction (trade, deposit, withdrawal, etc.) that caused the ledger entry.
 
-        ↳ **time** `number`
+    ↳ **time** `number`
 
 Unix timestamp of ledger
 
-        ↳ **type** `string`
+    ↳ **type** `string`
 
 Type of ledger entry
 
 **Possible values:** [`none`, `trade`, `deposit`, `withdrawal`, `transfer`, `margin`, `adjustment`, `rollover`, `spend`, `receive`, `settled`, `credit`, `staking`, `reward`, `dividend`, `sale`, `conversion`, `nfttrade`, `nftcreatorfee`, `nftrebate`, `custodytransfer`]
 
-        ↳ **subtype** `string`
+    ↳ **subtype** `string`
 
 Additional info relating to the ledger entry type, where applicable
 
-        ↳ **aclass** `string`
+    ↳ **aclass** `string`
 
 Asset class
 
-        ↳ **asset** `string`
+    ↳ **asset** `string`
 
 Asset
 
-        ↳ **amount** `string`
+    ↳ **amount** `string`
 
 Transaction amount
 
-        ↳ **fee** `string`
+    ↳ **fee** `string`
 
 Transaction fee
 
-        ↳ **balance** `string`
+    ↳ **balance** `string`
 
 Resulting balance
-
-        ↳ **count** `integer`
-
-Amount of available ledger info matching criteria
 
 **error** `string[]`
 * curl
@@ -149,16 +113,15 @@ Amount of available ledger info matching criteria
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Ledgers' \  
+    curl -L 'https://api.kraken.com/0/private/QueryLedgers' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828490,  
-      "type": "trade",  
-      "start": 1695728276,  
-      "end": 1695828276  
+      "id": "LUI2RA-CJFLB-EN5I4P, L2QE42-IGSZ3-WEVTLK",  
+      "trade": false  
     }'  
     
 
@@ -179,7 +142,6 @@ Body required
     
     {
       "nonce": 1695828490,
-      "type": "trade",
-      "start": 1695728276,
-      "end": 1695828276
+      "id": "LUI2RA-CJFLB-EN5I4P, L2QE42-IGSZ3-WEVTLK",
+      "trade": false
     }

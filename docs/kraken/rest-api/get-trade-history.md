@@ -2,18 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-history
 api_type: REST
-updated_at: 2026-06-02 20:13:44.966716
+updated_at: 2026-06-03 20:18:03.345165
 ---
 
-# Get Trades History
+# Get Trade Volume
 
-**POST** `https://api.kraken.com/0/private/TradesHistory`
+**POST** `https://api.kraken.com/0/private/TradeVolume`
 
-Retrieve information about trades/fills. 50 results are returned at a time, the most recent by default.
+Returns 30 day USD trading volume and resulting fee schedule for any asset pair(s) provided. Fees will not be included if `pair` is not specified as Kraken fees differ by asset pair. Note: If an asset pair is on a maker/taker fee schedule, the taker side is given in `fees` and maker side in `fees_maker`. For pairs not on maker/taker, they will only be given in `fees`.
 
-  * Unless otherwise stated, costs, fees, prices, and volumes are specified with the precision for the asset pair (`pair_decimals` and `lot_decimals`), not the individual assets' precision (`decimals`).
-
-**API Key Permissions Required:** `Orders and trades - Query closed orders & trades`
+**API Key Permissions Required:** `Funds permissions - Query`
 
 ## Request
 
@@ -25,50 +23,9 @@ Retrieve information about trades/fills. 50 results are returned at a time, the 
 
 Nonce used in construction of `API-Sign` header
 
-**type** `string`
+**pair** `string`
 
-Type of trade
-
-**Possible values:** [`all`, `any position`, `closed position`, `closing position`, `no position`]
-
-**Default value:**`all`
-
-**trades** `boolean`
-
-Whether or not to include trades related to position in output
-
-**Default value:**`false`
-
-**start** `integer`
-
-Starting unix timestamp or trade tx ID of results (exclusive)
-
-**end** `integer`
-
-Ending unix timestamp or trade tx ID of results (inclusive)
-
-**ofs** `integer`
-
-Result offset for pagination
-
-**without_count** `boolean`
-
-If true, does not retrieve count of ledger entries. Request can be noticeably faster for users with many ledger entries as this avoids an extra database query.
-
-**Default value:**`false`
-
-**consolidate_taker** `boolean`
-
-Whether or not to consolidate trades by individual taker trades
-
-**Default value:**`true`
-
-**ledgers** `boolean`
-
-Whether or not to include related ledger ids for given trade   
-Note that setting this to true will slow request performance
-
-**Default value:**`false`
+Comma delimited list of asset pairs to get fee info on (optional, but required if any fee info is desired)
 
 **rebase_multiplier** `rebase_multiplier (string)nullable`
 
@@ -84,7 +41,7 @@ Optional parameter for viewing xstocks data.
 
   * 200
 
-Trade history retrieved.
+Trade Volume retrieved.
 
   * application/json
 * Schema
@@ -93,124 +50,79 @@ Trade history retrieved.
 
 **result** `object`
 
-Trade History
+Trade Volume
 
-    ↳ **count** `integer`
+    ↳ **currency** `string`
 
-Amount of available trades matching criteria
+Fee volume currency (will always be USD)
 
-    ↳ **trades** `object`
+    ↳ **volume** `string`
 
-Trade info
+Current fee discount volume (in USD, breakdown by subaccount if applicable and logged in to master account)
 
-**property name*** Trade
+    ↳ **fees** `object`
 
-Trade Info
+Taker fees that will be applied for each `pair` included in the request. Default `None` if `pair` is not requested.
 
-        ↳ **ordertxid** `string`
+**property name*** FeeTierInfo
 
-Order responsible for execution of trade
-
-        ↳ **postxid** `string`
-
-Position responsible for execution of trade
-
-        ↳ **pair** `string`
-
-Asset pair
-
-        ↳ **time** `number`
-
-Unix timestamp of trade
-
-        ↳ **type** `string`
-
-Type of order (buy/sell)
-
-        ↳ **ordertype** `string`
-
-Order type
-
-        ↳ **price** `string`
-
-Average price order was executed at (quote currency)
-
-        ↳ **cost** `string`
-
-Total cost of order (quote currency)
+Fee Tier Info
 
         ↳ **fee** `string`
 
-Total fee (quote currency)
+Current fee (in percent)
 
-        ↳ **vol** `string`
+        ↳ **min_fee** `string`
 
-Volume (base currency)
+minimum fee for pair (if not fixed fee)
 
-        ↳ **margin** `string`
+        ↳ **max_fee** `string`
 
-Initial margin (quote currency)
+maximum fee for pair (if not fixed fee)
 
-        ↳ **leverage** `string`
+        ↳ **next_fee** `stringnullable`
 
-Amount of leverage used in trade
+next tier's fee for pair (if not fixed fee, null if at lowest fee tier)
 
-        ↳ **misc** `string`
+        ↳ **tier_volume** `stringnullable`
 
-Comma delimited list of miscellaneous info:
-* `closing` — Trade closes all or part of a position
+volume level of current tier (if not fixed fee. null if at lowest fee tier)
 
-        ↳ **ledgers** `string[]`
+        ↳ **next_volume** `stringnullable`
 
-List of ledger ids for entries associated with trade
+volume level of next tier (if not fixed fee. null if at lowest fee tier)
 
-        ↳ **trade_id** `integer`
+        ↳ **fees_maker** `object`
 
-Unique identifier of trade executed
+Maker fees that will be applied for this each `pair` included in the request. Default `None` if `pair` is not requested.
 
-        ↳ **maker** `boolean`
+**property name*** FeeTierInfo
 
-`true` if trade was executed with user as the maker, `false` if taker
+Fee Tier Info
 
-        ↳ **posstatus** `string`
+            ↳ **fee** `string`
 
-Position status (open/closed)   
-Only present if trade opened a position
+Current fee (in percent)
 
-        ↳ **cprice** `number`
+            ↳ **min_fee** `string`
 
-Average price of closed portion of position (quote currency)   
-Only present if trade opened a position
+minimum fee for pair (if not fixed fee)
 
-        ↳ **ccost** `number`
+            ↳ **max_fee** `string`
 
-Total cost of closed portion of position (quote currency)   
-Only present if trade opened a position
+maximum fee for pair (if not fixed fee)
 
-        ↳ **cfee** `number`
+            ↳ **next_fee** `stringnullable`
 
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
+next tier's fee for pair (if not fixed fee, null if at lowest fee tier)
 
-        ↳ **cvol** `number`
+            ↳ **tier_volume** `stringnullable`
 
-Total fee of closed portion of position (quote currency)   
-Only present if trade opened a position
+volume level of current tier (if not fixed fee. null if at lowest fee tier)
 
-        ↳ **cmargin** `number`
+            ↳ **next_volume** `stringnullable`
 
-Total margin freed in closed portion of position (quote currency)   
-Only present if trade opened a position
-
-        ↳ **net** `number`
-
-Net profit/loss of closed portion of position (quote currency, quote currency scale)   
-Only present if trade opened a position
-
-        ↳ **trades** `string[]`
-
-List of closing trades for position (if available)   
-Only present if trade opened a position
+volume level of next tier (if not fixed fee. null if at lowest fee tier)
 
 **error** `string[]`
 * curl
@@ -221,16 +133,14 @@ Only present if trade opened a position
 
     
     
-    curl -L 'https://api.kraken.com/0/private/TradesHistory' \  
+    curl -L 'https://api.kraken.com/0/private/TradeVolume' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828490,  
-      "type": "all",  
-      "trades": false,  
-      "consolidate_taker": true  
+      "pair": "XXBT/ZUSD, XETH/ZEUR"  
     }'  
     
 
@@ -251,7 +161,5 @@ Body required
     
     {
       "nonce": 1695828490,
-      "type": "all",
-      "trades": false,
-      "consolidate_taker": true
+      "pair": "XXBT/ZUSD, XETH/ZEUR"
     }

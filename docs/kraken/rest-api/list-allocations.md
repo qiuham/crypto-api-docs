@@ -2,28 +2,35 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/list-allocations
 api_type: REST
-updated_at: 2026-06-02 20:14:06.943600
+updated_at: 2026-06-03 20:18:23.809872
 ---
 
-# List Earn Strategies
+# List Earn Allocations
 
-**POST** `https://api.kraken.com/0/private/Earn/Strategies`
+**POST** `https://api.kraken.com/0/private/Earn/Allocations`
 
-List earn strategies along with their parameters.
+List all allocations for the user.
 
-Requires a valid API key but not specific permission is required.
+Requires the `Query Funds` API key permission.
 
-Returns only strategies that are available to the user based on geographic region.
+By default all allocations are returned, even for strategies that have been used in the past and have zero balance now. That is so that the user can see how much was earned with given strategy in the past. `hide_zero_allocations` parameter can be used to remove zero balance entries from the output. Paging hasn't been implemented for this method as we don't expect the result for a particular user to be overwhelmingly large.
 
-When the user does not meet the tier restriction, `can_allocate` will be false and `allocation_restriction_info` indicates `Tier` as the restriction reason. Earn products generally require Intermediate tier. Get your account verified to access earn.
+All amounts in the output can be denominated in a currency of user's choice (the `converted_asset` parameter).
 
-A note about `lock_type`:
+Information about when the next reward will be paid to the client is also provided in the output.
 
-  * `instant`: can be deallocated without an unbonding period. This is called flexible in the UI.
-  * `bonded`: has an unbonding period. Deallocation will not happen until this period has passed.
-  * `flex`: "Kraken rewards". This is earning on your spot balances where eligible. It's turned on account wide from the UI and you cannot manually allocate to these strategies.
+Allocated funds can be in up to 4 states:
 
-Paging isn't yet implemented, so the endpoint always returns all data in the first page.
+  * bonding
+  * allocated
+  * exit_queue (ETH only)
+  * unbonding
+
+Any funds in `total` not in `bonding`/`unbonding` are simply allocated and earning rewards. Depending on the strategy funds in the other 3 states can also be earning rewards. Consult the output of `/Earn/Strategies` to know whether `bonding`/`unbonding` earn rewards. `ETH` in `exit_queue` still earns rewards.
+
+Note that for `ETH`, when the funds are in the `exit_queue` state, the `expires` time given is the time when the funds will have finished unbonding, not when they go from exit queue to unbonding.
+
+(Un)bonding time estimate can be inaccurate right after having (de)allocated the funds. Wait 1-2 minutes after (de)allocating to get an accurate result.
 
 ## Request
 
@@ -39,23 +46,13 @@ Nonce used in construction of `API-Sign` header
 
 `true` to sort ascending, `false` (the default) for descending.
 
-**asset** `stringnullable`
+**converted_asset** `stringnullable`
 
-Filter strategies by asset name
+A secondary currency to express the value of your allocations (the default is USD).
 
-**cursor** `stringnullable`
+**hide_zero_allocations** `booleannullable`
 
-None to start at beginning/end, otherwise next page ID
-
-**limit** `integer<uint16>nullable`
-
-How many items to return per page. Note that the limit may be cap'd to lower value in the application code.
-
-**lock_type** `string[]nullable`
-
-Filter strategies by lock type
-
-**Possible values:** [`flex`, `bonded`, `timed`, `instant`]
+Omit entries for strategies that were used in the past but now they don't hold any allocation (the default is `false`)
 
 ## Responses
 
@@ -72,187 +69,231 @@ Response
 
 **result** `objectnullable`
 
+Page response
+
+    ↳ **converted_asset** `string`
+
+A secondary asset to show the value of allocations. (Eg. you also want to see the value of your allocations in USD). Choose this in the request parameters.
+
     ↳ **items** `object[]`
 
   * Array [
 
-        ↳ **allocation_fee** `object`
+        ↳ **amount_allocated** `object`
 
-Fee applied when allocating to this strategy
+Amounts allocated to this Earn strategy
 
-oneOf
-* string
-* integer
-* number
+            ↳ **bonding** `objectnullable`
 
-****string
+Amount allocated in bonding status. Only present when there are bonding allocations.
 
-****integer
+                ↳ **allocation_count** `integer<uint>`
 
-****number
+The total number of allocations in this state for this asset
 
-            ↳ **allocation_restriction_info** `string[]`
+                ↳ **allocations** `object[]`
 
-Reason list why user is not eligible for allocating to the strategy
+Details about when each allocation will expire and move to the next state
 
-**Possible values:** [`tier`]
+  * Array [
 
-            ↳ **apr_estimate** `objectnullable`
+                    ↳ **converted** `string`
 
-The estimate is based on previous revenues from the strategy. Optional hint, not always present.
+Amount converted into the requested asset
 
-                ↳ **high** `string`
+                    ↳ **created_at** `string<date-time>`
 
-Maximal yield percentage for one year
+The date and time which a request to either allocate was received and the funds started bonding.
 
-                ↳ **low** `string`
+                    ↳ **expires** `string<date-time>`
 
-Minimal yield percentage for one year
+The date at which the `Bonded` allocation will move to the `Earning` state.
 
-                ↳ **asset** `string`
+                    ↳ **native** `string`
 
-The asset to invest for this earn strategy
-
-                ↳ **auto_compound** `object`
-
-Auto compound choices for the earn strategy
-
-oneOf
-* MOD1
-* MOD2
-* MOD3
-
-                    ↳ **type** `string`
-
-**Possible values:** [`disabled`]
-
-                    ↳ **type** `string`
-
-**Possible values:** [`enabled`]
-
-                    ↳ **default** `boolean`
-
-                    ↳ **type** `string`
-
-**Possible values:** [`optional`]
-
-                    ↳ **can_allocate** `boolean`
-
-Is allocation available for this strategy
-
-                    ↳ **can_deallocate** `boolean`
-
-Is deallocation available for this strategy
-
-                    ↳ **deallocation_fee** `object`
-
-Fee applied when deallocating from this strategy
-
-oneOf
-* MOD1
-* MOD2
-* MOD3
-
-****string
-
-****integer
-
-****number
-
-                        ↳ **id** `string`
-
-The unique identifier for this strategy
-
-                        ↳ **lock_type** `object`
-
-Type of the strategy
-
-oneOf
-* MOD1
-* MOD2
-* MOD3
-
-                            ↳ **type** `string`
-
-**Possible values:** [`flex`]
-
-                            ↳ **bonding_period** `integer`
-
-Duration of the bonding period, in seconds
-
-                            ↳ **bonding_period_variable** `boolean`
-
-Is the bonding period length variable (`true`) or static (`false`)
-
-                            ↳ **bonding_rewards** `boolean`
-
-Whether rewards are earned during the bonding period (payouts occur after bonding is complete)
-
-                            ↳ **exit_queue_period** `integer`
-
-In order to remove funds, if this value is greater than 0, funds will first have to enter an exit queue and will have to wait for the exit queue period to end. Once ended, her funds will then follow and respect the `unbonding_period`.
-
-If the value of the exit queue period is 0, then no waiting will have to occur and the exit queue will be skipped
-
-Rewards are always paid out for the exit queue
-
-                            ↳ **payout_frequency** `integer`
-
-At what intervals are rewards distributed and credited to the user's ledger, in seconds
-
-                            ↳ **type** `string`
-
-**Possible values:** [`bonded`]
-
-                            ↳ **unbonding_period** `integer`
-
-Duration of the unbonding period in seconds. In order to remove funds, you must wait for the unbonding period to pass after requesting removal before funds become available in her spot wallet
-
-                            ↳ **unbonding_period_variable** `boolean`
-
-Is the unbonding period length variable (`true`) or static (`false`)
-
-                            ↳ **unbonding_rewards** `boolean`
-
-Whether rewards are earned and payouts are done during the unbonding period
-
-                            ↳ **payout_frequency** `integer`
-
-At what intervals are rewards distributed and credited to the user's ledger, in seconds
-
-                            ↳ **type** `string`
-
-**Possible values:** [`instant`]
-
-                            ↳ **user_cap** `stringnullable`
-
-The maximum amount of funds that any given user may allocate to an account. Absence of value means there is no limit. Zero means that all new allocations will return an error (though auto-compound is unaffected).
-
-                            ↳ **user_min_allocation** `stringnullable`
-
-Minimum amount (in USD) for an allocation or deallocation. Absence means no minimum.
-
-                            ↳ **yield_source** `object`
-
-Yield generation mechanism of this strategy
-
-oneOf
-* MOD1
-* MOD2
-
-                                ↳ **type** `string`
-
-**Possible values:** [`staking`]
-
-                                ↳ **type** `string`
-
-**Possible values:** [`off_chain`]
+Amount in the native asset
 
   * ]
 
-                                ↳ **next_cursor** `stringnullable`
+                    ↳ **converted** `string`
 
-index to send into PageRequest for next page, None means you've reached the end.
+Amount converted into the requested asset
+
+                    ↳ **native** `string`
+
+Amount in the native asset
+
+                    ↳ **exit_queue** `objectnullable`
+
+Amount allocated in the exit-queue status. Only present when there are exit_queue allocations.
+
+                        ↳ **allocation_count** `integer<uint>`
+
+The total number of allocations in this state for this asset
+
+                        ↳ **allocations** `object[]`
+
+Details about when each allocation will expire and move to the next state
+
+  * Array [
+
+                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                            ↳ **created_at** `string<date-time>`
+
+The date and time which a request to deallocate was received and processed. For a deallocation request to a strategy with an `exit-queue`, this will be the time the funds joined the exit queue.
+
+                            ↳ **expires** `string<date-time>`
+
+The date/time when the funds will be unbonded.
+
+                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                            ↳ **native** `string`
+
+Amount in the native asset
+
+                            ↳ **pending** `objectnullable`
+
+Pending allocation amount - can be negative if the pending operation is deallocation. Only present when there are pending allocations.
+
+                                ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                ↳ **native** `string`
+
+Amount in the native asset
+
+                                ↳ **total** `object`
+
+Total amount allocated to this Earn strategy
+
+                                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                    ↳ **native** `string`
+
+Amount in the native asset
+
+                                    ↳ **unbonding** `objectnullable`
+
+Amount allocated in unbonding status. Only present when there are unbonding allocations.
+
+                                        ↳ **allocation_count** `integer<uint>`
+
+The total number of allocations in this state for this asset
+
+                                        ↳ **allocations** `object[]`
+
+Details about when each allocation will expire and move to the next state
+
+  * Array [
+
+                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                            ↳ **created_at** `string<date-time>`
+
+The date and time which a request to either allocate or deallocate was received and processed.
+
+For a deallocation request to a strategy with an `exit-queue`, this will be the time the funds joined the exit queue. For a deallocation request to a strategy without exit queue, this will be the time the funds started unbonding
+
+                                            ↳ **expires** `string<date-time>`
+
+The date/time the funds will be unbonded.
+
+                                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                            ↳ **native** `string`
+
+Amount in the native asset
+
+                                            ↳ **native_asset** `string`
+
+The asset of the native currency of this allocation
+
+                                            ↳ **payout** `objectnullable`
+
+Information about the current payout period, absent if when there is no current payout period.
+
+                                                ↳ **accumulated_reward** `object`
+
+Reward accumulated in the payout period until now
+
+                                                    ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                    ↳ **native** `string`
+
+Amount in the native asset
+
+                                                    ↳ **estimated_reward** `object`
+
+Estimated reward from now until the payout
+
+                                                        ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                        ↳ **native** `string`
+
+Amount in the native asset
+
+                                                        ↳ **period_end** `string<date-time>`
+
+Tentative date of the next reward payout.
+
+                                                        ↳ **period_start** `string<date-time>`
+
+When the current payout period started. Either the date of the last payout or when it was enabled.
+
+                                                        ↳ **strategy_id** `string`
+
+Unique ID for Earn Strategy
+
+                                                        ↳ **total_rewarded** `object`
+
+Amount earned using the strategy during the whole lifetime of user account
+
+                                                            ↳ **converted** `string`
+
+Amount converted into the requested asset
+
+                                                            ↳ **native** `string`
+
+Amount in the native asset
+
+  * ]
+
+                                                            ↳ **total_allocated** `string`
+
+The total amount allocated across all strategies, denominated in the `converted_asset` currency
+
+                                                            ↳ **total_rewarded** `string`
+
+Amount earned across all strategies during the whole lifetime of user account, denominated in `converted_asset` currency
 * curl
   * python
   * go
@@ -261,14 +302,15 @@ index to send into PageRequest for next page, None means you've reached the end.
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Earn/Strategies' \  
+    curl -L 'https://api.kraken.com/0/private/Earn/Allocations' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 30295839,  
-      "asset": "DOT"  
+      "converted_asset": "EUR",  
+      "hide_zero_allocations": true  
     }'  
     
 
@@ -289,5 +331,6 @@ Body required
     
     {
       "nonce": 30295839,
-      "asset": "DOT"
+      "converted_asset": "EUR",
+      "hide_zero_allocations": true
     }

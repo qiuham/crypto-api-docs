@@ -2,16 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deposit-addresses
 api_type: REST
-updated_at: 2026-06-02 20:12:55.362870
+updated_at: 2026-06-03 20:17:11.025904
 ---
 
-# Get Deposit Addresses
+# Get Deposit Methods
 
-**POST** `https://api.kraken.com/0/private/DepositAddresses`
+**POST** `https://api.kraken.com/0/private/DepositMethods`
 
-Retrieve (or generate a new) deposit addresses for a particular asset and method.
+Retrieve methods available for depositing a particular asset.
 
-**API Key Permissions Required:** `Funds permissions - Query`
+**API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Deposit`
 
 ## Request
 
@@ -29,42 +29,27 @@ Asset being deposited
 
 **aclass** `string`
 
-Asset class being deposited
+Asset class being deposited (optional)
 
 **Possible values:** [`currency`, `tokenized_asset`]
 
 **Default value:**`currency`
 
-**method** `string` *required*
+**rebase_multiplier** `stringnullable`
 
-Name of the deposit method
+Optional parameter for viewing xstocks data.
+* `rebased`: Display in terms of underlying equity.
+* `base`: Display in terms of SPV tokens.
 
-**new** `boolean`
+**Possible values:** [`rebased`, `base`]
 
-Whether or not to generate a new address
-
-**Default value:**`false`
-
-**amount** `object`
-
-Amount you wish to deposit (only required for `method=Bitcoin Lightning`)
-
-oneOf
-* string
-* integer
-* number
-
-****string
-
-****integer
-
-****number
+**Default value:**`rebased`
 
 ## Responses
 
   * 200
 
-Deposit addresses retrieved.
+Deposit methods retrieved.
 
   * application/json
 * Schema
@@ -75,21 +60,29 @@ Deposit addresses retrieved.
 
   * Array [
 
-    ↳ **address** `string`
+**method** `string`
 
-Deposit Address
+Name of deposit method
 
-    ↳ **expiretm** `string`
+**limit**
 
-Expiration time in unix timestamp, or 0 if not expiring
+Maximum net amount that can be deposited right now, or false if no limit
 
-    ↳ **new** `boolean`
+**fee** `string`
 
-Whether or not address has ever been used
+Amount of fees that will be paid
 
-    ↳ **tag** `string`
+**address-setup-fee** string
 
-Contains tags for [XRP](https://support.kraken.com/hc/en-us/articles/360000184443-Destination-Tag-for-Ripple-XRP-deposits) deposit addresses and memos for [STX](https://support.kraken.com/hc/en-us/articles/10902306995860-Memo-for-Stacks-STX-deposits), [XLM](https://support.kraken.com/hc/en-us/articles/360000184543-Memo-for-Stellar-Lumens-XLM-deposits), and [EOS](https://support.kraken.com/hc/en-us/articles/360001099203-Memo-for-EOS-deposits) deposit addresses
+Whether or not method has an address setup fee
+
+**gen-address** boolean
+
+Whether new addresses can be generated for this method.
+
+**minimum** `string`
+
+Minimum net amount that can be deposited right now
 
   * ]
 
@@ -102,16 +95,14 @@ Contains tags for [XRP](https://support.kraken.com/hc/en-us/articles/36000018444
 
     
     
-    curl -L 'https://api.kraken.com/0/private/DepositAddresses' \  
+    curl -L 'https://api.kraken.com/0/private/DepositMethods' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
       "nonce": 1695828271,  
-      "asset": "XBT",  
-      "method": "Bitcoin",  
-      "new": true  
+      "asset": "XBT"  
     }'  
     
 
@@ -132,7 +123,5 @@ Body required
     
     {
       "nonce": 1695828271,
-      "asset": "XBT",
-      "method": "Bitcoin",
-      "new": true
+      "asset": "XBT"
     }

@@ -2,9 +2,168 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/order-management
 api_type: REST
-updated_at: 2026-06-02 20:10:38.131657
+updated_at: 2026-06-03 20:14:47.455359
 ---
 
-# Order Management
+# Place new offer on an open RFQ
 
-## [📄️ Batch order managementThis endpoint allows sending limit or stop order(s) and/or cancelling open order(s) and/or](/api/docs/futures-api/trading/send-batch-order)## [📄️ Cancel all ordersThis endpoint allows cancelling orders which are associated with a future's contract or a](/api/docs/futures-api/trading/cancel-all-orders)## [📄️ Dead man's switchThis endpoint provides a Dead Man's Switch mechanism to protect the user from network malfunctions. The user can send a request with a timeout in seconds which will trigger a countdown timer that will cancel all user orders when timeout expires. The user has to keep sending request to push back the timeout expiration or they can deactivate the mechanism by specifying a timeout of zero (0).](/api/docs/futures-api/trading/cancel-all-orders-after)## [📄️ Cancel orderThis endpoint allows cancelling an open order for a Futures contract.](/api/docs/futures-api/trading/cancel-order)## [📄️ Edit orderThis endpoint allows editing an existing order for a currently listed Futures contract.](/api/docs/futures-api/trading/edit-order-spring)## [📄️ Get open ordersThis endpoint returns information on all open orders for all Futures contracts.](/api/docs/futures-api/trading/get-open-orders)## [📄️ Send orderThis endpoint allows sending a limit, stop, take profit or immediate-or-cancel order for a](/api/docs/futures-api/trading/send-order)## [📄️ Get Specific Orders' StatusReturns information on specified orders which are open or were filled/cancelled in the last](/api/docs/futures-api/trading/get-order-status)
+**POST** `https://demo-futures.kraken.com/derivatives/api/v3/rfqs/place-offer/:rfqUid`
+
+Place a new offer on the specified open RFQ. At least one of bid or ask must be provided.
+
+Note: This is currently available exclusively in the Kraken pre-prod environments.
+
+## Request
+
+### Path Parameters
+
+**rfqUid** uuidrequired
+
+Unique identifier for the RFQ
+
+### Query Parameters
+
+**bid** `decimal`
+
+The bid price in USD
+
+**ask** `decimal`
+
+The ask price in USD
+
+**bidSide** string
+
+JSON-encoded per-leg bid pricing. Format: `[{"tradeable": "PI_XBTUSD", "price": 100}]`. When provided, bid/ask query params must be omitted.
+
+**askSide** string
+
+JSON-encoded per-leg ask pricing. Format: `[{"tradeable": "PI_XBTUSD", "price": 101}]`. When provided, bid/ask query params must be omitted.
+
+## Responses
+
+  * 200
+  * 404
+
+Placed bid
+
+  * application/json
+* Schema
+
+**Schema**
+
+**status**
+
+**Possible values:** [`placed`, `failed`]
+* placed
+* failed
+
+**result** `string` *required*
+
+**Possible values:** [`success`]
+
+**serverTime** string<date-time>required
+
+**offerUId** string<uuid>required
+
+**result** `string` *required*
+
+**Possible values:** [`success`]
+
+**serverTime** string<date-time>required
+
+**reason** `string` *required*
+
+**Possible values:** [`rfqNotFound`, `insufficientMargin`, `maxPositionExceed`, `wouldCauseLiquidation`, `fixedLeverageTooHigh`, `orderError`, `noBidOrAskProvided`, `marketRestricted`, `priceTooFarFromMarket`, `deltaLimitExceeded`, `vegaLimitExceeded`, `legMismatch`, `perLegAndPackagePricesProvided`, `incompleteSide`]
+
+RFQ feature is not enabled.
+
+  * application/json
+* Schema
+
+**Schema**
+
+**errors** `Error (string)[]`
+
+**Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
+
+**error** `Error (string)` *required*
+
+Error description.
+* `accountInactive`: The Futures account the request refers to is inactive
+* `apiLimitExceeded`: The API limit for the calling IP address has been exceeded
+* `authenticationError`: The request could not be authenticated
+* `insufficientFunds`: The amount requested for transfer is below the amount of funds available
+* `invalidAccount`: The Futures account the transfer request refers to is invalid
+* `invalidAmount`: The amount the transfer request refers to is invalid
+* `invalidArgument`: One or more arguments provided are invalid
+* `invalidUnit`: The unit the transfer request refers to is invalid
+* `Json Parse Error`: The request failed to pass valid JSON as an argument
+* `marketUnavailable`: The market is currently unavailable
+* `nonceBelowThreshold`: The provided nonce is below the threshold
+* `nonceDuplicate`: The provided nonce is a duplicate as it has been used in a previous request
+* `notFound`: The requested information could not be found
+* `requiredArgumentMissing`: One or more required arguments are missing
+* `Server Error`: There was an error processing the request
+* `Unavailable`: The endpoint being called is unavailable
+* `unknownError`: An unknown error has occurred
+
+**Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
+
+**result** `string` *required*
+
+**Possible values:** [`error`]
+
+**Example:**`error`
+
+**serverTime** string<date-time>required
+
+Server time in Coordinated Universal Time (UTC)
+
+**Example:**`2020-08-27T17:03:33.196Z`
+
+#### Authorization: APIKey
+    
+    
+    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
+    
+    
+    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
+
+  * curl
+  * python
+  * go
+  * nodejs
+  * php
+* CURL
+
+    
+    
+    curl -L -X POST 'https://demo-futures.kraken.com/derivatives/api/v3/rfqs/place-offer/:rfqUid' \  
+    -H 'Accept: application/json' \  
+    -H 'APIKey: <APIKey>' \  
+    -H 'Authent: <Authent>'  
+    
+
+Request Collapse all
+
+Base URL
+
+https://demo-futures.kraken.com/derivatives/api/v3
+
+Auth
+
+general-api-key
+
+authent
+
+Parameters
+
+rfqUid — pathrequired
+
+bid — query
+
+ask — query
+
+bidSide — query
+
+askSide — query

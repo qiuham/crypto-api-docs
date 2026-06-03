@@ -2,9 +2,11 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/market-data
 api_type: Market Data
-updated_at: 2026-06-02 20:10:34.745663
+updated_at: 2026-06-03 20:14:43.910550
 ---
 
-# Market Data
+# Multi-Collateral
 
-## [📄️ Get trade historyThis endpoint returns the most recent 100 trades prior to the specified `lastTime` value up](/api/docs/futures-api/trading/get-history)## [📄️ Get orderbookThis endpoint returns the entire non-cumulative order book of currently listed Futures](/api/docs/futures-api/trading/get-orderbook)## [📄️ Get tickersThis endpoint returns current market data for all currently listed Futures contracts and](/api/docs/futures-api/trading/get-tickers)## [📄️ Get ticker by symbolGet market data for contract or index by symbol](/api/docs/futures-api/trading/get-ticker)
+Endpoints pertaining to the multi-collateral (MC) futures markets.
+
+## [📄️ Get PNL currency preferencesThe PNL currency preference is used to determine which currency to pay out when realizing](/api/docs/futures-api/trading/get-pnl-currency-preference)## [📄️ Set PNL currency preferenceThe PNL currency preference is used to determine which currency to pay out when realizing](/api/docs/futures-api/trading/set-pnl-currency-preference)## [📄️ Get leverage settingsReturns list of configured leverage preferences.](/api/docs/futures-api/trading/get-leverage-setting)## [📄️ Set leverage settingsSets a contract's margin mode, either 'isolated' or 'cross' margin.](/api/docs/futures-api/trading/set-leverage-setting)

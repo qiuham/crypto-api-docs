@@ -2,27 +2,16 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-allocate-strategy-status
 api_type: REST
-updated_at: 2026-06-02 20:12:44.748450
+updated_at: 2026-06-03 20:16:59.048745
 ---
 
-# Get Allocation Status
+# Get API Key Info
 
-**POST** `https://api.kraken.com/0/private/Earn/AllocateStatus`
+**POST** `https://api.kraken.com/0/private/GetApiKeyInfo`
 
-Get the status of the last allocation request.
+Retrieve information about the API key that is used to make the request, including its name, permissions, restrictions, and usage timestamps.
 
-Requires either the `Earn Funds` or `Query Funds` API key permission.
-
-(De)allocation operations are asynchronous and this endpoint allows client to retrieve the status of the last dispatched operation. There can be only one (de)allocation request in progress for given user and strategy.
-
-The `pending` attribute in the response indicates if the previously dispatched operation is still in progress (true) or has successfully completed (false). If the dispatched request failed with an error, then HTTP error is returned to the client as if it belonged to the original request.
-
-Following specific errors within `Earnings` class can be returned by this method:
-
-  * Insufficient funds: `EEarnings:Insufficient funds:Insufficient funds to complete the (de)allocation request`
-  * User cap exceeded: `EEarnings:Above max:The allocation exceeds user limit for the strategy`
-  * Total cap exceeded: `EEarnings:Above max:The allocation exceeds the total strategy limit`
-  * Minimum allocation: `EEarnings:Below min:(De)allocation operation amount less than minimum`
+**API Key Permissions Required:** `None`
 
 ## Request
 
@@ -34,30 +23,94 @@ Following specific errors within `Earnings` class can be returned by this method
 
 Nonce used in construction of `API-Sign` header
 
-**strategy_id** `string` *required*
+**otp** `string`
 
-ID of the earn strategy, call `Earn/Strategies` to list available strategies
+Two-factor authentication password (required only if 2FA is configured for the API key)
 
 ## Responses
 
   * 200
 
-Response
+API key information retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
+**result** `object`
+
+API Key Information
+
+**apiKeyName** string
+
+Name/label assigned to the API key
+
+**apiKey** string
+
+The API key string
+
+    ↳ **nonce** `string`
+
+Current nonce value for the API key
+
+**nonceWindow** integer<int64>
+
+Custom nonce window value (0 if not configured)
+
+    ↳ **permissions** `string[]`
+
+List of permissions assigned to the API key. Values correspond to the API Key permission settings:
+
+Value| API Key Permission  
+---|---  
+`query-funds`| Funds permissions - Query  
+`add-funds`| Funds permissions - Deposit  
+`withdraw-funds`| Funds permissions - Withdraw  
+`earn-funds`| Funds permissions - Earn  
+`query-open-trades`| Orders and trades - Query open orders & trades  
+`query-closed-trades`| Orders and trades - Query closed orders & trades  
+`modify-trades`| Orders and trades - Create & modify orders  
+`close-trades`| Orders and trades - Cancel & close orders  
+`query-ledger`| Data - Query ledger entries  
+`export-data`| Data - Export data  
+`create-ws-token`| WebSocket interface - On  
+`add-withdraw-address`| Add withdrawal addresses  
+`update-withdraw-address`| Update withdrawal addresses  
+  
+    ↳ **iban** `string`
+
+IIBAN (Internal IBAN) of the account associated with the API key
+
+**validUntil** string
+
+Unix timestamp for key expiration (0 if not set)
+
+**queryFrom** string
+
+Unix timestamp for earliest allowed query date (0 if not set)
+
+**queryTo** string
+
+Unix timestamp for latest allowed query date (0 if not set)
+
+**createdTime** string
+
+Unix timestamp of when the API key was created
+
+**modifiedTime** string
+
+Unix timestamp of when the API key was last modified
+
+**ipAllowlist** string[]
+
+List of IP addresses or ranges allowed to use this API key (empty if not restricted)
+
+**lastUsed** stringnullable
+
+Unix timestamp of when the API key was last used (null if never used)
+
 **error** `string[]`
-
-**result** `objectnullable`
-
-Status of async earn operation
-
-    ↳ **pending** `boolean`
-
-`true` if an operation is still in progress on the same strategy.
 * curl
   * python
   * go
@@ -66,14 +119,14 @@ Status of async earn operation
 
     
     
-    curl -L 'https://api.kraken.com/0/private/Earn/AllocateStatus' \  
+    curl -L 'https://api.kraken.com/0/private/GetApiKeyInfo' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 30295839,  
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"  
+      "nonce": 0,  
+      "otp": "string"  
     }'  
     
 
@@ -93,6 +146,6 @@ Body required
     
     
     {
-      "nonce": 30295839,
-      "strategy_id": "ESRFUO3-Q62XD-WIOIL7"
+      "nonce": 0,
+      "otp": "string"
     }

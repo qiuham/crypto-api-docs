@@ -2,56 +2,52 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ohlc-data
 api_type: REST
-updated_at: 2026-06-02 20:13:09.270859
+updated_at: 2026-06-03 20:17:22.089414
 ---
 
-# Get Open Orders
+# Get OHLC Data
 
-**POST** `https://api.kraken.com/0/private/OpenOrders`
+**GET** `https://api.kraken.com/0/public/OHLC`
 
-Retrieve information about currently open orders.
-
-**API Key Permissions Required:** `Orders and trades - Query open orders & trades`
+Retrieve OHLC market data. The last entry in the OHLC array is for the current, not-yet-committed timeframe, and will always be present, regardless of the value of `since`. Returns up to 720 of the most recent entries (older data cannot be retrieved, regardless of the value of `since`).
 
 ## Request
 
-  * application/json
+### Query Parameters
 
-### Body**required**
+**pair** `string` *required*
 
-**nonce** `integer<int64>` *required*
+Asset pair to get data for
 
-Nonce used in construction of `API-Sign` header
+**Example:** XBTUSD
 
-**trades** `boolean`
+**interval** `integer`
 
-Whether or not to include trades related to position in output
+**Possible values:** [`1`, `5`, `15`, `30`, `60`, `240`, `1440`, `10080`, `21600`]
 
-**Default value:**`false`
+Time frame interval in minutes
 
-**userref** `integer<int32>`
+**Default value:**`1`
 
-Restrict results to given user reference
+**Example:** 60
 
-**cl_ord_id** `string`
+**since** `integer`
 
-Restrict results to given client order id
+Return OHLC entries since the given timestamp (intended for incremental updates)
 
-**rebase_multiplier** `rebase_multiplier (string)nullable`
+**Example:** 1688671200
 
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
+**asset_class** `string`
 
-**Possible values:** [`rebased`, `base`]
+**Possible values:** [`tokenized_asset`]
 
-**Default value:**`rebased`
+This parameter is required on requests for non-crypto pairs, i.e. use `tokenized_asset` for xstocks.
 
 ## Responses
 
   * 200
 
-Open orders info retrieved.
+OHLC data retrieved.
 
   * application/json
 * Schema
@@ -60,159 +56,33 @@ Open orders info retrieved.
 
 **result** `object`
 
-Open Orders
+    ↳ **last** `integer`
 
-    ↳ **open** `object`
+ID to be used as since when polling for new, committed OHLC data
 
-**property name*** OpenOrder
+**property name*** TickData
 
-Open Order
+Array of tick data arrays `[int <time>, string <open>, string <high>, string <low>, string <close>, string <vwap>, string <volume>, int <count>]`
 
-        ↳ **refid** `stringnullable`
+**Possible values:** `>= 8`, `<= 8`
 
-Referral order transaction ID that created this order
+  * Array [
 
-        ↳ **userref** `integernullable`
+**type**
 
-Optional numeric, client identifier associated with one or more orders.
+    ↳ **items** `object`
 
-        ↳ **cl_ord_id** `stringnullable`
+**Possible values:** `>= 8`, `<= 8`
 
-Optional alphanumeric, client identifier associated with the order.
+oneOf
+* string
+* integer
 
-        ↳ **status** `string`
+****string
 
-Status of order
-* pending = order pending book entry
-* open = open order
-* closed = closed order
-* canceled = order canceled
-* expired = order expired
+****integer
 
-**Possible values:** [`pending`, `open`, `closed`, `canceled`, `expired`]
-
-        ↳ **opentm** `number`
-
-Unix timestamp of when order was placed
-
-        ↳ **starttm** `number`
-
-Unix timestamp of order start time (or 0 if not set)
-
-        ↳ **expiretm** `number`
-
-Unix timestamp of order end time (or 0 if not set)
-
-        ↳ **descr** `object`
-
-Order description info
-
-            ↳ **pair** `string`
-
-Asset pair
-
-            ↳ **type** `string`
-
-Type of order (buy/sell)
-
-**Possible values:** [`buy`, `sell`]
-
-            ↳ **ordertype** `ordertype (string)`
-
-The execution model of the order.
-
-**Possible values:** [`market`, `limit`, `iceberg`, `stop-loss`, `take-profit`, `stop-loss-limit`, `take-profit-limit`, `trailing-stop`, `trailing-stop-limit`, `settle-position`]
-
-**Example:**`limit`
-
-            ↳ **price** `string`
-
-primary price
-
-**price2** string
-
-Secondary price
-
-            ↳ **leverage** `string`
-
-Amount of leverage
-
-            ↳ **order** `string`
-
-Order description
-
-            ↳ **close** `string`
-
-Conditional close order description (if conditional close set)
-
-            ↳ **vol** `string`
-
-Volume of order (base currency)
-
-            ↳ **vol_exec** `string`
-
-Volume executed (base currency)
-
-            ↳ **cost** `string`
-
-Total cost (quote currency unless)
-
-            ↳ **fee** `string`
-
-Total fee (quote currency)
-
-            ↳ **price** `string`
-
-Average price (quote currency)
-
-            ↳ **stopprice** `string`
-
-Stop price (quote currency)
-
-            ↳ **limitprice** `string`
-
-Triggered limit price (quote currency, when limit based order type triggered)
-
-            ↳ **trigger** `string`
-
-Price signal used to trigger "stop-loss" "take-profit" "stop-loss-limit" "take-profit-limit" orders.
-* `last` is the implied trigger if this field is not set.
-
-**Possible values:** [`last`, `index`]
-
-**Default value:**`last`
-
-            ↳ **margin** `boolean`
-
-Indicates if the order is funded on margin.
-
-            ↳ **misc** `string`
-
-Comma delimited list of miscellaneous info
-* `stopped` triggered by stop price
-* `touched` triggered by touch price
-* `liquidated` liquidation
-* `partial` partial fill
-* `amended` order parameters modified
-
-            ↳ **sender_sub_id** `stringnullable`
-
-For institutional accounts, identifies underlying sub-account/trader for Self Trade Prevention (STP).
-
-            ↳ **oflags** `oflags (string)`
-
-Comma delimited list of order flags
-* • `post` post-only order (available when ordertype = limit)
-* • `fcib` prefer fee in base currency (default if selling)
-* • `fciq` prefer fee in quote currency (default if buying, mutually exclusive with `fcib`)
-* • `nompp` (DEPRECATED) — disabling Market Price Protection for market orders is no longer supported. If supplied, the flag is accepted but ignored.
-* • `viqc` order volume expressed in quote currency. This option is supported only for buy market orders. Also not available on margin orders.
-
-**Example:**`post`
-
-            ↳ **trades** `string[]`
-
-List of trade IDs related to order (if trades info requested and data available)
+  * ]
 
 **error** `string[]`
 * curl
@@ -223,16 +93,8 @@ List of trade IDs related to order (if trades info requested and data available)
 
     
     
-    curl -L 'https://api.kraken.com/0/private/OpenOrders' \  
-    -H 'Content-Type: application/json' \  
-    -H 'Accept: application/json' \  
-    -H 'API-Key: <API-Key>' \  
-    -H 'API-Sign: <API-Sign>' \  
-    -d '{  
-      "nonce": 1234567,  
-      "trades": true,  
-      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d"  
-    }'  
+    curl -L 'https://api.kraken.com/0/public/OHLC' \  
+    -H 'Accept: application/json'  
     
 
 Request Collapse all
@@ -241,17 +103,20 @@ Base URL
 
 https://api.kraken.com/0
 
-Auth
+Parameters
 
-API-Key
+pair — queryrequired
 
-API-Sign
+interval — query
 
-Body required
-    
-    
-    {
-      "nonce": 1234567,
-      "trades": true,
-      "cl_ord_id": "9cc788d8-9c00-4b25-94d3-26d93603948d"
-    }
+\---1515306024014401008021600
+
+since — query
+
+asset_class — query
+
+\---tokenized_asset
+
+ResponseClear
+
+Click the `Send API Request` button above and see the response here!

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/reject-business_level-fix
 api_type: REST
-updated_at: 2026-06-02 20:08:34.857143
+updated_at: 2026-06-03 20:12:32.156880
 ---
 
 # Reject - Session Level

@@ -2,14 +2,14 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-withdrawal-information
 api_type: REST
-updated_at: 2026-06-02 20:14:00.649474
+updated_at: 2026-06-03 20:18:17.736116
 ---
 
-# Get Withdrawal Methods
+# Get Withdrawal Information
 
-**POST** `https://api.kraken.com/0/private/WithdrawMethods`
+**POST** `https://api.kraken.com/0/private/WithdrawInfo`
 
-Retrieve a list of withdrawal methods available for the user.
+Retrieve fee information about potential withdrawals for a particular asset, key and amount.
 
 **API Key Permissions Required:** `Funds permissions - Query` and `Funds permissions - Withdraw`
 
@@ -23,66 +23,48 @@ Retrieve a list of withdrawal methods available for the user.
 
 Nonce used in construction of `API-Sign` header
 
-**asset** `string`
+**asset** `string` *required*
 
-Filter methods for specific asset
+Asset being withdrawn
 
-**aclass** `string`
+**key** `string` *required*
 
-Filter methods for specific asset class
+Withdrawal key name, as set up on your account
 
-**Possible values:** [`currency`, `tokenized_asset`]
+**amount** `string` *required*
 
-**Default value:**`currency`
-
-**network** `string`
-
-Filter methods for specific network
-
-**rebase_multiplier** `stringnullable`
-
-Optional parameter for viewing xstocks data.
-* `rebased`: Display in terms of underlying equity.
-* `base`: Display in terms of SPV tokens.
-
-**Possible values:** [`rebased`, `base`]
-
-**Default value:**`rebased`
+Amount to be withdrawn
 
 ## Responses
 
   * 200
 
-Withdrawal methods retrieved.
+Withdrawal information retrieved.
 
   * application/json
 * Schema
 
 **Schema**
 
-**result** `object[]`
+**result** `object`
 
-Withdrawal Methods
-
-  * Array [
-
-    ↳ **asset** `string`
-
-Name of asset being withdrawn
+Withdrawal Info
 
 **method** `string`
 
-Name of the withdrawal method
+Name of the withdrawal method that will be used
 
-**network** `string`
+**limit** `string`
 
-Name of the blockchain or network being withdrawn on
+Maximum net amount that can be withdrawn right now
 
-**minimum** `string`
+**amount** `string`
 
-Minimum net amount that can be withdrawn right now
+Net amount that will be sent, after fees
 
-  * ]
+**fee** `string`
+
+Amount of fees that will be paid
 
 **error** `string[]`
 * curl
@@ -93,17 +75,16 @@ Minimum net amount that can be withdrawn right now
 
     
     
-    curl -L 'https://api.kraken.com/0/private/WithdrawMethods' \  
+    curl -L 'https://api.kraken.com/0/private/WithdrawInfo' \  
     -H 'Content-Type: application/json' \  
     -H 'Accept: application/json' \  
     -H 'API-Key: <API-Key>' \  
     -H 'API-Sign: <API-Sign>' \  
     -d '{  
-      "nonce": 0,  
-      "asset": "string",  
-      "aclass": "currency",  
-      "network": "string",  
-      "rebase_multiplier": "rebased"  
+      "nonce": 1695828271,  
+      "asset": "XBT",  
+      "key": "btc_testnet",  
+      "amount": "0.725"  
     }'  
     
 
@@ -123,9 +104,8 @@ Body required
     
     
     {
-      "nonce": 0,
-      "asset": "string",
-      "aclass": "currency",
-      "network": "string",
-      "rebase_multiplier": "rebased"
+      "nonce": 1695828271,
+      "asset": "XBT",
+      "key": "btc_testnet",
+      "amount": "0.725"
     }
