@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset
 api_type: REST
-updated_at: 2026-06-02 19:26:03.106732
+updated_at: 2026-06-03 19:31:47.265252
 ---
 
 # Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)

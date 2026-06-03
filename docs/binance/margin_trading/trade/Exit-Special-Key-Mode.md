@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Exit-Special-Key-Mode
 api_type: Trading
-updated_at: 2026-06-02 19:24:36.887790
+updated_at: 2026-06-03 19:30:13.620575
 ---
 
 # Exit Special Key Mode (TRADE)
@@ -20,6 +20,8 @@ When a user creates a Margin Special API Key, the account enters "Special Key Mo
   3. A cooldown period (default: 24 hours) will be enforced, during which the account will not be permitted to create new Margin Special API Keys.
 
 
+
+For more information, please refer to [FAQ](https://www.binance.com/en/support/faq/detail/3208663e900d4d2e9fec4140e1832f4e).
 
 ## HTTP Request[​](/docs/margin_trading/trade/Exit-Special-Key-Mode#http-request "Direct link to HTTP Request")
 
@@ -69,6 +71,8 @@ The following conditions must be met; otherwise the request will be rejected:
   3. 将执行冷却期（默认：24 小时），冷却期内账户不得创建新的 Margin Special Key。
 
 
+
+更多信息请参考 [FAQ](https://www.binance.com/zh-CN/support/faq/detail/3208663e900d4d2e9fec4140e1832f4e)。
 
 ## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Exit-Special-Key-Mode#http请求 "HTTP请求的直接链接")
 

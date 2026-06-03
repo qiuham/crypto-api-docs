@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/errors
 api_type: REST
-updated_at: 2026-06-02 19:21:25.322241
+updated_at: 2026-06-03 19:26:46.474372
 ---
 
 # Market Data Only URLs
@@ -37,7 +37,7 @@ Sample request:
 
 ### Websocket Streams[​](/docs/binance-spot-api-docs/faqs/market_data_only#websocket-streams "Direct link to Websocket Streams")
 
-Public market data can also be retrieved through the websocket market data using the URL `data-stream.binance.vision`. The streams available through this domain are the same that can be found in the [Websocket Market Streams](/docs/binance-spot-api-docs/web-socket-streams) documentation.
+Public market data can also be retrieved through the websocket market data using the URL `data-stream.binance.vision`. The streams available through this domain are the same that can be found in the [WebSocket Market Streams](/docs/binance-spot-api-docs/web-socket-streams) documentation.
 
 Note that User Data Streams **cannot** be accessed through this URL.
 
@@ -75,12 +75,12 @@ Sample request:
 请求示例:
     
     
-    curl -sX GET "https://data-api.binance.vision/api/v3/exchangeInfo?symbol=BTCUSDT"   
+    curl -sX GET "https://data-api.binance.vision/api/v3/exchangeInfo?symbol=BTCUSDT"  
     
 
 ### Websocket Streams[​](/docs/zh-CN/binance-spot-api-docs/faqs/market_data_only#websocket-streams "Websocket Streams的直接链接")
 
-也可以通过 Websocket 市场数据的 URL `data-stream.binance.vision` 提取公共市场数据。 此域名所提供的 stream 与 [Websocket Market Streams_CN](/docs/zh-CN/binance-spot-api-docs/web-socket-streams) 文档中的相同。 请注意账户信息推送**无法** 从此 URL 获得。
+也可以通过 Websocket 市场数据的 URL `data-stream.binance.vision` 提取公共市场数据。 此域名所提供的 stream 与 [WebSocket Market Streams_CN](/docs/zh-CN/binance-spot-api-docs/web-socket-streams) 文档中的相同。 请注意用户数据流**无法** 从此 URL 获得。
 
 请求示例:
     

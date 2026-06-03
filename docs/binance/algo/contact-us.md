@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/contact-us
 api_type: REST
-updated_at: 2026-06-02 19:25:27.292504
+updated_at: 2026-06-03 19:31:09.021895
 ---
 
 # Volume Participation(VP) New Order (TRADE)
@@ -28,7 +28,7 @@ side| ENUM| YES| Trading side ( BUY or SELL )
 positionSide| ENUM| NO| Default `BOTH` for One-way Mode ; `LONG` or `SHORT` for Hedge Mode. It must be sent in Hedge Mode.  
 quantity| DECIMAL| YES| Quantity of base asset; The notional (`quantity` * `mark price(base asset)`) must be more than the equivalent of 10,000 USDT and less than the equivalent of 1,000,000 USDT  
 urgency| ENUM| YES| Represent the relative speed of the current execution; ENUM: LOW, MEDIUM, HIGH  
-clientAlgoId| STRING| NO| A unique id among Algo orders (length should be 32 characters)， If it is not sent, we will give default value  
+clientAlgoId| STRING| NO| A unique id among Algo orders (length should be 32 characters), If it is not sent, we will give default value  
 reduceOnly| BOOLEAN| NO| "true" or "false". Default "false"; Cannot be sent in Hedge Mode; Cannot be sent when you open a position  
 limitPrice| DECIMAL| NO| Limit price of the order; If it is not sent, will place order by market price by default  
 recvWindow| LONG| NO|   
@@ -36,8 +36,10 @@ timestamp| LONG| YES|
   
 >   * Total Algo open orders max allowed: `10` orders.
 >   * Leverage of symbols and position mode will be the same as your futures account settings. You can set up through the trading page or fapi.
->   * Receiving `"success": true` does not mean that your order will be executed. Please use the query order endpoints（`GET sapi/v1/algo/futures/openOrders` or `GET sapi/v1/algo/futures/historicalOrders`） to check the order status. For example: Your futures balance is insufficient, or open position with reduce only or position side is inconsistent with your own setting. In these cases you will receive `"success": true`, but the order status will be `expired` after we check it.
->   * You need to enable `Futures Trading Permission` for the api key which requests this endpoint.
+>   * Receiving `"success": true` does not mean that your order will be executed. Please use the query order endpoints (`GET sapi/v1/algo/futures/openOrders` or `GET sapi/v1/algo/futures/historicalOrders`) to check the order status. For example: Your futures balance is insufficient, or open position with reduce only or position side is inconsistent with your own setting. In these cases you will receive `"success": true`, but the order status will be `expired` after we check it.
+>   * You need to enable the corresponding permission for the API key requesting this endpoint: 
+>     * `Futures Trading Permission` — for Classic Trading Account mode
+>     * `Portfolio Margin Trading Permission` — for Portfolio Margin Account mode
 >   * Base URL: <https://api.binance.com>
 > 
 
@@ -88,7 +90,9 @@ timestamp| LONG| YES|
 >   * 最大所有策略订单挂单数量： 10。
 >   * 杠杆倍数和持仓模式与您的合约账户设置相同，您可以通过合约交易页面设置或者通过fapi设置。
 >   * 收到 `"success": true` 不代表您的订单一定会被执行。请通过查询订单接口（`GET sapi/v1/algo/futures/openOrders` 或者 `GET sapi/v1/algo/futures/historicalOrders`）以获取订单状态。 例如: 如果您的合约账户余额不足，或者开仓使用了`reduce only`参数，或者您下单选择的持仓模式与您设置的不符，这些情况您都会收到响应 `"success": true`，但订单状态会显示为 `expired`，代表订单过期。
->   * 您的 API Key 需要开通 `允许合约交易` 权限
+>   * 您的 API Key 需要开通相应的权限: 
+>     * `允许合约交易` 权限 — 适用于经典交易账户模式
+>     * `允许组合保证金交易` 权限 — 适用于组合保证金账户模式
 >   * 请使用Base URL: <https://api.binance.com>
 > 
 
@@ -98,7 +102,7 @@ timestamp| LONG| YES|
     
     {  
         "clientAlgoId": "00358ce6a268403398bd34eaa36dffe7", //用户自定义策略订单ID  
-        "success": true,   
+        "success": true,  
         "code": 0,  
         "msg": "OK"  
     }

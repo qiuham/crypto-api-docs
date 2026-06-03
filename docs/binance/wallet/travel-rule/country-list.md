@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/country-list
 api_type: REST
-updated_at: 2026-06-02 19:26:59.807776
+updated_at: 2026-06-03 19:32:51.916491
 ---
 
 # Submit Deposit Questionnaire (For local entities that require travel rule) (supporting network) (USER_DATA)

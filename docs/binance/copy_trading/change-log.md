@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/copy_trading/change-log
 api_type: REST
-updated_at: 2026-06-02 19:27:24.879763
+updated_at: 2026-06-03 19:33:19.256867
 ---
 
 # Get Futures Lead Trader Status(TRADE)

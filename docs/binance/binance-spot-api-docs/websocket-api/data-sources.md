@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/data-sources
 api_type: WebSocket
-updated_at: 2026-06-02 19:22:26.386012
+updated_at: 2026-06-03 19:27:54.703708
 ---
 
 # Data sources

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/account-endpoints
 api_type: Account
-updated_at: 2026-06-02 19:21:47.279866
+updated_at: 2026-06-03 19:27:10.527053
 ---
 
 # Error Codes

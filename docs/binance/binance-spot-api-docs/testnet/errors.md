@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/errors
 api_type: REST
-updated_at: 2026-06-02 19:22:09.604143
+updated_at: 2026-06-03 19:27:35.733402
 ---
 
 # FIX API
@@ -2152,8 +2152,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Order Entry[​](/docs/binance-spot-api-docs/testnet/fix-api#order-entry "Direct link to Order Entry")
 
   * `tcp+tls://fix-oe.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-oe.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 
@@ -2161,8 +2161,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Drop Copy[​](/docs/binance-spot-api-docs/testnet/fix-api#drop-copy "Direct link to Drop Copy")
 
   * `tcp+tls://fix-dc.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-dc.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 
@@ -2170,8 +2170,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Market data[​](/docs/binance-spot-api-docs/testnet/fix-api#market-data "Direct link to Market data")
 
   * `tcp+tls://fix-md.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-md.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 
@@ -4483,8 +4483,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Order Entry[​](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#order-entry "Order Entry的直接链接")
 
   * `tcp+tls://fix-oe.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-oe.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 
@@ -4492,8 +4492,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Drop Copy[​](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#drop-copy "Drop Copy的直接链接")
 
   * `tcp+tls://fix-dc.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-dc.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 
@@ -4501,8 +4501,8 @@ In addition to FIX encoding available on port 9000, two request/response encodin
 #### Market data[​](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#market-data "Market data的直接链接")
 
   * `tcp+tls://fix-md.testnet.binance.vision:9001`: Send FIX requests; receive FIX SBE responses 
-    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (=1)
-    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (=0)
+    * FIX `SbeSchemaId` tag (=25050) must be set to the FIX SBE schema ID (e.g. 1)
+    * The FIX `SbeSchemaVersion` tag (=25051) must be set to the FIX SBE schema version (e.g. 0)
   * `tcp+tls://fix-md.testnet.binance.vision:9002`: Send FIX SBE requests; receive FIX SBE responses
 
 

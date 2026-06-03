@@ -2,14 +2,22 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints
 api_type: Market Data
-updated_at: 2026-06-02 19:22:00.314038
+updated_at: 2026-06-03 19:27:25.526837
 ---
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-05-11**
+**Last Updated: 2026-06-03**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-03[​](/docs/binance-spot-api-docs/testnet#2026-06-03 "Direct link to 2026-06-03")
+
+#### Data reset[​](/docs/binance-spot-api-docs/testnet#data-reset "Direct link to Data reset")
+
+All data on the Spot Test Network will be deleted today according to the periodic reset procedure. See [General Info](/docs/binance-spot-api-docs/testnet/general-info#faq-periodic-reset) for more details.
+
+* * *
 
 ### 2026-05-11[​](/docs/binance-spot-api-docs/testnet#2026-05-11 "Direct link to 2026-05-11")
 
@@ -25,7 +33,7 @@ The following rollout will occur at **approximately 08:00 UTC today**.
 
 ### 2026-05-06[​](/docs/binance-spot-api-docs/testnet#2026-05-06 "Direct link to 2026-05-06")
 
-#### Data reset[​](/docs/binance-spot-api-docs/testnet#data-reset "Direct link to Data reset")
+#### Data reset[​](/docs/binance-spot-api-docs/testnet#data-reset-1 "Direct link to Data reset")
 
 All data on the Spot Test Network will be deleted today according to the periodic reset procedure. See [General Info](/docs/binance-spot-api-docs/testnet/general-info#faq-periodic-reset) for more details.
 
@@ -1337,7 +1345,7 @@ WebSocket API
 
 User Data Stream
 
-  * WebSocket API only: New event `eventStreamTerminated` is emitted when you either logout from your websocket session or you have unsubscribed from the user data stream.
+  * WebSocket API only: New event `eventStreamTerminated` is emitted when you either logout from your WebSocket session or you have unsubscribed from the user data stream.
   * New event `externalLockUpdate` is sent when your spot wallet balance is locked/unlocked by an external system.
 
 
@@ -1559,9 +1567,17 @@ User Data Stream:
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-05-11**
+**Last Updated: 2026-06-03**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-03[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-03 "2026-06-03的直接链接")
+
+#### Data reset[​](/docs/zh-CN/binance-spot-api-docs/testnet#data-reset "Data reset的直接链接")
+
+All data on the Spot Test Network will be deleted today according to the periodic reset procedure. See [General Info](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-periodic-reset) for more details.
+
+* * *
 
 ### 2026-05-11[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-05-11 "2026-05-11的直接链接")
 
@@ -1577,7 +1593,7 @@ The following rollout will occur at **approximately 08:00 UTC today**.
 
 ### 2026-05-06[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-05-06 "2026-05-06的直接链接")
 
-#### Data reset[​](/docs/zh-CN/binance-spot-api-docs/testnet#data-reset "Data reset的直接链接")
+#### Data reset[​](/docs/zh-CN/binance-spot-api-docs/testnet#data-reset-1 "Data reset的直接链接")
 
 All data on the Spot Test Network will be deleted today according to the periodic reset procedure. See [General Info](/docs/zh-CN/binance-spot-api-docs/testnet/general-info#faq-periodic-reset) for more details.
 
@@ -2889,7 +2905,7 @@ WebSocket API
 
 User Data Stream
 
-  * WebSocket API only: New event `eventStreamTerminated` is emitted when you either logout from your websocket session or you have unsubscribed from the user data stream.
+  * WebSocket API only: New event `eventStreamTerminated` is emitted when you either logout from your WebSocket session or you have unsubscribed from the user data stream.
   * New event `externalLockUpdate` is sent when your spot wallet balance is locked/unlocked by an external system.
 
 
