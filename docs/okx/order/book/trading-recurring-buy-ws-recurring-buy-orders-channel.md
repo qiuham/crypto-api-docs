@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-ws-recurring-buy-orders-channel
 anchor_id: order-book-trading-recurring-buy-ws-recurring-buy-orders-channel
 api_type: WebSocket
-updated_at: 2026-06-02 20:01:26.780738
+updated_at: 2026-06-03 20:05:20.742979
 ---
 
 # WS / Recurring buy orders channel

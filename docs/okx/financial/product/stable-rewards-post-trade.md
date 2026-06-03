@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-stable-rewards-post-trade
 anchor_id: financial-product-stable-rewards-post-trade
 api_type: API
-updated_at: 2026-06-02 20:02:59.929581
+updated_at: 2026-06-03 20:06:54.368841
 ---
 
 # POST / Trade
