@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/no-convert-repay
 api_type: Account
-updated_at: 2026-06-02 19:40:08.302109
+updated_at: 2026-06-03 19:47:06.389783
 ---
 
 # Get Pay Info

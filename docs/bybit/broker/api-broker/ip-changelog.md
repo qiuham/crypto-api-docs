@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/api-broker/ip-changelog
 api_type: REST
-updated_at: 2026-06-02 19:42:05.855614
+updated_at: 2026-06-03 19:48:58.857891
 ---
 
 # Get Earning

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/rate-limit/set
 api_type: REST
-updated_at: 2026-06-02 19:42:12.881559
+updated_at: 2026-06-03 19:49:05.715888
 ---
 
 # Get Sub Account Deposit Records

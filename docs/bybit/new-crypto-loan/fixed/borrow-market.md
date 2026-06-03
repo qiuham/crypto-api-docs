@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow-market
 api_type: REST
-updated_at: 2026-06-02 19:44:56.189601
+updated_at: 2026-06-03 19:51:43.267019
 ---
 
 # Cancel Supply Order

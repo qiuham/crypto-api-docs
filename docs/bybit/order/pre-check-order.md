@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/pre-check-order
 api_type: Trading
-updated_at: 2026-06-02 19:45:36.901991
+updated_at: 2026-06-03 19:52:23.692522
 ---
 
 # Get LTV
