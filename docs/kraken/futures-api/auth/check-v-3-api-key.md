@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/auth/check-v-3-api-key
 api_type: REST
-updated_at: 2026-06-03 20:12:46.885955
+updated_at: 2026-06-04 19:41:28.820513
 ---
 
 # Check v3 API key

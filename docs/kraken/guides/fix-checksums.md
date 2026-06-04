@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/fix-checksums
 api_type: Guide
-updated_at: 2026-06-03 20:15:50.796696
+updated_at: 2026-06-04 19:44:29.144438
 ---
 
 # FIX Checksums

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-ticker
 api_type: REST
-updated_at: 2026-06-03 20:14:25.148803
+updated_at: 2026-06-04 19:43:03.480992
 ---
 
 # Get ticker by symbol

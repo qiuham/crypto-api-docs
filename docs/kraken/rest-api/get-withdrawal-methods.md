@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-withdrawal-methods
 api_type: REST
-updated_at: 2026-06-03 20:18:23.019041
+updated_at: 2026-06-04 19:46:58.630994
 ---
 
 # List Earn Allocations

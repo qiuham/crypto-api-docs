@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_after
 api_type: WebSocket
-updated_at: 2026-06-03 20:23:57.747321
+updated_at: 2026-06-04 19:52:58.550941
 ---
 
 # Cancel on Disconnect

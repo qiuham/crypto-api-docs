@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/general
 api_type: REST
-updated_at: 2026-06-03 20:13:45.390531
+updated_at: 2026-06-04 19:42:25.516109
 ---
 
 # Get wallets

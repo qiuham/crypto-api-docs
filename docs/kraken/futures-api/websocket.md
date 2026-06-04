@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket
 api_type: WebSocket
-updated_at: 2026-06-03 20:15:15.295514
+updated_at: 2026-06-04 19:43:53.072300
 ---
 
 # Account Log

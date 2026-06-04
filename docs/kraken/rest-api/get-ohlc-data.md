@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ohlc-data
 api_type: REST
-updated_at: 2026-06-03 20:17:22.089414
+updated_at: 2026-06-04 19:45:58.269039
 ---
 
 # Get OHLC Data

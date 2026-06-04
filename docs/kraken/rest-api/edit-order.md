@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/edit-order
 api_type: REST
-updated_at: 2026-06-03 20:16:52.532154
+updated_at: 2026-06-04 19:45:30.183727
 ---
 
 # Edit Order

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-unwind-queue
 api_type: REST
-updated_at: 2026-06-03 20:14:30.851474
+updated_at: 2026-06-04 19:43:09.864889
 ---
 
 # Get fee schedule volumes

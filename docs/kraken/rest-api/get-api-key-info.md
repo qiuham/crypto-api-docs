@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-api-key-info
 api_type: REST
-updated_at: 2026-06-03 20:16:59.882871
+updated_at: 2026-06-04 19:45:36.810031
 ---
 
 # Get API Key Info

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-pre-trade
 api_type: REST
-updated_at: 2026-06-03 20:17:38.919931
+updated_at: 2026-06-04 19:46:14.857713
 ---
 
 # Get Recent Spreads

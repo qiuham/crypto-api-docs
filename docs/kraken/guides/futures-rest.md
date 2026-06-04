@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/futures-rest
 api_type: Guide
-updated_at: 2026-06-03 20:15:57.176868
+updated_at: 2026-06-04 19:44:35.742199
 ---
 
 # Futures REST

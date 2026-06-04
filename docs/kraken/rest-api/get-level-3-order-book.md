@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-level-3-order-book
 api_type: REST
-updated_at: 2026-06-03 20:17:21.312682
+updated_at: 2026-06-04 19:45:57.492739
 ---
 
 # Get OHLC Data

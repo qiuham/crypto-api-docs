@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-self-trade-strategy
 api_type: REST
-updated_at: 2026-06-03 20:14:58.640267
+updated_at: 2026-06-04 19:43:37.445685
 ---
 
 # Update self trade strategy

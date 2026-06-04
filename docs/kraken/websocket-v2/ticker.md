@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ticker
 api_type: WebSocket
-updated_at: 2026-06-03 20:24:17.305105
+updated_at: 2026-06-04 19:53:17.595391
 ---
 
 # Trades

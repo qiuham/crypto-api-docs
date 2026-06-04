@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-assignment-program-history
 api_type: REST
-updated_at: 2026-06-03 20:13:49.853990
+updated_at: 2026-06-04 19:42:29.632373
 ---
 
 # List assignment preferences history

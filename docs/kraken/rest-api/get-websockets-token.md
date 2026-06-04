@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-websockets-token
 api_type: WebSocket
-updated_at: 2026-06-03 20:18:11.028297
+updated_at: 2026-06-04 19:46:46.223583
 ---
 
 # Get Websockets Token

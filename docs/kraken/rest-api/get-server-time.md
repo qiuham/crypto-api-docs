@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-server-time
 api_type: REST
-updated_at: 2026-06-03 20:17:45.893756
+updated_at: 2026-06-04 19:46:22.000415
 ---
 
 # Get Server Time

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/instrument
 api_type: WebSocket
-updated_at: 2026-06-03 20:24:07.724258
+updated_at: 2026-06-04 19:53:08.678656
 ---
 
 # Instruments

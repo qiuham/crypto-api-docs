@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/custody-rest-ratelimits
 api_type: Guide
-updated_at: 2026-06-03 20:15:39.711408
+updated_at: 2026-06-04 19:44:18.773503
 ---
 
 # Custody Rate Limits
