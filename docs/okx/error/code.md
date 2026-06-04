@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code
 anchor_id: error-code
 api_type: API
-updated_at: 2026-06-03 20:07:08.122696
+updated_at: 2026-06-04 19:36:00.130484
 ---
 
 # Error Code

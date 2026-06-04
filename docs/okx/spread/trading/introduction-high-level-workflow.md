@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-introduction-high-level-workflow
 anchor_id: spread-trading-introduction-high-level-workflow
 api_type: API
-updated_at: 2026-06-03 20:05:53.138285
+updated_at: 2026-06-04 19:34:45.424026
 ---
 
 # High Level Workflow

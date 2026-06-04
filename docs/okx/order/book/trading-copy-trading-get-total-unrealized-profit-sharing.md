@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-get-total-unrealized-profit-sharing
 anchor_id: order-book-trading-copy-trading-get-total-unrealized-profit-sharing
 api_type: API
-updated_at: 2026-06-03 20:05:26.185740
+updated_at: 2026-06-04 19:34:18.649325
 ---
 
 # GET / Total unrealized profit sharing

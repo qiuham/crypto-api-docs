@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview
 anchor_id: overview
 api_type: API
-updated_at: 2026-06-03 20:04:11.414449
+updated_at: 2026-06-04 19:33:04.310814
 ---
 
 # Overview
