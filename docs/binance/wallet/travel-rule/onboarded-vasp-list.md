@@ -2,14 +2,14 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/onboarded-vasp-list
 api_type: REST
-updated_at: 2026-06-03 19:33:00.733301
+updated_at: 2026-06-04 19:00:12.013670
 ---
 
 # Get Region List (USER_DATA)
 
 ## API Description[​](/docs/wallet/travel-rule/region-list#api-description "Direct link to API Description")
 
-Query the active region/city list for a given country.
+Query the active region/city list for a given country. Currently, only supports AU entity.
 
 ## HTTP Request[​](/docs/wallet/travel-rule/region-list#http-request "Direct link to HTTP Request")
 
@@ -61,9 +61,9 @@ lastUpdated| LONG| Last data update timestamp (epoch milliseconds); 0 if empty.
 
 ## 接口描述[​](/docs/zh-CN/wallet/travel-rule/region-list#接口描述 "接口描述的直接链接")
 
-查询指定国家下的活跃地区/城市列表。
+查询指定国家下的活跃地区/城市列表。目前仅支持澳大利亚站。
 
-## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/region-list#http请求 "HTTP请��求的直接链接")
+## HTTP请求[​](/docs/zh-CN/wallet/travel-rule/region-list#http请求 "HTTP请求的直接链接")
 
 GET `/sapi/v1/localentity/region/list`
 

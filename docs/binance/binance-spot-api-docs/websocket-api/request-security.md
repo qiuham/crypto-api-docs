@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/request-security
 api_type: WebSocket
-updated_at: 2026-06-03 19:28:11.433531
+updated_at: 2026-06-04 18:55:33.954594
 ---
 
 # Trading requests
@@ -3259,8 +3259,9 @@ TIF| 描述
 `pegOffsetType`| 挂钩价格偏移类型| 如若需要，仅用于挂钩订单| `"pegOffsetType": "PRICE_LEVEL"`  
 `pegOffsetValue`| 挂钩价格偏移值| 如若需要，仅用于挂钩订单| `"pegOffsetValue": 5`  
 `peggedPrice`| 订单对应的当前挂钩价格| 一旦确定，仅用于挂钩订单| `"peggedPrice": "87523.83710000"`  
+`expiryReason`| 订单失效原因| 当订单失效时| `"expiryReason": "INSUFFICIENT_LIQUIDITY"`  
   
-### 测试下单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#测试下单-trade "测��试下单 \(TRADE\)的直接链接")
+### 测试下单 (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#测试下单-trade "测试下单 \(TRADE\)的直接链接")
     
     
     {  
@@ -4934,7 +4935,7 @@ TIF| 描述
 
 **注意:** 上面的 payload 没有显示所有可以出现的字段，更多请看 [订单响应中的特定条件时才会出现的字段](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#conditional-fields-in-order-responses) 部分。
 
-#### 发送新订单列表 - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#发送新订单列表---otoco-trade "发送新订单��列表 - OTOCO \(TRADE\)的直接链接")
+#### 发送新订单列表 - OTOCO (TRADE)[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/trading-requests#发送新订单列表---otoco-trade "发送新订单列表 - OTOCO \(TRADE\)的直接链接")
     
     
     {  
