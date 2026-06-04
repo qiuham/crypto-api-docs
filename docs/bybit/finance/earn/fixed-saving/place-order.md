@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/fixed-saving/place-order
 api_type: REST
-updated_at: 2026-06-03 19:50:33.749895
+updated_at: 2026-06-04 19:17:46.576137
 ---
 
 # Set Auto-Invest

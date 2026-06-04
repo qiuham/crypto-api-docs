@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/dcp
 api_type: WebSocket
-updated_at: 2026-06-03 19:54:38.561540
+updated_at: 2026-06-04 19:22:20.090251
 ---
 
 # Execution

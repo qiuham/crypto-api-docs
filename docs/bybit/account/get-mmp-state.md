@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/get-mmp-state
 api_type: Account
-updated_at: 2026-06-03 19:47:01.974334
+updated_at: 2026-06-04 19:13:45.247714
 ---
 
 # Get MMP State
@@ -28,6 +28,7 @@ result| array| Object
 > frozenPeriod| string| Frozen period (ms)  
 > qtyLimit| string| Trade qty limit  
 > deltaLimit| string| Delta limit  
+> vegaLimit| string| Vega limit  
 > mmpFrozenUntil| string| Unfreeze timestamp (ms)  
 > mmpFrozen| boolean| Whether the mmp is triggered. 
 
@@ -104,6 +105,7 @@ result| array| Object
                     "frozenPeriod": "100000",  
                     "qtyLimit": "0.01",  
                     "deltaLimit": "0.01",  
+                    "vegaLimit": "500000",  
                     "mmpFrozenUntil": "1675760625519",  
                     "mmpFrozen": false  
                 }  
@@ -138,6 +140,7 @@ result| array| Object
 > frozenPeriod| string| 凍結時間長度 (毫秒)  
 > qtyLimit| string| 成交數量上限  
 > deltaLimit| string| Delta值上限  
+> vegaLimit| string| Vega 上限  
 > mmpFrozenUntil| string| 解凍時間戳 (毫秒)  
 > mmpFrozen| boolean| 當前是否觸發了mmp凍結. 
 
@@ -214,6 +217,7 @@ result| array| Object
                     "frozenPeriod": "100000",  
                     "qtyLimit": "0.01",  
                     "deltaLimit": "0.01",  
+                    "vegaLimit": "500000",  
                     "mmpFrozenUntil": "1675760625519",  
                     "mmpFrozen": false  
                 }  

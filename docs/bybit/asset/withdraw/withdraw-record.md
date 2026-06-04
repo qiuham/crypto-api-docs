@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/withdraw/withdraw-record
 api_type: REST
-updated_at: 2026-06-03 19:48:32.451458
+updated_at: 2026-06-04 19:15:27.462568
 ---
 
 # Get Withdrawal Records

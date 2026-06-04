@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/market/bbo
 api_type: Market Data
-updated_at: 2026-06-03 19:53:23.443501
+updated_at: 2026-06-04 19:20:55.520697
 ---
 
 # SBE Level 50 Integration

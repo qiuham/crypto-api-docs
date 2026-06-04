@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/cancel-rfq
 api_type: Trading
-updated_at: 2026-06-03 19:53:05.920357
+updated_at: 2026-06-04 19:20:35.617843
 ---
 
 # Create Quote

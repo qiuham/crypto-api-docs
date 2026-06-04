@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/fixed-saving/redeem
 api_type: REST
-updated_at: 2026-06-03 19:50:35.603406
+updated_at: 2026-06-04 19:17:48.427784
 ---
 
 # Set Auto-Invest

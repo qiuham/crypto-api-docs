@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/fee-group-info
 api_type: Market Data
-updated_at: 2026-06-03 19:51:13.982735
+updated_at: 2026-06-04 19:18:31.848860
 ---
 
 # Get Index Price Kline

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/total-members-assets
 api_type: REST
-updated_at: 2026-06-03 19:48:21.158644
+updated_at: 2026-06-04 19:15:14.457287
 ---
 
 # Get Total Members Assets

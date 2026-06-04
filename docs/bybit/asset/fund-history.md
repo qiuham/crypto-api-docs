@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fund-history
 api_type: REST
-updated_at: 2026-06-03 19:48:18.669821
+updated_at: 2026-06-04 19:15:11.967710
 ---
 
 # Get Total Members Assets

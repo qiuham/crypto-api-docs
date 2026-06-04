@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/demo
 api_type: REST
-updated_at: 2026-06-03 19:49:28.878746
+updated_at: 2026-06-04 19:16:32.043670
 ---
 
 # Demo Trading Service

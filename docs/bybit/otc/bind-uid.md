@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/bind-uid
 api_type: REST
-updated_at: 2026-06-03 19:52:24.949068
+updated_at: 2026-06-04 19:19:49.714177
 ---
 
 # Get LTV
