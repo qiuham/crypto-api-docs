@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/l1-data-schemas
 api_type: REST
-updated_at: 2026-06-03 19:25:56.535259
+updated_at: 2026-06-04 18:53:28.420867
 ---
 
 # L1 data schemas

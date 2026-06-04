@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm
 api_type: REST
-updated_at: 2026-06-03 19:25:19.178065
+updated_at: 2026-06-04 18:52:50.761377
 ---
 
 # HyperEVM

@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/post-requests
 api_type: WebSocket
-updated_at: 2026-06-03 19:25:07.876485
+updated_at: 2026-06-04 18:52:39.398897
 ---
 
 # Post requests
