@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-fills
 api_type: REST
-updated_at: 2026-06-04 19:42:35.604085
+updated_at: 2026-06-05 19:33:21.355156
 ---
 
 # Get trade history

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/wallet-transfer
 api_type: REST
-updated_at: 2026-06-04 19:52:12.842790
+updated_at: 2026-06-05 19:42:28.983362
 ---
 
 # Request Wallet Transfer

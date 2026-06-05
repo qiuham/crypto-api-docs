@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-system-status
 api_type: REST
-updated_at: 2026-06-04 19:46:28.358493
+updated_at: 2026-06-05 19:37:12.412204
 ---
 
 # Get Ticker Information

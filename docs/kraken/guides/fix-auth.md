@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/fix-auth
 api_type: Guide
-updated_at: 2026-06-04 19:44:28.364620
+updated_at: 2026-06-05 19:35:12.646239
 ---
 
 # FIX Checksums

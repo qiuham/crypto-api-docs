@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/list-allocations
 api_type: REST
-updated_at: 2026-06-04 19:46:59.420111
+updated_at: 2026-06-05 19:37:47.677188
 ---
 
 # List Earn Allocations

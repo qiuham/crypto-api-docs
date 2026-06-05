@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deposit-addresses
 api_type: REST
-updated_at: 2026-06-04 19:45:47.643456
+updated_at: 2026-06-05 19:36:31.212084
 ---
 
 # Get Deposit Methods

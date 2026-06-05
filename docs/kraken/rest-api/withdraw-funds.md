@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/withdraw-funds
 api_type: WebSocket
-updated_at: 2026-06-04 19:52:15.701678
+updated_at: 2026-06-05 19:42:31.615608
 ---
 
 # Spot WebSocket v1 API

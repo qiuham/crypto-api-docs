@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/challenge
 api_type: WebSocket
-updated_at: 2026-06-04 19:44:00.125176
+updated_at: 2026-06-05 19:34:44.708557
 ---
 
 # Fills

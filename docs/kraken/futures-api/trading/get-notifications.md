@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-notifications
 api_type: REST
-updated_at: 2026-06-04 19:42:42.446252
+updated_at: 2026-06-05 19:33:28.189622
 ---
 
 # Get open orders

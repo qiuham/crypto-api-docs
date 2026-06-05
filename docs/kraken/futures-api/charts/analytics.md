@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/analytics
 api_type: Market Data
-updated_at: 2026-06-04 19:41:31.319796
+updated_at: 2026-06-05 19:32:18.779339
 ---
 
 # Market Candles

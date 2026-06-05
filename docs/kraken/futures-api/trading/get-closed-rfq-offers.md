@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-closed-rfq-offers
 api_type: REST
-updated_at: 2026-06-04 19:42:32.049132
+updated_at: 2026-06-05 19:33:17.982679
 ---
 
 # Get fee schedules

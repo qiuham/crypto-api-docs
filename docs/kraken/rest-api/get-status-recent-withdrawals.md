@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-status-recent-withdrawals
 api_type: REST
-updated_at: 2026-06-04 19:46:25.655378
+updated_at: 2026-06-05 19:37:10.110182
 ---
 
 # Get Status of Recent Withdrawals

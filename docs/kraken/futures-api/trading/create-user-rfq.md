@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/create-user-rfq
 api_type: REST
-updated_at: 2026-06-04 19:42:18.843376
+updated_at: 2026-06-05 19:33:04.304927
 ---
 
 # Deletes assignment preference

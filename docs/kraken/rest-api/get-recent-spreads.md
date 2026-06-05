@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-recent-spreads
 api_type: REST
-updated_at: 2026-06-04 19:46:15.632948
+updated_at: 2026-06-05 19:36:59.712527
 ---
 
 # Get Recent Spreads

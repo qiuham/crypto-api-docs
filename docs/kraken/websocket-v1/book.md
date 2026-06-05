@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v1/book
 api_type: WebSocket
-updated_at: 2026-06-04 19:52:22.155321
+updated_at: 2026-06-05 19:42:37.954984
 ---
 
 # Cancel All

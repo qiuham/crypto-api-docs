@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/slr-fix
 api_type: REST
-updated_at: 2026-06-04 19:41:22.256600
+updated_at: 2026-06-05 19:32:09.724000
 ---
 
 # Instrument List Request

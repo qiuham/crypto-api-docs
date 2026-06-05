@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-public-order-events
 api_type: REST
-updated_at: 2026-06-04 19:41:55.616805
+updated_at: 2026-06-05 19:32:41.622369
 ---
 
 # Get public mark price events
