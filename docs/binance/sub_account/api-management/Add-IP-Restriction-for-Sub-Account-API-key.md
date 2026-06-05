@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/api-management/Add-IP-Restriction-for-Sub-Account-API-key
 api_type: Account
-updated_at: 2026-06-04 19:02:12.225611
+updated_at: 2026-06-05 18:54:46.836009
 ---
 
 # Get Detail on Sub-account's Futures Account V2 (For Master Account) (USER_DATA)

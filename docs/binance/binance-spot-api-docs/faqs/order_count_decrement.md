@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/order_count_decrement
 api_type: REST
-updated_at: 2026-06-04 18:54:23.375741
+updated_at: 2026-06-05 18:46:52.826327
 ---
 
 # Price Range Execution Rule

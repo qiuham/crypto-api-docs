@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints
 api_type: Market Data
-updated_at: 2026-06-04 18:54:51.997510
+updated_at: 2026-06-05 18:47:23.396001
 ---
 
 # CHANGELOG for Binance SPOT Testnet

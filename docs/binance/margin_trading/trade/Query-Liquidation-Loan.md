@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Liquidation-Loan
 api_type: Trading
-updated_at: 2026-06-04 18:57:57.050407
+updated_at: 2026-06-05 18:50:28.220467
 ---
 
 # Query Margin Account's all OCO (USER_DATA)

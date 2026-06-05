@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/trade-fee
 api_type: Trading
-updated_at: 2026-06-04 18:59:26.718853
+updated_at: 2026-06-05 18:51:58.758007
 ---
 
 # User Asset (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading
 api_type: Trading
-updated_at: 2026-06-04 18:57:34.697755
+updated_at: 2026-06-05 18:50:05.922156
 ---
 
 # Exit Special Key Mode (TRADE)
