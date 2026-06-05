@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets
 api_type: REST
-updated_at: 2026-06-04 18:51:41.944229
+updated_at: 2026-06-05 18:44:16.409330
 ---
 
 # Deploying HIP-1 and HIP-2 assets

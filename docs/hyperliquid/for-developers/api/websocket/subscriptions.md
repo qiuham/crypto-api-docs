@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions
 api_type: WebSocket
-updated_at: 2026-06-04 18:52:43.258694
+updated_at: 2026-06-05 18:45:18.404366
 ---
 
 # Subscriptions
