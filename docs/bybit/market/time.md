@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/time
 api_type: Market Data
-updated_at: 2026-06-04 19:18:57.028559
+updated_at: 2026-06-05 19:10:59.569161
 ---
 
 # Create Borrow Order

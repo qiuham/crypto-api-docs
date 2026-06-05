@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/exchange
 api_type: REST
-updated_at: 2026-06-04 19:14:59.918013
+updated_at: 2026-06-05 19:07:21.814419
 ---
 
 # Get Trading Pair List

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/market/orderbook
 api_type: Market Data
-updated_at: 2026-06-04 19:21:32.907490
+updated_at: 2026-06-05 19:13:19.027418
 ---
 
 # Cancel All Orders
