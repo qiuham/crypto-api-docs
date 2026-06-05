@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-post-place-lead-stop-order
 anchor_id: order-book-trading-copy-trading-post-place-lead-stop-order
 api_type: API
-updated_at: 2026-06-04 19:34:16.471322
+updated_at: 2026-06-05 19:24:57.925083
 ---
 
 # POST / Place lead stop order

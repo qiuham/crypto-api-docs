@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-position-builder-trend-graph
 anchor_id: trading-account-rest-api-position-builder-trend-graph
 api_type: REST
-updated_at: 2026-06-04 19:33:26.809253
+updated_at: 2026-06-05 19:24:07.674914
 ---
 
 # Position builder trend graph

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-sol-staking-get-balance
 anchor_id: financial-product-sol-staking-get-balance
 api_type: API
-updated_at: 2026-06-04 19:35:44.482226
+updated_at: 2026-06-05 19:26:26.552534
 ---
 
 # GET / Balance
