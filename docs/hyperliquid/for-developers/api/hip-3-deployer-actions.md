@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions
 api_type: REST
-updated_at: 2026-06-05 18:44:28.265709
+updated_at: 2026-06-06 18:32:04.618757
 ---
 
 # HIP-3 deployer actions
@@ -67,6 +67,10 @@ The API for deploying and operating builder-deployed perpetual dexs involves the
       | {
           type: "perpDeploy",
           setPerpAnnotation: SetPerpAnnotation
+      }
+      | {
+          type: "perpDeploy",
+          disableDex: string
       };
     
     

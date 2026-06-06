@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/raw-hyperevm-block-data
 api_type: REST
-updated_at: 2026-06-05 18:45:48.080850
+updated_at: 2026-06-06 18:33:23.662515
 ---
 
 # Raw HyperEVM block data

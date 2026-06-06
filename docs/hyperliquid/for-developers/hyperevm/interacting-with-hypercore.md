@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interacting-with-hypercore
 api_type: REST
-updated_at: 2026-06-05 18:45:36.549968
+updated_at: 2026-06-06 18:33:12.511560
 ---
 
 # Interacting with HyperCore
