@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/move-position
 api_type: Position
-updated_at: 2026-06-05 19:12:03.623237
+updated_at: 2026-06-06 19:00:13.835723
 ---
 
 # Set Trading Stop

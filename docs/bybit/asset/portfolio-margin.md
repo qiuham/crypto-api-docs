@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/portfolio-margin
 api_type: REST
-updated_at: 2026-06-05 19:07:33.121806
+updated_at: 2026-06-06 18:54:56.789692
 ---
 
 # Get Total Members Assets

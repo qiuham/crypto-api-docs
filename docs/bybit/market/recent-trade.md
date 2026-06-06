@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/recent-trade
 api_type: Market Data
-updated_at: 2026-06-05 19:10:54.207183
+updated_at: 2026-06-06 18:58:54.412147
 ---
 
 # Get Tickers

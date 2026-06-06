@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/trade-notify
 api_type: REST
-updated_at: 2026-06-05 19:07:29.288457
+updated_at: 2026-06-06 18:54:52.133735
 ---
 
 # Trade Notify

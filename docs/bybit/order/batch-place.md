@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/batch-place
 api_type: Trading
-updated_at: 2026-06-05 19:11:35.158591
+updated_at: 2026-06-06 18:59:41.431435
 ---
 
 # Cancel Order

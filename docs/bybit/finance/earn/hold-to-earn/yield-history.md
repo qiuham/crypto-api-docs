@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/hold-to-earn/yield-history
 api_type: REST
-updated_at: 2026-06-05 19:09:57.056447
+updated_at: 2026-06-06 18:57:45.515851
 ---
 
 # Create Fund (Pending Subscription)

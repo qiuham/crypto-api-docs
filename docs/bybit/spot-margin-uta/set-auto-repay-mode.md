@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-auto-repay-mode
 api_type: REST
-updated_at: 2026-06-05 19:13:09.557232
+updated_at: 2026-06-06 19:01:34.017511
 ---
 
 # Set Leverage

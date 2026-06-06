@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/liquidity-mining/claim-interest
 api_type: REST
-updated_at: 2026-06-05 19:09:10.836682
+updated_at: 2026-06-06 18:56:50.628663
 ---
 
 # Get Position Info
