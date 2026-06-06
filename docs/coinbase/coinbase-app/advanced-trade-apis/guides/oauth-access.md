@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/guides/oauth-access
 api_type: Guide
-updated_at: 2026-06-05 18:40:23.711346
+updated_at: 2026-06-06 18:28:09.685323
 ---
 
 # OAuth Portfolio Access
