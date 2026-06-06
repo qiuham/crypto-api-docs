@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/dust-convert
 api_type: REST
-updated_at: 2026-06-05 18:51:43.957611
+updated_at: 2026-06-06 18:39:15.513822
 ---
 
 # Dust Convertible Assets (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Event-Margin-Call
 api_type: REST
-updated_at: 2026-06-05 18:49:51.592786
+updated_at: 2026-06-06 18:37:25.863022
 ---
 
 # Keepalive User Data Stream (USER_STREAM)

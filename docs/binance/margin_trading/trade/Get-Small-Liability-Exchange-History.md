@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Get-Small-Liability-Exchange-History
 api_type: Trading
-updated_at: 2026-06-05 18:50:11.851258
+updated_at: 2026-06-06 18:37:45.721436
 ---
 
 # Margin Account Cancel OCO (TRADE)

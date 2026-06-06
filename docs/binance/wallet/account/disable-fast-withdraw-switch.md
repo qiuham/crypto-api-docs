@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/account/disable-fast-withdraw-switch
 api_type: Account
-updated_at: 2026-06-05 18:51:34.873542
+updated_at: 2026-06-06 18:39:06.664655
 ---
 
 # Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)

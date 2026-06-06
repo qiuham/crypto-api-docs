@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Current-Margin-Order-Count-Usage
 api_type: Trading
-updated_at: 2026-06-05 18:50:27.597700
+updated_at: 2026-06-06 18:38:01.506317
 ---
 
 # Query Margin Account's all OCO (USER_DATA)
