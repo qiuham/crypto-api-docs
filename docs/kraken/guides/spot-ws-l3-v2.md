@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-l3-v2
 api_type: WebSocket
-updated_at: 2026-06-05 19:35:48.788306
+updated_at: 2026-06-06 19:26:20.541166
 ---
 
 # Spot REST API

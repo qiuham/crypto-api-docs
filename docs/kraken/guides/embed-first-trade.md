@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-first-trade
 api_type: Guide
-updated_at: 2026-06-05 19:35:09.345414
+updated_at: 2026-06-06 19:25:40.085596
 ---
 
 # Embed REST Authentication

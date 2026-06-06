@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/allocate-strategy
 api_type: REST
-updated_at: 2026-06-05 19:35:58.843181
+updated_at: 2026-06-06 19:26:31.014695
 ---
 
 # Amend Order

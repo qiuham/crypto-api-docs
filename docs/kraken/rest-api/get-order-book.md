@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-order-book
 api_type: REST
-updated_at: 2026-06-05 19:36:52.236946
+updated_at: 2026-06-06 19:27:24.240798
 ---
 
 # Get Order Book

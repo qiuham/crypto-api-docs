@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/set-pnl-currency-preference
 api_type: REST
-updated_at: 2026-06-05 19:34:21.981421
+updated_at: 2026-06-06 19:24:51.647170
 ---
 
 # Update self trade strategy

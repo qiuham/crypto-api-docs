@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/create-subaccount
 api_type: REST
-updated_at: 2026-06-05 19:36:10.001563
+updated_at: 2026-06-06 19:26:42.004780
 ---
 
 # Create Subaccount

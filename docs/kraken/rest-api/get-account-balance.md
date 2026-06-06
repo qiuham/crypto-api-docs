@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-account-balance
 api_type: REST
-updated_at: 2026-06-05 19:36:16.788915
+updated_at: 2026-06-06 19:26:48.808134
 ---
 
 # Get Account Balance

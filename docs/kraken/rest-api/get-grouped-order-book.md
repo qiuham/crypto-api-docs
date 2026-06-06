@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-grouped-order-book
 api_type: REST
-updated_at: 2026-06-05 19:36:35.198215
+updated_at: 2026-06-06 19:27:07.421204
 ---
 
 # Get Grouped Order Book

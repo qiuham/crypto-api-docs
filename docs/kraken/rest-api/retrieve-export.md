@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/retrieve-export
 api_type: REST
-updated_at: 2026-06-05 19:40:28.574931
+updated_at: 2026-06-06 19:31:22.190781
 ---
 
 # Retrieve Data Export

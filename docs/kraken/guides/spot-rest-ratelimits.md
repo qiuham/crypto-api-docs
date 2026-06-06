@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-rest-ratelimits
 api_type: Guide
-updated_at: 2026-06-05 19:35:38.740836
+updated_at: 2026-06-06 19:26:11.121359
 ---
 
 # Spot REST Rate Limits

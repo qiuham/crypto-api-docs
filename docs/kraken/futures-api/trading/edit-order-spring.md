@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/edit-order-spring
 api_type: REST
-updated_at: 2026-06-05 19:33:07.748299
+updated_at: 2026-06-06 19:23:35.871457
 ---
 
 # Fee Schedules

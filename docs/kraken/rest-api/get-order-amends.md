@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-order-amends
 api_type: REST
-updated_at: 2026-06-05 19:36:51.462026
+updated_at: 2026-06-06 19:27:23.468434
 ---
 
 # Get Order Book

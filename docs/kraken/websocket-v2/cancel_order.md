@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/cancel_order
 api_type: WebSocket
-updated_at: 2026-06-05 19:43:17.158945
+updated_at: 2026-06-06 19:34:13.405773
 ---
 
 # Cancel Order

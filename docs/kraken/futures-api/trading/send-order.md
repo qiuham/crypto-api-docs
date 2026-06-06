@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/send-order
 api_type: REST
-updated_at: 2026-06-05 19:34:18.866851
+updated_at: 2026-06-06 19:24:48.073718
 ---
 
 # Set leverage settings

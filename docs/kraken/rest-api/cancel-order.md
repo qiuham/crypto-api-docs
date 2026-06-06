@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/cancel-order
 api_type: REST
-updated_at: 2026-06-05 19:36:05.710112
+updated_at: 2026-06-06 19:26:37.767497
 ---
 
 # Cancel Order Batch

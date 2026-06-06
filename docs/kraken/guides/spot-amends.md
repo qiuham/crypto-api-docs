@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-amends
 api_type: Guide
-updated_at: 2026-06-05 19:35:25.462078
+updated_at: 2026-06-06 19:25:56.866391
 ---
 
 # Spot Client Order Identifiers

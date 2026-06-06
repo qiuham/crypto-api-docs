@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/assignment-program
 api_type: REST
-updated_at: 2026-06-05 19:32:54.845760
+updated_at: 2026-06-06 19:23:22.566852
 ---
 
 # Cancel all orders

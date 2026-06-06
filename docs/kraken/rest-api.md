@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api
 api_type: REST
-updated_at: 2026-06-05 19:35:49.557502
+updated_at: 2026-06-06 19:26:21.308730
 ---
 
 # Spot REST API
