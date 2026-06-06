@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-funding-rate-history
 anchor_id: public-data-rest-api-get-funding-rate-history
 api_type: REST
-updated_at: 2026-06-05 19:25:44.155391
+updated_at: 2026-06-06 19:16:12.375529
 ---
 
 # Get funding rate history

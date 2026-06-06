@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-post-compute-min-investment-public
 anchor_id: order-book-trading-grid-trading-post-compute-min-investment-public
 api_type: API
-updated_at: 2026-06-05 19:24:39.274376
+updated_at: 2026-06-06 19:15:07.928121
 ---
 
 # POST / Compute min investment (public)

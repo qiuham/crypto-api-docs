@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-stable-rewards-post-quote
 anchor_id: financial-product-stable-rewards-post-quote
 api_type: API
-updated_at: 2026-06-05 19:26:28.134533
+updated_at: 2026-06-06 19:16:56.024551
 ---
 
 # POST / Quote
