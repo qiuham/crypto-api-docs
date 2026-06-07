@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/max-borrowable
 api_type: REST
-updated_at: 2026-06-06 19:01:32.163414
+updated_at: 2026-06-07 19:00:16.015301
 ---
 
 # Set Leverage

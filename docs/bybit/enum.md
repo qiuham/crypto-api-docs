@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/enum
 api_type: REST
-updated_at: 2026-06-06 18:56:23.477459
+updated_at: 2026-06-07 18:55:49.548195
 ---
 
 # Get Position Info

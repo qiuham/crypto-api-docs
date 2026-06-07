@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/dual-asset/product-quote
 api_type: REST
-updated_at: 2026-06-06 18:56:45.254047
+updated_at: 2026-06-07 18:56:08.903977
 ---
 
 # Add Liquidity

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/subuid-list
 api_type: REST
-updated_at: 2026-06-06 19:02:33.441580
+updated_at: 2026-06-07 19:01:10.216041
 ---
 
 # Execution

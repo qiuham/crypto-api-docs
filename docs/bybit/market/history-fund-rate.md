@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/history-fund-rate
 api_type: Market Data
-updated_at: 2026-06-06 18:58:35.107755
+updated_at: 2026-06-07 18:57:42.339342
 ---
 
 # Get Index Price Kline

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/wallet
 api_type: WebSocket
-updated_at: 2026-06-06 19:02:47.296850
+updated_at: 2026-06-07 19:01:21.307664
 ---
 
 # Kline
