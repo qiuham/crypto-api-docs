@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-dual-investment-post-trade
 anchor_id: financial-product-dual-investment-post-trade
 api_type: API
-updated_at: 2026-06-06 19:17:03.978967
+updated_at: 2026-06-07 19:14:06.993760
 ---
 
 # POST / Trade

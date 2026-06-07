@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-stable-rewards-get-subscribe-redeem-history
 anchor_id: financial-product-stable-rewards-get-subscribe-redeem-history
 api_type: API
-updated_at: 2026-06-06 19:16:57.268591
+updated_at: 2026-06-07 19:14:00.367021
 ---
 
 # GET / Subscribe redeem history

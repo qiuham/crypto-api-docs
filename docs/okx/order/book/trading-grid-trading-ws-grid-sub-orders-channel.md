@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-ws-grid-sub-orders-channel
 anchor_id: order-book-trading-grid-trading-ws-grid-sub-orders-channel
 api_type: WebSocket
-updated_at: 2026-06-06 19:15:10.157439
+updated_at: 2026-06-07 19:12:12.613246
 ---
 
 # WS / Grid sub orders channel

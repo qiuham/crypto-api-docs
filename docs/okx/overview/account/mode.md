@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-account-mode
 anchor_id: overview-account-mode
 api_type: API
-updated_at: 2026-06-06 19:14:20.674545
+updated_at: 2026-06-07 19:11:22.613769
 ---
 
 # Account mode

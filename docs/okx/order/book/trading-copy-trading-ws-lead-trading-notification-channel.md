@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-ws-lead-trading-notification-channel
 anchor_id: order-book-trading-copy-trading-ws-lead-trading-notification-channel
 api_type: WebSocket
-updated_at: 2026-06-06 19:15:33.992999
+updated_at: 2026-06-07 19:12:36.537246
 ---
 
 # WS / Lead trading notification channel

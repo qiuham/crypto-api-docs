@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-dual-investment
 anchor_id: financial-product-dual-investment
 api_type: API
-updated_at: 2026-06-06 19:17:02.732267
+updated_at: 2026-06-07 19:14:05.746137
 ---
 
 # Dual investment
