@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/funding-wallet
 api_type: REST
-updated_at: 2026-06-06 18:39:22.433996
+updated_at: 2026-06-07 18:39:17.631091
 ---
 
 # Query User Delegation History(For Master Account)(USER_DATA)

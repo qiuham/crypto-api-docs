@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Margin-Account-Borrow-Repay
 api_type: Account
-updated_at: 2026-06-06 18:36:53.662130
+updated_at: 2026-06-07 18:36:45.080196
 ---
 
 # Change Log

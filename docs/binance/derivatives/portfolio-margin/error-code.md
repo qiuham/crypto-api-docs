@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/portfolio-margin/error-code
 api_type: REST
-updated_at: 2026-06-06 18:36:14.912804
+updated_at: 2026-06-07 18:36:07.424844
 ---
 
 # Quick Start
