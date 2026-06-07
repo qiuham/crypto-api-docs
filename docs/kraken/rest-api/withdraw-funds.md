@@ -1,10 +1,24 @@
 ---
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/withdraw-funds
-api_type: WebSocket
-updated_at: 2026-06-06 19:33:25.384952
+api_type: REST
+updated_at: 2026-06-07 19:27:56.543005
 ---
 
-# Spot WebSocket v1 API
+# Withdraw Funds
 
-## [🗃️ User Trading6 items](/api/docs/websocket-v1/addorder)## [🗃️ User Data2 items](/api/docs/websocket-v1/openorders)## [🗃️ Market Data5 items](/api/docs/websocket-v1/ticker)## [🗃️ General5 items](/api/docs/websocket-v1/unsubscribe)
+POST 
+    
+    ## /private/Withdraw
+
+Make a withdrawal request.
+
+**API Key Permissions Required:** `Funds permissions - Withdraw`
+
+## Request
+
+## Responses
+
+  * 200
+
+Withdrawal created.

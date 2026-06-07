@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/logon-fix
 api_type: REST
-updated_at: 2026-06-06 19:22:10.086227
+updated_at: 2026-06-07 19:19:15.285252
 ---
 
 # Logon

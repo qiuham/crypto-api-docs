@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-closed-orders
 api_type: REST
-updated_at: 2026-06-06 19:26:56.015308
+updated_at: 2026-06-07 19:23:53.115079
 ---
 
 # Get Closed Orders

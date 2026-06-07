@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/ocrr-fix
 api_type: REST
-updated_at: 2026-06-06 19:22:23.065908
+updated_at: 2026-06-07 19:19:27.662697
 ---
 
 # Order Cancel Replace Request (Spot only)

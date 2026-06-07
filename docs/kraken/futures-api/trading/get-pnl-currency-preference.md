@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-pnl-currency-preference
 api_type: REST
-updated_at: 2026-06-06 19:24:10.227528
+updated_at: 2026-06-07 19:21:10.560809
 ---
 
 # Get portfolio margin parameters

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-post-trade
 api_type: REST
-updated_at: 2026-06-06 19:27:27.948626
+updated_at: 2026-06-07 19:24:24.325108
 ---
 
 # Post-Trade Data

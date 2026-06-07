@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/deallocate-strategy
 api_type: REST
-updated_at: 2026-06-06 19:26:44.729735
+updated_at: 2026-06-07 19:23:40.707585
 ---
 
 # Edit Order

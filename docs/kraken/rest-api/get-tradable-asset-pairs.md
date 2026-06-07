@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs
 api_type: REST
-updated_at: 2026-06-06 19:27:51.380096
+updated_at: 2026-06-07 19:24:43.711404
 ---
 
 # Get Trade Balance

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trades-info
 api_type: WebSocket
-updated_at: 2026-06-06 19:28:01.720535
+updated_at: 2026-06-07 19:24:54.083062
 ---
 
 # Get Websockets Token

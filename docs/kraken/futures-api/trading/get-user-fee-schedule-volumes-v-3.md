@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-user-fee-schedule-volumes-v-3
 api_type: REST
-updated_at: 2026-06-06 19:24:24.793961
+updated_at: 2026-06-07 19:21:23.847011
 ---
 
 # Get fee schedule volumes

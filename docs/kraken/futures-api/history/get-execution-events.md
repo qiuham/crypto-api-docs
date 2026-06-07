@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/get-execution-events
 api_type: REST
-updated_at: 2026-06-06 19:23:02.991348
+updated_at: 2026-06-07 19:20:05.138885
 ---
 
 # Get order events

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/subaccounts
 api_type: REST
-updated_at: 2026-06-06 19:24:57.828130
+updated_at: 2026-06-07 19:21:55.645579
 ---
 
 # Trading Settings

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/executions
 api_type: WebSocket
-updated_at: 2026-06-06 19:34:17.192768
+updated_at: 2026-06-07 19:30:45.327322
 ---
 
 # Executions

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/logout-fix
 api_type: Market Data
-updated_at: 2026-06-06 19:22:12.378352
+updated_at: 2026-06-07 19:19:17.699418
 ---
 
 # Market Data Incremental Refresh

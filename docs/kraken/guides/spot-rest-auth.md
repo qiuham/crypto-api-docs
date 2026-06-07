@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-rest-auth
 api_type: Guide
-updated_at: 2026-06-06 19:26:06.989114
+updated_at: 2026-06-07 19:23:02.590906
 ---
 
 # Spot REST Earn

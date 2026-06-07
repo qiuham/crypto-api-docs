@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/remove-export
 api_type: REST
-updated_at: 2026-06-06 19:28:30.688424
+updated_at: 2026-06-07 19:25:15.514373
 ---
 
 # Delete Export Report

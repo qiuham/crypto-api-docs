@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/transfer
 api_type: REST
-updated_at: 2026-06-06 19:25:01.002107
+updated_at: 2026-06-07 19:21:58.908761
 ---
 
 # Transfers

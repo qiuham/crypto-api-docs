@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/fix-api/mdsfr-fix
 api_type: REST
-updated_at: 2026-06-06 19:22:18.856249
+updated_at: 2026-06-07 19:19:23.713039
 ---
 
 # New Order Single

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/simulate-portfolio
 api_type: REST
-updated_at: 2026-06-06 19:24:54.779757
+updated_at: 2026-06-07 19:21:52.435243
 ---
 
 # Initiate sub account transfer

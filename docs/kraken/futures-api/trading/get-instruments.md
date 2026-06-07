@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-instruments
 api_type: REST
-updated_at: 2026-06-06 19:23:53.997370
+updated_at: 2026-06-07 19:20:53.820945
 ---
 
 # Get leverage settings

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/ohlc
 api_type: WebSocket
-updated_at: 2026-06-06 19:34:24.311213
+updated_at: 2026-06-07 19:30:51.948189
 ---
 
 # Candles (OHLC)

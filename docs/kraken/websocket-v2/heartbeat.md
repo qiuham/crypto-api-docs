@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/heartbeat
 api_type: WebSocket
-updated_at: 2026-06-06 19:34:19.944892
+updated_at: 2026-06-07 19:30:47.775749
 ---
 
 # Instruments

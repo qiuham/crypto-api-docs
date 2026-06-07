@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-credit-lines
 api_type: REST
-updated_at: 2026-06-06 19:26:59.518567
+updated_at: 2026-06-07 19:23:55.418103
 ---
 
 # Get Deallocation Status
