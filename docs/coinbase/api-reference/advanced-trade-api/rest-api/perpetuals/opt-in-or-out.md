@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/opt-in-or-out
 api_type: REST
-updated_at: 2026-06-06 18:28:08.954317
+updated_at: 2026-06-07 18:27:58.626701
 ---
 
 # Opt In or Out of Multi Asset Collateral
@@ -11,12 +11,6 @@ updated_at: 2026-06-06 18:28:08.954317
 
 
 Enable or Disable Multi Asset Collateral for a given Portfolio
-    
-    
-    curl --request POST \
-      --url https://api.coinbase.com/api/v3/brokerage/intx/multi_asset_collateral \
-      --header 'Authorization: Bearer <token>' \
-      --header
     
     
     curl --request POST \

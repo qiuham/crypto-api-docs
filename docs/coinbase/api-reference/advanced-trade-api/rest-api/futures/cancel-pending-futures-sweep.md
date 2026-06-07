@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/futures/cancel-pending-futures-sweep
 api_type: REST
-updated_at: 2026-06-06 18:28:07.984244
+updated_at: 2026-06-07 18:27:57.159542
 ---
 
 # Cancel Pending US Derivatives Sweep

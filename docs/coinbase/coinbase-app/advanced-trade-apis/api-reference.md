@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/api-reference
 api_type: Trading
-updated_at: 2026-06-06 18:28:09.839511
+updated_at: 2026-06-07 18:27:59.955281
 ---
 
 # Welcome to Coinbase Advanced Trade API
