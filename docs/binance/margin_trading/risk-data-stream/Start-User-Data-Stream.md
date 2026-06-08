@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Start-User-Data-Stream
 api_type: REST
-updated_at: 2026-06-07 18:37:23.480103
+updated_at: 2026-06-08 18:59:49.377336
 ---
 
 # Payload: Balance Update

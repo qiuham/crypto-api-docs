@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-questionnaire
 api_type: REST
-updated_at: 2026-06-07 18:40:08.907336
+updated_at: 2026-06-08 19:02:29.248450
 ---
 
 # Get Region List (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Get-Summary-of-Sub-accounts-Futures-Account-V2
 api_type: Account
-updated_at: 2026-06-07 18:42:25.416322
+updated_at: 2026-06-08 19:04:40.739089
 ---
 
 # Query Sub-account Assets (For Master Account) (USER_DATA)
