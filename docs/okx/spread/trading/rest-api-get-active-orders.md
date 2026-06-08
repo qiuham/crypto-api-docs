@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-get-active-orders
 anchor_id: spread-trading-rest-api-get-active-orders
 api_type: REST
-updated_at: 2026-06-07 19:13:03.530651
+updated_at: 2026-06-08 19:34:19.502171
 ---
 
 # Get active orders

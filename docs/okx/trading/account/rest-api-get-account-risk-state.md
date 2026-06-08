@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-account-risk-state
 anchor_id: trading-account-rest-api-get-account-risk-state
 api_type: REST
-updated_at: 2026-06-07 19:11:37.133197
+updated_at: 2026-06-08 19:32:53.469309
 ---
 
 # Get account risk state

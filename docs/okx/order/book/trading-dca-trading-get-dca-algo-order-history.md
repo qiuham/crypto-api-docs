@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-dca-trading-get-dca-algo-order-history
 anchor_id: order-book-trading-dca-trading-get-dca-algo-order-history
 api_type: API
-updated_at: 2026-06-07 19:12:14.570226
+updated_at: 2026-06-08 19:33:30.711041
 ---
 
 # GET / DCA algo order history

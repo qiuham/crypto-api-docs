@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data
 anchor_id: public-data
 api_type: API
-updated_at: 2026-06-07 19:13:11.586226
+updated_at: 2026-06-08 19:34:27.494478
 ---
 
 # Public Data
@@ -281,7 +281,7 @@ instCategory | String | The asset category of the instrument’s base asset (the
 upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 > param | String | The parameter name to be updated.   
 `tickSz`  
-`minSz`  
+`minSz`: For `FUTURES`/`SWAP`, `lotSz` will be modified synchronously.  
 `maxMktSz`  
 > newValue | String | The parameter value that will replace the current one.  
 > effTime | String | Effective time. Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -1176,7 +1176,7 @@ instFamily | String | Yes | Instrument family, only applicable to `OPTION`
   
 expTime | String | No | Contract expiry date, the format is "YYMMDD", e.g. "200527"  
   
-**Note** : This endpoint may not return data for all instruments listed in `/api/v5/public/instruments`. Options with insufficient market depth for implied volatility surface fitting — particularly deep out-of-the-money (OTM) options — may not have entries.
+**Note** : This endpoint may not return data for every option listed in `/api/v5/public/instruments`. Data can be absent in two cases: 1\. The option is listed but not yet tradeable (e.g. supplemental options may not become tradeable until a scheduled time; data will not be available before trading opens). 2\. Implied volatility surface fitting fails due to insufficient market quotes. This is more likely to occur in demo trading; in live trading, market maker quotes are generally available to ensure fitting succeeds.
 
 > Response Example
     
@@ -3273,7 +3273,7 @@ It is `null` when the value is not generated.
 > upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 >> param | String | The parameter name to be updated.   
 `tickSz`  
-`minSz`  
+`minSz`: For `FUTURES`/`SWAP`, `lotSz` will be modified synchronously.  
 `maxMktSz`  
 >> newValue | String | The parameter value that will replace the current one.  
 >> effTime | String | Effective time. Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -5569,7 +5569,7 @@ instCategory | String | 标的资产类别（产品ID的第一部分）。例如
 upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 > param | String | 即将变更的参数名称。  
 `tickSz`  
-`minSz`  
+`minSz`：若为交割/永续合约（`FUTURES`/`SWAP`），`lotSz` 会同步变更。  
 `maxMktSz`  
 > newValue | String | 即将变更的参数值。  
 > effTime | String | 生效时间。Unix 时间戳格式，例如 `1597026383085`  
@@ -6467,7 +6467,7 @@ enabled | Boolean | 限价是否生效
 instFamily | String | 是 | 交易品种，仅适用于期权  
 expTime | String | 否 | 合约到期日，格式为"YYMMDD"，如 "200527"  
   
-**注意** ：本接口返回的数据可能不包含 `/api/v5/public/instruments` 中所有的期权合约。对于市场深度不足、无法进行隐含波动率曲面拟合的期权（尤其是深度虚值期权），可能不会有对应的数据。
+**注意** ：本接口返回的数据可能不包含 `/api/v5/public/instruments` 中所有的期权合约。以下两种情况可能导致数据缺失： 1\. 期权已上架但尚未开始交易（例如，补充期权默认在特定时间开始交易，在开始交易之前可能无法获取对应数据）。 2\. 因市场报价不足导致隐含波动率曲面拟合失败。此情况在模拟盘中较易发生；实盘中由于做市商会提供报价，通常可保证拟合成功。
 
 > 返回结果
     
@@ -8521,7 +8521,7 @@ data | Array of objects | 订阅的数据
 > upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 >> param | String | 即将变更的参数名称。  
 `tickSz`  
-`minSz`  
+`minSz`：若为交割/永续合约（`FUTURES`/`SWAP`），`lotSz` 会同步变更。  
 `maxMktSz`  
 >> newValue | String | 即将变更的参数值。  
 >> effTime | String | 生效时间。Unix 时间戳格式，例如 `1597026383085`  

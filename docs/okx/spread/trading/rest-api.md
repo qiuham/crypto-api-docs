@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api
 anchor_id: spread-trading-rest-api
 api_type: REST
-updated_at: 2026-06-07 19:13:01.653341
+updated_at: 2026-06-08 19:34:17.622115
 ---
 
 # REST API

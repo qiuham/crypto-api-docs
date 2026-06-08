@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-instruments
 anchor_id: trading-account-rest-api-get-instruments
 api_type: REST
-updated_at: 2026-06-07 19:11:28.911609
+updated_at: 2026-06-08 19:32:45.261889
 ---
 
 # Get instruments
@@ -284,7 +284,7 @@ instCategory | String | The asset category of the instrument’s base asset (the
 upcChg | Array of objects | Upcoming changes. It is [] when there is no upcoming change.  
 > param | String | The parameter name to be updated.   
 `tickSz`  
-`minSz`  
+`minSz`: For `FUTURES`/`SWAP`, `lotSz` will be modified synchronously.  
 `maxMktSz`  
 > newValue | String | The parameter value that will replace the current one.  
 > effTime | String | Effective time. Unix timestamp format in milliseconds, e.g. `1597026383085`  
@@ -554,7 +554,7 @@ instCategory | String | 标的资产类别（产品ID的第一部分）。例如
 upcChg | Array of objects | 即将变更的参数列表。当没有即将变更的参数时，返回空数组 []  
 > param | String | 即将变更的参数名称。  
 `tickSz`  
-`minSz`  
+`minSz`：若为交割/永续合约（`FUTURES`/`SWAP`），`lotSz` 会同步变更。  
 `maxMktSz`  
 > newValue | String | 即将变更的参数值。  
 > effTime | String | 生效时间。Unix 时间戳格式，例如 `1597026383085`  

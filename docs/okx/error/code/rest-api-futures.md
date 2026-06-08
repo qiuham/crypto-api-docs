@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#error-code-rest-api-futures
 anchor_id: error-code-rest-api-futures
 api_type: REST
-updated_at: 2026-06-07 19:14:14.886243
+updated_at: 2026-06-08 19:35:30.584835
 ---
 
 # Futures
