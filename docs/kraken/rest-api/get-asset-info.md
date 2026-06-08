@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-asset-info
 api_type: REST
-updated_at: 2026-06-07 19:23:52.329366
+updated_at: 2026-06-08 19:45:16.270161
 ---
 
 # Get Closed Orders

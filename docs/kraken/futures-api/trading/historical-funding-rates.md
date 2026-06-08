@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/historical-funding-rates
 api_type: REST
-updated_at: 2026-06-07 19:21:27.080691
+updated_at: 2026-06-08 19:42:50.376465
 ---
 
 # Historical funding rates

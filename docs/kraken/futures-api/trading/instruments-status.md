@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/instruments-status
 api_type: REST
-updated_at: 2026-06-07 19:21:32.599158
+updated_at: 2026-06-08 19:42:56.265301
 ---
 
 # Get subaccounts

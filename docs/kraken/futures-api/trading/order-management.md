@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/order-management
 api_type: REST
-updated_at: 2026-06-07 19:21:39.111951
+updated_at: 2026-06-08 19:43:02.832185
 ---
 
 # Place new offer on an open RFQ
@@ -73,7 +73,7 @@ Placed bid
 
 **reason** `string` *required*
 
-**Possible values:** [`rfqNotFound`, `insufficientMargin`, `maxPositionExceed`, `wouldCauseLiquidation`, `fixedLeverageTooHigh`, `orderError`, `noBidOrAskProvided`, `marketRestricted`, `priceTooFarFromMarket`, `deltaLimitExceeded`, `vegaLimitExceeded`, `legMismatch`, `perLegAndPackagePricesProvided`, `incompleteSide`]
+**Possible values:** [`rfqNotFound`, `insufficientMargin`, `maxPositionExceeded`, `wouldCauseLiquidation`, `fixedLeverageTooHigh`, `orderError`, `noBidOrAskProvided`, `marketRestricted`, `priceTooFarFromMarket`, `deltaLimitExceeded`, `vegaLimitExceeded`, `legMismatch`, `perLegAndPackagePricesProvided`, `incompleteSide`]
 
 RFQ feature is not enabled.
 

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-withdrawal-addresses
 api_type: REST
-updated_at: 2026-06-07 19:25:00.384428
+updated_at: 2026-06-08 19:46:28.281595
 ---
 
 # Get Withdrawal Information

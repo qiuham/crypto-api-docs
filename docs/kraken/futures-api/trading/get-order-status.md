@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-order-status
 api_type: REST
-updated_at: 2026-06-07 19:21:07.248793
+updated_at: 2026-06-08 19:42:29.869050
 ---
 
 # Get orderbook

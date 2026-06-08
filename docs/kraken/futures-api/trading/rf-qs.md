@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/rf-qs
 api_type: REST
-updated_at: 2026-06-07 19:21:42.236763
+updated_at: 2026-06-08 19:43:06.465706
 ---
 
 # Batch order management

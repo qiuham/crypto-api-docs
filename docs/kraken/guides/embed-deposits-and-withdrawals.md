@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-deposits-and-withdrawals
 api_type: Guide
-updated_at: 2026-06-07 19:22:34.155595
+updated_at: 2026-06-08 19:43:58.267905
 ---
 
 # Embed: Deposits & Withdrawals

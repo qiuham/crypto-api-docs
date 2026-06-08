@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-deallocate-strategy-status
 api_type: REST
-updated_at: 2026-06-07 19:23:56.193506
+updated_at: 2026-06-08 19:45:20.595677
 ---
 
 # Get Deallocation Status

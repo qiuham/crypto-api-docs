@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/open_orders
 api_type: WebSocket
-updated_at: 2026-06-07 19:22:19.641646
+updated_at: 2026-06-08 19:43:43.651070
 ---
 
 # Open Orders (verbose)

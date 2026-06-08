@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/account-information
 api_type: REST
-updated_at: 2026-06-07 19:20:21.404825
+updated_at: 2026-06-08 19:41:43.371755
 ---
 
 # Add assignment preference

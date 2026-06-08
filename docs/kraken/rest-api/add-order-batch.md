@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/add-order-batch
 api_type: REST
-updated_at: 2026-06-07 19:23:24.447877
+updated_at: 2026-06-08 19:44:48.453700
 ---
 
 # Add Order Batch

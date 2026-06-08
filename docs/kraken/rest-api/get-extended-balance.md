@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-extended-balance
 api_type: REST
-updated_at: 2026-06-07 19:24:02.262148
+updated_at: 2026-06-08 19:45:26.467693
 ---
 
 # Get Grouped Order Book

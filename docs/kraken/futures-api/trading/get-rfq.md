@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-rfq
 api_type: REST
-updated_at: 2026-06-07 19:21:13.604813
+updated_at: 2026-06-08 19:42:36.388332
 ---
 
 # Get self trade strategy

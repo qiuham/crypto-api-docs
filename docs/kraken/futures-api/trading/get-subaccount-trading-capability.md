@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-subaccount-trading-capability
 api_type: REST
-updated_at: 2026-06-07 19:21:16.649363
+updated_at: 2026-06-08 19:42:39.667403
 ---
 
 # Get ticker by symbol
