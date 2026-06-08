@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency
 api_type: REST
-updated_at: 2026-06-07 18:32:20.560774
+updated_at: 2026-06-08 18:54:57.592326
 ---
 
 # Optimizing latency
