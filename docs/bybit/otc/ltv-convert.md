@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/ltv-convert
 api_type: REST
-updated_at: 2026-06-07 18:58:54.768217
+updated_at: 2026-06-08 19:20:43.203535
 ---
 
 # Get LTV

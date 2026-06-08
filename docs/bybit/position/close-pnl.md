@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/close-pnl
 api_type: Position
-updated_at: 2026-06-07 18:59:04.668023
+updated_at: 2026-06-08 19:20:52.837742
 ---
 
 # Set Leverage

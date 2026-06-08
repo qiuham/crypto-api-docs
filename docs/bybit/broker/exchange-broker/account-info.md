@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/account-info
 api_type: REST
-updated_at: 2026-06-07 18:55:15.788942
+updated_at: 2026-06-08 19:17:11.636035
 ---
 
 # Get Earning

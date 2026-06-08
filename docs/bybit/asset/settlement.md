@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/settlement
 api_type: REST
-updated_at: 2026-06-07 18:54:33.353260
+updated_at: 2026-06-08 19:16:31.000233
 ---
 
 # Get Total Members Assets

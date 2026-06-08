@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/liquidity-mining/add-liquidity
 api_type: REST
-updated_at: 2026-06-07 18:56:09.519972
+updated_at: 2026-06-08 19:18:03.068222
 ---
 
 # Add Liquidity

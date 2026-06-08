@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/system/system-status
 api_type: WebSocket
-updated_at: 2026-06-07 19:01:32.105824
+updated_at: 2026-06-08 19:23:14.916684
 ---
 
 # Connect

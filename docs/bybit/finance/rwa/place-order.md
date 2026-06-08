@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/rwa/place-order
 api_type: REST
-updated_at: 2026-06-07 18:57:30.884708
+updated_at: 2026-06-08 19:19:21.452333
 ---
 
 # Get Product List
