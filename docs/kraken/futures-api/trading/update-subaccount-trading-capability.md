@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/update-subaccount-trading-capability
 api_type: REST
-updated_at: 2026-06-08 19:43:26.707330
+updated_at: 2026-06-09 19:38:32.392780
 ---
 
 # Initiate withdrawal to Spot wallet

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/order-management
 api_type: REST
-updated_at: 2026-06-08 19:43:02.832185
+updated_at: 2026-06-09 19:38:08.835560
 ---
 
 # Place new offer on an open RFQ

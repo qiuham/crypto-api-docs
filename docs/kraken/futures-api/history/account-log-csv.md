@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/history/account-log-csv
 api_type: REST
-updated_at: 2026-06-08 19:41:24.168686
+updated_at: 2026-06-09 19:36:29.814465
 ---
 
 # Account log (CSV)

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/spot-ws-intro
 api_type: WebSocket
-updated_at: 2026-06-08 19:44:38.353270
+updated_at: 2026-06-09 19:39:43.757960
 ---
 
 # Spot Websockets Introduction

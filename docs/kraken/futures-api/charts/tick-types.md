@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/charts/tick-types
 api_type: REST
-updated_at: 2026-06-08 19:41:20.518022
+updated_at: 2026-06-09 19:36:25.757695
 ---
 
 # Account History

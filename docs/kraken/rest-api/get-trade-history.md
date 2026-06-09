@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-trade-history
 api_type: REST
-updated_at: 2026-06-08 19:46:14.512623
+updated_at: 2026-06-09 19:41:20.559972
 ---
 
 # Get Trade Volume

@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-open-orders
 api_type: REST
-updated_at: 2026-06-08 19:45:40.165171
+updated_at: 2026-06-09 19:40:43.453181
 ---
 
 # Get Open Positions

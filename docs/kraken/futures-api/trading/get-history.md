@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/get-history
 api_type: REST
-updated_at: 2026-06-08 19:42:13.835695
+updated_at: 2026-06-09 19:37:19.905227
 ---
 
 # Get trade history

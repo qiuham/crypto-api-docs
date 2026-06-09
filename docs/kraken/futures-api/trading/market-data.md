@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/market-data
 api_type: Market Data
-updated_at: 2026-06-08 19:42:59.706342
+updated_at: 2026-06-09 19:38:05.525761
 ---
 
 # Multi-Collateral

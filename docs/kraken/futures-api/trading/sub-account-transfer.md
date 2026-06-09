@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/sub-account-transfer
 api_type: REST
-updated_at: 2026-06-08 19:43:17.636751
+updated_at: 2026-06-09 19:38:23.438320
 ---
 
 # Initiate sub account transfer

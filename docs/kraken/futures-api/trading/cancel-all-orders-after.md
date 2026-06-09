@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/cancel-all-orders-after
 api_type: REST
-updated_at: 2026-06-08 19:41:50.430006
+updated_at: 2026-06-09 19:36:55.376025
 ---
 
 # Cancel order

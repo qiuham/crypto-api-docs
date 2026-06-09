@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/rest-api/get-ticker-information
 api_type: REST
-updated_at: 2026-06-08 19:46:04.891850
+updated_at: 2026-06-09 19:41:09.844465
 ---
 
 # Get Ticker Information

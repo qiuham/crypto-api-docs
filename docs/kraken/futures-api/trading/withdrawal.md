@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/withdrawal
 api_type: REST
-updated_at: 2026-06-08 19:43:27.486520
+updated_at: 2026-06-09 19:38:33.172690
 ---
 
 # Initiate withdrawal to Spot wallet

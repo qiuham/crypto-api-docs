@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/websocket/notifications
 api_type: WebSocket
-updated_at: 2026-06-08 19:43:41.008995
+updated_at: 2026-06-09 19:38:46.573123
 ---
 
 # Notification

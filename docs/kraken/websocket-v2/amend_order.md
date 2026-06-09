@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/amend_order
 api_type: WebSocket
-updated_at: 2026-06-08 19:51:58.800459
+updated_at: 2026-06-09 19:47:04.666646
 ---
 
 # Balances

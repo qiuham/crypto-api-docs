@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/guides/embed-custom-orders
 api_type: Guide
-updated_at: 2026-06-08 19:43:57.384870
+updated_at: 2026-06-09 19:39:03.230171
 ---
 
 # Embed: Deposits & Withdrawals

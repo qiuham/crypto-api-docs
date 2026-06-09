@@ -2,7 +2,7 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/websocket-v2/batch_add
 api_type: WebSocket
-updated_at: 2026-06-08 19:52:02.388812
+updated_at: 2026-06-09 19:47:08.008327
 ---
 
 # Batch Cancel
