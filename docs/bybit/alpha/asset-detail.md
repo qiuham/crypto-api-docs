@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/asset-detail
 api_type: REST
-updated_at: 2026-06-08 19:15:40.331752
+updated_at: 2026-06-09 19:10:32.659806
 ---
 
 # Get Asset List

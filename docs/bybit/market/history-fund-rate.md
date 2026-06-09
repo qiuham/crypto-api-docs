@@ -2,52 +2,49 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/history-fund-rate
 api_type: Market Data
-updated_at: 2026-06-08 19:19:32.804457
+updated_at: 2026-06-09 19:14:27.145256
 ---
 
-# Get Index Price Kline
+# Get Funding Rate History
 
-Query for historical [index price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms) klines. Charts are returned in groups based on the requested interval.
+Query for historical funding rates. Each symbol has a different funding interval. For example, if the interval is 8 hours and the current time is UTC 12, then it returns the last funding rate, which settled at UTC 8.
 
-> **Covers: USDT contract / USDC contract / Inverse contract**
+To query the funding rate interval, please refer to the [instruments-info](/docs/v5/market/instrument) endpoint.
+
+> **Covers: USDT and USDC perpetual / Inverse perpetual**
+
+info
+
+  * Passing only `startTime` returns an error.
+  * Passing only `endTime` returns 200 records up till `endTime`.
+  * Passing neither returns 200 records up till the current time.
+
+
 
 ### HTTP Request
 
-GET`/v5/market/index-price-kline`
+GET`/v5/market/funding/history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| false| string| Product type. `linear`,`inverse`
-
-  * When `category` is not passed, use `linear` by default
-
-  
+[category](/docs/v5/enum#category)| **true**|  string| Product type. `linear`,`inverse`  
 symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-[interval](/docs/v5/enum#interval)| **true**|  string| Kline interval. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`W`,`M`  
-start| false| integer| The start timestamp (ms)  
-end| false| integer| The end timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `1000`]. Default: `200`  
+startTime| false| integer| The start timestamp (ms)  
+endTime| false| integer| The end timestamp (ms)  
+limit| false| integer| Limit for data size per page. [`1`, `200`]. Default: `200`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
 category| string| Product type  
-symbol| string| Symbol name  
-list| array| 
-
-  * An string array of individual candle
-  * Sort in reverse by `startTime`
-
-  
-> list[0]: startTime| string| Start time of the candle (ms)  
-> list[1]: openPrice| string| Open price  
-> list[2]: highPrice| string| Highest price  
-> list[3]: lowPrice| string| Lowest price  
-> list[4]: closePrice| string| Close price. _Is the last traded price when the candle is not closed_  
-[](/docs/api-explorer/v5/market/index-kline)
+list| array| Object  
+> symbol| string| Symbol name  
+> fundingRate| string| Funding rate  
+> fundingRateTimestamp| string| Funding rate timestamp (ms)  
+[](/docs/api-explorer/v5/market/history-fund-rate)
 
 * * *
 
@@ -55,27 +52,24 @@ list| array|
 
   * HTTP
   * Python
-  * Go
+  * GO
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/index-price-kline?category=inverse&symbol=BTCUSDZ22&interval=1&start=1670601600000&end=1670608800000&limit=2 HTTP/1.1  
+    GET /v5/market/funding/history?category=linear&symbol=ETHPERP&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
-    session = HTTP(testnet=True)  
-    print(session.get_index_price_kline(  
-        category="inverse",  
-        symbol="BTCUSDZ22",  
-        interval=1,  
-        start=1670601600000,  
-        end=1670608800000,  
-        limit=2,  
+    session = HTTP()  
+    print(session.get_funding_rate_history(  
+        category="linear",  
+        symbol="ETHPERP",  
+        limit=1,  
     ))  
     
     
@@ -86,8 +80,8 @@ list| array|
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
-    client.NewUtaBybitServiceWithParams(params).GetIndexPriceKline(context.Background())  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT"}  
+    client.NewUtaBybitServiceWithParams(params).GetFundingRateHistory(context.Background())  
     
     
     
@@ -96,8 +90,8 @@ list| array|
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
-    client.getIndexPriceLinesData(marketKLineRequest, System.out::println);  
+    var fundingHistoryRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSD).startTime(1632046800000L).endTime(1632133200000L).limit(150).build();  
+    client.getFundingHistory(fundingHistoryRequest, System.out::println);  
     
     
     
@@ -108,13 +102,10 @@ list| array|
     });  
       
     client  
-        .getIndexPriceKline({  
-            category: 'inverse',  
-            symbol: 'BTCUSDZ22',  
-            interval: '1',  
-            start: 1670601600000,  
-            end: 1670608800000,  
-            limit: 2,  
+        .getFundingRateHistory({  
+            category: 'linear',  
+            symbol: 'ETHPERP',  
+            limit: 1,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -131,74 +122,59 @@ list| array|
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSDZ22",  
-            "category": "inverse",  
+            "category": "linear",  
             "list": [  
-                [  
-                    "1670608800000",  
-                    "17167.00",  
-                    "17167.00",  
-                    "17161.90",  
-                    "17163.07"  
-                ],  
-                [  
-                    "1670608740000",  
-                    "17166.54",  
-                    "17167.69",  
-                    "17165.42",  
-                    "17167.00"  
-                ]  
+                {  
+                    "symbol": "ETHPERP",  
+                    "fundingRate": "0.0001",  
+                    "fundingRateTimestamp": "1672041600000"  
+                }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672026471128  
+        "time": 1672051897447  
     }
 
 ---
 
-# 查詢指數價格K線數據
+# 查詢歷史資金費率
 
-查詢指數價格K線
+查詢資金費率，每個symbol的資金費率產生週期不同。假設資金費率為8小時，當前時間是UTC12點，則返回的是上一個結算即UTC8點產生的資金費率。如要查詢symbol的資金費率時間間隔，請查詢[可交易產品規格](/docs/zh-TW/v5/market/instrument)接口
 
-> **覆蓋範圍: USDT永續 / USDC交割 / USDC永續 / USDC交割 / 反向合約**
+> **覆蓋範圍: USDT和USDC永續 / 反向永續**
+
+時間入参規則
+
+  * 只傳`startTime`會報錯
+  * 只傳`endTime`，則返回endTime往前的200條數據
+  * 都不傳，返回當前時間的往前200條數據
+
+
 
 ### HTTP請求
 
-GET`/v5/market/index-price-kline`
+GET`/v5/market/funding/history`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| false| string| 產品類型. `linear`,`inverse`
-
-  * 當`category`不指定時, 默認是`linear`
-
-  
+[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `linear`,`inverse`  
 symbol| **true**|  string| 合約名稱  
-[interval](/docs/zh-TW/v5/enum#interval)| **true**|  string| 時間粒度. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`M`,`W`  
-start| false| integer| 開始時間戳 (毫秒)  
-end| false| integer| 結束時間戳 (毫秒)  
-limit| false| integer| 每頁數量限制. [`1`, `1000`]. 默認: `200`  
+startTime| false| integer| 開始時間戳 (毫秒)  
+endTime| false| integer| 結束時間戳 (毫秒)  
+limit| false| integer| 每頁數量限制. [`1`, `200`]. 默認: `200`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
 category| string| 產品類型  
-symbol| string| 合約名稱  
-list| array| 
-
-  * 一個字符串數組構成單個蠟燭
-  * 按照`startTime`降序排列
-
-  
-> list[0]: startTime| string| 蠟燭的開始時間戳 (毫秒)  
-> list[1]: openPrice| string| 開始價格  
-> list[2]: highPrice| string| 最高價格  
-> list[3]: lowPrice| string| 最低價格  
-> list[4]: closePrice| string| 結束價格. _如果蠟燭尚未結束，則表示為最新成交價格_  
-[](/docs/zh-TW/api-explorer/v5/market/index-kline)
+list| array| Object  
+> symbol| string| 合約名稱  
+> fundingRate| string| 資金費率  
+> fundingRateTimestamp| string| 資金費率時間戳 (毫秒)  
+[](/docs/zh-TW/api-explorer/v5/market/history-fund-rate)
 
 * * *
 
@@ -206,27 +182,24 @@ list| array|
 
   * HTTP
   * Python
-  * Go
+  * GO
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/index-price-kline?category=inverse&symbol=BTCUSDZ22&interval=1&start=1670601600000&end=1670608800000&limit=2 HTTP/1.1  
+    GET /v5/market/funding/history?category=linear&symbol=ETHPERP&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
-    session = HTTP(testnet=True)  
-    print(session.get_index_price_kline(  
-        category="inverse",  
-        symbol="BTCUSDZ22",  
-        interval=1,  
-        start=1670601600000,  
-        end=1670608800000,  
-        limit=2,  
+    session = HTTP()  
+    print(session.get_funding_rate_history(  
+        category="linear",  
+        symbol="ETHPERP",  
+        limit=1,  
     ))  
     
     
@@ -237,8 +210,8 @@ list| array|
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
-    client.NewUtaBybitServiceWithParams(params).GetIndexPriceKline(context.Background())  
+    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
+    client.NewUtaBybitServiceWithParams(params).GetFundingRateHistory(context.Background())  
     
     
     
@@ -247,8 +220,8 @@ list| array|
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
-    client.getIndexPriceLinesData(marketKLineRequest, System.out::println);  
+    var fundingHistoryRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSD).startTime(1632046800000L).endTime(1632133200000L).limit(150).build();  
+    client.getFundingHistory(fundingHistoryRequest, System.out::println);  
     
     
     
@@ -259,13 +232,10 @@ list| array|
     });  
       
     client  
-        .getIndexPriceKline({  
-            category: 'inverse',  
-            symbol: 'BTCUSDZ22',  
-            interval: '1',  
-            start: 1670601600000,  
-            end: 1670608800000,  
-            limit: 2,  
+        .getFundingRateHistory({  
+            category: 'linear',  
+            symbol: 'ETHPERP',  
+            limit: 1,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -282,25 +252,15 @@ list| array|
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSDZ22",  
-            "category": "inverse",  
+            "category": "linear",  
             "list": [  
-                [  
-                    "1670608800000",  
-                    "17167.00",  
-                    "17167.00",  
-                    "17161.90",  
-                    "17163.07"  
-                ],  
-                [  
-                    "1670608740000",  
-                    "17166.54",  
-                    "17167.69",  
-                    "17165.42",  
-                    "17167.00"  
-                ]  
+                {  
+                    "symbol": "ETHPERP",  
+                    "fundingRate": "0.0001",  
+                    "fundingRateTimestamp": "1672041600000"  
+                }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672026471128  
+        "time": 1672051897447  
     }

@@ -2,75 +2,89 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/product-info
 api_type: REST
-updated_at: 2026-06-08 19:18:41.126050
+updated_at: 2026-06-09 19:13:35.749000
 ---
 
-# Get Order List
-
-API ker permission: `Earn`  
-API rate limit: 10 reqs / sec
+# Get Product Info
 
 info
 
-  * Pass `orderId` alone to retrieve a single order. Omit to query the full order list with optional filters.
-  * For `Stake` orders, `startTime`/`endTime` filters on order creation time. For `Redeem` orders, filters are applied on settlement time.
-  * When `productId` is passed, `category` is required.
+Does not need authentication.
 
-
+[Bybit Saving FAQ](https://www.bybit.com/en/help-center/article/FAQ-Bybit-Savings)
 
 ### HTTP Request
 
-GET`/v5/earn/fixed-term/order`
+GET`/v5/earn/product`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderType| false| string| Filter by order type: `Stake`, `Redeem`, `Reinvest`. Returns all types if omitted  
-productId| false| string| Filter by product ID. Requires `category` when passed  
-category| false| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`. Required when `productId` is passed  
-orderId| false| string| System order ID for single order lookup  
-startTime| false| integer| Start timestamp in ms  
-endTime| false| integer| End timestamp in ms  
-limit| false| integer| Number of items per page. Default: `20`, Max: `50`  
-cursor| false| string| Pagination cursor. Use `nextPageCursor` from the previous response  
+category| **true**|  string| `FlexibleSaving`,`OnChain`  
+**Remarks** : currently, only flexible savings and on chain is supported  
+coin| false| string| Coin name, uppercase only  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Order list  
-> orderId| string| System-generated order ID  
-> orderLinkId| string| User-customised idempotent ID  
-> orderType| string| Order type: `Stake`, `Redeem`, `Reinvest`  
-> status| string| Order status: `Processing`, `Active`, `Complete`, `Failed`  
+list| array| Object  
+> category| string| `FlexibleSaving`,`OnChain`  
+> estimateApr| string| Estimated APR, e.g., `3%`, `4.25%`  
+**Remarks** : 1)The Est. APR provides a dynamic preview of your potential returns, updated every 10 minutes in response to market conditions.   
+2) Please note that this is an estimate and may differ from the actual APR you will receive.  
+3) Platform Reward APRs are not shown  
+> coin| string| Coin name  
+> minStakeAmount| string| Minimum stake amount  
+> maxStakeAmount| string| Maximum stake amount  
+> precision| string| Amount precision  
 > productId| string| Product ID  
-> category| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
-> coin| string| Coin  
-> amount| string| Order amount  
-> duration| string| Fixed term duration, e.g. `1d`, `8h`, `2m`  
-> accountType| string| Account type: `FUND`, `UNIFIED`. Redeem orders always show `FUND`  
-> settlementTime| string| Settlement time, unix timestamp in ms  
-> createdAt| string| Order creation time, unix timestamp in ms  
-> yieldInfoList| array| Yield info list. Populated after settlement  
->> coin| string| Yield coin  
->> amount| string| Yield amount  
->> status| string| Yield status: `Pending`, `Distributed`, `Fail`, `ReinvestSuccess`  
->> createdAt| string| Yield record creation time, unix timestamp in ms  
->> apy| string| APY applied for this yield  
-nextPageCursor| string| Cursor for the next page. Empty string means no more data  
+> status| string| `Available`, `NotAvailable`  
+> bonusEvents| Array| Bonus  
+>> apr| string| Yesterday's Rewards APR  
+>> coin| string| Reward coin  
+>> announcement| string| Announcement link  
+> minRedeemAmount| string| Minimum redemption amount. Only has value in Onchain LST mode (coin != swapCoin)  
+> maxRedeemAmount| string| Maximum redemption amount. Only has value in Onchain LST mode (coin != swapCoin)  
+> duration| string| `Fixed`,`Flexible`. Product Type  
+> term| int| Unit: Day. Only when duration = `Fixed` for OnChain  
+> swapCoin| string| swap coin. Only has value in Onchain LST mode (coin != swapCoin)  
+> swapCoinPrecision| string| swap coin precision. Only has value in Onchain LST mode (coin != swapCoin)  
+> stakeExchangeRate| string| Estimated stake exchange rate. Only has value in Onchain LST mode (coin != swapCoin)  
+> redeemExchangeRate| string| Estimated redeem exchange rate. Only has value in Onchain LST mode (coin != swapCoin)  
+> rewardDistributionType| string| `Simple`: Simple interest, `Compound`: Compound interest, `Other`: LST. Only has value for Onchain  
+> rewardIntervalMinute| int| Frequency of reward distribution (minutes)  
+> redeemProcessingMinute| string| Estimated redemption minutes  
+> stakeTime| string| Staking on-chain time, in milliseconds  
+> interestCalculationTime| string| Interest accrual time, in milliseconds  
   
-* * *
-
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
+    GET /v5/earn/product?category=FlexibleSaving&coin=BTC HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+    )  
+    print(session.get_earn_product_info(  
+        category="FlexibleSaving",  
+        coin="BTC",  
+    ))  
+    
+    
+    
+      
     
 
 ### Response Example
@@ -82,103 +96,117 @@ nextPageCursor| string| Cursor for the next page. Empty string means no more dat
         "result": {  
             "list": [  
                 {  
-                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
-                    "orderLinkId": "",  
-                    "orderType": "Redeem",  
-                    "status": "Complete",  
-                    "productId": "546",  
-                    "category": "FixedTermSaving",  
-                    "coin": "USDT",  
-                    "amount": "100.056",  
-                    "duration": "1d",  
-                    "accountType": "UNIFIED",  
-                    "settlementTime": "1750811400000",  
-                    "createdAt": "1750648976000",  
-                    "yieldInfoList": [  
-                        {  
-                            "coin": "USDT",  
-                            "amount": "0.0063",  
-                            "status": "Distributed",  
-                            "createdAt": "1750811401000",  
-                            "apy": "2.33%"  
-                        }  
-                    ]  
+                    "category": "FlexibleSaving",  
+                    "estimateApr": "3%",  
+                    "coin": "BTC",  
+                    "minStakeAmount": "0.001",  
+                    "maxStakeAmount": "10",  
+                    "precision": "8",  
+                    "productId": "430",  
+                    "status": "Available",  
+                    "bonusEvents": [],  
+                    "minRedeemAmount": "",  
+                    "maxRedeemAmount": "",  
+                    "duration": "",  
+                    "term": 0,  
+                    "swapCoin": "",  
+                    "swapCoinPrecision": "",  
+                    "stakeExchangeRate": "",  
+                    "redeemExchangeRate": "",  
+                    "rewardDistributionType": "",  
+                    "rewardIntervalMinute": 0,  
+                    "redeemProcessingMinute": 0,  
+                    "stakeTime": "",  
+                    "interestCalculationTime": ""  
                 }  
-            ],  
-            "nextPageCursor": ""  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1776070828622  
+        "time": 1739935669110  
     }
 
 ---
 
-# 取得訂單列表
-
-API key權限：`Earn`  
-API 頻率限制：每秒10次
+# 查询产品信息
 
 信息
 
-  * 單獨傳入 `orderId` 可查詢單筆訂單；省略則搭配可選過濾條件查詢完整訂單列表。
-  * `Stake` 訂單的 `startTime`/`endTime` 按訂單創建時間過濾；`Redeem` 訂單則按結算時間過濾。
-  * 傳入 `productId` 時，`category` 為必填項。
+不需要鑒權
 
-
+[Bybit儲蓄 - 常見問題](https://www.bybit.com/zh-TW/help-center/article/FAQ-Bybit-Savings)
 
 ### HTTP 請求
 
-GET`/v5/earn/fixed-term/order`
+GET`/v5/earn/product`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderType| false| string| 依訂單類型篩選：`Stake`、`Redeem`、`Reinvest`。若省略則返回所有類型  
-productId| false| string| 依產品ID篩選。傳入時需要 `category`  
-category| false| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`。傳入 `productId` 時必填  
-orderId| false| string| 系統訂單ID，用於單筆訂單查詢  
-startTime| false| integer| 開始時間戳（毫秒）  
-endTime| false| integer| 結束時間戳（毫秒）  
-limit| false| integer| 每頁數量。預設：`20`，最大：`50`  
-cursor| false| string| 分頁游標。使用上次響應中的 `nextPageCursor`  
+category| **true**|  string| `FlexibleSaving`,`OnChain`   
+**備註** : 本期僅支持活期理財和鏈上賺幣  
+coin| false| string| 幣種名稱  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| 訂單列表  
-> orderId| string| 系統生成的訂單ID  
-> orderLinkId| string| 用戶自訂冪等ID  
-> orderType| string| 訂單類型：`Stake`、`Redeem`、`Reinvest`  
-> status| string| 訂單狀態：`Processing`、`Active`、`Complete`、`Failed`  
+list| array| Object  
+> category| string| `FlexibleSaving`,`OnChain`  
+> estimateApr| string| 預估年化利率, e.g., `3%`, `4.25%`  
+**備註** : 1)預估年化收益率提供潛在收益的動態預覽，根據市場行情每 10 分鐘更新一次.   
+2) 請注意，該數值僅為估算值，可能會與您獲得的實際年化收益率有所不同.  
+3) 不展示部分幣種支持的平台獎勵年化收益率  
+> coin| string| 幣種名稱  
+> minStakeAmount| string| 最小質押額  
+> maxStakeAmount| string| 最大質押額  
+> precision| string| 金額的精度  
 > productId| string| 產品ID  
-> category| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
-> coin| string| 幣種  
-> amount| string| 訂單金額  
-> duration| string| 固定期限，例如 `1d`、`8h`、`2m`  
-> accountType| string| 帳戶類型：`FUND`、`UNIFIED`。贖回訂單始終顯示 `FUND`  
-> settlementTime| string| 結算時間，毫秒級unix時間戳  
-> createdAt| string| 訂單創建時間，毫秒級unix時間戳  
-> yieldInfoList| array| 收益資訊列表，結算後填充  
->> coin| string| 收益幣種  
->> amount| string| 收益金額  
->> status| string| 收益狀態：`Pending`、`Distributed`、`Fail`、`ReinvestSuccess`  
->> createdAt| string| 收益記錄創建時間，毫秒級unix時間戳  
->> apy| string| 此收益適用的APY  
-nextPageCursor| string| 下一頁游標。空字符串表示無更多數據  
+> status| string| 產品狀態 `Available`, `NotAvailable`  
+> bonusEvents| Array| 獎勵  
+>> apr| string| 昨日獎勵 APR  
+>> coin| string| 獎勵幣種  
+>> announcement| string| 公告連結  
+> minRedeemAmount| string| 最小贖回額度. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> maxRedeemAmount| string| 最大押額度 （返回可購買金額）. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> duration| string| 產品類型：`Fixed`,`Flexible`.  
+> term| int| 單位：天。只有 OnChain 定期產品類型使用  
+> swapCoin| string| 兌換幣種. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> swapCoinPrecision| string| 贖回可支援的精確度. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> stakeExchangeRate| string| 預計質押兌換率. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> redeemExchangeRate| string| 預計赎回兑换率. 只有 OnChain LST 模式有值 (coin != swapCoin)  
+> rewardDistributionType| string| 收益發放模式：`Simple`: 单利, `Compound`: 复利, `Other`: LST. 只有 OnChain 模式有值  
+> rewardIntervalMinute| int| 收益發放的頻率（分鐘）  
+> redeemProcessingMinute| string| 預計贖回分鐘  
+> stakeTime| string| 質押上鍊時間. 以毫秒為單位  
+> interestCalculationTime| string| 開始計息時間. 以毫秒為單位  
   
-* * *
-
 ### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
+    GET /v5/earn/product?category=FlexibleSaving&coin=BTC HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+    )  
+    print(session.get_earn_product_info(  
+        category="FlexibleSaving",  
+        coin="BTC",  
+    ))  
+    
+    
+    
+      
     
 
 ### 響應示例
@@ -190,31 +218,31 @@ nextPageCursor| string| 下一頁游標。空字符串表示無更多數據
         "result": {  
             "list": [  
                 {  
-                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
-                    "orderLinkId": "",  
-                    "orderType": "Redeem",  
-                    "status": "Complete",  
-                    "productId": "546",  
-                    "category": "FixedTermSaving",  
-                    "coin": "USDT",  
-                    "amount": "100.056",  
-                    "duration": "1d",  
-                    "accountType": "UNIFIED",  
-                    "settlementTime": "1750811400000",  
-                    "createdAt": "1750648976000",  
-                    "yieldInfoList": [  
-                        {  
-                            "coin": "USDT",  
-                            "amount": "0.0063",  
-                            "status": "Distributed",  
-                            "createdAt": "1750811401000",  
-                            "apy": "2.33%"  
-                        }  
-                    ]  
+                    "category": "FlexibleSaving",  
+                    "estimateApr": "0.3%",  
+                    "coin": "BTC",  
+                    "minStakeAmount": "0.001",  
+                    "maxStakeAmount": "200",  
+                    "precision": "8",  
+                    "productId": "3",  
+                    "status": "Available",  
+                    "bonusEvents": [],  
+                    "minRedeemAmount": "",  
+                    "maxRedeemAmount": "",  
+                    "duration": "",  
+                    "term": 0,  
+                    "swapCoin": "",  
+                    "swapCoinPrecision": "",  
+                    "stakeExchangeRate": "",  
+                    "redeemExchangeRate": "",  
+                    "rewardDistributionType": "",  
+                    "rewardIntervalMinute": 0,  
+                    "redeemProcessingMinute": 0,  
+                    "stakeTime": "",  
+                    "interestCalculationTime": ""  
                 }  
-            ],  
-            "nextPageCursor": ""  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1776070828622  
+        "time": 1739935669110  
     }

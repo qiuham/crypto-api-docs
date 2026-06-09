@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/historical-interest
 api_type: REST
-updated_at: 2026-06-08 19:21:57.752595
+updated_at: 2026-06-09 19:16:56.298033
 ---
 
-# Get Liability Info
+# Get Available Amount to Repay
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/liability`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### Request Parameters
 
@@ -22,11 +22,7 @@ currency| **true**|  string| Coin name, uppercase only
 Parameter| Type| Comments  
 ---|---|---  
 currency| string| Coin name, uppercase only  
-totalBorrowAmount| string| Total liability = borrowSize  
-fixedBorrowAmount| string| Fixed-rate liability  
-flexibleBorrowAmount| string| Floating-rate liability = borrowSize - fixedBorrowAmount  
-spotTotalBorrow| string| Spot liability + open order liability  
-derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - reservation  
+lossLessRepaymentAmount| string| Repayment amount = min(spot coin available balance, coin borrow amount)  
   
 * * *
 
@@ -39,7 +35,7 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
 
     
     
-    GET /v5/spot-margin-trade/liability?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -54,7 +50,7 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_liability(  
+    print(session.spot_margin_trade_get_repayment_available_amount(  
         currency="BTC"  
     ))  
     
@@ -70,12 +66,8 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "currency": "BTC",  
-            "totalBorrowAmount": "0.05000000",  
-            "fixedBorrowAmount": "0.02000000",  
-            "flexibleBorrowAmount": "0.03000000",  
-            "spotTotalBorrow": "0.04000000",  
-            "derivativesBorrow": "0.01000000"  
+            "lossLessRepaymentAmount": "0.02000000",  
+            "currency": "BTC"  
         },  
         "retExtInfo": {},  
         "time": 1756273388821  
@@ -83,11 +75,11 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
 
 ---
 
-# 查詢負債信息
+# 查詢負債幣種可還款金額
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/liability`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### 請求參數
 
@@ -100,11 +92,7 @@ currency| **true**|  string| 幣名稱，僅限大寫
 參數| 類型| 說明  
 ---|---|---  
 currency| string| 幣名稱，僅限大寫  
-totalBorrowAmount| string| 總負債 = borrowSize  
-fixedBorrowAmount| string| 固定利率負債  
-flexibleBorrowAmount| string| 活期利率負債 = borrowSize - fixedBorrowAmount  
-spotTotalBorrow| string| 現貨負債 + 掛單負債  
-derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservation  
+lossLessRepaymentAmount| string| 還款金額=min(現貨幣可用餘額，借幣金額)  
   
 * * *
 
@@ -117,7 +105,7 @@ derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservati
 
     
     
-    GET /v5/spot-margin-trade/liability?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -140,12 +128,8 @@ derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservati
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "currency": "BTC",  
-            "totalBorrowAmount": "0.05000000",  
-            "fixedBorrowAmount": "0.02000000",  
-            "flexibleBorrowAmount": "0.03000000",  
-            "spotTotalBorrow": "0.04000000",  
-            "derivativesBorrow": "0.01000000"  
+            "lossLessRepaymentAmount": "0.02000000",  
+            "currency": "BTC"  
         },  
         "retExtInfo": {},  
         "time": 1756273388821  

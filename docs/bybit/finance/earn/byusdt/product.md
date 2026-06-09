@@ -2,52 +2,104 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/product
 api_type: REST
-updated_at: 2026-06-08 19:18:31.171983
+updated_at: 2026-06-09 19:13:28.212160
 ---
 
-# Get Product Info
+# Stake / Redeem
+
+info
+
+API key needs "Earn" permission, custody accounts are not supported for now
+
+note
+
+In times of high demand for loans in the market for a specific cryptocurrency, the redemption of the principal may encounter delays and is expected to be processed within 48 hours. The redemption of on-chain products may take up to a few days to complete. Once the redemption request is initiated, it cannot be cancelled.
 
 ### HTTP Request
 
-GET`/v5/earn/token/product`
+POST`/v5/earn/place-order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| **true**|  string| Token coin. Currently only `BYUSDT` is supported  
+category| **true**|  string| `FlexibleSaving`,`OnChain`   
+**Remarks** : currently, only flexible savings and on chain is supported  
+orderType| **true**|  string| `Stake`, `Redeem`  
+accountType| **true**|  string| `FUND`, `UNIFIED`. Onchain only supports FUND  
+amount| **true**|  string| 
+
+  * Stake amount needs to satisfy minStake and maxStake
+  * Both stake and redeem amount need to satify precision requirement
+
+  
+coin| **true**|  string| Coin name  
+productId| **true**|  string| Product ID  
+orderLinkId| **true**|  string| Customised order ID, used to prevent from replay
+
+  * support up to 36 characters
+  * The same orderLinkId can't be used in 30 mins
+
+  
+redeemPositionId| false| string| The position ID that the user needs to redeem. Only is required in Onchain non-LST mode  
+toAccountType| false| string| `FUND`, `UNIFIED`. Onchain LST mode supports `FUND` and `UNIFIED`(Private wealth management custodial subaccount only supports `UNIFIED`). Onchain non-LST mode only supports `FUND`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-productId| string| Product ID  
-coin| string| Token coin  
-mintFeeRateE8| string| Mint fee rate in e8 precision (e.g. `5000000` = 0.05%)  
-redeemFeeRateE8| string| Redeem fee rate in e8 precision  
-minInvestment| string| Minimum investment amount (in USDT)  
-userHolding| string| User's current byUSDT holdings. Return `""` without authentication  
-leftQuota| string| Remaining mintable quota. Return `""` without authentication  
-canMint| boolean| Whether minting is currently available. Return `false` without authentication  
-savingsBalance| string| User's USDT balance in Flexible Saving account (available for Mint). Return `""` without authentication  
-aprE8| string| Base APR in e8 precision. Divide by 10^8 to get the actual rate  
-bonusAprE8| string| Bonus APR in e8 precision (returned when user is eligible). Divide by 10^8 to get the actual rate  
-bonusMaxAmount| string| Maximum principal eligible for bonus APR. Principal exceeding this amount earns only the base APR  
-baseCoinPrecision| integer| Decimal precision for USDT amounts  
-tokenPrecision| integer| Decimal precision for byUSDT amounts  
+orderId| string| Order ID  
+orderLinkId| string| Order link ID  
   
-* * *
-
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/token/product?coin=BYUSDT HTTP/1.1  
+    POST /v5/earn/place-order HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXXX  
-    X-BAPI-API-KEY: XXXXXXX  
-    X-BAPI-TIMESTAMP: 1775179312802  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1739936605822  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+    Content-Length: 190  
+      
+    {  
+        "category": "FlexibleSaving",  
+        "orderType": "Redeem",  
+        "accountType": "FUND",  
+        "amount": "0.35",  
+        "coin": "BTC",  
+        "productId": "430",  
+        "orderLinkId": "btc-earn-001"  
+    }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.stake_or_redeem(  
+        category="FlexibleSaving",  
+        orderType="Redeem",  
+        accountType="FUND",  
+        amount="0.35",  
+        coin="BTC",  
+        productId="430",  
+        orderLinkId="btc-earn-001"  
+    ))  
+    
+    
+    
+      
     
 
 ### Response Example
@@ -57,70 +109,110 @@ tokenPrecision| integer| Decimal precision for byUSDT amounts
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "productId": "1",  
-            "coin": "BYUSDT",  
-            "mintFeeRateE8": "0",  
-            "redeemFeeRateE8": "100000",  
-            "minInvestment": "1",  
-            "userHolding": "588",  
-            "leftQuota": "999412",  
-            "canMint": true,  
-            "savingsBalance": "1412",  
-            "aprE8": "60000000",  
-            "bonusAprE8": "0",  
-            "bonusMaxAmount": "",  
-            "baseCoinPrecision": 4,  
-            "tokenPrecision": 4  
+            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
+            "orderLinkId": "btc-earn-001"  
         },  
         "retExtInfo": {},  
-        "time": 1775179313444  
+        "time": 1739936607117  
     }
 
 ---
 
-# 查詢產品資訊
+# 質押/贖回
+
+信息
+
+API key需要"理財""權限, 三方託管帳戶暫不支援
+
+備註
+
+在極端情況下，當相應代幣的市場需求極高，本金贖回可能會出現延遲，預計需要 48 小時處理完畢。鏈上賺幣產品的贖回可能需要幾天的時間才能完成。一旦發動贖回請求，不能被取消。
 
 ### HTTP 請求
 
-GET`/v5/earn/token/product`
+POST`/v5/earn/place-order`
 
 ### 請求參數
 
-參數| 必填| 類型| 說明  
+參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| **true**|  string| 代幣幣種。目前僅支援 `BYUSDT`  
+category| **true**|  string| `FlexibleSaving`,`OnChain`   
+**備註** : 本期僅支持活期理財和鏈上賺幣  
+orderType| **true**|  string| 訂單類型 `Stake`, `Redeem`  
+accountType| **true**|  string| 選擇帳戶類型 `FUND`, `UNIFIED`. OnChain 只支持FUND  
+amount| **true**|  string| 
+
+  * 質押數量需要滿足最小/最大質押額
+  * 質押和贖回需要滿足幣種精度要求
+
+  
+coin| **true**|  string| 幣種名稱  
+productId| **true**|  string| 產品ID  
+orderLinkId| **true**|  string| 自定義訂單號, 同時用於冪等校驗
+
+  * 支持最長36位字符
+  * 30分鐘內無法使用相同的orderLinkId
+
+  
+redeemPositionId| false| string| 用戶需要贖回的持倉ID：只有非LST 產品需要在贖回時傳  
+toAccountType| false| string| `FUND`, `UNIFIED`. 鏈上賺幣LST模式支持`FUND`和`UNIFIED`（私人理財託管子帳戶僅支持`UNIFIED`）. 鏈上賺幣非LST模式僅支持`FUND`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-productId| string| 產品 ID  
-coin| string| 代幣幣種  
-mintFeeRateE8| string| 鑄造手續費率（e8 精度，例如 `5000000` = 0.05%）  
-redeemFeeRateE8| string| 贖回手續費率（e8 精度）  
-minInvestment| string| 最低投資金額（以 USDT 計）  
-userHolding| string| 用戶當前 byUSDT 持倉量。未身份驗證時返回 `""`  
-leftQuota| string| 剩餘可鑄造額度。未身份驗證時返回 `""`  
-canMint| boolean| 當前是否可進行鑄造。未身份驗證時返回 `false`  
-savingsBalance| string| 用戶活期理財帳戶的 USDT 餘額（可用於鑄造）。未身份驗證時返回 `""`  
-aprE8| string| 基礎年化利率（e8 精度）。除以 10^8 可得實際利率  
-bonusAprE8| string| 加成年化利率（e8 精度，符合條件的用戶才返回）。除以 10^8 可得實際利率  
-bonusMaxAmount| string| 可享受加成年化利率的最大本金上限。超出部分僅享受基礎年化利率  
-baseCoinPrecision| integer| USDT 金額的小數精度  
-tokenPrecision| integer| byUSDT 金額的小數精度  
+orderId| string| Order ID  
+orderLinkId| string| Order link ID  
   
-* * *
-
 ### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/token/product?coin=BYUSDT HTTP/1.1  
+    POST /v5/earn/place-order HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXXX  
-    X-BAPI-API-KEY: XXXXXXX  
-    X-BAPI-TIMESTAMP: 1775179312802  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1739936605822  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+    Content-Length: 190  
+      
+    {  
+        "category": "FlexibleSaving",  
+        "orderType": "Redeem",  
+        "accountType": "FUND",  
+        "amount": "0.35",  
+        "coin": "BTC",  
+        "productId": "430",  
+        "orderLinkId": "btc-earn-001"  
+    }  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.stake_or_redeem(  
+        category="FlexibleSaving",  
+        orderType="Redeem",  
+        accountType="FUND",  
+        amount="0.35",  
+        coin="BTC",  
+        productId="430",  
+        orderLinkId="btc-earn-001"  
+    ))  
+    
+    
+    
+      
     
 
 ### 響應示例
@@ -130,21 +222,9 @@ tokenPrecision| integer| byUSDT 金額的小數精度
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "productId": "1",  
-            "coin": "BYUSDT",  
-            "mintFeeRateE8": "0",  
-            "redeemFeeRateE8": "100000",  
-            "minInvestment": "1",  
-            "userHolding": "588",  
-            "leftQuota": "999412",  
-            "canMint": true,  
-            "savingsBalance": "1412",  
-            "aprE8": "60000000",  
-            "bonusAprE8": "0",  
-            "bonusMaxAmount": "",  
-            "baseCoinPrecision": 4,  
-            "tokenPrecision": 4  
+            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
+            "orderLinkId": "btc-earn-001"  
         },  
         "retExtInfo": {},  
-        "time": 1775179313444  
+        "time": 1739936607117  
     }

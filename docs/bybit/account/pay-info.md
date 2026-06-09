@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/pay-info
 api_type: Account
-updated_at: 2026-06-08 19:15:18.335460
+updated_at: 2026-06-09 19:10:10.378667
 ---
 
 # Get Pay Info

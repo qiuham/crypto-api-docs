@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-spot-hedge
 api_type: Account
-updated_at: 2026-06-08 19:15:28.842422
+updated_at: 2026-06-09 19:10:21.015574
 ---
 
 # Get SMP Group ID

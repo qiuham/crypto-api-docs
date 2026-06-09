@@ -2,56 +2,54 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/manage-order
 api_type: REST
-updated_at: 2026-06-08 19:18:59.799848
+updated_at: 2026-06-09 19:13:56.678139
 ---
 
-# Manage Order
+# Get Subscribable Product Info
+
+info
+
+Does not need authentication.
 
 ### HTTP Request
 
-POST`/v5/earn/pwm/asset-manager/manage-order`
+GET`/v5/earn/pwm/customize-plan/product`
 
 ### Request Parameters
 
-Parameter| Required| Type| Comments  
----|---|---|---  
-orderId| **true**|  string| Order ID. Must be in `Pending Review` status  
-action| **true**|  string| Action to perform: `approve` / `reject`  
-reqLinkId| **true**|  string| User-defined request ID, max 36 characters, used for idempotency  
-  
+None
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Order ID  
-fundId| string| Fund ID  
-accountUid| string| Fund main account UID  
-orderStatus| string| Current order status: `PendingReview` / `Pass` / `Rejected` / `Processing` / `Success` / `Failed`. After approval or rejection, the execution status can be queried using the same `reqLinkId`  
-orderType| string| Order type: `Subscribe` / `Redeem`  
-action| string| Action performed: `approve` / `reject`  
-coin| string| Coin  
-amount| string| Order amount (base coin). Subscription orders only; empty for redemption orders  
-shares| string| Order shares. Redemption orders only; empty for subscription orders  
-updatedTime| string| Order update timestamp (milliseconds)  
+products| array| Product card list grouped by category  
+> type| string| Product category: `equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
+> cards| array| Product card list for this category  
+>> category| string| Product type  
+>> productId| string| Underlying product ID (available for flexible savings / fixed yield / on-chain earn products)  
+>> fundName| string| Fund name in English (fund products)  
+>> coin| string| Product coin  
+>> apr| string| Current annualized return rate (flexible savings / fixed yield products)  
+>> aprRangeLow| string| APR lower bound (fund products)  
+>> aprRangeHigh| string| APR upper bound (fund products)  
+>> tags| array[string]| Product tags  
+>> introduction| string| Product introduction in English (fund products)  
+>> aum| string| Assets under management (base coin)  
+>> minInvestmentAmount| string| Minimum subscription amount  
+>> maxInvestmentAmount| string| Maximum subscription amount  
+>> duration| int| Lock-up period in days. `0` means flexible (fixed yield products)  
+>> maxDrawdown| string| Historical maximum drawdown (fund products)  
+>> sharpRatio| string| Sharpe ratio (fund products)  
+>> estAPR| string| Estimated APR for the product  
   
 * * *
 
 ### Request Example
     
     
-    POST /v5/earn/pwm/asset-manager/manage-order HTTP/1.1  
+    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
     Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "orderId": "500002",  
-        "action": "approve",  
-        "reqLinkId": "manage-order-001"  
-    }  
     
 
 ### Response Example
@@ -59,70 +57,94 @@ updatedTime| string| Order update timestamp (milliseconds)
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
         "result": {  
-            "orderId": "500002",  
-            "fundId": "100001",  
-            "accountUid": "800001",  
-            "orderStatus": "PendingReview",  
-            "orderType": "Subscribe",  
-            "action": "Approve",  
-            "coin": "BTC",  
-            "amount": "10.00000000",  
-            "shares": "",  
-            "updatedTime": "1700100000000"  
+            "products": [  
+                {  
+                    "type": "equityFund",  
+                    "cards": [  
+                        {  
+                            "category": "equityFund",  
+                            "fundName": "Market Neutral Alpha",  
+                            "coin": "USDT",  
+                            "aprRangeLow": "0.08",  
+                            "aprRangeHigh": "0.15",  
+                            "tags": ["Delta Neutral"],  
+                            "introduction": "A market-neutral strategy fund",  
+                            "aum": "5000000",  
+                            "minInvestmentAmount": "100000",  
+                            "maxInvestmentAmount": "5000000",  
+                            "maxDrawdown": "-0.035",  
+                            "sharpRatio": "2.3",  
+                            "estAPR": "0.06"  
+                        }  
+                    ]  
+                },  
+                {  
+                    "type": "multiCoinEarning",  
+                    "cards": [  
+                        {  
+                            "category": "flexibleSavings",  
+                            "productId": "430",  
+                            "coin": "USDT",  
+                            "apr": "0.05",  
+                            "duration": 0,  
+                            "minInvestmentAmount": "10000",  
+                            "maxInvestmentAmount": "10000000",  
+                            "estAPR": "0.02"  
+                        }  
+                    ]  
+                }  
+            ]  
         }  
     }
 
 ---
 
-# 處理申購/贖回訂單
+# 查詢可申購產品卡片（直客模式）
+
+信息
+
+無需身份驗證。
 
 ### HTTP 請求
 
-POST`/v5/earn/pwm/asset-manager/manage-order`
+GET`/v5/earn/pwm/customize-plan/product`
 
 ### 請求參數
 
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-orderId| **true**|  string| 訂單ID，須為 `Pending Review` 狀態  
-action| **true**|  string| 處理動作：`approve`（批准）/ `reject`（拒絕）  
-reqLinkId| **true**|  string| 用戶自定義請求ID，最長36字符，用於冪等  
-  
+無
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 訂單ID  
-fundId| string| 基金ID  
-accountUid| string| 基金主賬戶UID  
-orderStatus| string| 當前訂單狀態：`PendingReview`（待審核）/ `Pass`（審核通過）/ `Rejected`（審核拒絕）/ `Processing`（處理中）/ `Success`（成功）/ `Failed`（失敗）。審批通過或拒絕後可以通過同一個 `reqLinkId` 查詢當前訂單的執行狀態  
-orderType| string| 訂單類型：`Subscribe`（申購）/ `Redeem`（贖回）  
-action| string| 執行的處理動作：`approve` / `reject`  
-coin| string| 幣種  
-amount| string| 訂單金額（本位幣），僅申購訂單有值，贖回訂單為空  
-shares| string| 訂單份額，僅贖回訂單有值，申購訂單為空  
-updatedTime| string| 訂單更新時間戳（毫秒）  
+products| array| 按產品類別分組的卡片列表  
+> type| string| 產品類別：`equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
+> cards| array| 該類別下的產品卡片列表  
+>> category| string| 產品類型  
+>> productId| string| 對應的底層產品ID（活期 / 固收 / 鏈上賺幣產品有此字段）  
+>> fundName| string| 基金名稱英文（基金產品）  
+>> coin| string| 產品幣種  
+>> apr| string| 當前年化收益率（活期 / 固收產品）  
+>> aprRangeLow| string| 年化收益率下界（基金產品）  
+>> aprRangeHigh| string| 年化收益率上界（基金產品）  
+>> tags| array[string]| 產品標籤  
+>> introduction| string| 產品簡介英文（基金產品）  
+>> aum| string| 基金管理規模（本位幣）  
+>> minInvestmentAmount| string| 最小申購金額  
+>> maxInvestmentAmount| string| 最大申購金額  
+>> duration| int| 鎖定期天數，`0` 表示活期（固收產品）  
+>> maxDrawdown| string| 歷史最大回撤（基金產品）  
+>> sharpRatio| string| 夏普比率（基金產品）  
+>> estAPR| string| 產品預估APR  
   
 * * *
 
 ### 請求示例
     
     
-    POST /v5/earn/pwm/asset-manager/manage-order HTTP/1.1  
+    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
     Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "orderId": "500002",  
-        "action": "approve",  
-        "reqLinkId": "manage-order-001"  
-    }  
     
 
 ### 響應示例
@@ -130,17 +152,43 @@ updatedTime| string| 訂單更新時間戳（毫秒）
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
         "result": {  
-            "orderId": "500002",  
-            "fundId": "100001",  
-            "accountUid": "800001",  
-            "orderStatus": "PendingReview",  
-            "orderType": "Subscribe",  
-            "action": "Approve",  
-            "coin": "BTC",  
-            "amount": "10.00000000",  
-            "shares": "",  
-            "updatedTime": "1700100000000"  
+            "products": [  
+                {  
+                    "type": "equityFund",  
+                    "cards": [  
+                        {  
+                            "category": "equityFund",  
+                            "fundName": "Market Neutral Alpha",  
+                            "coin": "USDT",  
+                            "aprRangeLow": "0.08",  
+                            "aprRangeHigh": "0.15",  
+                            "tags": ["Delta Neutral"],  
+                            "introduction": "A market-neutral strategy fund",  
+                            "aum": "5000000",  
+                            "minInvestmentAmount": "100000",  
+                            "maxInvestmentAmount": "5000000",  
+                            "maxDrawdown": "-0.035",  
+                            "sharpRatio": "2.3",  
+                            "estAPR": "0.06"  
+                        }  
+                    ]  
+                },  
+                {  
+                    "type": "multiCoinEarning",  
+                    "cards": [  
+                        {  
+                            "category": "flexibleSavings",  
+                            "productId": "430",  
+                            "coin": "USDT",  
+                            "apr": "0.05",  
+                            "duration": 0,  
+                            "minInvestmentAmount": "10000",  
+                            "maxInvestmentAmount": "10000000",  
+                            "estAPR": "0.02"  
+                        }  
+                    ]  
+                }  
+            ]  
         }  
     }

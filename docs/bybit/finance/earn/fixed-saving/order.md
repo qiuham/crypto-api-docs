@@ -2,70 +2,64 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/fixed-saving/order
 api_type: REST
-updated_at: 2026-06-08 19:18:42.370038
+updated_at: 2026-06-09 19:13:39.643830
 ---
 
-# Get Order List
-
-API ker permission: `Earn`  
-API rate limit: 10 reqs / sec
+# Get Product Info
 
 info
 
-  * Pass `orderId` alone to retrieve a single order. Omit to query the full order list with optional filters.
-  * For `Stake` orders, `startTime`/`endTime` filters on order creation time. For `Redeem` orders, filters are applied on settlement time.
-  * When `productId` is passed, `category` is required.
-
-
+Does not need authentication. **Up to 50 requests** per second per IP .
 
 ### HTTP Request
 
-GET`/v5/earn/fixed-term/order`
+GET`/v5/earn/fixed-term/product`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderType| false| string| Filter by order type: `Stake`, `Redeem`, `Reinvest`. Returns all types if omitted  
-productId| false| string| Filter by product ID. Requires `category` when passed  
-category| false| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`. Required when `productId` is passed  
-orderId| false| string| System order ID for single order lookup  
-startTime| false| integer| Start timestamp in ms  
-endTime| false| integer| End timestamp in ms  
-limit| false| integer| Number of items per page. Default: `20`, Max: `50`  
-cursor| false| string| Pagination cursor. Use `nextPageCursor` from the previous response  
+coin| false| string| Filter by coin, e.g. `BTC`, `ETH`. Returns all coins if omitted  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Order list  
-> orderId| string| System-generated order ID  
-> orderLinkId| string| User-customised idempotent ID  
-> orderType| string| Order type: `Stake`, `Redeem`, `Reinvest`  
-> status| string| Order status: `Processing`, `Active`, `Complete`, `Failed`  
+list| array| Product list  
 > productId| string| Product ID  
 > category| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
-> coin| string| Coin  
-> amount| string| Order amount  
+> coin| string| Staking coin  
 > duration| string| Fixed term duration, e.g. `1d`, `8h`, `2m`  
-> accountType| string| Account type: `FUND`, `UNIFIED`. Redeem orders always show `FUND`  
-> settlementTime| string| Settlement time, unix timestamp in ms  
-> createdAt| string| Order creation time, unix timestamp in ms  
-> yieldInfoList| array| Yield info list. Populated after settlement  
->> coin| string| Yield coin  
->> amount| string| Yield amount  
->> status| string| Yield status: `Pending`, `Distributed`, `Fail`, `ReinvestSuccess`  
->> createdAt| string| Yield record creation time, unix timestamp in ms  
->> apy| string| APY applied for this yield  
-nextPageCursor| string| Cursor for the next page. Empty string means no more data  
+> status| string| Product status: `Available`, `SoldOut`, `NotStarted`  
+> tieredApyList| array| Tiered APY list (if applicable)  
+>> min| string| Minimum amount for this tier  
+>> max| string| Maximum amount for this tier. `"-1"` means no upper limit  
+>> apy| string| APY for this tier  
+> minStakeAmount| string| Minimum staking amount  
+> maxStakeAmount| string| Maximum staking amount  
+> precision| integer| Coin trading precision  
+> subscribeStartAt| string| Subscription start time, unix timestamp in ms  
+> subscribeEndAt| string| Subscription end time, unix timestamp in ms  
+> allowEarlyRedemption| boolean| Whether early redemption is supported  
+> earlyRedemptionApy| string| Discounted APY applied on early redemption  
+> redemptionLimitDuration| string| Minimum hold time before early redemption is allowed, e.g. `1d`, `8h`, `2m`  
+> allowAutoReinvest| boolean| Whether auto-reinvest is supported  
+> interestCoinApyList| array| Multi-coin reward APY list  
+>> coin| string| Reward coin  
+>> apy| string| Reward APY  
+>> expectUnitEarning| string| Expected reward per unit invested (influenced by spot price of reward coin)  
+>> currentPrice| string| Current price of the reward coin  
+> isVip| boolean| Whether this is a VIP-only product  
+> creditTime| string| Estimated time for earnings to be credited, unix timestamp in ms  
+> specialUserGroupRequired| boolean| Whether purchase is restricted to a specific user group  
+> specialUserGroupInfo| string| Description of the restricted user group  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
+    GET /v5/earn/fixed-term/product?coin=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -82,98 +76,155 @@ nextPageCursor| string| Cursor for the next page. Empty string means no more dat
         "result": {  
             "list": [  
                 {  
-                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
-                    "orderLinkId": "",  
-                    "orderType": "Redeem",  
-                    "status": "Complete",  
-                    "productId": "546",  
+                    "productId": "427",  
                     "category": "FixedTermSaving",  
                     "coin": "USDT",  
-                    "amount": "100.056",  
-                    "duration": "1d",  
-                    "accountType": "UNIFIED",  
-                    "settlementTime": "1750811400000",  
-                    "createdAt": "1750648976000",  
-                    "yieldInfoList": [  
+                    "duration": "30d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "50",  
+                    "maxStakeAmount": "10000",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1686704400000",  
+                    "subscribeEndAt": "1909094399000",  
+                    "allowEarlyRedemption": false,  
+                    "earlyRedemptionApy": "",  
+                    "redemptionLimitDuration": "",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
                         {  
                             "coin": "USDT",  
-                            "amount": "0.0063",  
-                            "status": "Distributed",  
-                            "createdAt": "1750811401000",  
-                            "apy": "2.33%"  
+                            "apy": "2.50%",  
+                            "expectUnitEarning": "0.002",  
+                            "currentPrice": "1.00"  
                         }  
-                    ]  
+                    ],  
+                    "isVip": false,  
+                    "creditTime": "1778718600000",  
+                    "specialUserGroupRequired": false,  
+                    "specialUserGroupInfo": ""  
+                },  
+                {  
+                    "productId": "27",  
+                    "category": "FundPool",  
+                    "coin": "USDT",  
+                    "duration": "3d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "100",  
+                    "maxStakeAmount": "10000",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1722448800000",  
+                    "subscribeEndAt": "0",  
+                    "allowEarlyRedemption": true,  
+                    "earlyRedemptionApy": "0.30%",  
+                    "redemptionLimitDuration": "1d",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "9.99%",  
+                            "expectUnitEarning": "0.0008",  
+                            "currentPrice": "1.00"  
+                        }  
+                    ],  
+                    "isVip": false,  
+                    "creditTime": "1776391500000",  
+                    "specialUserGroupRequired": true,  
+                    "specialUserGroupInfo": "Limited Offer"  
+                },  
+                {  
+                    "productId": "12",  
+                    "category": "FundPoolPremium",  
+                    "coin": "USDT",  
+                    "duration": "3d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "1",  
+                    "maxStakeAmount": "300",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1751500800000",  
+                    "subscribeEndAt": "0",  
+                    "allowEarlyRedemption": false,  
+                    "earlyRedemptionApy": "",  
+                    "redemptionLimitDuration": "",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "19.70%",  
+                            "expectUnitEarning": "0.0016",  
+                            "currentPrice": "1.00"  
+                        }  
+                    ],  
+                    "isVip": true,  
+                    "creditTime": "1776391200000",  
+                    "specialUserGroupRequired": false,  
+                    "specialUserGroupInfo": ""  
                 }  
-            ],  
-            "nextPageCursor": ""  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1776070828622  
+        "time": 1776067553433  
     }
 
 ---
 
-# 取得訂單列表
-
-API key權限：`Earn`  
-API 頻率限制：每秒10次
+# 查詢產品資訊
 
 信息
 
-  * 單獨傳入 `orderId` 可查詢單筆訂單；省略則搭配可選過濾條件查詢完整訂單列表。
-  * `Stake` 訂單的 `startTime`/`endTime` 按訂單創建時間過濾；`Redeem` 訂單則按結算時間過濾。
-  * 傳入 `productId` 時，`category` 為必填項。
-
-
+無需身份驗證。每個IP每秒最多 **50次** 請求。
 
 ### HTTP 請求
 
-GET`/v5/earn/fixed-term/order`
+GET`/v5/earn/fixed-term/product`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderType| false| string| 依訂單類型篩選：`Stake`、`Redeem`、`Reinvest`。若省略則返回所有類型  
-productId| false| string| 依產品ID篩選。傳入時需要 `category`  
-category| false| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`。傳入 `productId` 時必填  
-orderId| false| string| 系統訂單ID，用於單筆訂單查詢  
-startTime| false| integer| 開始時間戳（毫秒）  
-endTime| false| integer| 結束時間戳（毫秒）  
-limit| false| integer| 每頁數量。預設：`20`，最大：`50`  
-cursor| false| string| 分頁游標。使用上次響應中的 `nextPageCursor`  
+coin| false| string| 依幣種篩選，例如 `BTC`、`ETH`。若省略則返回所有幣種  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| 訂單列表  
-> orderId| string| 系統生成的訂單ID  
-> orderLinkId| string| 用戶自訂冪等ID  
-> orderType| string| 訂單類型：`Stake`、`Redeem`、`Reinvest`  
-> status| string| 訂單狀態：`Processing`、`Active`、`Complete`、`Failed`  
+list| array| 產品列表  
 > productId| string| 產品ID  
 > category| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
-> coin| string| 幣種  
-> amount| string| 訂單金額  
+> coin| string| 質押幣種  
 > duration| string| 固定期限，例如 `1d`、`8h`、`2m`  
-> accountType| string| 帳戶類型：`FUND`、`UNIFIED`。贖回訂單始終顯示 `FUND`  
-> settlementTime| string| 結算時間，毫秒級unix時間戳  
-> createdAt| string| 訂單創建時間，毫秒級unix時間戳  
-> yieldInfoList| array| 收益資訊列表，結算後填充  
->> coin| string| 收益幣種  
->> amount| string| 收益金額  
->> status| string| 收益狀態：`Pending`、`Distributed`、`Fail`、`ReinvestSuccess`  
->> createdAt| string| 收益記錄創建時間，毫秒級unix時間戳  
->> apy| string| 此收益適用的APY  
-nextPageCursor| string| 下一頁游標。空字符串表示無更多數據  
+> status| string| 產品狀態：`Available`、`SoldOut`、`NotStarted`  
+> tieredApyList| array| 分層APY列表（如適用）  
+>> min| string| 此層最低金額  
+>> max| string| 此層最高金額，`"-1"` 表示無上限  
+>> apy| string| 此層APY  
+> minStakeAmount| string| 最低質押金額  
+> maxStakeAmount| string| 最高質押金額  
+> precision| integer| 幣種交易精度  
+> subscribeStartAt| string| 訂閱開始時間，毫秒級unix時間戳  
+> subscribeEndAt| string| 訂閱結束時間，毫秒級unix時間戳  
+> allowEarlyRedemption| boolean| 是否支持提前贖回  
+> earlyRedemptionApy| string| 提前贖回時適用的折扣APY  
+> redemptionLimitDuration| string| 允許提前贖回前的最短持有時間，例如 `1d`、`8h`、`2m`  
+> allowAutoReinvest| boolean| 是否支持自動續投  
+> interestCoinApyList| array| 多幣種獎勵APY列表  
+>> coin| string| 獎勵幣種  
+>> apy| string| 獎勵APY  
+>> expectUnitEarning| string| 每單位投資預期獎勵（受獎勵幣種現貨價格影響）  
+>> currentPrice| string| 獎勵幣種當前價格  
+> isVip| boolean| 是否為VIP專屬產品  
+> creditTime| string| 預計收益到賬時間，毫秒級unix時間戳  
+> specialUserGroupRequired| boolean| 是否限制特定用戶群體購買  
+> specialUserGroupInfo| string| 限制用戶群體的描述  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/fixed-term/order?productId=546&category=FixedTermSaving HTTP/1.1  
+    GET /v5/earn/fixed-term/product?coin=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -190,31 +241,94 @@ nextPageCursor| string| 下一頁游標。空字符串表示無更多數據
         "result": {  
             "list": [  
                 {  
-                    "orderId": "6f2530d6-46b9-41f9-880a-4addbd152398",  
-                    "orderLinkId": "",  
-                    "orderType": "Redeem",  
-                    "status": "Complete",  
-                    "productId": "546",  
+                    "productId": "427",  
                     "category": "FixedTermSaving",  
                     "coin": "USDT",  
-                    "amount": "100.056",  
-                    "duration": "1d",  
-                    "accountType": "UNIFIED",  
-                    "settlementTime": "1750811400000",  
-                    "createdAt": "1750648976000",  
-                    "yieldInfoList": [  
+                    "duration": "30d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "50",  
+                    "maxStakeAmount": "10000",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1686704400000",  
+                    "subscribeEndAt": "1909094399000",  
+                    "allowEarlyRedemption": false,  
+                    "earlyRedemptionApy": "",  
+                    "redemptionLimitDuration": "",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
                         {  
                             "coin": "USDT",  
-                            "amount": "0.0063",  
-                            "status": "Distributed",  
-                            "createdAt": "1750811401000",  
-                            "apy": "2.33%"  
+                            "apy": "2.50%",  
+                            "expectUnitEarning": "0.002",  
+                            "currentPrice": "1.00"  
                         }  
-                    ]  
+                    ],  
+                    "isVip": false,  
+                    "creditTime": "1778718600000",  
+                    "specialUserGroupRequired": false,  
+                    "specialUserGroupInfo": ""  
+                },  
+                {  
+                    "productId": "27",  
+                    "category": "FundPool",  
+                    "coin": "USDT",  
+                    "duration": "3d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "100",  
+                    "maxStakeAmount": "10000",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1722448800000",  
+                    "subscribeEndAt": "0",  
+                    "allowEarlyRedemption": true,  
+                    "earlyRedemptionApy": "0.30%",  
+                    "redemptionLimitDuration": "1d",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "9.99%",  
+                            "expectUnitEarning": "0.0008",  
+                            "currentPrice": "1.00"  
+                        }  
+                    ],  
+                    "isVip": false,  
+                    "creditTime": "1776391500000",  
+                    "specialUserGroupRequired": true,  
+                    "specialUserGroupInfo": "Limited Offer"  
+                },  
+                {  
+                    "productId": "12",  
+                    "category": "FundPoolPremium",  
+                    "coin": "USDT",  
+                    "duration": "3d",  
+                    "status": "Available",  
+                    "tieredApyList": [],  
+                    "minStakeAmount": "1",  
+                    "maxStakeAmount": "300",  
+                    "precision": 4,  
+                    "subscribeStartAt": "1751500800000",  
+                    "subscribeEndAt": "0",  
+                    "allowEarlyRedemption": false,  
+                    "earlyRedemptionApy": "",  
+                    "redemptionLimitDuration": "",  
+                    "allowAutoReinvest": false,  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "19.70%",  
+                            "expectUnitEarning": "0.0016",  
+                            "currentPrice": "1.00"  
+                        }  
+                    ],  
+                    "isVip": true,  
+                    "creditTime": "1776391200000",  
+                    "specialUserGroupRequired": false,  
+                    "specialUserGroupInfo": ""  
                 }  
-            ],  
-            "nextPageCursor": ""  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1776070828622  
+        "time": 1776067553433  
     }

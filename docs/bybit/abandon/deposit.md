@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/deposit
 api_type: REST
-updated_at: 2026-06-08 19:14:54.009491
+updated_at: 2026-06-09 19:09:46.023982
 ---
 
 # Enable Universal Transfer for Sub UID

@@ -2,171 +2,971 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/private/fast-order
 api_type: REST
-updated_at: 2026-06-08 19:21:45.208081
+updated_at: 2026-06-09 19:16:40.593068
 ---
 
-# Self Match Prevention
+# SBE Basic Information
 
-## What is SMP?
+MMWS / Gateway only
 
-With the Self Match Prevention function users can choose the execution method when placing an order. When the counterparty is the same UID or belongs to the same specified SMP group, the execution can be effected accordingly:
+All SBE-based feeds are described in this section are available **only** via the **Market Maker WebSocket (MMWS) / Market Maker Gateway (GW)** infrastructure. For access and architecture details, see the official announcement: [Market Maker Gateway](https://announcements.bybit.com/en/article/introducing-the-market-maker-gateway-for-enhanced-api-connectivity-and-performance-bltfaba80a427cac5e5/)
 
-  1. Cancel maker: Cancel the maker order when executed; taker order remains.
-  2. Cancel taker: Cancel the taker order when executed; maker order remains.
-  3. Cancel both: Cancel both taker and maker orders when executed.
+This page gives a unified introduction to Bybit's **SBE-based market data** channels and how they fit into the MMWS/GW environment. Detailed, feature-specific behavior and code examples are provided in the sub-pages for:
 
-
-
-Once an order is placed in the orderbook, its smpType becomes invalid. This means that, for example, if you place a taker order without an smpType (`smpType=None`) that matches against your existing maker order set with `smpType=CancelMaker`, the taker will execute. This is because the maker order's `smpType=CancelMaker` became invalid once it placed in the orderbook.
-
-## How to set SMP?
-
-Check request params of [Place Order](/docs/v5/order/create-order). Specify parameter `smpType` when placing the order
-
-## What is SMP Trade Group?
-
-  * SMP is available for any user by UID level.
-  * SMP Trade Group Management is only available for institutions at present.
+  * **BBO SBE** (Level 1, with RPI fields)
+  * **Level-50 SBE** (50-level order book snapshots + deltas)
+  * **PublicTrade SBE** (Spot & Futures)
+  * **WS order entry SBE** (Spot & Futures & Options)
+  * **Fast Order Response SBE** (ultra-low-latency active order acknowledgements)
 
 
 
-**SMP Trade Group** : refers to a group of UIDs. When any of the UIDs in this group places an order and the SMP execution policy is selected, it will be triggered when the maker order under any of the UIDs in this group is matched.
+## SBE path
 
-**More details** :
-
-  1. Each UID can only join one SMP Trade Group.
-
-  2. SMP Trade Group is a UID-level management group, so when a main-account joins an SMP Trade Group, all the subaccounts under this main-account will automatically join the Trade Group as well.
-
-
-
-  * If the main-account has already joined an SMP Trade Group, and a subaccount is created after it, this new subaccount will automatically join the same SMP Trade Group by default.
-  * A subaccount does not have to be tied to the same SMP Trading Group as the main-account. It is only the default behaviour. It can be reset into different groups manually if needed.
-
-
-  3. The relationship between SMP Trade Group and UIDs can be changed: when a UID joins a new SMP Trade Group or is removed from an SMP Trade Group. This operation will not affect the pre-existing orders, it will only affect the newly placed orders after the relationship has changed.
+  * Spot market: `wss://{MMWS url}/v5/public-sbe/spot`
+  * USDT/USDC contracts market: `wss://{MMWS url}/v5/public-sbe/linear`
+  * Coin-margin contracts market: `wss://{MMWS url}/v5/public-sbe/inverse`
+  * WS order entry: `wss://{MMWS url}/v5/trade-sbe`
+  * Fast order response (private): `wss://{MMWS url}/v5/private-sbe`
 
 
 
-**Notes** : Based on this, we strongly suggest that when there will be an SMP Trade Group change, you should cancel all pre-existing orders to avoid an unexpected execution.
+## What is SBE?
 
-  4. The SMP Trade Group has a higher priority on SMP execution, so an individual UID is only taken into account when there is no SMP Trade Group on either side.
+Bybit uses **Simple Binary Encoding (SBE)** in accordance with the FIX/SBE 1.0 specification:
 
-  5. Once the order is standing in the orderbook, its SMP flag doesn't matter any more. The system always follows the tag on the latter order.
-
-
-
-
-**Examples** :  
-1st of Jan: UID1 joins SMP Trade Group A, and places Order1;  
-2nd of Jan: UID1 is removed from SMP Trade Group A, but Order1 is still active and "New"
-
-  * case1: If UID1 joined SMP Trade Group B, and placed Order2, if Order2 meets Order1, it will be executed since they belong to two different groups.
-  * case2: If UID1 did not join any other groups after being removed from SMP Trade Group A, and placed Order2, if Order2 meets Order1, the SMP will be triggered because UID1 did not have a group when it placed Order2, so SMP was triggered at the UID level (the same UID1).
+  * Binary, little-endian encoding
+  * Fixed-width fields where possible
+  * Explicit **message header** \+ **message body** layout
+  * High-efficiency decoding suitable for HFT and MM strategies
 
 
 
-## How to manage my UIDs & SMP Trade Group?
+Compared with JSON WebSocket feeds, SBE provides:
 
-You can contact your institutional business manager or email Bybit via: [institutional_services@bybit.com](mailto:institutional_services@bybit.com)
-
-## SMP across Bybit Global vs. Bybit compliant sites
-
-  * **Bybit Global:** Institutional clients can choose whether to enable SMP.
-  * **Bybit compliant sites:** SMP is **enabled by default for all users**.
-    * **Note:** Most compliant sites currently support **spot trading only**.
+  * Smaller payloads (up to ~30–50% reduction vs equivalent JSON data)
+  * Deterministic binary layouts
+  * Microsecond timestamp precision
+  * Lower CPU usage for both encoding and decoding
 
 
 
-**Rollout schedule** :  
+## SBE Connection Limit
+
+  * **Spot:** 1500 connections limit per dedicated MMWS host.
+  * **Futures (linear + inverse):** 3000 connections limit per dedicated MMWS host.
+  * Once you breach the connection limit, new connections return **HTTP 429**.
 
 
-The first site to go live will be **Bybit Turkey** , followed by:
 
-  * **Turkey:** 2026/01/27
-  * **Kazakhstan:** 2026/02/24
-  * **Georgia:** 2026/03/10
-  * **Other compliant sites (in development):** SMP will be enabled **immediately upon launch**.
+## Behavior Of PreLaunch Contracts
+
+  * There is no feed until `ContinuousTrading` stage for orderbook & publicTrade
+
+
+
+## Market SBE XML Template
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe" xmlns:mbx="https://bybit-exchange.github.io/docs/v5/intro" package="quote.sbe" id="1" version="0" semanticVersion="1.0.0" description="Bybit market data streams SBE message schema" byteOrder="littleEndian" headerType="messageHeader">  
+      <types>  
+        <composite name="messageHeader" description="Template ID and length of message root">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <composite name="varString8" description="Variable length UTF-8 string.">  
+          <type name="length" primitiveType="uint8"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+        <composite name="groupSize16Encoding" description="Repeating group dimensions.">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="numInGroup" primitiveType="uint16"/>  
+        </composite>  
+        <enum name="pkgTypeEnum" encodingType="uint8">  
+          <validValue name="SNAPSHOT">0</validValue>  
+          <validValue name="DELTA">1</validValue>  
+        </enum>  
+        <enum name="SideType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BUY">1</validValue>  
+          <validValue name="SELL">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+        <enum name="BoolEnum" encodingType="uint8">  
+          <validValue name="FALSE">0</validValue>  
+          <validValue name="TRUE">1</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+      </types>  
+      <!-- Stream event for "ob.rpi.1.sbe.<symbol>" channel -->  
+      <sbe:message name="BestOBRpiEvent" id="20000">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="seq" type="int64" description="Cross sequence ID"/>  
+        <field id="3" name="cts" type="int64" description="The timestamp in microseconds from the matching engine when this orderbook data is produced."/>  
+        <field id="4" name="u" type="int64" description="Update Id"/>  
+        <field id="5" name="askNormalPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best ask normal price"/>  
+        <field id="6" name="askNormalSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best ask normal size"/>  
+        <field id="7" name="askRpiPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best ask rpi price"/>  
+        <field id="8" name="askRpiSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best ask rpi size"/>  
+        <field id="9" name="bidNormalPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best bid normal price"/>  
+        <field id="10" name="bidNormalSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best bid normal size"/>  
+        <field id="11" name="bidRpiPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best bid rpi price"/>  
+        <field id="12" name="bidRpiSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best bid rpi size"/>  
+        <field id="13" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="14" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+      <!-- Stream event for "ob.50.sbe.<symbol>" channel -->  
+      <sbe:message name="OBL50Event" id="20001">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="seq" type="int64" description="Cross sequence ID"/>  
+        <field id="3" name="cts" type="int64" description="The timestamp in microseconds from the matching engine when this orderbook data is produced."/>  
+        <field id="4" name="u" type="int64" description="Update Id"/>  
+        <field id="5" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="6" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <field id="7" name="pkgType" type="pkgTypeEnum" description="Package type"/>  
+        <group id="40" name="asks" dimensionType="groupSize16Encoding" description="Sell side order book updates">  
+          <field id="1" name="price" type="int64" description="Price mantissa"/>  
+          <field id="2" name="size" type="int64" description="Size mantissa"/>  
+        </group>  
+        <group id="41" name="bids" dimensionType="groupSize16Encoding" description="Buy side order book updates">  
+          <field id="1" name="price" type="int64" description="Price mantissa"/>  
+          <field id="2" name="size" type="int64" description="Size mantissa"/>  
+        </group>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+      <!-- Stream event for "publicTrade.sbe.<symbol>" channel -->  
+      <sbe:message name="PublicTradeEvent" id="20002">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="3" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <group id="40" name="tradeItems" dimensionType="groupSize16Encoding" description="trade items">  
+          <field id="1" name="fillTime" type="int64" description="The timestamp in microseconds that the order is filled"/>  
+          <field id="2" name="price" type="int64" description="Price mantissa"/>  
+          <field id="3" name="size" type="int64" description="Size mantissa"/>  
+          <field id="4" name="seq" type="int64" description="Cross sequence ID"/>  
+          <field id="5" name="side" type="SideType" description="Side of taker"/>  
+          <field id="6" name="isBlockTrade" type="BoolEnum" description="Whether it is a block trade order or not"/>  
+          <field id="7" name="isRPI" type="BoolEnum" description="Whether it is a RPI trade or not"/>  
+          <data id="100" name="execId" type="varString8" description="Trade ID"/>  
+        </group>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+    </sbe:messageSchema>  
+    
+
+## WS Order Entry SBE XML Template
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe" package="order.trading.api.sbe" id="2" version="2" semanticVersion="1.0.0" description="Order Trading API SBE Schema" byteOrder="littleEndian">  
+      <types>  
+        <composite name="messageHeader" description="Standard message header">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <composite name="groupSize16Encoding" description="Repeating group dimensions.">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="numInGroup" primitiveType="uint16"/>  
+        </composite>  
+        <type name="String8" primitiveType="char" length="8"/>  
+        <type name="String16" primitiveType="char" length="16"/>  
+        <type name="String32" primitiveType="char" length="32"/>  
+        <type name="String64" primitiveType="char" length="64"/>  
+        <composite name="varString16" description="Variable length UTF-8 string">  
+          <type name="length" primitiveType="uint16"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+        <composite name="Decimal64" description="Decimal floating point number">  
+          <type name="exponent" primitiveType="int8"/>  
+          <type name="mantissa" primitiveType="int64"/>  
+        </composite>  
+        <enum name="CategoryType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="SPOT">1</validValue>  
+          <validValue name="LINEAR">2</validValue>  
+          <validValue name="INVERSE">3</validValue>  
+          <validValue name="OPTION">4</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="PositionIdxType" encodingType="uint8">  
+          <validValue name="ONE_WAY">0</validValue>  
+          <validValue name="HEDGE_BUY">1</validValue>  
+          <validValue name="HEDGE_SELL">2</validValue>  
+          <validValue name="UNKNOWN">253</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="OrderType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="MARKET">1</validValue>  
+          <validValue name="LIMIT">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="SideType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BUY">1</validValue>  
+          <validValue name="SELL">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="TimeInForceType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="GOOD_TILL_CANCEL">1</validValue>  
+          <validValue name="POST_ONLY">2</validValue>  
+          <validValue name="IMMEDIATE_OR_CANCEL">3</validValue>  
+          <validValue name="FILL_OR_KILL">4</validValue>  
+          <validValue name="RPI">5</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="SmpType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="CANCEL_TAKER">1</validValue>  
+          <validValue name="CANCEL_MAKER">2</validValue>  
+          <validValue name="CANCEL_BOTH">3</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="MarketUnitType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BASE_COIN">1</validValue>  
+          <validValue name="QUOTE_COIN">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="BoolEnum" encodingType="uint8">  
+          <validValue name="FALSE">0</validValue>  
+          <validValue name="TRUE">1</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+        <composite name="ApiRequestHeader" description="API Request header">  
+          <type name="reqId" primitiveType="char" length="64"/>  
+          <type name="timestamp" primitiveType="uint64"/>  
+          <type name="recvWindow" primitiveType="uint32"/>  
+          <type name="referer" primitiveType="char" length="64"/>  
+        </composite>  
+        <composite name="ApiRespHeader" description="Response header">  
+          <type name="reqId" primitiveType="char" length="64"/>  
+          <type name="connId" primitiveType="char" length="64"/>  
+          <type name="traceId" primitiveType="char" length="64"/>  
+          <type name="timeNow" primitiveType="int64"/>  
+          <type name="inTime" primitiveType="int64"/>  
+          <type name="bapiLimit" primitiveType="int64"/>  
+          <type name="bapiLimitStatus" primitiveType="int64"/>  
+          <type name="bapiLimitResetTimestamp" primitiveType="int64"/>  
+        </composite>  
+        <composite name="CommonOrderRespData" description="Common order response data">  
+          <type name="orderId" primitiveType="char" length="64"/>  
+          <type name="orderLinkId" primitiveType="char" length="64"/>  
+        </composite>  
+      </types>  
+      <message name="AuthReq" id="1" description="Authentication request">  
+        <field name="reqId" id="1" type="String64"/>  
+        <field name="apiKey" id="2" type="String64"/>  
+        <field name="expires" id="3" type="uint64"/>  
+        <field name="signature" id="4" type="String64"/>  
+      </message>  
+      <message name="AuthResp" id="2" description="Authentication response">  
+        <field name="reqId" id="1" type="String64"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="connId" id="3" type="String64"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="PingReq" id="3" description="Ping request">  
+        <field name="timestamp" id="1" type="uint64"/>  
+      </message>  
+      <message name="PongResp" id="4" description="Pong response">  
+        <field name="timestamp" id="1" type="uint64"/>  
+        <field name="pongTime" id="2" type="uint64"/>  
+      </message>  
+      <message name="CreateOrderReqV5" id="5" description="Create order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="side" id="4" type="SideType"/>  
+        <field name="orderType" id="5" type="OrderType"/>  
+        <field name="qty" id="6" type="Decimal64"/>  
+        <field name="price" id="7" type="Decimal64"/>  
+        <field name="orderLinkId" id="8" type="String64"/>  
+        <field name="timeInForce" id="9" type="TimeInForceType"/>  
+        <field name="positionIdx" id="10" type="PositionIdxType"/>  
+        <field name="marketUnit" id="11" type="MarketUnitType"/>  
+        <field name="isLeverage" id="12" type="BoolEnum"/>  
+        <field name="reduceOnly" id="13" type="BoolEnum"/>  
+        <field name="closeOnTrigger" id="14" type="BoolEnum"/>  
+        <field name="mmp" id="15" type="BoolEnum"/>  
+        <field name="smpType" id="16" type="SmpType"/>  
+        <field name="rpiTakerAccess" id="17" type="BoolEnum" sinceVersion="2"/>  
+      </message>  
+      <message name="CreateOrderRespV5" id="6" description="Create order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="ReplaceOrderReqV5" id="7" description="Replace order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="orderId" id="4" type="String64"/>  
+        <field name="orderLinkId" id="5" type="String64"/>  
+        <field name="qty" id="6" type="Decimal64"/>  
+        <field name="price" id="7" type="Decimal64"/>  
+      </message>  
+      <message name="ReplaceOrderRespV5" id="8" description="Replace order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="CancelOrderReqV5" id="9" description="Cancel order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="orderId" id="4" type="String64"/>  
+        <field name="orderLinkId" id="5" type="String64"/>  
+      </message>  
+      <message name="CancelOrderRespV5" id="10" description="Cancel order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="BatchCreateOrderReqV5" id="11" description="Batch create order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="side" id="2" type="SideType"/>  
+          <field name="orderType" id="3" type="OrderType"/>  
+          <field name="qty" id="4" type="Decimal64"/>  
+          <field name="price" id="5" type="Decimal64"/>  
+          <field name="orderLinkId" id="6" type="String64"/>  
+          <field name="timeInForce" id="7" type="TimeInForceType"/>  
+          <field name="positionIdx" id="8" type="PositionIdxType"/>  
+          <field name="marketUnit" id="9" type="MarketUnitType"/>  
+          <field name="isLeverage" id="10" type="BoolEnum"/>  
+          <field name="reduceOnly" id="11" type="BoolEnum"/>  
+          <field name="closeOnTrigger" id="12" type="BoolEnum"/>  
+          <field name="mmp" id="13" type="BoolEnum"/>  
+          <field name="smpType" id="14" type="SmpType"/>  
+        </group>  
+      </message>  
+      <message name="BatchCreateOrderRespV5" id="12" description="Batch create order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="BatchReplaceOrderReqV5" id="13" description="Batch replace order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="orderId" id="2" type="String64"/>  
+          <field name="orderLinkId" id="3" type="String64"/>  
+          <field name="qty" id="4" type="Decimal64"/>  
+          <field name="price" id="5" type="Decimal64"/>  
+        </group>  
+      </message>  
+      <message name="BatchReplaceOrderRespV5" id="14" description="Batch replace order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="BatchCancelOrderReqV5" id="15" description="Batch cancel order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="orderId" id="2" type="String64"/>  
+          <field name="orderLinkId" id="3" type="String64"/>  
+        </group>  
+      </message>  
+      <message name="BatchCancelOrderRespV5" id="16" description="Batch cancel order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="CommonErrResp" id="17" description="Common error response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+    </sbe:messageSchema>  
+    
+
+## Fast Order Response SBE XML Template
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"  
+                       xmlns:mbx="https://bybit-exchange.github.io/docs/v5/intro"  
+                       package="order.fast.sbe"  
+                       id="1"  
+                       version="0"  
+                       semanticVersion="1.0.0"  
+                       description="Bybit fast order response SBE schema"  
+                       byteOrder="littleEndian"  
+                       headerType="messageHeader">  
+      <types>  
+        <composite name="messageHeader" description="Template ID and length of message root">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <composite name="varString8" description="Variable length UTF-8 string">  
+          <type name="length" primitiveType="uint8"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+      </types>  
+      <!-- Fast order response: active place/cancel/amend acknowledgements -->  
+      <sbe:message name="FastOrderResp" id="21000">  
+        <!-- Routing / classification -->  
+        <field id="1" name="category" type="uint8" description="1=spot, 2=linear, 3=inverse, 4=option"/>  
+        <!-- Side / status / rejection -->  
+        <field id="2" name="side" type="uint8" description="1=Buy, 2=Sell"/>  
+        <field id="3" name="orderStatus" type="uint8" description="Order state enum"/>  
+        <!-- Price / size (mantissas) with exponents -->  
+        <field id="4" name="priceExponent" type="int8" description="Decimal places for price"/>  
+        <field id="5" name="sizeExponent" type="int8" description="Decimal places for size"/>  
+        <field id="6" name="valueExponent" type="int8" description="Decimal places for value"/>  
+        <field id="7" name="rejectReason" type="uint16" description="0 if N/A"/>  
+        <field id="8" name="price" type="int64" mbx:exponent="priceExponent" description="Price mantissa"/>  
+        <field id="9" name="leavesQty" type="int64" mbx:exponent="sizeExponent" description="Remaining quantity mantissa"/>  
+        <field id="10" name="leavesValue" type="int64" mbx:exponent="valueExponent" description="Spot market buy only; otherwise 0"/>  
+        <!-- Timing -->  
+        <field id="11" name="creationTime" type="int64" description="Order creation timestamp in Fast order channel(microseconds)"/>  
+        <field id="12" name="updatedTime" type="int64" description="Matching timestamp (microseconds)"/>  
+        <field id="13" name="seq" type="int64" description="Cross sequence ID"/>  
+        <!-- SymbolID -->  
+        <field id="14" name="symbolID" type="int32" description="Symbol ID"/>  
+        <!-- Order identifiers -->  
+        <data id="100" name="orderId" type="varString8" description="Order ID"/>  
+        <data id="101" name="orderLinkId" type="varString8" description="Optional; present for user-initiated orders"/>  
+      </sbe:message>  
+    </sbe:messageSchema>
 
 ---
 
-# 自成交攔截
+# SBE 基本信息
 
-## 什麼是自成交？
+僅限 MMWS / Gateway
 
-提供自成交攔截(Self Match Prevention)功能，用戶在下單時可以選擇執行方式。當交易對手為相同的UID或屬於相同指定的SMP群組時，可按照以下方式進行執行：
+本節中所描述的所有基於 SBE 的行情資料頻道，只能透過 **Market Maker WebSocket (MMWS) / Market Maker Gateway (GW)** 基礎設施使用。
 
-  1. 取消maker單：當執行時取消maker訂單，但taker訂單仍保留。
-  2. 取消taker單：當執行時取消taker訂單，但maker訂單仍保留。
-  3. 兩者皆取消：當執行時取消taker單和maker單。
+如需接入方式與架構細節，請參考官方公告: [做市商網關](https://announcements.bybit.com/en/article/introducing-the-market-maker-gateway-for-enhanced-api-connectivity-and-performance-bltfaba80a427cac5e5/)
 
+本頁提供 Bybit **基於 SBE 的市場數據** 通道在 MMWS/GW 環境中的統一介紹。關於各功能的詳細行為與程式碼範例，請參考以下子頁面:
 
-
-## 如何設置自成交類型?
-
-[創建訂單](/docs/zh-TW/v5/order/create-order)接口, 可以通過`smpType`參數來設定smp類型
-
-## 什麼是SMP交易群組?
-
-  * 任何用戶都可使用SMP功能，僅單UID維度。
-  * SMP交易群組管理功能目前僅適用於機構。
+  * **BBO SBE** (Level 1, 含 RPI 欄位)
+  * **Level-50 SBE** (50 檔深度訂單簿快照 + 增量更新)
+  * **PublicTrade SBE** (現貨 & 合約)
+  * **WS下單 SBE** (現貨 & 合約 & 期權)
+  * **Fast Order Response SBE** (超低延遲主動訂單回執)
 
 
 
-**SMP交易群組** ：指一組UID。當此群組中的任何UID下單並選擇SMP執行政策時，只要該群組中任何UID的限價單被匹配，就會觸發SMP執行政策。
+## SBE 服務路徑
 
-**更多細節** ：
-
-  1. 每個UID只能加入一個SMP交易群組。
-
-  2. SMP交易群組是UID級別的管理群組，因此當主帳戶加入SMP交易群組時，所有屬於該主帳戶的子帳戶也會自動加入該交易群組。
-
-
-
-  * 如果主帳戶已經加入某個SMP交易群組，則在其之後創建子帳戶，這個新的子帳戶將自動默認加入相同的SMP交易群組。
-  * 子帳戶不必與主帳戶綁定到相同的SMP交易群組。這只是自動加入相同群組的默認機制。如果真的需要，可以手動重置為不同的群組。
-
-
-  3. SMP交易群組和UID之間的關聯可以更改，例如UID加入新的SMP交易群組或從SMP交易群組中刪除，這將不會影響現有的訂單，而僅會影響關係更改後新下的訂單
+  * 現貨行情: `wss://{MMWS url}/v5/public-sbe/spot`
+  * USDT/USDC合約行情: `wss://{MMWS url}/v5/public-sbe/linear`
+  * 幣本位合約行情: `wss://{MMWS url}/v5/public-sbe/inverse`
+  * WS下單: `wss://{MMWS url}/v5/trade-sbe`
+  * Fast Order Response（私有）: `wss://{MMWS url}/v5/private-sbe`
 
 
 
-**注意** : 基於這點，我們強烈建議在SMP交易群組發生變更時，最好取消所有現有訂單，以避免意外執行。
+## 什麼是 SBE?
 
-  4. SMP交易群組在SMP執行中具有較高優先級，當任何一方沒有群組時，UID才會生效。
+Bybit 採用符合 FIX/SBE 1.0 規範的 **Simple Binary Encoding (SBE)** :
 
-  5. 一旦訂單進入訂單簿，其 smp 標誌就不再重要。系統始終遵循後一個訂單的smp標籤。
-
-
-
-
-**示例** ：  
-1月1日：UID1加入SMP交易群組A，並下訂單1；  
-1月2日：UID1被從SMP交易群組A中移除，但訂單1仍然處於活躍狀態且為“新”狀態。
-
-  * 情況1：如果UID1加入了SMP交易群組B並下了訂單2，如果訂單2與訂單1相符，它將被執行，因為它們屬於兩個不同的群組。
-  * 情況2：如果UID1在被從SMP交易群組A中移除後沒有加入任何其他群組並下了訂單2，如果訂單2與訂單1相符，SMP將被觸發，因為UID1在下訂單2時沒有群組，所以SMP在UID級別（同一個UID1）被觸發。
+  * 二進位資料, little-endian 編碼
+  * 儘可能使用固定長度欄位
+  * 明確區分 **訊息標頭 (message header)** 與 **訊息主體 (message body)** 佈局
+  * 高效率解碼, 適用於高頻交易 (HFT) 與做市策略
 
 
 
-## 如何管理我的UID及SMP交易群組?
+與 JSON WebSocket 行情相比, SBE 具備以下優點:
 
-您可以聯繫您的機構業務經理或通過電子郵件聯繫Bybit，電子郵件地址為: [institutional_services@bybit.com](mailto:institutional_services@bybit.com)
-
-## Bybit Global 與 Bybit 合規站點之間的 SMP
-
-  * **Bybit Global:** 機構客戶可自行選擇是否啟用 SMP
-  * **Bybit 合規站點:** SMP 將 **預設為所有用戶啟用**
-    * **注意:** 多數合規站點目前僅支援 **現貨交易**
+  * 較小的訊息負載 (相較等價 JSON 資料可降低約 30–50%)
+  * 決定性的二進位結構
+  * 微秒級時間戳精度
+  * 在編碼與解碼時皆有較低的 CPU 消耗
 
 
 
-**上線排期** :   
+## SBE 連接數限制
+
+  * **現貨:** 每個專屬 MMWS host 限制 1500 條連接.
+  * **合約 (linear + inverse):** 每個專屬 MMWS host 限制 3000 條連接.
+  * 一旦超過連接上限, 新連接會返回 **HTTP 429** 。
 
 
-首個上線站點為 **Bybit 土耳其站** , 其後依序為:
 
-  * **土耳其站:** 2026/01/27
-  * **哈薩克斯坦站:** 2026/02/24
-  * **格魯吉亞站:** 2026/03/10
-  * **其他合規站點 (開發中):** 將於站點上線時 **立即啟用 SMP** 。
+## 盤前合約的推送行為
+
+  * 直到`ContinuousTrading`(連續競價)階段, orderbook 和 publicTrade 數據才會下發
+
+
+
+## 行情 SBE XML Template
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe" xmlns:mbx="https://bybit-exchange.github.io/docs/v5/intro" package="quote.sbe" id="1" version="0" semanticVersion="1.0.0" description="Bybit market data streams SBE message schema" byteOrder="littleEndian" headerType="messageHeader">  
+      <types>  
+        <composite name="messageHeader" description="Template ID and length of message root">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <composite name="varString8" description="Variable length UTF-8 string.">  
+          <type name="length" primitiveType="uint8"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+        <composite name="groupSize16Encoding" description="Repeating group dimensions.">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="numInGroup" primitiveType="uint16"/>  
+        </composite>  
+        <enum name="pkgTypeEnum" encodingType="uint8">  
+          <validValue name="SNAPSHOT">0</validValue>  
+          <validValue name="DELTA">1</validValue>  
+        </enum>  
+        <enum name="SideType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BUY">1</validValue>  
+          <validValue name="SELL">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+        <enum name="BoolEnum" encodingType="uint8">  
+          <validValue name="FALSE">0</validValue>  
+          <validValue name="TRUE">1</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+      </types>  
+      <!-- Stream event for "ob.rpi.1.sbe.<symbol>" channel -->  
+      <sbe:message name="BestOBRpiEvent" id="20000">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="seq" type="int64" description="Cross sequence ID"/>  
+        <field id="3" name="cts" type="int64" description="The timestamp in microseconds from the matching engine when this orderbook data is produced."/>  
+        <field id="4" name="u" type="int64" description="Update Id"/>  
+        <field id="5" name="askNormalPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best ask normal price"/>  
+        <field id="6" name="askNormalSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best ask normal size"/>  
+        <field id="7" name="askRpiPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best ask rpi price"/>  
+        <field id="8" name="askRpiSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best ask rpi size"/>  
+        <field id="9" name="bidNormalPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best bid normal price"/>  
+        <field id="10" name="bidNormalSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best bid normal size"/>  
+        <field id="11" name="bidRpiPrice" type="int64" mbx:exponent="priceExponent" description="Mantissa for the best bid rpi price"/>  
+        <field id="12" name="bidRpiSize" type="int64" mbx:exponent="sizeExponent" description="Mantissa for the best bid rpi size"/>  
+        <field id="13" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="14" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+      <!-- Stream event for "ob.50.sbe.<symbol>" channel -->  
+      <sbe:message name="OBL50Event" id="20001">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="seq" type="int64" description="Cross sequence ID"/>  
+        <field id="3" name="cts" type="int64" description="The timestamp in microseconds from the matching engine when this orderbook data is produced."/>  
+        <field id="4" name="u" type="int64" description="Update Id"/>  
+        <field id="5" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="6" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <field id="7" name="pkgType" type="pkgTypeEnum" description="Package type"/>  
+        <group id="40" name="asks" dimensionType="groupSize16Encoding" description="Sell side order book updates">  
+          <field id="1" name="price" type="int64" description="Price mantissa"/>  
+          <field id="2" name="size" type="int64" description="Size mantissa"/>  
+        </group>  
+        <group id="41" name="bids" dimensionType="groupSize16Encoding" description="Buy side order book updates">  
+          <field id="1" name="price" type="int64" description="Price mantissa"/>  
+          <field id="2" name="size" type="int64" description="Size mantissa"/>  
+        </group>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+      <!-- Stream event for "publicTrade.sbe.<symbol>" channel -->  
+      <sbe:message name="PublicTradeEvent" id="20002">  
+        <field id="1" name="ts" type="int64" description="The timestamp in microseconds that the system generates the data"/>  
+        <field id="2" name="priceExponent" type="int8" description="Price exponent for decimal point positioning"/>  
+        <field id="3" name="sizeExponent" type="int8" description="Size exponent for decimal point positioning"/>  
+        <group id="40" name="tradeItems" dimensionType="groupSize16Encoding" description="trade items">  
+          <field id="1" name="fillTime" type="int64" description="The timestamp in microseconds that the order is filled"/>  
+          <field id="2" name="price" type="int64" description="Price mantissa"/>  
+          <field id="3" name="size" type="int64" description="Size mantissa"/>  
+          <field id="4" name="seq" type="int64" description="Cross sequence ID"/>  
+          <field id="5" name="side" type="SideType" description="Side of taker"/>  
+          <field id="6" name="isBlockTrade" type="BoolEnum" description="Whether it is a block trade order or not"/>  
+          <field id="7" name="isRPI" type="BoolEnum" description="Whether it is a RPI trade or not"/>  
+          <data id="100" name="execId" type="varString8" description="Trade ID"/>  
+        </group>  
+        <data id="55" name="symbol" type="varString8"/>  
+      </sbe:message>  
+    </sbe:messageSchema>  
+    
+
+## 交易 SBE XML Template
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe" package="order.trading.api.sbe" id="2" version="2" semanticVersion="1.0.0" description="Order Trading API SBE Schema" byteOrder="littleEndian">  
+      <types>  
+        <!-- 标准消息头 -->  
+        <composite name="messageHeader" description="Standard message header">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <!-- Group尺寸编码 -->  
+        <composite name="groupSize16Encoding" description="Repeating group dimensions.">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="numInGroup" primitiveType="uint16"/>  
+        </composite>  
+        <!-- 字符串类型 -->  
+        <type name="String8" primitiveType="char" length="8"/>  
+        <type name="String16" primitiveType="char" length="16"/>  
+        <type name="String32" primitiveType="char" length="32"/>  
+        <type name="String64" primitiveType="char" length="64"/>  
+        <!-- 变长字符串 -->  
+        <composite name="varString16" description="Variable length UTF-8 string">  
+          <type name="length" primitiveType="uint16"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+        <!-- Decimal64 类型 -->  
+        <composite name="Decimal64" description="Decimal floating point number">  
+          <type name="exponent" primitiveType="int8"/>  
+          <type name="mantissa" primitiveType="int64"/>  
+        </composite>  
+        <!-- 枚举类型定义 -->  
+        <enum name="CategoryType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="SPOT">1</validValue>  
+          <validValue name="LINEAR">2</validValue>  
+          <validValue name="INVERSE">3</validValue>  
+          <validValue name="OPTION">4</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="PositionIdxType" encodingType="uint8">  
+          <validValue name="ONE_WAY">0</validValue>  
+          <validValue name="HEDGE_BUY">1</validValue>  
+          <validValue name="HEDGE_SELL">2</validValue>  
+          <validValue name="UNKNOWN">253</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="OrderType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="MARKET">1</validValue>  
+          <validValue name="LIMIT">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="SideType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BUY">1</validValue>  
+          <validValue name="SELL">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="TimeInForceType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="GOOD_TILL_CANCEL">1</validValue>  
+          <validValue name="POST_ONLY">2</validValue>  
+          <validValue name="IMMEDIATE_OR_CANCEL">3</validValue>  
+          <validValue name="FILL_OR_KILL">4</validValue>  
+          <validValue name="RPI">5</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="SmpType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="CANCEL_TAKER">1</validValue>  
+          <validValue name="CANCEL_MAKER">2</validValue>  
+          <validValue name="CANCEL_BOTH">3</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="MarketUnitType" encodingType="uint8">  
+          <validValue name="UNKNOWN">0</validValue>  
+          <validValue name="BASE_COIN">1</validValue>  
+          <validValue name="QUOTE_COIN">2</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+          <sbe:metaAttribute name="sbe:unknownName" value="UNKNOWN"/>  
+        </enum>  
+        <enum name="BoolEnum" encodingType="uint8">  
+          <validValue name="FALSE">0</validValue>  
+          <validValue name="TRUE">1</validValue>  
+          <validValue name="NON_REPRESENTABLE">254</validValue>  
+        </enum>  
+        <!-- API请求头 -->  
+        <composite name="ApiRequestHeader" description="API Request header">  
+          <type name="reqId" primitiveType="char" length="64"/>  
+          <type name="timestamp" primitiveType="uint64"/>  
+          <type name="recvWindow" primitiveType="uint32"/>  
+          <type name="referer" primitiveType="char" length="64"/>  
+        </composite>  
+        <!-- 响应头 -->  
+        <composite name="ApiRespHeader" description="Response header">  
+          <type name="reqId" primitiveType="char" length="64"/>  
+          <type name="connId" primitiveType="char" length="64"/>  
+          <type name="traceId" primitiveType="char" length="64"/>  
+          <type name="timeNow" primitiveType="int64"/>  
+          <type name="inTime" primitiveType="int64"/>  
+          <type name="bapiLimit" primitiveType="int64"/>  
+          <type name="bapiLimitStatus" primitiveType="int64"/>  
+          <type name="bapiLimitResetTimestamp" primitiveType="int64"/>  
+        </composite>  
+        <!-- 通用订单响应数据 -->  
+        <composite name="CommonOrderRespData" description="Common order response data">  
+          <type name="orderId" primitiveType="char" length="64"/>  
+          <type name="orderLinkId" primitiveType="char" length="64"/>  
+        </composite>  
+      </types>  
+      <!-- 消息定义 -->  
+      <!-- 认证消息 -->  
+      <message name="AuthReq" id="1" description="Authentication request">  
+        <field name="reqId" id="1" type="String64"/>  
+        <field name="apiKey" id="2" type="String64"/>  
+        <field name="expires" id="3" type="uint64"/>  
+        <field name="signature" id="4" type="String64"/>  
+      </message>  
+      <message name="AuthResp" id="2" description="Authentication response">  
+        <field name="reqId" id="1" type="String64"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="connId" id="3" type="String64"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <!-- Ping/Pong 心跳消息 -->  
+      <message name="PingReq" id="3" description="Ping request">  
+        <field name="timestamp" id="1" type="uint64"/>  
+      </message>  
+      <message name="PongResp" id="4" description="Pong response">  
+        <field name="timestamp" id="1" type="uint64"/>  
+        <field name="pongTime" id="2" type="uint64"/>  
+      </message>  
+      <!-- 交易消息 -->  
+      <message name="CreateOrderReqV5" id="5" description="Create order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="side" id="4" type="SideType"/>  
+        <field name="orderType" id="5" type="OrderType"/>  
+        <field name="qty" id="6" type="Decimal64"/>  
+        <field name="price" id="7" type="Decimal64"/>  
+        <field name="orderLinkId" id="8" type="String64"/>  
+        <field name="timeInForce" id="9" type="TimeInForceType"/>  
+        <field name="positionIdx" id="10" type="PositionIdxType"/>  
+        <field name="marketUnit" id="11" type="MarketUnitType"/>  
+        <field name="isLeverage" id="12" type="BoolEnum"/>  
+        <field name="reduceOnly" id="13" type="BoolEnum"/>  
+        <field name="closeOnTrigger" id="14" type="BoolEnum"/>  
+        <field name="mmp" id="15" type="BoolEnum"/>  
+        <field name="smpType" id="16" type="SmpType"/>  
+        <field name="rpiTakerAccess" id="17" type="BoolEnum" sinceVersion="2"/>  
+      </message>  
+      <message name="CreateOrderRespV5" id="6" description="Create order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="ReplaceOrderReqV5" id="7" description="Replace order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="orderId" id="4" type="String64"/>  
+        <field name="orderLinkId" id="5" type="String64"/>  
+        <field name="qty" id="6" type="Decimal64"/>  
+        <field name="price" id="7" type="Decimal64"/>  
+      </message>  
+      <message name="ReplaceOrderRespV5" id="8" description="Replace order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <message name="CancelOrderReqV5" id="9" description="Cancel order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <field name="symbolId" id="3" type="int64"/>  
+        <field name="orderId" id="4" type="String64"/>  
+        <field name="orderLinkId" id="5" type="String64"/>  
+      </message>  
+      <message name="CancelOrderRespV5" id="10" description="Cancel order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <field name="result" id="3" type="CommonOrderRespData"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+      <!-- 批量操作消息 -->  
+      <message name="BatchCreateOrderReqV5" id="11" description="Batch create order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="side" id="2" type="SideType"/>  
+          <field name="orderType" id="3" type="OrderType"/>  
+          <field name="qty" id="4" type="Decimal64"/>  
+          <field name="price" id="5" type="Decimal64"/>  
+          <field name="orderLinkId" id="6" type="String64"/>  
+          <field name="timeInForce" id="7" type="TimeInForceType"/>  
+          <field name="positionIdx" id="8" type="PositionIdxType"/>  
+          <field name="marketUnit" id="9" type="MarketUnitType"/>  
+          <field name="isLeverage" id="10" type="BoolEnum"/>  
+          <field name="reduceOnly" id="11" type="BoolEnum"/>  
+          <field name="closeOnTrigger" id="12" type="BoolEnum"/>  
+          <field name="mmp" id="13" type="BoolEnum"/>  
+          <field name="smpType" id="14" type="SmpType"/>  
+        </group>  
+      </message>  
+      <message name="BatchCreateOrderRespV5" id="12" description="Batch create order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="BatchReplaceOrderReqV5" id="13" description="Batch replace order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="orderId" id="2" type="String64"/>  
+          <field name="orderLinkId" id="3" type="String64"/>  
+          <field name="qty" id="4" type="Decimal64"/>  
+          <field name="price" id="5" type="Decimal64"/>  
+        </group>  
+      </message>  
+      <message name="BatchReplaceOrderRespV5" id="14" description="Batch replace order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="BatchCancelOrderReqV5" id="15" description="Batch cancel order request">  
+        <field name="header" id="1" type="ApiRequestHeader"/>  
+        <field name="category" id="2" type="CategoryType"/>  
+        <group name="request" id="200" dimensionType="groupSize16Encoding">  
+          <field name="symbolId" id="1" type="int64"/>  
+          <field name="orderId" id="2" type="String64"/>  
+          <field name="orderLinkId" id="3" type="String64"/>  
+        </group>  
+      </message>  
+      <message name="BatchCancelOrderRespV5" id="16" description="Batch cancel order response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <group name="list" id="100" dimensionType="groupSize16Encoding">  
+          <field name="code" id="1" type="int32"/>  
+          <field name="category" id="2" type="CategoryType"/>  
+          <field name="symbolId" id="3" type="int64"/>  
+          <field name="orderId" id="4" type="String64"/>  
+          <field name="orderLinkId" id="5" type="String64"/>  
+          <data name="msg" id="20" type="varString16"/>  
+        </group>  
+        <data name="retMsg" id="200" type="varString16"/>  
+      </message>  
+      <message name="CommonErrResp" id="17" description="Common error response">  
+        <field name="respHeader" id="1" type="ApiRespHeader"/>  
+        <field name="retCode" id="2" type="int32"/>  
+        <data name="retMsg" id="20" type="varString16"/>  
+      </message>  
+    </sbe:messageSchema>  
+    
+
+## Fast Order Response SBE XML 模板
+    
+    
+    <?xml version="1.0" encoding="UTF-8"?>  
+    <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"  
+                       xmlns:mbx="https://bybit-exchange.github.io/docs/v5/intro"  
+                       package="order.fast.sbe"  
+                       id="1"  
+                       version="0"  
+                       semanticVersion="1.0.0"  
+                       description="Bybit fast order response SBE schema"  
+                       byteOrder="littleEndian"  
+                       headerType="messageHeader">  
+      <types>  
+        <composite name="messageHeader" description="Template ID and length of message root">  
+          <type name="blockLength" primitiveType="uint16"/>  
+          <type name="templateId" primitiveType="uint16"/>  
+          <type name="schemaId" primitiveType="uint16"/>  
+          <type name="version" primitiveType="uint16"/>  
+        </composite>  
+        <composite name="varString8" description="Variable length UTF-8 string">  
+          <type name="length" primitiveType="uint8"/>  
+          <type name="varData" length="0" primitiveType="uint8" semanticType="String" characterEncoding="UTF-8"/>  
+        </composite>  
+      </types>  
+      <!-- Fast order response: active place/cancel/amend acknowledgements -->  
+      <sbe:message name="FastOrderResp" id="21000">  
+        <!-- Routing / classification -->  
+        <field id="1" name="category" type="uint8" description="1=spot, 2=linear, 3=inverse, 4=option"/>  
+        <!-- Side / status / rejection -->  
+        <field id="2" name="side" type="uint8" description="1=Buy, 2=Sell"/>  
+        <field id="3" name="orderStatus" type="uint8" description="Order state enum"/>  
+        <!-- Price / size (mantissas) with exponents -->  
+        <field id="4" name="priceExponent" type="int8" description="Decimal places for price"/>  
+        <field id="5" name="sizeExponent" type="int8" description="Decimal places for size"/>  
+        <field id="6" name="valueExponent" type="int8" description="Decimal places for value"/>  
+        <field id="7" name="rejectReason" type="uint16" description="0 if N/A"/>  
+        <field id="8" name="price" type="int64" mbx:exponent="priceExponent" description="Price mantissa"/>  
+        <field id="9" name="leavesQty" type="int64" mbx:exponent="sizeExponent" description="Remaining quantity mantissa"/>  
+        <field id="10" name="leavesValue" type="int64" mbx:exponent="valueExponent" description="Spot market buy only; otherwise 0"/>  
+        <!-- Timing -->  
+        <field id="11" name="creationTime" type="int64" description="Order creation timestamp in Fast order channel(microseconds)"/>  
+        <field id="12" name="updatedTime" type="int64" description="Matching timestamp (microseconds)"/>  
+        <field id="13" name="seq" type="int64" description="Cross sequence ID"/>  
+        <!-- SymbolID -->  
+        <field id="14" name="symbolID" type="int32" description="Symbol ID"/>  
+        <!-- Order identifiers -->  
+        <data id="100" name="orderId" type="varString8" description="Order ID"/>  
+        <data id="101" name="orderLinkId" type="varString8" description="Optional; present for user-initiated orders"/>  
+      </sbe:message>  
+    </sbe:messageSchema>

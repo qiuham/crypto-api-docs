@@ -2,34 +2,38 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-renew
 api_type: REST
-updated_at: 2026-06-08 19:21:56.515700
+updated_at: 2026-06-09 19:16:52.446527
 ---
 
-# Get Liability Info
+# Get Auto Repay Mode
+
+Get spot automatic repayment mode
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/liability`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| **true**|  string| Coin name, uppercase only  
+currency| false| string| Coin name, uppercase only. If `currency` is not passed, automatic repay mode for all currencies will be returned.  
   
+* * *
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-currency| string| Coin name, uppercase only  
-totalBorrowAmount| string| Total liability = borrowSize  
-fixedBorrowAmount| string| Fixed-rate liability  
-flexibleBorrowAmount| string| Floating-rate liability = borrowSize - fixedBorrowAmount  
-spotTotalBorrow| string| Spot liability + open order liability  
-derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - reservation  
-  
-* * *
+data| array| Object  
+> currency| string| Coin name, uppercase only.  
+> autoRepayMode| string| 
 
+  * `1`: On
+  * `0`: Off
+
+  
+  
 ### Request Example
 
   * HTTP
@@ -39,12 +43,13 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
 
     
     
-    GET /v5/spot-margin-trade/liability?currency=BTC HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
     
     
     
@@ -54,8 +59,8 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_liability(  
-        currency="BTC"  
+    print(session.get_auto_repay_mode(  
+        currency="ETH"  
     ))  
     
     
@@ -70,44 +75,48 @@ derivativesBorrow| string| Derivatives liability = borrowSize - spotBorrow - res
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "currency": "BTC",  
-            "totalBorrowAmount": "0.05000000",  
-            "fixedBorrowAmount": "0.02000000",  
-            "flexibleBorrowAmount": "0.03000000",  
-            "spotTotalBorrow": "0.04000000",  
-            "derivativesBorrow": "0.01000000"  
+            "data": [  
+                {  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1756273388821  
+        "time": 1766977353904  
     }
 
 ---
 
-# 查詢負債信息
+# 獲取現貨自動還款模式
+
+獲取現貨自動還款模式
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/liability`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| **true**|  string| 幣名稱，僅限大寫  
+currency| false| string| 幣名稱，僅限大寫. 如果沒有指定 `currency` 參數，則返回所有貨幣自動還款模式。  
   
+* * *
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-currency| string| 幣名稱，僅限大寫  
-totalBorrowAmount| string| 總負債 = borrowSize  
-fixedBorrowAmount| string| 固定利率負債  
-flexibleBorrowAmount| string| 活期利率負債 = borrowSize - fixedBorrowAmount  
-spotTotalBorrow| string| 現貨負債 + 掛單負債  
-derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservation  
-  
-* * *
+data| array| Object  
+> currency| string| 幣名稱，僅限大寫.  
+> autoRepayMode| string| 
 
+  * `1`: 開啟
+  * `0`: 關閉
+
+  
+  
 ### 請求示例
 
   * HTTP
@@ -117,12 +126,14 @@ derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservati
 
     
     
-    GET /v5/spot-margin-trade/liability?currency=BTC HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
     
     
     
@@ -140,13 +151,13 @@ derivativesBorrow| string| 衍生品負債 = borrowSize - spotBorrow - reservati
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "currency": "BTC",  
-            "totalBorrowAmount": "0.05000000",  
-            "fixedBorrowAmount": "0.02000000",  
-            "flexibleBorrowAmount": "0.03000000",  
-            "spotTotalBorrow": "0.04000000",  
-            "derivativesBorrow": "0.01000000"  
+            "data": [  
+                {  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1756273388821  
+        "time": 1766977353904  
     }

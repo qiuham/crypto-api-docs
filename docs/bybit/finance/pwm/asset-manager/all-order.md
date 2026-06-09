@@ -2,66 +2,57 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/all-order
 api_type: REST
-updated_at: 2026-06-08 19:18:53.601049
+updated_at: 2026-06-09 19:13:50.392684
 ---
 
-# Create Fund (Pending Subscription)
-
-info
-
-  1. Each institution can create a maximum of **10 funds**.
-  2. A newly created fund will have a status of **`PendingSubscribe`** (pending subscription).
-
-
+# Get Investment Plans
 
 ### HTTP Request
 
-POST`/v5/earn/pwm/asset-manager/create-fund`
+GET`/v5/earn/pwm/asset-manager/get-investment-plan`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-fundName| **true**|  string| Fund name, 1–50 characters  
-coin| **true**|  string| Base coin. Supported values: `BTC`, `ETH`, `USDT`, `USDC`, `SOL`, `MNT`, `XRP`  
-profitShareRate| **true**|  string| High-watermark profit sharing rate (%), range: 0–100  
-managementFeeRate| **true**|  string| Management fee rate (annualized %), range: 0–100  
-fundIntroduction| false| string| Fund introduction ID (must be in the institution's allowed list)  
-reqLinkId| **true**|  string| User-defined request ID, max 36 characters, used for idempotency  
+planId| false| string| Investment plan ID. Returns all plans if omitted. Only plans created by the institution via Open API can be queried  
+status| false| string| Filter by status: `PendingSubscription` / `Active` / `Closed` / `Deleted`. Returns all if omitted  
+subscriptionUid| false| string| UID of the user who subscribed to the investment plan  
+limit| false| integer| Page size. Default: `20`, max: `50`  
+cursor| false| string| Pagination cursor  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-fundId| string| Unique identifier of the newly created fund  
-fundName| string| Fund name  
-coin| string| Fund denomination coin  
-status| string| Fund status. Fixed as `PendingSubscription` upon creation. Possible values: `PendingSubscribe` / `Active` / `Closing` / `Closed`  
-profitShareRate| string| Profit sharing rate (%)  
-managementFeeRate| string| Management fee rate (annualized %)  
-accountUid| string| Fund main sub-account UID automatically created by the system  
-createdTime| string| Creation timestamp (milliseconds)  
+list| array| Investment plan list  
+> planId| string| Investment plan ID  
+> planName| string| Investment plan name  
+> planType| string| Plan type: `stable` / `advanced`  
+> subscriptionUid| string| UID of the user who subscribed to the investment plan  
+> status| string| Plan status: `PendingSubscription` (newly configured, not yet subscribed) / `Active` (running) / `Closed` (closed) / `Deleted` (deleted)  
+> source| string| Creation source: `consultant` / `direct` / `institution`  
+> currentAssetUsd| string| Total current assets (USD valuation). When status is `PendingSubscription`, this is the configured amount  
+> accumulateYieldUsd| string| Accumulated yield (USD valuation). Returns `"0"` when status is `PendingSubscription`  
+> investmentDistribution| array| Investment distribution list  
+>> category| string| Product category: `multiCoinEarning` / `fixedYield` / `equityFund` / `onchainEarn`  
+>> coin| string| Denominated coin  
+>> productId| string| Subscribed product ID. For funds, this corresponds to `fundId`  
+>> currentAmount| string| Investment asset amount. When status is `PendingSubscription`, this is the configured coin amount; otherwise it is the current holding amount  
+> createdTime| string| Creation timestamp (milliseconds)  
+nextPageCursor| string| Next page cursor. Empty string indicates no more data (uses investment plan ID as cursor)  
   
 * * *
 
 ### Request Example
     
     
-    POST /v5/earn/pwm/asset-manager/create-fund HTTP/1.1  
+    GET /v5/earn/pwm/asset-manager/get-investment-plan HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "fundName": "BTC Alpha Fund",  
-        "coin": "BTC",  
-        "profitShareRate": "20.00",  
-        "managementFeeRate": "2.00",  
-        "reqLinkId": "create-fund-001"  
-    }  
     
 
 ### Response Example
@@ -71,76 +62,81 @@ createdTime| string| Creation timestamp (milliseconds)
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "fundId": "12345",  
-            "fundName": "BTC Alpha Fund",  
-            "coin": "BTC",  
-            "status": "pending_subscribe",  
-            "profitShareRate": "20.00",  
-            "managementFeeRate": "2.00",  
-            "accountUid": "0",  
-            "createdTime": "1640000000000"  
+            "list": [  
+                {  
+                    "planId": "10001",  
+                    "planName": "Conservative Growth Plan",  
+                    "planType": "stable",  
+                    "status": "Active",  
+                    "source": "institution",  
+                    "subscriptionUid": "12323434",  
+                    "currentAssetUsd": "200137.50",  
+                    "accumulateYieldUsd": "2137.50",  
+                    "investmentDistribution": [  
+                        {  
+                            "category": "equityFund",  
+                            "productId": "431",  
+                            "coin": "USDT",  
+                            "currentAmount": "50000.00"  
+                        }  
+                    ],  
+                    "createdTime": "1700000000000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         }  
     }
 
 ---
 
-# 機構創建待申購基金
-
-信息
-
-  1. 每個機構最多創建 **10 個基金** 。
-  2. 基金創建後狀態為 **`PendingSubscribe`** （待申購）。
-
-
+# 機構查詢為客戶創建的投資計劃列表
 
 ### HTTP 請求
 
-POST`/v5/earn/pwm/asset-manager/create-fund`
+GET`/v5/earn/pwm/asset-manager/get-investment-plan`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-fundName| **true**|  string| 基金名稱，長度1-50字符  
-coin| **true**|  string| 本位幣，支持：`BTC`、`ETH`、`USDT`、`USDC`、`SOL`、`MNT`、`XRP`  
-profitShareRate| **true**|  string| 高水位利潤分成比例（%），範圍0-100  
-managementFeeRate| **true**|  string| 管理費率（年化%），範圍0-100  
-fundIntroduction| false| string| 基金簡介ID（需在機構允許列表中）  
-reqLinkId| **true**|  string| 用戶自定義請求ID，最長36字符，用於冪等  
+planId| false| string| 投資計劃ID，不傳返回全部（該接口只能查詢機構 Open API 創建的投資計劃）  
+status| false| string| 篩選狀態：`PendingSubscription`（新配置，未申購）/ `Active`（運行中）/ `Closed`（已關閉）/ `Deleted`（已刪除），不傳返回全部  
+subscriptionUid| false| string| 申購投資計劃的用戶UID  
+limit| false| integer| 每頁數量，默認 `20`，最大 `50`  
+cursor| false| string| 分頁游標  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-fundId| string| 新創建的基金唯一標識  
-fundName| string| 基金名稱  
-coin| string| 基金計價幣種  
-status| string| 基金狀態，創建後固定為 `PendingSubscription`（待申購）。枚舉值：`PendingSubscribe`（待申購）/ `Active`（運行中）/ `Closing`（關閉中）/ `Closed`（已關閉）  
-profitShareRate| string| 利潤分成比例（%）  
-managementFeeRate| string| 管理費率（年化%）  
-accountUid| string| 系統自動創建的基金主子賬戶UID  
-createdTime| string| 創建時間戳（毫秒）  
+list| array| 投資計劃列表  
+> planId| string| 投資計劃ID  
+> planName| string| 投資計劃名稱  
+> planType| string| 計劃類型：`stable`（穩健）/ `advanced`（激進）  
+> subscriptionUid| string| 申購投資計劃的用戶UID  
+> status| string| 計劃狀態：`PendingSubscription`（新配置，未申購）/ `Active`（運行中）/ `Closed`（已關閉）/ `Deleted`（已刪除）  
+> source| string| 創建來源：`consultant`（顧問創建）/ `direct`（直客自建）/ `institution`（機構創建）  
+> currentAssetUsd| string| 當前計劃總資產（USD估值），`PendingSubscription` 狀態時為配置金額  
+> accumulateYieldUsd| string| 累計收益（USD估值），`PendingSubscription` 狀態時為 `"0"`  
+> investmentDistribution| array| 投資分佈比例列表  
+>> category| string| 產品類別：`multiCoinEarning`（靈活理財）/ `fixedYield`（固定收益）/ `equityFund`（淨值型基金）/ `onchainEarn`（鏈上賺幣）  
+>> coin| string| 本位幣種  
+>> productId| string| 申購的對應產品ID，基金對應為 `fundId`  
+>> currentAmount| string| 投資資產數量，`PendingSubscription` 狀態時為後台配置幣種數量，否則為持倉幣種數量  
+> createdTime| string| 創建時間戳（毫秒）  
+nextPageCursor| string| 下一頁游標，為空表示無更多數據（使用投資計劃ID作為游標）  
   
 * * *
 
 ### 請求示例
     
     
-    POST /v5/earn/pwm/asset-manager/create-fund HTTP/1.1  
+    GET /v5/earn/pwm/asset-manager/get-investment-plan HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "fundName": "BTC Alpha Fund",  
-        "coin": "BTC",  
-        "profitShareRate": "20.00",  
-        "managementFeeRate": "2.00",  
-        "reqLinkId": "create-fund-001"  
-    }  
     
 
 ### 響應示例
@@ -150,13 +146,27 @@ createdTime| string| 創建時間戳（毫秒）
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "fundId": "12345",  
-            "fundName": "BTC Alpha Fund",  
-            "coin": "BTC",  
-            "status": "pending_subscribe",  
-            "profitShareRate": "20.00",  
-            "managementFeeRate": "2.00",  
-            "accountUid": "0",  
-            "createdTime": "1640000000000"  
+            "list": [  
+                {  
+                    "planId": "10001",  
+                    "planName": "Conservative Growth Plan",  
+                    "planType": "stable",  
+                    "status": "Active",  
+                    "source": "institution",  
+                    "subscriptionUid": "12323434",  
+                    "currentAssetUsd": "200137.50",  
+                    "accumulateYieldUsd": "2137.50",  
+                    "investmentDistribution": [  
+                        {  
+                            "category": "equityFund",  
+                            "productId": "431",  
+                            "coin": "USDT",  
+                            "currentAmount": "50000.00"  
+                        }  
+                    ],  
+                    "createdTime": "1700000000000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         }  
     }

@@ -2,107 +2,214 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/reference-price
 api_type: REST
-updated_at: 2026-06-08 19:16:25.751209
+updated_at: 2026-06-09 19:11:19.074579
 ---
 
-# Trade Notify
+# Get Reference Price
 
-## Trade Notify
+### HTTP Request
 
-### Webhook URL
+GET`/v5/fiat/reference-price`
 
-  * **Webhook_url** : Provided in the [trade-execute](/docs/v5/asset/fiat-convert/confirm-quote) API.
+### Request Parameters
 
+Parameter| Required| Type| Comments  
+---|---|---|---  
+symbol| **true**|  string| Coin Pair, such as EUR-USDT  
+  
+### Response Parameters
 
-
-### Webhook Method
-
-  * **HTTP Method** : `POST`
-
-
-
-### Authentication
-
-  * Share the **IP whitelist** with each other.
-
-
-
-### Headers
-    
-    
-    Content-Type: application/json  
-    timestamp: xxx  
-    publicKey: xxx  
-    
-
-* * *
-
-### Request Body
-
-The request body is in **JSON** format with the following fields:
-
-Field Name| Type| Description  
+Parameter| Type| Comments  
 ---|---|---  
-`tradeNo`| string| Trade order number  
-`status`| string| Trade status: `processing`, `success`, or `failed`  
-`quoteTxId`| string| Quote transaction ID. System generated, used to confirm the quote  
-`exchangeRate`| string| Exchange rate  
-`fromCoin`| string| Convert from coin (coin to sell)  
-`fromCoinType`| string| Coin type of `fromCoin`, either `fiat` or `crypto`  
-`toCoin`| string| Convert to coin (coin to buy)  
-`toCoinType`| string| Coin type of `toCoin`, either `fiat` or `crypto`  
-`fromAmount`| string| From coin amount (amount to sell)  
-`toAmount`| string| To coin amount (amount to buy according to the exchange rate)  
-`createdAt`| string| Trade created time
+result| array| Array of quotes  
+> symbol| string| Trading pair symbol  
+> fiat| string| Fiat currency of the trading pair (e.g: "EUR")  
+> crypto| string| Cryptocurrency of the trading pair (e.g:"USDT")  
+> timestamp| string| Unix timestamp  
+> buys| array| Array of buy quote objects  
+>> unitPrice| string| unitPrice: 1 crypto=x fiat  
+>> paymentMethod| string| From coin type. `fiat` or `crypto`  
+> sells| array| Array of sell quote objects  
+>> unitPrice| string| unitPrice: 1 crypto=x fiat  
+>> paymentMethod| string| From coin type. `fiat` or `crypto`  
+  
+### Request Example
+
+  * HTTP
+  * Python
+
+
+    
+    
+    GET /v5/fiat/reference-price HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1720074159814  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+    from pybit.unified_trading import HTTP  
+    session = HTTP(  
+        testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
+    )  
+    print(session.get_fiat_reference_price(  
+        symbol="EUR-USDT"  
+    ))  
+    
+
+### Response Example
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "symbol": "EUR-USDT",  
+            "fiat": "EUR",  
+            "crypto": "USDT",  
+            "timestamp": "1765181161",  
+            "buys": [  
+                {  
+                    "unitPrice": "0.8581",  
+                    "paymentMethod": "Cash Balance"  
+                },  
+                {  
+                    "unitPrice": "0.9297487",  
+                    "paymentMethod": "Credit Card"  
+                },  
+                {  
+                    "unitPrice": "0.9807915",  
+                    "paymentMethod": "Apple Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8631747",  
+                    "paymentMethod": "Google Pay"  
+                }  
+            ],  
+            "sells": [  
+                {  
+                    "unitPrice": "0.8581",  
+                    "paymentMethod": "Cash Balance"  
+                },  
+                {  
+                    "unitPrice": "0.9297487",  
+                    "paymentMethod": "Credit Card"  
+                },  
+                {  
+                    "unitPrice": "0.9807915",  
+                    "paymentMethod": "Apple Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8631747",  
+                    "paymentMethod": "Google Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8584759",  
+                    "paymentMethod": "SEPA"  
+                }  
+            ]  
+        }  
+    }
 
 ---
 
-# 交易通知
+# 獲取報價
 
-## 交易通知
+### HTTP 請求
 
-### Webhook URL
+GET`/v5/fiat/reference-price`
 
-  * **Webhook_url** ：在 [trade-execute](/docs/zh-TW/v5/asset/fiat-convert/confirm-quote) API 中提供
+### 請求參數
 
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+symbol| **true**|  string| 幣種交易對，例如 EUR-USDT  
+  
+### 響應參數
 
-
-### Webhook Method
-
-  * **HTTP Method** ：`POST`
-
-
-
-### Authentication
-
-  * 雙方共享 **IP 白名單**
-
-
-
-### Headers
-    
-    
-    Content-Type: application/json  
-    timestamp: xxx  
-    publicKey: xxx  
-    
-
-* * *
-
-### Request Body
-
-請求體為 **JSON** 格式，包含以下欄位：
-
-欄位名稱| 型別| 說明  
+參數| 類型| 說明  
 ---|---|---  
-`tradeNo`| string| 交易訂單號  
-`status`| string| 交易狀態：`processing`、`success` 或 `failed`  
-`quoteTxId`| string| 報價交易 ID，由系統產生，用於確認報價  
-`exchangeRate`| string| 匯率  
-`fromCoin`| string| 兌出幣種（賣出的幣）  
-`fromCoinType`| string| `fromCoin` 的幣種類型，`fiat` 或 `crypto`  
-`toCoin`| string| 兌入幣種（買入的幣）  
-`toCoinType`| string| `toCoin` 的幣種類型，`fiat` 或 `crypto`  
-`fromAmount`| string| 兌出幣種數量（賣出數量）  
-`toAmount`| string| 兌入幣種數量（依照匯率計算的買入數量）  
-`createdAt`| string| 交易建立時間
+result| array| 報價列表  
+> symbol| string| 幣種交易對  
+> fiat| string| 交易對中的法幣（例如："EUR"）  
+> crypto| string| 交易對中的加密貨幣（例如："USDT"）  
+> timestamp| string| Unix 時間戳  
+> buys| array| 買入報價列表  
+>> unitPrice| string| 單價：1 crypto = x fiat  
+>> paymentMethod| string| 支付方式,`fiat` 或 `crypto`  
+> sells| array| 賣出報價列表  
+>> unitPrice| string| 單價：1 crypto = x fiat  
+>> paymentMethod| string| 支付方式,`fiat` 或 `crypto`  
+  
+### 請求示例
+
+  * HTTP
+
+
+    
+    
+    GET /v5/fiat/reference-price HTTP/1.1  
+    Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1720074159814  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+
+### 響應示例
+    
+    
+    {  
+        "retCode": 0,  
+        "retMsg": "",  
+        "result": {  
+            "symbol": "EUR-USDT",  
+            "fiat": "EUR",  
+            "crypto": "USDT",  
+            "timestamp": "1765181161",  
+            "buys": [  
+                {  
+                    "unitPrice": "0.8581",  
+                    "paymentMethod": "Cash Balance"  
+                },  
+                {  
+                    "unitPrice": "0.9297487",  
+                    "paymentMethod": "Credit Card"  
+                },  
+                {  
+                    "unitPrice": "0.9807915",  
+                    "paymentMethod": "Apple Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8631747",  
+                    "paymentMethod": "Google Pay"  
+                }  
+            ],  
+            "sells": [  
+                {  
+                    "unitPrice": "0.8581",  
+                    "paymentMethod": "Cash Balance"  
+                },  
+                {  
+                    "unitPrice": "0.9297487",  
+                    "paymentMethod": "Credit Card"  
+                },  
+                {  
+                    "unitPrice": "0.9807915",  
+                    "paymentMethod": "Apple Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8631747",  
+                    "paymentMethod": "Google Pay"  
+                },  
+                {  
+                    "unitPrice": "0.8584759",  
+                    "paymentMethod": "SEPA"  
+                }  
+            ]  
+        }  
+    }
