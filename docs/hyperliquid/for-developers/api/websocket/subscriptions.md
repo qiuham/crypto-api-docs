@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions
 api_type: WebSocket
-updated_at: 2026-06-08 18:55:24.590949
+updated_at: 2026-06-09 18:49:31.395409
 ---
 
 # Subscriptions
@@ -73,7 +73,7 @@ The subscription object contains the details of the specific feed you want to su
 
      * Subscription message: `{ "type": "l2Book", "coin": "<coin_symbol>" }`
 
-     * Optional parameters: nSigFigs: int, mantissa: int
+     * Optional parameters: `nSigFigs: int`, `mantissa: int` , `fast: boolean` (5 levels if fast, 20 levels if slow)
 
      * Data format: `WsBook`
 

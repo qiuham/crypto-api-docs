@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers
 api_type: REST
-updated_at: 2026-06-08 18:55:39.943882
+updated_at: 2026-06-09 18:49:46.288184
 ---
 
 # HyperCore <> HyperEVM transfers
