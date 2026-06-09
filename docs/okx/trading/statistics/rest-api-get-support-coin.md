@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-statistics-rest-api-get-support-coin
 anchor_id: trading-statistics-rest-api-get-support-coin
 api_type: REST
-updated_at: 2026-06-08 19:34:43.944168
+updated_at: 2026-06-09 19:29:49.341658
 ---
 
 # Get support coin
