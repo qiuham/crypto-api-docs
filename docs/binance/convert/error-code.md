@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/error-code
 api_type: REST
-updated_at: 2026-06-08 19:03:04.844447
+updated_at: 2026-06-09 18:57:30.374416
 ---
 
 # General Info

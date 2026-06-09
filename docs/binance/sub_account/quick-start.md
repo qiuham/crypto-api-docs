@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/quick-start
 api_type: Account
-updated_at: 2026-06-08 19:05:20.640883
+updated_at: 2026-06-09 18:59:52.917435
 ---
 
 # Quick Start

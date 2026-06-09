@@ -2,14 +2,34 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet
 api_type: REST
-updated_at: 2026-06-08 18:57:30.017049
+updated_at: 2026-06-09 18:51:45.259083
 ---
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-03**
+**Last Updated: 2026-06-09**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-09[​](/docs/binance-spot-api-docs/testnet#2026-06-09 "Direct link to 2026-06-09")
+
+**Update:**
+
+The `serverShutdown` event will be sent when the **server is about to be shut down** ; when you receive this event, please disconnect and open a new connection.
+
+All mention of a fixed time before the server shuts down has been removed from the documentation.
+
+  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown).
+
+    * ~~`serverShutdown` event will be sent 10 minutes before disconnection.~~
+    * Please establish a new connection as soon as possible to prevent connection interruption.
+    * Note that you will receive `serverShutdown` events in JSON in WebSocket text frames.
+  * Updated the [Price Range Execution Rule FAQ](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+
+
+
+
+* * *
 
 ### 2026-06-03[​](/docs/binance-spot-api-docs/testnet#2026-06-03 "Direct link to 2026-06-03")
 
@@ -1567,9 +1587,29 @@ User Data Stream:
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-03**
+**Last Updated: 2026-06-09**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-09[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-09 "2026-06-09的直接链接")
+
+**Update:**
+
+The `serverShutdown` event will be sent when the **server is about to be shut down** ; when you receive this event, please disconnect and open a new connection.
+
+All mention of a fixed time before the server shuts down has been removed from the documentation.
+
+  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown).
+
+    * ~~`serverShutdown` event will be sent 10 minutes before disconnection.~~
+    * Please establish a new connection as soon as possible to prevent connection interruption.
+    * Note that you will receive `serverShutdown` events in JSON in WebSocket text frames.
+  * Updated the [Price Range Execution Rule FAQ](/docs/zh-CN/faqs/price_range_execution_rules.md#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+
+
+
+
+* * *
 
 ### 2026-06-03[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-03 "2026-06-03的直接链接")
 

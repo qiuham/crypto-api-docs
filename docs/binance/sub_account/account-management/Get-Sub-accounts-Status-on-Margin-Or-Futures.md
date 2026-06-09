@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/account-management/Get-Sub-accounts-Status-on-Margin-Or-Futures
 api_type: Account
-updated_at: 2026-06-08 19:04:20.148989
+updated_at: 2026-06-09 18:58:48.744550
 ---
 
 # Get IP Restriction for a Sub-account API Key (For Master Account) (USER_DATA)

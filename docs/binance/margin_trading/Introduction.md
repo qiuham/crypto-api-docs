@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/Introduction
 api_type: REST
-updated_at: 2026-06-08 18:58:52.228747
+updated_at: 2026-06-09 18:53:11.393980
 ---
 
 # Get BNB Burn Status (USER_DATA)

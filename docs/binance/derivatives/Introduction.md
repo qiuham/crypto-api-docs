@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/Introduction
 api_type: REST
-updated_at: 2026-06-08 18:58:20.060422
+updated_at: 2026-06-09 18:52:38.444010
 ---
 
 # General Info

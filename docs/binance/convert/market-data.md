@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/market-data
 api_type: Market Data
-updated_at: 2026-06-08 19:03:09.793367
+updated_at: 2026-06-09 18:57:35.988798
 ---
 
 # Accept Quote (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/sbe-market-data-streams
 api_type: Market Data
-updated_at: 2026-06-08 18:57:43.407353
+updated_at: 2026-06-09 18:52:00.576718
 ---
 
 # User Data Streams for Binance
