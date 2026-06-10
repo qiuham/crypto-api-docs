@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#sub-account-rest-api-create-an-api-key-for-a-sub-account
 anchor_id: sub-account-rest-api-create-an-api-key-for-a-sub-account
 api_type: REST
-updated_at: 2026-06-09 19:30:08.415806
+updated_at: 2026-06-10 19:44:20.446008
 ---
 
 # Create an API Key for a sub-account
