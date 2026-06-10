@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-channels
 api_type: WebSocket
-updated_at: 2026-06-09 18:44:42.044440
+updated_at: 2026-06-10 18:54:02.356374
 ---
 
 # Advanced Trade WebSocket Channels
@@ -78,11 +78,11 @@ Subscribe to the `candles` channel to receive candles messages for specific prod
 
 A candles message is of the type `candles` and some of its parameters include:
 
-  * `start` \- string representation of the UNIX timestamp of the candle.
-  * `high` and `low` \- highest and lowest prices during the bucket interval.
-  * `open` and `close` \- prices of the first and last trade respectively.
-  * `volume` \- base amount that has been traded during this interval.
-  * `product_id` \- product identifier for this candle
+  * `start` - string representation of the UNIX timestamp of the candle.
+  * `high` and `low` - highest and lowest prices during the bucket interval.
+  * `open` and `close` - prices of the first and last trade respectively.
+  * `volume` - base amount that has been traded during this interval.
+  * `product_id` - product identifier for this candle
 
     
     
