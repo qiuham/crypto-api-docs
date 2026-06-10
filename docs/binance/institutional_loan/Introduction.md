@@ -2,31 +2,31 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/Introduction
 api_type: REST
-updated_at: 2026-06-09 18:57:55.913273
+updated_at: 2026-06-10 19:07:01.641729
 ---
 
 # Query Closed Risk Unit Record (USER_DATA)
 
-### API Description[​](/docs/institutional_loan/account/Query-Closed-Group-Record#api-description "Direct link to API Description")
+## API Description[​](/docs/institutional_loan/account/Query-Closed-Group-Record#api-description "Direct link to API Description")
 
 Query closed risk unit record. This endpoint is accessible only with the credit account API key.
 
-### HTTP Request[​](/docs/institutional_loan/account/Query-Closed-Group-Record#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/institutional_loan/account/Query-Closed-Group-Record#http-request "Direct link to HTTP Request")
 
 GET /sapi/v1/margin/loan-groups/closed
 
-### Request Weight[​](/docs/institutional_loan/account/Query-Closed-Group-Record#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/institutional_loan/account/Query-Closed-Group-Record#request-weight "Direct link to Request Weight")
 
 1(IP)
 
-### Request Parameters[​](/docs/institutional_loan/account/Query-Closed-Group-Record#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/institutional_loan/account/Query-Closed-Group-Record#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
 current| LONG| NO| The currently querying page. Start from 1. Default:1  
 size| LONG| NO| Default:10 Max:100  
   
-### Response Example[​](/docs/institutional_loan/account/Query-Closed-Group-Record#response-example "Direct link to Response Example")
+## Response Example[​](/docs/institutional_loan/account/Query-Closed-Group-Record#response-example "Direct link to Response Example")
     
     
     {  
@@ -56,7 +56,7 @@ size| LONG| NO| Default:10 Max:100
 
 Parameter| Type| Description  
 ---|---|---  
-total| LONG| Risk unit number which get as qeury result  
+total| LONG| Risk unit number which get as query result  
 rows| OBJECT ARRAY|   
 → groupId| LONG| Risk unit unique identifier  
 → parentEmail| STRING| Parent account email  
@@ -69,26 +69,26 @@ rows| OBJECT ARRAY|
 
 # 查询关闭的风险单元记录(USER_DATA)
 
-### 接口描述[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#接口描述 "接口描述的直接链接")
 
 查询已关闭的风险单元记录。 仅支持放贷账户调用该接口。
 
-### HTTP请求[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#http请求 "HTTP请求的直接链接")
 
-GET /sapi/v1/margin/loan-group/force-liquidation
+GET /sapi/v1/margin/loan-groups/closed
 
-### 请求权重[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#请求权重 "请求权重的直接链接")
 
 1(IP)
 
-### 请求参数[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
 current| LONG| NO| 当前查询页。 开始值 1。 默认:1  
 size| LONG| NO| 默认:10 最大:100  
   
-### 响应示例[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/institutional_loan/account/Query-Closed-Group-Record#响应示例 "响应示例的直接链接")
     
     
     {  

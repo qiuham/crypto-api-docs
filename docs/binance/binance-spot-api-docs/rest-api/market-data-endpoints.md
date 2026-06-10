@@ -2,30 +2,44 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints
 api_type: Market Data
-updated_at: 2026-06-09 18:51:42.559117
+updated_at: 2026-06-10 19:00:52.568136
 ---
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-09**
+**Last Updated: 2026-06-10**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-10[​](/docs/binance-spot-api-docs/testnet#2026-06-10 "Direct link to 2026-06-10")
+
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api "Direct link to FIX API")
+
+  * Documentation update: removed `LastFragment (893)` from [FIX API](/docs/binance-spot-api-docs/testnet/fix-api#marketdataincrementalrefresh). 
+    * As [previously announced](/docs/binance-spot-api-docs/testnet#2025-11-28), `MarketDataIncrementalRefresh <X>` messages stopped being fragmented on 2025-12-02, and the server no longer sends `LastFragment (893)`.
+    * The field has been removed from the [FIX API](/docs/binance-spot-api-docs/testnet/fix-api) field list and from the corresponding [QuickFIX MD schema](https://github.com/binance/binance-spot-api-docs/blob/master/fix/schemas/spot-fix-md.xml).
+  * Documentation update: updated the [News `<B>`](/docs/binance-spot-api-docs/testnet/fix-api#news-b) message description to be consistent with the announcement from [2026-06-09](/docs/binance-spot-api-docs/testnet#2026-06-09).
+
+
+
+* * *
 
 ### 2026-06-09[​](/docs/binance-spot-api-docs/testnet#2026-06-09 "Direct link to 2026-06-09")
 
 **Update:**
 
+  * Updated the [Price Range Execution Rule FAQ](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+
+
+
 The `serverShutdown` event will be sent when the **server is about to be shut down** ; when you receive this event, please disconnect and open a new connection.
 
 All mention of a fixed time before the server shuts down has been removed from the documentation.
 
-  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown).
-
+  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown). 
     * ~~`serverShutdown` event will be sent 10 minutes before disconnection.~~
     * Please establish a new connection as soon as possible to prevent connection interruption.
     * Note that you will receive `serverShutdown` events in JSON in WebSocket text frames.
-  * Updated the [Price Range Execution Rule FAQ](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
-
 
 
 
@@ -243,7 +257,7 @@ Please consult the [FIX API documentation](/docs/binance-spot-api-docs/testnet/f
 
 
 
-#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api "Direct link to FIX API")
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-1 "Direct link to FIX API")
 
   * ExpiryReason `<25056>` is optionally added to the ExecutionReport `<T>` message. 
     * Updated QuickFIX Schema for FIX Market Data and FIX Order Entry.
@@ -478,7 +492,7 @@ See <https://www.binance.com/en/support/faq/detail/360004492232> for more detail
 
 
 
-#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-1 "Direct link to FIX API")
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-2 "Direct link to FIX API")
 
   * Unicode values encoded in UTF-8 can now be accepted in FIX messages. This is allowed for the following tags only: 
     * `Currency (15)`
@@ -655,7 +669,7 @@ WebSocket API
 
 ### 2025-10-08[​](/docs/binance-spot-api-docs/testnet#2025-10-08 "Direct link to 2025-10-08")
 
-#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-2 "Direct link to FIX API")
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-3 "Direct link to FIX API")
 
 **Notice: The following changes will be enabled at 2025-10-08 07:00 UTC**
 
@@ -892,7 +906,7 @@ Please consult the Spot Test Network's [homepage](https://testnet.binance.vision
 
 
 
-#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-3 "Direct link to FIX API")
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-4 "Direct link to FIX API")
 
   * When a client sends a reject message, the FIX API will no longer send the client back a Reject `<3>` message. Error messages are clearer when a tag is invalid, missing a value, or when the field value is empty or malformed 
     * If the tag number was invalid, you will receive the error: 
@@ -1079,7 +1093,7 @@ Legacy URL| Latest URL
 
 
 
-#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-4 "Direct link to FIX API")
+#### FIX API[​](/docs/binance-spot-api-docs/testnet#fix-api-5 "Direct link to FIX API")
 
   * The [QuickFix schema for FIX OE](https://github.com/binance/binance-spot-api-docs/blob/master/fix/schemas/spot-fix-oe.xml) is updated to support the Order Amend Keep Priority feature and new STP mode, `DECREMENT`.
   * FIX Order Entry connection limits will be a maximum of 10 concurrent connections per account.
@@ -1587,25 +1601,39 @@ User Data Stream:
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-09**
+**Last Updated: 2026-06-10**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-10[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-10 "2026-06-10的直接链接")
+
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api "FIX API的直接链接")
+
+  * Documentation update: removed `LastFragment (893)` from [FIX API](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#marketdataincrementalrefresh). 
+    * As [previously announced](/docs/zh-CN/binance-spot-api-docs/testnet#2025-11-28), `MarketDataIncrementalRefresh <X>` messages stopped being fragmented on 2025-12-02, and the server no longer sends `LastFragment (893)`.
+    * The field has been removed from the [FIX API](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api) field list and from the corresponding [QuickFIX MD schema](https://github.com/binance/binance-spot-api-docs/blob/master/fix/schemas/spot-fix-md.xml).
+  * Documentation update: updated the [News `<B>`](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#news-b) message description to be consistent with the announcement from [2026-06-09](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-09).
+
+
+
+* * *
 
 ### 2026-06-09[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-09 "2026-06-09的直接链接")
 
 **Update:**
 
+  * Updated the [Price Range Execution Rule FAQ](/docs/zh-CN/faqs/price_range_execution_rules.md#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+
+
+
 The `serverShutdown` event will be sent when the **server is about to be shut down** ; when you receive this event, please disconnect and open a new connection.
 
 All mention of a fixed time before the server shuts down has been removed from the documentation.
 
-  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown).
-
+  * Documented the `serverShutdown` event in [SBE Market Data Streams](/docs/zh-CN/binance-spot-api-docs/testnet/sbe-market-data-streams#serverShutdown). 
     * ~~`serverShutdown` event will be sent 10 minutes before disconnection.~~
     * Please establish a new connection as soon as possible to prevent connection interruption.
     * Note that you will receive `serverShutdown` events in JSON in WebSocket text frames.
-  * Updated the [Price Range Execution Rule FAQ](/docs/zh-CN/faqs/price_range_execution_rules.md#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
-
 
 
 
@@ -1823,7 +1851,7 @@ Please consult the [FIX API documentation](/docs/zh-CN/binance-spot-api-docs/tes
 
 
 
-#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api "FIX API的直接链接")
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-1 "FIX API的直接链接")
 
   * ExpiryReason `<25056>` is optionally added to the ExecutionReport `<T>` message. 
     * Updated QuickFIX Schema for FIX Market Data and FIX Order Entry.
@@ -2058,7 +2086,7 @@ See <https://www.binance.com/en/support/faq/detail/360004492232> for more detail
 
 
 
-#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-1 "FIX API的直接链接")
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-2 "FIX API的直接链接")
 
   * Unicode values encoded in UTF-8 can now be accepted in FIX messages. This is allowed for the following tags only: 
     * `Currency (15)`
@@ -2235,7 +2263,7 @@ WebSocket API
 
 ### 2025-10-08[​](/docs/zh-CN/binance-spot-api-docs/testnet#2025-10-08 "2025-10-08的直接链接")
 
-#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-2 "FIX API的直接链接")
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-3 "FIX API的直接链接")
 
 **Notice: The following changes will be enabled at 2025-10-08 07:00 UTC**
 
@@ -2472,7 +2500,7 @@ Please consult the Spot Test Network's [homepage](https://testnet.binance.vision
 
 
 
-#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-3 "FIX API的直接链接")
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-4 "FIX API的直接链接")
 
   * When a client sends a reject message, the FIX API will no longer send the client back a Reject `<3>` message. Error messages are clearer when a tag is invalid, missing a value, or when the field value is empty or malformed 
     * If the tag number was invalid, you will receive the error: 
@@ -2591,7 +2619,7 @@ REST and WebSocket API:
 **Notice:** The following changes will be deployed tomorrow **April 2, 2025 starting at 7:00 UTC** and may take several hours to complete.   
 Please consult the Spot Test Network's [homepage](https://testnet.binance.vision/) to be informed of the release completion.
 
-#### New Features[​](/docs/zh-CN/binance-spot-api-docs/testnet#new-features-3 "New Features的直接链接")
+#### New Features[​](/docs/zh-CN/binance-spot-api-docs/testnet#new-features-3 "New Features��的直接链接")
 
   * **[Order Amend Keep Priority](https://github.com/binance/binance-spot-api-docs/blob/master/faqs/order_amend_keep_priority.md) is now available.**
     * FIX API: New Order Entry Messages **OrderAmendKeepPriorityRequest** and **OrderAmendReject**
@@ -2659,7 +2687,7 @@ Legacy URL| Latest URL
 
 
 
-#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-4 "FIX API的直接链接")
+#### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-5 "FIX API的直接链接")
 
   * The [QuickFix schema for FIX OE](https://github.com/binance/binance-spot-api-docs/blob/master/fix/schemas/spot-fix-oe.xml) is updated to support the Order Amend Keep Priority feature and new STP mode, `DECREMENT`.
   * FIX Order Entry connection limits will be a maximum of 10 concurrent connections per account.

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Query-Margin-Interest-Rate-History
 api_type: REST
-updated_at: 2026-06-09 18:53:33.367787
+updated_at: 2026-06-10 19:02:43.313413
 ---
 
 # Change Log

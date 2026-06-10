@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Small-Liability-Exchange
 api_type: Trading
-updated_at: 2026-06-09 18:54:54.839798
+updated_at: 2026-06-10 19:04:06.003463
 ---
 
 # Small Liability Exchange (MARGIN)

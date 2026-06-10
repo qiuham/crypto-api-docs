@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/deposite-address
 api_type: REST
-updated_at: 2026-06-09 18:56:15.572088
+updated_at: 2026-06-10 19:05:24.239271
 ---
 
 # Fetch deposit address list with network(USER_DATA)

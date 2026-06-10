@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/common-definition
 api_type: REST
-updated_at: 2026-06-09 18:58:12.788071
+updated_at: 2026-06-10 19:07:17.157721
 ---
 
 # Error Codes

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-All-Cross-Margin-Pairs
 api_type: Market Data
-updated_at: 2026-06-09 18:53:42.404354
+updated_at: 2026-06-10 19:02:51.813177
 ---
 
 # Get All Cross Margin Pairs (MARKET_DATA)

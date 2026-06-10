@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/borrow-and-repay/Institution-Loan-Interest-Rebate-Balance
 api_type: REST
-updated_at: 2026-06-09 18:58:10.822557
+updated_at: 2026-06-10 19:07:15.192681
 ---
 
 # Error Codes

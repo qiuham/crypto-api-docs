@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-Margin-Asset-Risk-Based-Liquidation-Ratio
 api_type: Market Data
-updated_at: 2026-06-09 18:53:55.284942
+updated_at: 2026-06-10 19:03:04.149072
 ---
 
 # Query Margin Available Inventory(USER_DATA)
