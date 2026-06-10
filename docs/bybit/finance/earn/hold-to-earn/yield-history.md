@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/hold-to-earn/yield-history
 api_type: REST
-updated_at: 2026-06-09 19:13:46.526132
+updated_at: 2026-06-10 19:23:36.055086
 ---
 
 # Get All Funds

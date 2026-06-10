@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/settle-profit
 api_type: REST
-updated_at: 2026-06-09 19:13:57.299134
+updated_at: 2026-06-10 19:23:48.591203
 ---
 
 # Get Subscribable Product Info

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/product
 api_type: REST
-updated_at: 2026-06-09 19:13:28.212160
+updated_at: 2026-06-10 19:23:15.220469
 ---
 
 # Stake / Redeem

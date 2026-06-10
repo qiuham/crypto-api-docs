@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/premium-index-kline
 api_type: Market Data
-updated_at: 2026-06-09 19:14:43.263167
+updated_at: 2026-06-10 19:24:40.462631
 ---
 
 # Get Risk Limit

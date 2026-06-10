@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/rpi-orderbook
 api_type: Market Data
-updated_at: 2026-06-09 19:14:47.767746
+updated_at: 2026-06-10 19:24:45.517197
 ---
 
 # Get Collateral Coins

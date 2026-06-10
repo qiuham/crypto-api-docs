@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/sign-agreement
 api_type: REST
-updated_at: 2026-06-09 19:17:49.943822
+updated_at: 2026-06-10 19:28:10.406597
 ---
 
 # Get UID Wallet Type

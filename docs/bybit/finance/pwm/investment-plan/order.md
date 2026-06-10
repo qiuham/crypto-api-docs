@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/order
 api_type: REST
-updated_at: 2026-06-09 19:14:09.503354
+updated_at: 2026-06-10 19:24:02.532802
 ---
 
 # Redeem
