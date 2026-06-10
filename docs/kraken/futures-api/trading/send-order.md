@@ -2,148 +2,365 @@
 exchange: kraken
 source_url: https://docs.kraken.com/api/docs/futures-api/trading/send-order
 api_type: REST
-updated_at: 2026-06-09 19:38:15.900199
+updated_at: 2026-06-10 19:49:50.111102
 ---
 
-# Set leverage settings
+# Send order
 
-**PUT** `https://futures.kraken.com/derivatives/api/v3/leveragepreferences`
+Send order
+    
+    
+    curl --request POST \
+      --url https://futures.kraken.com/derivatives/api/v3/sendorder \
+      --header 'APIKey: <api-key>' \
+      --header 'Authent: <api-key>'
+    
+    
+    {
+      "result": "success",
+      "sendStatus": {
+        "order_id": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",
+        "status": "placed",
+        "receivedTime": "2019-09-05T16:33:50.734Z",
+        "orderEvents": [
+          {
+            "type": "PLACE",
+            "order": {
+              "orderId": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",
+              "type": "lmt",
+              "symbol": "PF_XBTUSD",
+              "side": "buy",
+              "quantity": 10000,
+              "filled": 0,
+              "limitPrice": 9400,
+              "reduceOnly": false,
+              "timestamp": "2019-09-05T16:33:50.734Z",
+              "lastUpdateTimestamp": "2019-09-05T16:33:50.734Z"
+            }
+          }
+        ]
+      },
+      "serverTime": "2019-09-05T16:33:50.734Z"
+    }
 
-Sets a contract's margin mode, either "isolated" or "cross" margin.
+POST
 
-When specifying a max leverage, the contract's margin mode will be isolated.
+/
 
-Calling this endpoint can result in the following error codes:
+sendorder
 
-  * 87: Contract does not exist
-  * 88: Contract not a multi-collateral futures contract
-  * 41: Would cause liquidation
+Send order
+    
+    
+    curl --request POST \
+      --url https://futures.kraken.com/derivatives/api/v3/sendorder \
+      --header 'APIKey: <api-key>' \
+      --header 'Authent: <api-key>'
+    
+    
+    {
+      "result": "success",
+      "sendStatus": {
+        "order_id": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",
+        "status": "placed",
+        "receivedTime": "2019-09-05T16:33:50.734Z",
+        "orderEvents": [
+          {
+            "type": "PLACE",
+            "order": {
+              "orderId": "179f9af8-e45e-469d-b3e9-2fd4675cb7d0",
+              "type": "lmt",
+              "symbol": "PF_XBTUSD",
+              "side": "buy",
+              "quantity": 10000,
+              "filled": 0,
+              "limitPrice": 9400,
+              "reduceOnly": false,
+              "timestamp": "2019-09-05T16:33:50.734Z",
+              "lastUpdateTimestamp": "2019-09-05T16:33:50.734Z"
+            }
+          }
+        ]
+      },
+      "serverTime": "2019-09-05T16:33:50.734Z"
+    }
 
-## Request
+#### Authorizations
 
-### Query Parameters
+APIKey
 
-**symbol** `string` *required*
+string
 
-Symbol for the leverage preference.
+header
 
-**maxLeverage** number
+required
 
-Max leverage to set.
+General API key with full access
 
-When present, the symbol's margin mode will be set to "isolated". When missing, the symbol's margin mode will be set to "cross".
+Authent
 
-## Responses
+string
 
-  * 200
+header
 
-OK
+required
 
-  * application/json
-* Schema
-  * success
+Authentication string
 
-**Schema**
+#### Query Parameters
 
-oneOf
-* SuccessResponse
-* ErrorResponse
+processBefore
 
-**result** `string` *required*
+string<date-time>
 
-**Possible values:** [`success`]
+The time before which the request should be processed, otherwise it is rejected.
 
-**Example:**`success`
+orderType
 
-**serverTime** string<date-time>required
+enum<string>
+
+required
+
+The order type:
+
+  * `lmt` \- a limit order
+
+  * `post` \- a post-only limit order
+
+  * `mkt` \- an immediate-or-cancel order with 1% price protection
+
+  * `stp` \- a stop order
+
+  * `take_profit` \- a take profit order
+
+  * `ioc` \- an immediate-or-cancel order
+
+  * `trailing_stop` \- a trailing stop order
+
+  * `fok` \- fill or kill order The order type:
+
+  * `lmt` \- a limit order
+
+  * `post` \- a post-only limit order
+
+  * `mkt` \- an immediate-or-cancel order with 1% price protection
+
+  * `stp` \- a stop order
+
+  * `take_profit` \- a take profit order
+
+  * `ioc` \- an immediate-or-cancel order
+
+  * `trailing_stop` \- a trailing stop order
+
+  * `fok` \- fill-or-kill order
+
+`unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+Available options:
+
+`lmt`,
+
+`post`,
+
+`ioc`,
+
+`mkt`,
+
+`stp`,
+
+`take_profit`,
+
+`trailing_stop`,
+
+`fok`,
+
+`unknown`
+
+symbol
+
+string
+
+required
+
+The symbol of the Futures
+
+side
+
+enum<string>
+
+required
+
+The direction of the order. The direction of the order.
+
+`unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+Available options:
+
+`buy`,
+
+`sell`,
+
+`unknown`
+
+size
+
+number
+
+required
+
+The size associated with the order. Note that different Futures have different contract sizes.
+
+limitPrice
+
+number
+
+The limit price associated with the order. Note that for stop orders, limitPrice denotes the worst price at which the `stp` or `take_profit` order can get filled at. If no `limitPrice` is provided the `stp` or `take_profit` order will trigger a market order. If placing a `trailing_stop` order then leave undefined.
+
+stopPrice
+
+number
+
+The stop price associated with a stop or take profit order.
+
+Required if orderType is `stp` or `take_profit`, but if placing a `trailing_stop` then leave undefined. Note that for stop orders, limitPrice denotes the worst price at which the `stp` or `take_profit` order can get filled at. If no `limitPrice` is provided the `stp` or `take_profit` order will trigger a market order.
+
+cliOrdId
+
+string
+
+The order identity that is specified from the user. It must be globally unique.
+
+Maximum string length: `100`
+
+triggerSignal
+
+enum<string>
+
+If placing a `stp`, `take_profit` or `trailing_stop`, the signal used for trigger.
+
+  * `mark` \- the mark price
+  * `index` \- the index price
+  * `last` \- the last executed trade
+
+Available options:
+
+`mark`,
+
+`index`,
+
+`last`
+
+reduceOnly
+
+boolean
+
+Set as true if you wish the order to only reduce an existing position.
+
+Any order which increases an existing position will be rejected. Default false.
+
+trailingStopMaxDeviation
+
+number
+
+Required if the order type is `trailing_stop`. Maximum value of 50%, minimum value of 0.1% for 'PERCENT' 'maxDeviationUnit'.
+
+Is the maximum distance the trailing stop's trigger price may trail behind the requested trigger signal. It defines the threshold at which the trigger price updates.
+
+Required range: `0.1 <= x <= 50`
+
+trailingStopDeviationUnit
+
+enum<string>
+
+Required if the order type is `trailing_stop`.
+
+This defines how the trailing trigger price is calculated from the requested trigger signal. For example, if the max deviation is set to 10, the unit is 'PERCENT', and the underlying order is a sell, then the trigger price will never be more then 10% below the trigger signal. Similarly, if the deviation is 100, the unit is 'QUOTE_CURRENCY', the underlying order is a sell, and the contract is quoted in USD, then the trigger price will never be more than $100 below the trigger signal.
+
+`unknown` is returned when the source value couldn't be decoded; this will be replaced with a real value as soon as possible.
+
+Available options:
+
+`PERCENT`,
+
+`QUOTE_CURRENCY`,
+
+`unknown`
+
+limitPriceOffsetValue
+
+number
+
+Can only be set for triggers, e.g. order types `take_profit`, `stop` and `trailing_stop`. If set, `limitPriceOffsetUnit` must be set as well. This defines a relative limit price depending on the trigger `stopPrice`. The price is determined when the trigger is activated by the `triggerSignal`. The offset can be positive or negative, there might be restrictions on the value depending on the `limitPriceOffsetUnit`.
+
+limitPriceOffsetUnit
+
+enum<string>
+
+Can only be set together with `limitPriceOffsetValue`. This defines the unit for the relative limit price distance from the trigger's `stopPrice`.
+
+Available options:
+
+`QUOTE_CURRENCY`,
+
+`PERCENT`
+
+broker
+
+string
+
+Valid Broker identifier on whose behalf the order is sent.
+
+Note: This is currently available exclusively in the Kraken pre-prod environments.
+
+Maximum string length: `100`
+
+#### Response
+
+200 - application/json
+
+  * Success Response
+
+  * Errors
+
+sendStatus
+
+object
+
+required
+
+A structure containing information on the send order request.
+
+Show child attributes
+
+result
+
+enum<string>
+
+required
+
+Available options:
+
+`success`
+
+Example:
+
+`"success"`
+
+serverTime
+
+string<date-time>
+
+required
 
 Server time in Coordinated Universal Time (UTC)
 
-**Example:**`2020-08-27T17:03:33.196Z`
+Example:
 
-**errors** `Error (string)[]`
+`"2020-08-27T17:03:33.196Z"`
 
-**Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
+Was this page helpful?
 
-**error** `Error (string)` *required*
+[Get instrument status](/api-reference/instrument-details/get-instrument-status)[Edit order](/api-reference/order-management/edit-order)
 
-Error description.
-* `accountInactive`: The Futures account the request refers to is inactive
-* `apiLimitExceeded`: The API limit for the calling IP address has been exceeded
-* `authenticationError`: The request could not be authenticated
-* `insufficientFunds`: The amount requested for transfer is below the amount of funds available
-* `invalidAccount`: The Futures account the transfer request refers to is invalid
-* `invalidAmount`: The amount the transfer request refers to is invalid
-* `invalidArgument`: One or more arguments provided are invalid
-* `invalidUnit`: The unit the transfer request refers to is invalid
-* `Json Parse Error`: The request failed to pass valid JSON as an argument
-* `marketUnavailable`: The market is currently unavailable
-* `nonceBelowThreshold`: The provided nonce is below the threshold
-* `nonceDuplicate`: The provided nonce is a duplicate as it has been used in a previous request
-* `notFound`: The requested information could not be found
-* `requiredArgumentMissing`: One or more required arguments are missing
-* `Server Error`: There was an error processing the request
-* `Unavailable`: The endpoint being called is unavailable
-* `unknownError`: An unknown error has occurred
-
-**Possible values:** [`accountInactive`, `apiLimitExceeded`, `authenticationError`, `insufficientFunds`, `invalidAccount`, `invalidAmount`, `invalidArgument`, `invalidUnit`, `Json Parse Error`, `marketUnavailable`, `nonceBelowThreshold`, `nonceDuplicate`, `notFound`, `requiredArgumentMissing`, `Server Error`, `Unavailable`, `unknownError`]
-
-**result** `string` *required*
-
-**Possible values:** [`error`]
-
-**Example:**`error`
-
-**serverTime** string<date-time>required
-
-Server time in Coordinated Universal Time (UTC)
-
-**Example:**`2020-08-27T17:03:33.196Z`
-
-    
-    
-    {  
-      "result": "success",  
-      "serverTime": "2022-06-28T14:48:58.711Z"  
-    }  
-    
-
-#### Authorization: APIKey
-    
-    
-    **name:** [APIKey](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** General API key with **full** access**in:** header**x-inlineDescription:** true
-    
-    
-    **name:** [Authent](/api/docs/futures-api/trading/kraken-futures-trading-api#authentication)**type:** apiKey**description:** Authentication string**in:** header**x-inlineDescription:** true
-
-  * curl
-  * python
-  * go
-  * nodejs
-* CURL
-
-    
-    
-    curl -L -X PUT 'https://futures.kraken.com/derivatives/api/v3/leveragepreferences' \  
-    -H 'Accept: application/json' \  
-    -H 'APIKey: <APIKey>' \  
-    -H 'Authent: <Authent>'  
-    
-
-Request Collapse all
-
-Base URL
-
-https://futures.kraken.com/derivatives/api/v3
-
-Auth
-
-general-api-key
-
-authent
-
-Parameters
-
-symbol — queryrequired
-
-maxLeverage — query
+Ctrl+I
