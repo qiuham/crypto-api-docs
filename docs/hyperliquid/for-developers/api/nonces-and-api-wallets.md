@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/nonces-and-api-wallets
 api_type: REST
-updated_at: 2026-06-09 18:48:57.713623
+updated_at: 2026-06-10 18:58:13.281602
 ---
 
 # Nonces and API wallets
