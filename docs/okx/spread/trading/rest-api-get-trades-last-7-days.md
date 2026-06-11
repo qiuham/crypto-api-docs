@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-get-trades-last-7-days
 anchor_id: spread-trading-rest-api-get-trades-last-7-days
 api_type: REST
-updated_at: 2026-06-10 19:43:37.770041
+updated_at: 2026-06-11 19:48:13.380943
 ---
 
 # Get trades (last 7 days)

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#sub-account
 anchor_id: sub-account
 api_type: API
-updated_at: 2026-06-10 19:44:19.070532
+updated_at: 2026-06-11 19:48:54.866986
 ---
 
 # Sub-account
