@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/ltv-convert
 api_type: REST
-updated_at: 2026-06-10 19:25:44.944561
+updated_at: 2026-06-11 19:32:46.108558
 ---
 
 # Repay

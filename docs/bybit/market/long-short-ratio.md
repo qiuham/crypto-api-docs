@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/long-short-ratio
 api_type: Market Data
-updated_at: 2026-06-10 19:24:33.368277
+updated_at: 2026-06-11 19:31:32.936529
 ---
 
 # Get Open Interest

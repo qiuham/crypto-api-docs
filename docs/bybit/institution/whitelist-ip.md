@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/institution/whitelist-ip
 api_type: REST
-updated_at: 2026-06-10 19:24:19.792760
+updated_at: 2026-06-11 19:31:18.964851
 ---
 
 # Get Funding Rate History

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/apr-history
 api_type: REST
-updated_at: 2026-06-10 19:23:16.460012
+updated_at: 2026-06-11 19:30:20.834134
 ---
 
 # Stake / Redeem

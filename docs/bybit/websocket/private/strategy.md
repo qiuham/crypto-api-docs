@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/strategy
 api_type: WebSocket
-updated_at: 2026-06-10 19:28:22.961716
+updated_at: 2026-06-11 19:35:27.072486
 ---
 
 # All Liquidation

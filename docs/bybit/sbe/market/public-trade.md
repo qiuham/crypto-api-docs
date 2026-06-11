@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/market/public-trade
 api_type: Market Data
-updated_at: 2026-06-10 19:26:51.976037
+updated_at: 2026-06-11 19:33:54.929710
 ---
 
 # SBE Basic Information
