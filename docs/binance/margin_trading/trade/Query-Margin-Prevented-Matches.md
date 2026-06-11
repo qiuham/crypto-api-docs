@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Prevented-Matches
 api_type: Trading
-updated_at: 2026-06-10 19:04:04.158585
+updated_at: 2026-06-11 19:10:53.526431
 ---
 
 # Small Liability Exchange (MARGIN)

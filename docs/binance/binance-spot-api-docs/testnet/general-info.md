@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/general-info
 api_type: REST
-updated_at: 2026-06-10 19:01:08.027447
+updated_at: 2026-06-11 19:07:52.950548
 ---
 
 # User Data Streams for Binance

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/quick-start
 api_type: REST
-updated_at: 2026-06-10 19:06:43.991401
+updated_at: 2026-06-11 19:13:37.520707
 ---
 
 # Accept Quote (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Query-Enabled-Isolated-Margin-Account-Limit
 api_type: Account
-updated_at: 2026-06-10 19:02:29.907305
+updated_at: 2026-06-11 19:09:17.705541
 ---
 
 # Query Enabled Isolated Margin Account Limit (USER_DATA)
