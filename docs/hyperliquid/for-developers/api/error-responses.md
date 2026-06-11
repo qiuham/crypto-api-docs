@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses
 api_type: REST
-updated_at: 2026-06-10 18:57:49.550587
+updated_at: 2026-06-11 19:04:07.057331
 ---
 
 # Error responses

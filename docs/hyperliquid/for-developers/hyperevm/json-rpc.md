@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/json-rpc
 api_type: REST
-updated_at: 2026-06-10 18:59:19.307843
+updated_at: 2026-06-11 19:05:30.931268
 ---
 
 # JSON-RPC

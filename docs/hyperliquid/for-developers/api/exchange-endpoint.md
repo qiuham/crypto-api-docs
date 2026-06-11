@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint
 api_type: REST
-updated_at: 2026-06-10 18:57:53.661867
+updated_at: 2026-06-11 19:04:11.280185
 ---
 
 # Exchange endpoint
@@ -137,7 +137,7 @@ Type
 
 Description
 
-action*| Object| { "type": "cancel", "cancels": [ { "a": Number, "o": Number } ]} Meaning of keys: a is asset o is oid (order id)  
+action*| Object| { "type": "cancel", "cancels": [ { "a": Number, "o": Number } ], "f": Boolean // fast} Meaning of keys: a is asset o is oid (order id)  
 ---|---|---  
 | |   
 nonce*| Number| Recommended to use the current timestamp in milliseconds  
@@ -173,6 +173,10 @@ expiresAfter| Number| Timestamp in milliseconds
        }
     }
 
+Both cancel and cancelByCloid actions include an optional `fast` flag, encoded as `f` in the action. Currently `fast` has no effect, other than being rejected for canceling trigger orders. In a future network upgrade, cancel actions will be prioritized in the mempool if and only if `fast = true`.
+
+Note that `a` must be skipped if false, i.e. actions hashed with `a: false` will be rejected. 
+
 ## Cancel order(s) by cloid
 
 `POST` `https://api.hyperliquid.xyz/exchange `
@@ -196,7 +200,7 @@ Type
 
 Description
 
-action*| Object| { "type": "cancelByCloid", "cancels": [ { "asset": Number, "cloid": String } ]}  
+action*| Object| { "type": "cancelByCloid", "cancels": [ { "asset": Number, "cloid": String } ], "f": Boolean // fast}  
 ---|---|---  
 nonce*| Number| Recommended to use the current timestamp in milliseconds  
 signature*| Object|   
@@ -258,13 +262,17 @@ Type
 
 Description
 
-action*| Object| { "type": "modify", "oid": Number | Cloid, "order": { "a": Number, "b": Boolean, "p": String, "s": String, "r": Boolean, "t": { "limit": { "tif": "Alo" | "Ioc" | "Gtc"  } or "trigger": { "isMarket": Boolean, "triggerPx": String, "tpsl": "tp" | "sl" } }, "c": Cloid (optional) }} Meaning of keys: a is asset b is isBuy p is price s is size r is reduceOnly t is type c is cloid (client order id)  
+action*| Object| { "type": "modify", "oid": Number | Cloid, "order": { "a": Number, "b": Boolean, "p": String, "s": String, "r": Boolean, "t": { "limit": { "tif": "Alo" | "Ioc" | "Gtc"  } or "trigger": { "isMarket": Boolean, "triggerPx": String, "tpsl": "tp" | "sl" } }, "c": Cloid (optional) }, "a": Boolean // always_place} Meaning of keys: a is asset b is isBuy p is price s is size r is reduceOnly t is type c is cloid (client order id)  
 ---|---|---  
 nonce*| Number| Recommended to use the current timestamp in milliseconds  
 signature*| Object|   
 vaultAddress| String| If trading on behalf of a vault or subaccount, its Onchain address in 42-character hexadecimal format; e.g. 0x0000000000000000000000000000000000000000  
 expiresAfter| Number| Timestamp in milliseconds  
   
+Both single and batch modify actions include an optional `always_place` flag, encoded as `a` in the action. When `always_place = true` will place the new order regardless of whether the cancel succeeded. When `always_place = false` the new order must be a non-trigger order, and must have TIF = ALO or a non-executable order with TIF = GTC. In the latter case, TIF of the new order is overridden to ALO.
+
+Note that `a` must be skipped if false, i.e. actions hashed with `a: false` will be rejected. 
+
 ## Modify multiple orders
 
 `POST` `https://api.hyperliquid.xyz/exchange`
@@ -288,7 +296,7 @@ Type
 
 Description
 
-action*| Object| { "type": "batchModify", "modifies": [{ "oid": Number | Cloid, "order": { "a": Number, "b": Boolean, "p": String, "s": String, "r": Boolean, "t": { "limit": { "tif": "Alo" | "Ioc" | "Gtc"  } or "trigger": { "isMarket": Boolean, "triggerPx": String, "tpsl": "tp" | "sl" } }, "c": Cloid (optional) } }]} Meaning of keys: a is asset b is isBuy p is price s is size r is reduceOnly t is type c is cloid (client order id)  
+action*| Object| { "type": "batchModify", "modifies": [{ "oid": Number | Cloid, "order": { "a": Number, "b": Boolean, "p": String, "s": String, "r": Boolean, "t": { "limit": { "tif": "Alo" | "Ioc" | "Gtc"  } or "trigger": { "isMarket": Boolean, "triggerPx": String, "tpsl": "tp" | "sl" } }, "c": Cloid (optional) } }],  "a": Boolean // always_place} Meaning of keys: a is asset b is isBuy p is price s is size r is reduceOnly t is type c is cloid (client order id)  
 ---|---|---  
 nonce*| Number| Recommended to use the current timestamp in milliseconds  
 signature*| Object|   

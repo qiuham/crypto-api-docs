@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interacting-with-hypercore
 api_type: REST
-updated_at: 2026-06-10 18:59:11.812182
+updated_at: 2026-06-11 19:05:23.164010
 ---
 
 # Interacting with HyperCore
@@ -66,8 +66,8 @@ Notes
 11| Cancel order by cloid| (asset, cloid)| (uint32, uint128)|   
 12| Approve builder fee| (maxFeeRate, builder address)| (uint64, address)| maxFeeRate is in decibps. To approve a builder fee of 0.01% maxFreeRate should be 10.  
 13 | Send asset| (destination, subAccount, source_dex, destination_dex, token, wei)| (address, address, uint32, uint32, uint64, uint64)| If subAccount is not the zero address, then transfer from subAccount. Specify uint32::MAX for the source_dex or destination_dex for spot.   
-14| Reflect EVM supply change for aligned quote token| (token, wei, is_mint)| (uint64, uint64, bool)| Only applicable for aligned quote token contracts.  
 15| Borrow lend operation | (encodedOperation, token, wei)| (uint8, uint64, uint64)| encodedOperation `0` for `Supply`, `1` for `Withdraw` . If `wei` is 0 then maximally apply the operation, e.g. withdraw full balance from reserve.  
+16| Set abstraction| (user, abstraction)| (address, uint8)| abstraction `1` for `disabled`, `2` for `unifiedAccount` , `3` for `portfolioMargin` . `user` can either be the master user or a sub-account.  
   
 Below is an example contract that would send an action on behalf of its own contract address on HyperCore, which also demonstrates one way to construct the encoded action in Solidity.
     

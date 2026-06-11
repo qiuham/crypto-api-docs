@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing
 api_type: REST
-updated_at: 2026-06-10 18:58:32.159427
+updated_at: 2026-06-11 19:04:48.877913
 ---
 
 # Signing

@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions
 api_type: WebSocket
-updated_at: 2026-06-10 18:58:47.430600
+updated_at: 2026-06-11 19:05:04.266785
 ---
 
 # Subscriptions
@@ -172,6 +172,16 @@ The subscription object contains the details of the specific feed you want to su
      1. Subscription message: `{ "type": "outcomeMetaUpdates" }`
 
      2. Data format: `WsOutcomeMetaUpdates`
+
+  24. `fastAssetCtxs`
+
+     1. { "method": "subscribe", "subscription": { "type": "fastAssetCtxs" } }
+
+     2. Data format: base64 encoded and compressed `WsFastAssetCtx`
+
+     3. To read data, apply in order: 1\. base64-decode to bytes 2\. decompress: a raw DEFLATE stream (RFC 1951) — there is no zlib (RFC 1950) or gzip (RFC 1952) wrapper. Python `zlib.decompress(b, wbits=-15)`, browsers `new DecompressionStream("deflate-raw")`, Node `fflate.inflateSync` 3\. UTF-8 decode and parse as JSON 4\. Example to test your implementation payload: `"q1ZyCnFWsqpWyk0syg6oULJSsjQ3NTDQM1Wq1VFyDfFAkTI2MzXQMwJLVVRWWfmFuTiiyBuamOoZKdXWAgA="` decoded: `{ "BTC": { "markPx": "97500.5" }, "ETH": { "markPx": "3650.25" }, "xyz:NVDA": { markPx": "145.2" }}`
+
+     4. The first message is a snapshot, subsequent messages contain only coins that have updated.
 
 ### Data formats
 
@@ -543,6 +553,11 @@ Here are the definitions of the data types used in the WebSocket API:
       namedOutcomes: number[];
       settledNamedOutcomes: number[];
     };
+    
+    type FFastAssetCtx = {
+      markPx: number;
+    };
+    type WsFastAssetCtxs = Record<string, FFastAssetCtx>;
 
 WsUserNonFundingLedgerUpdates
     

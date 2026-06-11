@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint
 api_type: REST
-updated_at: 2026-06-10 18:58:01.585192
+updated_at: 2026-06-11 19:04:19.233543
 ---
 
 # Info endpoint
@@ -1354,53 +1354,6 @@ user*| String| hexadecimal format; e.g. 0x00000000000000000000000000000000000000
       
     
     "unifiedAccount" | "portfolioMargin" | "disabled" | "default" | "dexAbstraction"
-
-## Query aligned quote token status
-
-`POST` `https://api.hyperliquid.xyz/info`
-
-#### Headers
-
-Name
-
-Type
-
-Description
-
-Content-Type*| String| "application/json"  
----|---|---  
-  
-#### Request Body
-
-Name
-
-Type
-
-Description
-
-type*| String| "alignedQuoteTokenInfo"  
----|---|---  
-token*| Number| token index  
-      
-    
-    {
-        "isAligned": true,
-        "firstAlignedTime": 1758949452538,
-        "evmMintedSupply": "0.0",
-        "dailyAmountOwed": [
-            [
-                "2025-10-04",
-                "0.0"
-            ],
-            [
-                "2025-10-05",
-                "0.0"
-            ],
-            ...
-        ],
-        "predictedRate": "0.01"
-    }
-    
 
 ## Query borrow/lend user state
 

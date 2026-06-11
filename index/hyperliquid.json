@@ -1,7 +1,7 @@
 {
   "exchange": "hyperliquid",
   "total": 34,
-  "updated_at": "2026-06-10 18:59:38.099265",
+  "updated_at": "2026-06-11 19:05:49.892204",
   "documents_by_type": {
     "REST": [
       {
@@ -9,210 +9,210 @@
         "filename": "activation-gas-fee.md",
         "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee",
-        "updated_at": "2026-06-10 18:57:34.354707"
+        "updated_at": "2026-06-11 19:03:51.954103"
       },
       {
         "title": "Asset IDs",
         "filename": "asset-ids.md",
         "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids",
-        "updated_at": "2026-06-10 18:57:38.153222"
+        "updated_at": "2026-06-11 19:03:55.671543"
       },
       {
         "title": "Bridge2",
         "filename": "bridge2.md",
         "path": "docs/hyperliquid/for-developers/api/bridge2.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2",
-        "updated_at": "2026-06-10 18:57:41.927684"
+        "updated_at": "2026-06-11 19:03:59.437239"
       },
       {
         "title": "Deploying HIP-1 and HIP-2 assets",
         "filename": "deploying-hip-1-and-hip-2-assets.md",
         "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets",
-        "updated_at": "2026-06-10 18:57:45.728753"
+        "updated_at": "2026-06-11 19:04:03.275882"
       },
       {
         "title": "Error responses",
         "filename": "error-responses.md",
         "path": "docs/hyperliquid/for-developers/api/error-responses.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses",
-        "updated_at": "2026-06-10 18:57:49.550587"
+        "updated_at": "2026-06-11 19:04:07.057331"
       },
       {
         "title": "Exchange endpoint",
         "filename": "exchange-endpoint.md",
         "path": "docs/hyperliquid/for-developers/api/exchange-endpoint.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint",
-        "updated_at": "2026-06-10 18:57:53.661867"
+        "updated_at": "2026-06-11 19:04:11.280185"
       },
       {
         "title": "HIP-3 deployer actions",
         "filename": "hip-3-deployer-actions.md",
         "path": "docs/hyperliquid/for-developers/api/hip-3-deployer-actions.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions",
-        "updated_at": "2026-06-10 18:57:57.493068"
+        "updated_at": "2026-06-11 19:04:15.116247"
       },
       {
         "title": "Perpetuals",
         "filename": "perpetuals.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint/perpetuals.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals",
-        "updated_at": "2026-06-10 18:58:05.668330"
+        "updated_at": "2026-06-11 19:04:23.185687"
       },
       {
         "title": "Spot",
         "filename": "spot.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint/spot.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot",
-        "updated_at": "2026-06-10 18:58:09.506920"
+        "updated_at": "2026-06-11 19:04:27.069845"
       },
       {
         "title": "Info endpoint",
         "filename": "info-endpoint.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint",
-        "updated_at": "2026-06-10 18:58:01.585192"
+        "updated_at": "2026-06-11 19:04:19.233543"
       },
       {
         "title": "Nonces and API wallets",
         "filename": "nonces-and-api-wallets.md",
         "path": "docs/hyperliquid/for-developers/api/nonces-and-api-wallets.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/nonces-and-api-wallets",
-        "updated_at": "2026-06-10 18:58:13.281602"
+        "updated_at": "2026-06-11 19:04:30.865788"
       },
       {
         "title": "Notation",
         "filename": "notation.md",
         "path": "docs/hyperliquid/for-developers/api/notation.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/notation",
-        "updated_at": "2026-06-10 18:58:16.965821"
+        "updated_at": "2026-06-11 19:04:34.729734"
       },
       {
         "title": "Optimizing latency",
         "filename": "optimizing-latency.md",
         "path": "docs/hyperliquid/for-developers/api/optimizing-latency.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency",
-        "updated_at": "2026-06-10 18:58:20.715787"
+        "updated_at": "2026-06-11 19:04:38.528922"
       },
       {
         "title": "Priority fees",
         "filename": "priority-fees.md",
         "path": "docs/hyperliquid/for-developers/api/priority-fees.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees",
-        "updated_at": "2026-06-10 18:58:24.461688"
+        "updated_at": "2026-06-11 19:04:41.235788"
       },
       {
         "title": "Rate limits and user limits",
         "filename": "rate-limits-and-user-limits.md",
         "path": "docs/hyperliquid/for-developers/api/rate-limits-and-user-limits.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits",
-        "updated_at": "2026-06-10 18:58:28.369452"
+        "updated_at": "2026-06-11 19:04:45.066646"
       },
       {
         "title": "Signing",
         "filename": "signing.md",
         "path": "docs/hyperliquid/for-developers/api/signing.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing",
-        "updated_at": "2026-06-10 18:58:32.159427"
+        "updated_at": "2026-06-11 19:04:48.877913"
       },
       {
         "title": "Tick and lot size",
         "filename": "tick-and-lot-size.md",
         "path": "docs/hyperliquid/for-developers/api/tick-and-lot-size.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/tick-and-lot-size",
-        "updated_at": "2026-06-10 18:58:35.940352"
+        "updated_at": "2026-06-11 19:04:52.746226"
       },
       {
         "title": "API",
         "filename": "api.md",
         "path": "docs/hyperliquid/for-developers/api.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api",
-        "updated_at": "2026-06-10 18:57:30.629864"
+        "updated_at": "2026-06-11 19:03:48.242446"
       },
       {
         "title": "Dual-block architecture",
         "filename": "dual-block-architecture.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/dual-block-architecture.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/dual-block-architecture",
-        "updated_at": "2026-06-10 18:58:58.826382"
+        "updated_at": "2026-06-11 19:05:15.509114"
       },
       {
         "title": "HyperCore <> HyperEVM transfers",
         "filename": "hypercore-less-than-greater-than-hyperevm-transfers.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers",
-        "updated_at": "2026-06-10 18:59:08.040965"
+        "updated_at": "2026-06-11 19:05:19.352710"
       },
       {
         "title": "Interacting with HyperCore",
         "filename": "interacting-with-hypercore.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/interacting-with-hypercore.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interacting-with-hypercore",
-        "updated_at": "2026-06-10 18:59:11.812182"
+        "updated_at": "2026-06-11 19:05:23.164010"
       },
       {
         "title": "Interaction timings",
         "filename": "interaction-timings.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/interaction-timings.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interaction-timings",
-        "updated_at": "2026-06-10 18:59:15.513872"
+        "updated_at": "2026-06-11 19:05:27.140049"
       },
       {
         "title": "JSON-RPC",
         "filename": "json-rpc.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/json-rpc.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/json-rpc",
-        "updated_at": "2026-06-10 18:59:19.307843"
+        "updated_at": "2026-06-11 19:05:30.931268"
       },
       {
         "title": "Raw HyperEVM block data",
         "filename": "raw-hyperevm-block-data.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/raw-hyperevm-block-data.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/raw-hyperevm-block-data",
-        "updated_at": "2026-06-10 18:59:23.049751"
+        "updated_at": "2026-06-11 19:05:34.741835"
       },
       {
         "title": "Wrapped HYPE",
         "filename": "wrapped-hype.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/wrapped-hype.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/wrapped-hype",
-        "updated_at": "2026-06-10 18:59:26.798902"
+        "updated_at": "2026-06-11 19:05:38.540496"
       },
       {
         "title": "HyperEVM",
         "filename": "hyperevm.md",
         "path": "docs/hyperliquid/for-developers/hyperevm.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm",
-        "updated_at": "2026-06-10 18:58:55.118402"
+        "updated_at": "2026-06-11 19:05:11.798609"
       },
       {
         "title": "Foundation non-validating node",
         "filename": "foundation-non-validating-node.md",
         "path": "docs/hyperliquid/for-developers/nodes/foundation-non-validating-node.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/foundation-non-validating-node",
-        "updated_at": "2026-06-10 18:59:34.239722"
+        "updated_at": "2026-06-11 19:05:46.047246"
       },
       {
         "title": "L1 data schemas",
         "filename": "l1-data-schemas.md",
         "path": "docs/hyperliquid/for-developers/nodes/l1-data-schemas.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/l1-data-schemas",
-        "updated_at": "2026-06-10 18:59:38.099265"
+        "updated_at": "2026-06-11 19:05:49.892204"
       },
       {
         "title": "Nodes",
         "filename": "nodes.md",
         "path": "docs/hyperliquid/for-developers/nodes.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes",
-        "updated_at": "2026-06-10 18:59:30.464395"
+        "updated_at": "2026-06-11 19:05:42.303136"
       },
       {
         "title": "API",
         "filename": "for-developers.md",
         "path": "docs/hyperliquid/for-developers.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers",
-        "updated_at": "2026-06-10 18:57:26.638999"
+        "updated_at": "2026-06-11 19:03:44.454228"
       }
     ],
     "WebSocket": [
@@ -221,28 +221,28 @@
         "filename": "post-requests.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/post-requests.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/post-requests",
-        "updated_at": "2026-06-10 18:58:43.499608"
+        "updated_at": "2026-06-11 19:05:00.332230"
       },
       {
         "title": "Subscriptions",
         "filename": "subscriptions.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/subscriptions.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions",
-        "updated_at": "2026-06-10 18:58:47.430600"
+        "updated_at": "2026-06-11 19:05:04.266785"
       },
       {
         "title": "Timeouts and heartbeats",
         "filename": "timeouts-and-heartbeats.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/timeouts-and-heartbeats.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/timeouts-and-heartbeats",
-        "updated_at": "2026-06-10 18:58:51.132590"
+        "updated_at": "2026-06-11 19:05:08.020661"
       },
       {
         "title": "Websocket",
         "filename": "websocket.md",
         "path": "docs/hyperliquid/for-developers/api/websocket.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket",
-        "updated_at": "2026-06-10 18:58:39.777160"
+        "updated_at": "2026-06-11 19:04:56.554245"
       }
     ]
   },
@@ -253,7 +253,7 @@
       "path": "docs/hyperliquid/for-developers/api.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api",
-      "updated_at": "2026-06-10 18:57:30.629864"
+      "updated_at": "2026-06-11 19:03:48.242446"
     },
     {
       "title": "API",
@@ -261,7 +261,7 @@
       "path": "docs/hyperliquid/for-developers.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers",
-      "updated_at": "2026-06-10 18:57:26.638999"
+      "updated_at": "2026-06-11 19:03:44.454228"
     },
     {
       "title": "Activation gas fee",
@@ -269,7 +269,7 @@
       "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee",
-      "updated_at": "2026-06-10 18:57:34.354707"
+      "updated_at": "2026-06-11 19:03:51.954103"
     },
     {
       "title": "Asset IDs",
@@ -277,7 +277,7 @@
       "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/asset-ids",
-      "updated_at": "2026-06-10 18:57:38.153222"
+      "updated_at": "2026-06-11 19:03:55.671543"
     },
     {
       "title": "Bridge2",
@@ -285,7 +285,7 @@
       "path": "docs/hyperliquid/for-developers/api/bridge2.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2",
-      "updated_at": "2026-06-10 18:57:41.927684"
+      "updated_at": "2026-06-11 19:03:59.437239"
     },
     {
       "title": "Deploying HIP-1 and HIP-2 assets",
@@ -293,7 +293,7 @@
       "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/deploying-hip-1-and-hip-2-assets",
-      "updated_at": "2026-06-10 18:57:45.728753"
+      "updated_at": "2026-06-11 19:04:03.275882"
     },
     {
       "title": "Dual-block architecture",
@@ -301,7 +301,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/dual-block-architecture.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/dual-block-architecture",
-      "updated_at": "2026-06-10 18:58:58.826382"
+      "updated_at": "2026-06-11 19:05:15.509114"
     },
     {
       "title": "Error responses",
@@ -309,7 +309,7 @@
       "path": "docs/hyperliquid/for-developers/api/error-responses.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/error-responses",
-      "updated_at": "2026-06-10 18:57:49.550587"
+      "updated_at": "2026-06-11 19:04:07.057331"
     },
     {
       "title": "Exchange endpoint",
@@ -317,7 +317,7 @@
       "path": "docs/hyperliquid/for-developers/api/exchange-endpoint.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint",
-      "updated_at": "2026-06-10 18:57:53.661867"
+      "updated_at": "2026-06-11 19:04:11.280185"
     },
     {
       "title": "Foundation non-validating node",
@@ -325,7 +325,7 @@
       "path": "docs/hyperliquid/for-developers/nodes/foundation-non-validating-node.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/foundation-non-validating-node",
-      "updated_at": "2026-06-10 18:59:34.239722"
+      "updated_at": "2026-06-11 19:05:46.047246"
     },
     {
       "title": "HIP-3 deployer actions",
@@ -333,7 +333,7 @@
       "path": "docs/hyperliquid/for-developers/api/hip-3-deployer-actions.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/hip-3-deployer-actions",
-      "updated_at": "2026-06-10 18:57:57.493068"
+      "updated_at": "2026-06-11 19:04:15.116247"
     },
     {
       "title": "HyperCore <> HyperEVM transfers",
@@ -341,7 +341,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers",
-      "updated_at": "2026-06-10 18:59:08.040965"
+      "updated_at": "2026-06-11 19:05:19.352710"
     },
     {
       "title": "HyperEVM",
@@ -349,7 +349,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm",
-      "updated_at": "2026-06-10 18:58:55.118402"
+      "updated_at": "2026-06-11 19:05:11.798609"
     },
     {
       "title": "Info endpoint",
@@ -357,7 +357,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint",
-      "updated_at": "2026-06-10 18:58:01.585192"
+      "updated_at": "2026-06-11 19:04:19.233543"
     },
     {
       "title": "Interacting with HyperCore",
@@ -365,7 +365,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/interacting-with-hypercore.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interacting-with-hypercore",
-      "updated_at": "2026-06-10 18:59:11.812182"
+      "updated_at": "2026-06-11 19:05:23.164010"
     },
     {
       "title": "Interaction timings",
@@ -373,7 +373,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/interaction-timings.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/interaction-timings",
-      "updated_at": "2026-06-10 18:59:15.513872"
+      "updated_at": "2026-06-11 19:05:27.140049"
     },
     {
       "title": "JSON-RPC",
@@ -381,7 +381,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/json-rpc.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/json-rpc",
-      "updated_at": "2026-06-10 18:59:19.307843"
+      "updated_at": "2026-06-11 19:05:30.931268"
     },
     {
       "title": "L1 data schemas",
@@ -389,7 +389,7 @@
       "path": "docs/hyperliquid/for-developers/nodes/l1-data-schemas.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/l1-data-schemas",
-      "updated_at": "2026-06-10 18:59:38.099265"
+      "updated_at": "2026-06-11 19:05:49.892204"
     },
     {
       "title": "Nodes",
@@ -397,7 +397,7 @@
       "path": "docs/hyperliquid/for-developers/nodes.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes",
-      "updated_at": "2026-06-10 18:59:30.464395"
+      "updated_at": "2026-06-11 19:05:42.303136"
     },
     {
       "title": "Nonces and API wallets",
@@ -405,7 +405,7 @@
       "path": "docs/hyperliquid/for-developers/api/nonces-and-api-wallets.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/nonces-and-api-wallets",
-      "updated_at": "2026-06-10 18:58:13.281602"
+      "updated_at": "2026-06-11 19:04:30.865788"
     },
     {
       "title": "Notation",
@@ -413,7 +413,7 @@
       "path": "docs/hyperliquid/for-developers/api/notation.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/notation",
-      "updated_at": "2026-06-10 18:58:16.965821"
+      "updated_at": "2026-06-11 19:04:34.729734"
     },
     {
       "title": "Optimizing latency",
@@ -421,7 +421,7 @@
       "path": "docs/hyperliquid/for-developers/api/optimizing-latency.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/optimizing-latency",
-      "updated_at": "2026-06-10 18:58:20.715787"
+      "updated_at": "2026-06-11 19:04:38.528922"
     },
     {
       "title": "Perpetuals",
@@ -429,7 +429,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint/perpetuals.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals",
-      "updated_at": "2026-06-10 18:58:05.668330"
+      "updated_at": "2026-06-11 19:04:23.185687"
     },
     {
       "title": "Post requests",
@@ -437,7 +437,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/post-requests.md",
       "api_type": "WebSocket",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/post-requests",
-      "updated_at": "2026-06-10 18:58:43.499608"
+      "updated_at": "2026-06-11 19:05:00.332230"
     },
     {
       "title": "Priority fees",
@@ -445,7 +445,7 @@
       "path": "docs/hyperliquid/for-developers/api/priority-fees.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/priority-fees",
-      "updated_at": "2026-06-10 18:58:24.461688"
+      "updated_at": "2026-06-11 19:04:41.235788"
     },
     {
       "title": "Rate limits and user limits",
@@ -453,7 +453,7 @@
       "path": "docs/hyperliquid/for-developers/api/rate-limits-and-user-limits.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/rate-limits-and-user-limits",
-      "updated_at": "2026-06-10 18:58:28.369452"
+      "updated_at": "2026-06-11 19:04:45.066646"
     },
     {
       "title": "Raw HyperEVM block data",
@@ -461,7 +461,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/raw-hyperevm-block-data.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/raw-hyperevm-block-data",
-      "updated_at": "2026-06-10 18:59:23.049751"
+      "updated_at": "2026-06-11 19:05:34.741835"
     },
     {
       "title": "Signing",
@@ -469,7 +469,7 @@
       "path": "docs/hyperliquid/for-developers/api/signing.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing",
-      "updated_at": "2026-06-10 18:58:32.159427"
+      "updated_at": "2026-06-11 19:04:48.877913"
     },
     {
       "title": "Spot",
@@ -477,7 +477,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint/spot.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot",
-      "updated_at": "2026-06-10 18:58:09.506920"
+      "updated_at": "2026-06-11 19:04:27.069845"
     },
     {
       "title": "Subscriptions",
@@ -485,7 +485,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/subscriptions.md",
       "api_type": "WebSocket",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions",
-      "updated_at": "2026-06-10 18:58:47.430600"
+      "updated_at": "2026-06-11 19:05:04.266785"
     },
     {
       "title": "Tick and lot size",
@@ -493,7 +493,7 @@
       "path": "docs/hyperliquid/for-developers/api/tick-and-lot-size.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/tick-and-lot-size",
-      "updated_at": "2026-06-10 18:58:35.940352"
+      "updated_at": "2026-06-11 19:04:52.746226"
     },
     {
       "title": "Timeouts and heartbeats",
@@ -501,7 +501,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/timeouts-and-heartbeats.md",
       "api_type": "WebSocket",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/timeouts-and-heartbeats",
-      "updated_at": "2026-06-10 18:58:51.132590"
+      "updated_at": "2026-06-11 19:05:08.020661"
     },
     {
       "title": "Websocket",
@@ -509,7 +509,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket.md",
       "api_type": "WebSocket",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket",
-      "updated_at": "2026-06-10 18:58:39.777160"
+      "updated_at": "2026-06-11 19:04:56.554245"
     },
     {
       "title": "Wrapped HYPE",
@@ -517,7 +517,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/wrapped-hype.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/hyperevm/wrapped-hype",
-      "updated_at": "2026-06-10 18:59:26.798902"
+      "updated_at": "2026-06-11 19:05:38.540496"
     }
   ]
 }
