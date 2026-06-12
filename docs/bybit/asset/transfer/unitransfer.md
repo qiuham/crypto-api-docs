@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer
 api_type: REST
-updated_at: 2026-06-11 19:28:00.272402
+updated_at: 2026-06-12 19:11:31.665769
 ---
 
 # Create Universal Transfer

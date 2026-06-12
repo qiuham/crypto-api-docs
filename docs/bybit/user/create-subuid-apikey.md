@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/create-subuid-apikey
 api_type: REST
-updated_at: 2026-06-11 19:35:00.301492
+updated_at: 2026-06-12 19:17:36.018990
 ---
 
 # Get Fund Custodial Sub Acct

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/adl-alert
 api_type: WebSocket
-updated_at: 2026-06-11 19:35:28.308957
+updated_at: 2026-06-12 19:18:00.327528
 ---
 
 # All Liquidation

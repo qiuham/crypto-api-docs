@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/risk-limit
 api_type: Market Data
-updated_at: 2026-06-11 19:31:41.389742
+updated_at: 2026-06-12 19:14:42.064307
 ---
 
 # Get Risk Limit

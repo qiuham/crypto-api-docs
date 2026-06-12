@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/accept-other-quote
 api_type: Trading
-updated_at: 2026-06-11 19:33:25.937788
+updated_at: 2026-06-12 19:16:12.202040
 ---
 
 # Cancel Quote
