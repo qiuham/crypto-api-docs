@@ -1,12 +1,6 @@
 ---
-exchange: hyperliquid
-source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/activation-gas-fee
-api_type: REST
-updated_at: 2026-06-11 19:03:51.954103
+updated_at: 2026-06-12 18:46:54.092111
 ---
 
-# Activation gas fee
+# Untitled
 
-New HyperCore accounts require 1 quote token (e.g., 1 USDC, 1 USDT) of fees for the first transaction which has the new account as destination address. This applies regardless of the asset being transfered to the new account. 
-
-Unactivated accounts cannot send CoreWriter actions. Contract deployers who do not want this one-time behavior could manually send an activation transaction to the EVM contract address on HyperCore.
