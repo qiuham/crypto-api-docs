@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-signal-bot-trading-post-set-instruments
 anchor_id: order-book-trading-signal-bot-trading-post-set-instruments
 api_type: API
-updated_at: 2026-06-11 19:47:28.496494
+updated_at: 2026-06-12 19:28:37.770654
 ---
 
 # POST / Set instruments
