@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/query-user-delegation
 api_type: REST
-updated_at: 2026-06-11 19:12:02.211993
+updated_at: 2026-06-12 18:55:41.822566
 ---
 
 # Query User Delegation History(For Master Account)(USER_DATA)

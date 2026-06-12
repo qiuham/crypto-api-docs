@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Interest-History
 api_type: REST
-updated_at: 2026-06-11 19:14:05.119674
+updated_at: 2026-06-12 18:57:38.612697
 ---
 
 # Risk Unit Repay (TRADE)

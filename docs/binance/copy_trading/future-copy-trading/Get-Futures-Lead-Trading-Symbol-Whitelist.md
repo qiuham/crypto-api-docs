@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/copy_trading/future-copy-trading/Get-Futures-Lead-Trading-Symbol-Whitelist
 api_type: REST
-updated_at: 2026-06-11 19:13:16.678042
+updated_at: 2026-06-12 18:56:52.128741
 ---
 
 # Quick Start

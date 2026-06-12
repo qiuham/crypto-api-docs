@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Accept-Quote
 api_type: Trading
-updated_at: 2026-06-11 19:13:38.754171
+updated_at: 2026-06-12 18:57:13.190376
 ---
 
 # Accept Quote (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/query-user-wallet-balance
 api_type: REST
-updated_at: 2026-06-11 19:12:07.585079
+updated_at: 2026-06-12 18:55:46.896056
 ---
 
 # User Asset (USER_DATA)

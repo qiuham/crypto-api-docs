@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/region-list
 api_type: REST
-updated_at: 2026-06-11 19:12:55.196861
+updated_at: 2026-06-12 18:56:31.249138
 ---
 
 # Get Region List (USER_DATA)

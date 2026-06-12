@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Query-Sub-account-Spot-Assets-Summary
 api_type: Account
-updated_at: 2026-06-11 19:15:22.196277
+updated_at: 2026-06-12 18:59:14.778223
 ---
 
 # Query Universal Transfer History (For Master Account) (USER_DATA)

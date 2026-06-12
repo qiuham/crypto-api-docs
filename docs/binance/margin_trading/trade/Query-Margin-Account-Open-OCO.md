@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Account-Open-OCO
 api_type: Trading
-updated_at: 2026-06-11 19:10:46.471355
+updated_at: 2026-06-12 18:54:28.413396
 ---
 
 # Query Margin Account's Order (USER_DATA)
