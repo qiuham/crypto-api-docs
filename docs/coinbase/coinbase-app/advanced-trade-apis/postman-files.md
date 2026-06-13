@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/postman-files
 api_type: Trading
-updated_at: 2026-06-12 18:40:58.487082
+updated_at: 2026-06-13 18:30:10.631118
 ---
 
 # Advanced Trade Postman Files
