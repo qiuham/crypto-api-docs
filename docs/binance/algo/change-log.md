@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/change-log
 api_type: REST
-updated_at: 2026-06-12 18:54:49.513598
+updated_at: 2026-06-13 18:44:33.941343
 ---
 
 # Volume Participation(VP) New Order (TRADE)

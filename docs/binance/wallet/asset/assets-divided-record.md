@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/assets-divided-record
 api_type: REST
-updated_at: 2026-06-12 18:55:32.753106
+updated_at: 2026-06-13 18:45:19.853933
 ---
 
 # Dust Convertible Assets (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/options-trading/error-code
 api_type: REST
-updated_at: 2026-06-12 18:52:30.445850
+updated_at: 2026-06-13 18:42:01.873250
 ---
 
 # General Info
