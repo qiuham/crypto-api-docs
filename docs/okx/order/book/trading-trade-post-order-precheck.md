@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-order-precheck
 anchor_id: order-book-trading-trade-post-order-precheck
 api_type: API
-updated_at: 2026-06-12 19:28:16.221309
+updated_at: 2026-06-13 19:18:07.254325
 ---
 
 # POST / Order precheck

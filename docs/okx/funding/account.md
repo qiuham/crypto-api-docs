@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account
 anchor_id: funding-account
 api_type: API
-updated_at: 2026-06-12 19:29:50.770881
+updated_at: 2026-06-13 19:19:41.983626
 ---
 
 # Funding Account

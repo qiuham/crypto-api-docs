@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-get-one-click-repay-currency-list
 anchor_id: order-book-trading-trade-get-one-click-repay-currency-list
 api_type: API
-updated_at: 2026-06-12 19:28:13.404223
+updated_at: 2026-06-13 19:18:04.435271
 ---
 
 # GET / One-click repay currency list

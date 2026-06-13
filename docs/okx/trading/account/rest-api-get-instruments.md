@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-instruments
 anchor_id: trading-account-rest-api-get-instruments
 api_type: REST
-updated_at: 2026-06-12 19:27:47.382124
+updated_at: 2026-06-13 19:17:38.057696
 ---
 
 # Get instruments
