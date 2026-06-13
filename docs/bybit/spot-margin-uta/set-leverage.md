@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-leverage
 api_type: REST
-updated_at: 2026-06-12 19:17:01.033155
+updated_at: 2026-06-13 19:06:58.122949
 ---
 
 # Get Tiered Collateral Ratio

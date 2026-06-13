@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/dcp
 api_type: Trading
-updated_at: 2026-06-12 19:15:27.691244
+updated_at: 2026-06-13 19:05:25.319262
 ---
 
 # Get Trade History

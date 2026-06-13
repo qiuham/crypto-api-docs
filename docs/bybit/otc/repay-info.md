@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/repay-info
 api_type: REST
-updated_at: 2026-06-12 19:15:43.130262
+updated_at: 2026-06-13 19:05:40.918469
 ---
 
 # Get Closed Options Positions

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/sbe-basic-info
 api_type: REST
-updated_at: 2026-06-12 19:16:39.170484
+updated_at: 2026-06-13 19:06:37.251572
 ---
 
 # SBE Basic Information

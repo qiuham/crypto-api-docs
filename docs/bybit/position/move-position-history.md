@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/move-position-history
 api_type: Position
-updated_at: 2026-06-12 19:15:51.355964
+updated_at: 2026-06-13 19:05:49.165015
 ---
 
 # Get Move Position History

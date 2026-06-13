@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/loan-info
 api_type: REST
-updated_at: 2026-06-12 19:15:37.397910
+updated_at: 2026-06-13 19:05:35.012419
 ---
 
 # Repay

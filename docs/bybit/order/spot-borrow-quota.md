@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/spot-borrow-quota
 api_type: Trading
-updated_at: 2026-06-12 19:15:33.517799
+updated_at: 2026-06-13 19:05:31.108706
 ---
 
 # Bind Or Unbind UID

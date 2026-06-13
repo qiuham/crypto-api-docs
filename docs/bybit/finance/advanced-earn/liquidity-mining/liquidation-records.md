@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/liquidity-mining/liquidation-records
 api_type: REST
-updated_at: 2026-06-12 19:13:03.789667
+updated_at: 2026-06-13 19:03:02.570858
 ---
 
 # Get Liquidation Records

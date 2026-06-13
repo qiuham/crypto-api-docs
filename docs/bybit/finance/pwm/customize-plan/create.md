@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/customize-plan/create
 api_type: REST
-updated_at: 2026-06-12 19:14:00.847325
+updated_at: 2026-06-13 19:03:58.773262
 ---
 
 # Get Subscribable Product Info
