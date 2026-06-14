@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/error-code
 api_type: REST
-updated_at: 2026-06-13 18:45:57.856584
+updated_at: 2026-06-14 18:45:53.372962
 ---
 
 # Get symbols delist schedule for spot (MARKET_DATA)

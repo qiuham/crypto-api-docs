@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/PROD-TERMS-OF-USE
 api_type: REST
-updated_at: 2026-06-13 18:40:08.687968
+updated_at: 2026-06-14 18:40:09.800099
 ---
 
 # Demo Mode for SPOT Trading

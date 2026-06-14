@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Query-Borrow-Repay
 api_type: REST
-updated_at: 2026-06-13 18:42:51.259537
+updated_at: 2026-06-14 18:42:49.623461
 ---
 
 # Change Log

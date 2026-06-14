@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/trading-endpoints
 api_type: REST
-updated_at: 2026-06-13 18:40:57.393030
+updated_at: 2026-06-14 18:40:57.904234
 ---
 
 # CHANGELOG for Binance SPOT Testnet

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/general-info
 api_type: REST
-updated_at: 2026-06-13 18:44:48.384982
+updated_at: 2026-06-14 18:44:43.325007
 ---
 
 # Query Current Algo Open Orders(USER_DATA)

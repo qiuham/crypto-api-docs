@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-api-general-info
 api_type: WebSocket
-updated_at: 2026-06-13 18:42:18.291807
+updated_at: 2026-06-14 18:42:18.284007
 ---
 
 # WebSocket API General Info

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Get-BNB-Burn-Status
 api_type: Account
-updated_at: 2026-06-13 18:42:30.540289
+updated_at: 2026-06-14 18:42:30.682844
 ---
 
 # Get BNB Burn Status (USER_DATA)

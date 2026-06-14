@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Query-Sub-account-Futures-Asset-Transfer-History
 api_type: Account
-updated_at: 2026-06-13 18:48:51.173512
+updated_at: 2026-06-14 18:48:40.610652
 ---
 
 # Query Universal Transfer History (For Master Account) (USER_DATA)

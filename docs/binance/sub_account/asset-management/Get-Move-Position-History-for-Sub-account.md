@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Get-Move-Position-History-for-Sub-account
 api_type: Account
-updated_at: 2026-06-13 18:48:35.487507
+updated_at: 2026-06-14 18:48:26.180967
 ---
 
 # Get Summary of Sub-account's Futures Account (For Master Account) (USER_DATA)
