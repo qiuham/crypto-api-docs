@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-events
 anchor_id: public-data-rest-api-get-events
 api_type: REST
-updated_at: 2026-06-13 19:19:22.044577
+updated_at: 2026-06-14 19:20:40.959798
 ---
 
 # Get events
