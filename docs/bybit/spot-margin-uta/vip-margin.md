@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/vip-margin
 api_type: REST
-updated_at: 2026-06-13 19:07:03.134230
+updated_at: 2026-06-14 19:07:21.056030
 ---
 
 # Get Tickers

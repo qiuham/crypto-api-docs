@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/otc/margin-product-info
 api_type: REST
-updated_at: 2026-06-13 19:05:36.873621
+updated_at: 2026-06-14 19:05:47.788279
 ---
 
 # Repay

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/batch-amend
 api_type: Trading
-updated_at: 2026-06-13 19:05:18.782071
+updated_at: 2026-06-14 19:05:28.250653
 ---
 
 # Batch Place Order

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/index-components
 api_type: Market Data
-updated_at: 2026-06-13 19:04:25.802914
+updated_at: 2026-06-14 19:04:30.433119
 ---
 
 # Get Historical Volatility
