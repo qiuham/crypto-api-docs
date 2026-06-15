@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-Delist-Schedule
 api_type: Market Data
-updated_at: 2026-06-14 18:43:05.245412
+updated_at: 2026-06-15 19:33:59.167813
 ---
 
 # Get list Schedule (MARKET_DATA)

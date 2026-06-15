@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/error-code
 api_type: REST
-updated_at: 2026-06-14 18:42:57.353032
+updated_at: 2026-06-15 19:33:50.992656
 ---
 
 # Get All Cross Margin Pairs (MARKET_DATA)

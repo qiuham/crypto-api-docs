@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/enums
 api_type: REST
-updated_at: 2026-06-14 18:41:06.526884
+updated_at: 2026-06-15 19:32:01.592026
 ---
 
 # FIX API

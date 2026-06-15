@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/withdraw-questionnaire
 api_type: REST
-updated_at: 2026-06-14 18:46:23.338628
+updated_at: 2026-06-15 19:37:09.487984
 ---
 
 # Withdraw Questionnaire Contents (for existing local entities)

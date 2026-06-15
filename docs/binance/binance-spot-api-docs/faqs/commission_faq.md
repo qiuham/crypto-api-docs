@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/commission_faq
 api_type: REST
-updated_at: 2026-06-14 18:40:18.998844
+updated_at: 2026-06-15 19:31:16.697899
 ---
 
 # Market Data Only URLs

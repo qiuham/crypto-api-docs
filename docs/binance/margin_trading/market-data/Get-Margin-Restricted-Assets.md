@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-Margin-Restricted-Assets
 api_type: Market Data
-updated_at: 2026-06-14 18:43:13.216653
+updated_at: 2026-06-15 19:34:05.967218
 ---
 
 # Query Margin Available Inventory(USER_DATA)

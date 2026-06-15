@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/usds-margined-futures/error-code
 api_type: WebSocket
-updated_at: 2026-06-14 18:42:16.996823
+updated_at: 2026-06-15 19:33:10.762580
 ---
 
 # WebSocket API General Info
