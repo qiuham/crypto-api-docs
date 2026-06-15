@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-get-deposit-history
 anchor_id: funding-account-rest-api-get-deposit-history
 api_type: REST
-updated_at: 2026-06-14 19:21:04.545044
+updated_at: 2026-06-15 20:10:43.395125
 ---
 
 # Get deposit history
