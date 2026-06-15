@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/position-tiers
 api_type: REST
-updated_at: 2026-06-14 19:07:10.675451
+updated_at: 2026-06-15 19:57:24.153660
 ---
 
 # Get Available Amount to Repay

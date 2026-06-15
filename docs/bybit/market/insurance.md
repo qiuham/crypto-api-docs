@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/insurance
 api_type: Market Data
-updated_at: 2026-06-14 19:04:32.290152
+updated_at: 2026-06-15 19:54:55.573692
 ---
 
 # Get Historical Volatility

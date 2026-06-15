@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/order-price-limit
 api_type: WebSocket
-updated_at: 2026-06-14 19:08:25.545127
+updated_at: 2026-06-15 19:58:34.423625
 ---
 
 # RPI Orderbook

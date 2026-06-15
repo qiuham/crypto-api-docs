@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/api-broker/guidance
 api_type: REST
-updated_at: 2026-06-14 19:01:53.783664
+updated_at: 2026-06-15 19:52:20.397364
 ---
 
 # Get Broker Whitelist IP

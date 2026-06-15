@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/asset-trend
 api_type: REST
-updated_at: 2026-06-14 19:04:06.831455
+updated_at: 2026-06-15 19:54:25.601779
 ---
 
 # Get Investment Plan Detail

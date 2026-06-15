@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/spot-grid/validate-input
 api_type: REST
-updated_at: 2026-06-14 19:01:52.554613
+updated_at: 2026-06-15 19:52:19.160363
 ---
 
 # Get Broker Whitelist IP

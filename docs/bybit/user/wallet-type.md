@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/wallet-type
 api_type: REST
-updated_at: 2026-06-14 19:08:07.589829
+updated_at: 2026-06-15 19:58:17.643904
 ---
 
 # Get UID Wallet Type

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/close-pnl
 api_type: Position
-updated_at: 2026-06-14 19:05:54.004030
+updated_at: 2026-06-15 19:56:12.060203
 ---
 
 # Get Closed Options Positions

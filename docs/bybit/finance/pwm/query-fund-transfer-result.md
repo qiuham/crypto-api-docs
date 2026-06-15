@@ -2,54 +2,65 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/query-fund-transfer-result
 api_type: REST
-updated_at: 2026-06-14 19:04:18.666699
+updated_at: 2026-06-15 19:54:36.825958
 ---
 
-# Get Institution IP Change Log
+# Place Order
 
 info
 
-This endpoint must be requested with a main account API key.
+  * Orders are processed asynchronously. A successful response means the order was accepted, not settled. Use [Get Order List](/docs/v5/finance/rwa/order) to track order status.
+  * `orderLinkId` is **required** and must be unique per UID within RWA business scope. Reusing a previous `orderLinkId` returns error `180025 ORDER_ALREADY_EXISTS`.
+  * **Stake** : deducts settlement coin from `accountType` and allocates shares at next NAV.
+  * **Redeem** : locks shares and refunds settlement coin to `accountType` after settlement (T+N).
+  * **Rate Limit:** 5 req/s (UID)
+
+
 
 ### HTTP Request
 
-GET`/v5/ins/ip/changelog`
+POST`/v5/earn/rwa/place-order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-startTime| false| string| Filter start time, Unix timestamp in milliseconds  
-endTime| false| string| Filter end time, Unix timestamp in milliseconds  
-limit| false| integer| Records per page. Range: [1, 50]. Default: 20  
-cursor| false| string| Pagination cursor. Use the `nextPageCursor` value from the previous response  
+productId| **true**|  integer| Product ID  
+orderType| **true**|  string| Order type: `Stake` (subscription), `Redeem` (redemption)  
+coin| **true**|  string| Settlement coin (uppercase), e.g. `USDC`  
+orderLinkId| **true**|  string| User-defined idempotency key. Max 36 characters, allowed charset `[a-zA-Z0-9-_]`. Must be unique per UID within RWA scope  
+stakeAmount| false| string| Stake amount in settlement coin (decimal string). **Required when`orderType=Stake`**, ignored otherwise  
+redeemShares| false| string| Redeem share quantity (decimal string). **Required when`orderType=Redeem`**, ignored otherwise  
+accountType| false| string| Source/destination account: `FUND`, `UNIFIED`. Default: `FUND`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Array of IP change records  
-> operationType| string| Action type: `ADD`, `REMOVE`, `ENABLE`, or `DISABLE`  
-> ipAddress| string| The IP address affected by the operation  
-> domainType| string| Connection protocol. `GW` for HTTP hostname, `WS` for WebSocket hostname  
-> changeReason| string| The reason of the change  
-> createdAt| string| Operation timestamp in UTC+0, ISO 8601 format  
-nextPageCursor| string| Opaque token for retrieving the next page of results  
+orderId| string| System-generated order ID (UUID)  
+orderLinkId| string| User-defined order ID (echoed back)  
   
+* * *
+
 ### Request Example
-
-  * HTTP
-
-
     
     
-    GET /v5/ins/ip/changelog?limit=3 HTTP/1.1  
+    POST /v5/earn/rwa/place-order HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1779362662315  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1710691200000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+      
+    {  
+        "productId": 1001,  
+        "orderType": "Stake",  
+        "coin": "USDC",  
+        "stakeAmount": "100",  
+        "accountType": "FUND",  
+        "orderLinkId": "my-stake-001"  
+    }  
     
 
 ### Response Example
@@ -57,76 +68,73 @@ nextPageCursor| string| Opaque token for retrieving the next page of results
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "operationType": "DISABLE",  
-                    "ipAddress": "193.118.167.247",  
-                    "domainType": "WS",  
-                    "changeReason": "do not meet the requirement",  
-                    "createdAt": "2026-05-21T06:02:36Z"  
-                },  
-                {  
-                    "operationType": "DISABLE",  
-                    "ipAddress": "18.99.43.128/25",  
-                    "domainType": "WS",  
-                    "changeReason": "do not meet the requirement",  
-                    "createdAt": "2026-05-21T06:02:36Z"  
-                }  
-            ],  
-            "nextPageCursor": "eyJpZCI6NDE0LCJjcmVhdGVkQXQiOiIyMDI2LTA1LTIxVDA2OjAyOjM2In0="  
+            "orderId": "550e8400-e29b-41d4-a716-446655440000",  
+            "orderLinkId": "my-stake-001"  
         },  
-        "time": 1779362027705  
+        "retExtInfo": {},  
+        "time": 1710691200000  
     }
 
 ---
 
-# 查詢機構 IP 變更記錄
+# 下單（認購/贖回）
 
 信息
 
-此接口必須使用主帳戶 API key 請求。
+  * 訂單為異步處理。成功響應僅表示訂單已被接受，並非已完成結算。請使用 [獲取訂單列表](/docs/zh-TW/v5/finance/rwa/order) 追蹤訂單狀態。
+  * `orderLinkId` **必填** ，且在 RWA 業務範圍內每個 UID 必須唯一。重複使用已存在的 `orderLinkId` 將返回錯誤 `180025 ORDER_ALREADY_EXISTS`。
+  * **認購（Stake）** ：從 `accountType` 扣除結算幣種，按下一個 NAV 分配份額。
+  * **贖回（Redeem）** ：鎖定份額，T+N 結算後將結算幣種退回至 `accountType`。
+  * **頻率限制：** 5 次/秒（UID）
+
+
 
 ### HTTP 請求
 
-GET`/v5/ins/ip/changelog`
+POST`/v5/earn/rwa/place-order`
 
 ### 請求參數
 
-參數| 是否必填| 類型| 說明  
+參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-startTime| false| string| 篩選起始時間，Unix 毫秒時間戳  
-endTime| false| string| 篩選結束時間，Unix 毫秒時間戳  
-limit| false| integer| 每頁記錄數。範圍: [1, 50]。預設: 20  
-cursor| false| string| 分頁游標。使用上一頁響應中的 `nextPageCursor` 值  
+productId| **true**|  integer| 產品 ID  
+orderType| **true**|  string| 訂單類型：`Stake`（認購）、`Redeem`（贖回）  
+coin| **true**|  string| 結算幣種（大寫），如 `USDC`  
+orderLinkId| **true**|  string| 用戶自定義冪等鍵。最長 36 位，允許字符集 `[a-zA-Z0-9-_]`，在 RWA 業務範圍內每個 UID 必須唯一  
+stakeAmount| false| string| 認購金額（結算幣種，十進制字符串）。**`orderType=Stake` 時必填**，否則忽略  
+redeemShares| false| string| 贖回份額（十進制字符串）。**`orderType=Redeem` 時必填**，否則忽略  
+accountType| false| string| 資金來源/目標賬戶：`FUND`、`UNIFIED`。默認：`FUND`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| IP 變更記錄列表  
-> operationType| string| 操作類型: `ADD`, `REMOVE`, `ENABLE`, 或 `DISABLE`  
-> ipAddress| string| 受該操作影響的 IP 位址  
-> domainType| string| 連接協議。`GW` 表示 HTTP hostname，`WS` 表示 WebSocket hostname  
-> changeReason| string| 變更原因  
-> createdAt| string| 操作時間戳，UTC+0，ISO 8601 格式  
-nextPageCursor| string| 用於查詢下一頁的不透明 token  
+orderId| string| 系統生成的訂單 ID（UUID）  
+orderLinkId| string| 用戶自定義訂單 ID（原樣返回）  
   
+* * *
+
 ### 請求示例
-
-  * HTTP
-
-
     
     
-    GET /v5/ins/ip/changelog?limit=3 HTTP/1.1  
+    POST /v5/earn/rwa/place-order HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1779362662315  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1710691200000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+      
+    {  
+        "productId": 1001,  
+        "orderType": "Stake",  
+        "coin": "USDC",  
+        "stakeAmount": "100",  
+        "accountType": "FUND",  
+        "orderLinkId": "my-stake-001"  
+    }  
     
 
 ### 響應示例
@@ -134,25 +142,11 @@ nextPageCursor| string| 用於查詢下一頁的不透明 token
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "operationType": "DISABLE",  
-                    "ipAddress": "193.118.167.247",  
-                    "domainType": "WS",  
-                    "changeReason": "do not meet the requirement",  
-                    "createdAt": "2026-05-21T06:02:36Z"  
-                },  
-                {  
-                    "operationType": "DISABLE",  
-                    "ipAddress": "18.99.43.128/25",  
-                    "domainType": "WS",  
-                    "changeReason": "do not meet the requirement",  
-                    "createdAt": "2026-05-21T06:02:36Z"  
-                }  
-            ],  
-            "nextPageCursor": "eyJpZCI6NDE0LCJjcmVhdGVkQXQiOiIyMDI2LTA1LTIxVDA2OjAyOjM2In0="  
+            "orderId": "550e8400-e29b-41d4-a716-446655440000",  
+            "orderLinkId": "my-stake-001"  
         },  
-        "time": 1779362027705  
+        "retExtInfo": {},  
+        "time": 1710691200000  
     }

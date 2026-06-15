@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/market/level-50
 api_type: Market Data
-updated_at: 2026-06-14 19:06:50.355888
+updated_at: 2026-06-15 19:57:04.790664
 ---
 
 # SBE Basic Information

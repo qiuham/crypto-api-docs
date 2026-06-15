@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/institution/connection/mmws
 api_type: REST
-updated_at: 2026-06-14 19:04:19.898745
+updated_at: 2026-06-15 19:54:43.769936
 ---
 
 # Get Institution IP Change Log
