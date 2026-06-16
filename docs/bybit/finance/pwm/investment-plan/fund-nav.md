@@ -2,62 +2,63 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/fund-nav
 api_type: REST
-updated_at: 2026-06-15 19:54:30.441465
+updated_at: 2026-06-16 19:48:56.753157
 ---
 
-# Redeem
+# Get Investment Plan Orders
+
+Query subscription / redemption / auto-reinvest orders under the current user's investment plans. Supports filtering by plan, product category, order type, status, and date range.
+
+info
+
+Orders are sorted by creation time in **descending order** (newest first).
 
 ### HTTP Request
 
-POST`/v5/earn/pwm/investment-plan/redeem`
+GET`/v5/earn/pwm/investment-plan/order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-planId| **true**|  string| Investment plan ID  
-category| **true**|  string| Product type  
-productId| **true**|  string| Product ID. Pass `fundId` for fund products  
-shares| Conditional| string| Number of shares to redeem. Required for fund products  
-amount| Conditional| string| Redemption amount. Required for non-fund products  
-orderLinkId| **true**|  string| User-defined order ID, max 36 characters, used for idempotency  
-positionId| Conditional| string| Position ID to redeem. Required for FundPool and On-chain Earn products  
+planId| false| string| Investment plan ID. Returns orders for all plans if omitted  
+category| false| string| Product type filter: `flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`. Returns all if omitted  
+type| false| string| Order type filter: `Subscribe` / `Redeem`. Returns all if omitted  
+status| false| string| Order status filter: `Completed` / `Pending` / `Failed`. Returns all if omitted  
+startTime| false| string| Start time in milliseconds. No lower limit if omitted  
+endTime| false| string| End time in milliseconds. Defaults to current time if omitted  
+limit| false| int| Page size. Default: `20`, max: `50`  
+cursor| false| string| Pagination cursor  
+orderLinkId| false| string| User-defined order ID, max 36 characters  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Redemption order ID  
-planId| string| Investment plan ID  
-category| string| Product type  
-productId| string| Product ID  
-shares| string| Number of shares redeemed (returned for fund products)  
-amount| string| Redemption amount (returned for non-fund products)  
-estimatedAmount| string| Estimated redemption amount based on current share value. Actual amount is subject to settlement  
-coin| string| Redemption coin  
-status| string| Redemption status: `Success` (non-fund products redeem instantly) / `Pending` (equity funds require approval)  
-orderLinkId| string| User-defined order ID  
+list| array| Order list  
+> orderId| string| Unique order identifier (UUID format)  
+> planId| string| Investment plan ID  
+> type| string| Order type: `Subscribe` / `Redeem` / `AutoReinvest`  
+> accountType| string| Source account type: `Funding` / `Unified`  
+> coin| string| Order coin, e.g. `USDT`, `BTC`  
+> amount| string| Order amount (base coin)  
+> category| string| Product type: `flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`  
+> productId| string| Product ID  
+> status| string| Order status: `Completed` / `Pending` / `Failed`  
+> orderTime| string| Order creation timestamp (milliseconds), UTC  
+nextPageCursor| string| Next page cursor. Empty string indicates no more data  
   
 * * *
 
 ### Request Example
     
     
-    POST /v5/earn/pwm/investment-plan/redeem HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/order?planId=10001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "planId": "10001",  
-        "category": "equityFund",  
-        "productId": "2001",  
-        "shares": "3000",  
-        "orderLinkId": "xxx"  
-    }  
     
 
 ### Response Example
@@ -66,73 +67,104 @@ orderLinkId| string| User-defined order ID
     {  
         "retCode": 0,  
         "result": {  
-            "orderId": "ORD20241115003",  
-            "planId": "10001",  
-            "category": "equityFund",  
-            "productId": "2001",  
-            "shares": "3000",  
-            "estimatedAmount": "3087.00",  
-            "coin": "USDT",  
-            "status": "Pending",  
-            "orderLinkId": "xxx"  
+            "list": [  
+                {  
+                    "orderId": "a285b975-9968-4ba0-bd78-58430ead715f",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "USDT",  
+                    "amount": "100.0000",  
+                    "category": "flexibleSavings",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "f463ad6e-263c-499a-aff6-70c23be846ef",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "0.002000",  
+                    "category": "equityFund",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "98dc5a11-a578-49c2-830f-fc5d8c317ea7",  
+                    "planId": "10005",  
+                    "type": "AutoReinvest",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "10.409201",  
+                    "category": "fundPool",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739498401000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         }  
     }
 
 ---
 
-# 贖回
+# 查詢投資計劃訂單列表
+
+查詢當前用戶投資計劃下的申購 / 贖回 / 自動續投訂單列表，支持按投資計劃、產品類別、訂單類型、狀態及日期範圍等條件篩選。
+
+信息
+
+訂單按創建時間**降序排列** （最新訂單在前）。
 
 ### HTTP 請求
 
-POST`/v5/earn/pwm/investment-plan/redeem`
+GET`/v5/earn/pwm/investment-plan/order`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-planId| **true**|  string| 投資計劃ID  
-category| **true**|  string| 產品類型  
-productId| **true**|  string| 產品ID（基金產品傳 `fundId`）  
-shares| 條件必填| string| 贖回份額數量（基金產品時必填）  
-amount| 條件必填| string| 贖回金額（非基金產品時必填）  
-orderLinkId| **true**|  string| 用戶自定義訂單ID，最長36字符，用於防重  
-positionId| 條件必填| string| 贖回的倉位ID（FundPool 及 On-chain Earn 產品必填）  
+planId| false| string| 投資計劃ID，不傳返回全部計劃的訂單  
+category| false| string| 產品類型篩選：`flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`，不傳返回全部  
+type| false| string| 訂單類型篩選：`Subscribe` / `Redeem`，不傳返回全部  
+status| false| string| 訂單狀態篩選：`Completed`（已完成）/ `Pending`（處理中）/ `Failed`（失敗），不傳返回全部  
+startTime| false| string| 起始時間毫秒時間戳，不傳默認無限制  
+endTime| false| string| 結束時間毫秒時間戳，不傳默認為當前時間  
+limit| false| int| 分頁大小，默認 `20`，最大 `50`  
+cursor| false| string| 分頁游標  
+orderLinkId| false| string| 用戶自定義訂單ID，最長36字符  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 贖回訂單ID  
-planId| string| 投資計劃ID  
-category| string| 產品類型  
-productId| string| 產品ID  
-shares| string| 贖回份額數量（基金產品返回）  
-amount| string| 贖回金額（非基金產品返回）  
-estimatedAmount| string| 預估贖回到賬金額（按當前份額價值計算，實際以結算時為準）  
-coin| string| 贖回幣種  
-status| string| 贖回狀態：`Success`（非基金產品即時贖回）/ `Pending`（淨值型基金需審批）  
-orderLinkId| string| 用戶自定義訂單ID  
+list| array| 訂單列表  
+> orderId| string| 訂單唯一標識（UUID格式）  
+> planId| string| 所屬投資計劃ID  
+> type| string| 訂單類型：`Subscribe`（申購）/ `Redeem`（贖回）/ `AutoReinvest`（自動續投）  
+> accountType| string| 資金來源賬戶類型：`Funding`（資金賬戶）/ `Unified`（統一交易賬戶）  
+> coin| string| 訂單幣種，如 `USDT`、`BTC`  
+> amount| string| 訂單金額（本位幣數量）  
+> category| string| 產品類型：`flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`  
+> productId| string| 產品ID  
+> status| string| 訂單狀態：`Completed`（已完成）/ `Pending`（處理中）/ `Failed`（失敗）  
+> orderTime| string| 訂單創建時間戳（毫秒），UTC時間  
+nextPageCursor| string| 下一頁游標，為空表示無更多數據  
   
 * * *
 
 ### 請求示例
     
     
-    POST /v5/earn/pwm/investment-plan/redeem HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/order?planId=10001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "planId": "10001",  
-        "category": "equityFund",  
-        "productId": "2001",  
-        "shares": "3000",  
-        "orderLinkId": "xxx"  
-    }  
     
 
 ### 響應示例
@@ -141,14 +173,44 @@ orderLinkId| string| 用戶自定義訂單ID
     {  
         "retCode": 0,  
         "result": {  
-            "orderId": "ORD20241115003",  
-            "planId": "10001",  
-            "category": "equityFund",  
-            "productId": "2001",  
-            "shares": "3000",  
-            "estimatedAmount": "3087.00",  
-            "coin": "USDT",  
-            "status": "Pending",  
-            "orderLinkId": "xxx"  
+            "list": [  
+                {  
+                    "orderId": "a285b975-9968-4ba0-bd78-58430ead715f",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "USDT",  
+                    "amount": "100.0000",  
+                    "category": "flexibleSavings",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "f463ad6e-263c-499a-aff6-70c23be846ef",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "0.002000",  
+                    "category": "equityFund",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "98dc5a11-a578-49c2-830f-fc5d8c317ea7",  
+                    "planId": "10005",  
+                    "type": "AutoReinvest",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "10.409201",  
+                    "category": "fundPool",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739498401000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         }  
     }

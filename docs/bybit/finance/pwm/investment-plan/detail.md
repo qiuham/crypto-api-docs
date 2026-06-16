@@ -2,110 +2,58 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/detail
 api_type: REST
-updated_at: 2026-06-15 19:54:26.860489
+updated_at: 2026-06-16 19:48:56.131737
 ---
 
-# Get Investment Plan Detail
+# Get Investment Plan Orders
+
+Query subscription / redemption / auto-reinvest orders under the current user's investment plans. Supports filtering by plan, product category, order type, status, and date range.
+
+info
+
+Orders are sorted by creation time in **descending order** (newest first).
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/investment-plan/detail`
+GET`/v5/earn/pwm/investment-plan/order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-planId| **true**|  string| Investment plan ID. Must be in `Active` or `Closed` status  
+planId| false| string| Investment plan ID. Returns orders for all plans if omitted  
+category| false| string| Product type filter: `flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`. Returns all if omitted  
+type| false| string| Order type filter: `Subscribe` / `Redeem`. Returns all if omitted  
+status| false| string| Order status filter: `Completed` / `Pending` / `Failed`. Returns all if omitted  
+startTime| false| string| Start time in milliseconds. No lower limit if omitted  
+endTime| false| string| End time in milliseconds. Defaults to current time if omitted  
+limit| false| int| Page size. Default: `20`, max: `50`  
+cursor| false| string| Pagination cursor  
+orderLinkId| false| string| User-defined order ID, max 36 characters  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-planId| string| Unique identifier of the investment plan  
-planName| string| Investment plan name  
-planType| string| Plan type: `stable` / `advanced`  
-status| string| Plan status: `Active` / `Closed`  
-currentAssetUsd| string| Total current assets (USD valuation)  
-accumulateYieldUsd| string| Total accumulated yield (USD valuation)  
-weightedAvgApr| string| Weighted average annualized return rate (decimal form, e.g. `0.086` means 8.6%)  
-currentAssets| array| List of currently held coin assets  
-> coin| string| Coin name  
-> amount| string| Holding amount (in base coin)  
-positions| object| Position details by product category  
-> multiCoinsEarning| object| Flexible savings positions  
->> totalInvestmentUsd| string| Total investment for this category (USD)  
->> accumulateYieldUsd| string| Accumulated yield for this category (USD)  
->> weightedAvgApr| string| Weighted average APR for this category  
->> items| array| Flexible product position details  
->>> category| string| Product category  
->>> productId| string| Product ID  
->>> coin| string| Coin  
->>> currentAmount| string| Current holding amount  
->>> accumulateYield| string| Accumulated yield (base coin)  
->>> apr| string| Current annualized return rate  
->>> positionId| string| Position ID  
->>> status| string| Product status: `0`-Processing / `1`-Active / `2`-Redeeming / `3`-PendingSubscription / `4`-Closed  
-> fixedYield| object| Fixed yield positions (Classic/Premium WM)  
->> totalInvestmentUsd| string| Total investment for this category (USD)  
->> accumulateYieldUsd| string| Accumulated yield for this category (USD)  
->> weightedAvgApr| string| Weighted average APR for this category  
->> items| array| Fixed yield product position details  
->>> category| string| Product category  
->>> productId| string| Product ID  
->>> coin| string| Coin  
->>> currentAmount| string| Current holding amount  
->>> accumulateYield| string| Accumulated yield (base coin)  
->>> apr| string| Annualized return rate  
->>> duration| int| Lock-up period in days  
->>> maturityTime| string| Maturity timestamp (milliseconds)  
->>> autoReinvest| boolean| Whether auto-reinvest is enabled  
->>> positionId| string| Position ID  
->>> status| string| Product status: `0`-Processing / `1`-Active / `2`-Redeeming / `3`-PendingSubscription / `4`-Closed  
-> equityFunds| object| Equity fund positions  
->> totalInvestmentUsd| string| Total investment for this category (USD)  
->> accumulateYieldUsd| string| Accumulated yield for this category (USD)  
->> weightedAvgApr| string| Weighted average APR for this category  
->> items| array| Fund position details  
->>> category| string| Product category  
->>> productId| string| Fund unique identifier  
->>> fundName| string| Fund name  
->>> coin| string| Fund denomination coin  
->>> tags| array[string]| Fund tags  
->>> nav| string| Current net asset value  
->>> userShares| string| Number of shares held by user  
->>> shareValue| string| Current value per share  
->>> holdingValue| string| Total holding value of user  
->>> accumulateYield| string| Accumulated yield (base coin)  
->>> apr30d| string| 30-day annualized return rate  
->>> aprTotal| string| Annualized return since inception  
->>> sharpRatio| string| Sharpe ratio  
->>> maxDrawdown| string| Maximum drawdown (negative value)  
->>> createdTime| string| Fund inception timestamp (milliseconds)  
->>> runningDays| int| Number of days the fund has been running  
->>> positionId| string| Position ID  
->>> status| string| Product status: `0`-Processing / `1`-Active / `2`-Redeeming / `3`-PendingSubscription / `4`-Closed  
-> onchainEarn| object| On-chain earn positions  
->> totalInvestmentUsd| string| Total investment for this category (USD)  
->> accumulateYieldUsd| string| Accumulated yield for this category (USD)  
->> items| array| On-chain product position list  
->>> category| string| Product category  
->>> productId| string| Product ID  
->>> coin| string| Coin  
->>> stakeAmount| string| Staked amount  
->>> apr| string| Current annualized return rate  
->>> positionId| string| Position ID  
->>> status| string| Product status: `0`-Processing / `1`-Active / `2`-Redeeming / `3`-PendingSubscription / `4`-Closed  
-> fundingAccount| array| Idle funds in WM Vendor sub-account  
->> coin| string| Coin  
->> amount| string| Idle amount  
-createdTime| string| Investment plan creation timestamp (milliseconds)  
+list| array| Order list  
+> orderId| string| Unique order identifier (UUID format)  
+> planId| string| Investment plan ID  
+> type| string| Order type: `Subscribe` / `Redeem` / `AutoReinvest`  
+> accountType| string| Source account type: `Funding` / `Unified`  
+> coin| string| Order coin, e.g. `USDT`, `BTC`  
+> amount| string| Order amount (base coin)  
+> category| string| Product type: `flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`  
+> productId| string| Product ID  
+> status| string| Order status: `Completed` / `Pending` / `Failed`  
+> orderTime| string| Order creation timestamp (milliseconds), UTC  
+nextPageCursor| string| Next page cursor. Empty string indicates no more data  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/pwm/investment-plan/detail?planId=10001 HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/order?planId=10001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -119,208 +67,99 @@ createdTime| string| Investment plan creation timestamp (milliseconds)
     {  
         "retCode": 0,  
         "result": {  
-            "planId": "10001",  
-            "planName": "Conservative Growth Plan",  
-            "planType": "conservative",  
-            "status": "Active",  
-            "currentAssetUsd": "200137.50",  
-            "accumulateYieldUsd": "2137.50",  
-            "weightedAvgApr": "0.086",  
-            "currentAssets": [  
+            "list": [  
                 {  
+                    "orderId": "a285b975-9968-4ba0-bd78-58430ead715f",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
                     "coin": "USDT",  
-                    "amount": "150000.00"  
+                    "amount": "100.0000",  
+                    "category": "flexibleSavings",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "f463ad6e-263c-499a-aff6-70c23be846ef",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "0.002000",  
+                    "category": "equityFund",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "98dc5a11-a578-49c2-830f-fc5d8c317ea7",  
+                    "planId": "10005",  
+                    "type": "AutoReinvest",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "10.409201",  
+                    "category": "fundPool",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739498401000"  
                 }  
             ],  
-            "positions": {  
-                "multiCoinsEarning": {  
-                    "totalInvestmentUsd": "60000.00",  
-                    "accumulateYieldUsd": "500.00",  
-                    "weightedAvgApr": "0.052",  
-                    "items": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "currentAmount": "30000.00",  
-                            "accumulateYield": "250.00",  
-                            "apr": "0.05",  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "fixedYield": {  
-                    "totalInvestmentUsd": "50000.00",  
-                    "accumulateYieldUsd": "800.00",  
-                    "weightedAvgApr": "0.08",  
-                    "items": [  
-                        {  
-                            "category": "fundPool",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "currentAmount": "50000.00",  
-                            "accumulateYield": "800.00",  
-                            "apr": "0.08",  
-                            "duration": 30,  
-                            "maturityTime": "1700500000000",  
-                            "autoReinvest": true,  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "equityFunds": {  
-                    "totalInvestmentUsd": "70000.00",  
-                    "accumulateYieldUsd": "700.00",  
-                    "weightedAvgApr": "0.12",  
-                    "items": [  
-                        {  
-                            "category": "equityFund",  
-                            "productId": "2001",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "tags": ["Delta Neutral", "Funding Rate"],  
-                            "nav": "1.035",  
-                            "userShares": "68000.00",  
-                            "shareValue": "1.029",  
-                            "holdingValue": "69972.00",  
-                            "accumulateYield": "700.00",  
-                            "apr30d": "0.12",  
-                            "aprTotal": "0.105",  
-                            "sharpRatio": "2.5",  
-                            "maxDrawdown": "-0.032",  
-                            "createdTime": "1695000000000",  
-                            "runningDays": 58  
-                        }  
-                    ]  
-                },  
-                "onchainEarn": {  
-                    "totalInvestmentUsd": "18000.00",  
-                    "accumulateYieldUsd": "137.50",  
-                    "items": [  
-                        {  
-                            "category": "onchainEarn",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "stakeAmount": "18000.00",  
-                            "apr": "0.075",  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "fundingAccount": [  
-                    {  
-                        "coin": "USDT",  
-                        "amount": "165.50"  
-                    }  
-                ]  
-            },  
-            "createdTime": "1700000000000"  
+            "nextPageCursor": ""  
         }  
     }
 
 ---
 
-# 查詢已投資計劃詳情
+# 查詢投資計劃訂單列表
+
+查詢當前用戶投資計劃下的申購 / 贖回 / 自動續投訂單列表，支持按投資計劃、產品類別、訂單類型、狀態及日期範圍等條件篩選。
+
+信息
+
+訂單按創建時間**降序排列** （最新訂單在前）。
 
 ### HTTP 請求
 
-GET`/v5/earn/pwm/investment-plan/detail`
+GET`/v5/earn/pwm/investment-plan/order`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-planId| **true**|  string| 投資計劃ID（須為 `Active` 或 `Closed` 狀態）  
+planId| false| string| 投資計劃ID，不傳返回全部計劃的訂單  
+category| false| string| 產品類型篩選：`flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`，不傳返回全部  
+type| false| string| 訂單類型篩選：`Subscribe` / `Redeem`，不傳返回全部  
+status| false| string| 訂單狀態篩選：`Completed`（已完成）/ `Pending`（處理中）/ `Failed`（失敗），不傳返回全部  
+startTime| false| string| 起始時間毫秒時間戳，不傳默認無限制  
+endTime| false| string| 結束時間毫秒時間戳，不傳默認為當前時間  
+limit| false| int| 分頁大小，默認 `20`，最大 `50`  
+cursor| false| string| 分頁游標  
+orderLinkId| false| string| 用戶自定義訂單ID，最長36字符  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-planId| string| 投資計劃唯一標識  
-planName| string| 投資計劃名稱  
-planType| string| 計劃類型：`stable` / `advanced`  
-status| string| 計劃狀態：`Active` / `Closed`  
-currentAssetUsd| string| 當前總資產（USD估值）  
-accumulateYieldUsd| string| 累計總收益（USD估值）  
-weightedAvgApr| string| 加權平均年化收益率（小數形式，如 `0.086` 表示8.6%）  
-currentAssets| array| 當前持有的幣種資產列表  
-> coin| string| 幣種名稱  
-> amount| string| 持有數量（本位幣）  
-positions| object| 各產品類別持倉詳情  
-> multiCoinsEarning| object| 活期理財持倉  
->> totalInvestmentUsd| string| 該類別總投資（USD）  
->> accumulateYieldUsd| string| 該類別累計收益（USD）  
->> weightedAvgApr| string| 該類別加權平均年化  
->> items| array| 活期產品持倉明細列表  
->>> category| string| 產品類別  
->>> productId| string| 產品ID  
->>> coin| string| 幣種  
->>> currentAmount| string| 當前持有數量  
->>> accumulateYield| string| 累計收益（本位幣）  
->>> apr| string| 當前年化收益率  
->>> positionId| string| 產品的倉位ID  
->>> status| string| 產品狀態：`0`-Processing（申購中）/ `1`-Active / `2`-Redeeming（贖回中）/ `3`-PendingSubscription / `4`-Closed  
-> fixedYield| object| 固定收益持倉（Classic/Premium WM）  
->> totalInvestmentUsd| string| 該類別總投資（USD）  
->> accumulateYieldUsd| string| 該類別累計收益（USD）  
->> weightedAvgApr| string| 該類別加權平均年化  
->> items| array| 固定收益產品持倉明細列表  
->>> category| string| 產品類別  
->>> productId| string| 產品ID  
->>> coin| string| 幣種  
->>> currentAmount| string| 當前持有金額  
->>> accumulateYield| string| 累計收益（本位幣）  
->>> apr| string| 年化收益率  
->>> duration| int| 鎖定期天數  
->>> maturityTime| string| 到期時間戳（毫秒）  
->>> autoReinvest| boolean| 是否自動續投  
->>> positionId| string| 產品的倉位ID  
->>> status| string| 產品狀態：`0`-Processing（申購中）/ `1`-Active / `2`-Redeeming（贖回中）/ `3`-PendingSubscription / `4`-Closed  
-> equityFunds| object| 淨值型基金持倉  
->> totalInvestmentUsd| string| 該類別總投資（USD）  
->> accumulateYieldUsd| string| 該類別累計收益（USD）  
->> weightedAvgApr| string| 該類別加權平均年化  
->> items| array| 基金持倉明細列表  
->>> category| string| 產品類別  
->>> productId| string| 基金唯一標識  
->>> fundName| string| 基金名稱  
->>> coin| string| 基金計價幣種  
->>> tags| array[string]| 基金標籤  
->>> nav| string| 當前基金淨值  
->>> userShares| string| 用戶持有份額數量  
->>> shareValue| string| 當前每份價值  
->>> holdingValue| string| 用戶持倉總價值  
->>> accumulateYield| string| 累計收益（本位幣）  
->>> apr30d| string| 近30日年化收益率  
->>> aprTotal| string| 成立以來年化收益率  
->>> sharpRatio| string| 夏普比率  
->>> maxDrawdown| string| 最大回撤（負數）  
->>> createdTime| string| 基金成立時間戳（毫秒）  
->>> runningDays| int| 基金運行天數  
->>> positionId| string| 產品的倉位ID  
->>> status| string| 產品狀態：`0`-Processing（申購中）/ `1`-Active / `2`-Redeeming（贖回中）/ `3`-PendingSubscription / `4`-Closed  
-> onchainEarn| object| 鏈上賺幣持倉  
->> totalInvestmentUsd| string| 該類別總投資（USD）  
->> accumulateYieldUsd| string| 該類別累計收益（USD）  
->> items| array| 鏈上產品持倉列表  
->>> category| string| 產品類別  
->>> productId| string| 產品ID  
->>> coin| string| 幣種  
->>> stakeAmount| string| 質押數量  
->>> apr| string| 當前年化收益率  
->>> positionId| string| 產品的倉位ID  
->>> status| string| 產品狀態：`0`-Processing（申購中）/ `1`-Active / `2`-Redeeming（贖回中）/ `3`-PendingSubscription / `4`-Closed  
-> fundingAccount| array| WM Vendor子賬戶中的閒置資金列表  
->> coin| string| 幣種  
->> amount| string| 閒置金額  
-createdTime| string| 投資計劃創建時間戳（毫秒）  
+list| array| 訂單列表  
+> orderId| string| 訂單唯一標識（UUID格式）  
+> planId| string| 所屬投資計劃ID  
+> type| string| 訂單類型：`Subscribe`（申購）/ `Redeem`（贖回）/ `AutoReinvest`（自動續投）  
+> accountType| string| 資金來源賬戶類型：`Funding`（資金賬戶）/ `Unified`（統一交易賬戶）  
+> coin| string| 訂單幣種，如 `USDT`、`BTC`  
+> amount| string| 訂單金額（本位幣數量）  
+> category| string| 產品類型：`flexibleSavings` / `fundPool` / `fundPoolPremium` / `equityFund` / `onchainEarn`  
+> productId| string| 產品ID  
+> status| string| 訂單狀態：`Completed`（已完成）/ `Pending`（處理中）/ `Failed`（失敗）  
+> orderTime| string| 訂單創建時間戳（毫秒），UTC時間  
+nextPageCursor| string| 下一頁游標，為空表示無更多數據  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/pwm/investment-plan/detail?planId=10001 HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/order?planId=10001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -334,101 +173,44 @@ createdTime| string| 投資計劃創建時間戳（毫秒）
     {  
         "retCode": 0,  
         "result": {  
-            "planId": "10001",  
-            "planName": "Conservative Growth Plan",  
-            "planType": "conservative",  
-            "status": "Active",  
-            "currentAssetUsd": "200137.50",  
-            "accumulateYieldUsd": "2137.50",  
-            "weightedAvgApr": "0.086",  
-            "currentAssets": [  
+            "list": [  
                 {  
+                    "orderId": "a285b975-9968-4ba0-bd78-58430ead715f",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
                     "coin": "USDT",  
-                    "amount": "150000.00"  
+                    "amount": "100.0000",  
+                    "category": "flexibleSavings",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "f463ad6e-263c-499a-aff6-70c23be846ef",  
+                    "planId": "10001",  
+                    "type": "Subscribe",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "0.002000",  
+                    "category": "equityFund",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739519687000"  
+                },  
+                {  
+                    "orderId": "98dc5a11-a578-49c2-830f-fc5d8c317ea7",  
+                    "planId": "10005",  
+                    "type": "AutoReinvest",  
+                    "accountType": "Funding",  
+                    "coin": "BTC",  
+                    "amount": "10.409201",  
+                    "category": "fundPool",  
+                    "productId": "11123",  
+                    "status": "Completed",  
+                    "orderTime": "1739498401000"  
                 }  
             ],  
-            "positions": {  
-                "multiCoinsEarning": {  
-                    "totalInvestmentUsd": "60000.00",  
-                    "accumulateYieldUsd": "500.00",  
-                    "weightedAvgApr": "0.052",  
-                    "items": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "currentAmount": "30000.00",  
-                            "accumulateYield": "250.00",  
-                            "apr": "0.05",  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "fixedYield": {  
-                    "totalInvestmentUsd": "50000.00",  
-                    "accumulateYieldUsd": "800.00",  
-                    "weightedAvgApr": "0.08",  
-                    "items": [  
-                        {  
-                            "category": "fundPool",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "currentAmount": "50000.00",  
-                            "accumulateYield": "800.00",  
-                            "apr": "0.08",  
-                            "duration": 30,  
-                            "maturityTime": "1700500000000",  
-                            "autoReinvest": true,  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "equityFunds": {  
-                    "totalInvestmentUsd": "70000.00",  
-                    "accumulateYieldUsd": "700.00",  
-                    "weightedAvgApr": "0.12",  
-                    "items": [  
-                        {  
-                            "category": "equityFund",  
-                            "productId": "2001",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "tags": ["Delta Neutral", "Funding Rate"],  
-                            "nav": "1.035",  
-                            "userShares": "68000.00",  
-                            "shareValue": "1.029",  
-                            "holdingValue": "69972.00",  
-                            "accumulateYield": "700.00",  
-                            "apr30d": "0.12",  
-                            "aprTotal": "0.105",  
-                            "sharpRatio": "2.5",  
-                            "maxDrawdown": "-0.032",  
-                            "createdTime": "1695000000000",  
-                            "runningDays": 58  
-                        }  
-                    ]  
-                },  
-                "onchainEarn": {  
-                    "totalInvestmentUsd": "18000.00",  
-                    "accumulateYieldUsd": "137.50",  
-                    "items": [  
-                        {  
-                            "category": "onchainEarn",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "stakeAmount": "18000.00",  
-                            "apr": "0.075",  
-                            "positionId": "123"  
-                        }  
-                    ]  
-                },  
-                "fundingAccount": [  
-                    {  
-                        "coin": "USDT",  
-                        "amount": "165.50"  
-                    }  
-                ]  
-            },  
-            "createdTime": "1700000000000"  
+            "nextPageCursor": ""  
         }  
     }

@@ -2,49 +2,47 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/history-fund-rate
 api_type: Market Data
-updated_at: 2026-06-15 19:54:50.323738
+updated_at: 2026-06-16 19:49:21.357509
 ---
 
-# Get Funding Rate History
+# Get Insurance Pool
 
-Query for historical funding rates. Each symbol has a different funding interval. For example, if the interval is 8 hours and the current time is UTC 12, then it returns the last funding rate, which settled at UTC 8.
-
-To query the funding rate interval, please refer to the [instruments-info](/docs/v5/market/instrument) endpoint.
-
-> **Covers: USDT and USDC perpetual / Inverse perpetual**
+Query for Bybit [insurance pool](https://www.bybit.com/en/announcement-info/insurance-fund/) data (BTC/USDT/USDC etc)
 
 info
 
-  * Passing only `startTime` returns an error.
-  * Passing only `endTime` returns 200 records up till `endTime`.
-  * Passing neither returns 200 records up till the current time.
+  * The isolated insurance pool balance is updated every 1 minute, and shared insurance pool balance is updated every 24 hours
+  * Please note that you may receive data from the previous minute. This is due to multiple backend containers starting at different times, which may cause a slight delay. You can always rely on the latest minute data for accuracy.
+  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
 
 
 
 ### HTTP Request
 
-GET`/v5/market/funding/history`
+GET`/v5/market/insurance`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type. `linear`,`inverse`  
-symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-startTime| false| integer| The start timestamp (ms)  
-endTime| false| integer| The end timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `200`]. Default: `200`  
+coin| false| string| coin, uppercase only. Default: return all insurance coins  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-category| string| Product type  
+updatedTime| string| Data updated time (ms)  
 list| array| Object  
-> symbol| string| Symbol name  
-> fundingRate| string| Funding rate  
-> fundingRateTimestamp| string| Funding rate timestamp (ms)  
-[](/docs/api-explorer/v5/market/history-fund-rate)
+> coin| string| Coin  
+> symbols| string| 
+
+  * symbols with `"BTCUSDT,ETHUSDT,SOLUSDT"` mean these contracts are shared with one insurance pool
+  * For an isolated insurance pool, it returns one contract
+
+  
+> balance| string| Balance  
+> value| string| USD value  
+[](/docs/api-explorer/v5/market/insurance)
 
 * * *
 
@@ -59,17 +57,15 @@ list| array| Object
 
     
     
-    GET /v5/market/funding/history?category=linear&symbol=ETHPERP&limit=1 HTTP/1.1  
+    GET /v5/market/insurance?coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
-    session = HTTP()  
-    print(session.get_funding_rate_history(  
-        category="linear",  
-        symbol="ETHPERP",  
-        limit=1,  
+    session = HTTP(testnet=True)  
+    print(session.get_insurance(  
+        coin="USDT",  
     ))  
     
     
@@ -80,18 +76,16 @@ list| array| Object
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetFundingRateHistory(context.Background())  
+    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
+    client.NewUtaBybitServiceWithParams(params).GetMarketInsurance(context.Background())  
     
     
     
-    import com.bybit.api.client.domain.CategoryType;  
-    import com.bybit.api.client.domain.market.*;  
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var fundingHistoryRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSD).startTime(1632046800000L).endTime(1632133200000L).limit(150).build();  
-    client.getFundingHistory(fundingHistoryRequest, System.out::println);  
+    var insuranceRequest = MarketDataRequest.builder().coin("BTC").build();  
+    var insuranceData = client.getInsurance(insuranceRequest);  
     
     
     
@@ -102,10 +96,8 @@ list| array| Object
     });  
       
     client  
-        .getFundingRateHistory({  
-            category: 'linear',  
-            symbol: 'ETHPERP',  
-            limit: 1,  
+        .getInsurance({  
+            coin: 'USDT',  
         })  
         .then((response) => {  
             console.log(response);  
@@ -122,59 +114,77 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "category": "linear",  
+            "updatedTime": "1714003200000",  
             "list": [  
                 {  
-                    "symbol": "ETHPERP",  
-                    "fundingRate": "0.0001",  
-                    "fundingRateTimestamp": "1672041600000"  
+                    "coin": "USDT",  
+                    "symbols": "MERLUSDT,10000000AIDOGEUSDT,ZEUSUSDT",  
+                    "balance": "902178.57602476",  
+                    "value": "901898.0963091522"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "SOLUSDT,OMNIUSDT,ALGOUSDT",  
+                    "balance": "14454.51626125",  
+                    "value": "14449.515598975464"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "XLMUSDT,WUSDT",  
+                    "balance": "23.45018235",  
+                    "value": "22.992864174376344"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "AGIUSDT,WIFUSDT",  
+                    "balance": "10002",  
+                    "value": "9998.896846613574"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672051897447  
+        "time": 1714028451228  
     }
 
 ---
 
-# 查詢歷史資金費率
+# 查詢保險基金
 
-查詢資金費率，每個symbol的資金費率產生週期不同。假設資金費率為8小時，當前時間是UTC12點，則返回的是上一個結算即UTC8點產生的資金費率。如要查詢symbol的資金費率時間間隔，請查詢[可交易產品規格](/docs/zh-TW/v5/market/instrument)接口
+查詢Bybit平台的保險基金的數據，包含所有保險池的數據
 
-> **覆蓋範圍: USDT和USDC永續 / 反向永續**
+信息
 
-時間入参規則
-
-  * 只傳`startTime`會報錯
-  * 只傳`endTime`，則返回endTime往前的200條數據
-  * 都不傳，返回當前時間的往前200條數據
+  * 獨立保險池的餘額數據每1分鐘更新一次, 共享保險池的餘額數據每24小時更新一次
+  * 請注意，您可能會收到前一分鐘的數據。這是由於多個後端容器在不同的時間啟動，這會造成数据延遲。您始終可以依賴最新的那一分鐘數據來確保準確性。 *在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
 
 
 
 ### HTTP請求
 
-GET`/v5/market/funding/history`
+GET`/v5/market/insurance`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `linear`,`inverse`  
-symbol| **true**|  string| 合約名稱  
-startTime| false| integer| 開始時間戳 (毫秒)  
-endTime| false| integer| 結束時間戳 (毫秒)  
-limit| false| integer| 每頁數量限制. [`1`, `200`]. 默認: `200`  
+coin| false| string| 幣種名稱. 默認: 返回目前所有的保險池幣種  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-category| string| 產品類型  
+updateTime| string| 數據最近更新的時間戳 (ms)  
 list| array| Object  
-> symbol| string| 合約名稱  
-> fundingRate| string| 資金費率  
-> fundingRateTimestamp| string| 資金費率時間戳 (毫秒)  
-[](/docs/zh-TW/api-explorer/v5/market/history-fund-rate)
+> coin| string| 保險池的幣種  
+> symbols| string| 
+
+  * 對於共享保險池, 返回的symbols裡會有多個合約, 比如`"BTCUSDT,ETHUSDT,SOLUSDT"`
+  * 對於獨立保險池, 將會返回一個合約
+
+  
+> balance| string| 保險基金的幣種數量  
+> value| string| 保險基金的幣種價值，折合成USD的價值  
+[](/docs/zh-TW/api-explorer/v5/market/insurance)
 
 * * *
 
@@ -189,17 +199,15 @@ list| array| Object
 
     
     
-    GET /v5/market/funding/history?category=linear&symbol=ETHPERP&limit=1 HTTP/1.1  
+    GET /v5/market/insurance?coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
-    session = HTTP()  
-    print(session.get_funding_rate_history(  
-        category="linear",  
-        symbol="ETHPERP",  
-        limit=1,  
+    session = HTTP(testnet=True)  
+    print(session.get_insurance(  
+        coin="USDT",  
     ))  
     
     
@@ -211,17 +219,15 @@ list| array| Object
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
     params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetFundingRateHistory(context.Background())  
+    client.NewUtaBybitServiceWithParams(params).GetMarketInsurance(context.Background())  
     
     
     
-    import com.bybit.api.client.domain.CategoryType;  
-    import com.bybit.api.client.domain.market.*;  
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var fundingHistoryRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSD).startTime(1632046800000L).endTime(1632133200000L).limit(150).build();  
-    client.getFundingHistory(fundingHistoryRequest, System.out::println);  
+    var insuranceRequest = MarketDataRequest.builder().coin("BTC").build();  
+    var insuranceData = client.getInsurance(insuranceRequest);  
     
     
     
@@ -232,10 +238,8 @@ list| array| Object
     });  
       
     client  
-        .getFundingRateHistory({  
-            category: 'linear',  
-            symbol: 'ETHPERP',  
-            limit: 1,  
+        .getInsurance({  
+            coin: 'USDT',  
         })  
         .then((response) => {  
             console.log(response);  
@@ -252,15 +256,34 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "category": "linear",  
+            "updatedTime": "1714003200000",  
             "list": [  
                 {  
-                    "symbol": "ETHPERP",  
-                    "fundingRate": "0.0001",  
-                    "fundingRateTimestamp": "1672041600000"  
+                    "coin": "USDT",  
+                    "symbols": "MERLUSDT,10000000AIDOGEUSDT,ZEUSUSDT",  
+                    "balance": "902178.57602476",  
+                    "value": "901898.0963091522"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "SOLUSDT,OMNIUSDT,ALGOUSDT",  
+                    "balance": "14454.51626125",  
+                    "value": "14449.515598975464"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "XLMUSDT,WUSDT",  
+                    "balance": "23.45018235",  
+                    "value": "22.992864174376344"  
+                },  
+                {  
+                    "coin": "USDT",  
+                    "symbols": "AGIUSDT,WIFUSDT",  
+                    "balance": "10002",  
+                    "value": "9998.896846613574"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1672051897447  
+        "time": 1714028451228  
     }

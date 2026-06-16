@@ -2,55 +2,74 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/apr-history
 api_type: REST
-updated_at: 2026-06-15 19:53:50.472692
+updated_at: 2026-06-16 19:48:12.375752
 ---
 
-# Stake / Redeem
+# Get Coupon List
 
 info
 
-API key needs "Earn" permission, custody accounts are not supported for now
+  * Authentication required.
+  * **Rate Limit:** 10 req/s (UID)
 
-note
 
-In times of high demand for loans in the market for a specific cryptocurrency, the redemption of the principal may encounter delays and is expected to be processed within 48 hours. The redemption of on-chain products may take up to a few days to complete. Once the redemption request is initiated, it cannot be cancelled.
+
+Query the user's interest-rate coupons (`interestCards`) and Dual Assets reward cards (`awardCards`, e.g. trial funds / zero-cost vouchers) for the given product category.
+
+Returned cards include all states: `InUse`, `NotUse`, `Expired`, and `AlreadyUsed`.
+
+To apply a coupon when placing an order, pass its `awardId` and `specCode` in the `interestCard` field of the corresponding place-order request:
+
+  * `FlexibleSaving` → [Place Order](/docs/v5/finance/earn/easy-onchain/create-order)
+  * `DualAssets` → [Place Order](/docs/v5/finance/advanced-earn/dual-asset/create-order)
+
+
 
 ### HTTP Request
 
-POST`/v5/earn/place-order`
+GET`/v5/earn/coupons`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`   
-**Remarks** : currently, only flexible savings and on chain is supported  
-orderType| **true**|  string| `Stake`, `Redeem`  
-accountType| **true**|  string| `FUND`, `UNIFIED`. Onchain only supports FUND  
-amount| **true**|  string| 
-
-  * Stake amount needs to satisfy minStake and maxStake
-  * Both stake and redeem amount need to satify precision requirement
-
-  
-coin| **true**|  string| Coin name  
-productId| **true**|  string| Product ID  
-orderLinkId| **true**|  string| Customised order ID, used to prevent from replay
-
-  * support up to 36 characters
-  * The same orderLinkId can't be used in 30 mins
-
-  
-redeemPositionId| false| string| The position ID that the user needs to redeem. Only is required in Onchain non-LST mode  
-toAccountType| false| string| `FUND`, `UNIFIED`. Onchain LST mode supports `FUND` and `UNIFIED`(Private wealth management custodial subaccount only supports `UNIFIED`). Onchain non-LST mode only supports `FUND`  
+category| **true**|  string| Product category: `FlexibleSaving`, `DualAssets`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| Order link ID  
+interestCards| array| Interest-rate coupon list  
+> awardId| integer| Coupon unique ID  
+> specCode| string| Coupon spec code  
+> coin| string| Coin name, e.g. `USDT`, `BTC`  
+> apy| string| Bonus APY rate as a decimal string, e.g. `"0.03"` = 3%  
+> duration| integer| Coupon validity period (days)  
+> claimedAt| integer| Claim time (Unix seconds)  
+> expireAt| integer| Expiry time (Unix seconds)  
+> usedAt| integer| Use time (Unix seconds); `0` if not yet used  
+> status| string| Coupon status. `InUse`: currently in use, `NotUse`: claimed but not yet used, `Expired`: expired without being used, `AlreadyUsed`: used and settled  
+> currentPnl| string| Bonus interest accrued so far  
+> limitPnl| string| Bonus interest cap  
+> positionEffectiveAmount| string| Effective principal amount for the bonus calculation  
+> productId| integer| Linked product ID; populated for `InUse` / `AlreadyUsed`, `0` otherwise  
+> category| string| Product category the coupon applies to: `FlexibleSaving`, `DualAssets`  
+awardCards| array| Dual Assets reward card list (trial fund / zero-cost voucher)  
+> awardId| integer| Reward card unique ID  
+> specCode| string| Reward card spec code  
+> claimedAt| integer| Claim time (Unix seconds)  
+> usedAt| integer| Use time (Unix seconds); `0` if not yet used  
+> expireAt| integer| Expiry time (Unix seconds)  
+> status| string| Card status. Same semantics as `interestCards > status`  
+> amount| string| Trial / zero-cost voucher amount  
+> limitPnlPercentage| string| PnL percentage cap, e.g. `"0.23"` = 23%  
+> baseCoin| string| Base coin name  
+> quoteCoin| string| Quote coin name  
+> direction| integer| Dual Assets direction: `1` = BuyLow, `2` = SellHigh  
+> category| string| Product category the card applies to: `FlexibleSaving`, `DualAssets`  
   
+* * *
+
 ### Request Example
 
   * HTTP
@@ -60,42 +79,16 @@ orderLinkId| string| Order link ID
 
     
     
-    POST /v5/earn/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/earn/coupons?category=FlexibleSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739936605822  
+    X-BAPI-TIMESTAMP: 1759983699446  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    Content-Length: 190  
+    
+    
+    
       
-    {  
-        "category": "FlexibleSaving",  
-        "orderType": "Redeem",  
-        "accountType": "FUND",  
-        "amount": "0.35",  
-        "coin": "BTC",  
-        "productId": "430",  
-        "orderLinkId": "btc-earn-001"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.stake_or_redeem(  
-        category="FlexibleSaving",  
-        orderType="Redeem",  
-        accountType="FUND",  
-        amount="0.35",  
-        coin="BTC",  
-        productId="430",  
-        orderLinkId="btc-earn-001"  
-    ))  
     
     
     
@@ -107,63 +100,99 @@ orderLinkId| string| Order link ID
     
     {  
         "retCode": 0,  
-        "retMsg": "",  
+        "retMsg": "OK",  
         "result": {  
-            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
-            "orderLinkId": "btc-earn-001"  
+            "interestCards": [  
+                {  
+                    "awardId": 1001,  
+                    "specCode": "FS_APY_3PCT_30D",  
+                    "coin": "USDT",  
+                    "apy": "0.03",  
+                    "duration": 30,  
+                    "claimedAt": 1759900800,  
+                    "expireAt": 1762492800,  
+                    "usedAt": 0,  
+                    "status": "NotUse",  
+                    "currentPnl": "0",  
+                    "limitPnl": "100",  
+                    "positionEffectiveAmount": "0",  
+                    "productId": 0,  
+                    "category": "FlexibleSaving"  
+                }  
+            ],  
+            "awardCards": []  
         },  
         "retExtInfo": {},  
-        "time": 1739936607117  
+        "time": 1759983699446  
     }
 
 ---
 
-# 質押/贖回
+# 查詢優惠券列表
 
 信息
 
-API key需要"理財""權限, 三方託管帳戶暫不支援
+  * 需要身份驗證。
+  * **頻率限制：** 10 次/秒（UID）
 
-備註
 
-在極端情況下，當相應代幣的市場需求極高，本金贖回可能會出現延遲，預計需要 48 小時處理完畢。鏈上賺幣產品的贖回可能需要幾天的時間才能完成。一旦發動贖回請求，不能被取消。
+
+查詢用戶在指定產品類別下的利率優惠券（`interestCards`）和雙幣投資獎勵卡（`awardCards`，如體驗金/零成本券）。
+
+返回所有狀態的卡券：`InUse`（使用中）、`NotUse`（未使用）、`Expired`（已過期）、`AlreadyUsed`（已使用）。
+
+下單時如需使用優惠券，請在對應下單請求的 `interestCard` 字段中傳入 `awardId` 和 `specCode`：
+
+  * `FlexibleSaving` → [下單](/docs/zh-TW/v5/finance/earn/easy-onchain/create-order)
+  * `DualAssets` → [下單](/docs/zh-TW/v5/finance/advanced-earn/dual-asset/create-order)
+
+
 
 ### HTTP 請求
 
-POST`/v5/earn/place-order`
+GET`/v5/earn/coupons`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`   
-**備註** : 本期僅支持活期理財和鏈上賺幣  
-orderType| **true**|  string| 訂單類型 `Stake`, `Redeem`  
-accountType| **true**|  string| 選擇帳戶類型 `FUND`, `UNIFIED`. OnChain 只支持FUND  
-amount| **true**|  string| 
-
-  * 質押數量需要滿足最小/最大質押額
-  * 質押和贖回需要滿足幣種精度要求
-
-  
-coin| **true**|  string| 幣種名稱  
-productId| **true**|  string| 產品ID  
-orderLinkId| **true**|  string| 自定義訂單號, 同時用於冪等校驗
-
-  * 支持最長36位字符
-  * 30分鐘內無法使用相同的orderLinkId
-
-  
-redeemPositionId| false| string| 用戶需要贖回的持倉ID：只有非LST 產品需要在贖回時傳  
-toAccountType| false| string| `FUND`, `UNIFIED`. 鏈上賺幣LST模式支持`FUND`和`UNIFIED`（私人理財託管子帳戶僅支持`UNIFIED`）. 鏈上賺幣非LST模式僅支持`FUND`  
+category| **true**|  string| 產品類別：`FlexibleSaving`、`DualAssets`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| Order link ID  
+interestCards| array| 利率優惠券列表  
+> awardId| integer| 優惠券唯一ID  
+> specCode| string| 優惠券規格碼  
+> coin| string| 幣種名稱，如 `USDT`、`BTC`  
+> apy| string| 加成APY（小數字符串），如 `"0.03"` = 3%  
+> duration| integer| 優惠券有效期（天）  
+> claimedAt| integer| 領取時間（Unix秒）  
+> expireAt| integer| 到期時間（Unix秒）  
+> usedAt| integer| 使用時間（Unix秒）；未使用時為 `0`  
+> status| string| 狀態。`InUse`：使用中，`NotUse`：未使用，`Expired`：已過期，`AlreadyUsed`：已使用  
+> currentPnl| string| 已累計加成利息  
+> limitPnl| string| 加成利息上限  
+> positionEffectiveAmount| string| 計算加成的有效本金  
+> productId| integer| 關聯產品ID；`InUse`/`AlreadyUsed` 時有值，否則為 `0`  
+> category| string| 優惠券適用的產品類別：`FlexibleSaving`、`DualAssets`  
+awardCards| array| 雙幣投資獎勵卡列表（體驗金/零成本券）  
+> awardId| integer| 獎勵卡唯一ID  
+> specCode| string| 獎勵卡規格碼  
+> claimedAt| integer| 領取時間（Unix秒）  
+> usedAt| integer| 使用時間（Unix秒）；未使用時為 `0`  
+> expireAt| integer| 到期時間（Unix秒）  
+> status| string| 狀態，語義同 `interestCards > status`  
+> amount| string| 體驗金/零成本券金額  
+> limitPnlPercentage| string| 收益上限比例，如 `"0.23"` = 23%  
+> baseCoin| string| 標的幣種  
+> quoteCoin| string| 計價幣種  
+> direction| integer| 雙幣方向：`1` = 低買（BuyLow），`2` = 高賣（SellHigh）  
+> category| string| 獎勵卡適用的產品類別：`FlexibleSaving`、`DualAssets`  
   
+* * *
+
 ### 請求示例
 
   * HTTP
@@ -173,42 +202,16 @@ orderLinkId| string| Order link ID
 
     
     
-    POST /v5/earn/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
+    GET /v5/earn/coupons?category=FlexibleSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739936605822  
+    X-BAPI-TIMESTAMP: 1759983699446  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    Content-Length: 190  
+    
+    
+    
       
-    {  
-        "category": "FlexibleSaving",  
-        "orderType": "Redeem",  
-        "accountType": "FUND",  
-        "amount": "0.35",  
-        "coin": "BTC",  
-        "productId": "430",  
-        "orderLinkId": "btc-earn-001"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.stake_or_redeem(  
-        category="FlexibleSaving",  
-        orderType="Redeem",  
-        accountType="FUND",  
-        amount="0.35",  
-        coin="BTC",  
-        productId="430",  
-        orderLinkId="btc-earn-001"  
-    ))  
     
     
     
@@ -220,11 +223,28 @@ orderLinkId| string| Order link ID
     
     {  
         "retCode": 0,  
-        "retMsg": "",  
+        "retMsg": "OK",  
         "result": {  
-            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
-            "orderLinkId": "btc-earn-001"  
+            "interestCards": [  
+                {  
+                    "awardId": 1001,  
+                    "specCode": "FS_APY_3PCT_30D",  
+                    "coin": "USDT",  
+                    "apy": "0.03",  
+                    "duration": 30,  
+                    "claimedAt": 1759900800,  
+                    "expireAt": 1762492800,  
+                    "usedAt": 0,  
+                    "status": "NotUse",  
+                    "currentPnl": "0",  
+                    "limitPnl": "100",  
+                    "positionEffectiveAmount": "0",  
+                    "productId": 0,  
+                    "category": "FlexibleSaving"  
+                }  
+            ],  
+            "awardCards": []  
         },  
         "retExtInfo": {},  
-        "time": 1739936607117  
+        "time": 1759983699446  
     }

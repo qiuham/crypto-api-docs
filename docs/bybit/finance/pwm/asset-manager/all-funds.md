@@ -2,64 +2,57 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/all-funds
 api_type: REST
-updated_at: 2026-06-15 19:54:08.843928
+updated_at: 2026-06-16 19:48:36.308308
 ---
 
-# Get All Funds
+# Create Fund Sub-Account
 
 info
 
-Results are sorted by fund ID in **descending order** (newest first).
+  1. Sub-account creation is asynchronous. On the first call, `status` returns `pending` and `subAccountUid` returns `"0"`. Once the backend finishes creating the sub-account, calling the same endpoint with the same parameters will return `"status": "Active"` and the new sub-account UID in the `subAccountUid` field. Alternatively, you can verify whether the sub-account was created successfully by calling [Get All Funds](/docs/v5/finance/pwm/asset-manager/all-funds), which returns the list of sub-account UIDs associated with the fund.
+  2. The fund must be in **Active (Running)** status before a sub-account can be created.
+  3. Each fund supports a maximum of **30 sub-accounts** (excluding destroyed ones).
+  4. If there is already a sub-account in `pending` status being created, no new sub-account can be created until the current one completes.
+
+
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/asset-manager/all-funds`
+POST`/v5/earn/pwm/asset-manager/create-sub-account`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| false| string| Filter by coin  
-fundId| false| string| Filter by fund ID. Only funds created by the institution via Open API can be queried  
-status| false| string| Filter by status: `PendingSubscribe` / `Active` / `Closing` / `Closed`  
-limit| false| integer| Page size. Default: `20`, max: `50`  
-cursor| false| string| Pagination cursor (uses fund ID as cursor)  
+fundId| **true**|  string| Fund ID  
+reqLinkId| **true**|  string| User-defined request ID, used to prevent duplicate creation  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Fund list  
-> fundId| string| Unique fund identifier  
-> fundName| string| Fund name  
-> coin| string| Fund denomination coin  
-> status| string| Fund status: `PendingSubscribe` / `Active` / `Closing` / `Closed`  
-> totalEquity| string| Total fund equity (base coin)  
-> totalShares| string| Total fund shares  
-> currentNav| string| Current NAV (= shareValue / initialShareValue)  
-> currentAPR| string| Current 30-day APR  
-> accountUid| string| Main fund sub-account UID  
-> subAccountList| array| Sub-account UIDs attached to this fund  
->> (element)| string| Sub-account UID  
-> profitShareRate| string| Profit sharing rate (%), e.g. `"20.00"` means 20%  
-> managementFeeRate| string| Management fee rate (annualized %), e.g. `"2.00"` means 2%  
-> uncollectedProfit| string| Unsettled profit-sharing amount (base coin)  
-> collectedProfit| string| Historically settled profit-sharing amount (base coin)  
-> totalLoan| string| Current unsettled leverage amount (base coin)  
-> createdTime| string| Fund creation timestamp (milliseconds)  
-nextPageCursor| string| Next page cursor. Empty string indicates no more data  
+fundId| string| Fund ID  
+subAccountUid| string| UID of the newly created sub-account. Returns `"0"` while creation is in progress. Once status is `success`, the actual UID is returned when queried with the same `reqLinkId`  
+createdTime| string| Creation timestamp (milliseconds)  
+status| string| Creation status: `pending` (creating) / `success` (created) / `destroyed` (destroyed)  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/pwm/asset-manager/all-funds HTTP/1.1  
+    POST /v5/earn/pwm/asset-manager/create-sub-account HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "fundId": "100001",  
+        "reqLinkId": "create-sub-001"  
+    }  
     
 
 ### Response Example
@@ -69,86 +62,63 @@ nextPageCursor| string| Next page cursor. Empty string indicates no more data
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "fundId": "123",  
-                    "fundName": "BTC Alpha Fund",  
-                    "coin": "BTC",  
-                    "status": "active",  
-                    "totalEquity": "10.5",  
-                    "totalShares": "1000.00",  
-                    "currentNav": "1.05",  
-                    "accountUid": "456789",  
-                    "subAccountList": ["456790", "456791"],  
-                    "profitShareRate": "20.00",  
-                    "managementFeeRate": "2.00",  
-                    "uncollectedProfit": "0.5",  
-                    "collectedProfit": "1.2",  
-                    "totalLoan": "0",  
-                    "createdTime": "1640000000000"  
-                }  
-            ],  
-            "nextPageCursor": "32"  
+            "fundId": "100001",  
+            "subAccountUid": "0",  
+            "createdTime": "1700600000000",  
+            "status": "pending"  
         }  
     }
 
 ---
 
-# 查詢機構管轄的基金列表
+# 創建基金子賬戶
 
 信息
 
-返回數據按基金 ID **降序排列** （最新的在前）。
+  1. 子賬戶創建為異步操作。第一次調用時，`status` 返回 `pending`，`subAccountUid` 返回 `"0"`。後台創建完成後，使用相同參數再次調用該接口，將返回 `"status": "Active"`，新建子賬戶的 UID 會顯示在 `subAccountUid` 字段中。也可以通過 [查詢機構管轄的基金列表](/docs/zh-TW/v5/finance/pwm/asset-manager/all-funds) 查看基金下關聯的子賬戶列表，以確認子賬戶是否創建成功。
+  2. 基金必須為 **Active（運行中）** 狀態才能創建子賬戶。
+  3. 每個基金最多支持 **30 個子賬戶** （不包括已銷毀的）。
+  4. 如果當前有處於 `pending` 狀態的子賬戶正在創建，則不允許創建新的子賬戶，需等待當前創建完成後再操作。
+
+
 
 ### HTTP 請求
 
-GET`/v5/earn/pwm/asset-manager/all-funds`
+POST`/v5/earn/pwm/asset-manager/create-sub-account`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| false| string| 幣種篩選  
-fundId| false| string| 基金ID篩選（該接口只能查詢機構 Open API 創建的基金）  
-status| false| string| 狀態篩選：`PendingSubscribe`（待申購）/ `Active`（運行中）/ `Closing`（關閉中）/ `Closed`（已關閉）  
-limit| false| integer| 每頁數量，默認 `20`，最大 `50`  
-cursor| false| string| 分頁游標（使用基金ID作為游標）  
+fundId| **true**|  string| 基金ID  
+reqLinkId| **true**|  string| 用戶自定義請求ID，用於防止重複調用創建  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| 基金列表  
-> fundId| string| 基金唯一標識  
-> fundName| string| 基金名稱  
-> coin| string| 基金計價幣種  
-> status| string| 基金狀態：`PendingSubscribe`（待申購）/ `Active`（運行中）/ `Closing`（關閉中）/ `Closed`（已關閉）  
-> totalEquity| string| 基金總權益（本位幣）  
-> totalShares| string| 基金總份額  
-> currentNav| string| 當前淨值（nav = shareValue / initialShareValue）  
-> currentAPR| string| 當前30日APR  
-> accountUid| string| 主基金子賬戶UID  
-> subAccountList| array| 當前基金附屬子賬戶UID列表  
->> (元素)| string| 子賬戶UID  
-> profitShareRate| string| 利潤分成比例（%），如 `"20.00"` 表示20%  
-> managementFeeRate| string| 管理費率（年化%），如 `"2.00"` 表示2%  
-> uncollectedProfit| string| 當前未結算分潤的資產數量（本位幣）  
-> collectedProfit| string| 歷史已結算分潤資產數量（本位幣）  
-> totalLoan| string| 當前未結算的配資規模（本位幣）  
-> createdTime| string| 基金創建時間戳（毫秒）  
-nextPageCursor| string| 下一頁游標，為空表示無更多數據  
+fundId| string| 基金ID  
+subAccountUid| string| 新創建的子賬戶UID。創建中時返回 `"0"`，創建成功後使用同一個 `reqLinkId` 請求將返回實際的非零UID  
+createdTime| string| 創建時間戳（毫秒）  
+status| string| 創建狀態：`pending`（創建中）/ `success`（創建成功）/ `destroyed`（已銷毀）  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/pwm/asset-manager/all-funds HTTP/1.1  
+    POST /v5/earn/pwm/asset-manager/create-sub-account HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "fundId": "100001",  
+        "reqLinkId": "create-sub-001"  
+    }  
     
 
 ### 響應示例
@@ -158,25 +128,9 @@ nextPageCursor| string| 下一頁游標，為空表示無更多數據
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "fundId": "123",  
-                    "fundName": "BTC Alpha Fund",  
-                    "coin": "BTC",  
-                    "status": "active",  
-                    "totalEquity": "10.5",  
-                    "totalShares": "1000.00",  
-                    "currentNav": "1.05",  
-                    "accountUid": "456789",  
-                    "subAccountList": ["456790", "456791"],  
-                    "profitShareRate": "20.00",  
-                    "managementFeeRate": "2.00",  
-                    "uncollectedProfit": "0.5",  
-                    "collectedProfit": "1.2",  
-                    "totalLoan": "0",  
-                    "createdTime": "1640000000000"  
-                }  
-            ],  
-            "nextPageCursor": "32"  
+            "fundId": "100001",  
+            "subAccountUid": "0",  
+            "createdTime": "1700600000000",  
+            "status": "pending"  
         }  
     }

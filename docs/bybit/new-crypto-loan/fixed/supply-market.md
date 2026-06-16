@@ -2,40 +2,39 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-market
 api_type: REST
-updated_at: 2026-06-15 19:55:31.493718
+updated_at: 2026-06-16 19:50:06.835475
 ---
 
-# Get Lending Market
+# Repay
+
+Fully or partially repay a loan. If interest is due, that is paid off first, with the loaned amount being paid off only after due interest.
+
+> Permission: "Spot trade"  
+>  UID rate limit: 1 req / second
 
 info
 
-Does not need authentication.
+  * The repaid amount will be deducted from the Funding wallet.
+  * The collateral amount will not be auto returned when you don't fully repay the debt, but you can also adjust collateral amount
 
-If you want to supply, you can use this endpoint to check whether there are any suitable counterparty borrow orders available.
+
 
 ### HTTP Request
 
-GET`/v5/crypto-loan-fixed/supply-order-quote`
+POST`/v5/crypto-loan-flexible/repay`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderCurrency| **true**|  string| Coin name  
-term| false| string| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-orderBy| **true**|  string| Order by, `apy`: annual rate; `term`; `quantity`  
-sort| false| integer| `0`: ascend, default; `1`: descend  
-limit| false| integer| Limit for data size per page. [`1`, `100`]. Default: `10`  
+loanCurrency| **true**|  string| Loan coin name  
+amount| **true**|  string| Amount to repay  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| Coin name  
-> term| integer| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-> annualRate| string| Annual rate  
-> qty| string| Quantity  
+repayId| string| Repayment transaction ID  
   
 ### Request Example
 
@@ -46,8 +45,19 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/supply-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-flexible/repay HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752569628364  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 52  
+      
+    {  
+        "loanCurrency": "BTC",  
+        "amount": "0.005"  
+    }  
     
     
     
@@ -57,9 +67,9 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_lending_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.repay_flexible_crypto_loan(  
+        loanCurrency="BTC",  
+        loanAmount="0.005",  
     ))  
     
     
@@ -74,58 +84,44 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.02",  
-                    "orderCurrency": "USDT",  
-                    "qty": "1000.1234",  
-                    "term": 60  
-                },  
-                {  
-                    "annualRate": "0.022",  
-                    "orderCurrency": "USDT",  
-                    "qty": "212.1234",  
-                    "term": 7  
-                }  
-            ]  
+            "repayId": "1771"  
         },  
         "retExtInfo": {},  
-        "time": 1752652136224  
+        "time": 1752569614549  
     }
 
 ---
 
-# 查詢可存市場
+# 還款
+
+您可以選擇提前還款, 並且支持部分還款, 如果存在利息, 將優先還利息
+
+> 權限: "現貨"  
+>  頻率: 1次/秒
 
 信息
 
-公共接口, 無需鑒權
+  * 還款金額將從資金帳戶扣除
+  * 非完全還清操作, 系統將不會主動退還質押金, 但是您可以自行減少質押金
 
-如果您是存款方, 可通過該接口查詢到市場上可匹配的借款單報價
+
 
 ### HTTP 請求
 
-GET`/v5/crypto-loan-fixed/supply-order-quote`
+POST`/v5/crypto-loan-flexible/repay`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderCurrency| **true**|  string| 幣種名稱  
-term| false| string| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-orderBy| **true**|  string| 排序依據，`apy`: 年化利率；`term`: 期限；`quantity`: 數量  
-sort| false| integer| `0`: 升序，預設；`1`: 降序  
-limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
+loanCurrency| **true**|  string| 借款幣種  
+amount| **true**|  string| 還款金額  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| 幣種名稱  
-> term| integer| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-> annualRate| string| 年化利率  
-> qty| string| 數量  
+repayId| string| 還款訂單ID  
   
 ### 請求示例
 
@@ -136,8 +132,19 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/supply-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-flexible/repay HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752569628364  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 52  
+      
+    {  
+        "loanCurrency": "BTC",  
+        "amount": "0.005"  
+    }  
     
     
     
@@ -147,9 +154,9 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_lending_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.repay_flexible_crypto_loan(  
+        loanCurrency="BTC",  
+        loanAmount="0.005",  
     ))  
     
     
@@ -164,21 +171,8 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.02",  
-                    "orderCurrency": "USDT",  
-                    "qty": "1000.1234",  
-                    "term": 60  
-                },  
-                {  
-                    "annualRate": "0.022",  
-                    "orderCurrency": "USDT",  
-                    "qty": "212.1234",  
-                    "term": 7  
-                }  
-            ]  
+            "repayId": "1771"  
         },  
         "retExtInfo": {},  
-        "time": 1752652136224  
+        "time": 1752569614549  
     }

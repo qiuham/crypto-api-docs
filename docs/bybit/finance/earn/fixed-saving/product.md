@@ -2,229 +2,110 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/fixed-saving/product
 api_type: REST
-updated_at: 2026-06-15 19:54:02.887420
+updated_at: 2026-06-16 19:48:29.900148
 ---
 
-# Get Product Info
+# Get Airdrop Daily PnL Records
+
+You can query up to 3 months of historical data.
 
 info
 
-Does not need authentication. **Up to 50 requests** per second per IP .
+  * API key permission: `Earn`
+  * Only **completed** (already distributed) yield records are returned. Pending, failed, and zero-amount records are excluded.
+  * Users with no byfi earn history will receive a successful response with an empty list.
+
+
 
 ### HTTP Request
 
-GET`/v5/earn/fixed-term/product`
+GET`/v5/earn/hold-to-earn/yield-history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| false| string| Filter by coin, e.g. `BTC`, `ETH`. Returns all coins if omitted  
+timeStart| false| integer| Start time (Unix seconds). Cannot be earlier than current time minus 3 months, otherwise returns `INVALIDARGUMENTS`  
+timeEnd| false| integer| End time (Unix seconds). Requires `timeStart ≤ timeEnd`  
+limit| **true**|  integer| Page size. Range: `1` to `49`. Returns `INVALIDARGUMENTS` if out of range  
+cursor| false| string| Pagination cursor. Omit on the first request; pass the `nextCursor` value from the previous response for subsequent pages. Treat the cursor as opaque — do not parse or modify it  
   
+info
+
+When both `timeStart` and `timeEnd` are `0`, the query defaults to the last 3 months.
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Product list  
-> productId| string| Product ID  
-> category| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
-> coin| string| Staking coin  
-> duration| string| Fixed term duration, e.g. `1d`, `8h`, `2m`  
-> status| string| Product status: `Available`, `SoldOut`, `NotStarted`  
-> tieredApyList| array| Tiered APY list (if applicable)  
->> min| string| Minimum amount for this tier  
->> max| string| Maximum amount for this tier. `"-1"` means no upper limit  
->> apy| string| APY for this tier  
-> minStakeAmount| string| Minimum staking amount  
-> maxStakeAmount| string| Maximum staking amount  
-> precision| integer| Coin trading precision  
-> subscribeStartAt| string| Subscription start time, unix timestamp in ms  
-> subscribeEndAt| string| Subscription end time, unix timestamp in ms  
-> allowEarlyRedemption| boolean| Whether early redemption is supported  
-> earlyRedemptionApy| string| Discounted APY applied on early redemption  
-> redemptionLimitDuration| string| Minimum hold time before early redemption is allowed, e.g. `1d`, `8h`, `2m`  
-> allowAutoReinvest| boolean| Whether auto-reinvest is supported  
-> interestCoinApyList| array| Multi-coin reward APY list  
->> coin| string| Reward coin  
->> apy| string| Reward APY  
->> expectUnitEarning| string| Expected reward per unit invested (influenced by spot price of reward coin)  
->> currentPrice| string| Current price of the reward coin  
-> isVip| boolean| Whether this is a VIP-only product  
-> creditTime| string| Estimated time for earnings to be credited, unix timestamp in ms  
-> specialUserGroupRequired| boolean| Whether purchase is restricted to a specific user group  
-> specialUserGroupInfo| string| Description of the restricted user group  
+nextCursor| string| Next page cursor. Empty string indicates the last page. Pass it back as `cursor` in the next request  
+airdropDailyPnls| array| Yield records list, sorted by distribution date newest first  
+> coinName| string| Investment coin name  
+> yieldCoinName| string| Yield coin name. Differs from `coinName` for cross-coin airdrops  
+> effectiveAmount| string| Effective principal for that day, e.g., `"10000.00"`  
+> pnl| string| Actual yield distributed that day, e.g., `"0.27397260"`  
+> apy| string| Annualized yield for that day, e.g., `"10%"`  
+> createdAt| integer| Yield distribution time (Unix seconds)  
   
 * * *
 
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/fixed-term/product?coin=BTC HTTP/1.1  
+    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+      
+    
+    
+    
+      
     
 
 ### Response Example
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "",  
-        "result": {  
-            "list": [  
-                {  
-                    "productId": "427",  
-                    "category": "FixedTermSaving",  
-                    "coin": "USDT",  
-                    "duration": "30d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "50",  
-                    "maxStakeAmount": "10000",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1686704400000",  
-                    "subscribeEndAt": "1909094399000",  
-                    "allowEarlyRedemption": false,  
-                    "earlyRedemptionApy": "",  
-                    "redemptionLimitDuration": "",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "2.50%",  
-                            "expectUnitEarning": "0.002",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": false,  
-                    "creditTime": "1778718600000",  
-                    "specialUserGroupRequired": false,  
-                    "specialUserGroupInfo": ""  
-                },  
-                {  
-                    "productId": "27",  
-                    "category": "FundPool",  
-                    "coin": "USDT",  
-                    "duration": "3d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "100",  
-                    "maxStakeAmount": "10000",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1722448800000",  
-                    "subscribeEndAt": "0",  
-                    "allowEarlyRedemption": true,  
-                    "earlyRedemptionApy": "0.30%",  
-                    "redemptionLimitDuration": "1d",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "9.99%",  
-                            "expectUnitEarning": "0.0008",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": false,  
-                    "creditTime": "1776391500000",  
-                    "specialUserGroupRequired": true,  
-                    "specialUserGroupInfo": "Limited Offer"  
-                },  
-                {  
-                    "productId": "12",  
-                    "category": "FundPoolPremium",  
-                    "coin": "USDT",  
-                    "duration": "3d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "1",  
-                    "maxStakeAmount": "300",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1751500800000",  
-                    "subscribeEndAt": "0",  
-                    "allowEarlyRedemption": false,  
-                    "earlyRedemptionApy": "",  
-                    "redemptionLimitDuration": "",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "19.70%",  
-                            "expectUnitEarning": "0.0016",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": true,  
-                    "creditTime": "1776391200000",  
-                    "specialUserGroupRequired": false,  
-                    "specialUserGroupInfo": ""  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1776067553433  
-    }
+        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
+        "airdropDailyPnls": [  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747641600  
+            },  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747555200  
+            }  
+        ]  
+    }  
+    
 
----
+### Pagination Example
 
-# 查詢產品資訊
-
-信息
-
-無需身份驗證。每個IP每秒最多 **50次** 請求。
-
-### HTTP 請求
-
-GET`/v5/earn/fixed-term/product`
-
-### 請求參數
-
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-coin| false| string| 依幣種篩選，例如 `BTC`、`ETH`。若省略則返回所有幣種  
-  
-### 響應參數
-
-參數| 類型| 說明  
----|---|---  
-list| array| 產品列表  
-> productId| string| 產品ID  
-> category| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
-> coin| string| 質押幣種  
-> duration| string| 固定期限，例如 `1d`、`8h`、`2m`  
-> status| string| 產品狀態：`Available`、`SoldOut`、`NotStarted`  
-> tieredApyList| array| 分層APY列表（如適用）  
->> min| string| 此層最低金額  
->> max| string| 此層最高金額，`"-1"` 表示無上限  
->> apy| string| 此層APY  
-> minStakeAmount| string| 最低質押金額  
-> maxStakeAmount| string| 最高質押金額  
-> precision| integer| 幣種交易精度  
-> subscribeStartAt| string| 訂閱開始時間，毫秒級unix時間戳  
-> subscribeEndAt| string| 訂閱結束時間，毫秒級unix時間戳  
-> allowEarlyRedemption| boolean| 是否支持提前贖回  
-> earlyRedemptionApy| string| 提前贖回時適用的折扣APY  
-> redemptionLimitDuration| string| 允許提前贖回前的最短持有時間，例如 `1d`、`8h`、`2m`  
-> allowAutoReinvest| boolean| 是否支持自動續投  
-> interestCoinApyList| array| 多幣種獎勵APY列表  
->> coin| string| 獎勵幣種  
->> apy| string| 獎勵APY  
->> expectUnitEarning| string| 每單位投資預期獎勵（受獎勵幣種現貨價格影響）  
->> currentPrice| string| 獎勵幣種當前價格  
-> isVip| boolean| 是否為VIP專屬產品  
-> creditTime| string| 預計收益到賬時間，毫秒級unix時間戳  
-> specialUserGroupRequired| boolean| 是否限制特定用戶群體購買  
-> specialUserGroupInfo| string| 限制用戶群體的描述  
-  
-* * *
-
-### 請求示例
+To fetch the next page, pass the `nextCursor` from the previous response back as `cursor`:
     
     
-    GET /v5/earn/fixed-term/product?coin=BTC HTTP/1.1  
+    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -232,103 +113,116 @@ list| array| 產品列表
     X-BAPI-RECV-WINDOW: 5000  
     
 
+An empty `nextCursor` in the response indicates you have reached the last page.
+
+---
+
+# 查詢空投每日收益記錄
+
+可查詢最近 3 個月的歷史收益數據。
+
+信息
+
+  * API key 需要 `理財` 權限
+  * 僅返回**已發放** （`status = complete`）的收益記錄，未發放、失敗及金額為零的記錄均不可見。
+  * 非 byfi earn 歷史用戶調用將直接返回成功狀態及空列表。
+
+
+
+### HTTP 請求
+
+GET`/v5/earn/hold-to-earn/yield-history`
+
+### 請求參數
+
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+timeStart| false| integer| 起始時間（Unix 秒）。**不得早於「當前時間 - 3 個月」** ，否則返回 `INVALIDARGUMENTS`  
+timeEnd| false| integer| 結束時間（Unix 秒）。要求 `timeStart ≤ timeEnd`  
+limit| **true**|  integer| 單頁大小，範圍：`1` 至 `49`。超出範圍返回 `INVALIDARGUMENTS`  
+cursor| false| string| 翻頁游標。首次查詢不傳；後續翻頁傳入上一次響應中的 `nextCursor`。游標對接入方不透明，**僅作整體回傳，不要解析或拼接**  
+  
+信息
+
+當 `timeStart` 與 `timeEnd` 同時為 `0` 時，自動查詢最近 3 個月的數據。
+
+### 響應參數
+
+參數| 類型| 說明  
+---|---|---  
+nextCursor| string| 下一頁游標。空字符串表示已到尾頁；翻頁時將其原樣傳回 `cursor` 即可  
+airdropDailyPnls| array| 收益記錄列表，按發放日倒序排列（較新在前）  
+> coinName| string| 投資幣種名稱  
+> yieldCoinName| string| 收益幣種名稱。跨幣種空投時與 `coinName` 不同  
+> effectiveAmount| string| 當日計息本金（已格式化字符串，如 `"10000.00"`）  
+> pnl| string| 當日實際發放收益（已格式化字符串，如 `"0.27397260"`）  
+> apy| string| 該日折算年化收益文案（如 `"10%"`）  
+> createdAt| integer| 收益發放時間（Unix 秒）  
+  
+* * *
+
+### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+      
+    
+    
+    
+      
+    
+
 ### 響應示例
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "",  
-        "result": {  
-            "list": [  
-                {  
-                    "productId": "427",  
-                    "category": "FixedTermSaving",  
-                    "coin": "USDT",  
-                    "duration": "30d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "50",  
-                    "maxStakeAmount": "10000",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1686704400000",  
-                    "subscribeEndAt": "1909094399000",  
-                    "allowEarlyRedemption": false,  
-                    "earlyRedemptionApy": "",  
-                    "redemptionLimitDuration": "",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "2.50%",  
-                            "expectUnitEarning": "0.002",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": false,  
-                    "creditTime": "1778718600000",  
-                    "specialUserGroupRequired": false,  
-                    "specialUserGroupInfo": ""  
-                },  
-                {  
-                    "productId": "27",  
-                    "category": "FundPool",  
-                    "coin": "USDT",  
-                    "duration": "3d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "100",  
-                    "maxStakeAmount": "10000",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1722448800000",  
-                    "subscribeEndAt": "0",  
-                    "allowEarlyRedemption": true,  
-                    "earlyRedemptionApy": "0.30%",  
-                    "redemptionLimitDuration": "1d",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "9.99%",  
-                            "expectUnitEarning": "0.0008",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": false,  
-                    "creditTime": "1776391500000",  
-                    "specialUserGroupRequired": true,  
-                    "specialUserGroupInfo": "Limited Offer"  
-                },  
-                {  
-                    "productId": "12",  
-                    "category": "FundPoolPremium",  
-                    "coin": "USDT",  
-                    "duration": "3d",  
-                    "status": "Available",  
-                    "tieredApyList": [],  
-                    "minStakeAmount": "1",  
-                    "maxStakeAmount": "300",  
-                    "precision": 4,  
-                    "subscribeStartAt": "1751500800000",  
-                    "subscribeEndAt": "0",  
-                    "allowEarlyRedemption": false,  
-                    "earlyRedemptionApy": "",  
-                    "redemptionLimitDuration": "",  
-                    "allowAutoReinvest": false,  
-                    "interestCoinApyList": [  
-                        {  
-                            "coin": "USDT",  
-                            "apy": "19.70%",  
-                            "expectUnitEarning": "0.0016",  
-                            "currentPrice": "1.00"  
-                        }  
-                    ],  
-                    "isVip": true,  
-                    "creditTime": "1776391200000",  
-                    "specialUserGroupRequired": false,  
-                    "specialUserGroupInfo": ""  
-                }  
-            ]  
-        },  
-        "retExtInfo": {},  
-        "time": 1776067553433  
-    }
+        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
+        "airdropDailyPnls": [  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747641600  
+            },  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747555200  
+            }  
+        ]  
+    }  
+    
+
+### 翻頁示例
+
+繼續向後翻頁時，將上一次響應中的 `nextCursor` 原樣傳回 `cursor`：
+    
+    
+    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+
+當響應中的 `nextCursor` 為空字符串時，表示已到達尾頁。

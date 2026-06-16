@@ -2,54 +2,53 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/create-order
 api_type: REST
-updated_at: 2026-06-15 19:53:51.095806
+updated_at: 2026-06-16 19:48:16.990659
 ---
 
-# Stake / Redeem
+# Get Staked Position
 
 info
 
-API key needs "Earn" permission, custody accounts are not supported for now
+API key needs "Earn" permission
 
 note
 
-In times of high demand for loans in the market for a specific cryptocurrency, the redemption of the principal may encounter delays and is expected to be processed within 48 hours. The redemption of on-chain products may take up to a few days to complete. Once the redemption request is initiated, it cannot be cancelled.
+For Flexible Saving, fully redeemed position is also returned in the response For Onchain, only active position will be returned in the response
 
 ### HTTP Request
 
-POST`/v5/earn/place-order`
+GET`/v5/earn/position`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`   
-**Remarks** : currently, only flexible savings and on chain is supported  
-orderType| **true**|  string| `Stake`, `Redeem`  
-accountType| **true**|  string| `FUND`, `UNIFIED`. Onchain only supports FUND  
-amount| **true**|  string| 
-
-  * Stake amount needs to satisfy minStake and maxStake
-  * Both stake and redeem amount need to satify precision requirement
-
-  
-coin| **true**|  string| Coin name  
-productId| **true**|  string| Product ID  
-orderLinkId| **true**|  string| Customised order ID, used to prevent from replay
-
-  * support up to 36 characters
-  * The same orderLinkId can't be used in 30 mins
-
-  
-redeemPositionId| false| string| The position ID that the user needs to redeem. Only is required in Onchain non-LST mode  
-toAccountType| false| string| `FUND`, `UNIFIED`. Onchain LST mode supports `FUND` and `UNIFIED`(Private wealth management custodial subaccount only supports `UNIFIED`). Onchain non-LST mode only supports `FUND`  
+category| **true**|  string| `FlexibleSaving`,`OnChain`  
+productId| false| string| Product ID  
+coin| false| string| Coin name  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| Order link ID  
+list| array| Object  
+> coin| string| Coin name  
+> productId| string| Product ID  
+> amount| string| Total staked amount  
+> totalPnl| string| Return the profit of the current position. Only has value in Onchain non-LST mode  
+> claimableYield| string| Yield accrues on an hourly basis and is distributed at 00:30 UTC daily. If you unstake your assets before yield distribution, any undistributed yield will be credited to your account along with your principal. Onchain products do not return values  
+> id| string| Position Id. Only for Onchain  
+> status| string| `Processing`,`Active`. Only for Onchain  
+> orderId| string| Order Id. Only for Onchain  
+> estimateRedeemTime| string| Estimate redeem time, in milliseconds. Only for Onchain  
+> estimateStakeTime| string| Estimate stake time, in milliseconds. Only for Onchain  
+> estimateInterestCalculationTime| string| Estimated Interest accrual time, in milliseconds. Only for Onchain  
+> settlementTime| string| Settlement time, in milliseconds. Only has value for Onchain `Fixed` product  
+> autoReinvest| string| Auto-reinvest status. `Enable`: enabled, `Disable`: disabled. See [Modify Position](/docs/v5/finance/earn/easy-onchain/modify-position)  
+> availableAmount| string| Redeemable amount  
+> freezeDetails| array| Freeze detail list  
+>> amount| string| Frozen amount  
+>> description| string| Reason for freeze  
   
 ### Request Example
 
@@ -60,24 +59,13 @@ orderLinkId| string| Order link ID
 
     
     
-    POST /v5/earn/place-order HTTP/1.1  
+    GET /v5/earn/position?category=FlexibleSaving&coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739936605822  
+    X-BAPI-TIMESTAMP: 1739944576277  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 190  
-      
-    {  
-        "category": "FlexibleSaving",  
-        "orderType": "Redeem",  
-        "accountType": "FUND",  
-        "amount": "0.35",  
-        "coin": "BTC",  
-        "productId": "430",  
-        "orderLinkId": "btc-earn-001"  
-    }  
     
     
     
@@ -87,14 +75,9 @@ orderLinkId| string| Order link ID
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.stake_or_redeem(  
+    print(session.get_staked_position(  
         category="FlexibleSaving",  
-        orderType="Redeem",  
-        accountType="FUND",  
-        amount="0.35",  
-        coin="BTC",  
-        productId="430",  
-        orderLinkId="btc-earn-001"  
+        coin="USDT",  
     ))  
     
     
@@ -109,60 +92,81 @@ orderLinkId| string| Order link ID
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
-            "orderLinkId": "btc-earn-001"  
+            "list": [  
+                {  
+                    "coin": "BTC",  
+                    "productId": "8",  
+                    "amount": "0.1",  
+                    "totalPnl": "0.000027397260273973",  
+                    "claimableYield": "0",  
+                    "id": "326",  
+                    "status": "Active",  
+                    "orderId": "1a5a8945-e042-4dd5-a93f-c0f0577377ad",  
+                    "estimateRedeemTime": "",  
+                    "estimateStakeTime": "",  
+                    "estimateInterestCalculationTime": "1744243200000",  
+                    "settlementTime": "1744675200000",  
+                    "autoReinvest": "Enable",  
+                    "availableAmount": "4900",  
+                    "freezeDetails": [  
+                        {  
+                            "amount": "100",  
+                            "description": "Locked in Fixed-Rate Loan"  
+                        }  
+                    ]  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1739936607117  
+        "time": 1739944577575  
     }
 
 ---
 
-# 質押/贖回
+# 查詢理財持倉
 
 信息
 
-API key需要"理財""權限, 三方託管帳戶暫不支援
+API key需要"理財""權限
 
 備註
 
-在極端情況下，當相應代幣的市場需求極高，本金贖回可能會出現延遲，預計需要 48 小時處理完畢。鏈上賺幣產品的贖回可能需要幾天的時間才能完成。一旦發動贖回請求，不能被取消。
+對於活期儲蓄，返回訊息裡也返回完全贖回的部分 對於鏈上賺幣，返回訊息中僅返回當前的部分
 
 ### HTTP 請求
 
-POST`/v5/earn/place-order`
+GET`/v5/earn/position`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`   
-**備註** : 本期僅支持活期理財和鏈上賺幣  
-orderType| **true**|  string| 訂單類型 `Stake`, `Redeem`  
-accountType| **true**|  string| 選擇帳戶類型 `FUND`, `UNIFIED`. OnChain 只支持FUND  
-amount| **true**|  string| 
-
-  * 質押數量需要滿足最小/最大質押額
-  * 質押和贖回需要滿足幣種精度要求
-
-  
-coin| **true**|  string| 幣種名稱  
-productId| **true**|  string| 產品ID  
-orderLinkId| **true**|  string| 自定義訂單號, 同時用於冪等校驗
-
-  * 支持最長36位字符
-  * 30分鐘內無法使用相同的orderLinkId
-
-  
-redeemPositionId| false| string| 用戶需要贖回的持倉ID：只有非LST 產品需要在贖回時傳  
-toAccountType| false| string| `FUND`, `UNIFIED`. 鏈上賺幣LST模式支持`FUND`和`UNIFIED`（私人理財託管子帳戶僅支持`UNIFIED`）. 鏈上賺幣非LST模式僅支持`FUND`  
+category| **true**|  string| 產品類別：`FlexibleSaving`,`OnChain`  
+productId| false| string| 持倉對應的產品 ID  
+coin| false| string| 幣種名稱  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| Order link ID  
+list| array| Object  
+> coin| string| 幣種名稱  
+> productId| string| 持倉對應的產品 ID  
+> amount| string| 持倉金額  
+> totalPnl| string| 持倉總收益。僅在 OnChain 非 LST 模式下有價值  
+> claimableYield| string| 收益按小時累計，並於每天 UTC 時間 00:30 分發。如果您在收益分配之前取消質押資產，任何未分配的收益將與您的本金一起記入您的帳戶。  
+> id| string| 持倉ID. 僅適用於 OnChain  
+> status| string| `Processing`,`Active`. 僅適用於 OnChain  
+> orderId| string| 訂單編號. 僅適用於 OnChain  
+> estimateRedeemTime| string| 預計贖回時間。以毫秒為單位.僅適用於 OnChain  
+> estimateStakeTime| string| 預計質押時間。以毫秒為單位.僅適用於 OnChain  
+> estimateInterestCalculationTime| string| 預計計息時間。以毫秒為單位.僅適用於 OnChain  
+> settlementTime| string| 結算時間。以毫秒為單位.僅對 OnChain `Fixed`產品有價值  
+> autoReinvest| string| 自動複投狀態。`Enable`：已開啟，`Disable`：已關閉。參考 [修改持倉設置](/docs/zh-TW/v5/finance/earn/easy-onchain/modify-position)  
+> availableAmount| string| 可贖回金額  
+> freezeDetails| array| 凍結明細列表  
+>> amount| string| 凍結金額  
+>> description| string| 凍結原因  
   
 ### 請求示例
 
@@ -173,24 +177,13 @@ orderLinkId| string| Order link ID
 
     
     
-    POST /v5/earn/place-order HTTP/1.1  
+    GET /v5/earn/position?category=FlexibleSaving&coin=USDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739936605822  
+    X-BAPI-TIMESTAMP: 1739944576277  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 190  
-      
-    {  
-        "category": "FlexibleSaving",  
-        "orderType": "Redeem",  
-        "accountType": "FUND",  
-        "amount": "0.35",  
-        "coin": "BTC",  
-        "productId": "430",  
-        "orderLinkId": "btc-earn-001"  
-    }  
     
     
     
@@ -200,14 +193,9 @@ orderLinkId| string| Order link ID
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.stake_or_redeem(  
+    print(session.get_staked_position(  
         category="FlexibleSaving",  
-        orderType="Redeem",  
-        accountType="FUND",  
-        amount="0.35",  
-        coin="BTC",  
-        productId="430",  
-        orderLinkId="btc-earn-001"  
+        coin="USDT",  
     ))  
     
     
@@ -222,9 +210,31 @@ orderLinkId| string| Order link ID
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "orderId": "0572b030-6a0b-423f-88c4-b6ce31c0c82d",  
-            "orderLinkId": "btc-earn-001"  
+            "list": [  
+                {  
+                    "coin": "BTC",  
+                    "productId": "8",  
+                    "amount": "0.1",  
+                    "totalPnl": "0.000027397260273973",  
+                    "claimableYield": "0",  
+                    "id": "326",  
+                    "status": "Active",  
+                    "orderId": "1a5a8945-e042-4dd5-a93f-c0f0577377ad",  
+                    "estimateRedeemTime": "",  
+                    "estimateStakeTime": "",  
+                    "estimateInterestCalculationTime": "1744243200000",  
+                    "settlementTime": "1744675200000",  
+                    "autoReinvest": "Enable",  
+                    "availableAmount": "4900",  
+                    "freezeDetails": [  
+                        {  
+                            "amount": "100",  
+                            "description": "Locked in Fixed-Rate Loan"  
+                        }  
+                    ]  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1739936607117  
+        "time": 1739944577575  
     }

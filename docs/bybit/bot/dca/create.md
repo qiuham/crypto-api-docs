@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/dca/create
 api_type: REST
-updated_at: 2026-06-15 19:51:57.286380
+updated_at: 2026-06-16 19:46:07.593116
 ---
 
 # Bot Error Codes

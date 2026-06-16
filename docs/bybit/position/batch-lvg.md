@@ -1,8 +1,8 @@
 ---
 exchange: bybit
-source_url: https://bybit-exchange.github.io/docs/v5/otc/repay-info
-api_type: REST
-updated_at: 2026-06-16 19:50:46.592106
+source_url: https://bybit-exchange.github.io/docs/v5/position/batch-lvg
+api_type: Position
+updated_at: 2026-06-16 19:50:48.443303
 ---
 
 # Get Futures Leverage

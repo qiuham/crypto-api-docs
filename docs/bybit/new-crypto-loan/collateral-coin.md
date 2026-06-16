@@ -2,38 +2,40 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/collateral-coin
 api_type: REST
-updated_at: 2026-06-15 19:55:13.516534
+updated_at: 2026-06-16 19:49:47.402973
 ---
 
-# Get Collateral Coins
+# Get Borrowing Market
 
 info
 
 Does not need authentication.
 
+If you want to borrow, you can use this endpoint to check whether there are any suitable counterparty supply orders available.
+
 ### HTTP Request
 
-GET`/v5/crypto-loan-common/collateral-data`
+GET`/v5/crypto-loan-fixed/borrow-order-quote`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| false| string| Coin name, uppercase only  
+orderCurrency| **true**|  string| Coin name  
+orderBy| **true**|  string| Order by, `apy`: annual rate; `term`; `quantity`  
+term| false| string| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
+sort| false| integer| `0`: ascend, default; `1`: descend  
+limit| false| integer| Limit for data size per page. [`1`, `100`]. Default: `10`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-collateralRatioConfigList| array| Object  
-> collateralRatioList| array| Object  
->> collateralRatio| string| Collateral ratio  
->> maxValue| string| Max qty  
->> minValue| string| Min qty  
-> currencies| string| Currenies with the same collateral ratio, e.g., `BTC,ETH,XRP`  
-currencyLiquidationList| array| Object  
-> currency| string| Coin name  
-> liquidationOrder| integer| Liquidation order  
+list| array| Object  
+> orderCurrency| string| Coin name  
+> term| integer| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
+> annualRate| string| Annual rate  
+> qty| string| Quantity  
   
 ### Request Example
 
@@ -44,7 +46,7 @@ currencyLiquidationList| array| Object
 
     
     
-    GET /v5/crypto-loan-common/collateral-data?currency=BTC HTTP/1.1  
+    GET /v5/crypto-loan-fixed/borrow-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
@@ -52,11 +54,12 @@ currencyLiquidationList| array| Object
     from pybit.unified_trading import HTTP  
     session = HTTP(  
         testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_collateral_coins_new_crypto_loan(  
-        currency="BTC",  
-        amount="0.08",  
-        direction="1",  
+    print(session.get_borrowing_market_fixed_crypto_loan(  
+        orderCurrency="USDT",  
+        orderBy="apy",  
     ))  
     
     
@@ -71,75 +74,52 @@ currencyLiquidationList| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "collateralRatioConfigList": [  
+            "list": [  
                 {  
-                    "collateralRatioList": [  
-                        {  
-                            "collateralRatio": "0.8",  
-                            "maxValue": "10000",  
-                            "minValue": "0"  
-                        },  
-                        {  
-                            "collateralRatio": "0.7",  
-                            "maxValue": "20000",  
-                            "minValue": "10000"  
-                        },  
-                        {  
-                            "collateralRatio": "0.5",  
-                            "maxValue": "30000",  
-                            "minValue": "20000"  
-                        },  
-                        {  
-                            "collateralRatio": "0.4",  
-                            "maxValue": "99999999999",  
-                            "minValue": "30000"  
-                        }  
-                    ],  
-                    "currencies": "ATOM,AAVE,BTC,BOB"  
-                }  
-            ],  
-            "currencyLiquidationList": [  
-                {  
-                    "currency": "BTC",  
-                    "liquidationOrder": 1  
+                    "annualRate": "0.04",  
+                    "orderCurrency": "USDT",  
+                    "qty": "988.78",  
+                    "term": 14  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1752627381571  
+        "time": 1752719158890  
     }
 
 ---
 
-# 查詢質押幣種
+# 查詢可借市場
 
 信息
 
-不需要鑒權
+公共接口, 無需鑒權
+
+如果您是借款方, 可通過該接口查詢到市場上可匹配的存款單報價
 
 ### HTTP 請求
 
-GET`/v5/crypto-loan-common/collateral-data`
+GET`/v5/crypto-loan-fixed/borrow-order-quote`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| false| string| 幣種名稱  
+orderCurrency| **true**|  string| 幣種名稱  
+term| false| string| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
+orderBy| **true**|  string| 排序依據，`apy`: 年化利率；`term`: 期限；`quantity`: 數量  
+sort| false| integer| `0`: 升序，預設；`1`: 降序  
+limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-collateralRatioConfigList| array| Object  
-> collateralRatioList| array| Object  
->> collateralRatio| string| 抵押率  
->> maxValue| string| 最大數量  
->> minValue| string| 最小數量  
-> currencies| string| 具有相同抵押率的幣種，例如：`BTC,ETH,XRP`  
-currencyLiquidationList| array| Object  
-> currency| string| 幣種名稱  
-> liquidationOrder| integer| 清算順序  
+list| array| Object  
+> orderCurrency| string| 幣種名稱  
+> term| integer| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
+> annualRate| string| 年化利率  
+> qty| string| 數量  
   
 ### 請求示例
 
@@ -150,7 +130,7 @@ currencyLiquidationList| array| Object
 
     
     
-    GET /v5/crypto-loan-common/collateral-data?currency=BTC HTTP/1.1  
+    GET /v5/crypto-loan-fixed/borrow-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
@@ -158,11 +138,12 @@ currencyLiquidationList| array| Object
     from pybit.unified_trading import HTTP  
     session = HTTP(  
         testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_collateral_coins_new_crypto_loan(  
-        currency="BTC",  
-        amount="0.08",  
-        direction="1",  
+    print(session.get_borrowing_market_fixed_crypto_loan(  
+        orderCurrency="USDT",  
+        orderBy="apy",  
     ))  
     
     
@@ -177,40 +158,15 @@ currencyLiquidationList| array| Object
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "collateralRatioConfigList": [  
+            "list": [  
                 {  
-                    "collateralRatioList": [  
-                        {  
-                            "collateralRatio": "0.8",  
-                            "maxValue": "10000",  
-                            "minValue": "0"  
-                        },  
-                        {  
-                            "collateralRatio": "0.7",  
-                            "maxValue": "20000",  
-                            "minValue": "10000"  
-                        },  
-                        {  
-                            "collateralRatio": "0.5",  
-                            "maxValue": "30000",  
-                            "minValue": "20000"  
-                        },  
-                        {  
-                            "collateralRatio": "0.4",  
-                            "maxValue": "99999999999",  
-                            "minValue": "30000"  
-                        }  
-                    ],  
-                    "currencies": "ATOM,AAVE,BTC,BOB"  
-                }  
-            ],  
-            "currencyLiquidationList": [  
-                {  
-                    "currency": "BTC",  
-                    "liquidationOrder": 1  
+                    "annualRate": "0.04",  
+                    "orderCurrency": "USDT",  
+                    "qty": "988.78",  
+                    "term": 14  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1752627381571  
+        "time": 1752719158890  
     }

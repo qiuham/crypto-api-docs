@@ -2,55 +2,38 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/create-subuid
 api_type: REST
-updated_at: 2026-06-15 19:58:03.440948
+updated_at: 2026-06-16 19:52:50.577903
 ---
 
-# Get Fund Custodial Sub Acct
-
-The institutional client can query the fund custodial sub accounts.
+# Get Friend Referrals
 
 tip
 
-The API key must have one of the below permissions in order to call this endpoint..
-
-  * master API key: "Account Transfer", "Subaccount Transfer", "Withdrawal"
-
-
+Any permission can access this endpoint.
 
 ### HTTP Request
 
-GET`/v5/user/escrow_sub_members`
+GET`/v5/user/invitation/referrals`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-pageSize| false| string| Data size per page. Return up to 100 records per request  
-nextCursor| false| string| Cursor. Use the `nextCursor` token from the response to retrieve the next page of the result set  
+status| false| string| Invitation relationship status, `0`: alive; `1`: invalid. By default, returns all status  
+size| false| string| Data size per page [1, 100]. Return 20 records by default  
+cursor| false| string| Cursor. Use the `nextCursor` token from the response to retrieve the next page of the result set  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-subMembers| array| Object  
-> uid| string| Sub userId  
-> username| string| User name  
-> memberType| integer| `12`: Fund custodial account  
-> status| integer| Account state.
-
-  * `1`: normal
-  * `2`: forbidden login
-  * `4`: frozen 
-
-  
-> accountMode| integer| Account mode.
-
-  * `1`: classic account
-  * `3`: UTA account 
-
-  
-> remark| string| Remark  
-nextCursor| string| The next page cursor value. "0" means no more pages  
+nextCursor| string| The next page cursor value  
+records| array| Object  
+> id| string| ID, internal userd  
+> inviteeUid| string| Invitee userID  
+> status| integer| Invitation relationship status, `0`: alive; `1`: invalid  
+> createdAt| string| Created timestamp  
+> updatedAt| string| Updated timestamp  
   
 ### Request Example
 
@@ -61,11 +44,11 @@ nextCursor| string| The next page cursor value. "0" means no more pages
 
     
     
-    GET /v5/user/escrow_sub_members?pageSize=2 HTTP/1.1  
+    GET /v5/user/invitation/referrals?status=0&size=5&cursor=6867 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739763787703  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1772095760290  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
     
@@ -77,8 +60,10 @@ nextCursor| string| The next page cursor value. "0" means no more pages
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_escrow_sub_members(  
-        pageSize="2"  
+    print(session.get_friend_referrals(  
+        status="0",  
+        size="5",  
+        cursor="6867"  
     ))  
     
     
@@ -93,98 +78,72 @@ nextCursor| string| The next page cursor value. "0" means no more pages
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "subMembers": [  
+            "nextCursor": "",  
+            "records": [  
                 {  
-                    "uid": "104274894",  
-                    "username": "Private_Wealth_Management",  
-                    "memberType": 12,  
-                    "status": 1,  
-                    "remark": "earn fund",  
-                    "accountMode": 3  
+                    "id": "6866",  
+                    "inviteeUid": "1447787",  
+                    "status": 0,  
+                    "createdAt": "1681206247",  
+                    "updatedAt": "1681206247"  
                 },  
                 {  
-                    "uid": "104274884",  
-                    "username": "Private_Wealth_Management",  
-                    "memberType": 12,  
-                    "status": 1,  
-                    "remark": "earn fund",  
-                    "accountMode": 3  
+                    "id": "6863",  
+                    "inviteeUid": "1447350",  
+                    "status": 0,  
+                    "createdAt": "1681192249",  
+                    "updatedAt": "1681192248"  
                 }  
-            ],  
-            "nextCursor": "344"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1739763788699  
+        "time": 1772095760428  
     }
 
 ---
 
-# 查詢基金託管子帳戶列表
-
-託管機構可以通過這個接口查詢到基金託管子帳戶列表
+# 查詢好友被邀請人
 
 提示
 
-在調用接口時，使用的API key至少需要擁有以下其中一種權限
-
-  * 母API key: "Account Transfer（資產帳戶劃轉）", "Subaccount Transfer（母子帳戶劃轉）", "Withdrawal（提幣）"
+  * 任意權限可以訪問該接口
 
 
 
 ### HTTP 請求
 
-GET`/v5/user/escrow_sub_members`
+GET`/v5/user/invitation/referrals`
 
 ### 請求參數
 
 參數| 是否必須| 類型| 說明  
 ---|---|---|---  
-pageSize| false| string| 數據頁大小. 每次至多返回100條  
-nextCursor| false| string| 游標. 傳入響應中的`nextCursor`來獲取下一頁的數據  
+status| false| string| 邀請關係狀態, `0`: 存活; `1`: 失效. 默認返回全部狀態  
+size| false| string| 每頁數量限制. [`1`, `100`]. 默認: `20`  
+cursor| false| string| 游標，用於翻頁  
   
 ### 返回參數
 
 參數| 類型| 說明  
 ---|---|---  
-subMembers| array| Object  
-> uid| string| 子帳戶userId  
-> username| string| 用戶名  
-> memberType| integer| `12`: 基金託管子帳戶  
-> status| integer| 帳戶狀態.
-
-  * `1`: 正常
-  * `2`: 登陸封禁
-  * `4`: 凍結 
-
-  
-> accountMode| integer| 帳戶模式.
-
-  * `1`: 經典帳戶
-  * `3`: UTA帳戶 
-
-  
-> remark| string| 備註  
-nextCursor| string| 下一頁數據的游標. 返回"0"表示沒有更多的數據了  
+nextCursor| string| 游標，用於翻頁  
+records| array| Object  
+> id| string| ID, 內部使用  
+> inviteeUid| string| 被邀請人uid  
+> status| integer| 邀請關係狀態, `0`: 存活; `1`: 失效  
+> createdAt| string| 紀錄創建時間戳  
+> updatedAt| string| 紀錄更新時間戳  
   
 ### 請求示例
-
-  * HTTP
-  * Python
-
-
     
     
-    GET /v5/user/escrow_sub_members?pageSize=2 HTTP/1.1  
+    GET /v5/user/invitation/referrals?status=0&size=5&cursor=6867 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1739763787703  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1772095760290  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    
-    
-    
-      
     
 
 ### 響應示例
@@ -194,26 +153,24 @@ nextCursor| string| 下一頁數據的游標. 返回"0"表示沒有更多的數�
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "subMembers": [  
+            "nextCursor": "",  
+            "records": [  
                 {  
-                    "uid": "104274894",  
-                    "username": "Private_Wealth_Management",  
-                    "memberType": 12,  
-                    "status": 1,  
-                    "remark": "earn fund",  
-                    "accountMode": 3  
+                    "id": "6866",  
+                    "inviteeUid": "1447787",  
+                    "status": 0,  
+                    "createdAt": "1681206247",  
+                    "updatedAt": "1681206247"  
                 },  
                 {  
-                    "uid": "104274884",  
-                    "username": "Private_Wealth_Management",  
-                    "memberType": 12,  
-                    "status": 1,  
-                    "remark": "earn fund",  
-                    "accountMode": 3  
+                    "id": "6863",  
+                    "inviteeUid": "1447350",  
+                    "status": 0,  
+                    "createdAt": "1681192249",  
+                    "updatedAt": "1681192248"  
                 }  
-            ],  
-            "nextCursor": "344"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1739763788699  
+        "time": 1772095760428  
     }

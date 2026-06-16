@@ -2,54 +2,50 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/customize-plan/product
 api_type: REST
-updated_at: 2026-06-15 19:54:20.583780
+updated_at: 2026-06-16 19:48:49.556840
 ---
 
-# Get Subscribable Product Info
-
-info
-
-Does not need authentication.
+# Claim Withdrawable Funds
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/customize-plan/product`
+POST`/v5/earn/pwm/investment-plan/claim`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+planId| **true**|  string| Investment plan ID. Must be in `Active` status  
+toAccountType| false| string| Target account type. Default: `FUND`  
+orderLinkId| **true**|  string| User-defined order ID, max 36 characters, used for idempotency  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-products| array| Product card list grouped by category  
-> type| string| Product category: `equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| Product card list for this category  
->> category| string| Product type  
->> productId| string| Underlying product ID (available for flexible savings / fixed yield / on-chain earn products)  
->> fundName| string| Fund name in English (fund products)  
->> coin| string| Product coin  
->> apr| string| Current annualized return rate (flexible savings / fixed yield products)  
->> aprRangeLow| string| APR lower bound (fund products)  
->> aprRangeHigh| string| APR upper bound (fund products)  
->> tags| array[string]| Product tags  
->> introduction| string| Product introduction in English (fund products)  
->> aum| string| Assets under management (base coin)  
->> minInvestmentAmount| string| Minimum subscription amount  
->> maxInvestmentAmount| string| Maximum subscription amount  
->> duration| int| Lock-up period in days. `0` means flexible (fixed yield products)  
->> maxDrawdown| string| Historical maximum drawdown (fund products)  
->> sharpRatio| string| Sharpe ratio (fund products)  
->> estAPR| string| Estimated APR for the product  
+planId| string| Investment plan ID  
+toAccountType| int| Target account type for the transfer  
+status| string| Claim status: `Success` / `processing`  
+createdTime| string| Claim timestamp (milliseconds)  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    POST /v5/earn/pwm/investment-plan/claim HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "planId": "10001",  
+        "toAccountType": "FUND",  
+        "orderLinkId": "claim-order-001"  
+    }  
     
 
 ### Response Example
@@ -58,93 +54,56 @@ products| array| Product card list grouped by category
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
-                {  
-                    "type": "equityFund",  
-                    "cards": [  
-                        {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "planId": "10001",  
+            "toAccountType": 6,  
+            "status": "Success",  
+            "createdTime": "1701400000000"  
         }  
     }
 
 ---
 
-# 查詢可申購產品卡片（直客模式）
-
-信息
-
-無需身份驗證。
+# 領取可提取資金
 
 ### HTTP 請求
 
-GET`/v5/earn/pwm/customize-plan/product`
+POST`/v5/earn/pwm/investment-plan/claim`
 
 ### 請求參數
 
-無
-
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+planId| **true**|  string| 投資計劃ID，須為 `Active` 狀態  
+toAccountType| false| string| 目標賬戶類型，默認 `FUND`  
+orderLinkId| **true**|  string| 用戶自定義訂單ID，最長36字符，用於防重  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-products| array| 按產品類別分組的卡片列表  
-> type| string| 產品類別：`equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| 該類別下的產品卡片列表  
->> category| string| 產品類型  
->> productId| string| 對應的底層產品ID（活期 / 固收 / 鏈上賺幣產品有此字段）  
->> fundName| string| 基金名稱英文（基金產品）  
->> coin| string| 產品幣種  
->> apr| string| 當前年化收益率（活期 / 固收產品）  
->> aprRangeLow| string| 年化收益率下界（基金產品）  
->> aprRangeHigh| string| 年化收益率上界（基金產品）  
->> tags| array[string]| 產品標籤  
->> introduction| string| 產品簡介英文（基金產品）  
->> aum| string| 基金管理規模（本位幣）  
->> minInvestmentAmount| string| 最小申購金額  
->> maxInvestmentAmount| string| 最大申購金額  
->> duration| int| 鎖定期天數，`0` 表示活期（固收產品）  
->> maxDrawdown| string| 歷史最大回撤（基金產品）  
->> sharpRatio| string| 夏普比率（基金產品）  
->> estAPR| string| 產品預估APR  
+planId| string| 投資計劃ID  
+toAccountType| int| 到賬目標賬戶類型  
+status| string| 提取狀態：`Success`（成功）/ `processing`（處理中）  
+createdTime| string| 提取時間戳（毫秒）  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    POST /v5/earn/pwm/investment-plan/claim HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "planId": "10001",  
+        "toAccountType": "FUND",  
+        "orderLinkId": "claim-order-001"  
+    }  
     
 
 ### 響應示例
@@ -153,42 +112,9 @@ products| array| 按產品類別分組的卡片列表
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
-                {  
-                    "type": "equityFund",  
-                    "cards": [  
-                        {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "planId": "10001",  
+            "toAccountType": 6,  
+            "status": "Success",  
+            "createdTime": "1701400000000"  
         }  
     }

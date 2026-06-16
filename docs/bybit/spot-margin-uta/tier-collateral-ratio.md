@@ -2,48 +2,49 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/tier-collateral-ratio
 api_type: REST
-updated_at: 2026-06-15 19:57:30.428545
+updated_at: 2026-06-16 19:52:17.628729
 ---
 
-# Get Tiered Collateral Ratio
+# Get Orderbook
 
-UTA loan tiered collateral ratio
-
-info
-
-Does not need authentication.
+Query spread orderbook depth data.
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/collateral`
+GET`/v5/spread/orderbook`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| false| string| Coin name, uppercase only  
+symbol| **true**|  string| Spread combination symbol name  
+limit| false| integer| Limit size for each bid and ask [`1`, `25`]. Default: `1`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> currency| string| Coin name  
-> collateralRatioList| array| Object  
->> maxQty| string| Upper limit(in coin) of the tiered range, `""` means positive infinity  
->> minQty| string| lower limit(in coin) of the tiered range  
->> collateralRatio| string| Collateral ratio  
+s| string| Spread combination symbol name  
+b| array| Bid, buyer. Sorted by price in descending order  
+> b[0]| string| Bid price  
+> b[1]| string| Bid size  
+a| array| Ask, seller. Sorted by price in ascending order  
+> a[0]| string| Ask price  
+> a[1]| string| Ask size  
+ts| integer| The timestamp (ms) that the system generates the data  
+u| integer| Update ID. Is always in sequence. Corresponds to `u` in the 25-level [WebSocket orderbook stream](https://bybit-exchange.github.io/docs/v5/spread/websocket/public/orderbook)  
+seq| integer| Cross sequence  
+cts| integer| The timestamp from the matching engine when this orderbook data is produced. It can be correlated with `T` from [public trade channel](/docs/v5/spread/websocket/public/trade)  
   
 ### Request Example
 
   * HTTP
   * Python
-  * Node.js
 
 
     
     
-    GET /v5/spot-margin-trade/collateral?currency=BTC HTTP/1.1  
+    GET /v5/spread/orderbook?symbol=SOLUSDT_SOL/USDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
@@ -51,14 +52,13 @@ list| array| Object
     from pybit.unified_trading import HTTP  
     session = HTTP(  
         testnet=True,  
+        api_key="xxxxxxxxxxxxxxxxxx",  
+        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_tiered_collateral_ratio(  
-        currency="BTC",  
+    print(session.spread_get_orderbook(  
+        symbol="SOLUSDT_SOL/USDT",  
+        limit=1  
     ))  
-    
-    
-    
-      
     
 
 ### Response Example
@@ -66,86 +66,66 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "list": [  
-                {  
-                    "currency": "BTC",  
-                    "collateralRatioList": [  
-                        {  
-                            "minQty": "0",  
-                            "maxQty": "1000000",  
-                            "collateralRatio": "0.85"  
-                        },  
-                        {  
-                            "minQty": "1000000",  
-                            "maxQty": "",  
-                            "collateralRatio": "0"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "s": "SOLUSDT_SOL/USDT",  
+            "b": [  
+                [  
+                    "21.0000",  
+                    "0.1"  
+                ]  
+            ],  
+            "a": [  
+                [  
+                    "23.0107",  
+                    "4.6"  
+                ]  
+            ],  
+            "u": 46977,  
+            "ts": 1744077242177,  
+            "seq": 213110,  
+            "cts": 1744076329043  
         },  
-        "retExtInfo": "{}",  
-        "time": 1739848984945  
+        "retExtInfo": {},  
+        "time": 1744077243583  
     }
 
 ---
 
-# 查詢階梯價值率
+# 查詢深度
 
-查詢統一帳戶借貸的階梯價值率
+### HTTP請求
 
-信息
-
-不需要鑒權
-
-### HTTP 請求
-
-GET`/v5/spot-margin-trade/collateral`
+GET`/v5/spread/orderbook`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| false| string| 幣種名稱  
+symbol| **true**|  string| 價差產品名稱  
+limit| false| integer| 深度限制 [`1`, `25`]. 默認: `1`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> currency| string| 幣種名稱  
-> collateralRatioList| array| Object  
->> maxQty| string| 梯度區間上限, 單位是幣種, 如"BTC", `""`表示正無窮  
->> minQty| string| 梯度區間下限, 單位是幣種, 如"BTC", 最小值是0  
->> collateralRatio| string| 抵押率  
+s| string| 價差產品名稱  
+b| array| Bid, 買方. 按照價格從大到小  
+> b[0]| string| 買方報價  
+> b[1]| string| 買方數量  
+a| array| Ask, 賣方. 按照價格從小到大  
+> a[0]| string| 賣方報價  
+> a[1]| string| 賣方數量  
+ts| integer| 行情服務生成數據時間戳（毫秒）  
+u| integer| 表示數據連續性的id, 它和wss推送裡的25檔的`u`對齊  
+seq| integer| 撮合版本號  
+cts| integer| 產生此訂單簿數據時來自撮合引擎的時間戳. 可用於與平台成交頻道中的T進行關聯  
   
 ### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/spot-margin-trade/collateral?currency=BTC HTTP/1.1  
+    GET /v5/spread/orderbook?symbol=SOLUSDT_SOL/USDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-    )  
-    print(session.get_tiered_collateral_ratio(  
-        currency="BTC",  
-    ))  
-    
-    
-    
-      
     
 
 ### 響應示例
@@ -153,26 +133,26 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "list": [  
-                {  
-                    "currency": "BTC",  
-                    "collateralRatioList": [  
-                        {  
-                            "minQty": "0",  
-                            "maxQty": "1000000",  
-                            "collateralRatio": "0.85"  
-                        },  
-                        {  
-                            "minQty": "1000000",  
-                            "maxQty": "",  
-                            "collateralRatio": "0"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "s": "SOLUSDT_SOL/USDT",  
+            "b": [  
+                [  
+                    "21.0000",  
+                    "0.1"  
+                ]  
+            ],  
+            "a": [  
+                [  
+                    "23.0107",  
+                    "4.6"  
+                ]  
+            ],  
+            "u": 46977,  
+            "ts": 1744077242177,  
+            "seq": 213110,  
+            "cts": 1744076329043  
         },  
-        "retExtInfo": "{}",  
-        "time": 1739848984945  
+        "retExtInfo": {},  
+        "time": 1744077243583  
     }

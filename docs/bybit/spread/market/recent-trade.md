@@ -2,45 +2,33 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/market/recent-trade
 api_type: Market Data
-updated_at: 2026-06-15 19:57:35.611740
+updated_at: 2026-06-16 19:52:23.438200
 ---
 
-# Get Tickers
-
-Query for the latest price snapshot, best bid/ask price, and trading volume of different spread combinations in the last 24 hours.
-
-info
-
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
-
-
+# Cancel Order
 
 ### HTTP Request
 
-GET`/v5/spread/tickers`
+POST`/v5/spread/order/cancel`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-symbol| **true**|  string| Spread combination symbol name  
+orderId| false| string| Spread combination order ID. Either `orderId` or `orderLinkId` is **required**  
+orderLinkId| false| string| User customised order ID. Either `orderId` or `orderLinkId` is **required**  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array<object>| Ticker info  
-> symbol| string| Spread combination symbol name  
-> bidPrice| string| Bid 1 price  
-> bidSize| string| Bid 1 size  
-> askPrice| string| Ask 1 price  
-> askSize| string| Ask 1 size  
-> lastPrice| string| Last trade price  
-> highPrice24h| string| The highest price in the last 24 hours  
-> lowPrice24h| string| The lowest price in the last 24 hours  
-> prevPrice24h| string| Price 24 hours ago  
-> volume24h| string| Volume for 24h  
+orderId| string| Order ID  
+orderLinkId| string| User customised order ID  
   
+info
+
+The acknowledgement of an cancel order request indicates that the request was sucessfully accepted. This request is asynchronous so please use the websocket to confirm the order status.
+
 ### Request Example
 
   * HTTP
@@ -49,8 +37,18 @@ list| array<object>| Ticker info
 
     
     
-    GET /v5/spread/tickers?symbol=SOLUSDT_SOL/USDT HTTP/1.1  
+    POST /v5/spread/order/cancel HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXXX  
+    X-BAPI-API-KEY: XXXXXXX  
+    X-BAPI-TIMESTAMP: 1744090699418  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 48  
+      
+    {  
+        "orderLinkId": "1744072052193428476"  
+    }  
     
     
     
@@ -60,8 +58,8 @@ list| array<object>| Ticker info
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spread_get_tickers(  
-        symbol="SOLUSDT_SOL/USDT"  
+    print(session.spread_cancel_order(  
+        orderLinkId="1744072052193428476"  
     ))  
     
 
@@ -70,70 +68,56 @@ list| array<object>| Ticker info
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
+        "retMsg": "OK",  
         "result": {  
-            "list": [  
-                {  
-                    "symbol": "SOLUSDT_SOL/USDT",  
-                    "bidPrice": "",  
-                    "bidSize": "",  
-                    "askPrice": "",  
-                    "askSize": "",  
-                    "lastPrice": "19.444",  
-                    "highPrice24h": "23.8353",  
-                    "lowPrice24h": "0",  
-                    "prevPrice24h": "20",  
-                    "volume24h": "24694.9"  
-                }  
-            ]  
+            "orderId": "4496253b-b55b-4407-8c5c-29629d169caf",  
+            "orderLinkId": "1744072052193428476"  
         },  
         "retExtInfo": {},  
-        "time": 1744079413254  
+        "time": 1744090702715  
     }
 
 ---
 
-# 查詢最新行情信息
-
-可獲取到快照的最新市場價格，最佳買賣價格，以及過去時間內的交易量等.
-
-警告
-
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
-
-
+# 撤銷價差委託單
 
 ### HTTP請求
 
-GET`/v5/spread/tickers`
+POST`/v5/spread/order/cancel`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-symbol| **true**|  string| 價差產品名稱  
+orderId| false| string| 價差訂單ID. `orderId` 和 `orderLinkId` 必傳其中一個  
+orderLinkId| false| string| 用戶自定義ID. `orderId` 和 `orderLinkId` 必傳其中一個  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array<object>| 行情信息  
-> symbol| string| 價差產品名稱  
-> bidPrice| string| 買1價  
-> bidSize| string| 買1價的數量  
-> askPrice| string| 賣1價  
-> askSize| string| 賣1價的數量  
-> lastPrice| string| 最新市場成交價  
-> highPrice24h| string| 最近24小時的最高價  
-> lowPrice24h| string| 最近24小時的最低價  
-> prevPrice24h| string| 24小時前的整點市價  
-> volume24h| string| 最近24小時成交量  
+orderId| string| 價差訂單ID  
+orderLinkId| string| 用戶自定義ID  
   
+信息
+
+ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單狀態
+
 ### 請求示例
     
     
-    GET /v5/spread/tickers?symbol=SOLUSDT_SOL/USDT HTTP/1.1  
+    POST /v5/spread/order/cancel HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXXX  
+    X-BAPI-API-KEY: XXXXXXX  
+    X-BAPI-TIMESTAMP: 1744090699418  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 48  
+      
+    {  
+        "orderLinkId": "1744072052193428476"  
+    }  
     
 
 ### 響應示例
@@ -141,23 +125,11 @@ list| array<object>| 行情信息
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
+        "retMsg": "OK",  
         "result": {  
-            "list": [  
-                {  
-                    "symbol": "SOLUSDT_SOL/USDT",  
-                    "bidPrice": "",  
-                    "bidSize": "",  
-                    "askPrice": "",  
-                    "askSize": "",  
-                    "lastPrice": "19.444",  
-                    "highPrice24h": "23.8353",  
-                    "lowPrice24h": "0",  
-                    "prevPrice24h": "20",  
-                    "volume24h": "24694.9"  
-                }  
-            ]  
+            "orderId": "4496253b-b55b-4407-8c5c-29629d169caf",  
+            "orderLinkId": "1744072052193428476"  
         },  
         "retExtInfo": {},  
-        "time": 1744079413254  
+        "time": 1744090702715  
     }

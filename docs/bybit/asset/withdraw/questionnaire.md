@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/withdraw/questionnaire
 api_type: REST
-updated_at: 2026-06-15 19:51:51.514774
+updated_at: 2026-06-16 19:46:00.945260
 ---
 
 # Get available VASPs

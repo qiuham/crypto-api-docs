@@ -2,89 +2,73 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/easy-onchain/product-info
 api_type: REST
-updated_at: 2026-06-15 19:53:56.875101
+updated_at: 2026-06-16 19:48:23.346220
 ---
 
-# Get Product Info
+# Get Position Info
+
+API ker permission: `Earn`  
+API rate limit: 10 reqs / sec
 
 info
 
-Does not need authentication.
+  * Only active positions are returned. Settled positions (status `REVENUE_DISTRIBUTED`) are excluded.
+  * All filters are optional — omit them to return all active positions.
 
-[Bybit Saving FAQ](https://www.bybit.com/en/help-center/article/FAQ-Bybit-Savings)
+
 
 ### HTTP Request
 
-GET`/v5/earn/product`
+GET`/v5/earn/fixed-term/position`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`  
-**Remarks** : currently, only flexible savings and on chain is supported  
-coin| false| string| Coin name, uppercase only  
+productId| false| string| Filter by product ID  
+category| false| string| Filter by product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
+coin| false| string| Filter by coin, e.g. `BTC`, `ETH`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> category| string| `FlexibleSaving`,`OnChain`  
-> estimateApr| string| Estimated APR, e.g., `3%`, `4.25%`  
-**Remarks** : 1)The Est. APR provides a dynamic preview of your potential returns, updated every 10 minutes in response to market conditions.   
-2) Please note that this is an estimate and may differ from the actual APR you will receive.  
-3) Platform Reward APRs are not shown  
-> coin| string| Coin name  
-> minStakeAmount| string| Minimum stake amount  
-> maxStakeAmount| string| Maximum stake amount  
-> precision| string| Amount precision  
+list| array| Position list  
+> positionId| string| Position ID  
 > productId| string| Product ID  
-> status| string| `Available`, `NotAvailable`  
-> bonusEvents| Array| Bonus  
->> apr| string| Yesterday's Rewards APR  
+> category| string| Product sub-type: `FixedTermSaving`, `FundPool`, `FundPoolPremium`  
+> coin| string| Staking coin  
+> amount| string| Position amount  
+> effectiveAmount| string| Effective amount earning interest (takes effect T+1)  
+> duration| string| Fixed term duration, e.g. `1d`, `8h`, `2m`  
+> status| string| Position status: `Active`, `EarlyRedemptionProcessing`  
+> settlementTime| string| Maturity time, unix timestamp in ms  
+> createdAt| string| Position creation time, unix timestamp in ms  
+> orderId| string| Associated order ID  
+> earlyRedeemInfo| object| Early redemption info  
+>> allowEarlyRedeem| boolean| Whether early redemption is available  
+>> earlyRedeemEarning| string| Estimated earnings if redeemed early now  
+>> returnCoin| string| Coin returned upon redemption  
+>> redemptionLimitDuration| string| Minimum hold time required before early redemption, e.g. `1d`, `8h`, `2m`  
+> allowAutoReinvest| boolean| Whether the product supports auto-reinvest  
+> autoReinvest| string| User's current auto-reinvest setting: `Enable`, `Disable`  
+> interestCoinApyList| array| Multi-coin reward APY list  
 >> coin| string| Reward coin  
->> announcement| string| Announcement link  
-> minRedeemAmount| string| Minimum redemption amount. Only has value in Onchain LST mode (coin != swapCoin)  
-> maxRedeemAmount| string| Maximum redemption amount. Only has value in Onchain LST mode (coin != swapCoin)  
-> duration| string| `Fixed`,`Flexible`. Product Type  
-> term| int| Unit: Day. Only when duration = `Fixed` for OnChain  
-> swapCoin| string| swap coin. Only has value in Onchain LST mode (coin != swapCoin)  
-> swapCoinPrecision| string| swap coin precision. Only has value in Onchain LST mode (coin != swapCoin)  
-> stakeExchangeRate| string| Estimated stake exchange rate. Only has value in Onchain LST mode (coin != swapCoin)  
-> redeemExchangeRate| string| Estimated redeem exchange rate. Only has value in Onchain LST mode (coin != swapCoin)  
-> rewardDistributionType| string| `Simple`: Simple interest, `Compound`: Compound interest, `Other`: LST. Only has value for Onchain  
-> rewardIntervalMinute| int| Frequency of reward distribution (minutes)  
-> redeemProcessingMinute| string| Estimated redemption minutes  
-> stakeTime| string| Staking on-chain time, in milliseconds  
-> interestCalculationTime| string| Interest accrual time, in milliseconds  
+>> apy| string| Reward APY  
+>> expectReturnEarning| string| Expected earnings for this position  
+>> price| string| Locked price of the reward coin  
   
+* * *
+
 ### Request Example
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/product?category=FlexibleSaving&coin=BTC HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-    )  
-    print(session.get_earn_product_info(  
-        category="FlexibleSaving",  
-        coin="BTC",  
-    ))  
-    
-    
-    
-      
+    GET /v5/earn/fixed-term/position?category=FixedTermSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
     
 
 ### Response Example
@@ -96,117 +80,101 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "category": "FlexibleSaving",  
-                    "estimateApr": "3%",  
-                    "coin": "BTC",  
-                    "minStakeAmount": "0.001",  
-                    "maxStakeAmount": "10",  
-                    "precision": "8",  
-                    "productId": "430",  
-                    "status": "Available",  
-                    "bonusEvents": [],  
-                    "minRedeemAmount": "",  
-                    "maxRedeemAmount": "",  
-                    "duration": "",  
-                    "term": 0,  
-                    "swapCoin": "",  
-                    "swapCoinPrecision": "",  
-                    "stakeExchangeRate": "",  
-                    "redeemExchangeRate": "",  
-                    "rewardDistributionType": "",  
-                    "rewardIntervalMinute": 0,  
-                    "redeemProcessingMinute": 0,  
-                    "stakeTime": "",  
-                    "interestCalculationTime": ""  
+                    "positionId": "4064",  
+                    "productId": "724",  
+                    "category": "FixedTermSaving",  
+                    "coin": "USDT",  
+                    "amount": "201",  
+                    "effectiveAmount": "201",  
+                    "duration": "3d",  
+                    "status": "Active",  
+                    "settlementTime": "1776385800000",  
+                    "createdAt": "1776068177000",  
+                    "orderId": "86468516-5497-4a2b-8c4c-f9c58e01e12c",  
+                    "earlyRedeemInfo": null,  
+                    "allowAutoReinvest": false,  
+                    "autoReinvest": "Disable",  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "555.00%",  
+                            "expectReturnEarning": "9.1689",  
+                            "price": "1.00"  
+                        }  
+                    ]  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1739935669110  
+        "time": 1776070463687  
     }
 
 ---
 
-# 查询产品信息
+# 取得持倉資訊
+
+API key權限：`Earn`  
+API 頻率限制：每秒10次
 
 信息
 
-不需要鑒權
+  * 僅返回活躍持倉。已結算持倉（狀態 `REVENUE_DISTRIBUTED`）不在返回範圍內。
+  * 所有過濾條件均為可選，省略時返回所有活躍持倉。
 
-[Bybit儲蓄 - 常見問題](https://www.bybit.com/zh-TW/help-center/article/FAQ-Bybit-Savings)
+
 
 ### HTTP 請求
 
-GET`/v5/earn/product`
+GET`/v5/earn/fixed-term/position`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| `FlexibleSaving`,`OnChain`   
-**備註** : 本期僅支持活期理財和鏈上賺幣  
-coin| false| string| 幣種名稱  
+productId| false| string| 依產品ID篩選  
+category| false| string| 依產品子類型篩選：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
+coin| false| string| 依幣種篩選，例如 `BTC`、`ETH`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> category| string| `FlexibleSaving`,`OnChain`  
-> estimateApr| string| 預估年化利率, e.g., `3%`, `4.25%`  
-**備註** : 1)預估年化收益率提供潛在收益的動態預覽，根據市場行情每 10 分鐘更新一次.   
-2) 請注意，該數值僅為估算值，可能會與您獲得的實際年化收益率有所不同.  
-3) 不展示部分幣種支持的平台獎勵年化收益率  
-> coin| string| 幣種名稱  
-> minStakeAmount| string| 最小質押額  
-> maxStakeAmount| string| 最大質押額  
-> precision| string| 金額的精度  
+list| array| 持倉列表  
+> positionId| string| 持倉ID  
 > productId| string| 產品ID  
-> status| string| 產品狀態 `Available`, `NotAvailable`  
-> bonusEvents| Array| 獎勵  
->> apr| string| 昨日獎勵 APR  
+> category| string| 產品子類型：`FixedTermSaving`、`FundPool`、`FundPoolPremium`  
+> coin| string| 質押幣種  
+> amount| string| 持倉金額  
+> effectiveAmount| string| 有效計息金額（T+1生效）  
+> duration| string| 固定期限，例如 `1d`、`8h`、`2m`  
+> status| string| 持倉狀態：`Active`、`EarlyRedemptionProcessing`  
+> settlementTime| string| 到期時間，毫秒級unix時間戳  
+> createdAt| string| 持倉創建時間，毫秒級unix時間戳  
+> orderId| string| 關聯訂單ID  
+> earlyRedeemInfo| object| 提前贖回資訊  
+>> allowEarlyRedeem| boolean| 是否可以提前贖回  
+>> earlyRedeemEarning| string| 當前提前贖回的預計收益  
+>> returnCoin| string| 贖回時返還的幣種  
+>> redemptionLimitDuration| string| 允許提前贖回前的最短持有時間，例如 `1d`、`8h`、`2m`  
+> allowAutoReinvest| boolean| 產品是否支持自動續投  
+> autoReinvest| string| 用戶當前的自動續投設置：`Enable`、`Disable`  
+> interestCoinApyList| array| 多幣種獎勵APY列表  
 >> coin| string| 獎勵幣種  
->> announcement| string| 公告連結  
-> minRedeemAmount| string| 最小贖回額度. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> maxRedeemAmount| string| 最大押額度 （返回可購買金額）. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> duration| string| 產品類型：`Fixed`,`Flexible`.  
-> term| int| 單位：天。只有 OnChain 定期產品類型使用  
-> swapCoin| string| 兌換幣種. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> swapCoinPrecision| string| 贖回可支援的精確度. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> stakeExchangeRate| string| 預計質押兌換率. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> redeemExchangeRate| string| 預計赎回兑换率. 只有 OnChain LST 模式有值 (coin != swapCoin)  
-> rewardDistributionType| string| 收益發放模式：`Simple`: 单利, `Compound`: 复利, `Other`: LST. 只有 OnChain 模式有值  
-> rewardIntervalMinute| int| 收益發放的頻率（分鐘）  
-> redeemProcessingMinute| string| 預計贖回分鐘  
-> stakeTime| string| 質押上鍊時間. 以毫秒為單位  
-> interestCalculationTime| string| 開始計息時間. 以毫秒為單位  
+>> apy| string| 獎勵APY  
+>> expectReturnEarning| string| 此持倉的預計收益  
+>> price| string| 獎勵幣種鎖定價格  
   
+* * *
+
 ### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/product?category=FlexibleSaving&coin=BTC HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-    )  
-    print(session.get_earn_product_info(  
-        category="FlexibleSaving",  
-        coin="BTC",  
-    ))  
-    
-    
-    
-      
+    GET /v5/earn/fixed-term/position?category=FixedTermSaving HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
     
 
 ### 響應示例
@@ -218,31 +186,31 @@ list| array| Object
         "result": {  
             "list": [  
                 {  
-                    "category": "FlexibleSaving",  
-                    "estimateApr": "0.3%",  
-                    "coin": "BTC",  
-                    "minStakeAmount": "0.001",  
-                    "maxStakeAmount": "200",  
-                    "precision": "8",  
-                    "productId": "3",  
-                    "status": "Available",  
-                    "bonusEvents": [],  
-                    "minRedeemAmount": "",  
-                    "maxRedeemAmount": "",  
-                    "duration": "",  
-                    "term": 0,  
-                    "swapCoin": "",  
-                    "swapCoinPrecision": "",  
-                    "stakeExchangeRate": "",  
-                    "redeemExchangeRate": "",  
-                    "rewardDistributionType": "",  
-                    "rewardIntervalMinute": 0,  
-                    "redeemProcessingMinute": 0,  
-                    "stakeTime": "",  
-                    "interestCalculationTime": ""  
+                    "positionId": "4064",  
+                    "productId": "724",  
+                    "category": "FixedTermSaving",  
+                    "coin": "USDT",  
+                    "amount": "201",  
+                    "effectiveAmount": "201",  
+                    "duration": "3d",  
+                    "status": "Active",  
+                    "settlementTime": "1776385800000",  
+                    "createdAt": "1776068177000",  
+                    "orderId": "86468516-5497-4a2b-8c4c-f9c58e01e12c",  
+                    "earlyRedeemInfo": null,  
+                    "allowAutoReinvest": false,  
+                    "autoReinvest": "Disable",  
+                    "interestCoinApyList": [  
+                        {  
+                            "coin": "USDT",  
+                            "apy": "555.00%",  
+                            "expectReturnEarning": "9.1689",  
+                            "price": "1.00"  
+                        }  
+                    ]  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1739935669110  
+        "time": 1776070463687  
     }

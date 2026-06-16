@@ -2,54 +2,69 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/manage-investment-plan
 api_type: REST
-updated_at: 2026-06-15 19:54:18.099916
+updated_at: 2026-06-16 19:48:43.702754
 ---
 
-# Get Subscribable Product Info
+# Create Customize Investment Plan
 
 info
 
-Does not need authentication.
+The total number of **Active** and **Pending** plans for the current user cannot exceed **20**.
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/customize-plan/product`
+POST`/v5/earn/pwm/customize-plan/create`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+accountType| false| string| Source account type. Default: `FUND`  
+products| **true**|  array| Product configuration list. At least 1 item required  
+> category| **true**|  string| Pass through from product query result. Product category: `multiCoinEarning` / `fixedYield` / `equityFund` / `onchainEarn`  
+> productId| **true**|  string| Pass through from product query result. May be `0`  
+> fundName| **true**|  string| Pass through from product query result. May be empty  
+> amount| **true**|  string| Subscription amount (base coin)  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-products| array| Product card list grouped by category  
-> type| string| Product category: `equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| Product card list for this category  
->> category| string| Product type  
->> productId| string| Underlying product ID (available for flexible savings / fixed yield / on-chain earn products)  
->> fundName| string| Fund name in English (fund products)  
->> coin| string| Product coin  
->> apr| string| Current annualized return rate (flexible savings / fixed yield products)  
->> aprRangeLow| string| APR lower bound (fund products)  
->> aprRangeHigh| string| APR upper bound (fund products)  
->> tags| array[string]| Product tags  
->> introduction| string| Product introduction in English (fund products)  
->> aum| string| Assets under management (base coin)  
->> minInvestmentAmount| string| Minimum subscription amount  
->> maxInvestmentAmount| string| Maximum subscription amount  
->> duration| int| Lock-up period in days. `0` means flexible (fixed yield products)  
->> maxDrawdown| string| Historical maximum drawdown (fund products)  
->> sharpRatio| string| Sharpe ratio (fund products)  
->> estAPR| string| Estimated APR for the product  
+planId| string| Newly created investment plan ID  
+planName| string| Investment plan name, auto-generated in the format `PWM-{planId}`  
+status| string| Plan status. Created and subscribed in one step — `Active` upon success  
+orderLinkId| string| User-defined order ID  
   
 * * *
 
 ### Request Example
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    POST /v5/earn/pwm/customize-plan/create HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "accountType": "FUND",  
+        "products": [  
+            {  
+                "category": "equityFund",  
+                "productId": "2001",  
+                "fundName": "Market Neutral Alpha",  
+                "amount": "100000.00"  
+            },  
+            {  
+                "category": "multiCoinEarning",  
+                "productId": "430",  
+                "fundName": "",  
+                "amount": "50000.00"  
+            }  
+        ]  
+    }  
     
 
 ### Response Example
@@ -58,93 +73,75 @@ products| array| Product card list grouped by category
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
-                {  
-                    "type": "equityFund",  
-                    "cards": [  
-                        {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "planId": "10050",  
+            "planName": "PWM-10050",  
+            "status": "Active",  
+            "orderLinkId": "xxx"  
         }  
     }
 
 ---
 
-# 查詢可申購產品卡片（直客模式）
+# 創建自定義投資計劃（直客模式）
 
 信息
 
-無需身份驗證。
+當前用戶 **Active** （運行中）和 **Pending** （待處理）狀態的計劃總數不能超過 **20** 個。
 
 ### HTTP 請求
 
-GET`/v5/earn/pwm/customize-plan/product`
+POST`/v5/earn/pwm/customize-plan/create`
 
 ### 請求參數
 
-無
-
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+accountType| false| string| 資金來源賬戶類型，默認 `FUND`  
+products| **true**|  array| 產品配置列表，至少 1 個  
+> category| **true**|  string| 透傳product查詢結果，產品類別：`multiCoinEarning` / `fixedYield` / `equityFund` / `onchainEarn`  
+> productId| **true**|  string| 透傳product查詢結果，可能為 `0`  
+> fundName| **true**|  string| 透傳product查詢結果，可能為空  
+> amount| **true**|  string| 申購金額（本位幣）  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-products| array| 按產品類別分組的卡片列表  
-> type| string| 產品類別：`equityFund` / `multiCoinEarning` / `onchainEarn` / `fixedYield`  
-> cards| array| 該類別下的產品卡片列表  
->> category| string| 產品類型  
->> productId| string| 對應的底層產品ID（活期 / 固收 / 鏈上賺幣產品有此字段）  
->> fundName| string| 基金名稱英文（基金產品）  
->> coin| string| 產品幣種  
->> apr| string| 當前年化收益率（活期 / 固收產品）  
->> aprRangeLow| string| 年化收益率下界（基金產品）  
->> aprRangeHigh| string| 年化收益率上界（基金產品）  
->> tags| array[string]| 產品標籤  
->> introduction| string| 產品簡介英文（基金產品）  
->> aum| string| 基金管理規模（本位幣）  
->> minInvestmentAmount| string| 最小申購金額  
->> maxInvestmentAmount| string| 最大申購金額  
->> duration| int| 鎖定期天數，`0` 表示活期（固收產品）  
->> maxDrawdown| string| 歷史最大回撤（基金產品）  
->> sharpRatio| string| 夏普比率（基金產品）  
->> estAPR| string| 產品預估APR  
+planId| string| 新創建的投資計劃ID  
+planName| string| 投資計劃名稱，自動生成格式為 `PWM-{planId}`  
+status| string| 計劃狀態，創建即申購，成功後為 `Active`  
+orderLinkId| string| 用戶自定義訂單ID  
   
 * * *
 
 ### 請求示例
     
     
-    GET /v5/earn/pwm/customize-plan/product HTTP/1.1  
+    POST /v5/earn/pwm/customize-plan/create HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "accountType": "FUND",  
+        "products": [  
+            {  
+                "category": "equityFund",  
+                "productId": "2001",  
+                "fundName": "Market Neutral Alpha",  
+                "amount": "100000.00"  
+            },  
+            {  
+                "category": "multiCoinEarning",  
+                "productId": "430",  
+                "fundName": "",  
+                "amount": "50000.00"  
+            }  
+        ]  
+    }  
     
 
 ### 響應示例
@@ -153,42 +150,9 @@ products| array| 按產品類別分組的卡片列表
     {  
         "retCode": 0,  
         "result": {  
-            "products": [  
-                {  
-                    "type": "equityFund",  
-                    "cards": [  
-                        {  
-                            "category": "equityFund",  
-                            "fundName": "Market Neutral Alpha",  
-                            "coin": "USDT",  
-                            "aprRangeLow": "0.08",  
-                            "aprRangeHigh": "0.15",  
-                            "tags": ["Delta Neutral"],  
-                            "introduction": "A market-neutral strategy fund",  
-                            "aum": "5000000",  
-                            "minInvestmentAmount": "100000",  
-                            "maxInvestmentAmount": "5000000",  
-                            "maxDrawdown": "-0.035",  
-                            "sharpRatio": "2.3",  
-                            "estAPR": "0.06"  
-                        }  
-                    ]  
-                },  
-                {  
-                    "type": "multiCoinEarning",  
-                    "cards": [  
-                        {  
-                            "category": "flexibleSavings",  
-                            "productId": "430",  
-                            "coin": "USDT",  
-                            "apr": "0.05",  
-                            "duration": 0,  
-                            "minInvestmentAmount": "10000",  
-                            "maxInvestmentAmount": "10000000",  
-                            "estAPR": "0.02"  
-                        }  
-                    ]  
-                }  
-            ]  
+            "planId": "10050",  
+            "planName": "PWM-10050",  
+            "status": "Active",  
+            "orderLinkId": "xxx"  
         }  
     }

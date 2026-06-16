@@ -2,54 +2,48 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/rfq-config
 api_type: Trading
-updated_at: 2026-06-15 19:56:52.909768
+updated_at: 2026-06-16 19:51:33.839365
 ---
 
-# Get RFQs (real-time)
+# Get RFQ Configuration
 
-Obtain real-time inquiry information. **Up to 50 requests per second**
+RFQ Config. **Up to 50 requests** per second.
 
 info
 
-  * Obtain RFQs in real-time.
-  * If both rfqId and rfqLinkId are passed, only rfqId is considered.
-  * Sorted in descending order by createdAt.
+  * Query for information on the quoting party that can participate in your transaction, your own deskCode and other configuration information.
   * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
 
 
 
 ### HTTP Request
 
-GET`/v5/rfq/rfq-realtime`
+GET`/v5/rfq/config`
 
 ### Request Parameters
 
-Parameter| Required| Type| Comments  
----|---|---|---  
-rfqId|  _false_|  string| Inquiry ID  
-rfqLinkId|  _false_|  string| Custom inquiry ID, traderType is quote, this field is invalid  
-traderType| false| string| Trader type, `quote` , `request`. Default: `quote`  
-  
+None
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| An array of RFQs  
-> rfqId| string| Inquiry ID  
-> rfqLinkId| string| Custom RFQ ID. Not publicly disclosed.  
->counterparties| array of srings| List of bidders  
-> expiresAt| string| The inquiry's expiration time (ms)  
-> strategyType| string| Inquiry label  
-> status| string| Status of the RFQ: `Active` `PendingFill` `Canceled` `Filled` `Expired` `Failed`  
-> acceptOtherQuoteStatus| string| Whether to accept non-LP quotes. The default value is `false`: `false`: Default value, do not accept non-LP quotes. `true`: Accept non-LP quotes  
-> deskCode| string| The unique identification code of the inquiring party, which is not visible when anonymous was set to `true` when the RFQ was created  
-> createdAt| string| Time (ms) when the trade is created in epoch, such as 1650380963  
-> updatedAt| string| Time (ms) when the trade is updated in epoch, such as 1650380964  
-> legs| array of objects| Combination transaction  
->> category| string| category. Valid values include: "linear", "option" and "spot"  
->> symbol| string| The unique instrument ID  
->> side| string| Inquiry direction: Valid values are `Buy` and `Sell` .  
->> qty| string| Order quantity of the instrument.  
+result| array| Order ID  
+list| Object|   
+> deskCode| string| Your deskCode, a unique identification code  
+> maxLegs| integer| Maximum number of legs  
+> maxLP| integer| The maximum number of LPs (liquidity providers) selected in the inquiry  
+> maxActiveRfq| integer| The maximum number of unfinished inquiry orders allowed by a user  
+> rfqExpireTime| integer| Inquiry expiration time (mins)  
+> minLimitQtySpotOrder| integer| Spot minimum order quantity  
+>minLimitQtyContractOrder| integer| Contract minimum order quantity  
+> minLimitQtyOptionOrder| integer| Option minimum order  
+> strategyTypes| array| Product strategy  
+>> strategyName| string| Strategy name  
+> counterparties| array| Information on the quoters who can participate in the transaction  
+>> traderName| string| Name of the quoter  
+>> deskCode| string| The unique identification code of the quoting party  
+>> type| string| Quoter type. `LP` is an automated market maker connected via API, null means a normal quoting party  
   
 ### Request Example
 
@@ -59,7 +53,7 @@ list| array| An array of RFQs
 
     
     
-    GET /v5/rfq/rfq-realtime HTTP/1.1  
+    GET /v5/rfq/create-rfq HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1676430842094  
@@ -74,7 +68,7 @@ list| array| An array of RFQs
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_rfq_realtime())  
+    print(session.get_rfq_config())  
     
 
 ### Response Example
@@ -84,92 +78,87 @@ list| array| An array of RFQs
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "list": [  
+            "deskCode": "1nu9d1",  
+            "maxLegs": 25,  
+            "maxLP": 50,  
+            "rfqExpireTime": 10,  
+            "maxActiveRfq": 10,  
+            "minLimitQtySpotOrder": 10,  
+            "minLimitQtyContractOrder": 10,  
+            "minLimitQtyOptionOrder": 1,  
+            "strategyTypes": [  
                 {  
-                    "rfqLinkId": "",  
-                    "rfqId": "1756885055799241492396882271696580",  
-                    "counterparties": [  
-                        "hashwave2"  
-                    ],  
-                    "strategyType": "custom",  
-                    "expiresAt": "1756885655801",  
-                    "status": "Active",  
-                    "acceptOtherQuoteStatus":"false",  
-                    "deskCode": "1nu9d1",  
-                    "createdAt": "1756885055801",  
-                    "updatedAt": "1756885055801",  
-                    "legs": [  
-                        {  
-                            "category": "linear",  
-                            "symbol": "BTCUSDT",  
-                            "side": "Buy",  
-                            "qty": "1"  
-                        }  
-                    ]  
-                }  
+                    "strategyName": "custom"  
+                },  
+                {  
+                    "strategyName": "FundingRate"  
+                },  
+                {  
+                    "strategyName": "CarryTrade"  
+                },  
+                ...,  
+            ],  
+            "counterparties": [  
+                {  
+                    "traderName": "1zQkH0y7Y3acALM",  
+                    "deskCode": "gIMhjitYqE9WG5F",  
+                    "type": "LP"  
+                },  
+                {  
+                    "traderName": "Bernie LP",  
+                    "deskCode": "Bernie",  
+                    "type": "LP"  
+                },  
+                ...,  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1756885059062  
+        "time": 1756870672013  
     }
 
 ---
 
-# 獲取實时的詢價單資訊
+# rfq配寘資訊
 
-獲取實时的詢價單資訊。**每秒最多 50 次請求**
+査詢rfq配寘資訊 **每秒最多 50 次請求**
 
 信息
 
-  * 獲取使用者發送或接收的詢價資訊，從 rfq-engine 即時查詢，無延遲
-  * 同時傳遞 rfqId 和 rfqLinkId 時，以 rfqId 為準
-  * 根據詢價單的創建時間倒序排列並返回。
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
-
-
+查詢可參與交易的報價方資訊，以及自己的 deskCode 和其他配置資訊。 **在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況**
 
 ### HTTP 請求
 
-GET`/v5/rfq/rfq-realtime`
+GET`/v5/rfq/config`
 
 ### 請求參數
 
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-rfqId| **false**|  string| 詢價單 ID  
-rfqLinkId| **false**|  string| 詢價單自定義 ID，當 traderType 為 quote 時，此字段無效  
-traderType| **false**|  string| 交易者類型，`quote` 或 `request`，默認為 `request`
+無
 
-  * `Request`：詢價方，查詢自己發出的詢價單
-  * `Quote`：報價方，查詢自己接收到的詢價單
-
-  
-  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| Array| 詢價單數據陣列  
-> rfqId| string| 詢價單 ID  
-> rfqLinkId| string| 自定義詢價單 ID，客戶敏感資訊不會公開，僅返回給報價方。  
-> counterparties| Array of strings| 報價方列表  
-> expiresAt| string| 詢價單的過期時間，Unix 時間戳的毫秒格式  
-> strategyType| string| 詢價標籤  
-> status| string| 詢價單狀態：`Active`、`PendingFill`、`Canceled`、`Filled`、`Expired`、`Failed`  
-> acceptOtherQuoteStatus| string| 是否接受非 LP 報價. 預設值是 `false`.`false`: 不接受非 LP 報價. `true`: 接受非 LP 報價  
-> deskCode| string| 詢價方的唯一識別代碼，若詢價時設置匿名為 `true` 則不可見  
-> createdAt| string| 交易創建的時間（毫秒），例如 1650380963  
-> updatedAt| string| 交易更新的時間（毫秒），例如 1650380964  
-> legs| Array of objects| 組合交易  
->> category| string| 類型，有效值包括：`linear`、`option` 和 `spot`  
->> symbol| string| 唯一的交易品種 ID  
->> side| string| 詢價方向，有效值包括 `Buy` 和 `Sell`  
->> qty| string| 交易品種的訂單數量  
+result| array| 訂單 ID  
+list| Object|   
+> deskCode| string| 自己的 deskCode，唯一識別代碼  
+> maxLegs| integer| 最大腿數  
+> maxLP| integer| 詢價單中可選的最大 LP 數量  
+> maxActiveRfq| integer| 使用者允許的未完成詢價單最大數量  
+> rfqExpireTime| integer| 詢價過期時間，分鐘  
+> minLimitQtySpotOrder| integer| 現貨最小下單量乘數  
+> minLimitQtyContractOrder| integer| 合約最小下單量乘數  
+> minLimitQtyOptionOrder| integer| 期權最小下單量乘數  
+> strategyTypes| array| 產品策略  
+>> strategyName| string| 策略名稱  
+> counterparties| array| 可參與交易的報價方資訊  
+>> traderName| string| 報價方名稱  
+>> deskCode| string| 報價方的唯一識別代碼，公開可見；報價和詢價的相關介面使用此代碼表示報價方  
+>> type| string| 報價方類型:`LP`指通過API連接的自動做市商，為空表示普通報價方  
   
 ### 請求示例
     
     
-    GET /v5/rfq/rfq-realtime HTTP/1.1  
+    GET /v5/rfq/create-rfq HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1676430842094  
@@ -184,31 +173,40 @@ list| Array| 詢價單數據陣列
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "list": [  
+            "deskCode": "1nu9d1",  
+            "maxLegs": 25,  
+            "maxLP": 50,  
+            "rfqExpireTime": 10,  
+            "maxActiveRfq": 10,  
+            "minLimitQtySpotOrder": 10,  
+            "minLimitQtyContractOrder": 10,  
+            "minLimitQtyOptionOrder": 1,  
+            "strategyTypes": [  
                 {  
-                    "rfqLinkId": "",  
-                    "rfqId": "1756885055799241492396882271696580",  
-                    "counterparties": [  
-                        "hashwave2"  
-                    ],  
-                    "strategyType": "custom",  
-                    "expiresAt": "1756885655801",  
-                    "status": "Active",  
-                    "acceptOtherQuoteStatus":"false",  
-                    "deskCode": "1nu9d1",  
-                    "createdAt": "1756885055801",  
-                    "updatedAt": "1756885055801",  
-                    "legs": [  
-                        {  
-                            "category": "linear",  
-                            "symbol": "BTCUSDT",  
-                            "side": "Buy",  
-                            "qty": "1"  
-                        }  
-                    ]  
-                }  
+                    "strategyName": "custom"  
+                },  
+                {  
+                    "strategyName": "FundingRate"  
+                },  
+                {  
+                    "strategyName": "CarryTrade"  
+                },  
+                ...,  
+            ],  
+            "counterparties": [  
+                {  
+                    "traderName": "1zQkH0y7Y3acALM",  
+                    "deskCode": "gIMhjitYqE9WG5F",  
+                    "type": "LP"  
+                },  
+                {  
+                    "traderName": "Bernie LP",  
+                    "deskCode": "Bernie",  
+                    "type": "LP"  
+                },  
+                ...,  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1756885059062  
+        "time": 1756870672013  
     }

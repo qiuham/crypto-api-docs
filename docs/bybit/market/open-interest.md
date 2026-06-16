@@ -2,52 +2,66 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/open-interest
 api_type: Market Data
-updated_at: 2026-06-15 19:55:02.037869
+updated_at: 2026-06-16 19:49:34.526735
 ---
 
-# Get Open Interest
+# Get Recent Public Trades
 
-Get the [open interest](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms) of each symbol.
+Query recent public trading history in Bybit.
 
-> **Covers: USDT contract / USDC contract / Inverse contract**
+> **Covers: Spot / USDT contract / USDC contract / Inverse contract / Option**
 
-info
-
-  * The upper limit time you can query is the launch time of the symbol.
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
-
-
+You can download archived historical trades from the [website](https://www.bybit.com/en/derivative-activity/history-data)
 
 ### HTTP Request
 
-GET`/v5/market/open-interest`
+GET`/v5/market/recent-trade`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type. `linear`,`inverse`  
-symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-[intervalTime](/docs/v5/enum#intervaltime)| **true**|  string| Interval time. `5min`,`15min`,`30min`,`1h`,`4h`,`1d`  
-startTime| false| integer| The start timestamp (ms)  
-endTime| false| integer| The end timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `200`]. Default: `50`  
-cursor| false| string| Cursor. Used to paginate  
+[category](/docs/v5/enum#category)| **true**|  string| Product type. `spot`,`linear`,`inverse`,`option`  
+[symbol](/docs/v5/enum#symbol)| false| string| Symbol name, like `BTCUSDT`, uppercase only 
+
+  * **required** for spot/linear/inverse
+  * optional for option
+
+  
+baseCoin| false| string| Base coin, uppercase only 
+
+  * Apply to `option` **only**
+  * If the field is not passed, return **BTC** data by default
+
+  
+optionType| false| string| Option type. `Call` or `Put`. Apply to `option` **only**  
+limit| false| integer| Limit for data size per page 
+
+  * `spot`: [1,60], default: `60`
+  * others: [1,1000], default: `500`
+
+  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-category| string| Product type  
-symbol| string| Symbol name  
+category| string| Products category  
 list| array| Object  
-> openInterest| string| Open interest. The value is the sum of both sides.   
-The unit of value, e.g., BTCUSD(inverse) is USD, BTCUSDT(linear) is BTC  
-> singleOpenInterest| string| Open interest. The value is the single side.   
-The unit of value, e.g., BTCUSD(inverse) is USD, BTCUSDT(linear) is BTC  
-> timestamp| string| The timestamp (ms)  
-nextPageCursor| string| Used to paginate  
-[](/docs/api-explorer/v5/market/open-interest)
+> execId| string| Execution ID  
+> symbol| string| Symbol name  
+> price| string| Trade price  
+> size| string| Trade size  
+> side| string| Side of taker `Buy`, `Sell`  
+> time| string| Trade time (ms)  
+> isBlockTrade| boolean| Whether the trade is block trade  
+> isRPITrade| boolean| Whether the trade is RPI trade  
+> mP| string| Mark price, unique field for `option`  
+> iP| string| Index price, unique field for `option`  
+> mIv| string| Mark iv, unique field for `option`  
+> iv| string| iv, unique field for `option`  
+> seq| string| cross sequence  
+[](/docs/api-explorer/v5/market/recent-trade)
 
 * * *
 
@@ -62,19 +76,17 @@ nextPageCursor| string| Used to paginate
 
     
     
-    GET /v5/market/open-interest?limit=5&category=inverse&intervalTime=1d&symbol=BTCUSD HTTP/1.1  
+    GET /v5/market/recent-trade?category=spot&symbol=BTCUSDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_open_interest(  
-        category="inverse",  
-        symbol="BTCUSD",  
-        intervalTime="5min",  
-        startTime=1669571100000,  
-        endTime=1669571400000,  
+    print(session.get_public_trade_history(  
+        category="spot",  
+        symbol="BTCUSDT",  
+        limit=1,  
     ))  
     
     
@@ -86,7 +98,7 @@ nextPageCursor| string| Used to paginate
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
     params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetOpenInterests(context.Background())  
+    client.NewUtaBybitServiceWithParams(params).GetPublicRecentTrades(context.Background())  
     
     
     
@@ -95,8 +107,8 @@ nextPageCursor| string| Used to paginate
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var openInterest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.FIVE_MINUTES).build();  
-    client.getOpenInterest(openInterest, System.out::println);  
+    var recentTrade = MarketDataRequest.builder().category(CategoryType.OPTION).symbol("ETH-30JUN23-2050-C").build();  
+    client.getRecentTradeData(recentTrade, System.out::println);  
     
     
     
@@ -107,12 +119,10 @@ nextPageCursor| string| Used to paginate
     });  
       
     client  
-        .getOpenInterest({  
-            category: 'inverse',  
-            symbol: 'BTCUSD',  
-            intervalTime: '5min',  
-            startTime: 1669571100000,  
-            endTime: 1669571400000,  
+        .getPublicTradingHistory({  
+            category: 'spot',  
+            symbol: 'BTCUSDT',  
+            limit: 1,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -129,86 +139,79 @@ nextPageCursor| string| Used to paginate
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSD",  
-            "category": "inverse",  
+            "category": "spot",  
             "list": [  
                 {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780963200000"  
-                },  
-                {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780876800000"  
-                },  
-                {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780790400000"  
-                },  
-                {  
-                    "openInterest": "63942311.00000000",  
-                    "singleOpenInterest": "31971156",  
-                    "timestamp": "1780704000000"  
-                },  
-                {  
-                    "openInterest": "63942311.00000000",  
-                    "singleOpenInterest": "31971156",  
-                    "timestamp": "1780617600000"  
+                    "execId": "2100000000007764263",  
+                    "symbol": "BTCUSDT",  
+                    "price": "16618.49",  
+                    "size": "0.00012",  
+                    "side": "Buy",  
+                    "time": "1672052955758",  
+                    "isBlockTrade": false,  
+                    "isRPITrade": true,  
+                    "seq":"123456"  
                 }  
-            ],  
-            "nextPageCursor": "lastid%3D19408935%26lasttime%3D1780617600"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1780994051392  
+        "time": 1672053054358  
     }
 
 ---
 
-# 查詢未平倉合約持倉數量
+# 查詢平台最近成交歷史
 
-查詢各個合約市場內所有未平倉的數量
+獲取平台最近成交數據
 
-> **覆蓋範圍: USDT永續 / USDC永續 / USDC交割 / 反向合約**
+> **覆蓋範圍: 現貨 / USDT永續 / USDT交割 / USDC永續 / USDC交割 / 反向合約 / 期權**
 
-信息
-
-  * 最久可以查詢到自合約上線開始的數據
-  * 在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
-
-
+您可以從這個[地址](https://www.bybit.com/en/derivative-activity/history-data) 下載到歸檔的更多的歷史成交數據:
 
 ### HTTP請求
 
-GET`/v5/market/open-interest`
+GET`/v5/market/recent-trade`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `linear`,`inverse`  
-symbol| **true**|  string| 合約名稱  
-[intervalTime](/docs/zh-TW/v5/enum#intervaltime)| **true**|  string| 時間粒度. `5min` `15min` `30min` `1h` `4h` `1d`  
-startTime| false| integer| 開始時間戳 (毫秒)  
-endTime| false| integer| 結束時間戳 (毫秒)  
-limit| false| integer| 每頁數量限制. [`1`, `200`]. 默認: `50`  
-cursor| false| string| 游標，用於翻頁  
+[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型. `spot`,`linear`,`inverse`,`option`  
+[symbol](/docs/zh-TW/v5/enum#symbol)| false| string| 合約名稱
+
+  * 現貨/期貨**必傳**
+  * 期權選傳
+
+  
+baseCoin| false| string| 交易幣種. 僅`option`, 若不傳, 則默認返回BTC數據  
+optionType| false| string| 期權類型. `Call` 或 `Put`. 僅`option`  
+limit| false| integer| 每頁數量限制.
+
+  * `spot`: [1,60], 默认: `60`.
+  * others: [1,1000], 默認: `500`
+
+  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
 category| string| 產品類型  
-symbol| string| 合約名稱  
 list| array| Object  
-> openInterest| string| 未平倉合約數量, 數值為雙邊的和  
-這個數值的單位是, 比如, BTCUSDT永續是BTC, BTCUSD反向合約是USD  
-> singleOpenInterest| string| 未平倉合約數量, 數值為單邊的值  
-這個數值的單位是, 比如, BTCUSDT永續是BTC, BTCUSD反向合約是USD  
-> timestamp| string| 數據產生的時間戳（毫秒）  
-nextPageCursor| string| 游標，用於翻頁  
-[](/docs/zh-TW/api-explorer/v5/market/open-interest)
+> execId| string| 成交id  
+> symbol| string| 合約名稱  
+> price| string| 成交價格  
+> size| string| 成交數量  
+> side| string| 吃單方向. `Buy`, `Sell`  
+> time| string| 成交時間戳 (毫秒)  
+> isBlockTrade| boolean| 成交類型是否為大宗交易  
+> isRPITrade| boolean| 成交類型是否為RPI交易  
+> mP| string| 標記價格, 期權的特有字段  
+> iP| string| 指數價格, 期權的特有字段  
+> mIv| string| 標記iv, 期權的特有字段  
+> iv| string| iv, 期權的特有字段  
+> seq| string| 撮合版本號  
+[](/docs/zh-TW/api-explorer/v5/market/recent-trade)
 
 * * *
 
@@ -223,19 +226,17 @@ nextPageCursor| string| 游標，用於翻頁
 
     
     
-    GET /v5/market/open-interest?limit=5&category=inverse&intervalTime=1d&symbol=BTCUSD HTTP/1.1  
+    GET /v5/market/recent-trade?category=spot&symbol=BTCUSDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_open_interest(  
-        category="inverse",  
-        symbol="BTCUSD",  
-        intervalTime="5min",  
-        startTime=1669571100000,  
-        endTime=1669571400000,  
+    print(session.get_public_trade_history(  
+        category="spot",  
+        symbol="BTCUSDT",  
+        limit=1,  
     ))  
     
     
@@ -247,7 +248,7 @@ nextPageCursor| string| 游標，用於翻頁
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
     params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetOpenInterests(context.Background())  
+    client.NewUtaBybitServiceWithParams(params).GetPublicRecentTrades(context.Background())  
     
     
     
@@ -256,8 +257,8 @@ nextPageCursor| string| 游標，用於翻頁
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var openInterest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.FIVE_MINUTES).build();  
-    client.getOpenInterest(openInterest, System.out::println);  
+    var recentTrade = MarketDataRequest.builder().category(CategoryType.OPTION).symbol("ETH-30JUN23-2050-C").build();  
+    client.getRecentTradeData(recentTrade, System.out::println);  
     
     
     
@@ -268,12 +269,10 @@ nextPageCursor| string| 游標，用於翻頁
     });  
       
     client  
-        .getOpenInterest({  
-            category: 'inverse',  
-            symbol: 'BTCUSD',  
-            intervalTime: '5min',  
-            startTime: 1669571100000,  
-            endTime: 1669571400000,  
+        .getPublicTradingHistory({  
+            category: 'spot',  
+            symbol: 'BTCUSDT',  
+            limit: 1,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -290,37 +289,20 @@ nextPageCursor| string| 游標，用於翻頁
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "symbol": "BTCUSD",  
-            "category": "inverse",  
+            "category": "spot",  
             "list": [  
                 {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780963200000"  
-                },  
-                {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780876800000"  
-                },  
-                {  
-                    "openInterest": "63910691.00000000",  
-                    "singleOpenInterest": "31955346",  
-                    "timestamp": "1780790400000"  
-                },  
-                {  
-                    "openInterest": "63942311.00000000",  
-                    "singleOpenInterest": "31971156",  
-                    "timestamp": "1780704000000"  
-                },  
-                {  
-                    "openInterest": "63942311.00000000",  
-                    "singleOpenInterest": "31971156",  
-                    "timestamp": "1780617600000"  
+                    "execId": "2100000000007764263",  
+                    "symbol": "BTCUSDT",  
+                    "price": "16618.49",  
+                    "size": "0.00012",  
+                    "side": "Buy",  
+                    "time": "1672052955758",  
+                    "isBlockTrade": false,  
+                    "isRPITrade": true  
                 }  
-            ],  
-            "nextPageCursor": "lastid%3D19408935%26lasttime%3D1780617600"  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1780994051392  
+        "time": 1672053054358  
     }

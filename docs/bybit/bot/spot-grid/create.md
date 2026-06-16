@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/spot-grid/create
 api_type: REST
-updated_at: 2026-06-15 19:52:15.198588
+updated_at: 2026-06-16 19:46:27.128757
 ---
 
 # Get Grid Bot Detail

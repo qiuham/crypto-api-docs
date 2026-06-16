@@ -2,148 +2,110 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/fixed-saving/redeem
 api_type: REST
-updated_at: 2026-06-15 19:54:06.367283
+updated_at: 2026-06-16 19:48:30.521412
 ---
 
-# Get All Funds
+# Get Airdrop Daily PnL Records
+
+You can query up to 3 months of historical data.
 
 info
 
-Results are sorted by fund ID in **descending order** (newest first).
+  * API key permission: `Earn`
+  * Only **completed** (already distributed) yield records are returned. Pending, failed, and zero-amount records are excluded.
+  * Users with no byfi earn history will receive a successful response with an empty list.
+
+
 
 ### HTTP Request
 
-GET`/v5/earn/pwm/asset-manager/all-funds`
+GET`/v5/earn/hold-to-earn/yield-history`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| false| string| Filter by coin  
-fundId| false| string| Filter by fund ID. Only funds created by the institution via Open API can be queried  
-status| false| string| Filter by status: `PendingSubscribe` / `Active` / `Closing` / `Closed`  
-limit| false| integer| Page size. Default: `20`, max: `50`  
-cursor| false| string| Pagination cursor (uses fund ID as cursor)  
+timeStart| false| integer| Start time (Unix seconds). Cannot be earlier than current time minus 3 months, otherwise returns `INVALIDARGUMENTS`  
+timeEnd| false| integer| End time (Unix seconds). Requires `timeStart ≤ timeEnd`  
+limit| **true**|  integer| Page size. Range: `1` to `49`. Returns `INVALIDARGUMENTS` if out of range  
+cursor| false| string| Pagination cursor. Omit on the first request; pass the `nextCursor` value from the previous response for subsequent pages. Treat the cursor as opaque — do not parse or modify it  
   
+info
+
+When both `timeStart` and `timeEnd` are `0`, the query defaults to the last 3 months.
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Fund list  
-> fundId| string| Unique fund identifier  
-> fundName| string| Fund name  
-> coin| string| Fund denomination coin  
-> status| string| Fund status: `PendingSubscribe` / `Active` / `Closing` / `Closed`  
-> totalEquity| string| Total fund equity (base coin)  
-> totalShares| string| Total fund shares  
-> currentNav| string| Current NAV (= shareValue / initialShareValue)  
-> currentAPR| string| Current 30-day APR  
-> accountUid| string| Main fund sub-account UID  
-> subAccountList| array| Sub-account UIDs attached to this fund  
->> (element)| string| Sub-account UID  
-> profitShareRate| string| Profit sharing rate (%), e.g. `"20.00"` means 20%  
-> managementFeeRate| string| Management fee rate (annualized %), e.g. `"2.00"` means 2%  
-> uncollectedProfit| string| Unsettled profit-sharing amount (base coin)  
-> collectedProfit| string| Historically settled profit-sharing amount (base coin)  
-> totalLoan| string| Current unsettled leverage amount (base coin)  
-> createdTime| string| Fund creation timestamp (milliseconds)  
-nextPageCursor| string| Next page cursor. Empty string indicates no more data  
+nextCursor| string| Next page cursor. Empty string indicates the last page. Pass it back as `cursor` in the next request  
+airdropDailyPnls| array| Yield records list, sorted by distribution date newest first  
+> coinName| string| Investment coin name  
+> yieldCoinName| string| Yield coin name. Differs from `coinName` for cross-coin airdrops  
+> effectiveAmount| string| Effective principal for that day, e.g., `"10000.00"`  
+> pnl| string| Actual yield distributed that day, e.g., `"0.27397260"`  
+> apy| string| Annualized yield for that day, e.g., `"10%"`  
+> createdAt| integer| Yield distribution time (Unix seconds)  
   
 * * *
 
 ### Request Example
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    GET /v5/earn/pwm/asset-manager/all-funds HTTP/1.1  
+    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+      
+    
+    
+    
+      
     
 
 ### Response Example
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "success",  
-        "result": {  
-            "list": [  
-                {  
-                    "fundId": "123",  
-                    "fundName": "BTC Alpha Fund",  
-                    "coin": "BTC",  
-                    "status": "active",  
-                    "totalEquity": "10.5",  
-                    "totalShares": "1000.00",  
-                    "currentNav": "1.05",  
-                    "accountUid": "456789",  
-                    "subAccountList": ["456790", "456791"],  
-                    "profitShareRate": "20.00",  
-                    "managementFeeRate": "2.00",  
-                    "uncollectedProfit": "0.5",  
-                    "collectedProfit": "1.2",  
-                    "totalLoan": "0",  
-                    "createdTime": "1640000000000"  
-                }  
-            ],  
-            "nextPageCursor": "32"  
-        }  
-    }
+        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
+        "airdropDailyPnls": [  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747641600  
+            },  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747555200  
+            }  
+        ]  
+    }  
+    
 
----
+### Pagination Example
 
-# 查詢機構管轄的基金列表
-
-信息
-
-返回數據按基金 ID **降序排列** （最新的在前）。
-
-### HTTP 請求
-
-GET`/v5/earn/pwm/asset-manager/all-funds`
-
-### 請求參數
-
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-coin| false| string| 幣種篩選  
-fundId| false| string| 基金ID篩選（該接口只能查詢機構 Open API 創建的基金）  
-status| false| string| 狀態篩選：`PendingSubscribe`（待申購）/ `Active`（運行中）/ `Closing`（關閉中）/ `Closed`（已關閉）  
-limit| false| integer| 每頁數量，默認 `20`，最大 `50`  
-cursor| false| string| 分頁游標（使用基金ID作為游標）  
-  
-### 響應參數
-
-參數| 類型| 說明  
----|---|---  
-list| array| 基金列表  
-> fundId| string| 基金唯一標識  
-> fundName| string| 基金名稱  
-> coin| string| 基金計價幣種  
-> status| string| 基金狀態：`PendingSubscribe`（待申購）/ `Active`（運行中）/ `Closing`（關閉中）/ `Closed`（已關閉）  
-> totalEquity| string| 基金總權益（本位幣）  
-> totalShares| string| 基金總份額  
-> currentNav| string| 當前淨值（nav = shareValue / initialShareValue）  
-> currentAPR| string| 當前30日APR  
-> accountUid| string| 主基金子賬戶UID  
-> subAccountList| array| 當前基金附屬子賬戶UID列表  
->> (元素)| string| 子賬戶UID  
-> profitShareRate| string| 利潤分成比例（%），如 `"20.00"` 表示20%  
-> managementFeeRate| string| 管理費率（年化%），如 `"2.00"` 表示2%  
-> uncollectedProfit| string| 當前未結算分潤的資產數量（本位幣）  
-> collectedProfit| string| 歷史已結算分潤資產數量（本位幣）  
-> totalLoan| string| 當前未結算的配資規模（本位幣）  
-> createdTime| string| 基金創建時間戳（毫秒）  
-nextPageCursor| string| 下一頁游標，為空表示無更多數據  
-  
-* * *
-
-### 請求示例
+To fetch the next page, pass the `nextCursor` from the previous response back as `cursor`:
     
     
-    GET /v5/earn/pwm/asset-manager/all-funds HTTP/1.1  
+    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -151,32 +113,116 @@ nextPageCursor| string| 下一頁游標，為空表示無更多數據
     X-BAPI-RECV-WINDOW: 5000  
     
 
+An empty `nextCursor` in the response indicates you have reached the last page.
+
+---
+
+# 查詢空投每日收益記錄
+
+可查詢最近 3 個月的歷史收益數據。
+
+信息
+
+  * API key 需要 `理財` 權限
+  * 僅返回**已發放** （`status = complete`）的收益記錄，未發放、失敗及金額為零的記錄均不可見。
+  * 非 byfi earn 歷史用戶調用將直接返回成功狀態及空列表。
+
+
+
+### HTTP 請求
+
+GET`/v5/earn/hold-to-earn/yield-history`
+
+### 請求參數
+
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+timeStart| false| integer| 起始時間（Unix 秒）。**不得早於「當前時間 - 3 個月」** ，否則返回 `INVALIDARGUMENTS`  
+timeEnd| false| integer| 結束時間（Unix 秒）。要求 `timeStart ≤ timeEnd`  
+limit| **true**|  integer| 單頁大小，範圍：`1` 至 `49`。超出範圍返回 `INVALIDARGUMENTS`  
+cursor| false| string| 翻頁游標。首次查詢不傳；後續翻頁傳入上一次響應中的 `nextCursor`。游標對接入方不透明，**僅作整體回傳，不要解析或拼接**  
+  
+信息
+
+當 `timeStart` 與 `timeEnd` 同時為 `0` 時，自動查詢最近 3 個月的數據。
+
+### 響應參數
+
+參數| 類型| 說明  
+---|---|---  
+nextCursor| string| 下一頁游標。空字符串表示已到尾頁；翻頁時將其原樣傳回 `cursor` 即可  
+airdropDailyPnls| array| 收益記錄列表，按發放日倒序排列（較新在前）  
+> coinName| string| 投資幣種名稱  
+> yieldCoinName| string| 收益幣種名稱。跨幣種空投時與 `coinName` 不同  
+> effectiveAmount| string| 當日計息本金（已格式化字符串，如 `"10000.00"`）  
+> pnl| string| 當日實際發放收益（已格式化字符串，如 `"0.27397260"`）  
+> apy| string| 該日折算年化收益文案（如 `"10%"`）  
+> createdAt| integer| 收益發放時間（Unix 秒）  
+  
+* * *
+
+### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
+    
+    
+    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+    
+    
+      
+    
+    
+    
+      
+    
+
 ### 響應示例
     
     
     {  
-        "retCode": 0,  
-        "retMsg": "success",  
-        "result": {  
-            "list": [  
-                {  
-                    "fundId": "123",  
-                    "fundName": "BTC Alpha Fund",  
-                    "coin": "BTC",  
-                    "status": "active",  
-                    "totalEquity": "10.5",  
-                    "totalShares": "1000.00",  
-                    "currentNav": "1.05",  
-                    "accountUid": "456789",  
-                    "subAccountList": ["456790", "456791"],  
-                    "profitShareRate": "20.00",  
-                    "managementFeeRate": "2.00",  
-                    "uncollectedProfit": "0.5",  
-                    "collectedProfit": "1.2",  
-                    "totalLoan": "0",  
-                    "createdTime": "1640000000000"  
-                }  
-            ],  
-            "nextPageCursor": "32"  
-        }  
-    }
+        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
+        "airdropDailyPnls": [  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747641600  
+            },  
+            {  
+                "coinName": "USDE",  
+                "yieldCoinName": "USDE",  
+                "effectiveAmount": "10000.00",  
+                "pnl": "0.27397260",  
+                "apy": "10%",  
+                "createdAt": 1747555200  
+            }  
+        ]  
+    }  
+    
+
+### 翻頁示例
+
+繼續向後翻頁時，將上一次響應中的 `nextCursor` 原樣傳回 `cursor`：
+    
+    
+    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
+    Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1741651200000  
+    X-BAPI-RECV-WINDOW: 5000  
+    
+
+當響應中的 `nextCursor` 為空字符串時，表示已到達尾頁。
