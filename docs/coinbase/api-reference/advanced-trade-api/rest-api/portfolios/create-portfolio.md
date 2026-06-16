@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/portfolios/create-portfolio
 api_type: Account
-updated_at: 2026-06-15 19:20:57.867645
+updated_at: 2026-06-16 19:14:24.974092
 ---
 
 # Create Portfolio
@@ -14,37 +14,7 @@ Create a portfolio.
     
     
     curl --request POST \
-      --urlPortfolios
-    
-    # Create Portfolio
-    
-    Create a portfolio.
-    
-    POST
-    
-    /
-    
-    api
-    
-    /
-    
-    v3
-    
-    /
-    
-    brokerage
-    
-    /
-    
-    portfolios
-    
-    Create Portfolio
-    
-    
-    curl --request POST \
       --url https://api.coinbase.com/api/v3/brokerage/portfolios \
-      --header 'Authorization: Bearer <token>' \
-      --header 'Content-Type: application/json' https://api.coinbase.com/api/v3/brokerage/portfolios \
       --header 'Authorization: Bearer <token>' \
       --header 'Content-Type: application/json' \
       --data '

@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/allocate-portfolio
 api_type: Account
-updated_at: 2026-06-15 19:20:57.679353
+updated_at: 2026-06-16 19:14:24.456147
 ---
 
 # Allocate Portfolio

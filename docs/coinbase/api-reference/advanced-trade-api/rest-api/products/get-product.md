@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/products/get-product
 api_type: Market Data
-updated_at: 2026-06-15 19:20:58.145542
+updated_at: 2026-06-16 19:14:25.579927
 ---
 
 # Get Product
@@ -317,7 +317,15 @@ watched
 
 boolean
 
-required
+requiredProducts
+
+# Get Product
+
+Get information on a single product by product ID.
+
+GET
+
+/
 
 Whether or not the product is on the user's watchlist.
 
@@ -511,6 +519,7 @@ Example:
     
     
     ["BTC-USDC"]
+    
 
 view_only
 
