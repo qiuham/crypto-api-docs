@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Query-Sub-Orders
 api_type: REST
-updated_at: 2026-06-15 19:35:27.025542
+updated_at: 2026-06-16 19:29:06.435875
 ---
 
 # Time-Weighted Average Price(Twap) New Order(TRADE)

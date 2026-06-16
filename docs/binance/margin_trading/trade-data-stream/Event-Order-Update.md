@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Order-Update
 api_type: Trading
-updated_at: 2026-06-15 19:34:26.085060
+updated_at: 2026-06-16 19:28:05.408862
 ---
 
 # Exit Special Key Mode (TRADE)

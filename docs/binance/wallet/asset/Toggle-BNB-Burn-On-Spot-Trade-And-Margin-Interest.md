@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/Toggle-BNB-Burn-On-Spot-Trade-And-Margin-Interest
 api_type: Trading
-updated_at: 2026-06-15 19:35:57.320742
+updated_at: 2026-06-16 19:29:36.921481
 ---
 
 # Toggle BNB Burn On Spot Trade And Margin Interest (USER_DATA)

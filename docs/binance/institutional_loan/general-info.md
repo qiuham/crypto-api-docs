@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/general-info
 api_type: REST
-updated_at: 2026-06-15 19:38:24.815960
+updated_at: 2026-06-16 19:32:07.476387
 ---
 
 # Query Risk Unit Forced Liquidation Transfer Records(USER_DATA)

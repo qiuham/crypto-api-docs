@@ -2,10 +2,26 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Query-Margin-Interest-Rate-History
 api_type: REST
-updated_at: 2026-06-15 19:33:44.287949
+updated_at: 2026-06-16 19:27:23.064222
 ---
 
 # Change Log
+
+## 2026-06-15[​](/docs/margin_trading/change-log#2026-06-15 "Direct link to 2026-06-15")
+
+Effective at **2026-06-15 08:00 (UTC)**
+
+  * `POST /sapi/v1/margin/order/oto`:
+
+    * `pendingPrice` is now **mandatory** when `pendingTrailingDelta` is provided.
+  * `POST /sapi/v1/margin/order/otoco`:
+
+    * `pendingAbovePrice` is now **mandatory** when `pendingAboveTrailingDelta` is provided.
+    * `pendingBelowPrice` is now **mandatory** when `pendingBelowTrailingDelta` is provided.
+
+
+
+* * *
 
 ## 2026-05-05[​](/docs/margin_trading/change-log#2026-05-05 "Direct link to 2026-05-05")
 
@@ -598,6 +614,22 @@ ISOLATED MARGIN
 ---
 
 # 更新日志
+
+## 2026-06-15[​](/docs/zh-CN/margin_trading/change-log#2026-06-15 "2026-06-15的直接链接")
+
+生效时间: **2026-06-15 08:00 (UTC)**
+
+  * `POST /sapi/v1/margin/order/oto`:
+
+    * 当提供 `pendingTrailingDelta` 时，`pendingPrice` 现在是**必填参数** 。
+  * `POST /sapi/v1/margin/order/otoco`:
+
+    * 当提供 `pendingAboveTrailingDelta` 时，`pendingAbovePrice` 现在是**必填参数** 。
+    * 当提供 `pendingBelowTrailingDelta` 时，`pendingBelowPrice` 现在是**必填参数** 。
+
+
+
+* * *
 
 ## 2026-05-05[​](/docs/zh-CN/margin_trading/change-log#2026-05-05 "2026-05-05的直接链接")
 
