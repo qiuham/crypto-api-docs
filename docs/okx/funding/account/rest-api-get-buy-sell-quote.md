@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-get-buy-sell-quote
 anchor_id: funding-account-rest-api-get-buy-sell-quote
 api_type: REST
-updated_at: 2026-06-15 20:10:50.575080
+updated_at: 2026-06-16 20:06:43.502165
 ---
 
 # Get buy/sell quote

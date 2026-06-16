@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#funding-account-rest-api-get-non-tradable-assets
 anchor_id: funding-account-rest-api-get-non-tradable-assets
 api_type: REST
-updated_at: 2026-06-15 20:10:41.198180
+updated_at: 2026-06-16 20:06:34.091430
 ---
 
 # Get non-tradable assets

@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-websocket-position-risk-warning
 anchor_id: trading-account-websocket-position-risk-warning
 api_type: WebSocket
-updated_at: 2026-06-15 20:08:54.909875
+updated_at: 2026-06-16 20:04:47.400817
 ---
 
 # Position risk warning
