@@ -2,13 +2,15 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/data-api/get-api-key-permissions
 api_type: REST
-updated_at: 2026-06-16 19:14:22.542139
+updated_at: 2026-06-17 18:50:11.504387
 ---
 
 # Get API Key Permissions
 
 **Endpoint:** `GET https://api.coinbase.com/api/v3/brokerage/key_permissions`
 
+
+# Get API Key Permissions
 
 Get information about your CDP API key permissions
     
