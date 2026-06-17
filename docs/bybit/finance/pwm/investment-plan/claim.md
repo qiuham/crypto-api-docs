@@ -2,50 +2,50 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/claim
 api_type: REST
-updated_at: 2026-06-16 19:48:52.014937
+updated_at: 2026-06-17 19:24:11.319402
 ---
 
-# Claim Withdrawable Funds
+# Get Fund Historical NAV
+
+info
+
+The maximum allowed time range between `startTime` and `endTime` is **180 days**.
 
 ### HTTP Request
 
-POST`/v5/earn/pwm/investment-plan/claim`
+GET`/v5/earn/pwm/investment-plan/fund-nav`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-planId| **true**|  string| Investment plan ID. Must be in `Active` status  
-toAccountType| false| string| Target account type. Default: `FUND`  
-orderLinkId| **true**|  string| User-defined order ID, max 36 characters, used for idempotency  
+fundId| **true**|  string| Fund ID  
+startTime| false| int| Start timestamp (ms). Default: current time minus 7 days  
+endTime| false| int| End timestamp (ms). Default: current time  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-planId| string| Investment plan ID  
-toAccountType| int| Target account type for the transfer  
-status| string| Claim status: `Success` / `processing`  
-createdTime| string| Claim timestamp (milliseconds)  
+fundId| string| Fund ID  
+fundName| string| Fund name  
+coin| string| Fund denomination coin  
+currentNav| string| Latest NAV (= currentShareValue / initialShareValue)  
+dataPoints| array| NAV data point list, sorted in ascending order by date  
+> date| string| Date in `YYYY-MM-DD` format  
+> nav| string| NAV for that day, taken from the daily settlement snapshot  
   
 * * *
 
 ### Request Example
     
     
-    POST /v5/earn/pwm/investment-plan/claim HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/fund-nav?fundId=2001 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "planId": "10001",  
-        "toAccountType": "FUND",  
-        "orderLinkId": "claim-order-001"  
-    }  
     
 
 ### Response Example
@@ -54,56 +54,66 @@ createdTime| string| Claim timestamp (milliseconds)
     {  
         "retCode": 0,  
         "result": {  
-            "planId": "10001",  
-            "toAccountType": 6,  
-            "status": "Success",  
-            "createdTime": "1701400000000"  
+            "fundId": "2001",  
+            "fundName": "Market Neutral Alpha",  
+            "coin": "USDT",  
+            "currentNav": "1.035",  
+            "dataPoints": [  
+                {  
+                    "date": "2024-11-01",  
+                    "nav": "1.028"  
+                },  
+                {  
+                    "date": "2024-11-02",  
+                    "nav": "1.031"  
+                }  
+            ]  
         }  
     }
 
 ---
 
-# 領取可提取資金
+# 查詢基金歷史淨值
+
+信息
+
+`startTime` 與 `endTime` 的時間範圍最多為 **180 天** 。
 
 ### HTTP 請求
 
-POST`/v5/earn/pwm/investment-plan/claim`
+GET`/v5/earn/pwm/investment-plan/fund-nav`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-planId| **true**|  string| 投資計劃ID，須為 `Active` 狀態  
-toAccountType| false| string| 目標賬戶類型，默認 `FUND`  
-orderLinkId| **true**|  string| 用戶自定義訂單ID，最長36字符，用於防重  
+fundId| **true**|  string| 基金ID  
+startTime| false| int| 起始時間戳（ms），默認當前時間-7天  
+endTime| false| int| 結束時間戳（ms），默認當前時間  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-planId| string| 投資計劃ID  
-toAccountType| int| 到賬目標賬戶類型  
-status| string| 提取狀態：`Success`（成功）/ `processing`（處理中）  
-createdTime| string| 提取時間戳（毫秒）  
+fundId| string| 基金ID  
+fundName| string| 基金名稱  
+coin| string| 基金計價幣種  
+currentNav| string| 最新淨值（= currentShareValue / initialShareValue）  
+dataPoints| array| 淨值數據點列表，按日期升序排列  
+> date| string| 日期，格式 `YYYY-MM-DD`  
+> nav| string| 當日淨值，取每日結算快照  
   
 * * *
 
 ### 請求示例
     
     
-    POST /v5/earn/pwm/investment-plan/claim HTTP/1.1  
+    GET /v5/earn/pwm/investment-plan/fund-nav?fundId=2001 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "planId": "10001",  
-        "toAccountType": "FUND",  
-        "orderLinkId": "claim-order-001"  
-    }  
     
 
 ### 響應示例
@@ -112,9 +122,19 @@ createdTime| string| 提取時間戳（毫秒）
     {  
         "retCode": 0,  
         "result": {  
-            "planId": "10001",  
-            "toAccountType": 6,  
-            "status": "Success",  
-            "createdTime": "1701400000000"  
+            "fundId": "2001",  
+            "fundName": "Market Neutral Alpha",  
+            "coin": "USDT",  
+            "currentNav": "1.035",  
+            "dataPoints": [  
+                {  
+                    "date": "2024-11-01",  
+                    "nav": "1.028"  
+                },  
+                {  
+                    "date": "2024-11-02",  
+                    "nav": "1.031"  
+                }  
+            ]  
         }  
     }

@@ -2,28 +2,30 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/smp
 api_type: REST
-updated_at: 2026-06-16 19:51:53.491419
+updated_at: 2026-06-17 19:27:17.209583
 ---
 
-# Get Coin State
+# Fixed-Rate Borrow
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/coinstate`
+POST`/v5/spot-margin-trade/fixedborrow`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| false| string| Coin name, uppercase only  
+orderCurrency| **true**|  string| Currency to borrow  
+orderAmount| **true**|  string| Amount to borrow  
+annualRate| **true**|  string| Customizable annual interest rate, e.g., `0.02` means 2%  
+term| **true**|  string| Fixed term. `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
+repayType| false| string| `1`: Auto Repayment (default). Enable "Auto Repayment" to automatically repay your loan using assets in your UTA account when it is due, avoiding overdue penalties. `2`: Transfer to flexible loan  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| arrayList| Object  
-> currency| string| Coin name, uppercase only  
-> spotLeverage| string| Spot margin leverage. Returns "" if spot margin mode is turned off  
+orderId| string| Loan order ID  
   
 * * *
 
@@ -36,12 +38,20 @@ list| arrayList| Object
 
     
     
-    GET /v5/spot-margin-trade/coinstate HTTP/1.1  
+    POST /v5/spot-margin-trade/fixedborrow HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "orderCurrency": "BTC",  
+        "orderAmount": "0.01",  
+        "annualRate": "0.02",  
+        "term": "30"  
+    }  
     
     
     
@@ -51,8 +61,11 @@ list| arrayList| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_coin_state(  
-        currency="BTC"  
+    print(session.spot_margin_trade_fixed_borrow(  
+        orderCurrency="BTC",  
+        orderAmount="0.01",  
+        annualRate="0.02",  
+        term="30"  
     ))  
     
     
@@ -65,100 +78,37 @@ list| arrayList| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
+        "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "spotLeverage": 3,  
-                    "currency": "BTC"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "ETH"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "AVAX"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "EOS"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "XRP"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "USDT"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "GALA"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "DOGE"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BIT"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BTC3S"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BTC3L"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "EUR"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "USDC"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "UNI"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "SOL"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "ADA"  
-                }  
-            ]  
+            "orderId": "FIXED_BORROW_4563567182f746ec9f73e4357264d8c7187"  
         },  
         "retExtInfo": {},  
-        "time": 1756273703314  
+        "time": 1775616124837  
     }
 
 ---
 
-# 查詢幣種槓桿
+# 固定利率借款
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/coinstate`
+POST`/v5/spot-margin-trade/fixedborrow`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| false| string| 幣名稱，僅限大寫  
+orderCurrency| **true**|  string| 借款幣種  
+orderAmount| **true**|  string| 借款金額  
+annualRate| **true**|  string| 自定義年化利率，例如 `0.02` 表示 2%  
+term| **true**|  string| 借款期限。`7`：7天；`14`：14天；`30`：30天；`90`：90天；`180`：180天  
+repayType| false| string| `1`：自動還款（默認）。開啟「自動還款」後，借款到期時將自動使用 UTA 帳戶資產還款，避免逾期罰息。`2`：轉為活期借款  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| arrayList| Object  
-> currency| string| 幣名稱，僅限大寫  
-> spotLeverage| string| 現貨借貸槓桿。如果現貨借貸模式關閉，則返回“”  
+orderId| string| 借款訂單 ID  
   
 * * *
 
@@ -171,12 +121,20 @@ list| arrayList| Object
 
     
     
-    GET /v5/spot-margin-trade/coinstate HTTP/1.1  
+    POST /v5/spot-margin-trade/fixedborrow HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
+    {  
+        "orderCurrency": "BTC",  
+        "orderAmount": "0.01",  
+        "annualRate": "0.02",  
+        "term": "30"  
+    }  
     
     
     
@@ -192,75 +150,10 @@ list| arrayList| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
+        "retMsg": "success",  
         "result": {  
-            "list": [  
-                {  
-                    "spotLeverage": 3,  
-                    "currency": "BTC"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "ETH"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "AVAX"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "EOS"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "XRP"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "USDT"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "GALA"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "DOGE"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BIT"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BTC3S"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "BTC3L"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "EUR"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "USDC"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "UNI"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "SOL"  
-                },  
-                {  
-                    "spotLeverage": 4,  
-                    "currency": "ADA"  
-                }  
-            ]  
+            "orderId": "FIXED_BORROW_4563567182f746ec9f73e4357264d8c7187"  
         },  
         "retExtInfo": {},  
-        "time": 1756273703314  
+        "time": 1775616124837  
     }

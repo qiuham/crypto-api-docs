@@ -2,59 +2,79 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/order/batch-cancel
 api_type: Trading
-updated_at: 2026-06-16 19:50:22.286765
+updated_at: 2026-06-17 19:25:42.864307
 ---
 
-# Batch Cancel Order
+# Cancel All Orders
 
-This endpoint allows you to cancel more than one open order in a single request.
+Cancel all open orders
 
-important
+info
 
-  * You must specify `orderId` or `orderLinkId`.
-  * If `orderId` and `orderLinkId` is not matched, the system will process `orderId` first.
-  * You can cancel **unfilled** or **partially filled** orders.
-  * A maximum of 20 orders (option), 20 orders (inverse), 20 orders (linear), 10 orders (spot) can be cancelled per request.
+  * Support cancel orders by `symbol`/`baseCoin`/`settleCoin`. If you pass multiple of these params, the system will process one of param, which priority is `symbol` > `baseCoin` > `settleCoin`.
+  * **NOTE** : category=_option_ , you can cancel all option open orders without passing any of those three params. However, for "linear" and "inverse", you must specify one of those three params.
+  * **NOTE** : category=_spot_ , you can cancel all spot open orders (normal order by default) without passing other params.
 
 
+
+info
+
+**Spot** : no limit  
+**Futures** : cancel up to 500 orders (System **picks up 500 orders randomly to cancel** when you have over 500 orders)  
+**Options** : no limit
 
 ### HTTP Request
 
-POST`/v5/order/cancel-batch`
+POST`/v5/order/cancel-all`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type `linear`, `option`, `spot`, `inverse`  
-request| **true**|  array| Object  
-> symbol| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
-> orderId| false| string| Order ID. Either `orderId` or `orderLinkId` is required  
-> orderLinkId| false| string| User customised order ID. Either `orderId` or `orderLinkId` is required  
+[category](/docs/v5/enum#category)| **true**|  string| Product type. `linear`, `inverse`, `spot`, `option`  
+symbol| false| string| Symbol name, like `BTCUSDT`, uppercase only  
+`linear`&`inverse`: **Required** if not passing baseCoin or settleCoin  
+baseCoin| false| string| Base coin, uppercase only. `linear` & `inverse`: If cancel all by baseCoin, it will cancel all of the corresponding category's orders. **Required** if not passing symbol or settleCoin  
+settleCoin| false| string| Settle coin, uppercase only 
+
+  * `linear` & `inverse`: **Required** if not passing symbol or baseCoin
+  * `option`: USDT or USDC
+  * Not support `spot`
+
   
+orderFilter| false| string| 
+
+  * category=`spot`, you can pass `Order`, `tpslOrder`, `StopOrder`, `OcoOrder`, `BidirectionalTpslOrder`  
+If not passed, `Order` by default
+  * category=`linear` or `inverse`, you can pass `Order`, `StopOrder`,`OpenOrder`  
+If not passed, all kinds of orders will be cancelled, like active order, conditional order, TP/SL order and trailing stop order
+  * category=`option`, you can pass `Order`,`StopOrder`  
+If not passed, all kinds of orders will be cancelled, like active order, conditional order, TP/SL order and trailing stop order
+
+  
+[stopOrderType](/docs/v5/enum#stopordertype)| false| string| Stop order type `Stop`
+
+  * Only used for category=`linear` or `inverse` and orderFilter=`StopOrder`,you can cancel conditional orders except TP/SL order and Trailing stop orders with this param
+
+  
+  
+info
+
+The acknowledgement of create/amend/cancel order requests indicates that the request was sucessfully accepted. The request is asynchronous so please use the websocket to confirm the order status.
+
+[](/docs/api-explorer/v5/trade/cancel-all)
+
+* * *
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-result| Object|   
-> list| array| Object  
->> category| string| Product type  
->> symbol| string| Symbol name  
->> orderId| string| Order ID  
->> orderLinkId| string| User customised order ID  
-retExtInfo| Object|   
-> list| array| Object  
->> code| number| Success/error code  
->> msg| string| Success/error message  
+list| array| Object  
+> orderId| string| Order ID  
+> orderLinkId| string| User customised order ID  
+success| string| "1": success, "0": fail. [UTA1.0](/docs/v5/acct-mode#uta-10) (inverse) does not return this field  
   
-info
-
-The acknowledgement of an cancel order request indicates that the request was sucessfully accepted. This request is asynchronous so please use the websocket to confirm the order status.
-
-[](/docs/api-explorer/v5/trade/batch-cancel)
-
-* * *
-
 ### Request Example
 
   * HTTP
@@ -66,26 +86,18 @@ The acknowledgement of an cancel order request indicates that the request was su
 
     
     
-    POST /v5/order/cancel-batch HTTP/1.1  
+    POST /v5/order/cancel-all HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672223356634  
+    X-BAPI-TIMESTAMP: 1672219779140  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
       
     {  
-        "category": "spot",  
-        "request": [  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            }  
-        ]  
+      "category": "linear",  
+      "symbol": null,  
+      "settleCoin": "USDT"  
     }  
     
     
@@ -96,18 +108,9 @@ The acknowledgement of an cancel order request indicates that the request was su
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.cancel_batch_order(  
-        category="spot",  
-        request=[  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            }  
-        ]  
+    print(session.cancel_all_orders(  
+        category="linear",  
+        settleCoin="USDT",  
     ))  
     
     
@@ -118,18 +121,15 @@ The acknowledgement of an cancel order request indicates that the request was su
     import com.bybit.api.client.service.BybitApiClientFactory;  
     BybitApiClientFactory factory = BybitApiClientFactory.newInstance("YOUR_API_KEY", "YOUR_API_SECRET");  
     BybitApiAsyncTradeRestClient client = factory.newAsyncTradeRestClient();  
-    var cancelOrderRequests = Arrays.asList(TradeOrderRequest.builder().symbol("BTC-10FEB23-24000-C").orderLinkId("9b381bb1-401").build(),  
-                    TradeOrderRequest.builder().symbol("BTC-10FEB23-24000-C").orderLinkId("82ee86dd-001").build());  
-    var cancelBatchOrders = BatchOrderRequest.builder().category(ProductType.OPTION).request(cancelOrderRequests).build();  
-    client.createBatchOrder(cancelBatchOrders, System.out::println);  
+    var cancelAllOrdersRequest = TradeOrderRequest.builder().category(ProductType.LINEAR).baseCoin("USDT").build();  
+    client.cancelAllOrder(cancelAllOrdersRequest, System.out::println);  
     
     
     
     using bybit.net.api.ApiServiceImp;  
     using bybit.net.api.Models.Trade;  
-    var order1 = new OrderRequest { Symbol = "BTC-10FEB23-24000-C", OrderLinkId = "9b381bb1-401" };  
-    var order2 = new OrderRequest { Symbol = "BTC-10FEB23-24000-C", OrderLinkId = "82ee86dd-001" };  
-    var orderInfoString = await TradeService.CancelBatchOrder(category: Category.LINEAR, request: new List<OrderRequest> { order1, order2 });  
+    BybitTradeService tradeService = new(apiKey: "xxxxxxxxxxxxxx", apiSecret: "xxxxxxxxxxxxxxxxxxxxx");  
+    var orderInfoString = await TradeService.CancelAllOrder(category: Category.LINEAR, baseCoin:"USDT");  
     Console.WriteLine(orderInfoString);  
     
     
@@ -143,16 +143,10 @@ The acknowledgement of an cancel order request indicates that the request was su
     });  
       
     client  
-        .batchCancelOrders('spot', [  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            },  
-        ])  
+        .cancelAllOrders({  
+        category: 'linear',  
+        settleCoin: 'USDT',  
+        })  
         .then((response) => {  
             console.log(response);  
         })  
@@ -170,85 +164,93 @@ The acknowledgement of an cancel order request indicates that the request was su
         "result": {  
             "list": [  
                 {  
-                    "category": "spot",  
-                    "symbol": "BTCUSDT",  
-                    "orderId": "1666800494330512128",  
-                    "orderLinkId": "spot-btc-03"  
+                    "orderId": "1616024329462743808",  
+                    "orderLinkId": "1616024329462743809"  
                 },  
                 {  
-                    "category": "spot",  
-                    "symbol": "ATOMUSDT",  
-                    "orderId": "",  
-                    "orderLinkId": "1666800494330512129"  
+                    "orderId": "1616024287544869632",  
+                    "orderLinkId": "1616024287544869633"  
                 }  
-            ]  
+            ],  
+            "success": "1"  
         },  
-        "retExtInfo": {  
-            "list": [  
-                {  
-                    "code": 0,  
-                    "msg": "OK"  
-                },  
-                {  
-                    "code": 170213,  
-                    "msg": "Order does not exist."  
-                }  
-            ]  
-        },  
-        "time": 1713434299047  
+        "retExtInfo": {},  
+        "time": 1707381118116  
     }
 
 ---
 
-# 批量撤銷委託單
+# 撤銷所有訂單
 
-該接口可以批量撤銷多筆訂單
+信息
 
-重要
-
-  * 您必須指定`orderId`或者`orderLinkId`.
-  * 若`orderId`和`orderLinkId`之間不匹配, 系統將會優先處理`orderId`.
-  * 您只能撤銷未成交和部分成交的訂單.
-  * 最多支持單個請求中撤銷, 期權: 20個訂單, 反向合約: 20個訂單, 正向合約: 20个訂單, 現貨: 10個訂單.
+  * 支持按照symbol/baseCoin/settleCoin撤銷訂單，若您傳入了多個參數組合, 系統僅會處理其中一個參數，其中優先級為`symbol` > `baseCoin` > `settleCoin`.
+  * **注意** : 當`category`=_option_ , 您可以不傳人三個參數中的任何一個，就能取消所有期權的委託單。但是, 對於`linear`和`inverse`, 您必需指定三個參數的其中一個。
+  * **注意** : 當`category`=_spot_ , 您可以不傳人任何參數，就能取消所有現貨的委託單 (默認普通單)。
 
 
+
+信息
+
+**現貨** : 無限制  
+**期貨** : 最多取消500單 (當您訂單數量超過500單時, 系統會**隨機挑選500單** 進行取消)  
+**期權** : 統無限制
 
 ### HTTP請求
 
-POST`/v5/order/cancel-batch`
+POST`/v5/order/cancel-all`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型 `linear`, `option`, `spot`, `inverse`  
-request| **true**|  array| Object  
-> symbol| **true**|  string| 合約名稱  
-> orderId| false| string| 訂單Id. `orderId`和`orderLinkId`必傳其中一個  
-> orderLinkId| false| string| 用戶自定義訂單Id. `orderId`和`orderLinkId`必傳其中一個  
+[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型 `spot`, `linear`, `inverse`, `option`  
+symbol| false| string| 合約名稱  
+對於`linear` & `inverse`: 若不傳`baseCoin`和`settleCoin`, 該字段**必傳**  
+baseCoin| false| string| 交易幣種 
+
+  * `linear` & `inverse`: 當通過baseCoin來全部撤單時, 會將對應category的訂單全部撤掉。若不傳`symbol`和`baseCoin`, 則該字段**必傳**
+
   
+settleCoin| false| string| 結算幣種 
+
+  * 對於`linear` & `inverse`: 該字段**必傳** , 若不傳`symbol`和`baseCoin`
+  * `option`: USDC或者USDT
+  * 該字段不支持`spot`
+
+  
+orderFilter| false| string| 
+
+  * category=`spot`, 該字段可以傳:   
+`Order`(普通單), `tpslOrder`(止盈止損單)  
+`StopOrder`(條件單), `OcoOrder`  
+`BidirectionalTpslOrder`(現貨雙向止盈止損訂單)  
+若不傳, 則默認是撤掉`Order`單
+  * 當category=`linear` 或者 `inverse`, 該字段可以傳`Order`(普通單), `StopOrder`(條件單, 包括止盈止損單和追蹤出場單), `OpenOrder`(僅取消開倉單). 若不傳, 則所有類型的訂單都會被撤掉
+  * 當category=`option`, 該字段可以傳`Order`,`StopOrder`, 若不傳, 則撤掉這兩種類型下所有訂單
+
+  
+[stopOrderType](/docs/zh-TW/v5/enum#stopordertype)| false| string| 條件單類型, `Stop`
+
+  * 僅用於當category=`linear` 或者 `inverse`以及orderFilter=`StopOrder`時, 若想僅取消條件單 (不包括止盈止損單和追蹤出場單), 則可以傳入該字段
+
+  
+[](/docs/zh-TW/api-explorer/v5/trade/cancel-all)
+
+* * *
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-result| Object|   
-> list| array| Object  
->> category| string| 產品類型  
->> symbol| string| 合約名稱  
->> orderId| string| 訂單Id  
->> orderLinkId| string| 用戶自定義訂單Id  
-retExtInfo| Object|   
-> list| array| Object  
->> code| number| 成功/錯誤碼  
->> msg| string| 成功/錯誤信息  
+list| array| Object  
+> orderId| string| 訂單ID  
+> orderLinkId| string| 用戶自定義的訂單ID  
+success| string| "1": 成功, "0": 失敗  
   
 信息
 
 ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單狀態
-
-[](/docs/zh-TW/api-explorer/v5/trade/batch-cancel)
-
-* * *
 
 ### 請求示例
 
@@ -261,26 +263,18 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
 
     
     
-    POST /v5/order/cancel-batch HTTP/1.1  
+    POST /v5/order/cancel-all HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672223356634  
+    X-BAPI-TIMESTAMP: 1672219779140  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
       
     {  
-        "category": "spot",  
-        "request": [  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            }  
-        ]  
+      "category": "linear",  
+      "symbol": null,  
+      "settleCoin": "USDT"  
     }  
     
     
@@ -291,18 +285,9 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.cancel_batch_order(  
-        category="spot",  
-        request=[  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            }  
-        ]  
+    print(session.cancel_all_orders(  
+        category="linear",  
+        settleCoin="USDT",  
     ))  
     
     
@@ -313,18 +298,15 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
     import com.bybit.api.client.service.BybitApiClientFactory;  
     BybitApiClientFactory factory = BybitApiClientFactory.newInstance("YOUR_API_KEY", "YOUR_API_SECRET");  
     BybitApiAsyncTradeRestClient client = factory.newAsyncTradeRestClient();  
-    var cancelOrderRequests = Arrays.asList(TradeOrderRequest.builder().symbol("BTC-10FEB23-24000-C").orderLinkId("9b381bb1-401").build(),  
-                    TradeOrderRequest.builder().symbol("BTC-10FEB23-24000-C").orderLinkId("82ee86dd-001").build());  
-    var cancelBatchOrders = BatchOrderRequest.builder().category(ProductType.OPTION).request(cancelOrderRequests).build();  
-    client.createBatchOrder(cancelBatchOrders, System.out::println);  
+    var cancelAllOrdersRequest = TradeOrderRequest.builder().category(ProductType.LINEAR).baseCoin("USDT").build();  
+    client.cancelAllOrder(cancelAllOrdersRequest, System.out::println);  
     
     
     
     using bybit.net.api.ApiServiceImp;  
     using bybit.net.api.Models.Trade;  
-    var order1 = new OrderRequest { Symbol = "BTC-10FEB23-24000-C", OrderLinkId = "9b381bb1-401" };  
-    var order2 = new OrderRequest { Symbol = "BTC-10FEB23-24000-C", OrderLinkId = "82ee86dd-001" };  
-    var orderInfoString = await TradeService.CancelBatchOrder(category: Category.LINEAR, request: new List<OrderRequest> { order1, order2 });  
+    BybitTradeService tradeService = new(apiKey: "xxxxxxxxxxxxxx", apiSecret: "xxxxxxxxxxxxxxxxxxxxx");  
+    var orderInfoString = await TradeService.CancelAllOrder(category: Category.LINEAR, baseCoin:"USDT");  
     Console.WriteLine(orderInfoString);  
     
     
@@ -338,16 +320,10 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
     });  
       
     client  
-        .batchCancelOrders('spot', [  
-            {  
-                "symbol": "BTCUSDT",  
-                "orderId": "1666800494330512128"  
-            },  
-            {  
-                "symbol": "ATOMUSDT",  
-                "orderLinkId": "1666800494330512129"  
-            },  
-        ])  
+        .cancelAllOrders({  
+        category: 'linear',  
+        settleCoin: 'USDT',  
+        })  
         .then((response) => {  
             console.log(response);  
         })  
@@ -365,30 +341,16 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
         "result": {  
             "list": [  
                 {  
-                    "category": "spot",  
-                    "symbol": "BTCUSDT",  
-                    "orderId": "1666800494330512128",  
-                    "orderLinkId": "spot-btc-03"  
+                    "orderId": "1616024329462743808",  
+                    "orderLinkId": "1616024329462743809"  
                 },  
                 {  
-                    "category": "spot",  
-                    "symbol": "ATOMUSDT",  
-                    "orderId": "",  
-                    "orderLinkId": "1666800494330512129"  
+                    "orderId": "1616024287544869632",  
+                    "orderLinkId": "1616024287544869633"  
                 }  
-            ]  
+            ],  
+            "success": "1"  
         },  
-        "retExtInfo": {  
-            "list": [  
-                {  
-                    "code": 0,  
-                    "msg": "OK"  
-                },  
-                {  
-                    "code": 170213,  
-                    "msg": "Order does not exist."  
-                }  
-            ]  
-        },  
-        "time": 1713434299047  
+        "retExtInfo": {},  
+        "time": 1707381118116  
     }

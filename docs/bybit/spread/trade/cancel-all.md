@@ -2,65 +2,41 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/trade/cancel-all
 api_type: Trading
-updated_at: 2026-06-16 19:52:25.286256
+updated_at: 2026-06-17 19:27:49.816772
 ---
 
-# Cancel Order
+# Get Max Qty
+
+Query the maximum order quantity for the given symbol.
 
 ### HTTP Request
 
-POST`/v5/spread/order/cancel`
+GET`/v5/spread/max-qty`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderId| false| string| Spread combination order ID. Either `orderId` or `orderLinkId` is **required**  
-orderLinkId| false| string| User customised order ID. Either `orderId` or `orderLinkId` is **required**  
+symbol| **true**|  string| Spread symbol name  
+side| **true**|  string| Order side. `1`: Buy, `2`: Sell  
+orderPrice| **true**|  string| Order price  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| Order ID  
-orderLinkId| string| User customised order ID  
+ab| string| Maximum order quantity  
   
-info
-
-The acknowledgement of an cancel order request indicates that the request was sucessfully accepted. This request is asynchronous so please use the websocket to confirm the order status.
-
 ### Request Example
-
-  * HTTP
-  * Python
-
-
     
     
-    POST /v5/spread/order/cancel HTTP/1.1  
+    GET /v5/spread/max-qty?symbol=SOLUSDT_SOL/USDT&side=1&orderPrice=50000 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXXX  
-    X-BAPI-API-KEY: XXXXXXX  
-    X-BAPI-TIMESTAMP: 1744090699418  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 48  
-      
-    {  
-        "orderLinkId": "1744072052193428476"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.spread_cancel_order(  
-        orderLinkId="1744072052193428476"  
-    ))  
     
 
 ### Response Example
@@ -68,56 +44,48 @@ The acknowledgement of an cancel order request indicates that the request was su
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "orderId": "4496253b-b55b-4407-8c5c-29629d169caf",  
-            "orderLinkId": "1744072052193428476"  
+            "ab": "1992.55199490"  
         },  
         "retExtInfo": {},  
-        "time": 1744090702715  
+        "time": 1774318807656  
     }
 
 ---
 
-# 撤銷價差委託單
+# 查詢最大下單數量
+
+查詢指定交易對的最大下單數量。
 
 ### HTTP請求
 
-POST`/v5/spread/order/cancel`
+GET`/v5/spread/max-qty`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderId| false| string| 價差訂單ID. `orderId` 和 `orderLinkId` 必傳其中一個  
-orderLinkId| false| string| 用戶自定義ID. `orderId` 和 `orderLinkId` 必傳其中一個  
+symbol| **true**|  string| 價差交易對名稱  
+side| **true**|  string| 訂單方向. `1`: 買, `2`: 賣  
+orderPrice| **true**|  string| 下單價格  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 價差訂單ID  
-orderLinkId| string| 用戶自定義ID  
+ab| string| 最大下單數量  
   
-信息
-
-ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單狀態
-
 ### 請求示例
     
     
-    POST /v5/spread/order/cancel HTTP/1.1  
+    GET /v5/spread/max-qty?symbol=SOLUSDT_SOL/USDT&side=1&orderPrice=50000 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXXX  
-    X-BAPI-API-KEY: XXXXXXX  
-    X-BAPI-TIMESTAMP: 1744090699418  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1773230920000  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 48  
-      
-    {  
-        "orderLinkId": "1744072052193428476"  
-    }  
     
 
 ### 響應示例
@@ -125,11 +93,10 @@ ack僅表示請求被成功接受. 請使用websocket-order推送來確認訂單
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "orderId": "4496253b-b55b-4407-8c5c-29629d169caf",  
-            "orderLinkId": "1744072052193428476"  
+            "ab": "1992.55199490"  
         },  
         "retExtInfo": {},  
-        "time": 1744090702715  
+        "time": 1774318807656  
     }

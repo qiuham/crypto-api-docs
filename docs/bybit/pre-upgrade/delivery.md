@@ -2,16 +2,17 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/pre-upgrade/delivery
 api_type: REST
-updated_at: 2026-06-16 19:51:05.245056
+updated_at: 2026-06-17 19:26:23.328219
 ---
 
-# Get Pre-upgrade Transaction Log
+# Get Pre-upgrade Trade History
 
-Query transaction logs which occurred in the USDC Derivatives wallet before the account was upgraded to a Unified account.
+Get users' execution records which occurred before you upgraded the account to a Unified account, sorted by `execTime` in descending order It supports to query USDT perpetual, USDC perpetual, Inverse perpetual, Inverse futures, Spot and Option.
 
-By category="linear", you can query USDC Perps transaction logs occurred during classic account By category="option", you can query Options transaction logs occurred during classic account
-
-You can get USDC Perpetual, Option records.
+By category="linear", you can query USDT Perps, USDC Perps data occurred during classic account  
+By category="spot", you can query Spot data occurred during classic account  
+By category="option", you can query Options data occurred during classic account  
+By category="inverse", you can query Inverse Contract data occurred during **classic account or[UTA1.0](/docs/v5/acct-mode#uta-10)**
 
 info
 
@@ -19,15 +20,17 @@ USDC Perpeual & Option support the recent 6 months data. Please download older d
 
 ### HTTP Request
 
-GET`/v5/pre-upgrade/account/transaction-log`
+GET`/v5/pre-upgrade/execution/list`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-[category](/docs/v5/enum#category)| **true**|  string| Product type `linear`, `option`  
-baseCoin| false| string| BaseCoin, uppercase only. e.g., BTC of BTCPERP  
-[type](/docs/v5/enum#type)| false| string| Types of transaction logs  
+[category](/docs/v5/enum#category)| **true**|  string| Product type `linear`, `inverse`, `option`, `spot`  
+symbol| false| string| Symbol name, like `BTCUSDT`, uppercase only  
+orderId| false| string| Order ID  
+orderLinkId| false| string| User customised order ID  
+baseCoin| false| string| Base coin, uppercase only. Used for `option`  
 startTime| false| integer| The start timestamp (ms) 
 
   * startTime and endTime are not passed, return 7 days by default
@@ -37,69 +40,52 @@ startTime| false| integer| The start timestamp (ms)
 
   
 endTime| false| integer| The end timestamp (ms)  
-limit| false| integer| Limit for data size per page. [`1`, `50`]. Default: `20`  
-cursor| false| string| Cursor. Used for pagination  
+[execType](/docs/v5/enum#exectype)| false| string| Execution type  
+limit| false| integer| Limit for data size per page. [`1`, `100`]. Default: `50`  
+cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
+category| string| Product type  
 list| array| Object  
 > symbol| string| Symbol name  
-> category| string| Product type  
-> side| string| Side. `Buy`,`Sell`,`None`  
-> transactionTime| string| Transaction timestamp (ms)  
-> [type](/docs/v5/enum#type)| string| Type  
-> qty| string| Quantity  
-> size| string| Size  
-> currency| string| USDC、USDT、BTC、ETH  
-> tradePrice| string| Trade price  
-> funding| string| Funding fee 
-
-  * Positive value means receiving funding fee
-  * Negative value means deducting funding fee
-
-  
-> fee| string| Trading fee 
-
-  * Positive fee value means expense
-  * Negative fee value means rebates
-
-  
-> cashFlow| string| Cash flow  
-> change| string| Change  
-> cashBalance| string| Cash balance  
-> feeRate| string| 
-
-  * When type=`TRADE`, then it is trading fee rate
-  * When type=`SETTLEMENT`, it means funding fee rate. For side=Buy, feeRate=market fee rate; For side=Sell, feeRate= - market fee rate
-
-  
-> bonusChange| string| The change of bonus  
-> tradeId| string| Trade ID  
 > orderId| string| Order ID  
-> orderLinkId| string| User customised order ID  
-nextPageCursor| string| Cursor. Used for pagination  
+> orderLinkId| string| User customized order ID  
+> side| string| Side. `Buy`,`Sell`  
+> orderPrice| string| Order price  
+> orderQty| string| Order qty  
+> leavesQty| string| The remaining qty not executed  
+> [orderType](/docs/v5/enum#ordertype)| string| Order type. `Market`,`Limit`  
+> [stopOrderType](/docs/v5/enum#stopordertype)| string| Stop order type. If the order is not stop order, any type is not returned  
+> execFee| string| Executed trading fee  
+> execId| string| Execution ID  
+> execPrice| string| Execution price  
+> execQty| string| Execution qty  
+> [execType](/docs/v5/enum#exectype)| string| Executed type  
+> execValue| string| Executed order value  
+> execTime| string| Executed timestamp (ms)  
+> isMaker| boolean| Is maker order. `true`: maker, `false`: taker  
+> feeRate| string| Trading fee rate  
+> tradeIv| string| Implied volatility  
+> markIv| string| Implied volatility of mark price  
+> markPrice| string| The mark price of the symbol when executing  
+> indexPrice| string| The index price of the symbol when executing  
+> underlyingPrice| string| The underlying price of the symbol when executing  
+> blockTradeId| string| Paradigm block trade ID  
+> closedSize| string| Closed position size  
+nextPageCursor| string| Refer to the `cursor` request parameter  
   
 ### Request Example
-
-  * HTTP
-  * Python
-
-
     
     
-    GET /v5/pre-upgrade/account/transaction-log?category=option HTTP/1.1  
+    GET /v5/pre-upgrade/execution/list?category=linear&limit=1&execType=Funding&symbol=BTCUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1686808288265  
+    X-BAPI-TIMESTAMP: 1682580752432  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-      
     
 
 ### Response Example
@@ -109,61 +95,74 @@ nextPageCursor| string| Cursor. Used for pagination
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "nextPageCursor": "21%3A0%2C21%3A0",  
             "list": [  
                 {  
-                    "symbol": "ETH-14JUN23-1750-C",  
-                    "side": "Buy",  
-                    "funding": "",  
+                    "symbol": "BTCUSDT",  
+                    "orderId": "1682553600-BTCUSDT-592334-Sell",  
                     "orderLinkId": "",  
-                    "orderId": "",  
-                    "fee": "0",  
-                    "change": "0",  
-                    "cashFlow": "0",  
-                    "transactionTime": "1686729604507",  
-                    "type": "DELIVERY",  
-                    "feeRate": "0",  
-                    "bonusChange": "",  
-                    "size": "0",  
-                    "qty": "0.5",  
-                    "cashBalance": "1001.1438885",  
-                    "currency": "USDC",  
-                    "category": "option",  
-                    "tradePrice": "1740.25036667",  
-                    "tradeId": ""  
+                    "side": "Sell",  
+                    "orderPrice": "0.00",  
+                    "orderQty": "0.000",  
+                    "leavesQty": "0.000",  
+                    "orderType": "UNKNOWN",  
+                    "stopOrderType": "UNKNOWN",  
+                    "execFee": "0.6364003",  
+                    "execId": "11f1c4ed-ff20-4d73-acb7-96e43a917f25",  
+                    "execPrice": "28399.90",  
+                    "execQty": "0.011",  
+                    "execType": "Funding",  
+                    "execValue": "312.3989",  
+                    "execTime": "1682553600000",  
+                    "isMaker": false,  
+                    "feeRate": "0.00203714",  
+                    "tradeIv": "",  
+                    "markIv": "",  
+                    "markPrice": "28399.90",  
+                    "indexPrice": "",  
+                    "underlyingPrice": "",  
+                    "blockTradeId": "",  
+                    "closedSize": "0.000"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": "page_token%3D96184191%26",  
+            "category": "linear"  
         },  
         "retExtInfo": {},  
-        "time": 1686809006792  
+        "time": 1682580752717  
     }
 
 ---
 
-# 查詢升級前交易日誌
+# 查詢升級前成交紀錄
 
-查詢升級到統一帳戶之前USDC合約帳戶裡的交易日誌
+支持查詢升級到統一帳戶之前發生的USDT永續, USDC永續, 反向合約, 現貨和期權, 返回結果按`execTime`降序排列
 
 信息
 
   * USDC永續和期權僅支持查詢最近6個月的數據, 對於更老的數據, 請前往網頁端下載
-  * 通過category=linear, 查詢到在經典帳戶期間產生的USDC永續交易日誌數據  
+  * 通過category=linear, 查詢到在經典帳戶期間產生的USDT永續, USDC永續數據  
 
-  * 通過category=option, 查詢到在經典帳戶期間產生的期權交易日誌數據
+  * 通過category=spot, 查詢到在經典帳戶期間產生的現貨數據  
+
+  * 通過category=option, 查詢到在經典帳戶期間產生的期權數據  
+
+  * 通過category=inverse, 查詢到在**經典帳戶或者[統一帳戶1.0](/docs/zh-TW/v5/acct-mode#%E7%B5%B1%E4%B8%80%E5%B8%B3%E6%88%B610)**期間產生的反向合約數據
 
 
 
 ### HTTP 請求
 
-GET`/v5/pre-upgrade/account/transaction-log`
+GET `v5/pre-upgrade/execution/list`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 交易產品類型. `linear`: USDC永續, `option`: 期權  
-baseCoin| false| string| 交易幣種. 例如： BTCUSDT 的 baseCoin 是 BTC  
-[type](/docs/zh-TW/v5/enum#type)| false| string| 交易日誌的類型  
+[category](/docs/zh-TW/v5/enum#category)| **true**|  string| 產品類型 `linear`, `inverse`, `option`, `spot`  
+symbol| false| string| 合約名稱  
+orderId| false| string| 訂單ID  
+orderLinkId| false| string| 用戶自定義訂單ID  
+baseCoin| false| string| 交易幣種. 僅期權使用  
 startTime| false| integer| 開始時間戳 (毫秒) 
 
   * startTime 和 endTime都不傳入, 則默認返回最近7天的數據
@@ -173,93 +172,93 @@ startTime| false| integer| 開始時間戳 (毫秒)
 
   
 endTime| false| integer| 結束時間戳 (毫秒)  
-limit| false| integer| 每頁數量, 最大50. 默認每頁20條  
+[execType](/docs/zh-TW/v5/enum#exectype)| false| string| 執行類型  
+limit| false| integer| 每頁數量限制. [`1`, `100`]. 默認: `50`  
 cursor| false| string| 游標，用於翻頁  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
+[category](/docs/zh-TW/v5/enum#category)| string| 產品類型  
 list| array| Object  
 > symbol| string| 合約名稱  
-> category| string| 產品類型  
-> side| string| 方向. `Buy`,`Sell`,`None`  
-> transactionTime| string| 交易時間戳（毫秒）  
-> [type](/docs/zh-TW/v5/enum#type)| string| 類型  
-> qty| string| 數量  
-> size| string| 倉位  
-> currency| string| USDC、USDT、BTC、ETH  
-> tradePrice| string| 交易價格  
-> funding| string| 資金費用. 正數表示用戶收取xx資金費，負數表示用戶支出xx資金費  
-> fee| string| 手續費，正數表示用戶付出xx手續費，負數表示返佣  
-> cashFlow| string| 現金流  
-> change| string| 變更  
-> cashBalance| string| 餘額（當前幣種）  
-> feeRate| string| 
-
-  * 對於type=`TRADE`, 則表示交易手續費率
-  * 對於type=`SETTLEMENT`, 則表示資金費率. 當side=Buy, feeRate=市場結算費率; 當side=Sell, feeRate=-市場結算費率
-
-  
-> bonusChange| string| 體驗金的變化  
-> tradeId| string| 交易id  
-> orderId| string| 訂單id  
+> orderId| string| 訂單Id  
 > orderLinkId| string| 用戶自定義訂單id  
+> side| string| 訂單方向.買： `Buy`,賣：`Sell`  
+> orderPrice| string| 訂單價格  
+> orderQty| string| 訂單數量  
+> leavesQty| string| 剩餘委託未成交數量  
+> [orderType](/docs/zh-TW/v5/enum#ordertype)| string| 訂單類型. 市價單：`Market`,限價單：`Limit`  
+> [stopOrderType](/docs/zh-TW/v5/enum#stopordertype)| string| 条件单的订单类型。如果该订单不是条件单，则不会返回任何类型  
+> execFee| string| 交易手續費  
+> execId| string| 成交Id  
+> execPrice| string| 成交價格  
+> execQty| string| 成交數量  
+> [execType](/docs/zh-TW/v5/enum#exectype)| string| 交易類型  
+> execValue| string| 成交價值  
+> execTime| string| 成交時間（毫秒）  
+> isMaker| Bool| 是否是 Maker 訂單,`true` 為 maker 訂單，`false` 為 taker 訂單  
+> feeRate| string| 手續費率  
+> tradeIv| string| 隱含波動率，僅期權有效  
+> markIv| string| 標記價格的隱含波動率，僅期權有效  
+> markPrice| string| 成交執行時，該 symbol 當時的標記價格  
+> indexPrice| string| 成交執行時，該 symbol 當時的指數價格，目前僅對期權業務有效  
+> underlyingPrice| string| 成交執行時，該 symbol 當時的底層資產價格，僅期權有效  
+> blockTradeId| string| 大宗交易的订单 ID ，使用 paradigm 进行大宗交易时生成的 ID  
+> closedSize| string| 平倉數量  
 nextPageCursor| string| 游標，用於翻頁  
   
-### 請求示例
-
-  * HTTP
-  * Python
-
-
+### Request Example
     
     
-    GET /v5/pre-upgrade/account/transaction-log?category=option HTTP/1.1  
+    GET /v5/pre-upgrade/execution/list?category=linear&limit=1&execType=Funding&symbol=BTCUSDT HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1686808288265  
+    X-BAPI-TIMESTAMP: 1682580752432  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-    
-    
-    
-      
     
 
-### 響應示例
+### Response Example
     
     
     {  
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "nextPageCursor": "21%3A0%2C21%3A0",  
             "list": [  
                 {  
-                    "symbol": "ETH-14JUN23-1750-C",  
-                    "side": "Buy",  
-                    "funding": "",  
+                    "symbol": "BTCUSDT",  
+                    "orderId": "1682553600-BTCUSDT-592334-Sell",  
                     "orderLinkId": "",  
-                    "orderId": "",  
-                    "fee": "0",  
-                    "change": "0",  
-                    "cashFlow": "0",  
-                    "transactionTime": "1686729604507",  
-                    "type": "DELIVERY",  
-                    "feeRate": "0",  
-                    "bonusChange": "",  
-                    "size": "0",  
-                    "qty": "0.5",  
-                    "cashBalance": "1001.1438885",  
-                    "currency": "USDC",  
-                    "category": "option",  
-                    "tradePrice": "1740.25036667",  
-                    "tradeId": ""  
+                    "side": "Sell",  
+                    "orderPrice": "0.00",  
+                    "orderQty": "0.000",  
+                    "leavesQty": "0.000",  
+                    "orderType": "UNKNOWN",  
+                    "stopOrderType": "UNKNOWN",  
+                    "execFee": "0.6364003",  
+                    "execId": "11f1c4ed-ff20-4d73-acb7-96e43a917f25",  
+                    "execPrice": "28399.90",  
+                    "execQty": "0.011",  
+                    "execType": "Funding",  
+                    "execValue": "312.3989",  
+                    "execTime": "1682553600000",  
+                    "isMaker": false,  
+                    "feeRate": "0.00203714",  
+                    "tradeIv": "",  
+                    "markIv": "",  
+                    "markPrice": "28399.90",  
+                    "indexPrice": "",  
+                    "underlyingPrice": "",  
+                    "blockTradeId": "",  
+                    "closedSize": "0.000"  
                 }  
-            ]  
+            ],  
+            "nextPageCursor": "page_token%3D96184191%26",  
+            "category": "linear"  
         },  
         "retExtInfo": {},  
-        "time": 1686809006792  
+        "time": 1682580752717  
     }

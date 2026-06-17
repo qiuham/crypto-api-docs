@@ -2,48 +2,42 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/set-deposit-acct
 api_type: REST
-updated_at: 2026-06-16 19:45:28.620672
+updated_at: 2026-06-17 19:20:47.589590
 ---
 
-# Get Sub Deposit Address
+# Submit Deposit Originator Info
 
-Query the deposit address information of SUB account.
+Submit the originator's compliance information when a deposit triggers a Travel Rule review. After submission, the vendor completes the review and returns the resulting status.
 
 info
 
-  * Use master UID's api key **only**
-  * Custodial sub account deposit address cannot be obtained
-
-
+Call this endpoint when a deposit record hits the Travel Rule compliance policy and the current `travel_rule_status` is `1` (pending counterparty info submission).
 
 ### HTTP Request
 
-GET`/v5/asset/deposit/query-sub-member-address`
+POST`/v5/asset/travel-rule/deposit/submit`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| **true**|  string| Coin, uppercase only  
-chainType| **true**|  string| Please use the value of `chain` from [coin-info](/docs/v5/asset/coin-info) endpoint  
-subMemberId| **true**|  string| Sub user ID  
+depositId| **true**|  integer| Deposit record ID obtained from the deposit query API  
+subAccountId| false| integer| Broker scenario: target sub-account UID. Pass `0` or omit to use the current account  
+questionnaire| **true**|  string| Travel Rule questionnaire info as a JSON string. Max 16384 bytes. Structure varies by compliance zone. See [Questionnaire](/docs/v5/asset/withdraw/questionnaire)  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-coin| string| Coin  
-chains| array| Object  
-> chainType| string| Chain type  
-> addressDeposit| string| The address for deposit  
-> tagDeposit| string| Tag of deposit  
-> chain| string| Chain  
-> batchReleaseLimit| string| The deposit limit for this coin in this chain. `"-1"` means no limit  
-> contractAddress| string| The contract address of the coin. Only display last 6 characters, if there is no contract address, it shows `""`  
-[](/docs/api-explorer/v5/asset/sub-deposit-addr)
+travelRuleStatus| integer| Travel Rule review status 
 
-* * *
+  * `0`: Approved — review passed, proceed with subsequent flow
+  * `1`: CollectInfo — counterparty info required, re-submit questionnaire
+  * `2`: Pending — under review, poll the deposit query endpoint
+  * `3`: Rejected — rejected or failed (including cancelled)
 
+  
+  
 ### Request Example
 
   * HTTP
@@ -53,12 +47,19 @@ chains| array| Object
 
     
     
-    GET /v5/asset/deposit/query-sub-member-address?coin=USDT&chainType=TRX&subMemberId=592334 HTTP/1.1  
+    POST /v5/asset/travel-rule/deposit/submit HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672194349421  
+    X-BAPI-TIMESTAMP: 1672197227732  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "deposit_id": 1234567890,  
+        "sub_account_id": 0,  
+        "questionnaire": "{\"walletType\":0,\"vaspCode\":\"BINANCEUS_VASP\",\"legalType\":\"individual\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"transactionPurpose\":\"Personal investment in long-term holdings\"}"  
+    }  
     
     
     
@@ -68,10 +69,10 @@ chains| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_deposit_address(  
-        coin="USDT",  
-        chainType="TRX",  
-        subMemberId=592334,  
+    print(session.submit_deposit_originator_info(  
+        deposit_id=1234567890,  
+        sub_account_id=0,  
+        questionnaire='{"walletType":0,"vaspCode":"BINANCEUS_VASP","legalType":"individual","firstName":"John","lastName":"Smith","transactionPurpose":"Personal investment in long-term holdings"}',  
     ))  
     
     
@@ -85,7 +86,11 @@ chains| array| Object
     });  
       
     client  
-      .getSubDepositAddress('USDT', 'TRX', '592334')  
+      .submitDepositOriginatorInfo({  
+        deposit_id: 1234567890,  
+        sub_account_id: 0,  
+        questionnaire: '{"walletType":0,"vaspCode":"BINANCEUS_VASP","legalType":"individual","firstName":"John","lastName":"Smith","transactionPurpose":"Personal investment in long-term holdings"}',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -99,61 +104,49 @@ chains| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "OK",  
         "result": {  
-            "coin": "USDT",  
-            "chains": {  
-                "chainType": "TRC20",  
-                "addressDeposit": "XXXXXX",  
-                "tagDeposit": "",  
-                "chain": "TRX",  
-                "batchReleaseLimit": "-1",  
-                "contractAddress": "gjLj6t"  
-            }  
+            "travel_rule_status": 2  
         },  
         "retExtInfo": {},  
-        "time": 1736394845821  
+        "time": 1672197228408  
     }
 
 ---
 
-# 查詢子帳號充值地址
+# 提交入金發起人信息
+
+當入金記錄觸發 Travel Rule 審核時，由用戶提交發起人（Originator）合規信息，供應商完成審核後返回結果狀態。
 
 信息
 
-  * 僅能使用該**母帳號** 的API key
-  * 託管子帳戶不支持獲取入金地址
-
-
+當入金記錄命中合規策略且當前 `travel_rule_status` 為 `1`（待提交對手方信息）時調用本接口。
 
 ### HTTP 請求
 
-GET`/v5/asset/deposit/query-sub-member-address`
+POST`/v5/asset/travel-rule/deposit/submit`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| **true**|  string| 幣種  
-chainType| **true**|  string| 請使用[查詢幣種信息](/docs/zh-TW/v5/asset/coin-info)響應字段`chain`作為這個字段的輸入  
-subMemberId| **true**|  string| 子帳號Id  
+depositId| **true**|  integer| 入金記錄 ID，從入金查詢接口獲得，必須大於 `0`  
+subAccountId| false| integer| Broker 場景：目標子帳號 UID。傳 `0` 或不傳表示當前帳號本人  
+questionnaire| **true**|  string| Travel Rule 問卷信息，JSON 字符串，最大 16384 字節。不同合規區結構不同，詳見[問卷說明](/docs/zh-TW/v5/asset/withdraw/questionnaire)  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-coin| string| 幣種  
-chains| array| Object  
-> chainType| string| 鏈類型  
-> addressDeposit| string| 充值地址  
-> tagDeposit| string| 地址的tag  
-> chain| string| 鏈名  
-> batchReleaseLimit| string| 當前幣鏈每日充值限額. `"-1"`表示無限制  
-> contractAddress| string| 合約地址, 僅展示後6位. 如果沒有合約地址, 則為空字符串`""`  
-[](/docs/zh-TW/api-explorer/v5/asset/sub-deposit-addr)
+travelRuleStatus| integer| Travel Rule 審核狀態 
 
-* * *
+  * `0`: Approved — 已通過，可繼續後續流程
+  * `1`: CollectInfo — 需補充對手方信息，請重新提交問卷
+  * `2`: Pending — 審核中，請輪詢入金查詢接口
+  * `3`: Rejected — 已拒絕或失敗（含取消）
 
+  
+  
 ### 請求示例
 
   * HTTP
@@ -163,12 +156,19 @@ chains| array| Object
 
     
     
-    GET /v5/asset/deposit/query-sub-member-address?coin=USDT&chainType=TRX&subMemberId=592334 HTTP/1.1  
+    POST /v5/asset/travel-rule/deposit/submit HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672194349421  
+    X-BAPI-TIMESTAMP: 1672197227732  
     X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+      
+    {  
+        "depositId": 1234567890,  
+        "subAccountId": 0,  
+        "questionnaire": "{\"walletType\":0,\"vaspCode\":\"BINANCEUS_VASP\",\"legalType\":\"individual\",\"firstName\":\"John\",\"lastName\":\"Smith\",\"transactionPurpose\":\"Personal investment in long-term holdings\"}"  
+    }  
     
     
     
@@ -178,10 +178,10 @@ chains| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_deposit_address(  
-        coin="USDT",  
-        chainType="TRX",  
-        subMemberId=592334,  
+    print(session.submit_deposit_originator_info(  
+        depositId=1234567890,  
+        subAccountId=0,  
+        questionnaire='{"walletType":0,"vaspCode":"BINANCEUS_VASP","legalType":"individual","firstName":"John","lastName":"Smith","transactionPurpose":"Personal investment in long-term holdings"}',  
     ))  
     
     
@@ -195,7 +195,11 @@ chains| array| Object
     });  
       
     client  
-      .getSubDepositAddress('USDT', 'TRX', '592334')  
+      .submitDepositOriginatorInfo({  
+        depositId: 1234567890,  
+        subAccountId: 0,  
+        questionnaire: '{"walletType":0,"vaspCode":"BINANCEUS_VASP","legalType":"individual","firstName":"John","lastName":"Smith","transactionPurpose":"Personal investment in long-term holdings"}',  
+      })  
       .then((response) => {  
         console.log(response);  
       })  
@@ -209,18 +213,10 @@ chains| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "OK",  
         "result": {  
-            "coin": "USDT",  
-            "chains": {  
-                "chainType": "TRC20",  
-                "addressDeposit": "XXXXXX",  
-                "tagDeposit": "",  
-                "chain": "TRX",  
-                "batchReleaseLimit": "-1",  
-                "contractAddress": "gjLj6t"  
-            }  
+            "travelRuleStatus": 2  
         },  
         "retExtInfo": {},  
-        "time": 1736394845821  
+        "time": 1672197228408  
     }

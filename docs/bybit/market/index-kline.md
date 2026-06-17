@@ -2,47 +2,64 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/index-kline
 api_type: Market Data
-updated_at: 2026-06-16 19:49:22.605858
+updated_at: 2026-06-17 19:24:43.178453
 ---
 
-# Get Insurance Pool
+# Get Kline
 
-Query for Bybit [insurance pool](https://www.bybit.com/en/announcement-info/insurance-fund/) data (BTC/USDT/USDC etc)
+Query for historical klines (also known as candles/candlesticks). Charts are returned in groups based on the requested interval.
 
-info
-
-  * The isolated insurance pool balance is updated every 1 minute, and shared insurance pool balance is updated every 24 hours
-  * Please note that you may receive data from the previous minute. This is due to multiple backend containers starting at different times, which may cause a slight delay. You can always rely on the latest minute data for accuracy.
-  * During periods of extreme market volatility, this interface may experience increased latency or temporary delays in data delivery
-
-
+> **Covers: Spot / USDT contract / USDC contract / Inverse contract**
 
 ### HTTP Request
 
-GET`/v5/market/insurance`
+GET`/v5/market/kline`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-coin| false| string| coin, uppercase only. Default: return all insurance coins  
+[category](/docs/v5/enum#category)| false| string| Product type. `spot`,`linear`,`inverse`
+
+  * When `category` is not passed, use `linear` by default
+
+  
+[symbol](/docs/v5/enum#symbol)| **true**|  string| Symbol name, like `BTCUSDT`, uppercase only  
+[interval](/docs/v5/enum#interval)| **true**|  string| Kline interval. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`W`,`M`  
+start| false| integer| The start timestamp (ms)  
+end| false| integer| The end timestamp (ms)  
+limit| false| integer| Limit for data size per page. [`1`, `1000`]. Default: `200`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-updatedTime| string| Data updated time (ms)  
-list| array| Object  
-> coin| string| Coin  
-> symbols| string| 
+category| string| Product type  
+symbol| string| Symbol name  
+list| array| 
 
-  * symbols with `"BTCUSDT,ETHUSDT,SOLUSDT"` mean these contracts are shared with one insurance pool
-  * For an isolated insurance pool, it returns one contract
+  * An string array of individual candle
+  * Sort in reverse by `startTime`
 
   
-> balance| string| Balance  
-> value| string| USD value  
-[](/docs/api-explorer/v5/market/insurance)
+> list[0]: startTime| string| Start time of the candle (ms)  
+> list[1]: openPrice| string| Open price  
+> list[2]: highPrice| string| Highest price  
+> list[3]: lowPrice| string| Lowest price  
+> list[4]: closePrice| string| Close price. _Is the last traded price when the candle is not closed_  
+> list[5]: volume| string| Trade volume 
+
+  * USDT or USDC contract: unit is base coin (e.g., BTC)
+  * Inverse contract: unit is quote coin (e.g., USD)
+
+  
+> list[6]: turnover| string| Turnover. 
+
+  * USDT or USDC contract: unit is quote coin (e.g., USDT)
+  * Inverse contract: unit is base coin (e.g., BTC)
+
+  
+[](/docs/api-explorer/v5/market/kline)
 
 * * *
 
@@ -50,22 +67,26 @@ list| array| Object
 
   * HTTP
   * Python
-  * GO
+  * Go
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/insurance?coin=USDT HTTP/1.1  
+    GET /v5/market/kline?category=inverse&symbol=BTCUSD&interval=60&start=1670601600000&end=1670608800000 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_insurance(  
-        coin="USDT",  
+    print(session.get_kline(  
+        category="inverse",  
+        symbol="BTCUSD",  
+        interval=60,  
+        start=1670601600000,  
+        end=1670608800000,  
     ))  
     
     
@@ -76,16 +97,18 @@ list| array| Object
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetMarketInsurance(context.Background())  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
+    client.NewUtaBybitServiceWithParams(params).GetMarketKline(context.Background())  
     
     
     
+    import com.bybit.api.client.domain.CategoryType;  
+    import com.bybit.api.client.domain.market.*;  
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var insuranceRequest = MarketDataRequest.builder().coin("BTC").build();  
-    var insuranceData = client.getInsurance(insuranceRequest);  
+    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
+    client.getMarketLinesData(marketKLineRequest, System.out::println);  
     
     
     
@@ -96,8 +119,12 @@ list| array| Object
     });  
       
     client  
-        .getInsurance({  
-            coin: 'USDT',  
+        .getKline({  
+            category: 'inverse',  
+            symbol: 'BTCUSD',  
+            interval: '60',  
+            start: 1670601600000,  
+            end: 1670608800000,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -114,77 +141,99 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "updatedTime": "1714003200000",  
+            "symbol": "BTCUSD",  
+            "category": "inverse",  
             "list": [  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "MERLUSDT,10000000AIDOGEUSDT,ZEUSUSDT",  
-                    "balance": "902178.57602476",  
-                    "value": "901898.0963091522"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "SOLUSDT,OMNIUSDT,ALGOUSDT",  
-                    "balance": "14454.51626125",  
-                    "value": "14449.515598975464"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "XLMUSDT,WUSDT",  
-                    "balance": "23.45018235",  
-                    "value": "22.992864174376344"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "AGIUSDT,WIFUSDT",  
-                    "balance": "10002",  
-                    "value": "9998.896846613574"  
-                }  
+                [  
+                    "1670608800000",  
+                    "17071",  
+                    "17073",  
+                    "17027",  
+                    "17055.5",  
+                    "268611",  
+                    "15.74462667"  
+                ],  
+                [  
+                    "1670605200000",  
+                    "17071.5",  
+                    "17071.5",  
+                    "17061",  
+                    "17071",  
+                    "4177",  
+                    "0.24469757"  
+                ],  
+                [  
+                    "1670601600000",  
+                    "17086.5",  
+                    "17088",  
+                    "16978",  
+                    "17071.5",  
+                    "6356",  
+                    "0.37288112"  
+                ]  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1714028451228  
+        "time": 1672025956592  
     }
 
 ---
 
-# 查詢保險基金
+# 查詢市場價格K線數據
 
-查詢Bybit平台的保險基金的數據，包含所有保險池的數據
+查詢市場價格K線數據
 
-信息
-
-  * 獨立保險池的餘額數據每1分鐘更新一次, 共享保險池的餘額數據每24小時更新一次
-  * 請注意，您可能會收到前一分鐘的數據。這是由於多個後端容器在不同的時間啟動，這會造成数据延遲。您始終可以依賴最新的那一分鐘數據來確保準確性。 *在極端市場波動期間, 此介面可能會出現延遲增加或資料傳遞暫時延遲的情況
-
-
+> **覆蓋範圍: 現貨 / USDT永續 / USDT交割 / USDC永續 / USDC交割 / 反向合約**
 
 ### HTTP請求
 
-GET`/v5/market/insurance`
+GET`/v5/market/kline`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-coin| false| string| 幣種名稱. 默認: 返回目前所有的保險池幣種  
+[category](/docs/zh-TW/v5/enum#category)| false| string| 產品類型. `spot`,`linear`,`inverse`
+
+  * 當`category`不指定時, 默認是`linear`
+
+  
+[symbol](/docs/zh-TW/v5/enum#symbol)| **true**|  string| 合約名稱  
+[interval](/docs/zh-TW/v5/enum#interval)| **true**|  string| 時間粒度. `1`,`3`,`5`,`15`,`30`,`60`,`120`,`240`,`360`,`720`,`D`,`M`,`W`  
+start| false| integer| 開始時間戳 (毫秒)  
+end| false| integer| 結束時間戳 (毫秒)  
+limit| false| integer| 每頁數量限制. [`1`, `1000`]. 默認: `200`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-updateTime| string| 數據最近更新的時間戳 (ms)  
-list| array| Object  
-> coin| string| 保險池的幣種  
-> symbols| string| 
+category| string| 產品類型  
+symbol| string| 合約名稱  
+list| array| 
 
-  * 對於共享保險池, 返回的symbols裡會有多個合約, 比如`"BTCUSDT,ETHUSDT,SOLUSDT"`
-  * 對於獨立保險池, 將會返回一個合約
+  * 一個字符串數組構成單個蠟燭
+  * 按照`startTime`降序排列
 
   
-> balance| string| 保險基金的幣種數量  
-> value| string| 保險基金的幣種價值，折合成USD的價值  
-[](/docs/zh-TW/api-explorer/v5/market/insurance)
+> list[0]: startTime| string| 蠟燭的開始時間戳 (毫秒)  
+> list[1]: openPrice| string| 開始價格  
+> list[2]: highPrice| string| 最高價格  
+> list[3]: lowPrice| string| 最低價格  
+> list[4]: closePrice| string| 結束價格. _如果蠟燭尚未結束，則表示為最新成交價格_  
+> list[5]: volume| string| 交易量 
+
+  * U本位合約: 單位是base coin (比如, BTC)
+  * 幣本位合約: 單位是報價幣種 (e.g., USD)
+
+  
+> list[6]: turnover| string| 交易額 
+
+  * U本位合約: 單位是報價幣種(比如, USDT)
+  * 幣本位合約: 單位是base coin (e.g., BTC)
+
+  
+[](/docs/zh-TW/api-explorer/v5/market/kline)
 
 * * *
 
@@ -192,22 +241,26 @@ list| array| Object
 
   * HTTP
   * Python
-  * GO
+  * Go
   * Java
   * Node.js
 
 
     
     
-    GET /v5/market/insurance?coin=USDT HTTP/1.1  
+    GET /v5/market/kline?category=inverse&symbol=BTCUSD&interval=60&start=1670601600000&end=1670608800000 HTTP/1.1  
     Host: api-testnet.bybit.com  
     
     
     
     from pybit.unified_trading import HTTP  
     session = HTTP(testnet=True)  
-    print(session.get_insurance(  
-        coin="USDT",  
+    print(session.get_kline(  
+        category="inverse",  
+        symbol="BTCUSD",  
+        interval=60,  
+        start=1670601600000,  
+        end=1670608800000,  
     ))  
     
     
@@ -218,16 +271,18 @@ list| array| Object
         bybit "github.com/bybit-exchange/bybit.go.api"  
     )  
     client := bybit.NewBybitHttpClient("", "", bybit.WithBaseURL(bybit.TESTNET))  
-    params := map[string]interface{}{"category": "linear", "symbol": "BTCUSDT"}  
-    client.NewUtaBybitServiceWithParams(params).GetMarketInsurance(context.Background())  
+    params := map[string]interface{}{"category": "spot", "symbol": "BTCUSDT", "interval": "1"}  
+    client.NewUtaBybitServiceWithParams(params).GetMarketKline(context.Background())  
     
     
     
+    import com.bybit.api.client.domain.CategoryType;  
+    import com.bybit.api.client.domain.market.*;  
     import com.bybit.api.client.domain.market.request.MarketDataRequest;  
     import com.bybit.api.client.service.BybitApiClientFactory;  
     var client = BybitApiClientFactory.newInstance().newAsyncMarketDataRestClient();  
-    var insuranceRequest = MarketDataRequest.builder().coin("BTC").build();  
-    var insuranceData = client.getInsurance(insuranceRequest);  
+    var marketKLineRequest = MarketDataRequest.builder().category(CategoryType.LINEAR).symbol("BTCUSDT").marketInterval(MarketInterval.WEEKLY).build();  
+    client.getMarketLinesData(marketKLineRequest, System.out::println);  
     
     
     
@@ -238,8 +293,12 @@ list| array| Object
     });  
       
     client  
-        .getInsurance({  
-            coin: 'USDT',  
+        .getKline({  
+            category: 'inverse',  
+            symbol: 'BTCUSD',  
+            interval: '60',  
+            start: 1670601600000,  
+            end: 1670608800000,  
         })  
         .then((response) => {  
             console.log(response);  
@@ -256,34 +315,38 @@ list| array| Object
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "updatedTime": "1714003200000",  
+            "symbol": "BTCUSD",  
+            "category": "inverse",  
             "list": [  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "MERLUSDT,10000000AIDOGEUSDT,ZEUSUSDT",  
-                    "balance": "902178.57602476",  
-                    "value": "901898.0963091522"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "SOLUSDT,OMNIUSDT,ALGOUSDT",  
-                    "balance": "14454.51626125",  
-                    "value": "14449.515598975464"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "XLMUSDT,WUSDT",  
-                    "balance": "23.45018235",  
-                    "value": "22.992864174376344"  
-                },  
-                {  
-                    "coin": "USDT",  
-                    "symbols": "AGIUSDT,WIFUSDT",  
-                    "balance": "10002",  
-                    "value": "9998.896846613574"  
-                }  
+                [  
+                    "1670608800000",  
+                    "17071",  
+                    "17073",  
+                    "17027",  
+                    "17055.5",  
+                    "268611",  
+                    "15.74462667"  
+                ],  
+                [  
+                    "1670605200000",  
+                    "17071.5",  
+                    "17071.5",  
+                    "17061",  
+                    "17071",  
+                    "4177",  
+                    "0.24469757"  
+                ],  
+                [  
+                    "1670601600000",  
+                    "17086.5",  
+                    "17088",  
+                    "16978",  
+                    "17071.5",  
+                    "6356",  
+                    "0.37288112"  
+                ]  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1714028451228  
+        "time": 1672025956592  
     }

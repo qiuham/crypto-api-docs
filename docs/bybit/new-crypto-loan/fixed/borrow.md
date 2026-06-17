@@ -2,41 +2,28 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/borrow
 api_type: REST
-updated_at: 2026-06-16 19:49:48.636672
+updated_at: 2026-06-17 19:25:09.156631
 ---
 
-# Get Borrowing Market
+# Cancel Borrow Order
 
-info
-
-Does not need authentication.
-
-If you want to borrow, you can use this endpoint to check whether there are any suitable counterparty supply orders available.
+> Permission: "Spot trade"  
+>  UID rate limit: 1 req / second
 
 ### HTTP Request
 
-GET`/v5/crypto-loan-fixed/borrow-order-quote`
+POST`/v5/crypto-loan-fixed/borrow-order-cancel`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderCurrency| **true**|  string| Coin name  
-orderBy| **true**|  string| Order by, `apy`: annual rate; `term`; `quantity`  
-term| false| string| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-sort| false| integer| `0`: ascend, default; `1`: descend  
-limit| false| integer| Limit for data size per page. [`1`, `100`]. Default: `10`  
+orderId| **true**|  string| Order ID of fixed borrow order  
   
 ### Response Parameters
 
-Parameter| Type| Comments  
----|---|---  
-list| array| Object  
-> orderCurrency| string| Coin name  
-> term| integer| Fixed term `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-> annualRate| string| Annual rate  
-> qty| string| Quantity  
-  
+None
+
 ### Request Example
 
   * HTTP
@@ -46,8 +33,18 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/borrow-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-fixed/borrow-order-cancel HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752652457987  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 26  
+      
+    {  
+        "orderId": "13009"  
+    }  
     
     
     
@@ -57,9 +54,8 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_borrowing_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.create_lending_order_fixed_crypto_loan(  
+        orderId="13009",  
     ))  
     
     
@@ -73,54 +69,32 @@ list| array| Object
     {  
         "retCode": 0,  
         "retMsg": "ok",  
-        "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.04",  
-                    "orderCurrency": "USDT",  
-                    "qty": "988.78",  
-                    "term": 14  
-                }  
-            ]  
-        },  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1752719158890  
+        "time": 1752652458684  
     }
 
 ---
 
-# 查詢可借市場
+# 撤銷借款單
 
-信息
-
-公共接口, 無需鑒權
-
-如果您是借款方, 可通過該接口查詢到市場上可匹配的存款單報價
+> 權限: "現貨"  
+>  頻率: 1次/秒
 
 ### HTTP 請求
 
-GET`/v5/crypto-loan-fixed/borrow-order-quote`
+POST`/v5/crypto-loan-fixed/borrow-order-cancel`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderCurrency| **true**|  string| 幣種名稱  
-term| false| string| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-orderBy| **true**|  string| 排序依據，`apy`: 年化利率；`term`: 期限；`quantity`: 數量  
-sort| false| integer| `0`: 升序，預設；`1`: 降序  
-limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
+orderId| **true**|  string| 借款單ID  
   
 ### 響應參數
 
-參數| 類型| 說明  
----|---|---  
-list| array| Object  
-> orderCurrency| string| 幣種名稱  
-> term| integer| 固定期限 `7`: 7 天；`14`: 14 天；`30`: 30 天；`90`: 90 天；`180`: 180 天  
-> annualRate| string| 年化利率  
-> qty| string| 數量  
-  
+無
+
 ### 請求示例
 
   * HTTP
@@ -130,8 +104,18 @@ list| array| Object
 
     
     
-    GET /v5/crypto-loan-fixed/borrow-order-quote?orderCurrency=USDT&orderBy=apy HTTP/1.1  
+    POST /v5/crypto-loan-fixed/borrow-order-cancel HTTP/1.1  
     Host: api-testnet.bybit.com  
+    X-BAPI-SIGN: XXXXXX  
+    X-BAPI-API-KEY: XXXXXX  
+    X-BAPI-TIMESTAMP: 1752652457987  
+    X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+    Content-Length: 26  
+      
+    {  
+        "orderId": "13009"  
+    }  
     
     
     
@@ -141,9 +125,8 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_borrowing_market_fixed_crypto_loan(  
-        orderCurrency="USDT",  
-        orderBy="apy",  
+    print(session.create_lending_order_fixed_crypto_loan(  
+        orderId="13009",  
     ))  
     
     
@@ -157,16 +140,7 @@ list| array| Object
     {  
         "retCode": 0,  
         "retMsg": "ok",  
-        "result": {  
-            "list": [  
-                {  
-                    "annualRate": "0.04",  
-                    "orderCurrency": "USDT",  
-                    "qty": "988.78",  
-                    "term": 14  
-                }  
-            ]  
-        },  
+        "result": {},  
         "retExtInfo": {},  
-        "time": 1752719158890  
+        "time": 1752652458684  
     }

@@ -2,30 +2,38 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/get-auto-repay-mode
 api_type: REST
-updated_at: 2026-06-16 19:52:05.185521
+updated_at: 2026-06-17 19:27:25.942392
 ---
 
-# Get Max Borrowable Amount
+# Get Auto Repay Mode
+
+Get spot automatic repayment mode
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/max-borrowable`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| **true**|  string| Coin name, uppercase only  
+currency| false| string| Coin name, uppercase only. If `currency` is not passed, automatic repay mode for all currencies will be returned.  
   
+* * *
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-currency| string| Coin name, uppercase only  
-maxLoan| string| Max borrowable amount  
-  
-* * *
+data| array| Object  
+> currency| string| Coin name, uppercase only.  
+> autoRepayMode| string| 
 
+  * `1`: On
+  * `0`: Off
+
+  
+  
 ### Request Example
 
   * HTTP
@@ -35,12 +43,13 @@ maxLoan| string| Max borrowable amount
 
     
     
-    GET /v5/spot-margin-trade/max-borrowable?currency=BTC HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
     
     
     
@@ -50,8 +59,8 @@ maxLoan| string| Max borrowable amount
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_max_borrowable(  
-        currency="BTC"  
+    print(session.get_auto_repay_mode(  
+        currency="ETH"  
     ))  
     
     
@@ -66,36 +75,48 @@ maxLoan| string| Max borrowable amount
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "maxLoan": "17.54689892",  
-            "currency": "BTC"  
+            "data": [  
+                {  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1756261353733  
+        "time": 1766977353904  
     }
 
 ---
 
-# 查詢最大可借數
+# 獲取現貨自動還款模式
+
+獲取現貨自動還款模式
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/max-borrowable`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| **true**|  string| 幣名稱，僅限大寫  
+currency| false| string| 幣名稱，僅限大寫. 如果沒有指定 `currency` 參數，則返回所有貨幣自動還款模式。  
   
+* * *
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-currency| string| 幣名稱，僅限大寫  
-maxLoan| string| 最高可藉金額  
-  
-* * *
+data| array| Object  
+> currency| string| 幣名稱，僅限大寫.  
+> autoRepayMode| string| 
 
+  * `1`: 開啟
+  * `0`: 關閉
+
+  
+  
 ### 請求示例
 
   * HTTP
@@ -105,12 +126,14 @@ maxLoan| string| 最高可藉金額
 
     
     
-    GET /v5/spot-margin-trade/max-borrowable?currency=BTC HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
     
     
     
@@ -128,9 +151,13 @@ maxLoan| string| 最高可藉金額
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "maxLoan": "17.54689892",  
-            "currency": "BTC"  
+            "data": [  
+                {  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
+                }  
+            ]  
         },  
         "retExtInfo": {},  
-        "time": 1756261353733  
+        "time": 1766977353904  
     }

@@ -2,37 +2,38 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-contract-info
 api_type: REST
-updated_at: 2026-06-16 19:51:59.261469
+updated_at: 2026-06-17 19:27:23.462199
 ---
 
-# Get Fixed-Rate Borrow Order Quote
+# Get Auto Repay Mode
+
+Get spot automatic repayment mode
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/fixedborrow-order-quote`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderCurrency| **true**|  string| Coin name  
-term| false| string| Fixed term. `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-orderBy| false| string| Sort field. `apy`: annual rate; `term`: term; `quantity`: quantity  
-sort| false| integer| Sort direction. `0`: ascending (default); `1`: descending  
-limit| false| integer| Limit for data size per page. [1, 100]. Default: `10`  
+currency| false| string| Coin name, uppercase only. If `currency` is not passed, automatic repay mode for all currencies will be returned.  
   
+* * *
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| Coin name  
-> term| integer| Fixed term. `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
-> annualRate| string| Annual rate  
-> qty| string| Quantity  
-  
-* * *
+data| array| Object  
+> currency| string| Coin name, uppercase only.  
+> autoRepayMode| string| 
 
+  * `1`: On
+  * `0`: Off
+
+  
+  
 ### Request Example
 
   * HTTP
@@ -42,12 +43,13 @@ list| array| Object
 
     
     
-    GET /v5/spot-margin-trade/fixedborrow-order-quote?orderCurrency=ETH&orderBy=apy&limit=10 HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
     
     
     
@@ -57,10 +59,8 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_fixed_borrow_order_quote(  
-        orderCurrency="ETH",  
-        orderBy="apy",  
-        limit=10  
+    print(session.get_auto_repay_mode(  
+        currency="ETH"  
     ))  
     
     
@@ -73,75 +73,50 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "Success",  
         "result": {  
-            "list": [  
+            "data": [  
                 {  
-                    "orderCurrency": "ETH",  
-                    "term": 30,  
-                    "annualRate": "0.026",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 60,  
-                    "annualRate": "0.033",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 90,  
-                    "annualRate": "0.038",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 30,  
-                    "annualRate": "0.1",  
-                    "qty": "0.6"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 60,  
-                    "annualRate": "0.1",  
-                    "qty": "0.1"  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1775617874744  
+        "time": 1766977353904  
     }
 
 ---
 
-# 查詢固定利率借款掛單報價
+# 獲取現貨自動還款模式
+
+獲取現貨自動還款模式
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/fixedborrow-order-quote`
+GET`/v5/spot-margin-trade/get-auto-repay-mode`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderCurrency| **true**|  string| 幣種名稱  
-term| false| string| 借款期限。`7`：7天；`14`：14天；`30`：30天；`90`：90天；`180`：180天  
-orderBy| false| string| 排序字段。`apy`：年化利率；`term`：期限；`quantity`：數量  
-sort| false| integer| 排序方向。`0`：升序（默認）；`1`：降序  
-limit| false| integer| 每頁返回數量，[1, 100]，默認：`10`  
+currency| false| string| 幣名稱，僅限大寫. 如果沒有指定 `currency` 參數，則返回所有貨幣自動還款模式。  
   
+* * *
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> orderCurrency| string| 幣種名稱  
-> term| integer| 借款期限。`7`：7天；`14`：14天；`30`：30天；`90`：90天；`180`：180天  
-> annualRate| string| 年化利率  
-> qty| string| 數量  
-  
-* * *
+data| array| Object  
+> currency| string| 幣名稱，僅限大寫.  
+> autoRepayMode| string| 
 
+  * `1`: 開啟
+  * `0`: 關閉
+
+  
+  
 ### 請求示例
 
   * HTTP
@@ -151,12 +126,14 @@ list| array| Object
 
     
     
-    GET /v5/spot-margin-trade/fixedborrow-order-quote?orderCurrency=ETH&orderBy=apy&limit=10 HTTP/1.1  
-    Host: api.bybit.com  
+    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
+    Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1692696840996  
+    X-BAPI-TIMESTAMP: 1672299806626  
     X-BAPI-RECV-WINDOW: 5000  
+    Content-Type: application/json  
+      
     
     
     
@@ -172,41 +149,15 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
+        "retMsg": "Success",  
         "result": {  
-            "list": [  
+            "data": [  
                 {  
-                    "orderCurrency": "ETH",  
-                    "term": 30,  
-                    "annualRate": "0.026",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 60,  
-                    "annualRate": "0.033",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 90,  
-                    "annualRate": "0.038",  
-                    "qty": "0.1"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 30,  
-                    "annualRate": "0.1",  
-                    "qty": "0.6"  
-                },  
-                {  
-                    "orderCurrency": "ETH",  
-                    "term": 60,  
-                    "annualRate": "0.1",  
-                    "qty": "0.1"  
+                    "autoRepayMode": "1",  
+                    "currency": "ETH"  
                 }  
             ]  
         },  
         "retExtInfo": {},  
-        "time": 1775617874744  
+        "time": 1766977353904  
     }

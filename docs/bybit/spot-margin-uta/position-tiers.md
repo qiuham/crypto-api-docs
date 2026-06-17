@@ -2,30 +2,28 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/position-tiers
 api_type: REST
-updated_at: 2026-06-16 19:52:10.839644
+updated_at: 2026-06-17 19:27:31.649687
 ---
 
-# Get Status And Leverage
-
-Query the Spot margin status and leverage
+# Get Available Amount to Repay
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/state`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+currency| **true**|  string| Coin name, uppercase only  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-spotLeverage| string| Spot margin leverage. Returns `""` if the margin trade is turned off  
-spotMarginMode| string| Spot margin status. `1`: on, `0`: off  
-effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal places, truncate downwards  
-[](/docs/api-explorer/v5/spot-margin-uta/status)
-
+currency| string| Coin name, uppercase only  
+lossLessRepaymentAmount| string| Repayment amount = min(spot coin available balance, coin borrow amount)  
+  
 * * *
 
 ### Request Example
@@ -37,7 +35,7 @@ effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal pl
 
     
     
-    GET /v5/spot-margin-trade/state HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -52,26 +50,13 @@ effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal pl
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_status_and_leverage())  
+    print(session.spot_margin_trade_get_repayment_available_amount(  
+        currency="BTC"  
+    ))  
     
     
     
-    const { RestClientV5 } = require('bybit-api');  
       
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getSpotMarginState()  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### Response Example
@@ -79,40 +64,38 @@ effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal pl
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "spotLeverage": "10",  
-            "spotMarginMode": "1",  
-            "effectiveLeverage": "1"  
+            "lossLessRepaymentAmount": "0.02000000",  
+            "currency": "BTC"  
         },  
         "retExtInfo": {},  
-        "time": 1692696841231  
+        "time": 1756273388821  
     }
 
 ---
 
-# 查詢開關狀態和倍數
-
-查詢統一帳戶下槓桿交易的開關狀態和槓桿倍數
-
-> **覆蓋範圍: 全倉槓桿 (統一帳戶)**
+# 查詢負債幣種可還款金額
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/state`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### 請求參數
 
-無
-
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+currency| **true**|  string| 幣名稱，僅限大寫  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-spotLeverage| string| 槓桿倍數. 如果處於關閉狀態的話, 則返回 `""`  
-spotMarginMode| string| 開關狀態. `1`: 開啟, `0`: 關閉  
-effectiveLeverage| string| 實際借貸槓桿倍數。 精度保留2位小數，向下截取  
+currency| string| 幣名稱，僅限大寫  
+lossLessRepaymentAmount| string| 還款金額=min(現貨幣可用餘額，借幣金額)  
   
+* * *
+
 ### 請求示例
 
   * HTTP
@@ -122,7 +105,7 @@ effectiveLeverage| string| 實際借貸槓桿倍數。 精度保留2位小數，
 
     
     
-    GET /v5/spot-margin-trade/state HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -135,22 +118,7 @@ effectiveLeverage| string| 實際借貸槓桿倍數。 精度保留2位小數，
     
     
     
-    const { RestClientV5 } = require('bybit-api');  
       
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .getSpotMarginState()  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### 響應示例
@@ -158,12 +126,11 @@ effectiveLeverage| string| 實際借貸槓桿倍數。 精度保留2位小數，
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "spotLeverage": "10",  
-            "spotMarginMode": "1",  
-            "effectiveLeverage": "1"  
+            "lossLessRepaymentAmount": "0.02000000",  
+            "currency": "BTC"  
         },  
         "retExtInfo": {},  
-        "time": 1692696841231  
+        "time": 1756273388821  
     }

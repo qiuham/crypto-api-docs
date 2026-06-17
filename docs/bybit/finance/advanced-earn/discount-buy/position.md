@@ -2,135 +2,66 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/discount-buy/position
 api_type: REST
-updated_at: 2026-06-16 19:47:18.602479
+updated_at: 2026-06-17 19:22:35.015843
 ---
 
-# Place Order
+# Get Position Info
 
 info
 
   * Requires Earn permission on the API key.
-  * The order is processed asynchronously. A successful response means the order has been accepted, not settled. Use [Get Order Info](/docs/v5/finance/advanced-earn/double-win/order) to track the order status (`Pending` → `Success`).
-  * `orderLinkId` is used for idempotency — resubmitting the same `orderLinkId` returns an error indicating the order already exists.
-  * **Stake** : must pass `doubleWinStakeExtra`. For fixed range products, use the `leverage` from [Get Fixed Product Quote](/docs/v5/finance/advanced-earn/double-win/product-quote). For RFQ products, use the `leverage` from [Get Custom Product Quote](/docs/v5/finance/advanced-earn/double-win/leverage) and include `lowerPrice` / `upperPrice`. The order must be placed before the quote's `expireTime`.
-  * **Redeem** : must call [Get Redeem Estimated Amount](/docs/v5/finance/advanced-earn/double-win/est-redeem) first to obtain `estRedeemAmount`, then pass it in `doubleWinRedeemExtra`.
+  * Returns active positions only. Settled positions are not returned.
+  * MNT positions are not included in the response.
 
 
 
 ### HTTP Request
 
-POST`/v5/earn/advance/place-order`
+GET`/v5/earn/advance/position`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| **true**|  string| Product category. `DoubleWin`  
-productId| **true**|  string| Product ID  
-orderType| **true**|  string| `Stake`: subscribe; `Redeem`: early redemption  
-amount| false| string| Order amount. **Required** for `Stake`  
-accountType| **true**|  string| Account type: `FUND` or `UNIFIED`. Not required for `Redeem`  
-coin| **true**|  string| Coin name, e.g. `USDT`. Not required for `Redeem`  
-orderLinkId| **true**|  string| User customised order ID (max 36 characters, alphanumeric and `_-`)  
-doubleWinStakeExtra| false| Object| Required when `orderType=Stake`  
-> leverage| **true**|  string| Leverage multiplier obtained from [Get Fixed Product Quote](/docs/v5/finance/advanced-earn/double-win/product-quote) or [Get Custom Product Quote](/docs/v5/finance/advanced-earn/double-win/leverage). Maximum 2 decimal places, must not exceed the quoted maximum  
-> initialPrice| **true**|  string| Current index price of the underlying asset at order time. Recommend using `currentPrice` from [Get Fixed Product Quote](/docs/v5/finance/advanced-earn/double-win/product-quote)  
-> lowerPrice| false| string| **RFQ only.** Custom lower bound of price range. Must match the value used in [Get Custom Product Quote](/docs/v5/finance/advanced-earn/double-win/leverage)  
-> upperPrice| false| string| **RFQ only.** Custom upper bound of price range. Must match the value used in [Get Custom Product Quote](/docs/v5/finance/advanced-earn/double-win/leverage)  
-doubleWinRedeemExtra| false| Object| Required when `orderType=Redeem`  
-> positionId| **true**|  string| Position ID to redeem, obtained from [Get Position Info](/docs/v5/finance/advanced-earn/double-win/position)  
-> estRedeemAmount| **true**|  string| Estimated redeem amount from [Get Redeem Estimated Amount](/docs/v5/finance/advanced-earn/double-win/est-redeem)  
-> isSlippageProtected| false| bool| Whether to enable slippage protection. Default: `false`. If enabled, the order fails when the actual redeem amount deviates significantly from `estRedeemAmount`  
+category| **true**|  string| Product category. `DiscountBuy`  
+productId| false| string| Filter by product ID  
+coin| false| string| Filter by underlying coin, e.g. `USDT`  
+limit| false| int| Number of items per page  
+cursor| false| string| Pagination cursor. Use `nextPageCursor` from previous response  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-orderId| string| System-generated order ID  
-orderLinkId| string| User customised order ID  
+nextPageCursor| string| Cursor for the next page. Empty string if no more data  
+list| array| Object  
+> positionId| string| Position ID  
+> productId| string| Product ID  
+> category| string| Product category. `DiscountBuy`  
+> coin| string| Investment coin, e.g. `USDT`  
+> underlyingAsset| string| Underlying asset, e.g. `BTC`, `ETH`  
+> amount| string| Investment amount  
+> purchasePrice| string| Anchor buy price locked at order time  
+> knockoutPrice| string| Knockout price  
+> knockoutCouponE8| string| Annualized interest rate in e8 precision. Actual rate = `knockoutCouponE8` / 1e8  
+> status| string| Position status: `Active` (holding); `Settling` (settlement in progress)  
+> orderId| string| Associated order ID  
+> duration| string| Product duration, e.g. `7d`  
+> settlementTime| string| Settlement time, Unix timestamp in ms  
+> accountType| string| Deduction account: `FUND` or `UNIFIED`  
+> toAccountType| string| Settlement credit account. Always `FUND`  
+> settleType| string| Settlement preference when exercised: `Base` = receive underlying asset; `Quote` = receive USDT. Has no effect upon knockout  
+> expectReceiveAt| string| Expected settlement credit time, Unix timestamp in ms. Equal to `settlementTime` \+ 15 minutes  
   
-* * *
-
 ### Request Example
-
-**Stake (Fixed Range)**
     
     
-     POST /v5/earn/advance/place-order HTTP/1.1  
+    GET /v5/earn/advance/position?category=DiscountBuy&productId=7037 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
+    X-BAPI-TIMESTAMP: 1713600000000  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14084",  
-        "coin": "USDT",  
-        "amount": "150",  
-        "orderType": "Stake",  
-        "accountType": "FUND",  
-        "orderLinkId": "usdt-earn-009",  
-        "doubleWinStakeExtra": {  
-            "initialPrice": "66445.69",  
-            "leverage": "9"  
-        }  
-    }  
-    
-
-**Stake (RFQ Custom Range)**
-    
-    
-     POST /v5/earn/advance/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14084",  
-        "coin": "USDT",  
-        "amount": "150",  
-        "orderType": "Stake",  
-        "accountType": "FUND",  
-        "orderLinkId": "usdt-earn-009",  
-        "doubleWinStakeExtra": {  
-            "initialPrice": "66445.69",  
-            "leverage": "9"  
-        }  
-    }  
-    
-
-**Redeem**
-    
-    
-     POST /v5/earn/advance/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14092",  
-        "coin": "USDT",  
-        "amount": "200",  
-        "orderType": "Stake",  
-        "accountType": "FUND",  
-        "orderLinkId": "usdt-earn-010",  
-        "doubleWinStakeExtra": {  
-            "initialPrice": "66333.94",  
-            "lowerPrice": "63000",  
-            "upperPrice": "70000",  
-            "leverage": "245.18"  
-        }  
-    }  
     
 
 ### Response Example
@@ -140,139 +71,93 @@ orderLinkId| string| User customised order ID
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "orderId": "05184c23-8a98-456c-a2af-0ef1c45116cc",  
-            "orderLinkId": "usdt-earn-009"  
+            "category": "",  
+            "list": [  
+                {  
+                    "positionId": "11959",  
+                    "productId": "7037",  
+                    "category": "DiscountBuy",  
+                    "coin": "USDT",  
+                    "underlyingAsset": "BTC",  
+                    "amount": "200",  
+                    "purchasePrice": "74019",  
+                    "knockoutPrice": "76050",  
+                    "knockoutCouponE8": "1000000",  
+                    "status": "Active",  
+                    "orderId": "38f6f5ce-57e2-4d69-b4d3-c39464389ccb",  
+                    "duration": "1d",  
+                    "settlementTime": "1776240000000",  
+                    "accountType": "FUND",  
+                    "toAccountType": "FUND",  
+                    "settleType": "Base",  
+                    "expectReceiveAt": "1776240900000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         },  
         "retExtInfo": {},  
-        "time": 1775107011430  
+        "time": 1776154219022  
     }
 
 ---
 
-# 創建訂單
+# 查詢倉位資訊
 
 信息
 
   * API 金鑰需要具備 Earn（理財）權限。
-  * 訂單採非同步處理。響應成功僅代表訂單已被接受，而非已結算。請使用[查詢訂單資訊](/docs/zh-TW/v5/finance/advanced-earn/double-win/order)來追蹤訂單狀態（`Pending` → `Success`）。
-  * `orderLinkId` 用於保證冪等性——重複提交相同的 `orderLinkId` 時，系統將返回訂單已存在的錯誤。
-  * **申購（Stake）** ：必須傳入 `doubleWinStakeExtra`。固定區間產品請使用[查詢固定產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/product-quote)中的 `leverage`；RFQ 產品請使用[查詢自選區間產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/leverage)中的 `leverage`，並傳入 `lowerPrice` 和 `upperPrice`。須在報價的 `expireTime` 前完成下單。
-  * **贖回（Redeem）** ：必須先調用[查詢贖回預估金額](/docs/zh-TW/v5/finance/advanced-earn/double-win/est-redeem)獲取 `estRedeemAmount`，再透過 `doubleWinRedeemExtra` 傳入。
+  * 僅返回持倉中的倉位，已結算倉位不會包含在內。
+  * 返回數據不包含 MNT 倉位。
 
 
 
 ### HTTP 請求
 
-POST`/v5/earn/advance/place-order`
+GET`/v5/earn/advance/position`
 
 ### 請求參數
 
 參數| 必填| 類型| 說明  
 ---|---|---|---  
-category| **true**|  string| 產品類別，`DoubleWin`  
-productId| **true**|  string| 產品 ID  
-orderType| **true**|  string| 訂單類型：`Stake`（申購），`Redeem`（提前贖回）  
-amount| false| string| 訂單金額。`Stake` 訂單必填  
-accountType| **true**|  string| 帳戶類型：`FUND`（資金帳戶），`UNIFIED`（統一帳戶）。`Redeem` 訂單無需填寫  
-coin| **true**|  string| 幣種名稱，例如：`USDT`。`Redeem` 訂單無需填寫  
-orderLinkId| **true**|  string| 用戶自定義訂單 ID（最多 36 個字元，支援英數字及 `_-`）  
-doubleWinStakeExtra| false| Object| `orderType=Stake` 時必填  
-> leverage| **true**|  string| 槓桿倍數，從[查詢固定產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/product-quote)或[查詢自選區間產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/leverage)獲取。最多 2 位小數，不可超過報價返回的最大值  
-> initialPrice| **true**|  string| 下單時的標的資產指數價格。建議使用[查詢固定產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/product-quote)返回的 `currentPrice`  
-> lowerPrice| false| string| **僅 RFQ 產品需填寫。** 自選價格區間下限，須與[查詢自選區間產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/leverage)中使用的值一致  
-> upperPrice| false| string| **僅 RFQ 產品需填寫。** 自選價格區間上限，須與[查詢自選區間產品報價](/docs/zh-TW/v5/finance/advanced-earn/double-win/leverage)中使用的值一致  
-doubleWinRedeemExtra| false| Object| `orderType=Redeem` 時必填  
-> positionId| **true**|  string| 要贖回的倉位 ID，從[查詢倉位資訊](/docs/zh-TW/v5/finance/advanced-earn/double-win/position)獲取  
-> estRedeemAmount| **true**|  string| 預估贖回金額，從[查詢贖回預估金額](/docs/zh-TW/v5/finance/advanced-earn/double-win/est-redeem)獲取  
-> isSlippageProtected| false| bool| 是否啟用贖回滑點保護。預設值：`false`。啟用後，當實際贖回金額與 `estRedeemAmount` 偏差過大時，贖回訂單將失敗  
+category| **true**|  string| 產品類別，`DiscountBuy`  
+productId| false| string| 按產品 ID 篩選  
+coin| false| string| 按標的資產篩選，例如：`BTC`  
+limit| false| int| 每頁返回數量  
+cursor| false| string| 分頁游標，使用上次響應中的 `nextPageCursor`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-orderId| string| 系統生成的訂單 ID  
-orderLinkId| string| 用戶自定義訂單 ID  
+nextPageCursor| string| 下一頁游標，為空字串表示無更多資料  
+list| array| 列表  
+> positionId| string| 倉位 ID  
+> productId| string| 產品 ID  
+> category| string| 產品類別，`DiscountBuy`  
+> coin| string| 投資幣種，例如：`USDT`  
+> underlyingAsset| string| 標的資產，例如：`BTC`, `ETH`  
+> amount| string| 投資金額  
+> purchasePrice| string| 下單時鎖定的錨定買入價  
+> knockoutPrice| string| 敲出價  
+> knockoutCouponE8| string| 年化息率（e8 精度），實際利率 = `knockoutCouponE8` / 1e8  
+> status| string| 倉位狀態：`Active`（持倉中），`Settling`（結算處理中）  
+> orderId| string| 關聯訂單 ID  
+> duration| string| 產品期限，例如：`7d`  
+> settlementTime| string| 結算時間，毫秒級 Unix 時間戳  
+> accountType| string| 扣款帳戶：`FUND`（資金帳戶），`UNIFIED`（統一帳戶）  
+> toAccountType| string| 結算入帳帳戶，固定為 `FUND`  
+> settleType| string| 行權結算方式：`Base` = 收取標的資產；`Quote` = 收取 USDT。敲出時此參數無效  
+> expectReceiveAt| string| 預計到帳時間，毫秒級 Unix 時間戳，等於 `settlementTime` \+ 15 分鐘  
   
-* * *
-
 ### 請求示例
-
-**申購（固定區間）**
     
     
-     POST /v5/earn/advance/place-order HTTP/1.1  
+    GET /v5/earn/advance/position?category=DiscountBuy&productId=7037 HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
+    X-BAPI-TIMESTAMP: 1776154219022  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14084",  
-        "coin": "USDT",  
-        "amount": "150",  
-        "orderType": "Stake",  
-        "accountType": "FUND",  
-        "orderLinkId": "usdt-earn-009",  
-        "doubleWinStakeExtra": {  
-            "initialPrice": "66445.69",  
-            "leverage": "9"  
-        }  
-    }  
-    
-
-**申購（RFQ 自選區間）**
-    
-    
-     POST /v5/earn/advance/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14092",  
-        "coin": "USDT",  
-        "amount": "200",  
-        "orderType": "Stake",  
-        "accountType": "FUND",  
-        "orderLinkId": "usdt-earn-010",  
-        "doubleWinStakeExtra": {  
-            "initialPrice": "66333.94",  
-            "lowerPrice": "63000",  
-            "upperPrice": "70000",  
-            "leverage": "245.18"  
-        }  
-    }  
-    
-
-**贖回（Redeem）**
-    
-    
-     POST /v5/earn/advance/place-order HTTP/1.1  
-    Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672211928338  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "category": "DoubleWin",  
-        "productId": "14084",  
-        "orderType": "Redeem",  
-        "orderLinkId": "usdt-redeem-001",  
-        "doubleWinRedeemExtra": {  
-            "positionId": "2848",  
-            "estRedeemAmount": "148.50",  
-            "isSlippageProtected": true  
-        }  
-    }  
     
 
 ### 響應示例
@@ -282,9 +167,30 @@ orderLinkId| string| 用戶自定義訂單 ID
         "retCode": 0,  
         "retMsg": "",  
         "result": {  
-            "orderId": "05184c23-8a98-456c-a2af-0ef1c45116cc",  
-            "orderLinkId": "usdt-earn-009"  
+            "category": "",  
+            "list": [  
+                {  
+                    "positionId": "11959",  
+                    "productId": "7037",  
+                    "category": "DiscountBuy",  
+                    "coin": "USDT",  
+                    "underlyingAsset": "BTC",  
+                    "amount": "200",  
+                    "purchasePrice": "74019",  
+                    "knockoutPrice": "76050",  
+                    "knockoutCouponE8": "1000000",  
+                    "status": "Active",  
+                    "orderId": "38f6f5ce-57e2-4d69-b4d3-c39464389ccb",  
+                    "duration": "1d",  
+                    "settlementTime": "1776240000000",  
+                    "accountType": "FUND",  
+                    "toAccountType": "FUND",  
+                    "settleType": "Base",  
+                    "expectReceiveAt": "1776240900000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
         },  
         "retExtInfo": {},  
-        "time": 1775107011430  
+        "time": 1776154219022  
     }

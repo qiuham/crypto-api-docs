@@ -2,62 +2,64 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-sub-apikey
 api_type: REST
-updated_at: 2026-06-16 19:53:03.809800
+updated_at: 2026-06-17 19:28:28.300123
 ---
 
-# Sign Agreement
+# Get UID Wallet Type
 
-To trade commodity contracts, please complete the agreement signing first. Once completed, you will be able to trade all metals commodity contracts.
+Get available wallet types for the master account or sub account
 
-info
+tip
 
-  * Only the master account can sign the agreement via this endpoint. Subaccounts are not supported for this action.
-  * Once the master account has signed, all subaccounts will be eligible to trade.
-  * The API key must have at least one of the following permissions to call this endpoint: Account Transfer, Subaccount Transfer, or Withdrawal.
+  * Master api key: you can get master account and appointed sub account available wallet types, and support up to 200 sub UID in one request.
+  * Sub api key: you can get its own available wallet types
 
 
 
 ### HTTP Request
 
-POST`/v5/user/agreement`
+GET`/v5/user/get-member-type`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-category| false| integer| `2`: Metals commodity contracts (XAU & XAG). Stock perps share this agreement  
-`3`: Crude oil commodity contract  
- _Either`category` or `categoryV2` is required. This field remains supported, but new enum values will no longer be added here — use `categoryV2` instead._  
-categoryV2| false| integer| `1`: Metals commodity contracts (XAU & XAG). Stock perps share this agreement  
-`2`: Crude oil commodity contract  
- _Either`category` or `categoryV2` is required. Recommend using this field; new enum values will be added here going forward._  
-agree| **true**|  boolean| `true`  
+memberIds| false| string| 
+
+  * Query itself wallet types when not passed
+  * When use master api key to query sub UID, master UID data is always returned in the top of the array
+  * Multiple sub UID are supported, separated by commas
+  * This param is ignored when you use sub account api key
+
+  
   
 ### Response Parameters
 
-None
+Parameter| Type| Comments  
+---|---|---  
+accounts| array| Object  
+> uid| string| Master/Sub user Id  
+> [accountType](/docs/v5/enum#accounttype)| array| Wallets array. `FUND`,`UNIFIED`  
+[](/docs/api-explorer/v5/user/wallet-type)
+
+* * *
 
 ### Request Example
 
   * HTTP
   * Python
+  * Node.js
 
 
     
     
-    POST /v5/user/agreement HTTP/1.1  
+    GET /v5/user/get-member-type HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
-    X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1772695036541  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1686884973961  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 40  
-      
-    {  
-        "agree": true,  
-        "categoryV2": 2  
-    }  
     
     
     
@@ -67,10 +69,32 @@ None
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.sign_agreement(  
-        category=2,  
-        agree=True  
+    print(session.get_uid_wallet_type(  
+        memberIds="subUID1,subUID2"  
     ))  
+    
+    
+    
+    // https://api.bybit.com/v5/user/get-member-type  
+      
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getUIDWalletType({  
+        memberIds: 'subUID1,subUID2',  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### Response Example
@@ -78,61 +102,119 @@ None
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
-        "result": {},  
+        "retMsg": "",  
+        "result": {  
+            "accounts": [  
+                {  
+                    "uid": "533285",  
+                    "accountType": [  
+                        "UNIFIED",  
+                        "FUND"  
+                    ]  
+                }  
+            ]  
+        },  
         "retExtInfo": {},  
-        "time": 1772695037330  
+        "time": 1686884974151  
     }
 
 ---
 
-# 簽署協議
+# 查詢帳戶支持的錢包類型
 
-通過該接口, 您可以完成貴金融合約協議的簽署, 只有在完成簽署後, 才能進行交易貴金屬合約
+查詢母帳戶或者子帳戶下支持的錢包類型
 
-信息
+提示
 
-  * 請使用母帳戶調用接口, 子帳戶不支持。一旦母帳戶簽署後，所有子帳戶都可以交易
-  * API key權限需要擁有其中之一"帳戶劃轉, 母子帳戶劃轉, 提幣"
+  * 使用母帳戶api key: 您可以查詢到母帳戶以及指定的子帳戶的錢包類型, 子帳戶的uid最多單次可查詢200個.
+  * 使用子帳戶api key: 僅能查詢自身的錢包類型
+
+
+
+最佳實踐
+
+"FUND" - 這個資金錢包, 如果您從未存入或者轉入過資金, 該接口返回的數組裡將不會呈現該枚舉值, 但實際上您的帳戶總是擁有該錢包.
+
+  * `["SPOT","OPTION","FUND","CONTRACT"]` : 經典帳戶並且資金錢包曾經操作過
+  * `["SPOT","OPTION","CONTRACT"]` : 經典帳戶並且資金錢包不曾操作過
+  * `["SPOT","UNIFIED","FUND","CONTRACT"]` : UMA帳戶並且資金錢包曾經操作過. (等強制或主動升級到UTA後, 就沒有UMA帳戶的概念了)
+  * `["SPOT","UNIFIED","CONTRACT"]` : UMA帳戶並且資金錢包不曾操作過. (等強制或主動升級到UTA後, 就沒有UMA帳戶的概念了)
+  * `["UNIFIED""FUND","CONTRACT"]` : UTA帳戶並且資金錢包曾經操作過
+  * `["UNIFIED","CONTRACT"]` : UTA帳戶並且資金錢包不曾操作過
 
 
 
 ### HTTP 請求
 
-POST`/v5/user/agreement`
+GET`/v5/user/get-member-type`
 
 ### 請求參數
 
 參數| 是否必須| 類型| 說明  
 ---|---|---|---  
-category| false| integer| `2`: 貴金屬(黃金、白銀)合約協議，股票永續合約共用此協議  
-`3`: 原油合約協議  
- _`category` 與 `categoryV2` 二選一必傳。該字段仍然可用，但後續新增的枚舉值將不再添加至此字段，請使用 `categoryV2`。_  
-categoryV2| false| integer| `1`: 貴金屬(黃金、白銀)合約協議，股票永續合約共用此協議  
-`2`: 原油合約協議  
- _`category` 與 `categoryV2` 二選一必傳。建議使用此字段，後續新增的枚舉值將統一添加至此字段。_  
-agree| **true**|  boolean| `true`  
+memberIds| false| string| 
+
+  * 不入参時, 僅查詢自身
+  * 當使用母帳戶api key查詢子uid時, 母帳戶的數據總是返回且在數組的第一個
+  * 支持輸入多個子uid, 用逗號隔開, 單次查詢最多支持200個
+  * 子帳戶api key查詢時, 該入参將會被忽略
+
+  
   
 ### 返回參數
 
-無
+參數| 類型| 說明  
+---|---|---  
+accounts| array| Object  
+> uid| string| 母/子 uid  
+> [accountType](/docs/zh-TW/v5/enum#accounttype)| array| `SPOT`, `CONTRACT`, `FUND`, `OPTION`, `UNIFIED`. 請查閱上面的最佳實踐來理解返回的值  
+[](/docs/zh-TW/api-explorer/v5/user/wallet-type)
+
+* * *
 
 ### 請求示例
+
+  * HTTP
+  * Python
+  * Node.js
+
+
     
     
-    POST /v5/user/agreement HTTP/1.1  
+    GET /v5/user/get-member-type HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXXX  
-    X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1772695036541  
+    X-BAPI-SIGN: XXXXX  
+    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
+    X-BAPI-TIMESTAMP: 1686884973961  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 40  
+    
+    
+    
       
-    {  
-        "agree": true,  
-        "categoryV2": 2  
-    }  
+    
+    
+    
+    // https://api.bybit.com/v5/user/get-member-type  
+      
+    const { RestClientV5 } = require('bybit-api');  
+      
+    const client = new RestClientV5({  
+      testnet: true,  
+      key: 'xxxxxxxxxxxxxxxxxx',  
+      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
+    });  
+      
+    client  
+      .getUIDWalletType({  
+        memberIds: 'subUID1,subUID2',  
+      })  
+      .then((response) => {  
+        console.log(response);  
+      })  
+      .catch((error) => {  
+        console.error(error);  
+      });  
     
 
 ### 響應示例
@@ -140,8 +222,20 @@ agree| **true**|  boolean| `true`
     
     {  
         "retCode": 0,  
-        "retMsg": "success",  
-        "result": {},  
+        "retMsg": "",  
+        "result": {  
+            "accounts": [  
+                {  
+                    "uid": "24617703",  
+                    "accountType": [  
+                        "SPOT",  
+                        "OPTION",  
+                        "FUND",  
+                        "CONTRACT"  
+                    ]  
+                }  
+            ]  
+        },  
         "retExtInfo": {},  
-        "time": 1772695037330  
+        "time": 1686895670002  
     }

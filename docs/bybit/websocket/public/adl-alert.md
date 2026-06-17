@@ -2,49 +2,35 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/adl-alert
 api_type: WebSocket
-updated_at: 2026-06-16 19:53:21.975754
+updated_at: 2026-06-17 19:28:43.298798
 ---
 
-# Order Price Limit
+# All Liquidation
 
-Subscribe to Get Order Price Limit.
+Subscribe to the liquidation stream, push all liquidations that occur on Bybit.
 
-For derivative trading order price limit, refer to [announcement](https://announcements.bybit.com/en/article/update-contract-price-limit-enhancement-bltf9ebdcebe3089641/)  
-For spot trading order price limit, refer to [announcement](https://announcements.bybit.com/en/article/title-adjustments-to-bybit-s-spot-trading-limit-order-mechanism-blt786c0c5abf865983/)  
+> **Covers: USDT contract / USDC contract / Inverse contract**
 
-
-Push frequency: **300ms**
+Push frequency: **500ms**
 
 **Topic:**  
-`priceLimit.{symbol}`  
-
+`allLiquidation.{symbol}` e.g., allLiquidation.BTCUSDT
 
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
 topic| string| Topic name  
+type| string| Data type. `snapshot`  
 ts| number| The timestamp (ms) that the system generates the data  
-data| array| Object.  
-> symbol| string| Symbol name  
-> buyLmt| string| Highest Bid Price  
-> sellLmt| string| Lowest Ask Price  
+data| Object|   
+> T| number| The updated timestamp (ms)  
+> s| string| Symbol name  
+> S| string| Position side. `Buy`,`Sell`. When you receive a `Buy` update, this means that a long position has been liquidated  
+> v| string| Executed size  
+> p| string| [Bankruptcy price](https://www.bybit.com/en-US/help-center/s/article/Bankruptcy-Price-USDT-Contract)  
   
 ### Subscribe Example
-
-  * JSON
-  * Python
-
-
-    
-    
-    {  
-        "op": "subscribe",  
-        "args": [  
-            "priceLimit.BTCUSDT"  
-        ]  
-    }  
-    
     
     
     from pybit.unified_trading import WebSocket  
@@ -55,10 +41,7 @@ data| array| Object.
     )  
     def handle_message(message):  
         print(message)  
-    ws.price_limit_stream(  
-        symbol="BTCUSDT",  
-        callback=handle_message  
-    )  
+    ws.all_liquidation_stream("ROSEUSDT", handle_message)  
     while True:  
         sleep(1)  
     
@@ -67,55 +50,52 @@ data| array| Object.
     
     
     {  
-        "topic": "priceLimit.BTCUSDT",  
-        "data": {  
-            "symbol": "BTCUSDT",  
-            "buyLmt": "114450.00",  
-            "sellLmt": "103550.00"  
-        },  
-        "ts": 1750059683782  
+        "topic": "allLiquidation.ROSEUSDT",  
+        "type": "snapshot",  
+        "ts": 1739502303204,  
+        "data": [  
+            {  
+                "T": 1739502302929,  
+                "s": "ROSEUSDT",  
+                "S": "Sell",  
+                "v": "20000",  
+                "p": "0.04499"  
+            }  
+        ]  
     }
 
 ---
 
-# 訂單價格限制
+# 完整強平推送
 
-訂閱訂單價格限制的推送.  
-衍生性商品交易訂單價格限制，請參考[公告](https://announcements.bybit.com/en/article/update-contract-price-limit-enhancement-bltf9ebdcebe3089641/)  
-現貨交易訂單價格限制，請參考[公告](https://announcements.bybit.com/en/article/title-adjustments-to-bybit-s-spot-trading-limit-order-mechanism-blt786c0c5abf865983/)  
+訂閱Bybit平台上的強平推送
 
+> **覆蓋範圍: USDT永續 / USDT交割 / USDC永續 / USDC交割 / 反向合約**
 
-推送頻率: **300毫秒**
+推送頻率: **500毫秒**
 
 **Topic:**  
-`priceLimit.{symbol}`
+`allLiquidation.{symbol}` e.g., allLiquidation.BTCUSDT
 
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
 topic| string| Topic名  
+type| string| 數據類型. `snapshot`  
 ts| number| 行情服務生成數據的時間戳 (毫秒)  
-data| array| Object.  
-> symbol| string| 合約名稱  
-> buyLmt| string| 最高買價  
-> sellLmt| string| 最低賣價  
+data| Object|   
+> T| number| 數據更新時間戳 (毫秒)  
+> s| string| 合約名稱  
+> S| string| 被平的倉位方向. `Buy`,`Sell`
+
+  * 如果您收到一條Buy的推送更新, 則表明有一個多倉被強平了
+
+  
+> v| string| 成交數量  
+> p| string| 破產價格  
   
 ### 訂閱示例
-
-  * JSON
-  * Python
-
-
-    
-    
-    {  
-        "op": "subscribe",  
-        "args": [  
-            "priceLimit.BTCUSDT"  
-        ]  
-    }  
-    
     
     
     from pybit.unified_trading import WebSocket  
@@ -126,23 +106,25 @@ data| array| Object.
     )  
     def handle_message(message):  
         print(message)  
-    ws.price_limit_stream(  
-        symbol="BTCUSDT",  
-        callback=handle_message  
-    )  
+    ws.all_liquidation_stream("ROSEUSDT", handle_message)  
     while True:  
         sleep(1)  
     
 
-### 響應示例
+### 消息示例
     
     
     {  
-        "topic": "priceLimit.BTCUSDT",  
-        "data": {  
-            "symbol": "BTCUSDT",  
-            "buyLmt": "114450.00",  
-            "sellLmt": "103550.00"  
-        },  
-        "ts": 1750059683782  
+        "topic": "allLiquidation.ROSEUSDT",  
+        "type": "snapshot",  
+        "ts": 1739502303204,  
+        "data": [  
+            {  
+                "T": 1739502302929,  
+                "s": "ROSEUSDT",  
+                "S": "Sell",  
+                "v": "20000",  
+                "p": "0.04499"  
+            }  
+        ]  
     }

@@ -2,227 +2,195 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/hold-to-earn/yield-history
 api_type: REST
-updated_at: 2026-06-16 19:48:32.383236
+updated_at: 2026-06-17 19:23:51.613679
 ---
 
-# Get Airdrop Daily PnL Records
-
-You can query up to 3 months of historical data.
-
-info
-
-  * API key permission: `Earn`
-  * Only **completed** (already distributed) yield records are returned. Pending, failed, and zero-amount records are excluded.
-  * Users with no byfi earn history will receive a successful response with an empty list.
-
-
+# Get All Fund Orders
 
 ### HTTP Request
 
-GET`/v5/earn/hold-to-earn/yield-history`
+GET`/v5/earn/pwm/asset-manager/all-order`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-timeStart| false| integer| Start time (Unix seconds). Cannot be earlier than current time minus 3 months, otherwise returns `INVALIDARGUMENTS`  
-timeEnd| false| integer| End time (Unix seconds). Requires `timeStart ≤ timeEnd`  
-limit| **true**|  integer| Page size. Range: `1` to `49`. Returns `INVALIDARGUMENTS` if out of range  
-cursor| false| string| Pagination cursor. Omit on the first request; pass the `nextCursor` value from the previous response for subsequent pages. Treat the cursor as opaque — do not parse or modify it  
+fundId| false| string| Filter by fund ID. Returns orders for all managed funds if omitted  
+orderType| false| string| Order type filter: `Subscribe` / `Redeem`. Returns all if omitted  
+status| false| string| Order status filter: `Pending Review` / `Processing` / `Completed` / `Rejected` / `Failed`. Returns all if omitted  
+startTime| false| integer| Start time in milliseconds. See time range rules below  
+endTime| false| integer| End time in milliseconds. See time range rules below  
+limit| false| integer| Page size. Default: `20`, max: `50`  
+cursor| false| string| Pagination cursor (uses order `orderId` as cursor)  
   
-info
+Time Range Rules
 
-When both `timeStart` and `timeEnd` are `0`, the query defaults to the last 3 months.
+  * Neither `startTime` nor `endTime` passed: returns data from the last 7 days
+  * Both passed: returns data from `max(endTime - 7 days, startTime)` to `endTime`
+  * Only `startTime` passed: returns data from `startTime` to `startTime + 7 days`
+  * Only `endTime` passed: returns data from `endTime - 7 days` to `endTime`
+
+
 
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-nextCursor| string| Next page cursor. Empty string indicates the last page. Pass it back as `cursor` in the next request  
-airdropDailyPnls| array| Yield records list, sorted by distribution date newest first  
-> coinName| string| Investment coin name  
-> yieldCoinName| string| Yield coin name. Differs from `coinName` for cross-coin airdrops  
-> effectiveAmount| string| Effective principal for that day, e.g., `"10000.00"`  
-> pnl| string| Actual yield distributed that day, e.g., `"0.27397260"`  
-> apy| string| Annualized yield for that day, e.g., `"10%"`  
-> createdAt| integer| Yield distribution time (Unix seconds)  
+list| array| Order list  
+> orderId| string| Unique order identifier  
+> fundId| string| Fund ID  
+> fundName| string| Fund name  
+> accountUid| string| Fund main sub-account UID  
+> orderType| string| Order type: `Subscribe` / `Redeem`  
+> coin| string| Coin  
+> amount| string| Order amount (base coin). Subscription orders only; empty for redemption orders  
+> shares| string| Order shares. Redemption orders only; empty for subscription orders  
+> status| string| Order status: `PendingReview` / `Pass` / `Rejected` / `Processing` / `Success` / `Failed`  
+> createdTime| string| Order creation timestamp (milliseconds)  
+nextPageCursor| string| Next page cursor. Empty string indicates no more data  
   
 * * *
 
 ### Request Example
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
+    GET /v5/earn/pwm/asset-manager/all-order?fundId=100001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    
-    
-    
-      
-    
-    
-    
-      
     
 
 ### Response Example
     
     
     {  
-        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
-        "airdropDailyPnls": [  
-            {  
-                "coinName": "USDE",  
-                "yieldCoinName": "USDE",  
-                "effectiveAmount": "10000.00",  
-                "pnl": "0.27397260",  
-                "apy": "10%",  
-                "createdAt": 1747641600  
-            },  
-            {  
-                "coinName": "USDE",  
-                "yieldCoinName": "USDE",  
-                "effectiveAmount": "10000.00",  
-                "pnl": "0.27397260",  
-                "apy": "10%",  
-                "createdAt": 1747555200  
-            }  
-        ]  
-    }  
-    
-
-### Pagination Example
-
-To fetch the next page, pass the `nextCursor` from the previous response back as `cursor`:
-    
-    
-    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
-    
-
-An empty `nextCursor` in the response indicates you have reached the last page.
+        "retCode": 0,  
+        "retMsg": "success",  
+        "result": {  
+            "list": [  
+                {  
+                    "orderId": "768",  
+                    "fundId": "100001",  
+                    "fundName": "Alpha BTC Strategy Fund",  
+                    "accountUid": "800001",  
+                    "orderType": "Subscribe",  
+                    "coin": "BTC",  
+                    "amount": "10.00000000",  
+                    "shares": "",  
+                    "status": "Completed",  
+                    "createdTime": "1700000000000"  
+                },  
+                {  
+                    "orderId": "769",  
+                    "fundId": "100001",  
+                    "fundName": "Alpha BTC Strategy Fund",  
+                    "accountUid": "800002",  
+                    "orderType": "Redeem",  
+                    "coin": "BTC",  
+                    "amount": "",  
+                    "shares": "5000.00",  
+                    "status": "Pending Review",  
+                    "createdTime": "1700100000000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
+        }  
+    }
 
 ---
 
-# 查詢空投每日收益記錄
-
-可查詢最近 3 個月的歷史收益數據。
-
-信息
-
-  * API key 需要 `理財` 權限
-  * 僅返回**已發放** （`status = complete`）的收益記錄，未發放、失敗及金額為零的記錄均不可見。
-  * 非 byfi earn 歷史用戶調用將直接返回成功狀態及空列表。
-
-
+# 查詢機構相關基金全部訂單列表
 
 ### HTTP 請求
 
-GET`/v5/earn/hold-to-earn/yield-history`
+GET`/v5/earn/pwm/asset-manager/all-order`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-timeStart| false| integer| 起始時間（Unix 秒）。**不得早於「當前時間 - 3 個月」** ，否則返回 `INVALIDARGUMENTS`  
-timeEnd| false| integer| 結束時間（Unix 秒）。要求 `timeStart ≤ timeEnd`  
-limit| **true**|  integer| 單頁大小，範圍：`1` 至 `49`。超出範圍返回 `INVALIDARGUMENTS`  
-cursor| false| string| 翻頁游標。首次查詢不傳；後續翻頁傳入上一次響應中的 `nextCursor`。游標對接入方不透明，**僅作整體回傳，不要解析或拼接**  
+fundId| false| string| 篩選基金ID，不傳返回所有管轄基金的訂單  
+orderType| false| string| 訂單類型篩選：`Subscribe` / `Redeem`，不傳返回全部  
+status| false| string| 訂單狀態篩選：`Pending Review` / `Processing` / `Completed` / `Rejected` / `Failed`，不傳返回全部  
+startTime| false| integer| 起始時間毫秒時間戳，時間範圍規則見下方說明  
+endTime| false| integer| 結束時間毫秒時間戳，時間範圍規則見下方說明  
+limit| false| integer| 每頁數量，默認 `20`，最大 `50`  
+cursor| false| string| 分頁游標（使用訂單 `orderId` 作為游標）  
   
-信息
+時間範圍規則
 
-當 `timeStart` 與 `timeEnd` 同時為 `0` 時，自動查詢最近 3 個月的數據。
+  * `startTime` 和 `endTime` 都不傳：默認返回最近7天數據
+  * 都傳入：查詢 `max(endTime - 7天, startTime)` 到 `endTime` 的數據
+  * 只傳 `startTime`：查詢 `startTime` 到 `startTime + 7天` 的數據
+  * 只傳 `endTime`：查詢 `endTime - 7天` 到 `endTime` 的數據
+
+
 
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-nextCursor| string| 下一頁游標。空字符串表示已到尾頁；翻頁時將其原樣傳回 `cursor` 即可  
-airdropDailyPnls| array| 收益記錄列表，按發放日倒序排列（較新在前）  
-> coinName| string| 投資幣種名稱  
-> yieldCoinName| string| 收益幣種名稱。跨幣種空投時與 `coinName` 不同  
-> effectiveAmount| string| 當日計息本金（已格式化字符串，如 `"10000.00"`）  
-> pnl| string| 當日實際發放收益（已格式化字符串，如 `"0.27397260"`）  
-> apy| string| 該日折算年化收益文案（如 `"10%"`）  
-> createdAt| integer| 收益發放時間（Unix 秒）  
+list| array| 訂單列表  
+> orderId| string| 訂單唯一標識  
+> fundId| string| 基金ID  
+> fundName| string| 基金名稱  
+> accountUid| string| 基金主子賬戶UID  
+> orderType| string| 訂單類型：`Subscribe`（申購）/ `Redeem`（贖回）  
+> coin| string| 幣種  
+> amount| string| 訂單金額（本位幣），僅申購訂單有值，贖回訂單為空  
+> shares| string| 訂單份額，僅贖回訂單有值，申購訂單為空  
+> status| string| 訂單狀態：`PendingReview`（待審核）/ `Pass`（審核通過）/ `Rejected`（審核拒絕）/ `Processing`（處理中）/ `Success`（成功）/ `Failed`（失敗）  
+> createdTime| string| 訂單創建時間戳（毫秒）  
+nextPageCursor| string| 下一頁游標，為空表示無更多數據  
   
 * * *
 
 ### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    GET /v5/earn/hold-to-earn/yield-history?timeStart=1739952000&timeEnd=1747728000&limit=20 HTTP/1.1  
+    GET /v5/earn/pwm/asset-manager/all-order?fundId=100001&limit=20 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
     X-BAPI-TIMESTAMP: 1741651200000  
     X-BAPI-RECV-WINDOW: 5000  
-    
-    
-    
-      
-    
-    
-    
-      
     
 
 ### 響應示例
     
     
     {  
-        "nextCursor": "eyJsYXN0SWQiOjEwMDE5MH0=",  
-        "airdropDailyPnls": [  
-            {  
-                "coinName": "USDE",  
-                "yieldCoinName": "USDE",  
-                "effectiveAmount": "10000.00",  
-                "pnl": "0.27397260",  
-                "apy": "10%",  
-                "createdAt": 1747641600  
-            },  
-            {  
-                "coinName": "USDE",  
-                "yieldCoinName": "USDE",  
-                "effectiveAmount": "10000.00",  
-                "pnl": "0.27397260",  
-                "apy": "10%",  
-                "createdAt": 1747555200  
-            }  
-        ]  
-    }  
-    
-
-### 翻頁示例
-
-繼續向後翻頁時，將上一次響應中的 `nextCursor` 原樣傳回 `cursor`：
-    
-    
-    GET /v5/earn/hold-to-earn/yield-history?limit=20&cursor=eyJsYXN0SWQiOjEwMDE5MH0= HTTP/1.1  
-    Host: api.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1741651200000  
-    X-BAPI-RECV-WINDOW: 5000  
-    
-
-當響應中的 `nextCursor` 為空字符串時，表示已到達尾頁。
+        "retCode": 0,  
+        "retMsg": "success",  
+        "result": {  
+            "list": [  
+                {  
+                    "orderId": "768",  
+                    "fundId": "100001",  
+                    "fundName": "Alpha BTC Strategy Fund",  
+                    "accountUid": "800001",  
+                    "orderType": "Subscribe",  
+                    "coin": "BTC",  
+                    "amount": "10.00000000",  
+                    "shares": "",  
+                    "status": "Completed",  
+                    "createdTime": "1700000000000"  
+                },  
+                {  
+                    "orderId": "769",  
+                    "fundId": "100001",  
+                    "fundName": "Alpha BTC Strategy Fund",  
+                    "accountUid": "800002",  
+                    "orderType": "Redeem",  
+                    "coin": "BTC",  
+                    "amount": "",  
+                    "shares": "5000.00",  
+                    "status": "Pending Review",  
+                    "createdTime": "1700100000000"  
+                }  
+            ],  
+            "nextPageCursor": ""  
+        }  
+    }

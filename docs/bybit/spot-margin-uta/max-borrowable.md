@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/max-borrowable
 api_type: REST
-updated_at: 2026-06-16 19:52:07.031260
+updated_at: 2026-06-17 19:27:31.030355
 ---
 
-# Get Max Borrowable Amount
+# Get Available Amount to Repay
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/max-borrowable`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### Request Parameters
 
@@ -22,7 +22,7 @@ currency| **true**|  string| Coin name, uppercase only
 Parameter| Type| Comments  
 ---|---|---  
 currency| string| Coin name, uppercase only  
-maxLoan| string| Max borrowable amount  
+lossLessRepaymentAmount| string| Repayment amount = min(spot coin available balance, coin borrow amount)  
   
 * * *
 
@@ -35,7 +35,7 @@ maxLoan| string| Max borrowable amount
 
     
     
-    GET /v5/spot-margin-trade/max-borrowable?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -50,7 +50,7 @@ maxLoan| string| Max borrowable amount
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_max_borrowable(  
+    print(session.spot_margin_trade_get_repayment_available_amount(  
         currency="BTC"  
     ))  
     
@@ -66,20 +66,20 @@ maxLoan| string| Max borrowable amount
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "maxLoan": "17.54689892",  
+            "lossLessRepaymentAmount": "0.02000000",  
             "currency": "BTC"  
         },  
         "retExtInfo": {},  
-        "time": 1756261353733  
+        "time": 1756273388821  
     }
 
 ---
 
-# 查詢最大可借數
+# 查詢負債幣種可還款金額
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/max-borrowable`
+GET`/v5/spot-margin-trade/repayment-available-amount`
 
 ### 請求參數
 
@@ -92,7 +92,7 @@ currency| **true**|  string| 幣名稱，僅限大寫
 參數| 類型| 說明  
 ---|---|---  
 currency| string| 幣名稱，僅限大寫  
-maxLoan| string| 最高可藉金額  
+lossLessRepaymentAmount| string| 還款金額=min(現貨幣可用餘額，借幣金額)  
   
 * * *
 
@@ -105,7 +105,7 @@ maxLoan| string| 最高可藉金額
 
     
     
-    GET /v5/spot-margin-trade/max-borrowable?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/repayment-available-amount?currency=BTC HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
@@ -128,9 +128,9 @@ maxLoan| string| 最高可藉金額
         "retCode": 0,  
         "retMsg": "Success",  
         "result": {  
-            "maxLoan": "17.54689892",  
+            "lossLessRepaymentAmount": "0.02000000",  
             "currency": "BTC"  
         },  
         "retExtInfo": {},  
-        "time": 1756261353733  
+        "time": 1756273388821  
     }

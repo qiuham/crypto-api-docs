@@ -2,43 +2,31 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/ltv-adjust-history
 api_type: REST
-updated_at: 2026-06-16 19:50:15.651620
+updated_at: 2026-06-17 19:25:36.539284
 ---
 
-# Get Collateral Adjustment History
+# Get Max. Allowed Collateral Reduction Amount
 
-Query for your LTV adjustment history.
+Retrieve the maximum redeemable amount of your collateral asset based on LTV.
 
 > Permission: "Spot trade"  
 >  UID rate limit: 5 req / second
 
 ### HTTP Request
 
-GET`/v5/crypto-loan-common/adjustment-history`
+GET`/v5/crypto-loan-common/max-collateral-amount`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-adjustId| false| string| Collateral adjustment transaction ID  
-collateralCurrency| false| string| Collateral coin name  
-limit| false| string| Limit for data size per page. [`1`, `100`]. Default: `10`  
-cursor| false| string| Cursor. Use the `nextPageCursor` token from the response to retrieve the next page of the result set  
+currency| **true**|  string| Collateral coin  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-list| array| Object  
-> collateralCurrency| string| Collateral coin  
-> amount| string| amount  
-> adjustId| long| Collateral adjustment transaction ID  
-> adjustTime| long| Adjust timestamp  
-> preLTV| string| LTV before the adjustment  
-> afterLTV| string| LTV after the adjustment  
-> direction| integer| The direction of adjustment, `0`: add collateral; `1`: reduce collateral  
-> status| integer| The status of adjustment, `1`: success; `2`: processing; `3`: fail  
-nextPageCursor| string| Refer to the `cursor` request parameter  
+maxCollateralAmount| string| Maximum reduction amount  
   
 ### Request Example
 
@@ -49,11 +37,11 @@ nextPageCursor| string| Refer to the `cursor` request parameter
 
     
     
-    GET /v5/crypto-loan-common/adjustment-history?limit=2&collateralCurrency=BTC HTTP/1.1  
+    GET /v5/crypto-loan-common/max-collateral-amount?currency=BTC HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1752628288472  
+    X-BAPI-TIMESTAMP: 1752627687351  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -64,8 +52,7 @@ nextPageCursor| string| Refer to the `cursor` request parameter
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_ltv_adjustment_history_new_crypto_loan(  
-        limit="2",  
+    print(session.get_max_allowed_collateral_reduction_amount_new_crypto_loan(  
         collateralCurrency="BTC",  
     ))  
     
@@ -81,70 +68,36 @@ nextPageCursor| string| Refer to the `cursor` request parameter
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "adjustId": 27511,  
-                    "adjustTime": 1752627997907,  
-                    "afterLTV": "0.813743",  
-                    "amount": "0.08",  
-                    "collateralCurrency": "BTC",  
-                    "direction": 1,  
-                    "preLTV": "0.524602",  
-                    "status": 1  
-                },  
-                {  
-                    "adjustId": 27491,  
-                    "adjustTime": 1752218558913,  
-                    "afterLTV": "0.41983",  
-                    "amount": "0.03",  
-                    "collateralCurrency": "BTC",  
-                    "direction": 1,  
-                    "preLTV": "0.372314",  
-                    "status": 1  
-                }  
-            ],  
-            "nextPageCursor": "27491"  
+            "maxCollateralAmount": "0.08585184"  
         },  
         "retExtInfo": {},  
-        "time": 1752628288732  
+        "time": 1752627687596  
     }
 
 ---
 
-# 查詢質押金調整歷史
+# 查詢最大可減少的質押金額
 
-查詢增減質押金的操作歷史
+查詢某個借貸訂單允許的最大可減少質押金額
 
 > 權限: "現貨"  
 >  頻率: 5次/秒
 
 ### HTTP 請求
 
-GET`/v5/crypto-loan-common/adjustment-history`
+GET`/v5/crypto-loan-common/max-collateral-amount`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-adjustId| false| string| 質押金調整操作ID  
-collateralCurrency| false| string| 質押幣種  
-limit| false| string| 每頁數量限制. [`1`, `100`]. 默認: `10`  
-cursor| false| string| 游標，用於分頁  
+currency| **true**|  string| 質押幣種  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-list| array| Object  
-> collateralCurrency| string| 抵押幣種  
-> amount| string| 金額  
-> adjustId| long| 抵押調整交易 ID  
-> adjustTime| long| 調整時間戳  
-> preLTV| string| 調整前質押率（LTV）  
-> afterLTV| string| 調整後質押率（LTV）  
-> direction| integer| 調整方向，`0`: 增加抵押；`1`: 減少抵押  
-> status| integer| 調整狀態，`1`: 成功；`2`: 處理中；`3`: 失敗  
-nextPageCursor| string| 下一頁游標  
+maxCollateralAmount| string| 最大可減少金額  
   
 ### 請求示例
 
@@ -155,11 +108,11 @@ nextPageCursor| string| 下一頁游標
 
     
     
-    GET /v5/crypto-loan-common/adjustment-history?limit=2&collateralCurrency=BTC HTTP/1.1  
+    GET /v5/crypto-loan-common/max-collateral-amount?currency=BTC HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1752628288472  
+    X-BAPI-TIMESTAMP: 1752627687351  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -170,8 +123,7 @@ nextPageCursor| string| 下一頁游標
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_ltv_adjustment_history_new_crypto_loan(  
-        limit="2",  
+    print(session.get_max_allowed_collateral_reduction_amount_new_crypto_loan(  
         collateralCurrency="BTC",  
     ))  
     
@@ -187,30 +139,8 @@ nextPageCursor| string| 下一頁游標
         "retCode": 0,  
         "retMsg": "ok",  
         "result": {  
-            "list": [  
-                {  
-                    "adjustId": 27511,  
-                    "adjustTime": 1752627997907,  
-                    "afterLTV": "0.813743",  
-                    "amount": "0.08",  
-                    "collateralCurrency": "BTC",  
-                    "direction": 1,  
-                    "preLTV": "0.524602",  
-                    "status": 1  
-                },  
-                {  
-                    "adjustId": 27491,  
-                    "adjustTime": 1752218558913,  
-                    "afterLTV": "0.41983",  
-                    "amount": "0.03",  
-                    "collateralCurrency": "BTC",  
-                    "direction": 1,  
-                    "preLTV": "0.372314",  
-                    "status": 1  
-                }  
-            ],  
-            "nextPageCursor": "27491"  
+            "maxCollateralAmount": "0.08585184"  
         },  
         "retExtInfo": {},  
-        "time": 1752628288732  
+        "time": 1752627687596  
     }

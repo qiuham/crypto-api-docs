@@ -2,32 +2,41 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/settlement
 api_type: REST
-updated_at: 2026-06-16 19:45:47.748499
+updated_at: 2026-06-17 19:21:07.699903
 ---
 
-# Get Sub UID
+# Create Internal Transfer
 
-Query the sub UIDs under a main UID. It returns up to 2000 sub accounts, if you need more, please call this [endpoint](/docs/v5/user/page-subuid).
-
-info
-
-Query by the master UID's api key **only**
+Create the internal transfer between different [account types](/docs/v5/enum#accounttype) under the same UID.
 
 ### HTTP Request
 
-GET`/v5/asset/transfer/query-sub-member-list`
+POST`/v5/asset/transfer/inter-transfer`
 
 ### Request Parameters
 
-None
-
+Parameter| Required| Type| Comments  
+---|---|---|---  
+transferId| **true**|  string| [UUID](https://www.uuidgenerator.net/dev-corner). Please manually generate a UUID  
+coin| **true**|  string| Coin, uppercase only  
+amount| **true**|  string| Amount  
+[fromAccountType](/docs/v5/enum#accounttype)| **true**|  string| From account type  
+[toAccountType](/docs/v5/enum#accounttype)| **true**|  string| To account type  
+  
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-subMemberIds| array<string>| All sub UIDs under the main UID  
-transferableSubMemberIds| array<string>| All sub UIDs that have universal transfer enabled  
-[](/docs/api-explorer/v5/asset/sub-uid-list)
+transferId| string| UUID  
+status| string| Transfer status 
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
+[](/docs/api-explorer/v5/asset/create-inter-transfer)
 
 * * *
 
@@ -40,12 +49,20 @@ transferableSubMemberIds| array<string>| All sub UIDs that have universal transf
 
     
     
-    GET /v5/asset/transfer/query-sub-member-list HTTP/1.1  
+    POST v5/asset/transfer/inter-transfer HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672147239931  
-    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-TIMESTAMP: 1670986690556  
+    X-BAPI-RECV-WINDOW: 50000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+    {  
+        "transferId": "42c0cfb0-6bca-c242-bc76-4e6df6cbcb16",  
+        "coin": "BTC",  
+        "amount": "0.05",  
+        "fromAccountType": "UNIFIED",  
+        "toAccountType": "CONTRACT"  
+    }  
     
     
     
@@ -55,7 +72,13 @@ transferableSubMemberIds| array<string>| All sub UIDs that have universal transf
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_uid())  
+    print(session.create_internal_transfer(  
+        transferId="42c0cfb0-6bca-c242-bc76-4e6df6cbcb16",  
+        coin="BTC",  
+        amount="0.05",  
+        fromAccountType="UNIFIED",  
+        toAccountType="CONTRACT",  
+    ))  
     
     
     
@@ -68,7 +91,13 @@ transferableSubMemberIds| array<string>| All sub UIDs that have universal transf
     });  
       
     client  
-      .getSubUID()  
+      .createInternalTransfer(  
+        '42c0cfb0-6bca-c242-bc76-4e6df6cbcb16',  
+        'BTC',  
+        '0.05',  
+        'UNIFIED',  
+        'CONTRACT',  
+      )  
       .then((response) => {  
         console.log(response);  
       })  
@@ -84,48 +113,53 @@ transferableSubMemberIds| array<string>| All sub UIDs that have universal transf
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "subMemberIds": [  
-                "554117",  
-                "592324",  
-                "592334",  
-                "1055262",  
-                "1072055",  
-                "1119352"  
-            ],  
-            "transferableSubMemberIds": [  
-                "554117",  
-                "592324"  
-            ]  
+            "transferId": "42c0cfb0-6bca-c242-bc76-4e6df6cbab16",  
+            "status": "SUCCESS"  
         },  
         "retExtInfo": {},  
-        "time": 1672147241320  
+        "time": 1670986962783  
     }
 
 ---
 
-# 查詢子帳號列表
+# 劃轉 (單帳號內)
 
-查詢某個母帳戶的子帳號列表, 返回至多2000個子帳戶, 如果您有更多, 可以調用這個[接口](/docs/zh-TW/v5/user/page-subuid).
+創建單帳號下[帳戶類型](/docs/zh-TW/v5/enum#accounttype)間的劃轉操作
 
-信息
+提示
 
-僅支持母帳號API key
+  * 每個帳戶類型有其可接受的幣種限制, 詳情請參考[可劃轉幣種](/docs/zh-TW/v5/asset/transfer/transferable-coin)接口.
+
+
 
 ### HTTP 請求
 
-GET`/v5/asset/transfer/query-sub-member-list`
+POST`/v5/asset/transfer/inter-transfer`
 
 ### 請求參數
 
-無
-
+參數| 是否必需| 類型| 說明  
+---|---|---|---  
+transferId| **true**|  string| UUID. 請自行手動生成UUID  
+coin| **true**|  string| 幣種  
+amount| **true**|  string| 劃入數量  
+[fromAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 轉出賬戶類型  
+[toAccountType](/docs/zh-TW/v5/enum#accounttype)| **true**|  string| 轉入賬戶類型  
+  
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-subMemberIds| array<string>| 所有子帳號  
-transferableSubMemberIds| array<string>| 已經開啟了萬能劃轉的子帳號  
-[](/docs/zh-TW/api-explorer/v5/asset/sub-uid-list)
+transferId| string| UUID  
+status| string| 劃轉狀態 
+
+  * `STATUS_UNKNOWN`
+  * `SUCCESS`
+  * `PENDING`
+  * `FAILED`
+
+  
+[](/docs/zh-TW/api-explorer/v5/asset/create-inter-transfer)
 
 * * *
 
@@ -138,12 +172,20 @@ transferableSubMemberIds| array<string>| 已經開啟了萬能劃轉的子帳號
 
     
     
-    GET /v5/asset/transfer/query-sub-member-list HTTP/1.1  
+    POST v5/asset/transfer/inter-transfer HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672147239931  
-    X-BAPI-RECV-WINDOW: 5000  
+    X-BAPI-TIMESTAMP: 1670986690556  
+    X-BAPI-RECV-WINDOW: 50000  
+    X-BAPI-SIGN: XXXXX  
+    Content-Type: application/json  
+    {  
+        "transferId": "42c0cfb0-6bca-c242-bc76-4e6df6cbcb16",  
+        "coin": "BTC",  
+        "amount": "0.05",  
+        "fromAccountType": "UNIFIED",  
+        "toAccountType": "CONTRACT"  
+    }  
     
     
     
@@ -153,7 +195,13 @@ transferableSubMemberIds| array<string>| 已經開啟了萬能劃轉的子帳號
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_sub_uid())  
+    print(session.create_internal_transfer(  
+        transferId="42c0cfb0-6bca-c242-bc76-4e6df6cbcb16",  
+        coin="BTC",  
+        amount="0.05",  
+        fromAccountType="UNIFIED",  
+        toAccountType="CONTRACT",  
+    ))  
     
     
     
@@ -166,7 +214,13 @@ transferableSubMemberIds| array<string>| 已經開啟了萬能劃轉的子帳號
     });  
       
     client  
-      .getSubUID()  
+      .createInternalTransfer(  
+        '42c0cfb0-6bca-c242-bc76-4e6df6cbcb16',  
+        'BTC',  
+        '0.05',  
+        'UNIFIED',  
+        'CONTRACT',  
+      )  
       .then((response) => {  
         console.log(response);  
       })  
@@ -182,19 +236,9 @@ transferableSubMemberIds| array<string>| 已經開啟了萬能劃轉的子帳號
         "retCode": 0,  
         "retMsg": "success",  
         "result": {  
-            "subMemberIds": [  
-                "554117",  
-                "592324",  
-                "592334",  
-                "1055262",  
-                "1072055",  
-                "1119352"  
-            ],  
-            "transferableSubMemberIds": [  
-                "554117",  
-                "592324"  
-            ]  
+            "transferId": "42c0cfb0-6bca-c242-bc76-4e6df6cbab16",  
+            "status": "SUCCESS"  
         },  
         "retExtInfo": {},  
-        "time": 1672147241320  
+        "time": 1670986962783  
     }
