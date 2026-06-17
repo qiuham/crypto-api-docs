@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade
 api_type: Trading
-updated_at: 2026-06-16 19:27:58.368451
+updated_at: 2026-06-17 19:03:30.996362
 ---
 
 # Payload: Balance Update

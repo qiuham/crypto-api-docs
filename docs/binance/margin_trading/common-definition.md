@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/common-definition
 api_type: REST
-updated_at: 2026-06-16 19:27:30.018318
+updated_at: 2026-06-17 19:03:00.768559
 ---
 
 # Get All Cross Margin Pairs (MARKET_DATA)

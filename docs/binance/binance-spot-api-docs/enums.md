@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/enums
 api_type: REST
-updated_at: 2026-06-16 19:24:51.051273
+updated_at: 2026-06-17 19:00:25.987156
 ---
 
 # Market Data Only URLs

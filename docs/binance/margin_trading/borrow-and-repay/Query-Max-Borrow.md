@@ -2,12 +2,12 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Query-Max-Borrow
 api_type: REST
-updated_at: 2026-06-16 19:27:23.697816
+updated_at: 2026-06-17 19:02:55.401512
 ---
 
 # Change Log
 
-## 2026-06-15[​](/docs/margin_trading/change-log#2026-06-15 "Direct link to 2026-06-15")
+## 2026-06-17[​](/docs/margin_trading/change-log#2026-06-17 "Direct link to 2026-06-17")
 
 Effective at **2026-06-15 08:00 (UTC)**
 
@@ -615,7 +615,7 @@ ISOLATED MARGIN
 
 # 更新日志
 
-## 2026-06-15[​](/docs/zh-CN/margin_trading/change-log#2026-06-15 "2026-06-15的直接链接")
+## 2026-06-17[​](/docs/zh-CN/margin_trading/change-log#2026-06-17 "2026-06-17的直接链接")
 
 生效时间: **2026-06-15 08:00 (UTC)**
 

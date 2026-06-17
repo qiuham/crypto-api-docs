@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/options-trading/common-definition
 api_type: REST
-updated_at: 2026-06-16 19:26:32.250256
+updated_at: 2026-06-17 19:02:04.826934
 ---
 
 # General Info

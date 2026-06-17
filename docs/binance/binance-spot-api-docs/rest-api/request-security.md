@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/request-security
 api_type: REST
-updated_at: 2026-06-16 19:25:29.902775
+updated_at: 2026-06-17 19:01:03.329746
 ---
 
 # CHANGELOG for Binance SPOT Testnet

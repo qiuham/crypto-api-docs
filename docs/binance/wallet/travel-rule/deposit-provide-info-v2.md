@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/deposit-provide-info-v2
 api_type: REST
-updated_at: 2026-06-16 19:30:41.590742
+updated_at: 2026-06-17 19:06:12.824755
 ---
 
 # Get Region List (USER_DATA)
