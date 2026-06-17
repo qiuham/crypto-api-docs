@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-cancel-all-after
 anchor_id: spread-trading-rest-api-cancel-all-after
 api_type: REST
-updated_at: 2026-06-16 20:06:06.471081
+updated_at: 2026-06-17 19:41:42.684539
 ---
 
 # Cancel All After
