@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/convert/create-convert-quote
 api_type: Trading
-updated_at: 2026-06-17 18:50:11.300333
+updated_at: 2026-06-18 18:49:19.439347
 ---
 
 # Create Convert Quote

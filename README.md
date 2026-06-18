@@ -27,7 +27,7 @@ PYTHONPATH=. python src/main.py readme
 |--------|------|----------|----------|
 | [Binance](./docs/binance/) | ✅ | 823 | 2026-06-17 |
 | [Bybit](./docs/bybit/) | ✅ | 471 | 2026-06-17 |
-| [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-17 |
+| [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-18 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-06-17 |
 | [Kraken](./docs/kraken/) | ✅ | 248 | 2026-06-17 |
