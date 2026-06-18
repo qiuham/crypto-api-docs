@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/crypto-loan/repay
 api_type: REST
-updated_at: 2026-06-17 19:22:26.387614
+updated_at: 2026-06-18 19:19:55.131484
 ---
 
 # Demo Trading Service

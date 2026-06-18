@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/all-funds
 api_type: REST
-updated_at: 2026-06-17 19:23:52.235822
+updated_at: 2026-06-18 19:21:10.609731
 ---
 
 # Get All Fund Orders

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-subuid
 api_type: REST
-updated_at: 2026-06-17 19:28:28.922428
+updated_at: 2026-06-18 19:25:13.351301
 ---
 
 # Get UID Wallet Type

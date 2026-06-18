@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/friend-referral
 api_type: REST
-updated_at: 2026-06-17 19:28:16.675326
+updated_at: 2026-06-18 19:25:02.295434
 ---
 
 # Get Fund Custodial Sub Acct

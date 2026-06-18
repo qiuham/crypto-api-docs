@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/pay-token-list
 api_type: REST
-updated_at: 2026-06-17 19:20:15.562844
+updated_at: 2026-06-18 19:18:00.702880
 ---
 
 # Get Trade Quote
