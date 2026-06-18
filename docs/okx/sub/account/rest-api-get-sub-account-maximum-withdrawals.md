@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#sub-account-rest-api-get-sub-account-maximum-withdrawals
 anchor_id: sub-account-rest-api-get-sub-account-maximum-withdrawals
 api_type: REST
-updated_at: 2026-06-17 19:42:25.217861
+updated_at: 2026-06-18 19:37:50.469933
 ---
 
 # Get sub-account maximum withdrawals

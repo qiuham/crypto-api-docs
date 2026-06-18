@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#financial-product-dual-investment-get-order-state
 anchor_id: financial-product-dual-investment-get-order-state
 api_type: API
-updated_at: 2026-06-17 19:42:44.005817
+updated_at: 2026-06-18 19:38:09.280010
 ---
 
 # GET / Order state
