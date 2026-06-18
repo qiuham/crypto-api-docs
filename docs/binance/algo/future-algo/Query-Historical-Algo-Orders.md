@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Query-Historical-Algo-Orders
 api_type: REST
-updated_at: 2026-06-17 19:04:37.347121
+updated_at: 2026-06-18 19:03:21.168245
 ---
 
 # Time-Weighted Average Price(Twap) New Order(TRADE)

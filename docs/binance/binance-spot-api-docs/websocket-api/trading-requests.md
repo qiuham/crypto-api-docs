@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/trading-requests
 api_type: WebSocket
-updated_at: 2026-06-17 19:01:44.693424
+updated_at: 2026-06-18 19:00:38.213296
 ---
 
 # Trading requests

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/fetch-withdraw-quota
 api_type: REST
-updated_at: 2026-06-17 19:05:44.205264
+updated_at: 2026-06-18 19:04:22.433668
 ---
 
 # Withdraw History (supporting network) (USER_DATA)

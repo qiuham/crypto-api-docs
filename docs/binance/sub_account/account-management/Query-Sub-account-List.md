@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/account-management/Query-Sub-account-List
 api_type: Account
-updated_at: 2026-06-17 19:08:08.126599
+updated_at: 2026-06-18 19:06:39.524526
 ---
 
 # Get IP Restriction for a Sub-account API Key (For Master Account) (USER_DATA)

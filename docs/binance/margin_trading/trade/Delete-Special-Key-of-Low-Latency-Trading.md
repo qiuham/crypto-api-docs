@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Delete-Special-Key-of-Low-Latency-Trading
 api_type: Trading
-updated_at: 2026-06-17 19:03:38.690471
+updated_at: 2026-06-18 19:02:25.693265
 ---
 
 # Exit Special Key Mode (TRADE)
