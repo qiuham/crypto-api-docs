@@ -2,7 +2,7 @@
 exchange: hyperliquid
 source_url: https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers
 api_type: REST
-updated_at: 2026-06-17 18:56:11.136746
+updated_at: 2026-06-18 18:55:06.756863
 ---
 
 # API
