@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/guides/futures
 api_type: Guide
-updated_at: 2026-06-18 18:49:21.458665
+updated_at: 2026-06-19 18:37:29.478556
 ---
 
 # Advanced Trade US Derivatives
