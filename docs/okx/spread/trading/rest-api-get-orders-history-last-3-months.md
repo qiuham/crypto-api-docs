@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-get-orders-history-last-3-months
 anchor_id: spread-trading-rest-api-get-orders-history-last-3-months
 api_type: REST
-updated_at: 2026-06-18 19:37:05.299942
+updated_at: 2026-06-19 19:25:45.837644
 ---
 
 # Get orders history (last 3 months)

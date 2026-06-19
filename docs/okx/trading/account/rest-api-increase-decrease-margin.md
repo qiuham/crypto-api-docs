@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-increase-decrease-margin
 anchor_id: trading-account-rest-api-increase-decrease-margin
 api_type: REST
-updated_at: 2026-06-18 19:35:34.484324
+updated_at: 2026-06-19 19:24:14.682342
 ---
 
 # Increase/decrease margin
