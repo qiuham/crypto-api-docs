@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/websocket/smart-lvg-offer
 api_type: WebSocket
-updated_at: 2026-06-18 19:20:41.835361
+updated_at: 2026-06-19 19:09:14.280715
 ---
 
 # Get History APR

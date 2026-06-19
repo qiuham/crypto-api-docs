@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/broker/exchange-broker/sub-deposit-record
 api_type: REST
-updated_at: 2026-06-18 19:19:34.219290
+updated_at: 2026-06-19 19:08:05.921412
 ---
 
 # Get Sub Account Deposit Records

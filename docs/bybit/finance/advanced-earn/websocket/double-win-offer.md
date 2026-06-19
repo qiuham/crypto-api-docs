@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/websocket/double-win-offer
 api_type: WebSocket
-updated_at: 2026-06-18 19:20:40.596076
+updated_at: 2026-06-19 19:09:13.041562
 ---
 
 # Get History APR

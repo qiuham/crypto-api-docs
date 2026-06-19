@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/settlement
 api_type: REST
-updated_at: 2026-06-18 19:18:46.438526
+updated_at: 2026-06-19 19:07:17.988184
 ---
 
 # Create Internal Transfer

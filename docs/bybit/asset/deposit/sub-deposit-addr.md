@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-addr
 api_type: REST
-updated_at: 2026-06-18 19:18:29.731597
+updated_at: 2026-06-19 19:07:01.388985
 ---
 
 # Submit Deposit Originator Info
