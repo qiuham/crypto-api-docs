@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/broker-withdraw
 api_type: REST
-updated_at: 2026-06-18 19:04:42.047996
+updated_at: 2026-06-19 18:52:54.430768
 ---
 
 # Submit Deposit Questionnaire (For local entities that require travel rule) (supporting network) (USER_DATA)

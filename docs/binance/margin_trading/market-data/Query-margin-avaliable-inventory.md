@@ -2,73 +2,47 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Query-margin-avaliable-inventory
 api_type: Market Data
-updated_at: 2026-06-18 19:02:07.182493
+updated_at: 2026-06-19 18:50:14.491442
 ---
 
-# Query Margin Available Inventory(USER_DATA)
+# Payload: Margin Call
 
-## API Description[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#api-description "Direct link to API Description")
+## Event Description[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#event-description "Direct link to Event Description")
 
-Margin available Inventory query
+Margin call trigger the event
 
-## HTTP Request[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#http-request "Direct link to HTTP Request")
+## Event Name[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#event-name "Direct link to Event Name")
 
-GET `/sapi/v1/margin/available-inventory`
+`MARGIN_LEVEL_STATUS_CHANGE`
 
-## Request Weight(UID)[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#request-weightuid "Direct link to Request Weight\(UID\)")
-
-**50**
-
-## Request Parameters[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#request-parameters "Direct link to Request Parameters")
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-type| STRING| YES| MARGIN,ISOLATED  
-  
-## Response Example[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#response-example "Direct link to Response Example")
     
     
     {  
-        "assets": {  
-            "MATIC": "100000000",  
-            "STPT": "100000000",  
-            "TVK": "100000000",  
-            "SHIB": "97409653"  
-        }  
-       "updateTime": 1699272487  
+       "e": "MARGIN_LEVEL_STATUS_CHANGE", // Event Type  
+       "E": 1701949763462, // Event Time  
+       "l": "1.1", // margin level  
+       "s": "MARGIN_CALL" // margin call status  
     }
 
 ---
 
-# 杠杆可用放贷库存查询(USER_DATA)
+# Margin Call事件
 
-## 接口描述[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#接口描述 "接口描述的直接链接")
+## 事件描述[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#事件描述 "事件描述的直接链接")
 
-杠杆可用放贷库存查询
+在用户 margin 账户发生 margin call 事件时,会推送此事件
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#http请求 "HTTP请求的直接链接")
+## 事件类型[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#事件类型 "事件类型的直接��链接")
 
-GET `/sapi/v1/margin/available-inventory`
+`MARGIN_LEVEL_STATUS_CHANGE`
 
-## 请求权重(UID)[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#请求权重uid "请求权重\(UID\)的直接链接")
-
-**50**
-
-## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#请求参数 "请求参数的直接链接")
-
-名称| 类型| 是否必需| 描述  
----|---|---|---  
-type| STRING| YES| MARGIN,ISOLATED  
-  
-## 响应示例[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#响应示例 "响应示例的直接链接")
     
     
     {  
-        "assets": {  
-            "MATIC": "100000000",  
-            "STPT": "100000000",  
-            "TVK": "100000000",  
-            "SHIB": "97409653"  
-        }  
-      	"updateTime": 1699272487  
+      "e": "MARGIN_LEVEL_STATUS_CHANGE", // 事件类型  
+      "E": 1701949763462, // 事件时间  
+      "l": "1.1", // 杠杆账户风险率  
+      "s": "MARGIN_CALL" // 杠杆账户状态为Margin Call  
     }

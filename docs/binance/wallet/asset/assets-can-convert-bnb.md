@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/assets-can-convert-bnb
 api_type: REST
-updated_at: 2026-06-18 19:03:53.904316
+updated_at: 2026-06-19 18:52:03.525981
 ---
 
 # Dust Convertible Assets (USER_DATA)

@@ -2,67 +2,71 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Small-Liability-Exchange
 api_type: Trading
-updated_at: 2026-06-18 19:03:01.088625
+updated_at: 2026-06-19 18:51:09.661272
 ---
 
-# Small Liability Exchange (MARGIN)
+# Query Max Transfer-Out Amount (USER_DATA)
 
-## API Description[​](/docs/margin_trading/trade/Small-Liability-Exchange#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/transfer/Query-Max-Transfer-Out-Amount#api-description "Direct link to API Description")
 
-Small Liability Exchange
+Query Max Transfer-Out Amount
 
-## HTTP Request[​](/docs/margin_trading/trade/Small-Liability-Exchange#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/transfer/Query-Max-Transfer-Out-Amount#http-request "Direct link to HTTP Request")
 
-POST `/sapi/v1/margin/exchange-small-liability`
+GET `/sapi/v1/margin/maxTransferable`
 
-## Request Weight[​](/docs/margin_trading/trade/Small-Liability-Exchange#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/margin_trading/transfer/Query-Max-Transfer-Out-Amount#request-weight "Direct link to Request Weight")
 
-**3000(UID)**
+**50(IP)**
 
-## Request Parameters[​](/docs/margin_trading/trade/Small-Liability-Exchange#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/transfer/Query-Max-Transfer-Out-Amount#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-assetNames| ARRAY| YES| The assets list of small liability exchange， Example: assetNames = BTC,ETH  
-recvWindow| LONG| NO|   
+asset| STRING| YES|   
+isolatedSymbol| STRING| NO| isolated symbol  
+recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-  * Only convert once within 6 hours
-  * Only liability valuation less than 10 USDT are supported
-  * The maximum number of coin is 10
+  * If isolatedSymbol is not sent, crossed margin data will be sent.
 
 
 
-## Response Example[​](/docs/margin_trading/trade/Small-Liability-Exchange#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/transfer/Query-Max-Transfer-Out-Amount#response-example "Direct link to Response Example")
+    
+    
+     {  
+          "amount": "3.59498107"  
+     }
 
 ---
 
-# 全仓杠杆小额负债转换 (MARGIN)
+# 查询最大可转出额 (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Small-Liability-Exchange#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/transfer/Query-Max-Transfer-Out-Amount#接口描述 "接口描述的直接链接")
 
-全仓杠杆小额负债转换
+查询最大可转出额
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Small-Liability-Exchange#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/transfer/Query-Max-Transfer-Out-Amount#http请求 "HTTP请求的直接链接")
 
-POST `/sapi/v1/margin/exchange-small-liability`
+GET `/sapi/v1/margin/maxTransferable`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Small-Liability-Exchange#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/transfer/Query-Max-Transfer-Out-Amount#请求权重 "请求权重的直接链接")
 
-**3000(UID)**
+**50(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Small-Liability-Exchange#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/transfer/Query-Max-Transfer-Out-Amount#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-assetNames| ARRAY| YES| 小额转换的资产列表，举例: assetNames = BTC,ETH  
-recvWindow| LONG| NO|   
+asset| STRING| YES|   
+isolatedSymbol| STRING| NO| 逐仓交易对，适用于逐仓查询  
+recvWindow| LONG| NO| 默认值不能大于 `60000`  
 timestamp| LONG| YES|   
   
-  * 兑换请求限流6小时一次
-  * 币种负债小于10USDT
-  * 币种数量最大10个
-
-
-
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Small-Liability-Exchange#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/transfer/Query-Max-Transfer-Out-Amount#响应示例 "响应示例的直接链接")
+    
+    
+     {  
+          "amount": "3.59498107"  
+     }

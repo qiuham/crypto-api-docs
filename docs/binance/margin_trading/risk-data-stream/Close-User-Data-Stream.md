@@ -2,55 +2,47 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Close-User-Data-Stream
 api_type: REST
-updated_at: 2026-06-18 19:02:12.043099
+updated_at: 2026-06-19 18:50:15.724340
 ---
 
-# Keepalive User Data Stream (USER_STREAM)
+# Payload: Margin Call
 
-## API Description[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#api-description "Direct link to API Description")
+## Event Description[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#event-description "Direct link to Event Description")
 
-Keepalive a user data stream to prevent a time out.
+Margin call trigger the event
 
-## HTTP Request[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http-request "Direct link to HTTP Request")
+## Event Name[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#event-name "Direct link to Event Name")
 
-PUT `/sapi/v1/margin/listen-key`
+`MARGIN_LEVEL_STATUS_CHANGE`
 
-## Request Weight(UID)[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#request-weightuid "Direct link to Request Weight\(UID\)")
-
-**1**
-
-## Request Parameters[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#request-parameters "Direct link to Request Parameters")
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-listenKey| STRING| YES|   
-  
-## Response Example[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/risk-data-stream/Event-Margin-Call#response-example "Direct link to Response Example")
     
     
-    {}
+    {  
+       "e": "MARGIN_LEVEL_STATUS_CHANGE", // Event Type  
+       "E": 1701949763462, // Event Time  
+       "l": "1.1", // margin level  
+       "s": "MARGIN_CALL" // margin call status  
+    }
 
 ---
 
-# 延长listenKey有效期(USER_STREAM)
+# Margin Call事件
 
-## 接口描述[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#接口描述 "接口描述的直接链接")
+## 事件描述[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#事件描述 "事件描述的直接链接")
 
-有效期延长至本次调用后24小时。
+在用户 margin 账户发生 margin call 事件时,会推送此事件
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http请求 "HTTP��请求的直接链接")
+## 事件类型[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#事件类型 "事件类型的直接��链接")
 
-PUT `/sapi/v1/margin/listen-key`
+`MARGIN_LEVEL_STATUS_CHANGE`
 
-## 请求权重(UID)[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#请求权重uid "请求权重\(UID\)的直接链接")
-
-**1**
-
-## 请求参数[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#请求参数 "请求参数的直接链接")
-
-名称| 类型| 是否必需| 描述  
----|---|---|---  
-listenKey| STRING| YES|   
-      
+## 响应示例[​](/docs/zh-CN/margin_trading/risk-data-stream/Event-Margin-Call#响应示例 "响应示例的直接链接")
     
-    {}
+    
+    {  
+      "e": "MARGIN_LEVEL_STATUS_CHANGE", // 事件类型  
+      "E": 1701949763462, // 事件时间  
+      "l": "1.1", // 杠杆账户风险率  
+      "s": "MARGIN_CALL" // 杠杆账户状态为Margin Call  
+    }

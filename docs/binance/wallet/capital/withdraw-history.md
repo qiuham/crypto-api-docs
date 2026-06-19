@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/withdraw-history
 api_type: REST
-updated_at: 2026-06-18 19:04:24.302339
+updated_at: 2026-06-19 18:52:34.578245
 ---
 
 # Withdraw History (supporting network) (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/dust-transfer
 api_type: REST
-updated_at: 2026-06-18 19:04:01.447743
+updated_at: 2026-06-19 18:52:11.203767
 ---
 
 # Query User Delegation History(For Master Account)(USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Transfer-to-Sub-account-of-Same-Master
 api_type: Account
-updated_at: 2026-06-18 19:07:14.268069
+updated_at: 2026-06-19 18:55:29.157266
 ---
 
 # Universal Transfer (For Master Account) (USER_DATA)
