@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#spread-trading-rest-api-get-orders-last-21-days
 anchor_id: spread-trading-rest-api-get-orders-last-21-days
 api_type: REST
-updated_at: 2026-06-19 19:25:45.521385
+updated_at: 2026-06-20 19:20:51.092009
 ---
 
 # Get orders (last 21 days)
