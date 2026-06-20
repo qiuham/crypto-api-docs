@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/investment-plan/claim
 api_type: REST
-updated_at: 2026-06-19 19:09:59.592861
+updated_at: 2026-06-20 19:05:07.053226
 ---
 
 # Get Fund Historical NAV

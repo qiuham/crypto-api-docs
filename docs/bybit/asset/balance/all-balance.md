@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/balance/all-balance
 api_type: REST
-updated_at: 2026-06-19 19:06:39.067310
+updated_at: 2026-06-20 19:01:43.660349
 ---
 
 # Asset Overview

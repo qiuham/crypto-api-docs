@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bybit-card/point/records
 api_type: REST
-updated_at: 2026-06-19 19:08:16.132596
+updated_at: 2026-06-20 19:03:22.403436
 ---
 
 # Get Account Borrowable/Collateralizable Limit

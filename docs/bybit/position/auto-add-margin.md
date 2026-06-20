@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/auto-add-margin
 api_type: Position
-updated_at: 2026-06-19 19:11:42.725770
+updated_at: 2026-06-20 19:06:51.510298
 ---
 
 # Get Closed Options Positions

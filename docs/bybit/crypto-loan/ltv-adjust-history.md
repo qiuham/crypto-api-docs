@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/crypto-loan/ltv-adjust-history
 api_type: REST
-updated_at: 2026-06-19 19:08:23.124982
+updated_at: 2026-06-20 19:03:29.555951
 ---
 
 # Get Loan LTV Adjustment History

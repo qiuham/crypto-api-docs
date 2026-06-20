@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-auto-repay-mode
 api_type: REST
-updated_at: 2026-06-19 19:12:58.403936
+updated_at: 2026-06-20 19:08:08.597783
 ---
 
 # Get Tiered Collateral Ratio
