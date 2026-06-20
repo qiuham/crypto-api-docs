@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/quick-start
 api_type: WebSocket
-updated_at: 2026-06-19 18:49:12.343176
+updated_at: 2026-06-20 18:42:58.002400
 ---
 
 # WebSocket API General Info

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Move-Position-for-Sub-account
 api_type: Account
-updated_at: 2026-06-19 18:55:15.037020
+updated_at: 2026-06-20 18:49:30.299597
 ---
 
 # Query Sub-account Assets (For Master Account) (USER_DATA)

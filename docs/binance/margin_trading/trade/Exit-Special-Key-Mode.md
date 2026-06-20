@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Exit-Special-Key-Mode
 api_type: Trading
-updated_at: 2026-06-19 18:50:35.262401
+updated_at: 2026-06-20 18:44:28.523568
 ---
 
 # Margin Account Cancel all Open Orders on a Symbol (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/error-code
 api_type: REST
-updated_at: 2026-06-19 18:49:53.825267
+updated_at: 2026-06-20 18:43:42.404917
 ---
 
 # Cross margin collateral ratio (MARKET_DATA)

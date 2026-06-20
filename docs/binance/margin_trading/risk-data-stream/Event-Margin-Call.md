@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Event-Margin-Call
 api_type: REST
-updated_at: 2026-06-19 18:50:16.956584
+updated_at: 2026-06-20 18:44:08.408263
 ---
 
 # Payload: Margin Call

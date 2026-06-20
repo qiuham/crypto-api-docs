@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Margin-Transfer-for-Sub-account
 api_type: Account
-updated_at: 2026-06-19 18:55:14.415377
+updated_at: 2026-06-20 18:49:29.677753
 ---
 
 # Query Sub-account Assets (For Master Account) (USER_DATA)

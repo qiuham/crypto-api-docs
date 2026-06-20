@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Account-Update
 api_type: Trading
-updated_at: 2026-06-19 18:50:23.850240
+updated_at: 2026-06-20 18:44:15.616171
 ---
 
 # Payload: Account Update

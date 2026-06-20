@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/query-user-universal-transfer
 api_type: REST
-updated_at: 2026-06-19 18:52:17.456541
+updated_at: 2026-06-20 18:46:18.687373
 ---
 
 # User Asset (USER_DATA)

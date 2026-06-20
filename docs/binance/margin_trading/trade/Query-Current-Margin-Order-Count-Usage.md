@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Current-Margin-Order-Count-Usage
 api_type: Trading
-updated_at: 2026-06-19 18:50:50.814982
+updated_at: 2026-06-20 18:44:46.272921
 ---
 
 # Query Liquidation Loan Repay History (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Query-Loan-Group-Max-Borrowable
 api_type: REST
-updated_at: 2026-06-19 18:49:46.240888
+updated_at: 2026-06-20 18:43:34.044376
 ---
 
 # Query Max Borrow (USER_DATA)

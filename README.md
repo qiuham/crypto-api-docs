@@ -25,7 +25,7 @@ PYTHONPATH=. python src/main.py readme
 
 | 交易所 | 状态 | 文档数量 | 最后更新 |
 |--------|------|----------|----------|
-| [Binance](./docs/binance/) | ✅ | 824 | 2026-06-19 |
+| [Binance](./docs/binance/) | ✅ | 824 | 2026-06-20 |
 | [Bybit](./docs/bybit/) | ✅ | 471 | 2026-06-19 |
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-20 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |

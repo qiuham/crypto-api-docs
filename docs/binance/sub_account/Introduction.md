@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/Introduction
 api_type: Account
-updated_at: 2026-06-19 18:54:44.499606
+updated_at: 2026-06-20 18:48:56.152721
 ---
 
 # Get Futures Position-Risk of Sub-account (For Master Account) (USER_DATA)
