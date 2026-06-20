@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/futures/cancel-pending-futures-sweep
 api_type: REST
-updated_at: 2026-06-19 18:37:27.817658
+updated_at: 2026-06-20 18:30:59.674068
 ---
 
 # Cancel Pending US Derivatives Sweep
@@ -15,7 +15,39 @@ Cancel the pending sweep of funds from FCM wallet to USD Spot wallet
     
     curl --request DELETE \
       --url https://api.coinbase.com/api/v3/brokerage/cfm/sweeps \
-      --header 'Authorization: Bearer <token>'
+      --header 'Authorization: Bearer <token>'US Derivatives
+
+# Cancel Pending US Derivatives Sweep
+
+Cancel the pending sweep of funds from FCM wallet to USD Spot wallet
+
+DELETE
+
+/
+
+api
+
+/
+
+v3
+
+/
+
+brokerage
+
+/
+
+cfm
+
+/
+
+sweeps
+
+Cancel Pending Futures Sweep
+    
+    
+    curl --request DELETE \
+    
     
     
     {
