@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/query-trade-history
 api_type: REST
-updated_at: 2026-06-20 19:02:16.734073
+updated_at: 2026-06-21 19:03:03.345908
 ---
 
 # Funding Account Transaction History

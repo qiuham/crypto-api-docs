@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/apikey-info
 api_type: REST
-updated_at: 2026-06-20 19:08:40.440779
+updated_at: 2026-06-21 19:09:16.807789
 ---
 
 # Get API Key Information

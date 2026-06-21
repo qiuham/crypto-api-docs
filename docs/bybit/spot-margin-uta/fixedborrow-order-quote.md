@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-order-quote
 api_type: REST
-updated_at: 2026-06-20 19:07:58.312256
+updated_at: 2026-06-21 19:08:36.019524
 ---
 
 # Get Auto Repay Mode

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/froze-subuid
 api_type: REST
-updated_at: 2026-06-20 19:08:45.641450
+updated_at: 2026-06-21 19:09:21.818796
 ---
 
 # Get Fund Custodial Sub Acct
