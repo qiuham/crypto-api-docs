@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/borrow-and-repay
 api_type: REST
-updated_at: 2026-06-20 18:48:18.094501
+updated_at: 2026-06-21 18:49:53.206443
 ---
 
 # Risk Unit Repay (TRADE)

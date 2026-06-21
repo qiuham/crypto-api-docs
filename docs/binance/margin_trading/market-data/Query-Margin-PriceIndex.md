@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Query-Margin-PriceIndex
 api_type: Market Data
-updated_at: 2026-06-20 18:43:59.463124
+updated_at: 2026-06-21 18:45:51.939617
 ---
 
 # Query Margin PriceIndex (MARKET_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/open-symbol-list
 api_type: REST
-updated_at: 2026-06-20 18:46:12.609083
+updated_at: 2026-06-21 18:47:55.421481
 ---
 
 # Query User Delegation History(For Master Account)(USER_DATA)

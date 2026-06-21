@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Balance-Update
 api_type: Trading
-updated_at: 2026-06-20 18:44:21.014299
+updated_at: 2026-06-21 18:46:10.532600
 ---
 
 # Edit ip for Special Key(Low-Latency Trading)(TRADE)

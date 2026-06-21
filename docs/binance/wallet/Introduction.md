@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/Introduction
 api_type: REST
-updated_at: 2026-06-20 18:45:47.771876
+updated_at: 2026-06-21 18:47:32.100623
 ---
 
 # Get API Key Permission (USER_DATA)

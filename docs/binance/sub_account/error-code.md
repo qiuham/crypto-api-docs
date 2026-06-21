@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/error-code
 api_type: Account
-updated_at: 2026-06-20 18:49:52.650864
+updated_at: 2026-06-21 18:51:22.530880
 ---
 
 # Deposit Assets Into The Managed Sub-account (For Investor Master Account) (USER_DATA)

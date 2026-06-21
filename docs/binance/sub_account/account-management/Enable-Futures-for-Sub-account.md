@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/account-management/Enable-Futures-for-Sub-account
 api_type: Account
-updated_at: 2026-06-20 18:48:57.389429
+updated_at: 2026-06-21 18:50:31.643022
 ---
 
 # Get Futures Position-Risk of Sub-account (For Master Account) (USER_DATA)

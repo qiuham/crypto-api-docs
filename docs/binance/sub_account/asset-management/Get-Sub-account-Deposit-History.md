@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Get-Sub-account-Deposit-History
 api_type: Account
-updated_at: 2026-06-20 18:49:21.832577
+updated_at: 2026-06-21 18:50:53.248350
 ---
 
 # Get Summary of Sub-account's Futures Account (For Master Account) (USER_DATA)

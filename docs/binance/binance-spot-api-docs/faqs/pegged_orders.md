@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/pegged_orders
 api_type: REST
-updated_at: 2026-06-20 18:41:05.791003
+updated_at: 2026-06-21 18:43:09.072523
 ---
 
 # Price Range Execution Rule

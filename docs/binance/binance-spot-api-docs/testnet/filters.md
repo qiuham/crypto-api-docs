@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/filters
 api_type: REST
-updated_at: 2026-06-20 18:41:46.661050
+updated_at: 2026-06-21 18:43:47.743640
 ---
 
 # FIX API

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Manual-Liquidation
 api_type: Trading
-updated_at: 2026-06-20 18:44:45.652647
+updated_at: 2026-06-21 18:46:32.501811
 ---
 
 # Query Liquidation Loan Repay History (USER_DATA)

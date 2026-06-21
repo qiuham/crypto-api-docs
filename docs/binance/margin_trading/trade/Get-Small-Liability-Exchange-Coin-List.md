@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Get-Small-Liability-Exchange-Coin-List
 api_type: Trading
-updated_at: 2026-06-20 18:44:29.154231
+updated_at: 2026-06-21 18:46:18.225444
 ---
 
 # Margin Account Cancel all Open Orders on a Symbol (TRADE)

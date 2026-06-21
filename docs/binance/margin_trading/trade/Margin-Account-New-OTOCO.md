@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-New-OTOCO
 api_type: Trading
-updated_at: 2026-06-20 18:44:39.840150
+updated_at: 2026-06-21 18:46:27.275909
 ---
 
 # Margin Account New OTOCO (TRADE)

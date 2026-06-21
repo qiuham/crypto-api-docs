@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/asset-management/Get-Detail-on-Sub-accounts-Futures-Account-V2
 api_type: Account
-updated_at: 2026-06-20 18:49:14.058132
+updated_at: 2026-06-21 18:50:46.272161
 ---
 
 # Get Detail on Sub-account's Futures Account V2 (For Master Account) (USER_DATA)
