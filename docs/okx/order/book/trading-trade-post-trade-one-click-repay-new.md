@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-trade-post-trade-one-click-repay-new
 anchor_id: order-book-trading-trade-post-trade-one-click-repay-new
 api_type: API
-updated_at: 2026-06-20 19:19:44.000129
+updated_at: 2026-06-21 19:20:02.278849
 ---
 
 # POST / Trade one-click repay (New)
