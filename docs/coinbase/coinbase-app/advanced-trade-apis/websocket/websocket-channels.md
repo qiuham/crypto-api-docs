@@ -2,38 +2,61 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-channels
 api_type: WebSocket
-updated_at: 2026-06-20 18:31:01.836377
+updated_at: 2026-06-21 18:32:50.668908
 ---
 
 # Advanced Trade WebSocket Channels
 
-Use heartbeats to keep all subscriptions openMost channels close within 60-90 seconds if no updates are sent. Subscribe to heartbeats to keep all subscriptions open.
-
-The Coinbase Advanced Trade Market Data WebSocket feed provides the following channels:
-
-Channel| Description| Requires Authentication  
----|---|---  
-**heartbeats**| **Real-time server pings to keep all connections open**|  No  
-candles| Real-time updates on product candles| No  
-status| Sends all products and currencies on a preset interval| No  
-ticker| Real-time price updates every time a match happens| No  
-ticker_batch| Real-time price updates every 5000 milli-seconds| No  
-level2| All updates and easiest way to keep order book snapshot| No  
-user| Only sends messages that include the authenticated user|  _Yes_  
-market_trades| Real-time updates every time a market trade happens| No  
-futures_balance_summary| Real-time updates every time a user’s futures balance changes|  _Yes_  
-  
-Refer to the documentation on [subscribing to a WebSocket channel](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#subscribing).
-
-For the most reliable connection, authenticate with a CDP API key when subscribing to any channel.
-
-Subscribing to “-USDC” based products are only available on the user channel. Other channels will return the same data as the corresponding “-USD” based products. USDT-USDC and EURC-USDC are available on all channels.
-
-## Heartbeats Channel
-
-Subscribe to the `heartbeats` channel to receive heartbeats messages every second. Heartbeats include a `heartbeat_counter` which verifies that no messages were missed.
-
-Subscribing to the heartbeats channel, alongside other channels, ensures that all subscriptions stay open when updates are sparse. This is useful, for example, when fetching market data for illiquid pairs.
+WebSocket
+    
+    # Advanced Trade WebSocket Channels
+    
+    Use heartbeats to keep all subscriptions openMost channels close within 60-90 seconds if no updates are sent. Subscribe to heartbeats to keep all subscriptions open.
+    
+    
+    The Coinbase Advanced Trade Market Data WebSocket feed provides the following channels:
+    
+    
+    Channel| Description| Requires Authentication  
+    ---|---|---  
+    **heartbeats**| **Real-time server pings to keep all connections open**|  No  
+    candles| Real-time updates on product candles| No  
+    status| Sends all products and currencies on a preset interval| No  
+    ticker| Real-time price updates every time a match happens| No  
+    ticker_batch| Real-time price updates every 5000 milli-seconds| No  
+    level2| All updates and easiest way to keep order book snapshot| No  
+    user| Only sends messages that include the authenticated user|  _Yes_  
+    market_trades| Real-time updates every time a market trade happens| No  
+    futures_balance_summary| Real-time updates every time a user’s futures balance changes|  _Yes_  
+      
+    
+    Refer to the documentation on [subscribing to a WebSocket channel](/coinbase-app/advanced-trade-apis/websocket/websocket-overview#subscribing).
+    
+    
+    For the most reliable connection, authenticate with a CDP API key when subscribing to any channel.
+    
+    
+    
+    
+    Subscribing to “-USDC” based products are only available on the user channel. Other channels will return the same data as the corresponding “-USD” based products. USDT-USDC and EURC-USDC are available on all channels.
+    
+    
+    
+    
+    ## 
+    
+    
+    
+    Heartbeats Channel
+    
+    
+    Subscribe to the heartbeats channel to receive heartbeats messages every second. Heartbeats include a heartbeat_counter which verifies that no messages were missed.
+    
+    
+    Subscribing to the heartbeats channel, alongside other channels, ensures that all subscriptions stay open when updates are sparse. This is useful, for example, when fetching market data for illiquid pairs.
+    
+    
+    
     
     
     // Request

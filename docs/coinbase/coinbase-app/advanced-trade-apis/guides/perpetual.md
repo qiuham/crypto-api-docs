@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/guides/perpetual
 api_type: Guide
-updated_at: 2026-06-20 18:31:01.502204
+updated_at: 2026-06-21 18:32:49.939233
 ---
 
 # Advanced Trade International Derivatives
