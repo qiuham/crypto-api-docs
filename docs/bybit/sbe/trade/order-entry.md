@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/sbe/trade/order-entry
 api_type: Trading
-updated_at: 2026-06-21 19:08:29.210227
+updated_at: 2026-06-22 19:42:44.106068
 ---
 
 # Fixed-Rate Borrow

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/unitransfer-list
 api_type: REST
-updated_at: 2026-06-21 19:03:16.474617
+updated_at: 2026-06-22 19:37:27.581137
 ---
 
 # Withdraw

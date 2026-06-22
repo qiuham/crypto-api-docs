@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/customize-plan/product
 api_type: REST
-updated_at: 2026-06-21 19:05:43.474988
+updated_at: 2026-06-22 19:39:56.356550
 ---
 
 # Fund Transfer Between Sub-Accounts

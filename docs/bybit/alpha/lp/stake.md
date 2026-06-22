@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/lp/stake
 api_type: REST
-updated_at: 2026-06-21 19:02:23.616098
+updated_at: 2026-06-22 19:36:33.906327
 ---
 
 # Get Trade Quote

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/reference-price
 api_type: REST
-updated_at: 2026-06-21 19:03:04.580995
+updated_at: 2026-06-22 19:37:15.434611
 ---
 
 # Funding Account Transaction History

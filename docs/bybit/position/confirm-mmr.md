@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/position/confirm-mmr
 api_type: Position
-updated_at: 2026-06-21 19:07:36.658803
+updated_at: 2026-06-22 19:41:50.072122
 ---
 
 # Get Move Position History

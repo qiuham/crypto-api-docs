@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/rwa/product
 api_type: REST
-updated_at: 2026-06-21 19:06:04.896528
+updated_at: 2026-06-22 19:40:17.289482
 ---
 
 # Get Institution Whitelist IP

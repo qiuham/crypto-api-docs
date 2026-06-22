@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/dual-asset/product-info
 api_type: REST
-updated_at: 2026-06-21 19:04:40.975846
+updated_at: 2026-06-22 19:38:53.084452
 ---
 
 # Add Liquidity
