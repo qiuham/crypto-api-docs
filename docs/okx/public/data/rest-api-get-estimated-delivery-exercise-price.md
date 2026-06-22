@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-rest-api-get-estimated-delivery-exercise-price
 anchor_id: public-data-rest-api-get-estimated-delivery-exercise-price
 api_type: REST
-updated_at: 2026-06-21 19:21:19.099973
+updated_at: 2026-06-22 19:56:05.199748
 ---
 
 # Get estimated delivery/exercise price

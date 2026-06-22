@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-grid-trading-ws-spot-grid-algo-orders-channel
 anchor_id: order-book-trading-grid-trading-ws-spot-grid-algo-orders-channel
 api_type: WebSocket
-updated_at: 2026-06-21 19:20:17.265258
+updated_at: 2026-06-22 19:55:02.832624
 ---
 
 # WS / Spot grid algo orders channel
