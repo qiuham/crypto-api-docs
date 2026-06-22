@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/futures/set-intraday-margin-settings
 api_type: REST
-updated_at: 2026-06-21 18:32:47.461901
+updated_at: 2026-06-22 19:06:46.467668
 ---
 
 # Set Intraday Margin Setting
