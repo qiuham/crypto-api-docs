@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Small-Liability-Exchange
 api_type: Trading
-updated_at: 2026-06-21 18:46:51.508021
+updated_at: 2026-06-22 19:20:54.061269
 ---
 
 # Query Max Transfer-Out Amount (USER_DATA)

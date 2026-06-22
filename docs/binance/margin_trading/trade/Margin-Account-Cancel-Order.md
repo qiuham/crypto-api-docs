@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-Cancel-Order
 api_type: Trading
-updated_at: 2026-06-21 18:46:25.375617
+updated_at: 2026-06-22 19:20:27.060901
 ---
 
 # Margin Account New OTOCO (TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Account-Order
 api_type: Trading
-updated_at: 2026-06-21 18:46:46.019751
+updated_at: 2026-06-22 19:20:48.542524
 ---
 
 # Query Special key(Low Latency Trading)(TRADE)

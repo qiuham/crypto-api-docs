@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Liquidation-Loan-Repay
 api_type: Trading
-updated_at: 2026-06-21 18:46:19.489764
+updated_at: 2026-06-22 19:20:20.365749
 ---
 
 # Margin Account Cancel all Open Orders on a Symbol (TRADE)

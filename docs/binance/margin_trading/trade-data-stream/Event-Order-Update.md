@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Order-Update
 api_type: Trading
-updated_at: 2026-06-21 18:46:11.148469
+updated_at: 2026-06-22 19:20:11.796385
 ---
 
 # Edit ip for Special Key(Low-Latency Trading)(TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Prevented-Matches
 api_type: Trading
-updated_at: 2026-06-21 18:46:47.253162
+updated_at: 2026-06-22 19:20:49.773416
 ---
 
 # Query Special key(Low Latency Trading)(TRADE)

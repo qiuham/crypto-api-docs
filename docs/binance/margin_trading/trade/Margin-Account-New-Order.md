@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-New-Order
 api_type: Trading
-updated_at: 2026-06-21 18:46:31.882546
+updated_at: 2026-06-22 19:20:34.411962
 ---
 
 # Query Liquidation Loan Repay History (USER_DATA)

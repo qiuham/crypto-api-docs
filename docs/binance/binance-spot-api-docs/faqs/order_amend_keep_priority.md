@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/order_amend_keep_priority
 api_type: REST
-updated_at: 2026-06-21 18:43:07.830644
+updated_at: 2026-06-22 19:17:05.107494
 ---
 
 # Price Range Execution Rule

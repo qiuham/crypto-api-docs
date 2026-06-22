@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Order-Status
 api_type: Trading
-updated_at: 2026-06-21 18:49:33.948510
+updated_at: 2026-06-22 19:23:36.576541
 ---
 
 # Query limit open orders (USER_DATA)

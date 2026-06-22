@@ -2,14 +2,25 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/sbe-market-data-streams
 api_type: Market Data
-updated_at: 2026-06-21 18:43:38.868846
+updated_at: 2026-06-22 19:17:37.485867
 ---
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-10**
+**Last Updated: 2026-06-22**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-22[​](/docs/binance-spot-api-docs/testnet#2026-06-22 "Direct link to 2026-06-22")
+
+REST and WebSocket API:
+
+  * Reminder that SBE 3:1 schema will be retired on 2026-06-29, [6 months after being deprecated](/docs/binance-spot-api-docs/faqs/sbe_faq#regarding-legacy-support).
+  * The [SBE lifecycle for Testnet](https://github.com/binance/binance-spot-api-docs/blob/master/sbe/schemas/sbe_schema_lifecycle_testnet.json) has been updated to reflect this change.
+
+
+
+* * *
 
 ### 2026-06-10[​](/docs/binance-spot-api-docs/testnet#2026-06-10 "Direct link to 2026-06-10")
 
@@ -1601,9 +1612,20 @@ User Data Stream:
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-10**
+**Last Updated: 2026-06-22**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-22[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-22 "2026-06-22的直接链接")
+
+REST and WebSocket API:
+
+  * Reminder that SBE 3:1 schema will be retired on 2026-06-29, [6 months after being deprecated](/docs/zh-CN/faqs/sbe_faq.md#regarding-legacy-support).
+  * The [SBE lifecycle for Testnet](https://github.com/binance/binance-spot-api-docs/blob/master/sbe/schemas/sbe_schema_lifecycle_testnet.json) has been updated to reflect this change.
+
+
+
+* * *
 
 ### 2026-06-10[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-10 "2026-06-10的直接链接")
 
@@ -2261,7 +2283,7 @@ WebSocket API
 
 * * *
 
-### 2025-10-08[​](/docs/zh-CN/binance-spot-api-docs/testnet#2025-10-08 "2025-10-08的直接链接")
+### 2025-10-08[​](/docs/zh-CN/binance-spot-api-docs/testnet#2025-10-08 "2025-10-08�的直接链接")
 
 #### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-3 "FIX API的直接链接")
 
@@ -2619,7 +2641,7 @@ REST and WebSocket API:
 **Notice:** The following changes will be deployed tomorrow **April 2, 2025 starting at 7:00 UTC** and may take several hours to complete.   
 Please consult the Spot Test Network's [homepage](https://testnet.binance.vision/) to be informed of the release completion.
 
-#### New Features[​](/docs/zh-CN/binance-spot-api-docs/testnet#new-features-3 "New Features��的直接链接")
+#### New Features[​](/docs/zh-CN/binance-spot-api-docs/testnet#new-features-3 "New Features的直接链接")
 
   * **[Order Amend Keep Priority](https://github.com/binance/binance-spot-api-docs/blob/master/faqs/order_amend_keep_priority.md) is now available.**
     * FIX API: New Order Entry Messages **OrderAmendKeepPriorityRequest** and **OrderAmendReject**

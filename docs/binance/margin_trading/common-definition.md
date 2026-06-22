@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/common-definition
 api_type: REST
-updated_at: 2026-06-21 18:45:34.973293
+updated_at: 2026-06-22 19:19:34.933259
 ---
 
 # Cross margin collateral ratio (MARKET_DATA)

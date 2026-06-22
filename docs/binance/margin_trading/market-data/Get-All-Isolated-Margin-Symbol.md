@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-All-Isolated-Margin-Symbol
 api_type: Market Data
-updated_at: 2026-06-21 18:45:42.195818
+updated_at: 2026-06-22 19:19:41.896830
 ---
 
 # Get Limit Price Pairs(MARKET_DATA)

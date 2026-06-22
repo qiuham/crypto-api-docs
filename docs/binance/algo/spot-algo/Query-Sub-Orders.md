@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/spot-algo/Query-Sub-Orders
 api_type: REST
-updated_at: 2026-06-21 18:47:22.427417
+updated_at: 2026-06-22 19:21:22.902996
 ---
 
 # Query Sub Orders(USER_DATA)
