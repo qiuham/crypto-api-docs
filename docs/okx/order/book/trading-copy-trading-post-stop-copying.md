@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-copy-trading-post-stop-copying
 anchor_id: order-book-trading-copy-trading-post-stop-copying
 api_type: API
-updated_at: 2026-06-22 19:55:24.091769
+updated_at: 2026-06-23 19:31:22.761915
 ---
 
 # POST / Stop copying
