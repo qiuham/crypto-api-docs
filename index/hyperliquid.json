@@ -1,7 +1,7 @@
 {
   "exchange": "hyperliquid",
   "total": 34,
-  "updated_at": "2026-06-22 19:15:58.128958",
+  "updated_at": "2026-06-23 18:52:19.014866",
   "documents_by_type": {
     "Other": [
       {
@@ -9,231 +9,231 @@
         "filename": "activation-gas-fee.md",
         "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:12:42.232684"
+        "updated_at": "2026-06-23 18:49:00.299789"
       },
       {
         "title": "Untitled",
         "filename": "asset-ids.md",
         "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:12:48.486131"
+        "updated_at": "2026-06-23 18:49:06.635044"
       },
       {
         "title": "Untitled",
         "filename": "bridge2.md",
         "path": "docs/hyperliquid/for-developers/api/bridge2.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:12:54.797923"
+        "updated_at": "2026-06-23 18:49:13.097177"
       },
       {
         "title": "Untitled",
         "filename": "deploying-hip-1-and-hip-2-assets.md",
         "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:01.188300"
+        "updated_at": "2026-06-23 18:49:19.558910"
       },
       {
         "title": "Untitled",
         "filename": "error-responses.md",
         "path": "docs/hyperliquid/for-developers/api/error-responses.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:07.492611"
+        "updated_at": "2026-06-23 18:49:26.022261"
       },
       {
         "title": "Untitled",
         "filename": "exchange-endpoint.md",
         "path": "docs/hyperliquid/for-developers/api/exchange-endpoint.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:14.231812"
+        "updated_at": "2026-06-23 18:49:32.767241"
       },
       {
         "title": "Untitled",
         "filename": "hip-3-deployer-actions.md",
         "path": "docs/hyperliquid/for-developers/api/hip-3-deployer-actions.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:20.580921"
+        "updated_at": "2026-06-23 18:49:39.221471"
       },
       {
         "title": "Untitled",
         "filename": "perpetuals.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint/perpetuals.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:33.872633"
+        "updated_at": "2026-06-23 18:49:52.615691"
       },
       {
         "title": "Untitled",
         "filename": "spot.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint/spot.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:40.371654"
+        "updated_at": "2026-06-23 18:49:59.120541"
       },
       {
         "title": "Untitled",
         "filename": "info-endpoint.md",
         "path": "docs/hyperliquid/for-developers/api/info-endpoint.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:27.315858"
+        "updated_at": "2026-06-23 18:49:45.940191"
       },
       {
         "title": "Untitled",
         "filename": "nonces-and-api-wallets.md",
         "path": "docs/hyperliquid/for-developers/api/nonces-and-api-wallets.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:46.681633"
+        "updated_at": "2026-06-23 18:50:05.465119"
       },
       {
         "title": "Untitled",
         "filename": "notation.md",
         "path": "docs/hyperliquid/for-developers/api/notation.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:52.962940"
+        "updated_at": "2026-06-23 18:50:11.837029"
       },
       {
         "title": "Untitled",
         "filename": "optimizing-latency.md",
         "path": "docs/hyperliquid/for-developers/api/optimizing-latency.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:13:59.336151"
+        "updated_at": "2026-06-23 18:50:18.218864"
       },
       {
         "title": "Untitled",
         "filename": "priority-fees.md",
         "path": "docs/hyperliquid/for-developers/api/priority-fees.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:05.615630"
+        "updated_at": "2026-06-23 18:50:24.588408"
       },
       {
         "title": "Untitled",
         "filename": "rate-limits-and-user-limits.md",
         "path": "docs/hyperliquid/for-developers/api/rate-limits-and-user-limits.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:11.925248"
+        "updated_at": "2026-06-23 18:50:30.988322"
       },
       {
         "title": "Untitled",
         "filename": "signing.md",
         "path": "docs/hyperliquid/for-developers/api/signing.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:18.190856"
+        "updated_at": "2026-06-23 18:50:37.371853"
       },
       {
         "title": "Untitled",
         "filename": "tick-and-lot-size.md",
         "path": "docs/hyperliquid/for-developers/api/tick-and-lot-size.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:24.457675"
+        "updated_at": "2026-06-23 18:50:43.737725"
       },
       {
         "title": "Untitled",
         "filename": "post-requests.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/post-requests.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:37.062533"
+        "updated_at": "2026-06-23 18:50:56.597754"
       },
       {
         "title": "Untitled",
         "filename": "subscriptions.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/subscriptions.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:43.499038"
+        "updated_at": "2026-06-23 18:51:03.206280"
       },
       {
         "title": "Untitled",
         "filename": "timeouts-and-heartbeats.md",
         "path": "docs/hyperliquid/for-developers/api/websocket/timeouts-and-heartbeats.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:49.773910"
+        "updated_at": "2026-06-23 18:51:08.580675"
       },
       {
         "title": "Untitled",
         "filename": "websocket.md",
         "path": "docs/hyperliquid/for-developers/api/websocket.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:30.746135"
+        "updated_at": "2026-06-23 18:50:50.141597"
       },
       {
         "title": "Untitled",
         "filename": "api.md",
         "path": "docs/hyperliquid/for-developers/api.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:12:35.878837"
+        "updated_at": "2026-06-23 18:48:53.765265"
       },
       {
         "title": "Untitled",
         "filename": "dual-block-architecture.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/dual-block-architecture.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:02.292244"
+        "updated_at": "2026-06-23 18:51:21.347497"
       },
       {
         "title": "Untitled",
         "filename": "hypercore-less-than-greater-than-hyperevm-transfers.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:08.561994"
+        "updated_at": "2026-06-23 18:51:27.758334"
       },
       {
         "title": "Untitled",
         "filename": "interacting-with-hypercore.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/interacting-with-hypercore.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:14.910016"
+        "updated_at": "2026-06-23 18:51:34.197789"
       },
       {
         "title": "Untitled",
         "filename": "interaction-timings.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/interaction-timings.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:21.220031"
+        "updated_at": "2026-06-23 18:51:40.582707"
       },
       {
         "title": "Untitled",
         "filename": "json-rpc.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/json-rpc.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:26.500892"
+        "updated_at": "2026-06-23 18:51:46.986761"
       },
       {
         "title": "Untitled",
         "filename": "raw-hyperevm-block-data.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/raw-hyperevm-block-data.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:32.807747"
+        "updated_at": "2026-06-23 18:51:53.402430"
       },
       {
         "title": "Untitled",
         "filename": "wrapped-hype.md",
         "path": "docs/hyperliquid/for-developers/hyperevm/wrapped-hype.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:39.153889"
+        "updated_at": "2026-06-23 18:51:59.850009"
       },
       {
         "title": "Untitled",
         "filename": "hyperevm.md",
         "path": "docs/hyperliquid/for-developers/hyperevm.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:14:56.058943"
+        "updated_at": "2026-06-23 18:51:14.977836"
       },
       {
         "title": "Untitled",
         "filename": "foundation-non-validating-node.md",
         "path": "docs/hyperliquid/for-developers/nodes/foundation-non-validating-node.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:51.768036"
+        "updated_at": "2026-06-23 18:52:12.592176"
       },
       {
         "title": "Untitled",
         "filename": "l1-data-schemas.md",
         "path": "docs/hyperliquid/for-developers/nodes/l1-data-schemas.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:58.128958"
+        "updated_at": "2026-06-23 18:52:19.014866"
       },
       {
         "title": "Untitled",
         "filename": "nodes.md",
         "path": "docs/hyperliquid/for-developers/nodes.md",
         "source_url": "",
-        "updated_at": "2026-06-22 19:15:45.469074"
+        "updated_at": "2026-06-23 18:52:06.242597"
       }
     ],
     "REST": [
@@ -242,7 +242,7 @@
         "filename": "for-developers.md",
         "path": "docs/hyperliquid/for-developers.md",
         "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers",
-        "updated_at": "2026-06-22 19:12:29.609597"
+        "updated_at": "2026-06-23 18:48:47.380153"
       }
     ]
   },
@@ -253,7 +253,7 @@
       "path": "docs/hyperliquid/for-developers.md",
       "api_type": "REST",
       "source_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers",
-      "updated_at": "2026-06-22 19:12:29.609597"
+      "updated_at": "2026-06-23 18:48:47.380153"
     },
     {
       "title": "Untitled",
@@ -261,7 +261,7 @@
       "path": "docs/hyperliquid/for-developers/api/activation-gas-fee.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:12:42.232684"
+      "updated_at": "2026-06-23 18:49:00.299789"
     },
     {
       "title": "Untitled",
@@ -269,7 +269,7 @@
       "path": "docs/hyperliquid/for-developers/api/asset-ids.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:12:48.486131"
+      "updated_at": "2026-06-23 18:49:06.635044"
     },
     {
       "title": "Untitled",
@@ -277,7 +277,7 @@
       "path": "docs/hyperliquid/for-developers/api/bridge2.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:12:54.797923"
+      "updated_at": "2026-06-23 18:49:13.097177"
     },
     {
       "title": "Untitled",
@@ -285,7 +285,7 @@
       "path": "docs/hyperliquid/for-developers/api/deploying-hip-1-and-hip-2-assets.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:01.188300"
+      "updated_at": "2026-06-23 18:49:19.558910"
     },
     {
       "title": "Untitled",
@@ -293,7 +293,7 @@
       "path": "docs/hyperliquid/for-developers/api/error-responses.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:07.492611"
+      "updated_at": "2026-06-23 18:49:26.022261"
     },
     {
       "title": "Untitled",
@@ -301,7 +301,7 @@
       "path": "docs/hyperliquid/for-developers/api/exchange-endpoint.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:14.231812"
+      "updated_at": "2026-06-23 18:49:32.767241"
     },
     {
       "title": "Untitled",
@@ -309,7 +309,7 @@
       "path": "docs/hyperliquid/for-developers/api/hip-3-deployer-actions.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:20.580921"
+      "updated_at": "2026-06-23 18:49:39.221471"
     },
     {
       "title": "Untitled",
@@ -317,7 +317,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint/perpetuals.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:33.872633"
+      "updated_at": "2026-06-23 18:49:52.615691"
     },
     {
       "title": "Untitled",
@@ -325,7 +325,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint/spot.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:40.371654"
+      "updated_at": "2026-06-23 18:49:59.120541"
     },
     {
       "title": "Untitled",
@@ -333,7 +333,7 @@
       "path": "docs/hyperliquid/for-developers/api/info-endpoint.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:27.315858"
+      "updated_at": "2026-06-23 18:49:45.940191"
     },
     {
       "title": "Untitled",
@@ -341,7 +341,7 @@
       "path": "docs/hyperliquid/for-developers/api/nonces-and-api-wallets.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:46.681633"
+      "updated_at": "2026-06-23 18:50:05.465119"
     },
     {
       "title": "Untitled",
@@ -349,7 +349,7 @@
       "path": "docs/hyperliquid/for-developers/api/notation.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:52.962940"
+      "updated_at": "2026-06-23 18:50:11.837029"
     },
     {
       "title": "Untitled",
@@ -357,7 +357,7 @@
       "path": "docs/hyperliquid/for-developers/api/optimizing-latency.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:13:59.336151"
+      "updated_at": "2026-06-23 18:50:18.218864"
     },
     {
       "title": "Untitled",
@@ -365,7 +365,7 @@
       "path": "docs/hyperliquid/for-developers/api/priority-fees.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:05.615630"
+      "updated_at": "2026-06-23 18:50:24.588408"
     },
     {
       "title": "Untitled",
@@ -373,7 +373,7 @@
       "path": "docs/hyperliquid/for-developers/api/rate-limits-and-user-limits.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:11.925248"
+      "updated_at": "2026-06-23 18:50:30.988322"
     },
     {
       "title": "Untitled",
@@ -381,7 +381,7 @@
       "path": "docs/hyperliquid/for-developers/api/signing.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:18.190856"
+      "updated_at": "2026-06-23 18:50:37.371853"
     },
     {
       "title": "Untitled",
@@ -389,7 +389,7 @@
       "path": "docs/hyperliquid/for-developers/api/tick-and-lot-size.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:24.457675"
+      "updated_at": "2026-06-23 18:50:43.737725"
     },
     {
       "title": "Untitled",
@@ -397,7 +397,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/post-requests.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:37.062533"
+      "updated_at": "2026-06-23 18:50:56.597754"
     },
     {
       "title": "Untitled",
@@ -405,7 +405,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/subscriptions.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:43.499038"
+      "updated_at": "2026-06-23 18:51:03.206280"
     },
     {
       "title": "Untitled",
@@ -413,7 +413,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket/timeouts-and-heartbeats.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:49.773910"
+      "updated_at": "2026-06-23 18:51:08.580675"
     },
     {
       "title": "Untitled",
@@ -421,7 +421,7 @@
       "path": "docs/hyperliquid/for-developers/api/websocket.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:30.746135"
+      "updated_at": "2026-06-23 18:50:50.141597"
     },
     {
       "title": "Untitled",
@@ -429,7 +429,7 @@
       "path": "docs/hyperliquid/for-developers/api.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:12:35.878837"
+      "updated_at": "2026-06-23 18:48:53.765265"
     },
     {
       "title": "Untitled",
@@ -437,7 +437,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/dual-block-architecture.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:02.292244"
+      "updated_at": "2026-06-23 18:51:21.347497"
     },
     {
       "title": "Untitled",
@@ -445,7 +445,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/hypercore-less-than-greater-than-hyperevm-transfers.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:08.561994"
+      "updated_at": "2026-06-23 18:51:27.758334"
     },
     {
       "title": "Untitled",
@@ -453,7 +453,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/interacting-with-hypercore.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:14.910016"
+      "updated_at": "2026-06-23 18:51:34.197789"
     },
     {
       "title": "Untitled",
@@ -461,7 +461,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/interaction-timings.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:21.220031"
+      "updated_at": "2026-06-23 18:51:40.582707"
     },
     {
       "title": "Untitled",
@@ -469,7 +469,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/json-rpc.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:26.500892"
+      "updated_at": "2026-06-23 18:51:46.986761"
     },
     {
       "title": "Untitled",
@@ -477,7 +477,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/raw-hyperevm-block-data.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:32.807747"
+      "updated_at": "2026-06-23 18:51:53.402430"
     },
     {
       "title": "Untitled",
@@ -485,7 +485,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm/wrapped-hype.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:39.153889"
+      "updated_at": "2026-06-23 18:51:59.850009"
     },
     {
       "title": "Untitled",
@@ -493,7 +493,7 @@
       "path": "docs/hyperliquid/for-developers/hyperevm.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:14:56.058943"
+      "updated_at": "2026-06-23 18:51:14.977836"
     },
     {
       "title": "Untitled",
@@ -501,7 +501,7 @@
       "path": "docs/hyperliquid/for-developers/nodes/foundation-non-validating-node.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:51.768036"
+      "updated_at": "2026-06-23 18:52:12.592176"
     },
     {
       "title": "Untitled",
@@ -509,7 +509,7 @@
       "path": "docs/hyperliquid/for-developers/nodes/l1-data-schemas.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:58.128958"
+      "updated_at": "2026-06-23 18:52:19.014866"
     },
     {
       "title": "Untitled",
@@ -517,7 +517,7 @@
       "path": "docs/hyperliquid/for-developers/nodes.md",
       "api_type": "Other",
       "source_url": "",
-      "updated_at": "2026-06-22 19:15:45.469074"
+      "updated_at": "2026-06-23 18:52:06.242597"
     }
   ]
 }
