@@ -25,7 +25,7 @@ PYTHONPATH=. python src/main.py readme
 
 | 交易所 | 状态 | 文档数量 | 最后更新 |
 |--------|------|----------|----------|
-| [Binance](./docs/binance/) | ✅ | 824 | 2026-06-22 |
+| [Binance](./docs/binance/) | ✅ | 825 | 2026-06-23 |
 | [Bybit](./docs/bybit/) | ✅ | 471 | 2026-06-22 |
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-23 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |
@@ -64,7 +64,7 @@ crypto-api-docs/
 │   ├── kraken.yaml
 │   └── okx.yaml
 ├── docs/                   # 生成的 Markdown 文档
-│   ├── binance/                # 824 Markdown docs
+│   ├── binance/                # 825 Markdown docs
 │   ├── bybit/                  # 471 Markdown docs
 │   ├── coinbase/               # 71 Markdown docs
 │   ├── gateio/                 # 66 Markdown docs

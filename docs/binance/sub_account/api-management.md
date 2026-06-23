@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/api-management
 api_type: Account
-updated_at: 2026-06-22 19:24:44.727597
+updated_at: 2026-06-23 19:00:40.581306
 ---
 
 # Get IP Restriction for a Sub-account API Key (For Master Account) (USER_DATA)

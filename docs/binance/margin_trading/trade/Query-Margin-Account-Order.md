@@ -2,77 +2,115 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Account-Order
 api_type: Trading
-updated_at: 2026-06-22 19:20:48.542524
+updated_at: 2026-06-23 18:56:42.307476
 ---
 
-# Query Special key(Low Latency Trading)(TRADE)
+# Query Margin Account's Order (USER_DATA)
 
-## API Description[​](/docs/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/trade/Query-Margin-Account-Order#api-description "Direct link to API Description")
 
-Query Special Key Information.
+Query Margin Account's Order
 
-This only applies to Special Key for Low Latency Trading.
+## HTTP Request[​](/docs/margin_trading/trade/Query-Margin-Account-Order#http-request "Direct link to HTTP Request")
 
-## HTTP Request[​](/docs/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#http-request "Direct link to HTTP Request")
+GET `/sapi/v1/margin/order`
 
-GET `/sapi/v1/margin/apiKey`
+## Request Weight[​](/docs/margin_trading/trade/Query-Margin-Account-Order#request-weight "Direct link to Request Weight")
 
-## Request Weight[​](/docs/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#request-weight "Direct link to Request Weight")
+**10(IP)**
 
-**1(UID)**
-
-## Request Parameters[​](/docs/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/trade/Query-Margin-Account-Order#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
+symbol| STRING| YES|   
+isIsolated| STRING| NO| for isolated margin or not, "TRUE", "FALSE"，default "FALSE"  
+orderId| LONG| NO|   
+origClientOrderId| STRING| NO|   
 recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-## Response Example[​](/docs/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#response-example "Direct link to Response Example")
+  * Either orderId or origClientOrderId must be sent.
+  * For some historical orders cummulativeQuoteQty will be < 0, meaning the data is not available at this time.
+
+
+
+## Response Example[​](/docs/margin_trading/trade/Query-Margin-Account-Order#response-example "Direct link to Response Example")
     
     
     {  
-    	"apiKey":"npOzOAeLVgr2TuxWfNo43AaPWpBbJEoKezh1o8mSQb6ryE2odE11A4AoVlJbQoGx",  
-      "ip": "0.0.0.0,192.168.0.1,192.168.0.2", // 0.0.0.0 is just an initial statereference (no extra meaning).  
-      "apiName": "testName",  
-      "type": "RSA",     
-      "permissionMode": "TRADE"   
+       "clientOrderId": "ZwfQzuDIGpceVhKW5DvCmO",  
+       "cummulativeQuoteQty": "0.00000000",  
+       "executedQty": "0.00000000",  
+       "icebergQty": "0.00000000",  
+       "isWorking": true,  
+       "orderId": 213205622,  
+       "origQty": "0.30000000",  
+       "price": "0.00493630",  
+       "side": "SELL",  
+       "status": "NEW",  
+       "stopPrice": "0.00000000",  
+       "symbol": "BNBBTC",  
+       "isIsolated": true,  
+       "time": 1562133008725,  
+       "timeInForce": "GTC",  
+       "type": "LIMIT",  
+       "selfTradePreventionMode": "NONE",  
+       "updateTime": 1562133008725  
     }
 
 ---
 
-# 查询低延迟交易SpecialKey(TRADE)
+# 查询杠杆账户订单 (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Order#接口描述 "接口描述的直接链接")
 
-查询SpecialKey信息，仅适用于低延迟交易接口的SpecialKey。
+查询杠杆账户订单
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Order#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/apiKey`
+GET `/sapi/v1/margin/order`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Order#请求权重 "请求权重的直接链接")
 
-**1(UID)**
+**10(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Order#请求参数 "请求参数的直接链接")
 
-Name| Type| Mandatory| Description  
+名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
-recvWindow| LONG| NO| The value cannot be greater than `60000`  
+symbol| STRING| YES|   
+isIsolated| STRING| NO| 是否逐仓杠杆，"TRUE", "FALSE", 默认 "FALSE"  
+orderId| LONG| NO|   
+origClientOrderId| STRING| NO|   
+recvWindow| LONG| NO| 赋值不能大于 `60000`  
 timestamp| LONG| YES|   
   
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Special-Key-of-Low-Latency-Trading#响应示例 "响应示例的直接链接")
+  * 必须发送 orderId 或 origClientOrderId 其中一个。
+  * 一些历史订单的 cummulativeQuoteQty < 0, 是指当前数据不存在。
+
+
+
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-Order#响应示例 "响应示例的直接链接")
     
     
     {  
-    	"apiKey":"npOzOAeLVgr2TuxWfNo43AaPWpBbJEoKezh1o8mSQb6ryE2odE11A4AoVlJbQoGx",  
-      "ip": "0.0.0.0,192.168.0.1,192.168.0.2", // 0.0.0.0 is just an initial statereference (no extra meaning).  
-      "apiName": "testName",  
-      "type": "RSA",     
-      "permissionMode": "TRADE"   
+       "clientOrderId": "ZwfQzuDIGpceVhKW5DvCmO",  
+       "cummulativeQuoteQty": "0.00000000",  
+       "executedQty": "0.00000000",  
+       "icebergQty": "0.00000000",  
+       "isWorking": true,  
+       "orderId": 213205622,  
+       "origQty": "0.30000000",  
+       "price": "0.00493630",  
+       "side": "SELL",  
+       "status": "NEW",  
+       "stopPrice": "0.00000000",  
+       "symbol": "BNBBTC",  
+       "isIsolated": true,  
+       "time": 1562133008725,  
+       "timeInForce": "GTC",  
+       "type": "LIMIT",  
+       "selfTradePreventionMode": "NONE",  
+       "updateTime": 1562133008725  
     }

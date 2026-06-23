@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/trade/Get-Convert-Trade-History
 api_type: Trading
-updated_at: 2026-06-22 19:23:35.960328
+updated_at: 2026-06-23 18:59:31.613810
 ---
 
 # Query limit open orders (USER_DATA)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/change-log
 api_type: REST
-updated_at: 2026-06-22 19:18:34.076887
+updated_at: 2026-06-23 18:54:32.303800
 ---
 
 # Error Codes

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/best-practice
 api_type: REST
-updated_at: 2026-06-22 19:19:21.818345
+updated_at: 2026-06-23 18:55:20.655828
 ---
 
 # Get Interest History (USER_DATA)

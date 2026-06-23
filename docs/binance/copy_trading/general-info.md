@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/copy_trading/general-info
 api_type: REST
-updated_at: 2026-06-22 19:23:11.601163
+updated_at: 2026-06-23 18:59:06.354547
 ---
 
 # Quick Start

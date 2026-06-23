@@ -2,139 +2,159 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Liquidation-Loan
 api_type: Trading
-updated_at: 2026-06-22 19:20:36.264940
+updated_at: 2026-06-23 18:56:33.533847
 ---
 
-# Query Liquidation Loan Repay History (USER_DATA)
+# Query Margin Account's all OCO (USER_DATA)
 
-## Description[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#description "Direct link to Description")
+## API Description[​](/docs/margin_trading/trade/Query-Margin-Account-All-OCO#api-description "Direct link to API Description")
 
-Query the repayment history of cross-margin liquidation loans (deficit caused by bankruptcy during liquidation). Supports time-range filtering and pagination.
+Retrieves all OCO for a specific margin account based on provided optional parameters
 
-## HTTP Request[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/trade/Query-Margin-Account-All-OCO#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/margin/liquidation-loan/repay-history`
+GET `/sapi/v1/margin/allOrderList`
 
-## Request Weight[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#request-weight "Direct link to Request Weight")
+## Request Weight[​](/docs/margin_trading/trade/Query-Margin-Account-All-OCO#request-weight "Direct link to Request Weight")
 
-**100(UID)**
+**200(IP)**
 
-## Request Parameters[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/trade/Query-Margin-Account-All-OCO#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-startTime| LONG| NO| Start time in Unix timestamp (milliseconds). Defaults to 7 days ago if not specified  
-endTime| LONG| NO| End time in Unix timestamp (milliseconds). Defaults to now if not specified  
-current| LONG| NO| Current page number, default `1`  
-size| LONG| NO| Page size, default `50`  
+isIsolated| STRING| NO| for isolated margin or not, "TRUE", "FALSE"，default "FALSE"  
+symbol| STRING| NO| mandatory for isolated margin, not supported for cross margin  
+fromId| LONG| NO| If supplied, neither `startTime` or `endTime` can be provided  
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| Default Value: 500; Max Value: 1000  
 recvWindow| LONG| NO| The value cannot be greater than `60000`  
 timestamp| LONG| YES|   
   
-  * The maximum query range is 90 days. If `startTime` is earlier than 90 days ago, it will be clamped to 90 days ago.
-  * Only records with status `SUCCESS` or `PENDING` are returned. Failed repayment records are excluded.
-
-
-
-## Response Example[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/trade/Query-Margin-Account-All-OCO#response-example "Direct link to Response Example")
     
     
-    {  
-        "total": 2,  
-        "rows": [  
-            {  
-                "repayId": 12345678,  
-                "asset": "USDC",  
-                "amount": "300.00000000",  
-                "status": "SUCCESS",  
-                "createTime": 1714492800000  
-            },  
-            {  
-                "repayId": 12345679,  
-                "asset": "USDC",  
-                "amount": "200.00000000",  
-                "status": "SUCCESS",  
-                "createTime": 1714579200000  
-            }  
+    [  
+      {  
+        "orderListId": 29,  
+        "contingencyType": "OCO",  
+        "listStatusType": "EXEC_STARTED",  
+        "listOrderStatus": "EXECUTING",  
+        "listClientOrderId": "amEEAXryFzFwYF1FeRpUoZ",  
+        "transactionTime": 1565245913483,  
+        "symbol": "LTCBTC",  
+        "isIsolated": true,       // if isolated margin  
+        "orders": [  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 4,  
+            "clientOrderId": "oD7aesZqjEGlZrbtRpy5zB"  
+          },  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 5,  
+            "clientOrderId": "Jr1h6xirOxgeJOUuYQS7V3"  
+          }  
         ]  
-    }  
-    
-
-## Response Parameters[​](/docs/margin_trading/trade/Query-Liquidation-Loan-Repay-History#response-parameters "Direct link to Response Parameters")
-
-Name| Type| Description  
----|---|---  
-total| LONG| Total number of repayment records  
-rows| ARRAY| List of repayment records  
-rows[].repayId| LONG| Unique identifier for the repayment transaction  
-rows[].asset| STRING| Asset used for repayment  
-rows[].amount| DECIMAL| The repayment amount  
-rows[].status| STRING| Repayment status: `SUCCESS` (completed) or `PENDING` (processing)  
-rows[].createTime| LONG| Unix timestamp (milliseconds) when the repayment was created
+      },  
+      {  
+        "orderListId": 28,  
+        "contingencyType": "OCO",  
+        "listStatusType": "EXEC_STARTED",  
+        "listOrderStatus": "EXECUTING",  
+        "listClientOrderId": "hG7hFNxJV6cZy3Ze4AUT4d",  
+        "transactionTime": 1565245913407,  
+        "symbol": "LTCBTC",  
+        "orders": [  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 2,  
+            "clientOrderId": "j6lFOfbmFMRjTYA7rRJ0LP"  
+          },  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 3,  
+            "clientOrderId": "z0KCjOdditiLS5ekAFtK81"  
+          }  
+        ]  
+      }  
+    ]
 
 ---
 
-# 查询强平欠款还款历史 (USER_DATA)
+# 查询特定杠杆账户所有 OCO (USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-All-OCO#接口描述 "接口描述的直接链接")
 
-查询全仓杠杆强平穿仓欠款（强平穿仓产生的负债）的还款历史记录，支持按时间范围过滤和分页查询。
+根据提供的可选参数检索特定杠杆账户所有的 OCO 订单。
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-All-OCO#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/liquidation-loan/repay-history`
+GET `/sapi/v1/margin/allOrderList`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#请求权重 "请求权重的直接链接")
+## 请求权重[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-All-OCO#请求权重 "请求权重的直接链接")
 
-**100(UID)**
+**200(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-All-OCO#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-startTime| LONG| NO| 起始时间，Unix 时间戳（毫秒）。未指定时默认为 7 天前  
-endTime| LONG| NO| 结束时间，Unix 时间戳（毫秒）。未指定时默认为当前时间  
-current| LONG| NO| 当前页码，默认 `1`  
-size| LONG| NO| 每页数量，默认 `50`  
-recvWindow| LONG| NO| 赋值不能大于 `60000`  
+isIsolated| STRING| NO| 是否逐仓杠杆，"TRUE", "FALSE", 默认 "FALSE"  
+symbol| STRING| NO| 逐仓杠杆必填，全仓杠杆不支持该参数  
+fromId| LONG| NO| 提供该项后, `startTime` 和 `endTime` 都不可提供  
+startTime| LONG| NO|   
+endTime| LONG| NO|   
+limit| INT| NO| 默认值: 500; 最大值: 1000  
+recvWindow| LONG| NO| 赋值不能超过 `60000`  
 timestamp| LONG| YES|   
   
-  * 最大查询范围为 90 天。如果 `startTime` 早于 90 天前，将被截断为 90 天前。
-  * 仅返回状态为 `SUCCESS`（成功）或 `PENDING`（处理中）的记录，失败的还款记录不会返回。
-
-
-
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Query-Margin-Account-All-OCO#响应示例 "响应示例的直接链接")
     
     
-    {  
-        "total": 2,  
-        "rows": [  
-            {  
-                "repayId": 12345678,  
-                "asset": "USDC",  
-                "amount": "300.00000000",  
-                "status": "SUCCESS",  
-                "createTime": 1714492800000  
-            },  
-            {  
-                "repayId": 12345679,  
-                "asset": "USDC",  
-                "amount": "200.00000000",  
-                "status": "PENDING",  
-                "createTime": 1714579200000  
-            }  
+    [  
+      {  
+        "orderListId": 29,  
+        "contingencyType": "OCO",  
+        "listStatusType": "EXEC_STARTED",  
+        "listOrderStatus": "EXECUTING",  
+        "listClientOrderId": "amEEAXryFzFwYF1FeRpUoZ",  
+        "transactionTime": 1565245913483,  
+        "symbol": "LTCBTC",  
+        "isIsolated": true,       // 是否是逐仓symbol交易   
+        "orders": [  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 4,  
+            "clientOrderId": "oD7aesZqjEGlZrbtRpy5zB"  
+          },  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 5,  
+            "clientOrderId": "Jr1h6xirOxgeJOUuYQS7V3"  
+          }  
         ]  
-    }  
-    
-
-## 响应参数[​](/docs/zh-CN/margin_trading/trade/Query-Liquidation-Loan-Repay-History#响应参数 "响应参数的直接链接")
-
-名称| 类型| 描述  
----|---|---  
-total| LONG| 还款记录总数  
-rows| ARRAY| 还款记录列表  
-rows[].repayId| LONG| 还款交易唯一标识  
-rows[].asset| STRING| 还款资产  
-rows[].amount| DECIMAL| 还款金额  
-rows[].status| STRING| 还款状态：`SUCCESS`（成功）或 `PENDING`（处理中）  
-rows[].createTime| LONG| 还款创建时间，Unix 时间戳（毫秒）
+      },  
+      {  
+        "orderListId": 28,  
+        "contingencyType": "OCO",  
+        "listStatusType": "EXEC_STARTED",  
+        "listOrderStatus": "EXECUTING",  
+        "listClientOrderId": "hG7hFNxJV6cZy3Ze4AUT4d",  
+        "transactionTime": 1565245913407,  
+        "symbol": "LTCBTC",  
+        "orders": [  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 2,  
+            "clientOrderId": "j6lFOfbmFMRjTYA7rRJ0LP"  
+          },  
+          {  
+            "symbol": "LTCBTC",  
+            "orderId": 3,  
+            "clientOrderId": "z0KCjOdditiLS5ekAFtK81"  
+          }  
+        ]  
+      }  
+    ]

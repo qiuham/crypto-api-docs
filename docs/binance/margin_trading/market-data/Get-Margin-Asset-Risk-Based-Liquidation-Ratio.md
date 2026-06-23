@@ -2,65 +2,73 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/market-data/Get-Margin-Asset-Risk-Based-Liquidation-Ratio
 api_type: Market Data
-updated_at: 2026-06-22 19:19:50.086375
+updated_at: 2026-06-23 18:55:49.205557
 ---
 
-# Query Margin PriceIndex (MARKET_DATA)
+# Query Margin Available Inventory(USER_DATA)
 
-## API Description[​](/docs/margin_trading/market-data/Query-Margin-PriceIndex#api-description "Direct link to API Description")
+## API Description[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#api-description "Direct link to API Description")
 
-Query Margin PriceIndex
+Margin available Inventory query
 
-## HTTP Request[​](/docs/margin_trading/market-data/Query-Margin-PriceIndex#http-request "Direct link to HTTP Request")
+## HTTP Request[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#http-request "Direct link to HTTP Request")
 
-GET `/sapi/v1/margin/priceIndex`
+GET `/sapi/v1/margin/available-inventory`
 
-## Request Weight[​](/docs/margin_trading/market-data/Query-Margin-PriceIndex#request-weight "Direct link to Request Weight")
+## Request Weight(UID)[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#request-weightuid "Direct link to Request Weight\(UID\)")
 
-**10(IP)**
+**50**
 
-## Request Parameters[​](/docs/margin_trading/market-data/Query-Margin-PriceIndex#request-parameters "Direct link to Request Parameters")
+## Request Parameters[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#request-parameters "Direct link to Request Parameters")
 
 Name| Type| Mandatory| Description  
 ---|---|---|---  
-symbol| STRING| YES|   
+type| STRING| YES| MARGIN,ISOLATED  
   
-## Response Example[​](/docs/margin_trading/market-data/Query-Margin-PriceIndex#response-example "Direct link to Response Example")
+## Response Example[​](/docs/margin_trading/market-data/Query-margin-avaliable-inventory#response-example "Direct link to Response Example")
     
     
     {  
-       "calcTime": 1562046418000,  
-       "price": "0.00333930",  
-       "symbol": "BNBBTC"  
+        "assets": {  
+            "MATIC": "100000000",  
+            "STPT": "100000000",  
+            "TVK": "100000000",  
+            "SHIB": "97409653"  
+        }  
+       "updateTime": 1699272487  
     }
 
 ---
 
-# 查询杠杆价格指数 (MARKET_DATA)
+# 杠杆可用放贷库存查询(USER_DATA)
 
-## 接口描述[​](/docs/zh-CN/margin_trading/market-data/Query-Margin-PriceIndex#接口描述 "接口描述的直接链接")
+## 接口描述[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#接口描述 "接口描述的直接链接")
 
-查询杠杆价格指数
+杠杆可用放贷库存查询
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/market-data/Query-Margin-PriceIndex#http请求 "HTTP请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#http请求 "HTTP请求的直接链接")
 
-GET `/sapi/v1/margin/priceIndex`
+GET `/sapi/v1/margin/available-inventory`
 
-## 请求权重[​](/docs/zh-CN/margin_trading/market-data/Query-Margin-PriceIndex#请求权重 "请求权重的直接链接")
+## 请求权重(UID)[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#请求权重uid "请求权重\(UID\)的直接链接")
 
-**10(IP)**
+**50**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Query-Margin-PriceIndex#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
-symbol| STRING| YES|   
+type| STRING| YES| MARGIN,ISOLATED  
   
-## 响应示例[​](/docs/zh-CN/margin_trading/market-data/Query-Margin-PriceIndex#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/market-data/Query-margin-avaliable-inventory#响应示例 "响应示例的直接链接")
     
     
     {  
-       "calcTime": 1562046418000,  
-       "price": "0.00333930",  
-       "symbol": "BNBBTC"  
+        "assets": {  
+            "MATIC": "100000000",  
+            "STPT": "100000000",  
+            "TVK": "100000000",  
+            "SHIB": "97409653"  
+        }  
+      	"updateTime": 1699272487  
     }

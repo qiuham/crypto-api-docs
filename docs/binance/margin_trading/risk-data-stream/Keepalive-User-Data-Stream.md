@@ -2,23 +2,55 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream
 api_type: REST
-updated_at: 2026-06-22 19:20:03.907269
+updated_at: 2026-06-23 18:55:58.629226
 ---
 
-# Payload: Account Update
+# Keepalive User Data Stream (USER_STREAM)
 
-The Margin account uses the same `outboundAccountPosition` event payload as the Spot account.
+## API Description[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#api-description "Direct link to API Description")
 
-Please refer to the Spot User Data Streams documentation for the full event description, fields, and response example:
+Keepalive a user data stream to prevent a time out.
 
-[Spot User Data Streams - Account Update](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream#account-update)
+## HTTP Request[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http-request "Direct link to HTTP Request")
+
+PUT `/sapi/v1/margin/listen-key`
+
+## Request Weight(UID)[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#request-weightuid "Direct link to Request Weight\(UID\)")
+
+**1**
+
+## Request Parameters[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#request-parameters "Direct link to Request Parameters")
+
+Name| Type| Mandatory| Description  
+---|---|---|---  
+listenKey| STRING| YES|   
+  
+## Response Example[​](/docs/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#response-example "Direct link to Response Example")
+    
+    
+    {}
 
 ---
 
-# 账户更新
+# 延长listenKey有效期(USER_STREAM)
 
-杠杆账户使用与现货账户相同的 `outboundAccountPosition` 事件内容。
+## 接口描述[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#接口描述 "接口描述的直接链接")
 
-完整的事件描述、字段说明和响应示例，请参阅现货用户数据流文档：
+有效期延长至本次调用后24小时。
 
-[现货用户数据流 - 账户更新](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/user-data-stream#%E8%B4%A6%E6%88%B7%E6%9B%B4%E6%96%B0)
+## HTTP请求[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http请求 "HTTP��请求的直接链接")
+
+PUT `/sapi/v1/margin/listen-key`
+
+## 请求权重(UID)[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#请求权重uid "请求权重\(UID\)的直接链接")
+
+**1**
+
+## 请求参数[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#请求参数 "请求参数的直接链接")
+
+名称| 类型| 是否必需| 描述  
+---|---|---|---  
+listenKey| STRING| YES|   
+      
+    
+    {}

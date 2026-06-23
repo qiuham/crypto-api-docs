@@ -2,71 +2,23 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade-data-stream/Event-Balance-Update
 api_type: Trading
-updated_at: 2026-06-22 19:20:11.174709
+updated_at: 2026-06-23 18:56:05.632039
 ---
 
-# Edit ip for Special Key(Low-Latency Trading)(TRADE)
+# Payload: Balance Update
 
-## API Description[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#api-description "Direct link to API Description")
+The Margin account uses the same `balanceUpdate` event payload as the Spot account.
 
-Edit ip restriction. This only applies to Special Key for Low Latency Trading.
+Please refer to the Spot User Data Streams documentation for the full event description, fields, and response example:
 
-You need to enable Permits “Enable Spot & Margin Trading” option for the API Key which requests this endpoint.
-
-## HTTP Request[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#http-request "Direct link to HTTP Request")
-
-PUT `/sapi/v1/margin/apiKey/ip`
-
-## Request Weight[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#request-weight "Direct link to Request Weight")
-
-**1(UID)**
-
-## Request Parameters[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#request-parameters "Direct link to Request Parameters")
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
-ip| STRING| YES| Can be added in batches, separated by commas. Max 30 for an API key  
-recvWindow| LONG| NO| The value cannot be greater than `60000`  
-timestamp| LONG| YES|   
-  
-## Response Example[​](/docs/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#response-example "Direct link to Response Example")
-    
-    
-    {  
-    }
+[Spot User Data Streams - Balance Update](https://developers.binance.com/docs/binance-spot-api-docs/user-data-stream#balance-update)
 
 ---
 
-# 修改可供SpecialKey执行的IP地址(TRADE)
+# 余额更新
 
-## 接口描述[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#接口描述 "接口描述的直接链接")
+杠杆账户使用与现货账户相同的 `balanceUpdate` 事件内容。
 
-修改可供低延迟交易的SpecialKey执行的IP地址, 仅适用低延迟交易SpecialKey。
+完整的事件描述、字段说明和响应示例，请参阅现货用户数据流文档：
 
-该接口需开通“Enable Spot & Margin Trading”的权限。
-
-## HTTP请求[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#http请求 "HTTP请求的直接链��接")
-
-PUT `/sapi/v1/margin/apiKey/ip`
-
-## 请求权重[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#请求权重 "请求权重的直接链接")
-
-**1(UID)**
-
-## 请求参数[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#请求参数 "请求参数的直接链接")
-
-Name| Type| Mandatory| Description  
----|---|---|---  
-apiKey| STRING| YES|   
-symbol| STRING| NO| isolated margin pair  
-ip| STRING| YES| Can be added in batches, separated by commas. Max 30 for an API key  
-recvWindow| LONG| NO| The value cannot be greater than `60000`  
-timestamp| LONG| YES|   
-  
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Edit-ip-for-Special-Key-of-Low-Latency-Trading#响应示例 "响应示例的直接链接")
-    
-    
-    {  
-    }
+[现货用户数据流 - 余额更新](https://developers.binance.com/docs/zh-CN/binance-spot-api-docs/user-data-stream#%E4%BD%99%E9%A2%9D%E6%9B%B4%E6%96%B0)
