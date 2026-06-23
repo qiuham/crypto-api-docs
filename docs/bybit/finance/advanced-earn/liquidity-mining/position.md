@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/liquidity-mining/position
 api_type: REST
-updated_at: 2026-06-22 19:39:00.145751
+updated_at: 2026-06-23 19:15:09.860490
 ---
 
 # Get Position Info

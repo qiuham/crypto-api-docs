@@ -26,7 +26,7 @@ PYTHONPATH=. python src/main.py readme
 | 交易所 | 状态 | 文档数量 | 最后更新 |
 |--------|------|----------|----------|
 | [Binance](./docs/binance/) | ✅ | 825 | 2026-06-23 |
-| [Bybit](./docs/bybit/) | ✅ | 471 | 2026-06-22 |
+| [Bybit](./docs/bybit/) | ✅ | 472 | 2026-06-23 |
 | [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-23 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-06-23 |
@@ -65,7 +65,7 @@ crypto-api-docs/
 │   └── okx.yaml
 ├── docs/                   # 生成的 Markdown 文档
 │   ├── binance/                # 825 Markdown docs
-│   ├── bybit/                  # 471 Markdown docs
+│   ├── bybit/                  # 472 Markdown docs
 │   ├── coinbase/               # 71 Markdown docs
 │   ├── gateio/                 # 66 Markdown docs
 │   ├── hyperliquid/            # 34 Markdown docs

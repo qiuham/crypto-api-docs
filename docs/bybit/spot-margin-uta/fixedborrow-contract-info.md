@@ -2,38 +2,30 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-contract-info
 api_type: REST
-updated_at: 2026-06-22 19:42:49.866150
+updated_at: 2026-06-23 19:19:02.248369
 ---
 
-# Get Auto Repay Mode
-
-Get spot automatic repayment mode
+# Renew Fixed-Rate Borrow
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/get-auto-repay-mode`
+POST`/v5/spot-margin-trade/fixedborrow-renew`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| false| string| Coin name, uppercase only. If `currency` is not passed, automatic repay mode for all currencies will be returned.  
+loanId| **true**|  string| Loan ID  
+qty| false| string| Renewal quantity. If not specified, the entire remaining amount will be renewed; if specified, the renewal will be based on the entered quantity  
   
-* * *
-
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-data| array| Object  
-> currency| string| Coin name, uppercase only.  
-> autoRepayMode| string| 
-
-  * `1`: On
-  * `0`: Off
-
+result| string| `Success` / `Failure`  
   
-  
+* * *
+
 ### Request Example
 
   * HTTP
@@ -43,13 +35,17 @@ data| array| Object
 
     
     
-    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
-    Host: api-testnet.bybit.com  
+    POST /v5/spot-margin-trade/fixedborrow-renew HTTP/1.1  
+    Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672299806626  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
+      
+    {  
+        "loanId": "2092341042506646784"  
+    }  
     
     
     
@@ -59,8 +55,8 @@ data| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.get_auto_repay_mode(  
-        currency="ETH"  
+    print(session.spot_margin_trade_fixed_borrow_renew(  
+        loanId="2092341042506646784"  
     ))  
     
     
@@ -73,50 +69,35 @@ data| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
-        "result": {  
-            "data": [  
-                {  
-                    "autoRepayMode": "1",  
-                    "currency": "ETH"  
-                }  
-            ]  
-        },  
+        "retMsg": "success",  
+        "result": "Success",  
         "retExtInfo": {},  
-        "time": 1766977353904  
+        "time": 1775617874744  
     }
 
 ---
 
-# 獲取現貨自動還款模式
-
-獲取現貨自動還款模式
+# 固定利率借款續借
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/get-auto-repay-mode`
+POST`/v5/spot-margin-trade/fixedborrow-renew`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| false| string| 幣名稱，僅限大寫. 如果沒有指定 `currency` 參數，則返回所有貨幣自動還款模式。  
+loanId| **true**|  string| 借款合約 ID  
+qty| false| string| 續借數量。未輸入則將剩餘全部金額續借；輸入則按輸入的數量續借  
   
-* * *
-
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-data| array| Object  
-> currency| string| 幣名稱，僅限大寫.  
-> autoRepayMode| string| 
-
-  * `1`: 開啟
-  * `0`: 關閉
-
+result| string| `Success`：成功 / `Failure`：失敗  
   
-  
+* * *
+
 ### 請求示例
 
   * HTTP
@@ -126,14 +107,17 @@ data| array| Object
 
     
     
-    GET /v5/spot-margin-trade/get-auto-repay-mode?currency=ETH HTTP/1.1  
-    Host: api-testnet.bybit.com  
+    POST /v5/spot-margin-trade/fixedborrow-renew HTTP/1.1  
+    Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672299806626  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
       
+    {  
+        "loanId": "2092341042506646784"  
+    }  
     
     
     
@@ -149,15 +133,8 @@ data| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "Success",  
-        "result": {  
-            "data": [  
-                {  
-                    "autoRepayMode": "1",  
-                    "currency": "ETH"  
-                }  
-            ]  
-        },  
+        "retMsg": "success",  
+        "result": "Success",  
         "retExtInfo": {},  
-        "time": 1766977353904  
+        "time": 1775617874744  
     }

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/trade-redeem
 api_type: REST
-updated_at: 2026-06-22 19:36:39.720846
+updated_at: 2026-06-23 19:12:48.156489
 ---
 
 # Asset Overview

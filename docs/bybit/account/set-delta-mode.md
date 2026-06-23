@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/set-delta-mode
 api_type: Account
-updated_at: 2026-06-22 19:36:02.090144
+updated_at: 2026-06-23 19:12:10.286105
 ---
 
 # Set Delta Neutral Mode

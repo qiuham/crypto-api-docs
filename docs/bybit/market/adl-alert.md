@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/adl-alert
 api_type: Market Data
-updated_at: 2026-06-22 19:40:23.229022
+updated_at: 2026-06-23 19:16:34.591799
 ---
 
 # Get Index Price Components

@@ -2,129 +2,197 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/private/position
 api_type: WebSocket
-updated_at: 2026-06-22 19:43:59.503074
+updated_at: 2026-06-23 19:20:11.180677
 ---
 
-# All Liquidation
+# ADL Alert
 
-Subscribe to the liquidation stream, push all liquidations that occur on Bybit.
+Subscribe to ADL alerts and insurance pool information.
 
-> **Covers: USDT contract / USDC contract / Inverse contract**
+> **Covers: USDT Perpetual / USDT Delivery / USDC Perpetual / USDC Delivery / Inverse Contracts**
 
-Push frequency: **500ms**
+Push frequency: **1s**
 
 **Topic:**  
-`allLiquidation.{symbol}` e.g., allLiquidation.BTCUSDT
+`adlAlert.{coin}`
+
+Available filters:
+
+  * `adlAlert.USDT` for USDT Perpetual/Delivery
+  * `adlAlert.USDC` for USDC Perpetual/Delivery
+  * `adlAlert.inverse` for Inverse contracts.
+
+
+
+For more information on how ADL is triggered, see the [ADL endpoint](/docs/v5/market/adl-alert).
 
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-topic| string| Topic name  
-type| string| Data type. `snapshot`  
-ts| number| The timestamp (ms) that the system generates the data  
-data| Object|   
-> T| number| The updated timestamp (ms)  
-> s| string| Symbol name  
-> S| string| Position side. `Buy`,`Sell`. When you receive a `Buy` update, this means that a long position has been liquidated  
-> v| string| Executed size  
-> p| string| [Bankruptcy price](https://www.bybit.com/en-US/help-center/s/article/Bankruptcy-Price-USDT-Contract)  
+list| array| Object  
+> c| string| Token of the insurance pool  
+> s| string| Trading pair name  
+> b| string| Balance of the insurance fund. Used to determine if ADL is triggered. For shared insurance pool, the "b" field will follow a T+1 refresh mechanism and will be updated daily at 00:00 UTC.  
+> mb| string| Deprecated, always return "". Maximum balance of the insurance pool in the last 8 hours  
+> i_pr| string| PnL ratio threshold for triggering **contract PnL drawdown ADL**
+
+  * ADL is triggered when the symbol's PnL drawdown ratio in the last 8 hours exceeds this value
+
+  
+> pr| string| Symbol's PnL drawdown ratio in the last 8 hours. Used to determine whether ADL is triggered or stopped  
+> adl_tt| string| Trigger threshold for **contract PnL drawdown ADL**
+
+  * This condition is only effective when the insurance pool balance is greater than this value; if so, an 8 hours drawdown exceeding n% may trigger ADL
+
+  
+> adl_sr| string| Stop ratio threshold for **contract PnL drawdown ADL**
+
+  * ADL stops when the symbol's 8 hours drawdown ratio falls below this value
+
+  
   
 ### Subscribe Example
     
     
-    from pybit.unified_trading import WebSocket  
-    from time import sleep  
-    ws = WebSocket(  
-        testnet=True,  
-        channel_type="linear",  
-    )  
-    def handle_message(message):  
-        print(message)  
-    ws.all_liquidation_stream("ROSEUSDT", handle_message)  
-    while True:  
-        sleep(1)  
+    {"op": "subscribe", "args": ["adlAlert.USDT"]}  
     
 
 ### Response Example
     
     
     {  
-        "topic": "allLiquidation.ROSEUSDT",  
-        "type": "snapshot",  
-        "ts": 1739502303204,  
-        "data": [  
-            {  
-                "T": 1739502302929,  
-                "s": "ROSEUSDT",  
-                "S": "Sell",  
-                "v": "20000",  
-                "p": "0.04499"  
-            }  
-        ]  
+      "topic": "adlAlert.USDT",  
+      "type": "snapshot",  
+      "ts": 1757736794000,  
+      "data": [  
+        {  
+          "c": "USDT",  
+          "s": "FWOGUSDT",  
+          "b": -5421.29889888,  
+          "mb": -5421.29889888,  
+          "i_pr": -0.3,  
+          "pr": 0,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        {  
+          "c": "USDT",  
+          "s": "ZORAUSDT",  
+          "b": 19873.46255153,  
+          "mb": 19874.97612833,  
+          "i_pr": -0.3,  
+          "pr": 0.000174,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        {  
+          "c": "USDT",  
+          "s": "BERAUSDT",  
+          "b": 453.36427074,  
+          "mb": 453.36427074,  
+          "i_pr": -0.3,  
+          "pr": 0.24576,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        ...,  
+      ]  
     }
 
 ---
 
-# 完整強平推送
+# ADL告警
 
-訂閱Bybit平台上的強平推送
+訂閱按組劃分保險池 ADL 告警及相關資訊
 
-> **覆蓋範圍: USDT永續 / USDT交割 / USDC永續 / USDC交割 / 反向合約**
+> **覆蓋範圍：USDT 永續 / USDT 交割 / USDC 永續 / USDC 交割 / 反向合約**
 
-推送頻率: **500毫秒**
+推送頻率: **1秒**
 
 **Topic:**  
-`allLiquidation.{symbol}` e.g., allLiquidation.BTCUSDT
+`adlAlert.{coin}`
+
+可用類型為:
+
+  * `adlAlert.USDT` 用於USDT 永續、交割
+  * `adlAlert.USDC` 用於USDC 永續、交割
+  * `adlAlert.inverse` 用於反向合約
+
+
+
+規則詳情請參考 [查詢ADL告警](/docs/zh-TW/v5/market/adl-alert)
 
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-topic| string| Topic名  
-type| string| 數據類型. `snapshot`  
-ts| number| 行情服務生成數據的時間戳 (毫秒)  
-data| Object|   
-> T| number| 數據更新時間戳 (毫秒)  
-> s| string| 合約名稱  
-> S| string| 被平的倉位方向. `Buy`,`Sell`
+list| array| Object  
+> c| string| 保險池所屬幣種  
+> s| string| 交易對名稱  
+> b| string| 保險基金餘額，用於判斷是否觸發 ADL。對於共用保險池，balance 將採用 T+1 刷新機制，並於每日 UTC 時間 00:00 更新。  
+> mb| string| 被棄用，並將傳回空字串。最近 8 小時內的保險池最大餘額  
+> i_pr| string| 觸發 **合約盈虧回撤 ADL** 的盈虧比例閾值 
 
-  * 如果您收到一條Buy的推送更新, 則表明有一個多倉被強平了
+  * 當 symbol 在 8 小時內的盈虧回撤比例大於該值時，觸發 ADL
 
   
-> v| string| 成交數量  
-> p| string| 破產價格  
+> pr| string| symbol 在 8 小時內的回撤比例，用於判斷 ADL 是否觸發或停止  
+> adl_tt| string| **合約盈虧回撤 ADL** 的觸發閾值 
+
+  * 僅當保險池餘額大於該值時，8 小時內回撤 n% 的觸發條件才會生效
+
+  
+> adl_sr| string| **合約盈虧回撤 ADL** 的停止比例閾值 
+
+  * 當 symbol 在 8 小時內的回撤比例小於該值時，ADL 停止
+
+  
   
 ### 訂閱示例
     
     
-    from pybit.unified_trading import WebSocket  
-    from time import sleep  
-    ws = WebSocket(  
-        testnet=True,  
-        channel_type="linear",  
-    )  
-    def handle_message(message):  
-        print(message)  
-    ws.all_liquidation_stream("ROSEUSDT", handle_message)  
-    while True:  
-        sleep(1)  
+    {"op": "subscribe", "args": ["adlAlert.USDT"]}  
     
 
-### 消息示例
+### 響應示例
     
     
     {  
-        "topic": "allLiquidation.ROSEUSDT",  
-        "type": "snapshot",  
-        "ts": 1739502303204,  
-        "data": [  
-            {  
-                "T": 1739502302929,  
-                "s": "ROSEUSDT",  
-                "S": "Sell",  
-                "v": "20000",  
-                "p": "0.04499"  
-            }  
-        ]  
+      "topic": "adlAlert.USDT",  
+      "type": "snapshot",  
+      "ts": 1757736794000,  
+      "data": [  
+        {  
+          "c": "USDT",  
+          "s": "FWOGUSDT",  
+          "b": -5421.29889888,  
+          "mb": -5421.29889888,  
+          "i_pr": -0.3,  
+          "pr": 0,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        {  
+          "c": "USDT",  
+          "s": "ZORAUSDT",  
+          "b": 19873.46255153,  
+          "mb": 19874.97612833,  
+          "i_pr": -0.3,  
+          "pr": 0.000174,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        {  
+          "c": "USDT",  
+          "s": "BERAUSDT",  
+          "b": 453.36427074,  
+          "mb": 453.36427074,  
+          "i_pr": -0.3,  
+          "pr": 0.24576,  
+          "adl_tt": 10000,  
+          "adl_sr": -0.25  
+        },  
+        ...,  
+      ]  
     }

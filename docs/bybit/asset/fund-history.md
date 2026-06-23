@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fund-history
 api_type: REST
-updated_at: 2026-06-22 19:37:16.677629
+updated_at: 2026-06-23 19:13:25.276141
 ---
 
 # Funding Account Transaction History

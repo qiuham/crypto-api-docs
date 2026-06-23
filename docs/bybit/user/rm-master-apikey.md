@@ -2,12 +2,12 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/user/rm-master-apikey
 api_type: REST
-updated_at: 2026-06-22 19:43:44.617981
+updated_at: 2026-06-23 19:19:59.027423
 ---
 
-# Delete Master API Key
+# Get Sub UID List (Limited)
 
-Delete the api key of master account. Use the api key pending to be delete to call the endpoint. Use **master user's api key** **only**.
+Get at most 1,000 sub UID of master account, please use [Get Sub UID List (Unlimited)](/docs/v5/user/page-subuid) if you have more subaccounts. Use **master user's api key** **only**.
 
 tip
 
@@ -17,13 +17,9 @@ The API key must have one of the below permissions in order to call this endpoin
 
 
 
-danger
-
-BE CAREFUL! The API key used to call this interface will be invalid immediately.
-
 ### HTTP Request
 
-POST`/v5/user/delete-api`
+GET`/v5/user/query-sub-members`
 
 ### Request Parameters
 
@@ -31,8 +27,30 @@ None
 
 ### Response Parameters
 
-None
+Parameter| Type| Comments  
+---|---|---  
+subMembers| array| Object  
+> uid| string| Sub user Id  
+> username| string| Username  
+> memberType| integer| `1`: normal subaccount, `6`: custodial sub account  
+> status| integer| The status of the user account
 
+  * `1`: normal
+  * `2`: login banned
+  * `4`: frozen 
+
+  
+> accountMode| integer| The account mode of the user account
+
+  * `1`: Classic Account
+  * `3`: UTA1.0
+  * `4`: UTA1.0 Pro
+  * `5`: UTA2.0
+  * `6`: UTA2.0 Pro
+
+  
+> remark| string| The remark  
+  
 ### Request Example
 
   * HTTP
@@ -42,17 +60,12 @@ None
 
     
     
-    POST /v5/user/delete-api HTTP/1.1  
+    GET /v5/user/query-sub-members HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676431576621  
+    X-BAPI-TIMESTAMP: 1676430318405  
     X-BAPI-RECV-WINDOW: 5000  
-    X-BAPI-SIGN: XXXXXX  
-    Content-Type: application/json  
-      
-    {  
-      
-    }  
     
     
     
@@ -62,7 +75,7 @@ None
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.delete_master_api_key())  
+    print(session.get_sub_uid())  
     
     
     
@@ -75,7 +88,7 @@ None
     });  
       
     client  
-      .deleteMasterApiKey()  
+      .getSubUIDList()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -90,16 +103,35 @@ None
     {  
         "retCode": 0,  
         "retMsg": "",  
-        "result": {},  
+        "result": {  
+            "subMembers": [  
+                {  
+                    "uid": "106314365",  
+                    "username": "xxxx02",  
+                    "memberType": 1,  
+                    "status": 1,  
+                    "remark": "",  
+                    "accountMode": 5  
+                },  
+                {  
+                    "uid": "106279879",  
+                    "username": "xxxx01",  
+                    "memberType": 1,  
+                    "status": 1,  
+                    "remark": "",  
+                    "accountMode": 6  
+                }  
+            ]  
+        },  
         "retExtInfo": {},  
-        "time": 1676431577675  
+        "time": 1760388036728  
     }
 
 ---
 
-# 刪除母帳戶的API Key
+# 查詢子帳戶UID列表 (限制)
 
-刪除母帳戶下的api key。使用待刪除的api key調用接口。需使用**母** 帳戶的API key。
+最多返回1000個子帳戶, 適合子帳戶較少的母帳戶調用, 需使用**母** 帳戶的API key。如您有較多的子帳戶, 請使用[查詢子帳戶UID列表 (無限制)](/docs/zh-TW/v5/user/page-subuid)接口。
 
 提示
 
@@ -109,13 +141,9 @@ None
 
 
 
-危險
-
-當心! 用於調用本接口的API KEY將會立馬失效。
-
 ### HTTP 請求
 
-POST`/v5/user/delete-api`
+GET`/v5/user/query-sub-members`
 
 ### 請求參數
 
@@ -123,8 +151,30 @@ POST`/v5/user/delete-api`
 
 ### 返回參數
 
-無
+參數| 類型| 說明  
+---|---|---  
+subMembers| array| Object  
+> uid| string| 子帳戶userId  
+> username| string| 用戶名  
+> memberType| integer| `1`: 普通子帳戶, `6`: 託管子帳戶  
+> status| integer| 帳戶狀態.
 
+  * `1`: 正常
+  * `2`: 登陸封禁
+  * `4`: 凍結 
+
+  
+> accountMode| integer| 帳戶模式.
+
+  * `1`: 經典帳戶
+  * `3`: UTA帳戶
+  * `4`: UTA1.0 Pro 帳戶
+  * `5`: UTA2.0 帳戶
+  * `6`: UTA2.0 Pro 帳戶
+
+  
+> remark| string| 備註  
+  
 ### 請求示例
 
   * HTTP
@@ -134,17 +184,12 @@ POST`/v5/user/delete-api`
 
     
     
-    POST /v5/user/delete-api HTTP/1.1  
+    GET /v5/user/query-sub-members HTTP/1.1  
     Host: api.bybit.com  
+    X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1676431576621  
+    X-BAPI-TIMESTAMP: 1676430318405  
     X-BAPI-RECV-WINDOW: 5000  
-    X-BAPI-SIGN: XXXXXX  
-    Content-Type: application/json  
-      
-    {  
-      
-    }  
     
     
     
@@ -154,7 +199,7 @@ POST`/v5/user/delete-api`
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.delete_master_api_key())  
+    print(session.get_sub_uid())  
     
     
     
@@ -167,7 +212,7 @@ POST`/v5/user/delete-api`
     });  
       
     client  
-      .deleteMasterApiKey()  
+      .getSubUIDList()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -182,7 +227,26 @@ POST`/v5/user/delete-api`
     {  
         "retCode": 0,  
         "retMsg": "",  
-        "result": {},  
+        "result": {  
+            "subMembers": [  
+                {  
+                    "uid": "106314365",  
+                    "username": "xxxx02",  
+                    "memberType": 1,  
+                    "status": 1,  
+                    "remark": "",  
+                    "accountMode": 5  
+                },  
+                {  
+                    "uid": "106279879",  
+                    "username": "xxxx01",  
+                    "memberType": 1,  
+                    "status": 1,  
+                    "remark": "",  
+                    "accountMode": 6  
+                }  
+            ]  
+        },  
         "retExtInfo": {},  
-        "time": 1676431577675  
+        "time": 1760388036728  
     }

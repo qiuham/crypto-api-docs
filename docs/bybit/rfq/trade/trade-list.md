@@ -2,14 +2,14 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/trade/trade-list
 api_type: Trading
-updated_at: 2026-06-22 19:42:30.318951
+updated_at: 2026-06-23 19:18:43.278042
 ---
 
-# Trade
+# Execution
 
-Latest block trade information. All legs in the same block trade are included in the same update. Data will be pushed whenever there is a block trade.
+Obtain the user's own block trade information. All legs in the same block trade are included in the same update. As long as the user performs block trade as a counterparty, the data will be pushed.
 
-**Topic:** `rfq.open.public.trades`
+**Topic:** `rfq.open.trades`
 
 ### Response Parameters
 
@@ -19,17 +19,31 @@ id| string| Message ID
 topic| string| Topic name  
 creationTime| int| Data created timestamp (ms)  
 data| array| Object  
+data| array|   
 > rfqId| string| Inquiry ID  
->strategyType| string| Policy type  
+> rfqLinkId| string| Custom RFQ ID. Not publicly disclosed.  
+> quoteId| string| Quote ID  
+> quoteLinkId| string| Custom quote ID. Not publicly disclosed.  
+> quoteSide| string| Return of completed inquiry, executed quote direction, `buy` or `sell`  
+> strategyType| string| Inquiry label  
+> status| string| Status: `Filled` , `Failed`  
+> rfqDeskCode| string| The unique identification code of the inquiry party, which is not visible when anonymous is set to `true` during inquiry  
+> quoteDeskCode| string| The unique identification code of the quoting party, which is not visible when anonymous is set to `true` during quotation  
 > createdAt| string| Time (ms) when the trade is created in epoch, such as 1650380963  
 > updatedAt| string| Time (ms) when the trade is updated in epoch, such as 1650380964  
 > legs| array of objects| Combination transaction  
->> category| string| Product type: `spot`, `linear`, `option`  
+>> category| string| category. Valid values include: `linear`, `option` and `spot`  
+>> orderId| string| bybit order id  
 >> symbol| string| symbol name  
->> side| string| Inquiry direction: Valid values are `buy` and `sell`  
+>> side| string| Direction, valid values are `buy` and `sell`  
 >> price| string| Execution price  
 >> qty| string| Number of executions  
 >> markPrice| string| The markPrice (contract) at the time of transaction, and the spot price is indexPrice  
+>> execFee| string| The fee for taker or maker in the base currency paid to the Exchange executing the Block Trade.  
+>> execId| string| The unique exec(trade) ID from the exchange  
+>> resultCode| integer| The status code of the this order. "0" means success  
+>>resultMessage| string| Error message about resultCode. If resultCode is "0", resultMessage is "".  
+>> rejectParty| string| Empty if status is `Filled`. Valid values: `Taker` or `Maker` if status is `Rejected`, "rejectParty=`bybit`" to indicate errors that occur on the Bybit side.  
   
 ### Subscribe Example
     
@@ -37,7 +51,7 @@ data| array| Object
     {  
         "op": "subscribe",  
         "args": [  
-            "rfq.open.public.trades"  
+            "rfq.open.trades"  
         ]  
     }  
     
@@ -46,35 +60,48 @@ data| array| Object
     
     
     {  
-      "topic": "rfq.open.public.trades",  
-      "creationTime": 1757579314358,  
+      "topic": "rfq.open.trades",  
+      "creationTime": 1757578749474,  
       "data": [  
         {  
-          "rfqId": "1757579281847749169219132657134900",  
+          "rfqId": "1757578410512325974246073709371267",  
+          "rfqLinkId": "",  
+          "quoteId": "1757578719388835162295211364781592",  
+          "quoteLinkId": "",  
+          "quoteSide": "Buy",  
           "strategyType": "custom",  
+          "status": "Filled",  
+          "rfqDeskCode": "1nu9d1",  
+          "quoteDeskCode": "test0904",  
           "legs": [  
             {  
               "category": "linear",  
               "symbol": "BTCUSDT",  
-              "side": "Sell",  
+              "side": "Buy",  
               "price": "91600",  
               "qty": "1",  
-              "markPrice": "90216.29"  
+              "orderId": "64fe4108-555e-4361-ae2d-3a8d0c292859",  
+              "markPrice": "91741.11",  
+              "execFee": "-1.374",  
+              "execId": "42b8be1e-36cf-4aba-bb75-4602cc11df37",  
+              "resultCode": 0,  
+              "resultMessage": "",  
+              "rejectParty": ""  
             }  
           ],  
-          "createdAt": "1757579314213",  
-          "updatedAt": "1757579314347"  
+          "createdAt": "1757578749361",  
+          "updatedAt": "1757578749464"  
         }  
       ]  
     }
 
 ---
 
-# 公共交易頻道
+# 交易頻道
 
-最新的大宗交易資訊。所有屬於同一大宗交易的明細都會包含在同一次更新中。每當發生大宗交易時，數據將被推送。
+獲取用戶自己的大宗交易信息。同一大宗交易中的所有 legs 都包含在同一更新中。只要用戶作為交易對手方進行大宗交易，數據將被推送。
 
-**主題:** `rfq.open.public.trades`
+**主題：** `rfq.open.trades`
 
 ### 響應參數
 
@@ -83,18 +110,32 @@ data| array| Object
 id| string| 消息 ID  
 topic| string| 主題名稱  
 creationTime| int| 數據創建時間戳（毫秒）  
-data| array| 對象  
+data| array| Object  
+data| array|   
 > rfqId| string| 詢價單 ID  
-> strategyType| string| 策略類型  
-> createdAt| string| 交易創建時間（毫秒），例如 1650380963  
-> updatedAt| string| 交易更新時間（毫秒），例如 1650380964  
-> legs| array of objects| 組合交易明細  
->> category| string| 產品類型：`spot`（現貨）、`linear`（線性合約）、`option`（期權）  
+> rfqLinkId| string| 詢價單的自定義 ID，客戶的敏感信息，不會向報價方披露，返回 ""。  
+> quoteId| string| 報價單 ID  
+> quoteLinkId| string| 報價單自定義 ID，客戶的敏感信息，不會向詢價方披露，返回 ""。  
+> quoteSide| string| 已完成詢價的返回，執行的報價方向，`buy`（買入） 或 `sell`（賣出）  
+> strategyType| string| 詢價標籤  
+> status| string| 狀態：`Filled`（已成交）、`Failed`（失敗）  
+> rfqDeskCode| string| 詢價方的唯一識別碼，如果在詢價期間設置為匿名，則不可見  
+> quoteDeskCode| string| 報價方的唯一識別碼，如果在報價期間設置為匿名，則不可見  
+> createdAt| string| 交易創建的時間（毫秒），例如 1650380963  
+> updatedAt| string| 交易更新的時間（毫秒），例如 1650380964  
+> legs| Array of objects| 組合交易  
+>> category| string| 類別。有效值包括：`linear`（線性）、`option`（期權） 和 `spot`（現貨）  
+>> orderId| string| Bybit 訂單 ID  
 >> symbol| string| 交易對名稱  
->> side| string| 詢價方向：有效值為 `buy`（買入）和 `sell`（賣出）  
->> price| string| 成交價格  
->> qty| string| 成交數量  
->> markPrice| string| 成交時的標記價格（合約）；對於現貨，為指數價格  
+>> side| string| 方向，有效值為 `buy`（買入） 和 `sell`（賣出）  
+>> price| string| 執行價格  
+>> qty| string| 執行數量  
+>> markPrice| string| 交易時的標記價格（合約），現貨的標記價格為 indexPrice  
+>> execFee| string| Taker 或 Maker 支付給交易所的大宗交易手續費（以基礎貨幣計算）。  
+>> execId| string| 交易所生成的唯一交易 ID  
+>> resultCode| integer| 該訂單的狀態碼。"0" 表示成功  
+>>resultMessage| string| 關於 resultCode 的錯誤信息。如果 resultCode 為 "0"，則 resultMessage 為 ""。  
+>> rejectParty| string| 如果狀態為 `Filled` 則為空。有效值為：`Taker` 或 `Maker`（如果狀態為 `Rejected`）；"rejectParty=`bybit`" 表示錯誤發生於 Bybit 端。  
   
 ### 訂閱示例
     
@@ -102,33 +143,46 @@ data| array| 對象
     {  
         "op": "subscribe",  
         "args": [  
-            "rfq.open.public.trades"  
+            "rfq.open.trades"  
         ]  
     }  
     
 
-### 響應示例
+### 資料流示例
     
     
     {  
-      "topic": "rfq.open.public.trades",  
-      "creationTime": 1757579314358,  
+      "topic": "rfq.open.trades",  
+      "creationTime": 1757578749474,  
       "data": [  
         {  
-          "rfqId": "1757579281847749169219132657134900",  
+          "rfqId": "1757578410512325974246073709371267",  
+          "rfqLinkId": "",  
+          "quoteId": "1757578719388835162295211364781592",  
+          "quoteLinkId": "",  
+          "quoteSide": "Buy",  
           "strategyType": "custom",  
+          "status": "Filled",  
+          "rfqDeskCode": "1nu9d1",  
+          "quoteDeskCode": "test0904",  
           "legs": [  
             {  
               "category": "linear",  
               "symbol": "BTCUSDT",  
-              "side": "Sell",  
+              "side": "Buy",  
               "price": "91600",  
               "qty": "1",  
-              "markPrice": "90216.29"  
+              "orderId": "64fe4108-555e-4361-ae2d-3a8d0c292859",  
+              "markPrice": "91741.11",  
+              "execFee": "-1.374",  
+              "execId": "42b8be1e-36cf-4aba-bb75-4602cc11df37",  
+              "resultCode": 0,  
+              "resultMessage": "",  
+              "rejectParty": ""  
             }  
           ],  
-          "createdAt": "1757579314213",  
-          "updatedAt": "1757579314347"  
+          "createdAt": "1757578749361",  
+          "updatedAt": "1757578749464"  
         }  
       ]  
     }
