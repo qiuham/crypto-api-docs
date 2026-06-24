@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/capital/fetch-withdraw-address
 api_type: REST
-updated_at: 2026-06-23 18:58:13.407328
+updated_at: 2026-06-24 18:51:50.493484
 ---
 
 # Withdraw History (supporting network) (USER_DATA)

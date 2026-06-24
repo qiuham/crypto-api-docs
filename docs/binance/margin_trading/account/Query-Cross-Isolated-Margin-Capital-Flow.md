@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Query-Cross-Isolated-Margin-Capital-Flow
 api_type: Account
-updated_at: 2026-06-23 18:55:12.941710
+updated_at: 2026-06-24 18:49:02.914160
 ---
 
 # Query Enabled Isolated Margin Account Limit (USER_DATA)

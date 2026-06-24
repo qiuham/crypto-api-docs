@@ -2,14 +2,23 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/market-data-endpoints
 api_type: Market Data
-updated_at: 2026-06-23 18:53:37.856963
+updated_at: 2026-06-24 18:47:33.808523
 ---
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-22**
+**Last Updated: 2026-06-24**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-24[​](/docs/binance-spot-api-docs/testnet#2026-06-24 "Direct link to 2026-06-24")
+
+  * Beginning at **2026-07-02 07:00 UTC** , [WebSocket Streams](/docs/binance-spot-api-docs/testnet/web-socket-streams) will undergo an infrastructure upgrade and will approximately take up to an hour.
+  * During the upgrade, your WebSocket connection may be disconnected; please reconnect to restore your connection.
+
+
+
+* * *
 
 ### 2026-06-22[​](/docs/binance-spot-api-docs/testnet#2026-06-22 "Direct link to 2026-06-22")
 
@@ -1612,9 +1621,18 @@ User Data Stream:
 
 # CHANGELOG for Binance SPOT Testnet
 
-**Last Updated: 2026-06-22**
+**Last Updated: 2026-06-24**
 
 **Note:** All features here will only apply to the [SPOT Testnet](https://testnet.binance.vision/). This is not always synced with the live exchange.
+
+### 2026-06-24[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-24 "2026-06-24的直接链接")
+
+  * Beginning at **2026-07-02 07:00 UTC** , [WebSocket Streams](/docs/zh-CN/binance-spot-api-docs/testnet/web-socket-streams) will undergo an infrastructure upgrade and will approximately take up to an hour.
+  * During the upgrade, your WebSocket connection may be disconnected; please reconnect to restore your connection.
+
+
+
+* * *
 
 ### 2026-06-22[​](/docs/zh-CN/binance-spot-api-docs/testnet#2026-06-22 "2026-06-22的直接链接")
 
@@ -2283,7 +2301,7 @@ WebSocket API
 
 * * *
 
-### 2025-10-08[​](/docs/zh-CN/binance-spot-api-docs/testnet#2025-10-08 "2025-10-08�的直接链接")
+### 2025-10-08[​](/docs/zh-CN/binance-spot-api-docs/testnet#2025-10-08 "2025-10-08的直接链接")
 
 #### FIX API[​](/docs/zh-CN/binance-spot-api-docs/testnet#fix-api-3 "FIX API的直接链接")
 

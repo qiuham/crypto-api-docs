@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Time-Weighted-Average-Price-New-Order
 api_type: REST
-updated_at: 2026-06-23 18:57:10.915068
+updated_at: 2026-06-24 18:50:52.544072
 ---
 
 # Time-Weighted Average Price(Twap) New Order(TRADE)
