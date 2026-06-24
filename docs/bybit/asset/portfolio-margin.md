@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/portfolio-margin
 api_type: REST
-updated_at: 2026-06-23 19:13:28.651923
+updated_at: 2026-06-24 19:05:51.447496
 ---
 
 # Create Internal Transfer

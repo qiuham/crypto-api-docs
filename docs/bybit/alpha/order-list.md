@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/order-list
 api_type: REST
-updated_at: 2026-06-23 19:12:42.934099
+updated_at: 2026-06-24 19:05:06.114120
 ---
 
 # Get Trade Quote

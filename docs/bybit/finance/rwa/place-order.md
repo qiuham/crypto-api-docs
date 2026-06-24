@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/rwa/place-order
 api_type: REST
-updated_at: 2026-06-23 19:16:24.638342
+updated_at: 2026-06-24 19:08:44.922522
 ---
 
 # Get Position List

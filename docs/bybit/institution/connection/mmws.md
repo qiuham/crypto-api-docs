@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/institution/connection/mmws
 api_type: REST
-updated_at: 2026-06-23 19:16:29.794093
+updated_at: 2026-06-24 19:08:49.933357
 ---
 
 # Get Institution Whitelist IP

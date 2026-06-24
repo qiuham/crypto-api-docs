@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/flexible/repay
 api_type: REST
-updated_at: 2026-06-23 19:17:22.668820
+updated_at: 2026-06-24 19:09:42.190704
 ---
 
 # Get Repayment History

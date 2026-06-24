@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/websocket/trade/guideline
 api_type: Trading
-updated_at: 2026-06-23 19:20:24.864057
+updated_at: 2026-06-24 19:12:44.481890
 ---
 
 # Websocket Trade Guideline

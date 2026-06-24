@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/rfq/websocket/public/public-transaction
 api_type: WebSocket
-updated_at: 2026-06-23 19:18:49.125502
+updated_at: 2026-06-24 19:11:08.702777
 ---
 
 # Fast Order Response SBE

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/fee-rate
 api_type: Account
-updated_at: 2026-06-23 19:11:57.882598
+updated_at: 2026-06-24 19:04:21.788380
 ---
 
 # Get MMP State

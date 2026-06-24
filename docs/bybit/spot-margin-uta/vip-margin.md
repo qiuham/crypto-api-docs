@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/vip-margin
 api_type: REST
-updated_at: 2026-06-23 19:19:19.316150
+updated_at: 2026-06-24 19:11:38.802290
 ---
 
 # Get Recent Public Trades

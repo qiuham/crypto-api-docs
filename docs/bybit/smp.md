@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/smp
 api_type: REST
-updated_at: 2026-06-23 19:18:57.066229
+updated_at: 2026-06-24 19:11:16.603180
 ---
 
 # Get Currency Data

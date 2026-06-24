@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spread/market/tickers
 api_type: Market Data
-updated_at: 2026-06-23 19:19:24.349354
+updated_at: 2026-06-24 19:11:43.876730
 ---
 
 # Create Order

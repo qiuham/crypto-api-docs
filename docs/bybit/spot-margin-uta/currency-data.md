@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/currency-data
 api_type: REST
-updated_at: 2026-06-23 19:18:58.307509
+updated_at: 2026-06-24 19:11:17.843824
 ---
 
 # Get Currency Data
