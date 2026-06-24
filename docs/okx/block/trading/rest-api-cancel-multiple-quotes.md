@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-cancel-multiple-quotes
 anchor_id: block-trading-rest-api-cancel-multiple-quotes
 api_type: REST
-updated_at: 2026-06-23 19:31:41.277188
+updated_at: 2026-06-24 19:23:57.814671
 ---
 
 # Cancel multiple Quotes

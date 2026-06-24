@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-get-trades
 anchor_id: block-trading-rest-api-get-trades
 api_type: REST
-updated_at: 2026-06-23 19:31:42.857722
+updated_at: 2026-06-24 19:23:59.398456
 ---
 
 # Get trades
