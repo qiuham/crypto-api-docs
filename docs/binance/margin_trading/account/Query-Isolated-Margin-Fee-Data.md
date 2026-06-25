@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Query-Isolated-Margin-Fee-Data
 api_type: Account
-updated_at: 2026-06-24 18:49:09.485434
+updated_at: 2026-06-25 18:57:45.241265
 ---
 
 # Get Interest History (USER_DATA)

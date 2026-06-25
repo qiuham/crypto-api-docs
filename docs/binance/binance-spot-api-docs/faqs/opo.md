@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/faqs/opo
 api_type: REST
-updated_at: 2026-06-24 18:47:06.270766
+updated_at: 2026-06-25 18:55:29.225654
 ---
 
 # Price Range Execution Rule

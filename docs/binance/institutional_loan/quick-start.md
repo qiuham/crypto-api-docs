@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/quick-start
 api_type: REST
-updated_at: 2026-06-24 18:53:35.354405
+updated_at: 2026-06-25 19:02:36.301593
 ---
 
 # Risk Unit Transfer(TRADE)

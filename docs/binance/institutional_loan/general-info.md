@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/general-info
 api_type: REST
-updated_at: 2026-06-24 18:53:34.737044
+updated_at: 2026-06-25 19:02:35.681704
 ---
 
 # Risk Unit Transfer(TRADE)

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-Cancel-Order
 api_type: Trading
-updated_at: 2026-06-24 18:50:09.103822
+updated_at: 2026-06-25 18:58:52.258298
 ---
 
 # Margin Account New Order (TRADE)

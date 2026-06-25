@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/managed-sub-account/Query-Managed-Sub-Account-Transfer-Log-Trading-Team-Sub
 api_type: Account
-updated_at: 2026-06-24 18:54:52.144538
+updated_at: 2026-06-25 19:04:01.639170
 ---
 
 # Query Managed Sub-account Asset Details (For Investor Master Account) (USER_DATA)

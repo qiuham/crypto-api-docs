@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/borrow-and-repay/Get-Interest-History
 api_type: REST
-updated_at: 2026-06-24 18:49:11.332937
+updated_at: 2026-06-25 18:57:47.104890
 ---
 
 # Get Interest History (USER_DATA)

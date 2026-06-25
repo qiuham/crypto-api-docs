@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/asset/user-universal-transfer
 api_type: REST
-updated_at: 2026-06-24 18:51:43.635452
+updated_at: 2026-06-25 19:00:34.110168
 ---
 
 # Fetch deposit address list with network(USER_DATA)
