@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/sandbox
 api_type: Trading
-updated_at: 2026-06-24 18:36:51.652686
+updated_at: 2026-06-25 18:45:21.525289
 ---
 
 # Advanced Trade API Sandbox

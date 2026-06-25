@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/coinbase-app/advanced-trade-apis/websocket/websocket-overview
 api_type: WebSocket
-updated_at: 2026-06-23 18:42:54.484904
+updated_at: 2026-06-25 18:45:21.926481
 ---
 
 # Advanced Trade WebSocket Overview

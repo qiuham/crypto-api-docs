@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/products/get-market-trades
 api_type: Market Data
-updated_at: 2026-06-24 18:36:50.671781
+updated_at: 2026-06-25 18:45:19.414688
 ---
 
 # Get Market Trades
@@ -105,35 +105,3 @@ The best ask for the `product_id`, in quote currency.
 Example:
 
 `"292.40"`
-
-# Get Market Trades
-
-Get snapshot information by product ID about the last trades (ticks) and best bid/ask.
-
-GET
-
-/
-
-api
-
-/
-
-v3
-
-/
-
-brokerage
-
-/
-
-products
-
-/
-
-{product_id}
-
-/
-
-ticker
-
-Get Market Trades
