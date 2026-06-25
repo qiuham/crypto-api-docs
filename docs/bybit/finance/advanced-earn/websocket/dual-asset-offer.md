@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/advanced-earn/websocket/dual-asset-offer
 api_type: WebSocket
-updated_at: 2026-06-24 19:07:47.192113
+updated_at: 2026-06-25 19:17:47.304080
 ---
 
 # Get History APR

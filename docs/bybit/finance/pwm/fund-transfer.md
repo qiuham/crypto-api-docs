@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/fund-transfer
 api_type: REST
-updated_at: 2026-06-24 19:08:28.336693
+updated_at: 2026-06-25 19:18:28.908873
 ---
 
 # Fund Transfer Between Sub-Accounts

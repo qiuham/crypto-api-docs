@@ -2,33 +2,29 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/set-leverage
 api_type: REST
-updated_at: 2026-06-24 19:11:33.705719
+updated_at: 2026-06-25 19:21:34.979843
 ---
 
-# Toggle Margin Trade
+# Get Status And Leverage
 
-Turn on / off spot margin trade
-
-caution
-
-Your account needs to activate spot margin first; i.e., you must have finished the quiz on web / app.
+Query the Spot margin status and leverage
 
 ### HTTP Request
 
-POST`/v5/spot-margin-trade/switch-mode`
+GET`/v5/spot-margin-trade/state`
 
 ### Request Parameters
 
-Parameter| Required| Type| Comments  
----|---|---|---  
-spotMarginMode| **true**|  string| `1`: on, `0`: off  
-  
+None
+
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
+spotLeverage| string| Spot margin leverage. Returns `""` if the margin trade is turned off  
 spotMarginMode| string| Spot margin status. `1`: on, `0`: off  
-[](/docs/api-explorer/v5/spot-margin-uta/switch-mode)
+effectiveLeverage| string| actual leverage ratio. Precision retains 2 decimal places, truncate downwards  
+[](/docs/api-explorer/v5/spot-margin-uta/status)
 
 * * *
 
@@ -41,17 +37,12 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
 
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
-    Host: api-testnet.bybit.com  
+    GET /v5/spot-margin-trade/state HTTP/1.1  
+    Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "spotMarginMode": "0"  
-    }  
     
     
     
@@ -61,9 +52,7 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
-    ))  
+    print(session.spot_margin_trade_get_status_and_leverage())  
     
     
     
@@ -76,7 +65,7 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
     });  
       
     client  
-      .toggleSpotMarginTrade('0')  
+      .getSpotMarginState()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -92,43 +81,38 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "spotMarginMode": "0"  
+            "spotLeverage": "10",  
+            "spotMarginMode": "1",  
+            "effectiveLeverage": "1"  
         },  
         "retExtInfo": {},  
-        "time": 1672297795542  
+        "time": 1692696841231  
     }
 
 ---
 
-# 全倉槓桿開關
+# 查詢開關狀態和倍數
 
-全倉槓桿開關
+查詢統一帳戶下槓桿交易的開關狀態和槓桿倍數
 
 > **覆蓋範圍: 全倉槓桿 (統一帳戶)**
 
-警告
-
-您的帳戶需要先開啟全倉槓桿
-
 ### HTTP 請求
 
-POST`/v5/spot-margin-trade/switch-mode`
+GET`/v5/spot-margin-trade/state`
 
 ### 請求參數
 
-參數| 是否必需| 類型| 說明  
----|---|---|---  
-spotMarginMode| **true**|  string| `1`: 開啟，`0`: 關閉  
-  
+無
+
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）  
-[](/docs/zh-TW/api-explorer/v5/spot-margin-uta/switch-mode)
-
-* * *
-
+spotLeverage| string| 槓桿倍數. 如果處於關閉狀態的話, 則返回 `""`  
+spotMarginMode| string| 開關狀態. `1`: 開啟, `0`: 關閉  
+effectiveLeverage| string| 實際借貸槓桿倍數。 精度保留2位小數，向下截取  
+  
 ### 請求示例
 
   * HTTP
@@ -138,29 +122,16 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
 
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
-    Host: api-testnet.bybit.com  
+    GET /v5/spot-margin-trade/state HTTP/1.1  
+    Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
+    
+    
+    
       
-    {  
-        "spotMarginMode": "0"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
-    ))  
     
     
     
@@ -173,7 +144,7 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
     });  
       
     client  
-      .toggleSpotMarginTrade('0')  
+      .getSpotMarginState()  
       .then((response) => {  
         console.log(response);  
       })  
@@ -189,8 +160,10 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
         "retCode": 0,  
         "retMsg": "OK",  
         "result": {  
-            "spotMarginMode": "0"  
+            "spotLeverage": "10",  
+            "spotMarginMode": "1",  
+            "effectiveLeverage": "1"  
         },  
         "retExtInfo": {},  
-        "time": 1672297795542  
+        "time": 1692696841231  
     }

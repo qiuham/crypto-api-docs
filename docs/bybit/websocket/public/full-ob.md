@@ -1,8 +1,8 @@
 ---
 exchange: bybit
-source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/insurance-pool
+source_url: https://bybit-exchange.github.io/docs/v5/websocket/public/full-ob
 api_type: WebSocket
-updated_at: 2026-06-25 19:22:40.232542
+updated_at: 2026-06-25 19:22:39.612907
 ---
 
 # Kline

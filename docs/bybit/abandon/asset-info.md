@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/asset-info
 api_type: REST
-updated_at: 2026-06-24 19:03:57.937101
+updated_at: 2026-06-25 19:13:55.354890
 ---
 
 # Get Lending Coin Info

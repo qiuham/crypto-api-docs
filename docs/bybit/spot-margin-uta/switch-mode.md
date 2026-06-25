@@ -2,56 +2,50 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/switch-mode
 api_type: REST
-updated_at: 2026-06-24 19:11:34.947394
+updated_at: 2026-06-25 19:21:38.818296
 ---
 
-# Toggle Margin Trade
+# Get Orderbook
 
-Turn on / off spot margin trade
-
-caution
-
-Your account needs to activate spot margin first; i.e., you must have finished the quiz on web / app.
+Query spread orderbook depth data.
 
 ### HTTP Request
 
-POST`/v5/spot-margin-trade/switch-mode`
+GET`/v5/spread/orderbook`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-spotMarginMode| **true**|  string| `1`: on, `0`: off  
+symbol| **true**|  string| Spread combination symbol name  
+limit| false| integer| Limit size for each bid and ask [`1`, `25`]. Default: `1`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
-spotMarginMode| string| Spot margin status. `1`: on, `0`: off  
-[](/docs/api-explorer/v5/spot-margin-uta/switch-mode)
-
-* * *
-
+s| string| Spread combination symbol name  
+b| array| Bid, buyer. Sorted by price in descending order  
+> b[0]| string| Bid price  
+> b[1]| string| Bid size  
+a| array| Ask, seller. Sorted by price in ascending order  
+> a[0]| string| Ask price  
+> a[1]| string| Ask size  
+ts| integer| The timestamp (ms) that the system generates the data  
+u| integer| Update ID. Is always in sequence. Corresponds to `u` in the 25-level [WebSocket orderbook stream](https://bybit-exchange.github.io/docs/v5/spread/websocket/public/orderbook)  
+seq| integer| Cross sequence  
+cts| integer| The timestamp from the matching engine when this orderbook data is produced. It can be correlated with `T` from [public trade channel](/docs/v5/spread/websocket/public/trade)  
+  
 ### Request Example
 
   * HTTP
   * Python
-  * Node.js
 
 
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
+    GET /v5/spread/orderbook?symbol=SOLUSDT_SOL/USDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "spotMarginMode": "0"  
-    }  
     
     
     
@@ -61,28 +55,10 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
+    print(session.spread_get_orderbook(  
+        symbol="SOLUSDT_SOL/USDT",  
+        limit=1  
     ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .toggleSpotMarginTrade('0')  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### Response Example
@@ -90,96 +66,66 @@ spotMarginMode| string| Spot margin status. `1`: on, `0`: off
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "spotMarginMode": "0"  
+            "s": "SOLUSDT_SOL/USDT",  
+            "b": [  
+                [  
+                    "21.0000",  
+                    "0.1"  
+                ]  
+            ],  
+            "a": [  
+                [  
+                    "23.0107",  
+                    "4.6"  
+                ]  
+            ],  
+            "u": 46977,  
+            "ts": 1744077242177,  
+            "seq": 213110,  
+            "cts": 1744076329043  
         },  
         "retExtInfo": {},  
-        "time": 1672297795542  
+        "time": 1744077243583  
     }
 
 ---
 
-# 全倉槓桿開關
+# 查詢深度
 
-全倉槓桿開關
+### HTTP請求
 
-> **覆蓋範圍: 全倉槓桿 (統一帳戶)**
-
-警告
-
-您的帳戶需要先開啟全倉槓桿
-
-### HTTP 請求
-
-POST`/v5/spot-margin-trade/switch-mode`
+GET`/v5/spread/orderbook`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-spotMarginMode| **true**|  string| `1`: 開啟，`0`: 關閉  
+symbol| **true**|  string| 價差產品名稱  
+limit| false| integer| 深度限制 [`1`, `25`]. 默認: `1`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
-spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）  
-[](/docs/zh-TW/api-explorer/v5/spot-margin-uta/switch-mode)
-
-* * *
-
+s| string| 價差產品名稱  
+b| array| Bid, 買方. 按照價格從大到小  
+> b[0]| string| 買方報價  
+> b[1]| string| 買方數量  
+a| array| Ask, 賣方. 按照價格從小到大  
+> a[0]| string| 賣方報價  
+> a[1]| string| 賣方數量  
+ts| integer| 行情服務生成數據時間戳（毫秒）  
+u| integer| 表示數據連續性的id, 它和wss推送裡的25檔的`u`對齊  
+seq| integer| 撮合版本號  
+cts| integer| 產生此訂單簿數據時來自撮合引擎的時間戳. 可用於與平台成交頻道中的T進行關聯  
+  
 ### 請求示例
-
-  * HTTP
-  * Python
-  * Node.js
-
-
     
     
-    POST /v5/spot-margin-trade/switch-mode HTTP/1.1  
+    GET /v5/spread/orderbook?symbol=SOLUSDT_SOL/USDT&limit=1 HTTP/1.1  
     Host: api-testnet.bybit.com  
-    X-BAPI-SIGN: XXXXX  
-    X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1672297794480  
-    X-BAPI-RECV-WINDOW: 5000  
-    Content-Type: application/json  
-      
-    {  
-        "spotMarginMode": "0"  
-    }  
-    
-    
-    
-    from pybit.unified_trading import HTTP  
-    session = HTTP(  
-        testnet=True,  
-        api_key="xxxxxxxxxxxxxxxxxx",  
-        api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
-    )  
-    print(session.spot_margin_trade_toggle_margin_trade(  
-        spotMarginMode="0",  
-    ))  
-    
-    
-    
-    const { RestClientV5 } = require('bybit-api');  
-      
-    const client = new RestClientV5({  
-      testnet: true,  
-      key: 'xxxxxxxxxxxxxxxxxx',  
-      secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',  
-    });  
-      
-    client  
-      .toggleSpotMarginTrade('0')  
-      .then((response) => {  
-        console.log(response);  
-      })  
-      .catch((error) => {  
-        console.error(error);  
-      });  
     
 
 ### 響應示例
@@ -187,10 +133,26 @@ spotMarginMode| string| 全倉槓桿狀態（`1`: 開啟，`0`: 關閉）
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "Success",  
         "result": {  
-            "spotMarginMode": "0"  
+            "s": "SOLUSDT_SOL/USDT",  
+            "b": [  
+                [  
+                    "21.0000",  
+                    "0.1"  
+                ]  
+            ],  
+            "a": [  
+                [  
+                    "23.0107",  
+                    "4.6"  
+                ]  
+            ],  
+            "u": 46977,  
+            "ts": 1744077242177,  
+            "seq": 213110,  
+            "cts": 1744076329043  
         },  
         "retExtInfo": {},  
-        "time": 1672297795542  
+        "time": 1744077243583  
     }

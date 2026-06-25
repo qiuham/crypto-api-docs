@@ -2,28 +2,31 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/cancel-borrow
 api_type: REST
-updated_at: 2026-06-24 19:09:26.276700
+updated_at: 2026-06-25 19:19:30.662359
 ---
 
-# Cancel Borrow Order
+# Repay
 
 > Permission: "Spot trade"  
 >  UID rate limit: 1 req / second
 
 ### HTTP Request
 
-POST`/v5/crypto-loan-fixed/borrow-order-cancel`
+POST`/v5/crypto-loan-fixed/fully-repay`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-orderId| **true**|  string| Order ID of fixed borrow order  
+loanId| false| string| Loan contract ID. Either `loanId` or `loanCurrency` needs to be passed  
+loanCurrency| false| string| Loan coin. Either `loanId` or `loanCurrency` needs to be passed  
   
 ### Response Parameters
 
-None
-
+Parameter| Type| Comments  
+---|---|---  
+repayId| string| Repayment transaction ID  
+  
 ### Request Example
 
   * HTTP
@@ -33,17 +36,18 @@ None
 
     
     
-    POST /v5/crypto-loan-fixed/borrow-order-cancel HTTP/1.1  
+    POST /v5/crypto-loan-fixed/fully-repay HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1752652457987  
+    X-BAPI-TIMESTAMP: 1752656296791  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 26  
+    Content-Length: 50  
       
     {  
-        "orderId": "13009"  
+        "loanId": "570",  
+        "loanCurrency": "ETH"  
     }  
     
     
@@ -54,8 +58,9 @@ None
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.create_lending_order_fixed_crypto_loan(  
-        orderId="13009",  
+    print(session.repay_fixed_crypto_loan(  
+        loanId="570",  
+        loanCurrency="ETH",  
     ))  
     
     
@@ -69,32 +74,37 @@ None
     {  
         "retCode": 0,  
         "retMsg": "ok",  
-        "result": {},  
+        "result": {  
+            "repayId": "1771"  
+        },  
         "retExtInfo": {},  
-        "time": 1752652458684  
+        "time": 1752569614549  
     }
 
 ---
 
-# 撤銷借款單
+# 還款
 
 > 權限: "現貨"  
 >  頻率: 1次/秒
 
 ### HTTP 請求
 
-POST`/v5/crypto-loan-fixed/borrow-order-cancel`
+POST`/v5/crypto-loan-fixed/fully-repay`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-orderId| **true**|  string| 借款單ID  
+loanId| false| string| 借款合同ID. `loanId` 和 `loanCurrency`必須傳其中一個  
+loanCurrency| false| string| 借款幣種. `loanId` 和 `loanCurrency`必須傳其中一個  
   
 ### 響應參數
 
-無
-
+參數| 類型| 說明  
+---|---|---  
+repayId| string| 還款訂單ID  
+  
 ### 請求示例
 
   * HTTP
@@ -104,17 +114,18 @@ orderId| **true**|  string| 借款單ID
 
     
     
-    POST /v5/crypto-loan-fixed/borrow-order-cancel HTTP/1.1  
+    POST /v5/crypto-loan-fixed/fully-repay HTTP/1.1  
     Host: api-testnet.bybit.com  
     X-BAPI-SIGN: XXXXXX  
     X-BAPI-API-KEY: XXXXXX  
-    X-BAPI-TIMESTAMP: 1752652457987  
+    X-BAPI-TIMESTAMP: 1752656296791  
     X-BAPI-RECV-WINDOW: 5000  
     Content-Type: application/json  
-    Content-Length: 26  
+    Content-Length: 50  
       
     {  
-        "orderId": "13009"  
+        "loanId": "570",  
+        "loanCurrency": "ETH"  
     }  
     
     
@@ -125,8 +136,9 @@ orderId| **true**|  string| 借款單ID
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.create_lending_order_fixed_crypto_loan(  
-        orderId="13009",  
+    print(session.repay_fixed_crypto_loan(  
+        loanId="570",  
+        loanCurrency="ETH",  
     ))  
     
     
@@ -140,7 +152,9 @@ orderId| **true**|  string| 借款單ID
     {  
         "retCode": 0,  
         "retMsg": "ok",  
-        "result": {},  
+        "result": {  
+            "repayId": "1771"  
+        },  
         "retExtInfo": {},  
-        "time": 1752652458684  
+        "time": 1752569614549  
     }

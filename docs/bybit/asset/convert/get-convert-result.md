@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/convert/get-convert-result
 api_type: REST
-updated_at: 2026-06-24 19:05:28.788500
+updated_at: 2026-06-25 19:15:27.407546
 ---
 
 # Get Internal Deposit Records (off-chain)

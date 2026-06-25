@@ -2,40 +2,34 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/currency-data
 api_type: REST
-updated_at: 2026-06-24 19:11:17.843824
+updated_at: 2026-06-25 19:21:21.702113
 ---
 
-# Get Currency Data
-
-info
-
-If the borrowable switch is disabled (`false`), the related configuration fields will return `""`.
+# Get Fixed-Rate Borrow Order Quote
 
 ### HTTP Request
 
-GET`/v5/spot-margin-trade/currency-data`
+GET`/v5/spot-margin-trade/fixedborrow-order-quote`
 
 ### Request Parameters
 
 Parameter| Required| Type| Comments  
 ---|---|---|---  
-currency| false| string| Coin name, uppercase only  
+orderCurrency| **true**|  string| Coin name  
+term| false| string| Fixed term. `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
+orderBy| false| string| Sort field. `apy`: annual rate; `term`: term; `quantity`: quantity  
+sort| false| integer| Sort direction. `0`: ascending (default); `1`: descending  
+limit| false| integer| Limit for data size per page. [1, 100]. Default: `10`  
   
 ### Response Parameters
 
 Parameter| Type| Comments  
 ---|---|---  
 list| array| Object  
-> currency| string| Coin name  
-> flexibleManualBorrowable| boolean| Whether flexible manual borrow is enabled. `true`: enabled, `false`: disabled  
-> minFlexibleManualBorrowQty| string| Min flexible manual borrow qty  
-> flexibleManualBorrowAccuracy| string| Coin precision for flexible manual borrow  
-> fixedManualBorrowable| boolean| Whether fixed manual borrow is enabled. `true`: enabled, `false`: disabled  
-> minFixedManualBorrowQty| string| Min fixed manual borrow qty  
-> fixedManualBorrowAccuracy| string| Coin precision for fixed manual borrow  
-> fixedInterestRateAccuracy| string| Coin precision for fixed manual borrow interest rate.  
-> minFixedInterestRate| string| Min fixed manual borrow interest rate, e.g.: `0.01`  
-> maxFixedInterestRate| string| Max fixed manual borrow interest rate, e.g.: `0.8`  
+> orderCurrency| string| Coin name  
+> term| integer| Fixed term. `7`: 7 days; `14`: 14 days; `30`: 30 days; `90`: 90 days; `180`: 180 days  
+> annualRate| string| Annual rate  
+> qty| string| Quantity  
   
 * * *
 
@@ -48,11 +42,11 @@ list| array| Object
 
     
     
-    GET /v5/spot-margin-trade/currency-data?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/fixedborrow-order-quote?orderCurrency=ETH&orderBy=apy&limit=10 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1773220082000  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -63,8 +57,10 @@ list| array| Object
         api_key="xxxxxxxxxxxxxxxxxx",  
         api_secret="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  
     )  
-    print(session.spot_margin_trade_get_currency_data(  
-        currency="BTC"  
+    print(session.spot_margin_trade_get_fixed_borrow_order_quote(  
+        orderCurrency="ETH",  
+        orderBy="apy",  
+        limit=10  
     ))  
     
     
@@ -77,60 +73,72 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
             "list": [  
                 {  
-                    "currency": "BTC",  
-                    "flexibleManualBorrowable": true,  
-                    "minFlexibleManualBorrowQty": "0.001",  
-                    "flexibleManualBorrowAccuracy": "8",  
-                    "fixedManualBorrowable": false,  
-                    "minFixedManualBorrowQty": "",  
-                    "fixedManualBorrowAccuracy": "",  
-                    "fixedInterestRateAccuracy": "",  
-                    "minFixedInterestRate": "",  
-                    "maxFixedInterestRate": ""  
+                    "orderCurrency": "ETH",  
+                    "term": 30,  
+                    "annualRate": "0.026",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 60,  
+                    "annualRate": "0.033",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 90,  
+                    "annualRate": "0.038",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 30,  
+                    "annualRate": "0.1",  
+                    "qty": "0.6"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 60,  
+                    "annualRate": "0.1",  
+                    "qty": "0.1"  
                 }  
             ]  
         },  
-        "retExtInfo": "{}",  
-        "time": 1773220082091  
+        "retExtInfo": {},  
+        "time": 1775617874744  
     }
 
 ---
 
-# 查詢借幣幣種數據
-
-信息
-
-若借貸開關為關閉狀態（`false`），相關配置字段將返回 `""`。
+# 查詢固定利率借款掛單報價
 
 ### HTTP 請求
 
-GET`/v5/spot-margin-trade/currency-data`
+GET`/v5/spot-margin-trade/fixedborrow-order-quote`
 
 ### 請求參數
 
 參數| 是否必需| 類型| 說明  
 ---|---|---|---  
-currency| false| string| 幣種名稱，僅限大寫  
+orderCurrency| **true**|  string| 幣種名稱  
+term| false| string| 借款期限。`7`：7天；`14`：14天；`30`：30天；`90`：90天；`180`：180天  
+orderBy| false| string| 排序字段。`apy`：年化利率；`term`：期限；`quantity`：數量  
+sort| false| integer| 排序方向。`0`：升序（默認）；`1`：降序  
+limit| false| integer| 每頁返回數量，[1, 100]，默認：`10`  
   
 ### 響應參數
 
 參數| 類型| 說明  
 ---|---|---  
 list| array| Object  
-> currency| string| 幣種名稱  
-> flexibleManualBorrowable| boolean| 是否開啟活期借幣。`true`：開啟，`false`：關閉  
-> minFlexibleManualBorrowQty| string| 活期最小借幣數量  
-> flexibleManualBorrowAccuracy| string| 活期借幣精度  
-> fixedManualBorrowable| boolean| 是否開啟定期借幣。`true`：開啟，`false`：關閉  
-> minFixedManualBorrowQty| string| 定期最小借幣數量  
-> fixedManualBorrowAccuracy| string| 定期借幣精度  
-> fixedInterestRateAccuracy| string| 定期借幣利率精度  
-> minFixedInterestRate| string| 最小借幣利率，例如：`0.01`  
-> maxFixedInterestRate| string| 最大借幣利率，例如：`0.8`  
+> orderCurrency| string| 幣種名稱  
+> term| integer| 借款期限。`7`：7天；`14`：14天；`30`：30天；`90`：90天；`180`：180天  
+> annualRate| string| 年化利率  
+> qty| string| 數量  
   
 * * *
 
@@ -143,11 +151,11 @@ list| array| Object
 
     
     
-    GET /v5/spot-margin-trade/currency-data?currency=BTC HTTP/1.1  
+    GET /v5/spot-margin-trade/fixedborrow-order-quote?orderCurrency=ETH&orderBy=apy&limit=10 HTTP/1.1  
     Host: api.bybit.com  
     X-BAPI-SIGN: XXXXX  
     X-BAPI-API-KEY: xxxxxxxxxxxxxxxxxx  
-    X-BAPI-TIMESTAMP: 1773220082000  
+    X-BAPI-TIMESTAMP: 1692696840996  
     X-BAPI-RECV-WINDOW: 5000  
     
     
@@ -164,23 +172,41 @@ list| array| Object
     
     {  
         "retCode": 0,  
-        "retMsg": "OK",  
+        "retMsg": "success",  
         "result": {  
             "list": [  
                 {  
-                    "currency": "BTC",  
-                    "flexibleManualBorrowable": true,  
-                    "minFlexibleManualBorrowQty": "0.001",  
-                    "flexibleManualBorrowAccuracy": "8",  
-                    "fixedManualBorrowable": false,  
-                    "minFixedManualBorrowQty": "",  
-                    "fixedManualBorrowAccuracy": "",  
-                    "fixedInterestRateAccuracy": "",  
-                    "minFixedInterestRate": "",  
-                    "maxFixedInterestRate": ""  
+                    "orderCurrency": "ETH",  
+                    "term": 30,  
+                    "annualRate": "0.026",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 60,  
+                    "annualRate": "0.033",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 90,  
+                    "annualRate": "0.038",  
+                    "qty": "0.1"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 30,  
+                    "annualRate": "0.1",  
+                    "qty": "0.6"  
+                },  
+                {  
+                    "orderCurrency": "ETH",  
+                    "term": 60,  
+                    "annualRate": "0.1",  
+                    "qty": "0.1"  
                 }  
             ]  
         },  
-        "retExtInfo": "{}",  
-        "time": 1773220082091  
+        "retExtInfo": {},  
+        "time": 1775617874744  
     }
