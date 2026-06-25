@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#public-data-websocket-instruments-channel
 anchor_id: public-data-websocket-instruments-channel
 api_type: WebSocket
-updated_at: 2026-06-24 19:24:29.449452
+updated_at: 2026-06-25 19:34:44.969444
 ---
 
 # Instruments channel

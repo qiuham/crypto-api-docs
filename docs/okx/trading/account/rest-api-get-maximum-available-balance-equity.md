@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-account-rest-api-get-maximum-available-balance-equity
 anchor_id: trading-account-rest-api-get-maximum-available-balance-equity
 api_type: REST
-updated_at: 2026-06-24 19:22:39.424447
+updated_at: 2026-06-25 19:32:55.245927
 ---
 
 # Get maximum available balance/equity

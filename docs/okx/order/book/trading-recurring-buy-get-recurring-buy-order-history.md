@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#order-book-trading-recurring-buy-get-recurring-buy-order-history
 anchor_id: order-book-trading-recurring-buy-get-recurring-buy-order-history
 api_type: API
-updated_at: 2026-06-24 19:23:31.273578
+updated_at: 2026-06-25 19:33:46.820904
 ---
 
 # GET / Recurring buy order history
