@@ -1,7 +1,7 @@
 {
   "exchange": "kraken",
   "total": 248,
-  "updated_at": "2026-06-24 19:30:32.746402",
+  "updated_at": "2026-06-25 19:41:46.787600",
   "documents_by_type": {
     "REST": [
       {
@@ -30,7 +30,7 @@
         "filename": "nos-fix.md",
         "path": "docs/kraken/fix-api/nos-fix.md",
         "source_url": "https://docs.kraken.com/api/docs/fix-api/nos-fix",
-        "updated_at": "2026-06-24 19:30:24.882249"
+        "updated_at": "2026-06-25 19:41:24.393039"
       },
       {
         "title": "Order Cancel Replace Request (Spot only)",
@@ -569,7 +569,7 @@
         "filename": "send-order.md",
         "path": "docs/kraken/futures-api/trading/send-order.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-order",
-        "updated_at": "2026-06-24 19:30:25.681244"
+        "updated_at": "2026-06-25 19:41:25.196254"
       },
       {
         "title": "Set leverage settings",
@@ -677,11 +677,11 @@
         "updated_at": "2026-06-09 19:39:55.032131"
       },
       {
-        "title": "Add Order",
+        "title": "Error loading page",
         "filename": "add-order.md",
         "path": "docs/kraken/rest-api/add-order.md",
         "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order",
-        "updated_at": "2026-06-24 19:30:31.936639"
+        "updated_at": "2026-06-25 19:41:46.020052"
       },
       {
         "title": "Amend Order",
@@ -1168,7 +1168,7 @@
         "filename": "book.md",
         "path": "docs/kraken/futures-api/websocket/book.md",
         "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/book",
-        "updated_at": "2026-06-24 19:30:28.268899"
+        "updated_at": "2026-06-25 19:41:41.661581"
       },
       {
         "title": "Fills",
@@ -1444,11 +1444,11 @@
         "updated_at": "2026-06-09 19:46:29.447504"
       },
       {
-        "title": "Add Order",
+        "title": "Error loading page",
         "filename": "add_order.md",
         "path": "docs/kraken/websocket-v2/add_order.md",
         "source_url": "https://docs.kraken.com/api/docs/websocket-v2/add_order",
-        "updated_at": "2026-06-24 19:30:32.746402"
+        "updated_at": "2026-06-25 19:41:46.787600"
       },
       {
         "title": "Balances",
@@ -1674,7 +1674,7 @@
         "filename": "global-intro.md",
         "path": "docs/kraken/guides/global-intro.md",
         "source_url": "https://docs.kraken.com/api/docs/guides/global-intro",
-        "updated_at": "2026-06-24 19:30:29.048374"
+        "updated_at": "2026-06-25 19:41:42.441764"
       },
       {
         "title": "Spot Client Order Identifiers",
@@ -1812,22 +1812,6 @@
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/history/account-log",
       "updated_at": "2026-06-09 19:36:29.042398"
-    },
-    {
-      "title": "Add Order",
-      "filename": "add-order.md",
-      "path": "docs/kraken/rest-api/add-order.md",
-      "api_type": "REST",
-      "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order",
-      "updated_at": "2026-06-24 19:30:31.936639"
-    },
-    {
-      "title": "Add Order",
-      "filename": "add_order.md",
-      "path": "docs/kraken/websocket-v2/add_order.md",
-      "api_type": "WebSocket",
-      "source_url": "https://docs.kraken.com/api/docs/websocket-v2/add_order",
-      "updated_at": "2026-06-24 19:30:32.746402"
     },
     {
       "title": "Add Order",
@@ -2238,12 +2222,28 @@
       "updated_at": "2026-06-09 19:39:04.111648"
     },
     {
+      "title": "Error loading page",
+      "filename": "add-order.md",
+      "path": "docs/kraken/rest-api/add-order.md",
+      "api_type": "REST",
+      "source_url": "https://docs.kraken.com/api/docs/rest-api/add-order",
+      "updated_at": "2026-06-25 19:41:46.020052"
+    },
+    {
+      "title": "Error loading page",
+      "filename": "add_order.md",
+      "path": "docs/kraken/websocket-v2/add_order.md",
+      "api_type": "WebSocket",
+      "source_url": "https://docs.kraken.com/api/docs/websocket-v2/add_order",
+      "updated_at": "2026-06-25 19:41:46.787600"
+    },
+    {
       "title": "Exchange overview",
       "filename": "book.md",
       "path": "docs/kraken/futures-api/websocket/book.md",
       "api_type": "WebSocket",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/websocket/book",
-      "updated_at": "2026-06-24 19:30:28.268899"
+      "updated_at": "2026-06-25 19:41:41.661581"
     },
     {
       "title": "Exchange overview",
@@ -2251,7 +2251,7 @@
       "path": "docs/kraken/guides/global-intro.md",
       "api_type": "Guide",
       "source_url": "https://docs.kraken.com/api/docs/guides/global-intro",
-      "updated_at": "2026-06-24 19:30:29.048374"
+      "updated_at": "2026-06-25 19:41:42.441764"
     },
     {
       "title": "Executions",
@@ -3395,7 +3395,7 @@
       "path": "docs/kraken/fix-api/nos-fix.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/fix-api/nos-fix",
-      "updated_at": "2026-06-24 19:30:24.882249"
+      "updated_at": "2026-06-25 19:41:24.393039"
     },
     {
       "title": "Send order",
@@ -3403,7 +3403,7 @@
       "path": "docs/kraken/futures-api/trading/send-order.md",
       "api_type": "REST",
       "source_url": "https://docs.kraken.com/api/docs/futures-api/trading/send-order",
-      "updated_at": "2026-06-24 19:30:25.681244"
+      "updated_at": "2026-06-25 19:41:25.196254"
     },
     {
       "title": "Set leverage settings",
