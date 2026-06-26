@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/get-portfolio-balances
 api_type: Account
-updated_at: 2026-06-25 18:45:18.617461
+updated_at: 2026-06-26 18:37:14.980388
 ---
 
 # Get Portfolios Balances
@@ -51,6 +51,8 @@ Get a list of asset balances on Intx for a given Portfolio
         }
       ]
     }
+
+**Deprecated — retires September 9, 2026.** This INTX perpetuals endpoint is being replaced by the [Deribit-powered derivatives gateway](/coinbase-app/advanced-trade-apis/guides/derivatives/overview). Migrate before the cutover — see the [Migration Overview](/coinbase-app/advanced-trade-apis/guides/derivatives/overview).
 
 #### Authorizations
 

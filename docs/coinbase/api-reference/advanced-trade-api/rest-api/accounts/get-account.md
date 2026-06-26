@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/accounts/get-account
 api_type: Account
-updated_at: 2026-06-25 18:45:16.088411
+updated_at: 2026-06-26 18:37:12.251729
 ---
 
 # Get Account

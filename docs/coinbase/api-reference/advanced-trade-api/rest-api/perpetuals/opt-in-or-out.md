@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/perpetuals/opt-in-or-out
 api_type: REST
-updated_at: 2026-06-25 18:45:18.706034
+updated_at: 2026-06-26 18:37:15.225125
 ---
 
 # Opt In or Out of Multi Asset Collateral
@@ -28,6 +28,8 @@ Enable or Disable Multi Asset Collateral for a given Portfolio
     {
       "multi_asset_collateral_enabled": true
     }
+
+**Deprecated — retires September 9, 2026.** This INTX perpetuals endpoint is being replaced by the [Deribit-powered derivatives gateway](/coinbase-app/advanced-trade-apis/guides/derivatives/overview). Migrate before the cutover — see the [Migration Overview](/coinbase-app/advanced-trade-apis/guides/derivatives/overview).
 
 #### Authorizations
 

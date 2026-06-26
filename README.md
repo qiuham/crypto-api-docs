@@ -27,7 +27,7 @@ PYTHONPATH=. python src/main.py readme
 |--------|------|----------|----------|
 | [Binance](./docs/binance/) | ✅ | 825 | 2026-06-25 |
 | [Bybit](./docs/bybit/) | ✅ | 474 | 2026-06-25 |
-| [Coinbase](./docs/coinbase/) | ✅ | 71 | 2026-06-25 |
+| [Coinbase](./docs/coinbase/) | ✅ | 75 | 2026-06-26 |
 | [Gate.io](./docs/gateio/) | ✅ | 66 | 2026-06-02 |
 | [Hyperliquid](./docs/hyperliquid/) | ✅ | 34 | 2026-06-25 |
 | [Kraken](./docs/kraken/) | ✅ | 248 | 2026-06-25 |
@@ -66,7 +66,7 @@ crypto-api-docs/
 ├── docs/                   # 生成的 Markdown 文档
 │   ├── binance/                # 825 Markdown docs
 │   ├── bybit/                  # 474 Markdown docs
-│   ├── coinbase/               # 71 Markdown docs
+│   ├── coinbase/               # 75 Markdown docs
 │   ├── gateio/                 # 66 Markdown docs
 │   ├── hyperliquid/            # 34 Markdown docs
 │   ├── kraken/                 # 248 Markdown docs
