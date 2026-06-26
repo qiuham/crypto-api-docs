@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#trading-statistics-rest-api-get-taker-flow
 anchor_id: trading-statistics-rest-api-get-taker-flow
 api_type: REST
-updated_at: 2026-06-25 19:34:54.558018
+updated_at: 2026-06-26 19:26:28.354653
 ---
 
 # Get taker flow

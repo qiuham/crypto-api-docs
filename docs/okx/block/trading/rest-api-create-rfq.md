@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#block-trading-rest-api-create-rfq
 anchor_id: block-trading-rest-api-create-rfq
 api_type: REST
-updated_at: 2026-06-25 19:34:09.562436
+updated_at: 2026-06-26 19:25:43.295582
 ---
 
 # Create RFQ
