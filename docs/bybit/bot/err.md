@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/bot/err
 api_type: REST
-updated_at: 2026-06-25 19:16:09.362161
+updated_at: 2026-06-26 19:07:52.696389
 ---
 
 # Create Bot

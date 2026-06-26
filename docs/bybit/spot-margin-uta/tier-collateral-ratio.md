@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/tier-collateral-ratio
 api_type: REST
-updated_at: 2026-06-25 19:21:39.439615
+updated_at: 2026-06-26 19:13:20.322205
 ---
 
 # Get Orderbook

@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/spot-margin-uta/fixedborrow-order-quote
 api_type: REST
-updated_at: 2026-06-25 19:21:24.191271
+updated_at: 2026-06-26 19:13:05.131016
 ---
 
 # Get Fixed-Rate Borrow Order Quote

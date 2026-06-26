@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/earn/byusdt/order
 api_type: REST
-updated_at: 2026-06-25 19:17:52.385968
+updated_at: 2026-06-26 19:09:34.996284
 ---
 
 # Get Product Info

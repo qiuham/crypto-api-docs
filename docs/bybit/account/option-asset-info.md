@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/account/option-asset-info
 api_type: Account
-updated_at: 2026-06-25 19:14:25.097764
+updated_at: 2026-06-26 19:06:09.909589
 ---
 
 # Get Pay Info

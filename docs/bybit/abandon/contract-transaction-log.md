@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/abandon/contract-transaction-log
 api_type: REST
-updated_at: 2026-06-25 19:14:00.350642
+updated_at: 2026-06-26 19:05:45.112003
 ---
 
 # Enable Universal Transfer for Sub UID

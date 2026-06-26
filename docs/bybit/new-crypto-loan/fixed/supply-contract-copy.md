@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/new-crypto-loan/fixed/supply-contract%20copy
 api_type: REST
-updated_at: 2026-06-25 19:19:38.320621
+updated_at: 2026-06-26 19:11:19.033488
 ---
 
 # Get Lending Market

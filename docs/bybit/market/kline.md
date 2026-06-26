@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/kline
 api_type: Market Data
-updated_at: 2026-06-25 19:19:07.656553
+updated_at: 2026-06-26 19:10:48.470509
 ---
 
 # Get Open Interest
