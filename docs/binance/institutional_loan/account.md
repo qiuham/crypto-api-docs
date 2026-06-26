@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/account
 api_type: Account
-updated_at: 2026-06-25 19:02:13.867155
+updated_at: 2026-06-26 18:54:08.775429
 ---
 
 # Query Closed Risk Unit Record (USER_DATA)

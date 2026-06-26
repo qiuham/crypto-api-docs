@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/account/Query-Cross-Margin-Fee-Data
 api_type: Account
-updated_at: 2026-06-25 18:57:39.078309
+updated_at: 2026-06-26 18:49:36.535041
 ---
 
 # Query Enabled Isolated Margin Account Limit (USER_DATA)
@@ -50,7 +50,7 @@ GET `/sapi/v1/margin/isolated/accountLimit`
 
 **1(IP)**
 
-## 请求参数[​](/docs/zh-CN/margin_trading/account/Query-Enabled-Isolated-Margin-Account-Limit#请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/margin_trading/account/Query-Enabled-Isolated-Margin-Account-Limit#请求参数 "请求�参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  

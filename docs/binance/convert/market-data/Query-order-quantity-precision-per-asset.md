@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/market-data/Query-order-quantity-precision-per-asset
 api_type: Market Data
-updated_at: 2026-06-25 19:01:54.369958
+updated_at: 2026-06-26 18:53:49.070359
 ---
 
 # Accept Quote (TRADE)

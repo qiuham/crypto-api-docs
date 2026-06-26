@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Margin-Account-New-OTO
 api_type: Trading
-updated_at: 2026-06-25 18:58:53.516870
+updated_at: 2026-06-26 18:50:48.021686
 ---
 
 # Margin Account New Order (TRADE)
@@ -211,7 +211,7 @@ timestamp| LONG| YES|
 
 
 
-## 响应示例[​](/docs/zh-CN/margin_trading/trade/Margin-Account-New-Order#响应示例 "响应示例的直接链接")
+## 响应示例[​](/docs/zh-CN/margin_trading/trade/Margin-Account-New-Order#响应示例 "响应示例�的直接链接")
 
 > Response ACK:
     

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/request-security
 api_type: REST
-updated_at: 2026-06-25 18:56:00.080688
+updated_at: 2026-06-26 18:47:58.056818
 ---
 
 # CHANGELOG for Binance SPOT Testnet
@@ -48,7 +48,7 @@ REST and WebSocket API:
 
 **Update:**
 
-  * Updated the [Price Range Execution Rule FAQ](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+  * Updated the [Price Range Execution Rule FAQ](/docs/binance-spot-api-docs/faqs/price_range_execution_rules#externalCalculationId1) with new External Reference Price Calculation Methods.
 
 
 
@@ -1662,7 +1662,7 @@ REST and WebSocket API:
 
 **Update:**
 
-  * Updated the [Price Range Execution Rule FAQ](/docs/zh-CN/faqs/price_range_execution_rules.md#external-reference-price-calculation-method-1) with new External Reference Price Calculation Methods.
+  * Updated the [Price Range Execution Rule FAQ](/docs/zh-CN/faqs/price_range_execution_rules.md#externalCalculationId1) with new External Reference Price Calculation Methods.
 
 
 

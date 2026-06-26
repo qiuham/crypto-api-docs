@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/api-management/Delete-IP-List-For-a-Sub-account-API-Key
 api_type: Account
-updated_at: 2026-06-25 19:03:15.534301
+updated_at: 2026-06-26 18:55:09.249127
 ---
 
 # Get Detail on Sub-account's Futures Account V2 (For Master Account) (USER_DATA)

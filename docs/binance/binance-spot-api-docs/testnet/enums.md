@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/enums
 api_type: REST
-updated_at: 2026-06-25 18:56:08.215293
+updated_at: 2026-06-26 18:48:06.845802
 ---
 
 # FIX API
@@ -4536,7 +4536,7 @@ Bytes| Description
 0x30, 0x32, 0x53, 0x50, 0x47, 0x66, 0x4b, 0x69| Logon.Username.varData  
 0x32, 0x68, 0x38, 0x73, 0x70, 0x5a, 0x4a, 0x62| Logon.Username.varData  
   
-### FIX vs. FIX SBE[​](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#fix-vs-fix-sbe "FIX vs. FIX SBE的直接链接")
+### FIX vs. FIX SBE[​](/docs/zh-CN/binance-spot-api-docs/testnet/fix-api#fix-vs-fix-sbe "FIX vs. FIX SBE�的直接链接")
 
 General:
 

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/portfolio-margin/general-info
 api_type: REST
-updated_at: 2026-06-25 18:57:12.855721
+updated_at: 2026-06-26 18:49:10.980121
 ---
 
 # General Info
@@ -596,7 +596,7 @@ symbol=BTCUSDT
 
 
 
-### 示例 2: 所有参数通过 request body 发送[​](/docs/zh-CN/derivatives/portfolio-margin/general-info#示例-2-所有参数通过-request-body-发送 "示例 2: 所有参数通过 request body 发送的直接链接")
+### 示例 2: 所有参数通过 request body 发送[​](/docs/zh-CN/derivatives/portfolio-margin/general-info#示例-2-所有参数通过-request-body-��发送 "示例 2: 所有参数通过 request body 发送的直接链接")
 
 > **示例2:**
 

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/websocket-api/market-data-requests
 api_type: WebSocket
-updated_at: 2026-06-25 18:56:33.467465
+updated_at: 2026-06-26 18:48:31.055165
 ---
 
 # Rate limits
@@ -419,7 +419,7 @@ API 有多种频率限制间隔。 如果您用完了较短的间隔但较长的
     }  
     
 
-### 未成交订单计数[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/rate-limits#未成交订单计数 "未成交订单计数的直接链接")
+### 未成交订单计数[​](/docs/zh-CN/binance-spot-api-docs/websocket-api/rate-limits#未成交订单计数 "未成交订单计数��的直接链接")
 
   * 成功下单将更新 `订单` 速率限制类型。
   * 被拒绝或不成功的订单可能会也可能不会更新 `订单` 速率限制类型。

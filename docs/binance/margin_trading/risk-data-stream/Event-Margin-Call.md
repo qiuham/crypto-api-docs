@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/risk-data-stream/Event-Margin-Call
 api_type: REST
-updated_at: 2026-06-25 18:58:24.580782
+updated_at: 2026-06-26 18:50:19.935605
 ---
 
 # Keepalive User Data Stream (USER_STREAM)
@@ -38,7 +38,7 @@ listenKey| STRING| YES|
 
 有效期延长至本次调用后24小时。
 
-## HTTP请求[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http请求 "HTTP��请求的直接链接")
+## HTTP请求[​](/docs/zh-CN/margin_trading/risk-data-stream/Keepalive-User-Data-Stream#http请求 "HTTP请求的直接链接")
 
 PUT `/sapi/v1/margin/listen-key`
 

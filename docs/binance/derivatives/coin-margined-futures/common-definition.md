@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/coin-margined-futures/common-definition
 api_type: REST
-updated_at: 2026-06-25 18:56:57.405218
+updated_at: 2026-06-26 18:48:56.077036
 ---
 
 # Error Codes
@@ -1655,7 +1655,7 @@ Codes are universal,but messages can vary.
 
 
 
-### -4032 EXCEED_MAX_CANCEL_ORDER_SIZE[​](/docs/zh-CN/derivatives/coin-margined-futures/error-code#-4032-exceed_max_cancel_order_size "-4032 EXCEED_MAX_CANCEL_ORDER_SIZE的直接链接")
+### -4032 EXCEED_MAX_CANCEL_ORDER_SIZE[​](/docs/zh-CN/derivatives/coin-margined-futures/error-code#-4032-exceed_max_cancel_order_size "-4032 EXCEED_MAX_CANCEL_ORDER_SIZE的直��接链接")
 
   * Exceed maximum cancel order size.
   * 超过可以取消的最大订单量。
@@ -1746,7 +1746,7 @@ Codes are universal,but messages can vary.
 
 
 
-### -4055 AMOUNT_MUST_BE_POSITIVE[​](/docs/zh-CN/derivatives/coin-margined-futures/error-code#-4055-amount_must_be_positive "-4055 AMOUNT_MUST_BE_POSITIVE的直接链接")
+### -4055 AMOUNT_MUST_BE_POSITIVE[​](/docs/zh-CN/derivatives/coin-margined-futures/error-code#-4055-amount_must_be_positive "-4055 AMOUNT_MUST_BE_POSITIVE的�直接链接")
 
   * Amount must be positive.
   * 数量必须是正整数

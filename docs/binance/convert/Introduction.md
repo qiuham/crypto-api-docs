@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/Introduction
 api_type: REST
-updated_at: 2026-06-25 19:01:46.357846
+updated_at: 2026-06-26 18:53:41.486656
 ---
 
 # General Info
@@ -897,7 +897,7 @@ MARKET_DATA| 需要有效的 API-Key
 
 
 
-#### 签名是否是大小写敏感的[​](/docs/zh-CN/convert/general-info#签名是否是大小写敏感的 "签名是否是大小写敏感的的直�接链接")
+#### 签名是否是大小写敏感的[​](/docs/zh-CN/convert/general-info#签名是否是大小写敏感的 "签名是否��是大小写敏感的的直接链接")
 
   * **HMAC：** 使用 HMAC 生成的签名**不区分大小写** 。这意味着无论字母大小写如何，签名字符串都可以被验证。
   * **RSA：** 使用 RSA 生成的签名是**大小写敏感的** 。

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/borrow-and-repay/Institution-Loan-Group-Max-Borrowable
 api_type: REST
-updated_at: 2026-06-25 19:02:22.866957
+updated_at: 2026-06-26 18:54:18.641849
 ---
 
 # Query Loan Group Max Borrowable (USER_DATA)

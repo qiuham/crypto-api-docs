@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/institutional_loan/trade
 api_type: Trading
-updated_at: 2026-06-25 19:02:36.921302
+updated_at: 2026-06-26 18:54:32.344340
 ---
 
 # Risk Unit Transfer(TRADE)
@@ -83,7 +83,7 @@ POST /sapi/v1/margin/loan-group/transfer-out
 
 1(IP)
 
-## 请求参数[​](/docs/zh-CN/institutional_loan/transfer#��请求参数 "请求参数的直接链接")
+## 请求参数[​](/docs/zh-CN/institutional_loan/transfer#请求参数 "请求参数的直接链接")
 
 名称| 类型| 是否必需| 描述  
 ---|---|---|---  
