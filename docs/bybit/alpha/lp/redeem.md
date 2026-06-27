@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/alpha/lp/redeem
 api_type: REST
-updated_at: 2026-06-26 19:06:44.761164
+updated_at: 2026-06-27 18:55:22.861113
 ---
 
 # Execute LP Redeem

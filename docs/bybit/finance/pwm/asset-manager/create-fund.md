@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/create-fund
 api_type: REST
-updated_at: 2026-06-26 19:10:02.682998
+updated_at: 2026-06-27 18:58:40.833878
 ---
 
 # Manage Investment Plan

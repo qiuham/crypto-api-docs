@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/fiat-convert/trade-notify
 api_type: REST
-updated_at: 2026-06-26 19:07:30.157633
+updated_at: 2026-06-27 18:56:08.174444
 ---
 
 # Funding Account Transaction History

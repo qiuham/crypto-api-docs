@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/deposit/sub-deposit-record
 api_type: REST
-updated_at: 2026-06-26 19:07:18.726430
+updated_at: 2026-06-27 18:55:56.940172
 ---
 
 # Submit Deposit Originator Info

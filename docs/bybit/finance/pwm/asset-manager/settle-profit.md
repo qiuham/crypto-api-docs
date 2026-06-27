@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/finance/pwm/asset-manager/settle-profit
 api_type: REST
-updated_at: 2026-06-26 19:10:08.986539
+updated_at: 2026-06-27 18:58:47.105109
 ---
 
 # Fund Transfer Between Sub-Accounts

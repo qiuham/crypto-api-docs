@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/asset/transfer/transferable-coin
 api_type: REST
-updated_at: 2026-06-26 19:07:40.724620
+updated_at: 2026-06-27 18:56:18.454048
 ---
 
 # Withdraw

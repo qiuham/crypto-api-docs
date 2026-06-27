@@ -2,7 +2,7 @@
 exchange: bybit
 source_url: https://bybit-exchange.github.io/docs/v5/market/orderbook
 api_type: Market Data
-updated_at: 2026-06-26 19:10:54.962731
+updated_at: 2026-06-27 18:59:32.732965
 ---
 
 # Get Risk Limit
