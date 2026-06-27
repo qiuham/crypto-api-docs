@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/sub_account/change-log
 api_type: Account
-updated_at: 2026-06-26 18:55:44.936039
+updated_at: 2026-06-27 18:44:12.832613
 ---
 
 # Deposit Assets Into The Managed Sub-account (For Investor Master Account) (USER_DATA)

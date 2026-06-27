@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Query-Margin-Account-All-Orders
 api_type: Trading
-updated_at: 2026-06-26 18:51:02.118324
+updated_at: 2026-06-27 18:39:21.846018
 ---
 
 # Query Margin Account's Order (USER_DATA)

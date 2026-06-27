@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/margin_trading/trade/Exit-Special-Key-Mode
 api_type: Trading
-updated_at: 2026-06-26 18:50:35.130997
+updated_at: 2026-06-27 18:38:53.973315
 ---
 
 # Exit Special Key Mode (TRADE)

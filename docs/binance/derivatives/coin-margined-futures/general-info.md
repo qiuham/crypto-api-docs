@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/derivatives/coin-margined-futures/general-info
 api_type: REST
-updated_at: 2026-06-26 18:49:01.050203
+updated_at: 2026-06-27 18:37:17.199859
 ---
 
 # General Info

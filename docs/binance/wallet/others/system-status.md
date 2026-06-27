@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/others/system-status
 api_type: REST
-updated_at: 2026-06-26 18:52:51.795932
+updated_at: 2026-06-27 18:41:15.545442
 ---
 
 # Submit Deposit Questionnaire (For local entities that require travel rule) (supporting network) (USER_DATA)

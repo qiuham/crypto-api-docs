@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/onboarded-vasp-list
 api_type: REST
-updated_at: 2026-06-26 18:53:07.835914
+updated_at: 2026-06-27 18:41:30.247582
 ---
 
 # Get Region List (USER_DATA)

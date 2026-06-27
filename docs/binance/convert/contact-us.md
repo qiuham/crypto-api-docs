@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/convert/contact-us
 api_type: REST
-updated_at: 2026-06-26 18:53:42.804863
+updated_at: 2026-06-27 18:42:05.729903
 ---
 
 # General Info

@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/rest-api/general-information-on-endpoints
 api_type: REST
-updated_at: 2026-06-26 18:47:49.914972
+updated_at: 2026-06-27 18:36:07.664006
 ---
 
 # LIMITS

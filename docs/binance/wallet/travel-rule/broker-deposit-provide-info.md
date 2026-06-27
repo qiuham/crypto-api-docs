@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/wallet/travel-rule/broker-deposit-provide-info
 api_type: REST
-updated_at: 2026-06-26 18:52:54.284621
+updated_at: 2026-06-27 18:41:18.018138
 ---
 
 # Submit Deposit Questionnaire (For local entities that require travel rule) (supporting network) (USER_DATA)

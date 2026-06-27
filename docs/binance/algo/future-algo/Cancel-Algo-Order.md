@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/algo/future-algo/Cancel-Algo-Order
 api_type: REST
-updated_at: 2026-06-26 18:51:30.026207
+updated_at: 2026-06-27 18:39:52.089170
 ---
 
 # Time-Weighted Average Price(Twap) New Order(TRADE)

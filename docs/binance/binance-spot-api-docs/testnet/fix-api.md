@@ -2,7 +2,7 @@
 exchange: binance
 source_url: https://developers.binance.com/docs/binance-spot-api-docs/testnet/fix-api
 api_type: REST
-updated_at: 2026-06-26 18:48:09.116812
+updated_at: 2026-06-27 18:36:25.606778
 ---
 
 # FIX API
