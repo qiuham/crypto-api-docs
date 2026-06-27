@@ -2,7 +2,7 @@
 exchange: coinbase
 source_url: https://docs.cdp.coinbase.com/api-reference/advanced-trade-api/rest-api/portfolios/create-portfolio
 api_type: Account
-updated_at: 2026-06-26 18:37:15.189621
+updated_at: 2026-06-27 18:25:45.312855
 ---
 
 # Create Portfolio
