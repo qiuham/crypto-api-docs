@@ -3,7 +3,7 @@ exchange: okx
 source_url: https://www.okx.com/docs-v5/en/#overview-websocket-login
 anchor_id: overview-websocket-login
 api_type: WebSocket
-updated_at: 2026-06-26 19:24:16.849050
+updated_at: 2026-06-27 19:12:54.884407
 ---
 
 # Login
