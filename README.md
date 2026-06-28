@@ -1,5 +1,11 @@
 # 加密货币交易所 API 文档
 
+> **已归档 / Archived**
+>
+> 本仓库已迁移到新的多市场接口文档库：[`qiuham/marketdata-api-doc`](https://github.com/qiuham/marketdata-api-doc)。
+>
+> Crypto 文档现在位于新仓库的 [`docs/crypto/exchanges/`](https://github.com/qiuham/marketdata-api-doc/tree/main/docs/crypto/exchanges)，后续更新、索引和 GitHub Actions 定时任务都在新仓库维护。
+
 自动爬取和维护主流加密货币交易所的 API 文档。
 
 ## 快速开始
